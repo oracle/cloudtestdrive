@@ -42,13 +42,6 @@ During this day you will be able to experience the various cloud services hands-
   
 
 
-## Process Cloud Service ##
-In this lab, you will create a business process using PCS. This Order Approvals process will be initiated when a user enters an order.
-[Follow this link for the details](Process/readme.md)
-
-
-
-
 ## Integration ##
 
 + [Integration Cloud Service](Integration/readme.md) - 
