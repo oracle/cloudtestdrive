@@ -44,14 +44,11 @@ During this day you will be able to experience the various cloud services hands-
 
 ## Integration ##
 
-+ [Integration Cloud Service](Integration/readme.md) - 
-This lab will show you how to set up integration between 2 systems simply using the drag & drop features of Integration Cloud Service.  In this exercise we will set up an integration between a RightNow instance and a generic REST service of a mobile Application.
++ [Integration Cloud Service](Integration/readme.md) - This lab will show you how to set up integration between 2 systems simply using the drag & drop features of Integration Cloud Service.  In this exercise we will set up an integration between a RightNow instance and a generic REST service of a mobile Application.
 
-+ [APIARY](Integration/APICS/APIPCS-DesignFirst.md) - 
-The objective of this lab is to give you an overview of the APIARY Cloud Platform as an API Developer. 
++ [APIARY](Integration/APICS/APIPCS-DesignFirst.md) - The objective of this lab is to give you an overview of the APIARY Cloud Platform as an API Developer. 
 
-+ [API Platform Cloud Service](Integration/APICS/APIPCS-Manager.md) - 
-The objective of this lab is to give you a comprehensive overview of the API Platform Cloud Service as an API Manager. 
++ [API Platform Cloud Service](Integration/APICS/APIPCS-Manager.md) - The objective of this lab is to give you a comprehensive overview of the API Platform Cloud Service as an API Manager. 
 
 
 ## Prerequisites ##

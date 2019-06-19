@@ -17,8 +17,8 @@ This section contains directories with lab tutorials on the following topics:
   You can find the lab documents [here](IntegrationCloudService/readme.md).
 
 + API Cloud Services - The objective of this lab is to give you an overview of the two services we offer in this space:
-  + [Oracle APIARY Cloud Service](APICS/Lab%201.0%20-%20APIPCS%20API%20Design%20First%20Lab%20Latest%20(1).docx) as an API Developer environment
-  + [Oracle API Platform Cloud Service](APICS/Lab%201.0%20-%20APIPCS%20API%20Manager%20Latest.docx) as an API Manager platform
+  + [Oracle APIARY Cloud Service](APICS/APIPCS-DesignFirst.md) as an API Developer environment
+  + [Oracle API Platform Cloud Service](APICS/APIPCS-Manager.md) as an API Manager platform
 
 Attention ! To come back to this page, hit the "Back" button of your browser !
 
