@@ -16,8 +16,6 @@ During this day you will be able to experience the various cloud services hands-
 
 + [AppDev Infrastructure lab](AppDev/AppDevInfra.md) - Set up the infrastructure to run your applications : create a Database and Application Servers, using DBaaS and JCS
 
-+ [AppDev Development lab](AppDev/devcs-docker/Dev2OKE.md) - In this lab, you’ll learn how to build a Docker image for a Node.js REST service on Oracle Developer Cloud Service (DevCS), and push it to a Docker registrie such as Oracle Cloud Infrastructure Registry.  Then you will deploy your application on an OKE Managed Kubernetes cluster.
-
 + Using **Wercker** CI/CD pipelines to [deploy an Angular Node application](AppDev/K8S/readme.md)
 
 + Run your first **serverless Functions** [using FnProject](AppDev/functions/function2_lab.md)
