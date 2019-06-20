@@ -58,7 +58,7 @@ Start here after successfully connecting to an ATP dabase instance:
 
 
 
-#### [License](../../LICENSE.md)
+#### [License](../../LICENSE)
 
 Copyright (c) 2014, 2016 Oracle and/or its affiliates
 The Universal Permissive License (UPL), Version 1.0

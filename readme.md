@@ -63,6 +63,6 @@ Alternatively you can request an Oracle PaaS trial account. To get an account lo
 
 
 
-## [License](LICENSE.md)
+## [License](LICENSE)
 Copyright (c) 2014, 2016 Oracle and/or its affiliates
 The Universal Permissive License (UPL), Version 1.0

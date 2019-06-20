@@ -53,11 +53,7 @@ If you are running these labs on your own, please get a [Trial account](https://
 
 + [Oracle VBCS Tutorial; Build a Web or Mobile App](https://docs.oracle.com/en/cloud/paas/app-builder-cloud/tutorials.html)
 
----
-## License ##
-Copyright (c) 2014, 2018 Oracle and/or its affiliates
-The Universal Permissive License (UPL), Version 1.0   
-[Details](../LICENSE.md)
+
 
 ---
 ## Further Info ##

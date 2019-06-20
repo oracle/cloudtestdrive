@@ -22,12 +22,7 @@
 
 + Log in to the environment with the URL and the username/password that has been provided
 
----
 
-## License ##
-Copyright (c) 2014, 2017 Oracle and/or its affiliates
-The Universal Permissive License (UPL), Version 1.0   
-[Details](../../LICENSE.md)
 
 ---
 [Go to the Cloud Test Drive Overview](../README.md)

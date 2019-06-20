@@ -24,11 +24,4 @@ We'll spin up these components using the PaaS Cloud Control GUI, and then take a
 
 
 ---
-
-## License ##
-Copyright (c) 2014, 2017 Oracle and/or its affiliates
-The Universal Permissive License (UPL), Version 1.0   
-[Details](../LICENSE.md)
-
----
 [Go to the Cloud Test Drive Overview](../README.md)
