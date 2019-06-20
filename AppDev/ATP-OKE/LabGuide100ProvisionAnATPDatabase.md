@@ -15,16 +15,28 @@ This lab walks you through the steps to get started using the Oracle Autonomous 
 
 ## Steps
 
-### **STEP 1: Sign in to Oracle Cloud Infrastructure console**
+### **Step 1: Sign in to Oracle Cloud Infrastructure console**
 
-- If you are running this lab on an instructor-provided environment, you will have the direct link to the OCI console in the **access document** that was provided to you.
-- Alternatively, go to **cloud.oracle.com**, click **Sign In** to sign in with your Oracle Cloud account.
+Start Firefox on your Lab VM by double clicking on the Firefox Logo.
+Go to the OCI console by pasting following URL in the browser address bar: 
 
-![](./images/100/signin2.png)
+​	https://console.eu-frankfurt-1.oraclecloud.com 
 
-- Enter your Cloud Account Name and click Next.
+We will be using the Frankfurt region for all components in this lab.
 
-- Enter your Oracle Cloud username and password, and click Sign In.
+- Enter the name of the Cloud Tenancy: **oractdemeabdmnative**
+
+![](./images/100/signin2-2.png)
+
+- Next, make sure to choose the option **Single Sign-On
+
+![](./images/100/signin3.png)
+
+
+
+- Now you can enter your **User Name** and **Password**, and click **Sign In**.
+
+
 
 ![](./images/100/unpw.png)
 

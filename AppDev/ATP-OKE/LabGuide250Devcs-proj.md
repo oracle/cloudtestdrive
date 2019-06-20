@@ -25,7 +25,7 @@ Let’s get started!
 
 In this section, you’ll provision a complete development platform for your team by leveraging DevCS’s web interface.
 
-- Navigate to the Developer Cloud Service Instance once it has been created (see prerequisites)
+- On your VNC viewer, using Firefox, Navigate to the Developer Cloud Service Instance link provided by your instructor.
 - On the Welcome page, click **New Project**.
   ![](images/150/image001-2.png)
 
@@ -91,14 +91,12 @@ In this section, you’ll provision a complete development platform for your tea
 
 
 
-### Step 3:  Cloning your repository on your local machine
+### Step 3:  Cloning your repository on your Virtual Machine
 
-In order to easily update and upload files into your Developer repository, we will clone the newly created DevCS repository onto your machine.
+In order to easily update and upload files into your Developer repository, we will clone the newly created DevCS repository onto your VM machine.
 
-- Install git on your laptop.  You can download the software for your OS on [this location](https://git-scm.com/downloads) 
-- In this tutorial we will use the command line to execute the required git operations, but if you have a git GUI installed (like GitHub Desktop or GitKraken) you can execute the equivalent operations through these tools.
-
-- Create a directory on your desktop where you will clone the repository.  For ease of (command-line) navigation use a path with no spaces (for example on Mac: /Users/youruser/dev/ or on Windows c:\dev)
+- On your VNC viewer desktop, open a Terminal window.
+- In the home directory, create a directory where you will clone the repository, and move into this directory:
 
 ```
 mkdir dev

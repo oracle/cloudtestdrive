@@ -12,28 +12,38 @@ This lab will walk you through the steps to set up a CI/CD environment for devel
 
 ## Prerequisites
 
-To run these labs you will need access to an Oracle Cloud Account.  We have prepared this lab for the following situations: 
+- To run these labs you will need access to an Oracle Cloud Account.  Your instructor will provide you a URL that allows to perform **Self Registration**, where you will be asked to provide a username and a password of your choosing.  **Please note down this username and password, you will need this info later in the labs!**
 
-- You are using your own Oracle Cloud Tenancy, either via a **Trial**, using a **Pay-as-you-Go** account, or using the **Corporate account** of your organization.  If you do not have an account yet, you can obtain  a [Free Trial account](https://myservices.us.oraclecloud.com/mycloud/signup?sourceType=:eng:lw:ie::RC_EMMK190301P00254:220519_MicroATP).
+- This lab requires you to install a VNC viewer on your Laptop so that you can complete this hands-on lab.   There are many VNC viewer packages both commercial and open source. 
 
-  In this case, you need to go through the **Part 0** of this tutorial, to prepare your environment for this lab.
+  - For macOS we advise realVNC which can be obtained from 
 
-  
+    - https://www.realvnc.com/en/connect/download/viewer/macos/
 
-- If you are participating in a **in-person Oracle event**, your instructor will provide you the required credentials to access an environment that has already been prepared with the minimum policies, account credentials etc.  
-  **In this case you can <u>skip Part 0</u>**
+  - For Windows, suggested packages are TigerVNC viewer or TightVNC Viewer but if you already have a preferred VNC viewer you can use this. TigerVNC viewer has a simpler install process, as it is a standalone executable, but has fewer features.
 
+    - TigerVNC: Download ‘vncviewer64-1.9.0.exe’ from
 
+      - https://bintray.com/tigervnc/stable/tigervnc/1.9.0#files and save it to your desktop. It is a self-contained executable file, which requires no further installation.
+
+    - TightVNC Viewer: Select the 'Installer for Windows (64-bit)' from
+
+      - https://www.tightvnc.com/download.php
+
+        When prompted, select to save the file.  Next, run the executable to install the program. This requires you have the privileges to install software on your machine.
+
+## Connecting to your Lab Virtual Machine
+
+To reduce the amount of software that needs to be installed on your local machine we have prepared a Linux virtual machine to act as your desktop.
+
+Start TigerVNC viewer (or your choice of VNC viewer) by double clicking on the icon on your local desktop.
+Enter connection information (IP address and password)  provided by your lab leader and select Connect.
 
 
 
 ## Components of this lab
 
 This lab is composed of the steps outlined below.  Please walk through the various labs in a sequential order, as the different steps depend on each other:
-
-- **Part 0**:  [Preparing your Tenancy for the lab](env-setup.md) .  **ATTENTION : Only for personal tenancies.**  Please skip this part if your instructor provided you an environment.
-
-
 
 In case you already participated in the lab **Autonomous Database Hands-On Lab**, you just created a new ATP database and learned how to connect to this database instance.  In this case, you can skip Part 1 and Part 2, and go straight to Part 3, using the ATP database you created in the previous lab for all subsequent database activities.
 
