@@ -13,10 +13,6 @@ In this lab we will configure a secure connection using Oracle SQL Developer.
 
 - Learn how to configure a secure connection using Oracle SQL Developer
 
-#### **Required Artifacts**
-
-- You should have Oracle SQL Developer installed on your machine. If not, you can download the latest version from [here](https://www.oracle.com/technetwork/developer-tools/sql-developer/downloads/index.html).
-
 
 ## Steps
 
