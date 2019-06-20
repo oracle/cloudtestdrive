@@ -25,7 +25,7 @@ The lab is structured in three sections
 
   -  click on the link of your choice, then select "Download", and use the back button of your browser to return here.
 
-**Section 3** is composed of the lab [**Microservices on Kubernetes and Autonomous Database**](AppDev/ATP-OKE/README.md). 
+**Section 3** is composed of the lab [**Microservices on Kubernetes and Autonomous Database**](../AppDev/ATP-OKE/README.md). 
 
 
 
