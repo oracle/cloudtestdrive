@@ -20,7 +20,7 @@ The lab is structured in three sections
 
 **Section 1 and 2** of this lab can be downloaded as a PDF or WORD document
 
-- [PDF File](ATP-HOL-Long-v1.2-OKE-hol.pdf)
+- [PDF File](ATP-HOL-Long-v1.5-OKE-connect.pdf)
 - Word File (to be uploaded soon)
 
   -  click on the link of your choice, then select "Download", and use the back button of your browser to return here.
