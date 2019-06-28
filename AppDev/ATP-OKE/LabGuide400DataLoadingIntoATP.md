@@ -1,11 +1,11 @@
-[Go to Overview Page](README.md)
+[Go to ATP Overview Page](../../ATP/readme.md)
 
 ![](../../common/images/customer.logo2.png)
 
 # Microservices on ATP
 
 
-## Part 4: Data Loading into ATP
+## Part 2: Data Loading into ATP
 #### **Introduction**
 
 In this lab, you will be creating a few tables and inserting data into the ATP database using the CI/CD features of Developer Cloud.  We'll use the Build engine of DevCS to set up a flow that will create the necessary objects in the database, and insert data into the tables.  In case these elements are changed in the repository, the script will trigger again and re-create the database elements.
@@ -26,7 +26,7 @@ In real life, you would want to set up a more sophisticated logic to manage your
 
 ### STEP 1: Set up your ATP Wallet in Developer Cloud
 
-In the ATP Connection step of this lab, you downloaded the ATP Connection wallet zip file into the Downloads folder on your VNC desktop.  We will now unizp the file and copy both the wallet zip file and the folder into the git repository folder:
+In the ATP Connection step of this lab, you downloaded the ATP Connection wallet zip file into the Downloads folder on your (VNC) desktop.  We will now unizp the file and copy both the wallet zip file and the folder into the git repository folder:
 
 ```bash
 cd Downloads
@@ -149,5 +149,5 @@ Congratulations, You are now ready to move to the next lab.
 
 ------
 
-[Go to Overview Page](README.md)
+[Go to ATP Overview Page](../../ATP/readme.md)
 

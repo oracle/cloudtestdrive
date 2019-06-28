@@ -1,9 +1,9 @@
-[Go to Overview Page](README.md)
+[Go to ATP Overview Page](../../ATP/readme.md)
 
 ![](../../common/images/customer.logo2.png)
 # Microservices on ATP
 
-## Part 7: Deploy your container on top of your Kubernetes Cluster
+## Part 5: Deploy your container on top of your Kubernetes Cluster
 
 #### **Introduction**
 
@@ -115,7 +115,7 @@ Let’s get started!
 
 ### Step 5: Setting up kubectl
 
-You need to configure your VM terminal to point to the kubeconfig configuration file that belongs to the cluster you just created. This file has been generated during the terraform setup of your cluster.
+You need to configure your terminal window to point to the kubeconfig configuration file that belongs to the cluster you just created. This file has been generated during the terraform setup of your cluster.
 
 The *kubeconfig* file contains the necessary details and parameters to connect to Oracle Container Engine (Kubernetes cluster). The *clusters* parameter defines the available clusters. 
 
@@ -227,4 +227,5 @@ Congratulations, you have finished this lab !!!!
 Because you did all this via a CI/CD chain, making a small change in the source code of your application will trigger the re-deployment and make your change immediately visible.
 
 ---
-[Go to Overview Page](README.md)
+[Go to ATP Overview Page](../../ATP/readme.md)
+
