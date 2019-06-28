@@ -59,7 +59,7 @@ Enter connection information (IP address and password)  provided by your lab lea
 
 **Section 1** of this lab can be downloaded as a PDF document
 
-- [PDF File](ATP-HOL-Long-v1.2-OKE-hol.pdf)
+- [PDF File](ATP-HOL-Long-v1.5-OKE-connect.pdf)
   - click on the link above, then select "Download", and use the back button of your browser to return here.
 
 
