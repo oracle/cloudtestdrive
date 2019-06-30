@@ -16,7 +16,7 @@ To run these labs you will need access to an Oracle Cloud Account.  We have prep
 
 - <u>You are using your own Oracle Cloud Tenancy,</u> either via a **Trial**, using a **Pay-as-you-Go** account, or using the **Corporate account** of your organization.  If you do not have an account yet, you can obtain  a [Free Trial account](https://myservices.us.oraclecloud.com/mycloud/signup?sourceType=:eng:lw:ie::RC_EMMK190301P00254:220519_MicroATP).
 
-  In this case, you need to go through the **Part 0** of this tutorial, to prepare your environment for this lab.
+  Next, follow the steps described on this page in the **Components of this lab** section.
 
   
 
