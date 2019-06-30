@@ -31,7 +31,8 @@ This lab is composed of the steps outlined below.  Please walk through the vario
 
 - [Preparing your Tenancy for the lab](env-setup.md) .
 - [Provisioning an Autonomous Transaction Processing Database Instance](LabGuide100ProvisionAnATPDatabase.md)  using the OCI Console (manual).
-- [Connecting to your Database](LabGuide200SecureConnectivityAndDataAccess.md) using the secure wallet
+
+  
 
 You finished the setup part of your environment, and you can now start with the creation of your CI/CD flows in Developer Cloud:
 
