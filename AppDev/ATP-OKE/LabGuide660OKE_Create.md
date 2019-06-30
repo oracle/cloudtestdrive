@@ -1,10 +1,10 @@
-[Go to Overview Page](README.md)
+[Go to ATP Overview Page](../../ATP/readme.md)
 
 ![](../../common/images/customer.logo2.png)
 
 # Microservices on ATP
 
-## Part 5: Setup your Managed Kubernetes Instance
+## Part 3: Setup your Managed Kubernetes Instance
 
 This Lab describes how to instantiate an **Oracle Managed Kubernetes cluster using Terraform**, including all the required network elements such as VNC's, subnets and access lists.
 #### **Introduction**
@@ -56,7 +56,7 @@ Screen shots of the various locations to find this information
 
 ### Step 2: Set the Terraform parameters and run the script ###
 
-- Open a new Terminal on your VNC viewer, and navigate to the **terraform_0.12** folder in the **ATPDocker** git repository folder
+- Open a new Terminal window, and navigate to the **terraform_0.12** folder in the **ATPDocker** git repository folder
 
 - Edit the file terraform.tfvars and enter your instance OCID's on the first lines, using the information collected in the previous section
 
@@ -172,4 +172,4 @@ resource "oci_core_virtual_network" "K8SVNC" {
 
 ---
 
-[Go to Overview Page](README.md)
+[Go to ATP Overview Page](../../ATP/readme.md)

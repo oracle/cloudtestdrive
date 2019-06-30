@@ -1,9 +1,9 @@
-[Go to Overview Page](README.md)
+[Go to ATP Overview Page](../../ATP/readme.md)
 
 ![](../../common/images/customer.logo2.png)
 # Microservices on ATP
 
-## Part 6: Build a Container image with the aone application runing on ATP
+## Part 4: Build a Container image with the aone application runing on ATP
 
 #### **Introduction**
 
@@ -193,4 +193,4 @@ You have finished this part of the lab, navigate to the next step to continue!
 
 
 ---
-[Go to Overview Page](README.md)
+[Go to ATP Overview Page](../../ATP/readme.md)

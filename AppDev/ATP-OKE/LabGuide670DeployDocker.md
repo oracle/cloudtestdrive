@@ -1,9 +1,9 @@
-[Go to Overview Page](README.md)
+[Go to ATP Overview Page](../../ATP/readme.md)
 
 ![](../../common/images/customer.logo2.png)
 # Microservices on ATP
 
-## Part 7: Deploy your container on top of your Kubernetes Cluster
+## Part 5: Deploy your container on top of your Kubernetes Cluster
 
 #### **Introduction**
 
@@ -77,7 +77,7 @@ Let’s get started!
 
 ### Step 3: ***Optional*** - Personalize the deployment on the cluster
 
-<u>In case you are sharing an instance with other participants</u>, you need to make sure your deployment can be distinguished from the ones belonging to your colleagues.  You can perform the below steps to achieve this:
+<u>In case you are sharing a Kubernetes instance with other participants</u>, you need to make sure your deployment can be distinguished from the ones belonging to your colleagues.  You can perform the below steps to achieve this:
 
 - In the **Git** tab of Developer Cloud, re-open the file **atp2.yaml**.  You need to make following extra changes:
 
@@ -115,7 +115,7 @@ Let’s get started!
 
 ### Step 5: Setting up kubectl
 
-You need to configure your VM terminal to point to the kubeconfig configuration file that belongs to the cluster you just created. This file has been generated during the terraform setup of your cluster.
+You need to configure your terminal window to point to the kubeconfig configuration file that belongs to the cluster you just created. This file has been generated during the terraform setup of your cluster.
 
 The *kubeconfig* file contains the necessary details and parameters to connect to Oracle Container Engine (Kubernetes cluster). The *clusters* parameter defines the available clusters. 
 
@@ -123,6 +123,14 @@ When you execute a `kubectl` command first it tries to read the default configur
 
 ```
 export KUBECONFIG=~/Downloads/kubeconfig
+```
+
+
+
+*Remark: in case you are not using a VNC viewer and running these commands locally on a Windows machine, the correct syntax is:*
+
+```
+				set KUBECONFIG=c:\Downloads\kubeconfig
 ```
 
 
@@ -153,7 +161,7 @@ This command runs `kubectl` in a mode where it acts as a reverse proxy. It handl
 
 http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#%21/overview?namespace=default.
 
-The default port used by the proxy command is port 8001. If on your laptop this port is already in use by another application you can easily specify to use another port using following syntax:
+The default port used by the proxy command is port 8001. In case this port is already in use by another application you can easily specify to use another port using following syntax:
 
 ```
 kubectl proxy --port=8333
@@ -227,4 +235,5 @@ Congratulations, you have finished this lab !!!!
 Because you did all this via a CI/CD chain, making a small change in the source code of your application will trigger the re-deployment and make your change immediately visible.
 
 ---
-[Go to Overview Page](README.md)
+[Go to ATP Overview Page](../../ATP/readme.md)
+

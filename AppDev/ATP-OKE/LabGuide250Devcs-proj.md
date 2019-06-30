@@ -1,9 +1,9 @@
-[Go to Overview Page](README.md)
+[Go to ATP Overview Page](../../ATP/readme.md)
 
 ![](../../common/images/customer.logo2.png)
 # Microservices on ATP #
 
-## Part 3 - Setting up your Developer Cloud Project ##
+## Part 1 - Setting up your Developer Cloud Project ##
 
 ## Introduction ##
 
@@ -25,9 +25,15 @@ Let’s get started!
 
 In this section, you’ll provision a complete development platform for your team by leveraging DevCS’s web interface.
 
-- On your VNC viewer, using Firefox, Navigate to the Developer Cloud Service Instance link provided by your instructor.
+- Access your Developer Cloud Instance
+  - <u>When using on an Oracle-provided environment</u>: On your VNC viewer, using Firefox, Navigate to the Developer Cloud Service Instance link provided by your instructor.
+  - <u>When using a Personal Trial</u>: Use the URL to your Developer Cloud Console you saved during the setup of your environment 
+
 - On the Welcome page, click **New Project**.
-  ![](images/150/image001-2.png)
+
+
+
+![](images/150/image001-2.png)
 
 
 
@@ -91,11 +97,12 @@ In this section, you’ll provision a complete development platform for your tea
 
 
 
-### Step 3:  Cloning your repository on your Virtual Machine
+### Step 3:  Cloning your repository locally
 
-In order to easily update and upload files into your Developer repository, we will clone the newly created DevCS repository onto your VM machine.
+In order to easily update and upload files into your Developer repository, we will clone the newly created DevCS repository onto your (VM) machine.
 
-- On your VNC viewer desktop, open a Terminal window.
+- <u>When using an Oracle provided environment</u>, go to your VNC viewer desktop and open a Terminal window.
+- <u>When using a personal instance</u>, open a Terminal window on your laptop
 - In the home directory, create a directory where you will clone the repository, and move into this directory:
 
 ```
@@ -131,5 +138,5 @@ Go back to the overview page and select the next lab step to continue.
 
 
 ---
-[Go to Overview Page](README.md)
+[Go to ATP Overview Page](../../ATP/readme.md)
 

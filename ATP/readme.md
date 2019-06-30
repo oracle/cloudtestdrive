@@ -2,7 +2,7 @@
 
 ![](../common/images/customer.logo2.png)
 
-# Autonomous Transaction Processing - ATP #
+# Autonomous Transaction Processing for Developers #
 
 
 
@@ -16,6 +16,8 @@ The lab is structured in three sections
 - **Section 2** – Focus on Developer features - *For Developers*
 
 
+
+
 ## Prerequisites
 
 - To run these labs you will need access to an Oracle Cloud Account.  Your instructor will provide you a URL that allows to perform **Self Registration**, where you will be asked to provide a username and a password of your choosing.  **Please note down this username and password, you will need this info later in the labs!**
@@ -25,7 +27,6 @@ The lab is structured in three sections
   - For **macOS** we advise realVNC which can be obtained from 
 
     - https://www.realvnc.com/en/connect/download/viewer/macos/
-      
 
   - For **Windows**, suggested packages are TigerVNC viewer or TightVNC Viewer but if you already have a preferred VNC viewer you can use this. TigerVNC viewer has a simpler install process, as it is a standalone executable, but has fewer features.
 
@@ -41,7 +42,7 @@ The lab is structured in three sections
 
 - **USING A PERSONAL TRIAL ACCOUNT ?** 
 
-  In case you are using a personal Cloud Trial Account, you will need to prepare your Cloud Environment to be able to execute these labs.  See [instructions on this page](../AppDev/ATP-OKE/env-setup.md) for all details.
+  In case you are using a personal Cloud Trial Account, you will need to prepare your Cloud Environment to be able to execute these labs.  See [instructions on this page](../AppDev/ATP-OKE/README.md) for all details.
 
   
 
@@ -72,7 +73,6 @@ This section will take you through the steps to set up a CI/CD environment for d
 - **Part 3:** [Spin up a Managed Kubernetes environment with Terraform](../AppDev/ATP-OKE/LabGuide660OKE_Create.md)
 - **Part 4:** [Build a Container image with the aone application running on ATP](../AppDev/ATP-OKE/LabGuide650BuildDocker.md)
 - **Part 5:** [Deploy your container on top of your Kubernetes Cluster](../AppDev/ATP-OKE/LabGuide670DeployDocker.md)
-
 
 
 

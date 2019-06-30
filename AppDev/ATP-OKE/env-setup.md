@@ -2,7 +2,7 @@
 
 ![](../../common/images/customer.logo2.png)
 # Microservices on ATP #
-## Part 0: Preparing your Oracle Cloud Tenancy for the lab ##
+## Preparing your Oracle Cloud Tenancy for the lab ##
 
 ## Introduction ##
 
@@ -75,6 +75,11 @@ In case your cloud account is linked straight to the OCI dashboard, you need to 
 - Now the instance is being created.  This will take a few minutes, you can hit the small arrow to requery the status.
 
 ![alt text](images/devcs/creating.png)
+
+#### Access your DevCS Environment ####
+
+To access your Developer Cloud Instance, use the hzmburger menu on the right to view the menu item **Access Service Instance**.  Right-click to save the URL, you will need this link later in the labs.
+
 
 
 #### Configuring your DevCS Instance ####
