@@ -20,17 +20,7 @@ Below you find a detailed description of these steps, with screendumps and expla
 
 
 
-### Step 1: Set up Terraform on your local machine
-
-Terraform needs to be installed on your local machine.  
-
-- Go to the [Hashicorp Terraform website](https://www.terraform.io/downloads.html) to download the software for your OS
-- unzip the executable file in the directory of your choice
-- Add the terraform command to your path
-    - On Mac: export PATH=$PATH:`pwd`
-    - On Windows: go to System Steetings, Advanced, Environment Variables, and add the path to your Terraform directory 
-
-### Step 2: Collect Infrastructure Info for your environment: ###
+### Step 1: Collect Infrastructure Info for your environment: ###
 
 You need to collect a series of OCID's from your instance in order for Terraform to access your instance:
 - Tenancy OCID
@@ -64,27 +54,9 @@ Screen shots of the various locations to find this information
 
 
 
-### Step 3: Set the Terraform parameters and run the script ###
+### Step 2: Set the Terraform parameters and run the script ###
 
-**Attention**: Terraform version 0.12 syntax changes
-
-As of version 0.12, Terraform slightly changed the syntax of it's configuration files.
-
-- If you installed the latest version from the website, you probably have the lastst version: v0.12.1 or above
-
-  - ==> Use the scripts in the folder **terraform_0.12**
-
-- If you already had Terraform on your machine, verify the version:
-
-  - ==> If you are on v0.11 or earlier, use the scripts in folder **terraform**
-
-  You can issue the below command to check your version:
-
-  `Terraform version`
-
-  
-
-- Open a command prompt on your local machine and navigate to the **terraform_0.12** or **terraform** folder in the **ATPDocker** git repository folder
+- Open a new Terminal on your VNC viewer, and navigate to the **terraform_0.12** folder in the **ATPDocker** git repository folder
 
 - Edit the file terraform.tfvars and enter your instance OCID's on the first lines, using the information collected in the previous section
 
@@ -127,11 +99,7 @@ resource "oci_core_virtual_network" "K8SVNC" {
    - **terraform.tfstate**: this file contains the details of the created elements.  Terraform will require this file when you do an update to your configuration file and you want top apply this change to the infrastructure.
    -  **mykubeconfig**: this is the config file that allows you to connect to your newly created Kubernetes cluster.  You will need it in the next steps to access the kubernetes management console.
 
-### Step 4: Validate and connect to the Kubernetes cluster
-
-- In case you do not have kubectl installed on your machine, follow these steps:
-
-   - [Instructions to Install kubectl](https://github.com/CloudTestDrive/EventLabs_priv/blob/master/AppDev/K8S/kubectl_install.md)
+### Step 3: Validate and connect to the Kubernetes cluster
 
 - validate the resulting K8S infrastructure :
 
@@ -166,7 +134,7 @@ resource "oci_core_virtual_network" "K8SVNC" {
 
      
 
-   - Then navigate in a browser to the following address:   
+   - Then navigate in a browser on your VNC Viewer to the following address:   
      http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/login
 
 

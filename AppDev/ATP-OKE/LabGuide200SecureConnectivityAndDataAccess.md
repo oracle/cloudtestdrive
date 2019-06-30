@@ -13,16 +13,12 @@ In this lab we will configure a secure connection using Oracle SQL Developer.
 
 - Learn how to configure a secure connection using Oracle SQL Developer
 
-#### **Required Artifacts**
-
-- You should have Oracle SQL Developer installed on your machine. If not, you can download the latest version from [here](https://www.oracle.com/technetwork/developer-tools/sql-developer/downloads/index.html).
-
 
 ## Steps
 
 ### **STEP 1: Download the secure connection wallet for your provisioned instance**
 
-- Log into your cloud account using your tenant name, username and password.
+- Via your VNC Viewer, using Firefox, log into your cloud account using your tenant name, username and password.
 
 - Click on Menu and select Autonomous Transaction Processing
 
