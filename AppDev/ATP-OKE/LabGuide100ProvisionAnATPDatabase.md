@@ -15,40 +15,9 @@ This lab walks you through the steps to get started using the Oracle Autonomous 
 
 ## Steps
 
-### **Step 1: Sign in to Oracle Cloud Infrastructure console**
-
-Start Firefox on your Lab VM by double clicking on the Firefox Logo.
-Go to the OCI console by pasting following URL in the browser address bar: 
-
-​	https://console.eu-frankfurt-1.oraclecloud.com 
-
-We will be using the Frankfurt region for all components in this lab.
-
-- Enter the name of the Cloud Tenancy: **oractdemeabdmnative**
-
-![](./images/100/signin2-2.png)
-
-- Next, make sure to choose the option **Single Sign-On
-
-![](./images/100/signin3.png)
 
 
-
-- Now you can enter your **User Name** and **Password**, and click **Sign In**.
-
-
-
-![](./images/100/unpw.png)
-
-- Once you are logged in, you are taken to the cloud services dashboard where you can see all the services available to you.
-
-- Click Autonomous Transaction Processing in the left side menu under services
-
-![](./images/100/myservices.png)
-
-
-
-### **STEP 2: Create an ATP Instance**
+### **STEP 1: Create an ATP Instance**
 
 -  Click on the hamburger menu icon on the top left of the screen
 

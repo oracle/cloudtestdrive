@@ -26,7 +26,7 @@ In real life, you would want to set up a more sophisticated logic to manage your
 
 ### STEP 1: Set up your ATP Wallet in Developer Cloud
 
-In the ATP Connection step of this lab, you downloaded the ATP Connection wallet zip file into the Downloads folder on your (VNC) desktop.  We will now unizp the file and copy both the wallet zip file and the folder into the git repository folder:
+In the ATP Connection step of this lab, you downloaded the ATP Connection wallet zip file into the Downloads folder.  We will now unizp the file and copy both the wallet zip file and the folder into the git repository folder.
 
 ```bash
 cd Downloads
@@ -41,7 +41,7 @@ mv Wallet_yourwalletfilename.zip ~/dev/ATPDocker
 mv Wallet_yourwalletfilename ~/dev/ATPDocker
 ```
 
-
+- *Remark: In case you chose to install git on your local Windows machine (not using the VNC viewer), you can just double-click the wallet zip file, and use the Windows File Manager to drag the files to the new folder*
 
 - On the command line, add the new files to the git repository, commit them and push them to the Developer Cloud with the following commands:
 

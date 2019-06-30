@@ -2,7 +2,7 @@
 
 ![](../../common/images/customer.logo2.png)
 # Microservices on ATP #
-## Part 0: Preparing your Oracle Cloud Tenancy for the lab ##
+## Preparing your Oracle Cloud Tenancy for the lab ##
 
 ## Introduction ##
 

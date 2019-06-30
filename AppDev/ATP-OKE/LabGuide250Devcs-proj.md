@@ -97,12 +97,12 @@ In this section, you’ll provision a complete development platform for your tea
 
 
 
-### Step 3:  Cloning your repository on your Virtual Machine
+### Step 3:  Cloning your repository locally
 
 In order to easily update and upload files into your Developer repository, we will clone the newly created DevCS repository onto your (VM) machine.
 
 - <u>When using an Oracle provided environment</u>, go to your VNC viewer desktop and open a Terminal window.
-- <u>When using a personal instance</u>, open a Terminal window on yopur laptop
+- <u>When using a personal instance</u>, open a Terminal window on your laptop
 - In the home directory, create a directory where you will clone the repository, and move into this directory:
 
 ```

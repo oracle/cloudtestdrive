@@ -29,16 +29,17 @@ To run these labs you will need access to an Oracle Cloud Account.  We have prep
 
 This lab is composed of the steps outlined below.  Please walk through the various labs in a sequential order, as the different steps depend on each other:
 
-- **Part 0**:  [Preparing your Tenancy for the lab](env-setup.md) .  **ATTENTION : Only for personal tenancies.**  Please skip this part if your instructor provided you an environment.
+- [Preparing your Tenancy for the lab](env-setup.md) .
+- [Provisioning an Autonomous Transaction Processing Database Instance](LabGuide100ProvisionAnATPDatabase.md)  using the OCI Console (manual).
+- [Connecting to your Database](LabGuide200SecureConnectivityAndDataAccess.md) using the secure wallet
 
-- **Part 1:** [Provisioning an Autonomous Transaction Processing Database Instance](LabGuide100ProvisionAnATPDatabase.md)  using the OCI Console (manual).
-- **Part 2:** [Connecting to your Database](LabGuide200SecureConnectivityAndDataAccess.md) using the secure wallet
+You finished the setup part of your environment, and you can now start with the creation of your CI/CD flows in Developer Cloud:
 
-- **Part 3:** [Setting up your Developer Cloud project](LabGuide250Devcs-proj.md)
-- **Part 4:** [Create and populate the Database objects](LabGuide400DataLoadingIntoATP.md) in your ATP database with Developer Cloud
-- **Part 5:** [Spin up a Managed Kubernetes environment with Terraform](LabGuide660OKE_Create.md)
-- **Part 6:** [Build a Container image with the aone application running on ATP](LabGuide650BuildDocker.md)
-- **Part 7:** [Deploy your container on top of your Kubernetes Cluster](LabGuide670DeployDocker.md)
+- **Part 1:** [Setting up your Developer Cloud project](LabGuide250Devcs-proj.md)
+- **Part 2:** [Create and populate the Database objects](LabGuide400DataLoadingIntoATP.md) in your ATP database with Developer Cloud
+- **Part 3:** [Spin up a Managed Kubernetes environment with Terraform](LabGuide660OKE_Create.md)
+- **Part 4:** [Build a Container image with the aone application running on ATP](LabGuide650BuildDocker.md)
+- **Part 5:** [Deploy your container on top of your Kubernetes Cluster](LabGuide670DeployDocker.md)
 
 ---
 

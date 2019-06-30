@@ -9,16 +9,14 @@
 
 In this lab we will configure a secure connection using Oracle SQL Developer.
 
-#### **Objectives**
 
-- Learn how to configure a secure connection using Oracle SQL Developer
 
 
 ## Steps
 
 ### **STEP 1: Download the secure connection wallet for your provisioned instance**
 
-- Via your VNC Viewer, using Firefox, log into your cloud account using your tenant name, username and password.
+- Log into your cloud account using your tenant name, username and password.
 
 - Click on Menu and select Autonomous Transaction Processing
 
