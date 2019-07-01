@@ -10,7 +10,7 @@
 
 In this hands-on lab you will get first-hand experience with Oracle’s new Autonomous Transaction Processing (ATP) service. Oracle ATP delivers a self-driving, self-securing, self-repairing database service that can instantly scale to meet demands of mission critical transaction processing and mixed workload applications. 
 
-The lab is structured in three sections 
+The lab is structured in two sections 
 
 - **Section 1** – Introduction to ATP 
 - **Section 2** – Focus on Developer features - *For Developers*
@@ -46,22 +46,19 @@ The lab is structured in three sections
 
   
 
-## Connecting to your Lab Virtual Machine
-
-To reduce the amount of software that needs to be installed on your local machine we have prepared a Linux virtual machine to act as your desktop.
-
-Start TigerVNC viewer (or your choice of VNC viewer) by double clicking on the icon on your local desktop.
-Enter connection information (IP address and password)  provided by your lab leader and select Connect.
-
 
 
 ## Lab Instructions
 
-**Section 1** of this lab can be downloaded as a PDF document
+**Section 1** - Introduction to ATP 
 
-- [PDF File](ATP-HOL-Long-v1.5-OKE-connect.pdf)
-  - click on the link above, then select "Download", and use the back button of your browser to return here.
+This section will take you through connecting to your Lab VM, locating your ATP instance and connecting to it using SQL Developer.
 
+- **Part 1:** [Setting up your Developer Cloud project](./LabGuideOSC100Login.md)
+
+- **Part 2:**  [Securely Connecting to Autonomous Transaction Processing](LabGuideOSC200Connect.md)
+
+  
 
 
 **Section 2** - Focus on Developers
