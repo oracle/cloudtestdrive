@@ -1,6 +1,7 @@
-﻿# ![customer.logo3](./images/Common/customer.logo3.png)Appendix B – Creating and preparing a user to access Object Storage
+ ![customer.logo3](./images/Common/customer.logo3.png)
+# Appendix B – Creating and preparing a user to access Object Storage #
 
-### Information about how the environment was prepared
+## Information about how the environment was prepared ##
 
 To load data from the Oracle Cloud Infrastructure Object Storage you will need a Cloud user with the appropriate privileges to read data from the Object Store. The communication between the database and the object store relies on the Swift protocol and a username/password authentication token. 
 
