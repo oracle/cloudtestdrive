@@ -1,10 +1,10 @@
 ![customer.logo3](./images/Common/customer.logo3.png)
 
-﻿# Appendix A – Provisioning Process Walkthrough
+# Appendix A – Provisioning Process Walkthrough #
 
 This is a walkthrough of the process used to create an ATP instance. This was demonstrated live during your lab session.
 
-## Creating your Autonomous Transaction Processing Database
+## Creating your Autonomous Transaction Processing Database ##
 
 Click on the **MENU** link at the top left of the page. 
 
