@@ -1,6 +1,6 @@
-﻿# ![customer.logo3](./images/Common/customer.logo3.png)
+ ![customer.logo3](./images/Common/customer.logo3.png)
 
-﻿# Part 1 . Connecting to the Oracle Cloud
+﻿# Part 1 . Connecting to the Oracle Cloud #
 
 **Objectives:**
 
@@ -31,7 +31,7 @@ The VNC session will open, and an Oracle Linux desktop session will be displayed
 
  ![Lab100desktop](./images/100/Lab100desktop.png)
 
-## Signing in to the OCI Console
+## Signing in to the OCI Console ##
 
 Start Firefox on your Lab VM by double clicking on the Firefox Logo.
 
@@ -67,7 +67,7 @@ Verify that your region is set to eu-frankfurt-1 on the top right hand side of y
 
  
 
-## Locating your ATP Instance
+## Locating your ATP Instance ##
 
 As part of the preparation for this lab, ATP instances have been pre-created. Your lab leader will have demonstrated a provisioning process live and the process is documented using screenshots in   [Appendix A](./LabGuideOSCAppendixA.md)
 
@@ -135,7 +135,7 @@ This will display more information about your instance and you should notice the
 
 A summary of your instance lifecycle status is shown in the large box on the left.
 
- ![Lab100ATPAvailablebox](./images/100/Lab100ATPAvailablebox.png)
+ ![Lab100ATPAvailablebox](./images/Common/ATPAvailablebox.png)
 
 Additional summary information about your instance is displayed, including the workload type. You can also see the Lifecycle Status reported in this region.
 
