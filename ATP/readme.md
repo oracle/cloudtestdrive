@@ -6,7 +6,7 @@
 
 
 
-## Lab Introduction
+## Lab Introduction ##
 
 In this hands-on lab you will get first-hand experience with Oracle’s new Autonomous Transaction Processing (ATP) service. Oracle ATP delivers a self-driving, self-securing, self-repairing database service that can instantly scale to meet demands of mission critical transaction processing and mixed workload applications. 
 
@@ -18,7 +18,7 @@ The lab is structured in two sections
 
 
 
-## Prerequisites
+## Prerequisites ##
 
 - To run these labs you will need access to an Oracle Cloud Account.  Your instructor will provide you a URL that allows to perform **Self Registration**, where you will be asked to provide a username and a password of your choosing.  **Please note down this username and password, you will need this info later in the labs!**
 
@@ -48,7 +48,7 @@ The lab is structured in two sections
 
 
 
-## Lab Instructions
+## Lab Instructions ##
 
 **Section 1** - Introduction to ATP 
 
