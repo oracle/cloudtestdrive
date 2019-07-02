@@ -1,6 +1,6 @@
 ![customer.logo3](./images/Common/customer.logo3.png)
 
-﻿# Part 2. Securely Connecting to Autonomous Transaction Processing
+# Part 2. Securely Connecting to Autonomous Transaction Processing #
 
 **Objectives:**
 
@@ -20,7 +20,7 @@ The sample SQL scripts for this lab are available in your VM under the directory
 
  
 
-## Managing Priorities on Autonomous Transaction Processing
+## Managing Priorities on Autonomous Transaction Processing ##
 
 The priority of user requests in ATP is determined by the database service the user is connected to. Users are required to select a service when connecting to the database. The service names are in the format:
 
@@ -44,23 +44,23 @@ The basic characteristics of these consumer groups are:
 
  
 
-- **tpurgent**: The highest priority application connection service      for time critical transaction processing operations. This connection      service supports manual parallelism.
+- **tpurgent**: The highest priority application connection service for time critical transaction processing operations. This connection      service supports manual parallelism.
 
  
 
-- **tp**: A typical application connection service for transaction      processing operations. Queries run serially.
+- **tp**: A typical application connection service for transaction processing operations. Queries run serially.
 
  
 
-- **high**: A high priority application connection service for      reporting and batch operations with low concurrency requirements. All      operations run in parallel  (if you      have multiple OCPU assigned to your instance) and are subject to queuing.
+- **high**: A high priority application connection service for reporting and batch operations with low concurrency requirements. All      operations run in parallel  (if you have multiple OCPU assigned to your instance) and are subject to queuing.
 
  
 
-- **medium**: A typical application connection service for reporting      and batch operations. All operations run in parallel and are subject to      queuing.
+- **medium**: A typical application connection service for reporting and batch operations. All operations run in parallel and are subject to      queuing.
 
  
 
-- **low**: A lowest priority application connection service for high      concurrency reporting or batch processing operations. Queries run serially.
+- **low**: A lowest priority application connection service for high concurrency reporting or batch processing operations. Queries run serially.
 
  
 
@@ -142,7 +142,7 @@ Select to Save the file, and then click ok. This will save the file in the defau
 
  
 
-## Connecting to the database using SQL Developer
+## Connecting to the database using SQL Developer ##
 
 Minimise your Firefox window, and on your Lab VM desktop, start SQL Developer by double clicking on the icon.
 
@@ -206,7 +206,7 @@ and press the ‘Run Script’ button or press F5.
 
 *Note – You do not have to use GUI tools to access an ATP instance. Other Oracle Client utilities such as SQL Plus can connect to the ATP instance using a wallet.*
 
-## (Optional) Secure access to your Autonomous Database using Access Control Lists
+## (Optional) Secure access to your Autonomous Database using Access Control Lists ##
 
 An Access Control List (ACL) provides additional protection for your Autonomous Database by allowing only the IP addresses in the list to connect to the database.
 
@@ -228,7 +228,7 @@ It is important to complete this exercise successfully to allow subsequent labs 
 
  
 
-#### Creating your initial ACL
+#### Creating your initial ACL ####
 
  
 
@@ -304,7 +304,7 @@ The connection to the database should fail with **"IO Error: Undefined Error"**
 
  
 
-#### Correcting the ACL to allow connections
+#### Correcting the ACL to allow connections ####
 
  
 
@@ -434,7 +434,7 @@ The pop-up will now have no IP Addresses or CIDR blocks specified.  Select "Upda
 
 The Lifecycle status will change to **"Updating".**
 
-![Lab200ATPUpdating](./images/200/Lab200ATPUpdating.png) 
+![Lab200ATPUpdating](./images/Common/ATPUpdating.png) 
 
 ​    
 
@@ -442,7 +442,7 @@ Wait until the Lifecycle status is **"Available"**
 
  
 
-![Lab100ATPAvailablebox](./images/200/Lab100ATPAvailablebox.png)   
+![Lab100ATPAvailablebox](./images/Common/ATPAvailablebox.png)   
 
  
 
