@@ -1,8 +1,8 @@
-# Instructors Guide
+# Instructors Guide # 
 
 This is a hybrid workshop to showcase the ATP database alongside Kubernetes and other developer specific features. The environment can be used to showcase the DBA features, but this is not integrated into the GIT markdown language. 
 
-## What you have received
+## What you have received ##
 
 You will have received access to an OraDocs folder. 
 
@@ -14,9 +14,9 @@ In there you have
 
 
 
-## Troubleshooting Section 1
+## Troubleshooting Section 1 ##
 
-### SQL Developer Blank Dialog Boxes
+### SQL Developer Blank Dialog Boxes ###
 
  ![TSBlankSQLDEV](./images/TroubleShoot/TSBlankSQLDEV.png)
 
@@ -30,21 +30,21 @@ Seen intermittently on the V4 of the VM image. No known fix or cause, only worka
 
 ### VNC on Macs
 
-#### Using the built in VNC viewer
+#### Using the built in VNC viewer ####
 
 This requires you to specify the full port number not just the desktop number e.g. :5901 rather than :1
 
-#### VNC Sessions Terminating on Macs
+#### VNC Sessions Terminating on Macs ####
 
 Observed on first run of the lab in Brussels. Not able to reproduce as do not have Apple computers. Seems to be a keepalive/timeout problem. You can start a new terminal session in the VNC and run 'top' in it and leave it running and this seems to keep the session 'busy' enough to not disconnect.
 
-### Part 1. Connecting to the Oracle Cloud
+### Part 1. Connecting to the Oracle Cloud ###
 
 No troubleshooting steps recorded for this section.
 
-### Part 2 Securely Connecting to ATP
+### Part 2 Securely Connecting to ATP ###
 
-#### Wallet names
+#### Wallet names ####
 
 If a customer downloads the wallet from the DB connection link on the console page it currently downloads with a slightly different name
 
@@ -64,15 +64,15 @@ This means some of the copy and unzip commands will not work pasted from the gui
 
  
 
-#### Services
+#### Services ####
 
 **Can you create a new service?** Nope! Admin does not have access to dbms_service package (or srvctl or lsnrctl)
 
  
 
-### Secure access to your Autonomous Database using Access Control Lists
+### Secure access to your Autonomous Database using Access Control Lists ###
 
-#### Can still connect despite setting the address to 192.168.28.1
+#### Can still connect despite setting the address to 192.168.28.1 ####
 
  
 
@@ -116,7 +116,7 @@ E.g.
 
  
 
-#### Cannot connect to the database despite setting the ACL to the VM's public IP.
+#### Cannot connect to the database despite setting the ACL to the VM's public IP. ####
 
  
 
