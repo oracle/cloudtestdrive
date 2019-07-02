@@ -238,7 +238,7 @@ Navigate back to the **Autonomous Transaction Processing** page in the lab compa
 
 Click on the name of your database to open the instance details screen.
 
-![Lab100OKEDBListSelectMELATP](./images/200/Lab100OKEDBListSelectMELATP.png) 
+![Lab100OKEDBListSelectMELATP](./images/100/Lab100OKEDBListSelectMELATP.png) 
 
    
 
@@ -260,7 +260,7 @@ In the pop up box enter the IP Address **192.168.28.1** and select **"Update".**
 
 The Lifecycle status will change to **"Updating".**
 
- ![Lab200ATPUpdating](./images/common/ATPUpdating.png)
+ ![Lab200ATPUpdating](./images/Common/ATPUpdating.png)
 
 ​    
 
@@ -268,7 +268,7 @@ Wait until the Lifecycle status is **"Available"**
 
  
 
-   ![Lab100ATPAvailablebox](./images/common/ATPAvailablebox.png)
+   ![Lab100ATPAvailablebox](./images/Common/ATPAvailablebox.png)
 
  
 
@@ -358,7 +358,7 @@ Select **"Update".**
 
 The Lifecycle status will change to **"Updating".**
 
- ![Lab200ATPUpdating](./images/common/ATPUpdating.png)
+ ![Lab200ATPUpdating](./images/Common/ATPUpdating.png)
 
 ​    
 
@@ -366,7 +366,7 @@ Wait until the Lifecycle status is **"Available"**
 
  
 
-   ![Lab100ATPAvailablebox](./images/common/ATPAvailablebox.png)
+   ![Lab100ATPAvailablebox](./images/Common/ATPAvailablebox.png)
 
  
 
