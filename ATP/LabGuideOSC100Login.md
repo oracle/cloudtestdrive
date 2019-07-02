@@ -1,6 +1,6 @@
  ![customer.logo3](./images/Common/customer.logo3.png)
 
-﻿# Part 1 . Connecting to the Oracle Cloud #
+# Part 1 . Connecting to the Oracle Cloud #
 
 **Objectives:**
 
