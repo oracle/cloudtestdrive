@@ -54,7 +54,7 @@ The lab is structured in two sections
 
 This section will take you through connecting to your Lab VM, locating your ATP instance and connecting to it using SQL Developer.
 
-- **Part 1:** [Setting up your Developer Cloud project](./LabGuideOSC100Login.md)
+- **Part 1:** [Connecting to the Oracle Cloud](./LabGuideOSC100Login.md)
 
 - **Part 2:**  [Securely Connecting to Autonomous Transaction Processing](LabGuideOSC200Connect.md)
 
