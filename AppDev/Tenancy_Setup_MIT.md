@@ -131,3 +131,7 @@ Setting up an instance of Managed Kubernetes for deploying containers
 - Detailed instructions are available on the link below:
   - Link to Step 3 - [Setup your Managed Kubernetes Instance](ATP-OKE/LabGuide660OKE_Create.md)
 
+### Functions
+
+If required you can request access to the Functions service, only available in Limited Availability.  For this you need to communicate your **tenancy name** and **tenancy OCID** to your Oracle contact.
+
