@@ -122,6 +122,12 @@ A detailed explanation for setting up Developer Cloud can be found following the
 
 Setting up an instance of Managed Kubernetes for deploying containers
 
+- Request a Limit Increase for the required number of OKE instances you are expected to be using in your environment.  This parameter is not yet visible in the Service Limit dashboard, so it is best to request this beforehand.
+  - Select the Service Limit Increase menu
+  - Select the Service Category **OKE**
+  - Select the Resource **OCI Container Engine for Kubernetes**
+  - Select the limit required
+
 - Detailed instructions are available on the link below:
   - Link to Step 3 - [Setup your Managed Kubernetes Instance](ATP-OKE/LabGuide660OKE_Create.md)
 
