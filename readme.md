@@ -16,6 +16,7 @@ During this day you will be able to experience the various cloud services hands-
 + [AppDev Infrastructure lab](AppDev/AppDevInfra.md) - Set up the infrastructure to run your applications : create a Database and Application Servers, using DBaaS and JCS
 + Using **Wercker** CI/CD pipelines to [deploy an Angular Node application](AppDev/K8S/readme.md)
 + Run your first **serverless Functions** [using FnProject](AppDev/functions/function2_lab.md)
++ Discover the **Helidon Microservices framework for Java** by running through the 2 Getting Started [Quickstarts](https://helidon.io/docs/latest/#/guides/01_overview) for the SE and MP flavour, and then continue with more advanced features like Metrics and Healthchecks in [this tutorial](https://github.com/tomas-langer/helidon-conference/blob/master/README.md)
 
 
 
