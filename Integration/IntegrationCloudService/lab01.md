@@ -1,3 +1,8 @@
+[Go to the Cloud Test Drive Overview](../README.md)
+
+![](/Users/jleemans/dev/github/cloudtestdrive/common/images/customer.logo2.png)
+
+# Integration Cloud Service Lab
 
 ## 3A Labs - JAM Workshop (Journey of App Modernization)
 
