@@ -50,7 +50,8 @@ Screen shots of the various locations to find this information
   ![](images/660/OkeUser.png)
   
 - **Private Key API Path**
-  - This is the local path on your laptop where the private key file is located
+  - This is the local path on your laptop where the private key file is located.  
+  - In case you are running Terraform on a Linux instance that was provided to you, you can download the private key using the Firefox browser and the document link provided by your instructor.
 
 
 
