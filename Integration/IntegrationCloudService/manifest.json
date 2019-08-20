@@ -1,0 +1,15 @@
+{
+    "workshop": {
+        "title": "JAM Workshops",
+        "description": "Journey of App Modernization",
+        "theme": "default",
+        "labs": [
+            {
+                "number": "01",
+                "filename": "lab01.md",
+                "title": "OIC Integration",
+                "description": "OIC Integration – for application integration"
+            }
+        ]
+    }
+}
