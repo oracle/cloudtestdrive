@@ -501,11 +501,11 @@ This directs to a very handy page, the Endpoint Description.
 
 ![](images/lab01/img0700.png)
 
-You should have a Request-Response which looks like this:
+-	You should have a Request-Response which looks like this:
 
 ![](images/lab01/img0710.png)
 
-You can compare the Response to the example-Response from the Endpoint Description page.
+-	You can compare the Response to the example-Response from the Endpoint Description page.
 
 -	Verify &quot;Organization Created&quot;
 
