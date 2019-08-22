@@ -501,7 +501,6 @@ This directs to a very handy page, the Endpoint Description.
 ![](images/lab01/img0700.png)
 
 -	You should have a Request-Response which looks like this:
-
 ![](images/lab01/img0710.png)
 
 -	You can compare the Response to the example-Response from the Endpoint Description page.
@@ -509,7 +508,6 @@ This directs to a very handy page, the Endpoint Description.
 -	Verify &quot;Organization Created&quot;
 
 -	Click **Send** again
-
 ![](images/lab01/img0720.png)
 
 -	Note the different Response
