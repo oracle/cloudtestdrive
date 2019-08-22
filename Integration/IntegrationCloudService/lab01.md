@@ -24,7 +24,7 @@ The use case is very simple – we need to be able to expose an API that allows 
 -	Activate the Integration
 -	Test using Postman
 
-### **STEP 1** Oracle Integration Cloud Overview
+### **STEP 1:** Oracle Integration Cloud Overview
 
 -	Login to Oracle Integration Cloud (OIC)
 
@@ -52,7 +52,7 @@ The Integration Designer allows us to do the following –
 -	Enhance your integrations with JavaScript libraries
 
 
-### **STEP 2.1** Create the Connections - REST
+### **STEP 2.1:** Create the Connections - REST
 
 We will create a REST Connection which will trigger our integration, and a Service Cloud connection to communicate with, you&#39;ve guessed it, Oracle Service Cloud.
 
