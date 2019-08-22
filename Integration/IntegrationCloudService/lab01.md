@@ -19,13 +19,12 @@ The use case is very simple – we need to be able to expose an API that allows 
 #### Contents
 
 -	Oracle Integration Cloud Overview
--	OIC Integration – for application integration
-    *	Create the Connections - REST and Service Cloud
-    *	Create the Integration
-    *	Activate the Integration
-    *	Test using Postman
+-	Create the Connections - REST and Service Cloud
+-	Create the Integration
+-	Activate the Integration
+-	Test using Postman
 
-### Oracle Integration Cloud Overview
+### **STEP 1** Oracle Integration Cloud Overview
 
 -	Login to Oracle Integration Cloud (OIC)
 
@@ -53,7 +52,7 @@ The Integration Designer allows us to do the following –
 -	Enhance your integrations with JavaScript libraries
 
 
-### **STEP 1.1** Create the Connections - REST
+### **STEP 2.1** Create the Connections - REST
 
 We will create a REST Connection which will trigger our integration, and a Service Cloud connection to communicate with, you&#39;ve guessed it, Oracle Service Cloud.
 
@@ -81,7 +80,7 @@ We will create a REST Connection which will trigger our integration, and a Servi
 
 ![](images/lab01/img0090.png)
 
-### **STEP 1.2:** Create the Connections - Service Cloud
+### **STEP 2.2:** Create the Connections - Service Cloud
 
 -	Now **Create** the Service Cloud Connection, you can search to filter away the other adapters.
 
@@ -116,7 +115,7 @@ You should now be able to see your new connection at the top of the list.
 ![](images/lab01/img0160.png)
 
 
-### **STEP 2.1:** Create the Integration - Create App Driven Orchestration
+### **STEP 3.1:** Create the Integration - Create App Driven Orchestration
 
 -	Open the main menu and click on **Integrations**
 
@@ -140,7 +139,7 @@ You should now be able to see your new connection at the top of the list.
 ![](images/lab01/img0200.png)
 
 
-### **STEP 2.2:** Create the Integration - Configure REST Trigger
+### **STEP 3.2:** Create the Integration - Configure REST Trigger
 
 -	Click on the start node, **search for** and **select your REST Connection**: REST-Trigger-NN
 
@@ -206,7 +205,7 @@ Your Integration should now look something like this:
 ![](images/lab01/img0290.png)
 
 
-### **STEP 2.3:** Create the Integration - Check if Organization exists
+### **STEP 3.3:** Create the Integration - Check if Organization exists
 
 Before creating a new organization, the first thing we will do is to check whether the organization already exists.
 For this we will use the Service Cloud Connection.
@@ -285,7 +284,7 @@ If the Organization does not already exist, then we will create it and return th
 ![](images/lab01/img0390.png)
 
 
-### **STEP 2.4:** Create the Integration - Case Organization exists
+### **STEP 3.4:** Create the Integration - Case Organization exists
 
 -	**Edit** path 1 by clicking on the pencil-icon:
 
@@ -343,7 +342,7 @@ Your integration should now look like this:
 ![](images/lab01/img0480.png)
 
 
-### **STEP 2.5:** Create the Integration - Case New Organization
+### **STEP 3.5:** Create the Integration - Case New Organization
 
 Now to configure Path 2 – Otherwise
 
@@ -421,7 +420,7 @@ The completed integration!
 ![](images/lab01/img0600.png)
 
 
-### **STEP 2.6:** Create the Integration - Setup tracking
+### **STEP 3.6:** Create the Integration - Setup tracking
 
 Before we activate and publish, we still need to set a tracking field, for auditing/monitoring purposes
 
@@ -437,7 +436,7 @@ Before we activate and publish, we still need to set a tracking field, for audit
 -	**Save** and **Close** the Integration
 
 
-### **STEP 3:** Activate the Integration
+### **STEP 4:** Activate the Integration
 
 It&#39;s finally time to activate and publish your integration!
 
@@ -453,7 +452,7 @@ From the Integrations-list
 ![](images/lab01/img0641.png)
 
 
-### **STEP 4:** Test using Postman
+### **STEP 5:** Test using Postman
 
 You will need to have Postman (or a similar program) installed for this step
 
