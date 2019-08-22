@@ -495,7 +495,7 @@ This directs to a very handy page, the Endpoint Description.
 	}
     ```
 
--	**Modify** the orgName to: Oracle Organization **NN II** where **II** represent the initials of your name
+    * **Modify** the orgName to: Oracle Organization **NN II** where **II** represent the initials of your name
 
 -	Click **Send**
 
@@ -514,3 +514,4 @@ You can compare the Response to the example-Response from the Endpoint Descripti
 ![](images/lab01/img0720.png)
 
 -	Note the different Response
+
