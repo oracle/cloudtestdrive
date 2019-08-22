@@ -15,4 +15,5 @@ No expertise or previous experience is required.
 
 ## Step 2: Navigate to labs
 
-- Use the ![](images/hamburger.png) hamburger menu to navigate to labs.
+- Use the hamburger menu to navigate to labs:
+![](images/hamburger.png)
