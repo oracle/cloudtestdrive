@@ -498,7 +498,6 @@ This directs to a very handy page, the Endpoint Description.
     * **Modify** the orgName to: Oracle Organization **NN II** where **II** represent the initials of your name
 
 -	Click **Send**
-
 ![](images/lab01/img0700.png)
 
 -	You should have a Request-Response which looks like this:
