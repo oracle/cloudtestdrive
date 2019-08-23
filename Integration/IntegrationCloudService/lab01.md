@@ -2,15 +2,6 @@
 This hands-on, instructor-led workshop supplements live presentations and demos in order to cover both technical architecture and innovation use cases, strategies when taking application networks to the cloud and introduce you the tools required for successful implementation.
 No expertise or previous experience is required.
 
-## Contents
-
--	Introduction
--	OIC Integration – for application integration
-    *	Create the Connections - REST and Service Cloud
-    *	Create the Integration
-    *	Activate the Integration
-    *	Test using Postman
-
 
 ## Introduction
 
@@ -25,13 +16,19 @@ This set of labs covers the following Oracle Integration Services –
 
 The use case is very simple – we need to be able to expose an API that allows us to create new organizations in Oracle Service Cloud (fka. Right Now).
 
+#### Contents
 
-### Oracle Integration Cloud Overview
+-	Oracle Integration Cloud Overview
+-	Create the Connections - REST and Service Cloud
+-	Create the Integration
+-	Activate the Integration
+-	Test using Postman
+
+### **STEP 1:** Oracle Integration Cloud Overview
 
 -	Login to Oracle Integration Cloud (OIC)
-    * Use URL and credentials from the section 0 (zero)
 
-  ![](images/lab01/img0010.png)
+![](images/lab01/img0010.png)
 
 Think of OIC as a toolbox, containing the following –
 
@@ -55,9 +52,9 @@ The Integration Designer allows us to do the following –
 -	Enhance your integrations with JavaScript libraries
 
 
-### **STEP 1.1** Create the Connections - REST
+### **STEP 2.1:** Create the Connections - REST
 
-We will create a REST connection which will trigger our integration, and a Service Cloud connection to communicate, with, you&#39;ve guessed it, Oracle Service Cloud.
+We will create a REST Connection which will trigger our integration, and a Service Cloud connection to communicate with, you&#39;ve guessed it, Oracle Service Cloud.
 
 -	Click on **Connections**
 
@@ -74,7 +71,7 @@ We will create a REST connection which will trigger our integration, and a Servi
 ![](images/lab01/img0060.png)
 
 -	Configure as follows
-    * Name: REST-Trigger-**NN**
+    * **Name**: REST-Trigger-**NN** (Replace **NN** with the number given by your trainers. Do so for all examples in this lab.)
     ![](images/lab01/img0070.png)
 
 -	Click **Test, Save, Close** , in that order.
@@ -83,16 +80,16 @@ We will create a REST connection which will trigger our integration, and a Servi
 
 ![](images/lab01/img0090.png)
 
-### **STEP 1.2:** Create the Connections - Service Cloud
+### **STEP 2.2:** Create the Connections - Service Cloud
 
--	Now **create** the Service Cloud Connection, you can search to filter away the other adapters.
+-	Now **Create** the Service Cloud Connection, you can search to filter away the other adapters.
 
 ![](images/lab01/img0100.png)
 
 ![](images/lab01/img0110.png)
 
 -	**Configure** as follows
-    * Name: ServiceCloud-**NN**
+    * **Name**: ServiceCloud-**NN**
     ![](images/lab01/img0120.png)
 
 -	**Configure** with the following WSDL URL :
@@ -103,12 +100,12 @@ We will create a REST connection which will trigger our integration, and a Servi
     * Click **Configure Connectivity**
     ![](images/lab01/img0130.png)
 
-    * Enter the WSDL URL and confirm by clicking **OK**
+    * Enter the **WSDL URL** and confirm by clicking **OK**
     ![](images/lab01/img0140.png)
 
     * Click **Configure Security**
-        +	User : Admin1
-        +	Password: Your trainers will provide this to you
+        +	**Username** : Admin2
+        +	**Password**: Your trainers will provide this to you
         ![](images/lab01/img0150.png)
 
 -	Click **Test, Save, Close** , in that order.
@@ -118,7 +115,7 @@ You should now be able to see your new connection at the top of the list.
 ![](images/lab01/img0160.png)
 
 
-### **STEP 2.1:** Create the Integration - Create App Driven Orchestration
+### **STEP 3.1:** Create the Integration - Create App Driven Orchestration
 
 -	Open the main menu and click on **Integrations**
 
@@ -133,22 +130,22 @@ You should now be able to see your new connection at the top of the list.
 ![](images/lab01/img0190.png)
 
 -	**Configure** as follows
-    * Name: CreateServiceOrg-**NN**
-    * Description: Your name or initials
-    * Package: pck-createServiceOrg-**NN**
+    * **Name**: CreateServiceOrg-**NN**
+    * **Description**: Your name or initials
+    * **Package**: pck-createServiceOrg-**NN**
 
 -	Click **Create**
 
 ![](images/lab01/img0200.png)
 
 
-### **STEP 2.2:** Create the Integration - Configure REST Trigger
+### **STEP 3.2:** Create the Integration - Configure REST Trigger
 
--	Click on the start node, **search for** and **select your REST-connector**; REST-Trigger-NN
+-	Click on the start node, **search for** and **select your REST Connection**: REST-Trigger-NN
 
 ![](images/lab01/img0210.png)
 
--	**Configure** the REST Trigger as follows
+-	**Configure** the REST-Trigger as follows
     * Name: CreateOrgService
     * Description: Your name or initials
     * Endpoint&#39;s relative resource URI: /createOrg
@@ -158,8 +155,6 @@ You should now be able to see your new connection at the top of the list.
 -	Click **Next**
 
 ![](images/lab01/img0220.png)
-
-The request and response payloads can be taken from our Apiary definition
 
 -	In the Request-step:
     *	**Select JSON** as payload sample
@@ -171,7 +166,7 @@ The request and response payloads can be taken from our Apiary definition
     *	**Copy** the following JSON sample into the editor
         ```javascript
 		{
-			"orgName": "The Hare of the Dog Public House",
+			"orgName": "Oracle Organization",
 			"contactFirstName": "Chris",
 			"contactLastName": "OConnnor",
 			"contactEmail": "cc@hotd.ie",
@@ -182,7 +177,7 @@ The request and response payloads can be taken from our Apiary definition
     *	Click **OK**
     ![](images/lab01/img0250.png)
 
-    *	Click Next
+    *	Click **Next**
     ![](images/lab01/img0260.png)
 
 -	In the Response-step:
@@ -201,7 +196,7 @@ The request and response payloads can be taken from our Apiary definition
     *	Click **OK**
     ![](images/lab01/img0280.png)
 
--	Click Next
+-	Click **Next**
 -	Click **Done**
 -	**Save** the Integration
 
@@ -210,12 +205,12 @@ Your Integration should now look something like this:
 ![](images/lab01/img0290.png)
 
 
-### **STEP 2.3:** Create the Integration - Check if Organization exists
+### **STEP 3.3:** Create the Integration - Check if Organization exists
 
 Before creating a new organization, the first thing we will do is to check whether the organization already exists.
 For this we will use the Service Cloud Connection.
 
--	**Drag and Drop** _your_ Service Cloud Connector (ServiceCloud-NN) after the Trigger CreateOrgService. Once you start to move the connector onto the canvas, you will see a plus-sign (+) just under the CreateOrgService. Drop the connector on this sign.
+-	**Drag and Drop** _your_ Service Cloud Connection (ServiceCloud-NN) after the Trigger *CreateOrgService*. Once you start to move the connector onto the canvas, you will see a plus-sign (+) just under the *CreateOrgService*. Drop the connector on this sign.
 
 ![](images/lab01/img0300.png)
 
@@ -230,14 +225,14 @@ For this we will use the Service Cloud Connection.
     * Select Operation mode: **Single** operation
     * Operation type: **ROQL** (ROQL is an SQL like query language for Service Cloud)
     
-        + Select Query objects as Cloud Operation
+        + Select **Query objects** as Cloud Operation
 	*	Enter the following query
         ```
 		SELECT organization from organization where organization.name = '&orgName'
         ```
 
     * **Click** on Parameter Bindings
-    * Enter orgName: HOTD
+    * Enter **orgName**: HOTD
 	* **Click** _Test My Query_
     
     
@@ -255,9 +250,9 @@ Your integration now looks like this:
 
 ![](images/lab01/img0340.png)
 
-Now we need to map the incoming orgName to the CheckIfOrgExists parameter.
+Now we need to map the incoming *orgName* to the *CheckIfOrgExists* parameter.
 
--	Hover over, or click on the &quot;Map to CheckIfOrgExists&quot;, and **click** on the little pencil-icon to edit
+-	**Hover** over, or click on the &quot;*Map to CheckIfOrgExists*&quot;, and **click** on the little pencil-icon to edit
 
 ![](images/lab01/img0350.png)
 
@@ -269,40 +264,40 @@ Now we need to map the incoming orgName to the CheckIfOrgExists parameter.
 
   ![](images/lab01/img0360.png)
 
--	Click **validate** and **close**
+-	Click **Validate** and **Close**
 -	**Save** the Integration
 
 Your integration now looks like this:
 
 ![](images/lab01/img0370.png)
 
-Now we will add a Switch action, which is essentially an if/else check.
+Now we will add a *Switch* action, which is essentially an if/else check.
 
-If the Organization already exists, then we will return the orgId and a message – _&quot;Organization already exists&quot;._
+If the Organization already exists, then we will return the *orgId* and a message – _&quot;Organization already exists&quot;._
 
-If the Organization does not already exist, then we will create it and return the orgId and a message – _&quot;Organization created&quot;._
+If the Organization does not already exist, then we will create it and return the *orgId* and a message – _&quot;Organization created&quot;._
 
--	**Drag &amp; Drop** the **Switch** from the Actions Tab on the right and drop it right after CheckIfOrgExists
+-	**Drag &amp; Drop** the **Switch** from the Actions Tab on the right and drop it right after *CheckIfOrgExists*
 
 ![](images/lab01/img0380.png)
 
 ![](images/lab01/img0390.png)
 
 
-### **STEP 2.4:** Create the Integration - Case Organization exists
+### **STEP 3.4:** Create the Integration - Case Organization exists
 
 -	**Edit** path 1 by clicking on the pencil-icon:
 
 ![](images/lab01/img0400.png)
 
 -	**Configure** as follows
-    * Expression name: Org Already Exists
+    * **Expression name**: Org Already Exists
     * In the Expression-editor, **enter** : count()
     * Verify the condition is set to &quot;&gt;&quot;  and  &quot;0&quot; – greater than zero
 
   ![](images/lab01/img0410.png)
 
-The Expression is now &quot;count() &gt; 0&quot;; but the count of what? Naturally, the count of the objects returned by CheckIfOrgExists. So we need to add this variable to the count().
+The Expression is now &quot;count() &gt; 0&quot;; but the count of what? Naturally, the count of the objects returned by *CheckIfOrgExists*. So we need to add this variable to the count().
 
 -	**Drag &amp; Drop** Organization into the count()-expression ( **OR** mark and click  on the&quot;&gt;&quot;-icon)
 
@@ -347,16 +342,16 @@ Your integration should now look like this:
 ![](images/lab01/img0480.png)
 
 
-### **STEP 2.5:** Create the Integration - Case New Organization
+### **STEP 3.5:** Create the Integration - Case New Organization
 
 Now to configure Path 2 – Otherwise
 
 Here we will leverage the Service Cloud Connection to create an Organization in Service Cloud.
 
--	**Drag &amp; Drop** _your_ Service Cloud Connector (ServiceCloud-NN) onto Path 2.
+-	**Drag &amp; Drop** _your_ Service Cloud Connection (ServiceCloud-NN) onto Path 2.
 -	Call the endpoint: CreateOrg; **Click** Next
 -	**Configure** as follows
-    * Operation type: CRUD &amp; Create
+    * **Operation type**: CRUD &amp; Create
     * Search for Org, and **select** Business Object Organization by marking it and clicking on the &quot;&gt;&quot;-icon
     * **Click** Next
     * **Click** Done
@@ -368,7 +363,7 @@ Your integration should now look like this:
 
 ![](images/lab01/img0500.png)
 
--	Do the **Mapping** between Otherwise and CreateOrg
+-	Do the **Mapping** between *Otherwise* and *CreateOrg*
 
 ![](images/lab01/img0510.png)
 
@@ -425,7 +420,7 @@ The completed integration!
 ![](images/lab01/img0600.png)
 
 
-### **STEP 2.6:** Create the Integration - Setup tracking
+### **STEP 3.6:** Create the Integration - Setup tracking
 
 Before we activate and publish, we still need to set a tracking field, for auditing/monitoring purposes
 
@@ -441,38 +436,23 @@ Before we activate and publish, we still need to set a tracking field, for audit
 -	**Save** and **Close** the Integration
 
 
-### **STEP 3:** Activate the Integration
+### **STEP 4:** Activate the Integration
 
 It&#39;s finally time to activate and publish your integration!
 
 From the Integrations-list
 
 -	**Identify** _your_ Integration – CreateServiceOrg-NN (you can search to filter the results)
--	Activate the Integration – **Activate and Publish** - by clicking on the switch
+-	Activate the Integration – **Activate** - by clicking on the switch
 
 ![](images/lab01/img0630.png)
 
-Note: we are only creating the API definition in API Platform. We deploy it to an API Gateway in another step.
+-	Click **Activate**
 
-Finally, we will then also publish it to the API Developers Portal.
-
--	Click **Activate and Publish**
-
-![](images/lab01/img0640.png)
-
--	**Configure** as follows
-    * API Name: CreateServiceOrg-**NN**
-    * Version: 1.0
-    * API Endpoint URL: /organization
-    * API description: Your name/initials
--	Click **Create**
-
-![](images/lab01/img0650.png)
-
--	Click **Create**
+![](images/lab01/img0641.png)
 
 
-### **STEP 4:** Test using Postman
+### **STEP 5:** Test using Postman
 
 You will need to have Postman (or a similar program) installed for this step
 
@@ -490,12 +470,12 @@ This directs to a very handy page, the Endpoint Description.
 
 ![](images/lab01/img0680.png)
 
--	In Postman, open a new Request-tab
+-	In Postman, open a **New Request**-tab
     * Enter the **Endpoint URL** you copied
     * Make sure you are using a **POST** -call
     * Under the tab **Authorization**
-    * Type: Basic Auth
-    * Enter your OIC credentials
+        + **Type**: Basic Auth
+        + Enter your **OIC credentials**
 
   ![](images/lab01/img0690.png)
 
@@ -506,7 +486,7 @@ This directs to a very handy page, the Endpoint Description.
 -	Enter the **request payload** you copied from the **Request sample** (similar to this)
     ```javascript
 	{
-		"orgName": "The Hare of the Dog Public House", 
+		"orgName": "Oracle Organization", 
 		"contactFirstName": "Chris",
 		"contactLastName": "O'Connor",
 		"contactEmail": "cc@hotd.ie",
@@ -514,22 +494,20 @@ This directs to a very handy page, the Endpoint Description.
 	}
     ```
 
--	Modify the orgName to: The Hare of the Dog Public House NN
+    * **Modify** the orgName to: Oracle Organization **NN II** where **II** represent the initials of your name
 
 -	Click **Send**
-
 ![](images/lab01/img0700.png)
 
-You should have a Request-Response which looks like this:
-
+-	You should have a Request-Response which looks like this:
 ![](images/lab01/img0710.png)
 
-You can compare the Response to the example-Response from the Endpoint Description page.
+-	You can compare the Response to the example-Response from the Endpoint Description page.
 
 -	Verify &quot;Organization Created&quot;
 
 -	Click **Send** again
-
 ![](images/lab01/img0720.png)
 
 -	Note the different Response
+

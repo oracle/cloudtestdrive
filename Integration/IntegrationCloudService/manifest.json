@@ -1,9 +1,15 @@
 {
     "workshop": {
-        "title": "JAM Workshops",
+        "title": "JAM Workshop",
         "description": "Journey of App Modernization",
         "theme": "default",
         "labs": [
+			{
+                "number": "00",
+                "filename": "lab00.md",
+                "title": "Prerequisites",
+                "description": "Prerequisites for JAM Workshop"
+            },
             {
                 "number": "01",
                 "filename": "lab01.md",
