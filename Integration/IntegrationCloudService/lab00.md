@@ -32,7 +32,11 @@ This lab covers a set of prerequisites for running workshop hands-on activities
 
 ![](images/lab00/img0060.png)
 
--	Enter **Instance Name**, **Notification Email** and click on **Subscribe to a new Oracle Integration software license**; click **Next**
+-	Fill up Instace details:
+	* Enter **Instance Name**, **Notification Email**
+	* Select **eu-frankfurt-1** for **Region** 
+	* Choose to **Subscribe to a new Oracle Integration software license**
+	* click **Next**
 
 ![](images/lab00/img0070.png)
 
