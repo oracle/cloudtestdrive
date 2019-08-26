@@ -5,9 +5,7 @@ No expertise or previous experience is required.
 
 ## Step 1: Request an Oracle Cloud Trial or Workshop Account
 
-- Open https://cloud.oracle.com/home
-
-- At top right corner click a button **Try for Free**
+- Open this [link](https://myservices.us.oraclecloud.com/mycloud/signup?sourceType=:eng:eo:ie::RC_EMMK190614P00070:Labsteps) to create a Trial Account 
 
 - Follow the wizard to **Sign Up**.
     * When selecting **Home Region**, please use **EMEA -> Frankfurt**
