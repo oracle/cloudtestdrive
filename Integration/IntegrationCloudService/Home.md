@@ -10,6 +10,7 @@ No expertise or previous experience is required.
 - At top right corner click a button **Try for Free**
 
 - Follow the wizard to **Sign Up**.
+    * When selecting **Home Region**, please use **EMEA -> Frankfurt**
 
 - Login to Your Cloud account
 
