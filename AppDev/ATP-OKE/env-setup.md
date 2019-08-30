@@ -10,11 +10,11 @@ In case you are using a personal instance, either obtained via a free trial or u
 
 This page will guide you through the following activities :
 
-- Set up Developer Cloud Service
-- Create a compartment called CTDOKE which we will use in this lab
-- Add a Policy statement for OKE
-- Create an API user with a certificate
-- Install some software on your local machine:
+- Step 1: Set up Developer Cloud Service
+- Step 2: Create a compartment called CTDOKE which we will use in this lab
+- Step 3: Add a Policy statement for OKE
+- Step 4: Create an API user with a certificate
+- Step 5: Install some software on your local machine:
   - git
   - kubectl
   - terraform
@@ -236,7 +236,7 @@ Enter the following in create Compartment window
 
   
 
-### STEP 4: Install the required software on your laptop
+### STEP 5: Install the required software on your laptop
 
 #### Installing git
 
