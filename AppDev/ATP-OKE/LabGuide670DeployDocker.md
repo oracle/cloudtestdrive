@@ -48,7 +48,7 @@ Let’s get started!
 
 ### Step 2: Configure the environment to point to your cloud instance
 
-- Upload the kubeconfig file into the repository.  During the creation of the cluster, a file called **mykubeconfig** was generated.  This file is required to connect to your cluster from within the build job.
+- Upload the kubeconfig file into the repository.  During the creation of the cluster, a file called **mykubeconfig** was generated.  This file is required to connect to your cluster from within the build job.  In case you skipped the optional step 3 to create your own cluster, your instructor will provide you with the appropriate kubeconfig file.
 
   - Copy the file in the home directory of your ATPDocker repository
 
@@ -75,7 +75,7 @@ Let’s get started!
 
   
 
-### Step 3: ***Optional*** - Personalize the deployment on the cluster
+### Step 3:  Personalize the deployment on the cluster
 
 <u>In case you are sharing a Kubernetes instance with other participants</u>, you need to make sure your deployment can be distinguished from the ones belonging to your colleagues.  You can perform the below steps to achieve this:
 

@@ -120,40 +120,10 @@ Before we can run the Build Job we just created, we need to parametrize some scr
 
 - Navigate to the **Git** page of your Developer project
 
-- Open the file **Dockerfile**, and hit the Edit button (pencil icon upper right) to change the file
-
-- On line 17, change the **COPY** comman to reflect the name of your wallet directory:
-
-  - For example, if your wallet folder is named **APT1**, replace the original line with the blow text:
-
-    ```dockerfile
-    COPY ./wallet_ATP1 ./wallet_NODEAPPDB2
-    ```
-
-- Hit the **Commit** button (upper right) to save your changes.
-
-- Now navigate into your wallet folder by clicking on it, then select the file **sqlnet.ora** and hit the "Edit" pencil icon.
-
-  - In this file, replace the default line below:
-
-  - ```
-    WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY="?/network/admin")))
-    ```
-
-    
-
-  - by this line:
-
-  - ```
-    WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY=$TNS_ADMIN)))
-    ```
-
-  - This will allow us to simply set the environment variable $TNS_ADMIN to the correct path.
-
-- Finally, you need to ensure the docker image has the right connection information for connecting to the database.  Navigate to the folder **aone/scripts**, and locate the file called **dbconfig.js**
+- You need to ensure the docker image has the right connection information for connecting to the database.  Navigate to the folder **aone/scripts**, and locate the file called **dbconfig.js**
 
   - In this file, enter the username, password and connect string of your ATP database.  This is just a crude way of simply setting up connectivity, this should be parametrized in a real-world deployment!
-  - The connect string is of the form **atp2_high**, where atp2 would be your datbase name.
+  - The connect string is  **jleoow_high**, where jleoow is your datbase name.
   - Hit the **Commit** button to save the modifications.
 
 - You are now ready to try out your Build Job in the next step!

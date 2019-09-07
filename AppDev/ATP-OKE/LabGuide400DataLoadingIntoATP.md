@@ -16,56 +16,25 @@ In real life, you would want to set up a more sophisticated logic to manage your
 
 #### **Objectives**
 
-- Set up your ATP Wallet in Developer Cloud
+- Personalize the SQL script with your initials in the db table
 - Create and run a Build to create your database objects
-- Validate reation via SQLDeveloper
+- Validate creation via SQLDeveloper
 
 
 
 ## Steps
 
-### STEP 1: Set up your ATP Wallet in Developer Cloud
-
-In the ATP Connection step of this lab, you downloaded the ATP Connection wallet zip file into the Downloads folder.  We will now unizp the file and copy both the wallet zip file and the folder into the git repository folder.
-
-```bash
-cd Downloads
-
-# List downloaded files
-ls -l
-
-unzip Wallet_yourwalletfilename.zip -d Wallet_yourwalletfilename
-
-# Move Wallet file and directory into your git repository - assuming you placed it in "dev"
-mv Wallet_yourwalletfilename.zip ~/dev/ATPDocker
-mv Wallet_yourwalletfilename ~/dev/ATPDocker
-```
-
-- *Remark: In case you chose to install git on your local Windows machine (not using the VNC viewer), you can just double-click the wallet zip file, and use the Windows File Manager to drag the files to the new folder*
-
-- On the command line, add the new files to the git repository, commit them and push them to the Developer Cloud with the following commands:
-
-```bash
-# Position yourself in the actual Git directory
-cd ~/dev/ATPDocker
-
-# add the new files to the git repository
-git add .
-
-# Commit the change with the appropriate comment
-git commit -m "Add wallet"
-
-# Push the change from your laptop back into the DevCS repository
-git push
-```
 
 
+### **STEP 1: Personalize the table creation script**
 
-- Your wallet is now visible in Developer Cloud - you might have to refresh your browser window to see the changes
+As all participants will be using the same ATP database, we will first personalize the database table creation script so you can see your table in the database after running the build job.
 
-![](./images/400/wallet_added.png)
-
-
+- Go to the Developer Cloud web interface, 
+- Navigate to the **aone** folder
+- Open the file **create_schema_simple.sql**, hit the Edit pencil 
+- Replace all occurences of "ITEMS_CTD" by "ITEMS_<your_initials>".
+- Safe the changes 
 
 ### **STEP 2: Create and load your data in the database**
 
@@ -100,10 +69,10 @@ git push
 
 - Fill in the parameters:
   - username of the ATP instance : **admin**
-  - password of the ATP instance
-  - your wallet .zip file
-  - your connect string, for example **atp2_high**, where atp2 is the name of the database in this example
-  - the sql file containing the create script: **aone/create_schema.sql**
+  - password of the ATP instance (see access document provided by instructor)
+  - the wallet .zip file **CTD_OOW.zip** that is already pre-loaded in your repository
+  - your connect string, for example **jleoow_high**, where atp2 is the name of the database in this example
+  - the sql file containing the create script: **aone/create_schema_simple.sql**
 
 
 
