@@ -45,14 +45,12 @@ This step will guide you through the setup of a new Developer Cloud instance :
 ![alt text](images/devcs/dashboard_new.png)
 
 - Open DevCS service
-![alt text](images/devcs/DevCS_create_instance.png)
-
 
 #### Create an instance ####
 
 -  You should have no existing instances.  If you have, you can skip the following steps and just validate you have a build engine witht the correct libraries included.
 
-![alt text](images/devcs/empty.png)
+![alt text](images/devcs/DevCS_create_instance.png)
 
 - Use the "Create Instance" button to create a new Developer Cloud instance
 
