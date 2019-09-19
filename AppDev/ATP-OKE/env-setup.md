@@ -70,7 +70,7 @@ Note: You should match the region selected with your home region.
 
 #### Access your DevCS Environment ####
 
-To access your Developer Cloud Instance, use the hzmburger menu on the right to view the menu item **Access Service Instance**.  Right-click to save the URL, you will need this link later in the labs.
+To access your Developer Cloud Instance, refresh the page and use the hamburger menu on the right to view the menu item **Access Service Instance**.  Right-click to save the URL (copy link address), you will need this link later in the labs.
 
 
 
