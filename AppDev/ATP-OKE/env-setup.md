@@ -38,21 +38,15 @@ This step will guide you through the setup of a new Developer Cloud instance :
 
 
 
-#### Go to DevCS on ypur dashboard ####
+#### Go to DevCS on yp\our dashboard ####
 
 - Login to your cloud account and navigate to the PaaS dashboard:
 
 ![alt text](images/devcs/dashboard_new.png)
 
-In case your cloud account is linked straight to the OCI dashboard, you need to use the following menu item on the left to reach the PaaS dashboard:
+bla bla
+![alt text](images/devcs/dashboard_new.png)
 
-![alt text](images/devcs/gotopaas.png)
-
-
-
-- Make sure the "Developer Cloud" service is "visible" on the dashboard as in the above screenshot.  If this is not the case, use the "Customize Dashboard" button to enable it.
-
-![alt text](images/devcs/customize.png)
 
 #### Create an instance ####
 
