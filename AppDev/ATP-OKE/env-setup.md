@@ -50,11 +50,7 @@ This step will guide you through the setup of a new Developer Cloud instance :
 
 #### Create an instance ####
 
-- Go into the Developer Cloud Service Overview by clicking on the Service title
-
-![alt text](images/devcs/service.png)
-
-- Open the Service Console.  You should have no existing instances.  If you have, you can skip the following steps and just validate you have a build engine witht the correct libraries included.
+-  You should have no existing instances.  If you have, you can skip the following steps and just validate you have a build engine witht the correct libraries included.
 
 ![alt text](images/devcs/empty.png)
 
