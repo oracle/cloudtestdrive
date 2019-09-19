@@ -38,14 +38,14 @@ This step will guide you through the setup of a new Developer Cloud instance :
 
 
 
-#### Go to DevCS on yp\our dashboard ####
+#### Go to DevCS on your dashboard ####
 
-- Login to your cloud account and navigate to the PaaS dashboard:
+- Login to your cloud account and find DevCS service:
 
 ![alt text](images/devcs/dashboard_new.png)
 
-bla bla
-![alt text](images/devcs/dashboard_new.png)
+- Open DevCS service
+![alt text](images/devcs/DevCS_create_instance.png)
 
 
 #### Create an instance ####
