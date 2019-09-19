@@ -32,17 +32,17 @@ This page will guide you through the following activities :
 
 This step will guide you through the setup of a new Developer Cloud instance :
 
-- Enabling DevCS on your Dashboard
+- Go to DevCS on your Dashboard
 - Creating a Developer Cloud instance
 - Configuring the Storage and Build parameters for your DevCS instance
 
 
 
-#### Enable DevCS on your PaaS dashboard ####
+#### Go to DevCS on ypur dashboard ####
 
 - Login to your cloud account and navigate to the PaaS dashboard:
 
-![alt text](images/devcs/dashboard.png)
+![alt text](images/devcs/dashboard_new.png)
 
 In case your cloud account is linked straight to the OCI dashboard, you need to use the following menu item on the left to reach the PaaS dashboard:
 
