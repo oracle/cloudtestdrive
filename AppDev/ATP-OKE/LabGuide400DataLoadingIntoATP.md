@@ -71,7 +71,7 @@ As all participants will be using the same ATP database, we will first personali
   - username of the ATP instance : **admin**
   - password of the ATP instance (see access document provided by instructor)
   - the wallet .zip file **CTD_OOW.zip** that is already pre-loaded in your repository
-  - your connect string, for example **jleoow_high**, where atp2 is the name of the database in this example
+  - your connect string, for example **jleoow_high**, where *jleoow* is the name of the database
   - the sql file containing the create script: **aone/create_schema_simple.sql**
 
 
@@ -84,15 +84,9 @@ In case this is the first build job in your environment, the startup of the Buil
 
 ![](./images/400/waiting.png)
 
-To extend the default shut-down timout of your build engines, navigate to the **Organization** (left menu), and the **Build Virtual Machines** (upper menu) and select the button **Sleep Timeout**.
 
-![](./images/400/timeout.png)
 
-On the resulting screen, set the timeout to 90 minutes
-
-![](./images/400/timeout3.png)
-
-You can also visualize the log file of your virtual machine, to check any errors you might encounter on this level: ![](./images/400/logs.png)
+You can visualize the log file of your virtual machine, to check any errors you might encounter on this level: ![](./images/400/logs.png)
 
 
 

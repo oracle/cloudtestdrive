@@ -22,6 +22,8 @@ The lab is structured in two sections
 
 - To run these labs you will need access to an Oracle Cloud Account.  Your instructor will provide you a URL that allows to perform **Self Registration**, where you will be asked to provide a username and a password of your choosing.  **Please note down this username and password, you will need this info later in the labs!**
 
+  
+
 - This lab requires you to install a VNC viewer on your Laptop so that you can complete this hands-on lab.   There are many VNC viewer packages both commercial and open source. 
 
   - For **macOS** we advise realVNC which can be obtained from 
@@ -39,6 +41,8 @@ The lab is structured in two sections
       - https://www.tightvnc.com/download.php
 
         When prompted, select to save the file.  Next, run the executable to install the program. This requires you have the privileges to install software on your machine
+        
+        
 
 - **USING A PERSONAL TRIAL ACCOUNT ?** 
 

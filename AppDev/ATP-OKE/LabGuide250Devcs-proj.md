@@ -91,35 +91,6 @@ In this section, you’ll provision a complete development platform for your tea
 
 
 
-### Step 3:  Cloning your repository locally
-
-In order to easily update and upload files into your Developer repository, we will clone the newly created DevCS repository onto your (VM) machine.
-
-- <u>When using an Oracle provided environment</u>, go to your VNC viewer desktop and open a Terminal window.
-- <u>When using a personal instance</u>, open a Terminal window on your laptop
-- In the home directory, create a directory where you will clone the repository, and move into this directory:
-
-```
-mkdir dev
-
-cd dev
-```
-
-
-
-- Copy the URL of your newly created repository in Developer cloud, by navigating to the "Project Home" page on the left, then selecting the **Clone** button of your repository on the right.  Select **Clone with HTTPS** and the URL will be copied.
-
-![](images/150/image013.png)
-
-Now you can enter a command similar to the one below to clone your repository, pasting the URL you just copied 
-
-`git clone https://<user_name>@ctddevcs-<instance_name>.developer.ocp.oraclecloud.com/ctddevcs-<instance_name>/s/ctddevcs-<instance_name>_atpdocker_1741/scm/ATPDocker.git`
-
-This will result in following output:
-
-![](images/150/image014.png)
-
-
 
 You are now ready to start configuring your CI/CD flows in this project!
 

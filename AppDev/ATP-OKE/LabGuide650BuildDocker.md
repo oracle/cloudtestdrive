@@ -26,7 +26,7 @@ Open your project in Develoepr Cloud, and follow the steps below:
   - Registry Name: **MyOCIR**
   - Registry URL: fill in the URL of your OCI Repository.  Example for an instance based in Frankfurt:
      https://fra.ocir.io  , but replace the "fra" by the correct code : **phx** for Phenix,  **lhr** for London, ...
-  - The **Username** is composed of {cloud-tenancy-name}/{username}, for example **gse00014089/api.user** 
+  - The **Username** is composed of {object namespace}/{username}, for example **oractdemeabdmnative/api.user** 
   - Type your password **token** in the **Password** field - **attention, this is not the password** ! Typically a string looking like : i!co>5426CWaLZ&_Zh!r
 
   ![](images/650/im01.png)
@@ -123,7 +123,7 @@ Before we can run the Build Job we just created, we need to parametrize some scr
 - You need to ensure the docker image has the right connection information for connecting to the database.  Navigate to the folder **aone/scripts**, and locate the file called **dbconfig.js**
 
   - In this file, enter the username, password and connect string of your ATP database.  This is just a crude way of simply setting up connectivity, this should be parametrized in a real-world deployment!
-  - The connect string is  **jleoow_high**, where jleoow is your datbase name.
+  - The connect string is  **jleoow_high**, where jleoow is your database name.
   - Hit the **Commit** button to save the modifications.
 
 - You are now ready to try out your Build Job in the next step!

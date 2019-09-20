@@ -50,18 +50,23 @@ Let’s get started!
 
 - Upload the kubeconfig file into the repository.  During the creation of the cluster, a file called **mykubeconfig** was generated.  This file is required to connect to your cluster from within the build job.  In case you skipped the optional step 3 to create your own cluster, your instructor will provide you with the appropriate kubeconfig file.
 
-  - Copy the file in the home directory of your ATPDocker repository
+  - In Developer Cloud, navigate to the top level of your git repository, and hit the **+ File** button:
 
-  - Perform the usual git commands to sync your Developer git repository:
+    ![](images/670/im51.png)
 
-    ```bash
-    git add mykubeconfig
-    git commit -m "Add kubeconfig"
-    git pull
-    git push
-    ```
+  - Enter the name of the file "mykubeconfig"
 
-- In the **Git** tab of Developer Cloud, open the file **atp2.yaml**.  This is the deployment profile of your container on the Cluster.  You need to make following changes:
+  - Open your local **mykubeconfig** file **with a plain text editor** and copy the content into the editor window of your browser:
+
+    ![](images/670/im52.png)
+    
+    **Attention** : make sure NOT to accidentally insert any line feeds in the long lines 4 and 17 that contain a certificate.  See picture above how the file should look after the paste command.
+    
+  - Commit the new file
+
+  
+
+- Now open the file **atp2.yaml**.  This is the deployment profile of your container on the Cluster.  You need to make following changes:
 
   - Line 17: set the correct image location as you configured it in the BuildContainer job
 
@@ -115,7 +120,9 @@ Let’s get started!
 
 ### Step 5: Setting up kubectl
 
-You need to configure your terminal window to point to the kubeconfig configuration file that belongs to the cluster you just created. This file has been generated during the terraform setup of your cluster.
+First ownload and set up the **kubectl** executable on your machine.  You can folled [the detailed steps on this page](env-setup-kubectl.md) for more details.
+
+Next you need to configure your terminal window to point to the kubeconfig configuration file that belongs to the cluster you just created. This file has been generated during the terraform setup of your cluster.
 
 The *kubeconfig* file contains the necessary details and parameters to connect to Oracle Container Engine (Kubernetes cluster). The *clusters* parameter defines the available clusters. 
 
@@ -127,7 +134,7 @@ export KUBECONFIG=~/Downloads/kubeconfig
 
 
 
-*Remark: in case you are not using a VNC viewer and running these commands locally on a Windows machine, the correct syntax is:*
+*Remark: in case you are running these commands on a Windows machine, the correct syntax is:*
 
 ```
 				set KUBECONFIG=c:\Downloads\kubeconfig
