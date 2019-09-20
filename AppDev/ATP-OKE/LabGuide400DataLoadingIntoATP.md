@@ -55,6 +55,10 @@ git add .
 # Commit the change with the appropriate comment
 git commit -m "Add wallet"
 
+# In case you get an error "Please tell me who you are" at this point, please execute below commands:
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+
 # Push the change from your laptop back into the DevCS repository
 git push
 ```
