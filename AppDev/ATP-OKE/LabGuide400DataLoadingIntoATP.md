@@ -100,7 +100,6 @@ Now navigate back to the Build job you launched.
 
 ![](./images/400/log_file.png)
 
-- You can now re-connect with SQLDeveloper to your database and verify the objects were created correctly.
 
 
 
