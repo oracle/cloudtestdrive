@@ -24,9 +24,20 @@ Open your project in Develoepr Cloud, and follow the steps below:
 - In the Dialog Box, enter following parameters
 
   - Registry Name: **MyOCIR**
+
   - Registry URL: fill in the URL of your OCI Repository.  Example for an instance based in Frankfurt:
      https://fra.ocir.io  , but replace the "fra" by the correct code : **phx** for Phenix,  **lhr** for London, ...
-  - The **Username** is composed of {cloud-tenancy-name}/{username}, for example **gse00014089/api.user** 
+     
+  - The **Username** is composed of {object-storage-namespace}/{username}, for example **gse00014089/api.user**
+
+     To get your "object-storage-namespace" name, you must navigate to the "Administration" and "Tenancy Details" menu:
+
+     <img src="images/650/im41.png" style="zoom: 50%;" />
+
+     Here  you can see the name of your Object Storage Namespace
+
+     <img src="images/650/im42.png" style="zoom: 25%;" />
+
   - Type your password **token** in the **Password** field - **attention, this is not the password** ! Typically a string looking like : i!co>5426CWaLZ&_Zh!r
 
   ![](images/650/im01.png)
