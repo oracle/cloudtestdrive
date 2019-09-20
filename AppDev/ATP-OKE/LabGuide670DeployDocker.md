@@ -52,6 +52,10 @@ Let’s get started!
 
   - Copy the file in the home directory of your ATPDocker repository
 
+    ```
+    cp ./terraform_0.12/mykubeconfig .
+    ```
+
   - Perform the usual git commands to sync your Developer git repository:
 
     ```bash
@@ -237,3 +241,4 @@ Because you did all this via a CI/CD chain, making a small change in the source 
 ---
 [Go to ATP Overview Page](../../ATP/readme.md)
 
+@
