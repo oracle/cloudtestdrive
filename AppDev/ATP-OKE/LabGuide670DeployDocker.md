@@ -120,7 +120,7 @@ Let’s get started!
 
 ### Step 5: Setting up kubectl
 
-First ownload and set up the **kubectl** executable on your machine.  You can folled [the detailed steps on this page](env-setup-kubectl.md) for more details.
+First download and set up the **kubectl** executable on your machine.  You can folled [the detailed steps on this page](env-setup-kubectl.md) for more details.
 
 Next you need to configure your terminal window to point to the kubeconfig configuration file that belongs to the cluster you just created. This file has been generated during the terraform setup of your cluster.
 
