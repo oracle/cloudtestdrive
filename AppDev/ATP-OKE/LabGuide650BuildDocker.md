@@ -19,7 +19,7 @@ Open your project in Develoepr Cloud, and follow the steps below:
 
 - Click **Docker** in the left navigation bar, then click **Link External Repository**.
 
-  ![](images/650/im08-2.png)
+  ![](images/650/im08-3.png)
 
 - In the Dialog Box, enter following parameters
 
@@ -29,17 +29,17 @@ Open your project in Develoepr Cloud, and follow the steps below:
   - The **Username** is composed of {object namespace}/{username}, for example **oractdemeabdmnative/api.user** 
   - Type your password **token** in the **Password** field - **attention, this is not the password** ! Typically a string looking like : i!co>5426CWaLZ&_Zh!r
 
-  ![](images/650/im01.png)
+  ![](images/650/im01-1.png)
 
 - Now click **Create**.  Your credentials will be checked, and if they are correct you should see the list of objects that are already in the repository (this will look different on your instance)
 
-  - ![](images/650/im02.png)
+  - ![](images/650/im02-1.png)
 
 ### Step 2: Configure the Docker build job for building your container - create the job and get required libraries
 
 - Click **Build** in the left nav bar, then click **New Job**. 
 
-  ![](images/650/image034.png)
+  ![](images/650/image034-1.png)
 
 - In the New Job dialog: 
   - Type **NodeJSDockerOCIR** in the **Job Name** field 
@@ -50,11 +50,11 @@ Open your project in Develoepr Cloud, and follow the steps below:
 
   - Click **Create Job**.
 
-    ![](images/650/image035.png)
+    ![](images/650/image035-1.png)
 
 - From the **Add Source Control** dropdown, select Git.
 
-  ![](images/650/image036.png)
+  ![](images/650/image036-1.png)
 
 - Select your **Repository.git** from the **Repository** drop-down.
 
@@ -62,7 +62,7 @@ Open your project in Develoepr Cloud, and follow the steps below:
 
 - Leave the **Automatically perform build on SCM commit** check box **unchecked**.
 
-  ![](images/650/image037.png)
+  ![](images/650/im41.png)
 
   
 
@@ -74,7 +74,7 @@ Open your project in Develoepr Cloud, and follow the steps below:
     ls -al 
 ```
 
-​	![](images/650/image_unix.png)
+​	![](images/650/image_unix-1.png)
 
 - Explanation of these operations:
   We need the library to access the ATP database, called **instantclient** in the environment where we will execute the Docker Build operation, so we can include it in the container.  Since this is a "Licensed" library that can be downloaded from the Oracle website by accepting the T&C's, we automate this operation by supplying a copy on a running Compute instance with the IP address 130.61.120.69.
@@ -86,9 +86,11 @@ Open your project in Develoepr Cloud, and follow the steps below:
 
 - Use the **Add Step** button and add a step of type **Docker Builder->Docker login**. 
 
+- ![](images/650/image038-1.png)
+
   - Use the dropdown of the field **Registry Host** to select the Repository configuration you just ceated (named **MyOCIR**.  The username and password field are automatically filled in now.
 
-    ![](images/650/image038.png)
+    ![](images/650/image038-2.png)
 
 
 
@@ -96,16 +98,22 @@ Open your project in Develoepr Cloud, and follow the steps below:
 
 - Using the **Add Step** drop-down, select **Docker Builder->Docker build**. 
 
+  ![](images/650/image038-3.png)
+
   - Select the **MyOCIR** registry from the dropdown field of the  **Registry Host** field (should be pre-filled in)
+
   - The **Image Name** is composed as follows: my_instance_name/your_repo_name/image_name
     - Example : oractdemeabdmnative/jle_repo/atp01
     - Use your initials in the repo name to distinguish from other users
+    
   - In the **Source** radio buttons, click **Context root in Workspace**.
+
+    ![](images/650/im42.png)
 
 - From the **Add Builder** drop-down, select **Docker Builder->Docker push**. 
   - Your **Registry Host** and **Image Name** should be pre-filled with the previously specified values.
 
-  ![](images/650/im46.png)
+  ![](images/650/im46-1.png)
 
 - Make sure to check the **Full Image Name** displaying on the Docker Build and Docker Deploy steps, they should be the same !
 
@@ -136,7 +144,7 @@ Before we move on, we want to ensure the job we just created works correctly.
 
 - Hit the **Build Now** button to kick off the build. 
 
-![](images/650/im10.png)
+![](images/650/im10-1.png)
 
 If this is the very first time you invoke the executor, this might take some time (up to 10 minutes), as the Executioner needs to be instantiated and launched.  Consecutive builds will start almost immediately.
 
@@ -144,17 +152,17 @@ If this is the very first time you invoke the executor, this might take some tim
 
 Once the job finished successfully, you should see something like this :
 
-![	](images/650/im13.png)
+![](images/650/im13-1.png)
 
 - Navigate to your OCI console to check the container has indeed been uploaded
   - On the menu, select **Developer Services**, and then **Registry**
 
-![](images/650/im12.png)
+![](images/650/im12-1.png)
 
 
 
 - You should see your container in the list, deployed just a few minutes ago
-  ![](images/650/im45.png)
+  ![](images/650/im45-1.png)
 
 
 
