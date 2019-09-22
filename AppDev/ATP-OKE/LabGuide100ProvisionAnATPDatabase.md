@@ -37,7 +37,7 @@ This lab walks you through the steps to get started using the Oracle Autonomous 
 
 -  This will bring up Create ATP Database screen where you specify the configurations of the instance
 
-![](./images/100/Picture100-24.png)
+![](./images/100/Picture100-24.jpeg)
 
 
 #### Note: Oracle Cloud Infrastructure allows logical isolation of users within a tenant through Compartments. This allows multiple users and business units to share a tenant account while being isolated from each other.
