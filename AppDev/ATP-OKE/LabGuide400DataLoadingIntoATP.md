@@ -36,34 +36,35 @@ As all participants will be using the same ATP database, we will first personali
 - Replace all occurences of "ITEMS_CTD" by "ITEMS_<your_initials>".
 - Safe the changes 
 
+![](./images/400/Edit-sql.png)
+
 ### **STEP 2: Create and load your data in the database**
 
 - In Developer Cloud, navigate to the "Builds" tab and select **+Create Job**.
   - Enter a name : **CreateDBObjects**
-  - Select the Software Template you created, for example **OKE**
-    - PS: If you are using an Oracle provided environment, your instructor will suggest the appropriate Template to use.  A VM with all the necessary software packages is OKE3.
+  - Select the Software Template **OKE2**
   - Hit **Create Job**
 
-![](./images/400/new_job.png)
+![](./images/400/new_job-1.png)
 
 
 
 - Add a  GIT Source repository
 
-![](./images/400/add_src.png)
+![](./images/400/add_src-1.png)
 
 - Select your repository from the list
 - Do **not** select the Automatic build on Commit
 
 
 
-![](./images/400/config_source.png)
+![](./images/400/config_source-1.png)
 
 
 
 - Select the tab **Steps** to add a **SQLcl** build step from the dropdown
 
- ![](./images/400/add_step.png)
+ ![](./images/400/add_step-1.png)
 
 
 
@@ -76,13 +77,15 @@ As all participants will be using the same ATP database, we will first personali
 
 
 
-![](./images/400/step_details.png)
+![](./images/400/step_details-1.png)
 
  -   Now save your Build Config and hit the **Build Now** button.  
 
+![](./images/400/build-now-2.png)
+
 In case this is the first build job in your environment, the startup of the Build engine might take up to 10 minutes to complete.  You will notice the build to be "Waiting for Executioner"
 
-![](./images/400/waiting.png)
+![](./images/400/waiting-1.png)
 
 
 
@@ -94,17 +97,19 @@ Now navigate back to the Build job you launched.
 
  -   After a successfull build you should see following screen :
 
-![](./images/400/build_result.png)
+![](./images/400/build_result-01.png)
 
 - You can check the detailed content of the SQL execution in the log file of the build job.
 
-![](./images/400/log_file.png)
-
-- You can now re-connect with SQLDeveloper to your database and verify the objects were created correctly.
+![](./images/400/build_result-1.png)
 
 
 
-Congratulations, You are now ready to move to the next lab.
+- Optionally you can now re-connect with SQLDeveloper to your database and verify the objects were created correctly.
+
+
+
+**Congratulations**, You are now ready to move to the next lab.
 
 
 

@@ -27,7 +27,7 @@ In this section, you’ll provision a complete development platform for your tea
 
 
 
-![](images/150/image001-2.png)
+![](images/150/image001-3.png)
 
 
 
@@ -39,23 +39,23 @@ In this section, you’ll provision a complete development platform for your tea
 
   - Click **Next**
 
-    ![](images/150/image002.png)
+    ![](images/150/image002-1.png)
 
 - Click **Empty Project**, then click **Next**.
 
-  ![](images/150/image003.png)
+  ![](images/150/image003-1.png)
 
 - Select your preferred wiki markup language, then click **Finish**
 
-  ![](images/150/image004.png)
+  ![](images/150/image004-1.png)
 
 - Wait while the project modules are provisioned, which can take a minute or two. You can see the indicators turn green as the associated modules are provisioned.
 
-  ![](images/150/image005.png)
+  ![](images/150/image005-1.png)
 
 - When everything is provisioned, the project Home page opens, which contains details about your newly created project:
 
-  ![](images/150/image006.png)
+  ![](images/150/image006-1.png)
 
   Let’s take a look at this page (you may need to scroll to see the whole thing): 
   - On the left side is an activity feed. 
@@ -80,13 +80,13 @@ In this section, you’ll provision a complete development platform for your tea
 
   - Enter https://github.com/CloudTestDrive/ATPDocker.git in the text box: 
 
-    ![](images/150/image10-2.png)
+    ![](images/150/image010-3.png)
 
 - Click **Create**.
 
   You should now be on the Code tab, which shows that you have a new DevCS git repository, NodeJSDocker.git.  This new repository contains imported code from the GitHub repository you specified.
 
-  ![](images/150/image011-2.png)
+  ![](images/150/image011-3.png)
 
 
 
