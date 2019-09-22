@@ -105,8 +105,11 @@ Now navigate back to the Build job you launched.
 
 
 
+- Optionally you can now re-connect with SQLDeveloper to your database and verify the objects were created correctly.
 
-Congratulations, You are now ready to move to the next lab.
+
+
+**Congratulations**, You are now ready to move to the next lab.
 
 
 
