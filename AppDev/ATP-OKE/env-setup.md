@@ -90,55 +90,6 @@ A detailed explanation of these steps is provided in [this section of the Develo
 
 
 
-#### Create a Virtual Machine
-
-- On the left-side menu, select the top level **Organization** menu, then click on **Virtual Machines Templates** in the top menu.  Next you can hit the **Create Template** button.
-
-![alt text](images/devcs/NewTemplate2.png)
-
-
-
-- In the dialog box, specify a name, for example **DockerOCIOKE**  and use the default **Oracle Linux 7** image.  Then hit the **Create** button.
-
-  ![alt text](images/devcs/im04.png)
-
-
-- Now select the template you just created (DockerOCIOKE), and add the required software packages by clicking on the **Configure Software** button.
-
-![alt text](images/devcs/im05-2.png)
-
-- Select the following packages:
-  - Docker 17,2
-  - Kubectl
-  - OCIcli ==> this will prompt you to also install Python3
-  - SQLcl 18
-
-![alt text](images/devcs/im06-2.png)
-
-
-
-- Finally, navigate to the **Build Virtual Machines** menu on the top menu, and hit the **+ Create VM** button.
-
-  ![alt text](images/devcs/im07-2.png)
-
-  
-  
-  In the dialog that pops up, enter following values:
-  
-  - Choose **Quantity = 1**
-  
-  - Select the **VM Template** you just created: **DockerOCIOKE**
-  
-  - Set the **Region** to **eu-Frankfurt-1**
-  
-  - Select the compute **Shape** : **VM.Standard2.2**
-  
-    ![alt text](images/devcs/im08.png)
-
-You finished all the steps to finalize the Developer Cloud setup.  
-
-
-
 ### **STEP 2: Create a Compartment**
 
 - In the Cloud Infrastructure Console, click on the hamburger menu on the top left of the screen. From the pull-out menu, under Identity, click Compartments.
@@ -161,9 +112,6 @@ Enter the following in create Compartment window
 - Click on the **Create Compartment** link 
 
 - You can verify the compartment created on Compartments page
-
-
-
 
 
 ### **STEP 3**: Add a Policy Statement for OKE
@@ -227,6 +175,72 @@ Enter the following in create Compartment window
     ![](images/660/Auth_token.png)
 
   
+
+
+
+#### Connect to your OCI tenancy to configure Compute & Storage using OCI credentials
+
+- On the left-side menu, select the top level **Organization** menu, then click on **OCI Account** in the top menu.  Next you can hit the **Connect** button.
+
+![alt text](images/devcs/Connect_OCIaccount_new.png)
+
+![alt text](images/devcs/Configure_OCIaccount_new.png)
+
+- The OCI credentials can be found in your main cloud dasboard / Administration / Tenancy details
+
+![alt text](images/devcs/OCI_Tenancy_details_new.png)
+
+![alt text](images/devcs/OCI_tenancy_details_new (2).png)
+
+
+
+#### Create a Virtual Machine
+
+- On the left-side menu, select the top level **Organization** menu, then click on **Virtual Machines Templates** in the top menu.  Next you can hit the **Create Template** button.
+
+![alt text](images/devcs/NewTemplate2.png)
+
+
+- In the dialog box, specify a name, for example **DockerOCIOKE**  and use the default **Oracle Linux 7** image.  Then hit the **Create** button.
+
+  ![alt text](images/devcs/im04.png)
+
+
+- Now select the template you just created (DockerOCIOKE), and add the required software packages by clicking on the **Configure Software** button.
+
+![alt text](images/devcs/im05-2.png)
+
+- Select the following packages:
+  - Docker 17,2
+  - Kubectl
+  - OCIcli ==> this will prompt you to also install Python3
+  - SQLcl 18
+
+![alt text](images/devcs/im06-2.png)
+
+
+
+- Finally, navigate to the **Build Virtual Machines** menu on the top menu, and hit the **+ Create VM** button.
+
+  ![alt text](images/devcs/im07-2.png)
+
+  
+  
+  In the dialog that pops up, enter following values:
+  
+  - Choose **Quantity = 1**
+  
+  - Select the **VM Template** you just created: **DockerOCIOKE**
+  
+  - Set the **Region** to **eu-Frankfurt-1**
+  
+  - Select the compute **Shape** : **VM.Standard2.2**
+  
+    ![alt text](images/devcs/im08.png)
+
+You finished all the steps to finalize the Developer Cloud setup.  
+
+
 
 ### STEP 5: Install the required software on your laptop
 
