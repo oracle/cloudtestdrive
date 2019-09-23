@@ -1,4 +1,4 @@
-[Go to the Cloud Test Drive Overview](../README.md)
+[Go to the Cloud Test Drive Overview](../readme.md)
 
 ![](../common/images/customer.logo2.png)
 
@@ -47,6 +47,5 @@ This section will take you through the steps to set up a CI/CD environment for d
 
 ---
 
-
-[Go to the Cloud Test Drive Overview](../README.md)
+[Go to the Cloud Test Drive Overview](../readme.md)
 
