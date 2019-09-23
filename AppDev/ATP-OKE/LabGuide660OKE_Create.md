@@ -4,9 +4,10 @@
 
 # Microservices on ATP
 
-## Part 3: Setup your Managed Kubernetes Instance
+## Setup your Managed Kubernetes Instance
 
 This Lab describes how to instantiate an **Oracle Managed Kubernetes cluster using Terraform**, including all the required network elements such as VNC's, subnets and access lists.
+
 #### **Introduction**
 
 In this lab we will perform the steps described below : 

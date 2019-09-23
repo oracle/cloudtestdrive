@@ -3,7 +3,7 @@
 ![](../../common/images/customer.logo2.png)
 # Microservices on ATP
 
-## Part 5: Deploy your container on top of your Kubernetes Cluster
+## Deploy your container on top of your Kubernetes Cluster
 
 #### **Introduction**
 
@@ -18,13 +18,13 @@ Let’s get started!
   - Enter a name, for example OKEDeploy
   - Select your build template, we named it DockerOCIOKE in the previous steps
 
-  ![](images/670/im47.png)
+  ![](images/670/im47-1.png)
 
   - Now hit  **Create Job**, and the Job Configuration dialog will pop up. 
 
-- In the Source Control tab, select your git repository.
+- In the Git tab, select your git repository.
 
-  ![](images/670/im48.png)
+  ![](images/670/im48-1.png)
 
   - Do **not** select the "Automatically perform Build" option for this job, we will link it with the previous job using a pipeline.
 
@@ -32,13 +32,15 @@ Let’s get started!
 
   - Docker Login : use the predefined Repository definition **MyOCIR** as you did in the previous job
 
+    ![](images/670/im53.png)
+
   - Unix Shell Builder:
 
-    - launch the script "my script.sh" that is in your repository.  We will edit this script after completing the Build definition to adapt it to your needs.
+    - launch the script "kubescript.sh" that is in your repository.  We will edit this script after completing the Build definition to adapt it to your needs.
 
       ``bash -ex kubescript.sh``
 
-  ![](images/670/im50.png)
+  ![](images/670/im50-1.png)
 
 - You have finished setting up the Build job !
 
@@ -48,24 +50,26 @@ Let’s get started!
 
 ### Step 2: Configure the environment to point to your cloud instance
 
-- Upload the kubeconfig file into the repository.  During the creation of the cluster, a file called **mykubeconfig** was generated.  This file is required to connect to your cluster from within the build job.
+- Upload the kubeconfig file into the repository.  During the creation of the cluster, a file called **mykubeconfig** was generated.  This file is required to connect to your cluster from within the build job.  In case you are using a common Kubernetes cluster, your instructor will provide you with the appropriate kubeconfig file.
 
-  - Copy the file in the home directory of your ATPDocker repository
+  - In Developer Cloud, navigate to the top level of your git repository, and hit the **+ File** button:
 
-    ```
-    cp ./terraform_0.12/mykubeconfig .
-    ```
+    ![](images/670/im51.png)
 
-  - Perform the usual git commands to sync your Developer git repository:
+  - Enter the name of the file "mykubeconfig"
 
-    ```bash
-    git add mykubeconfig
-    git commit -m "Add kubeconfig"
-    git pull
-    git push
-    ```
 
-- In the **Git** tab of Developer Cloud, open the file **atp2.yaml**.  This is the deployment profile of your container on the Cluster.  You need to make following changes:
+  - Open your local **mykubeconfig** file **with a plain text editor** and copy the content into the editor window of your browser:
+
+    ![](images/670/im52.png)
+    
+    **Attention** : make sure NOT to accidentally insert any line feeds in the long lines 4 and 17 that contain a certificate.  See picture above how the file should look after the paste command.
+    
+  - Commit the new file
+
+  
+
+- Now open the file **atp2.yaml**.  This is the deployment profile of your container on the Cluster.  You need to make following changes:
 
   - Line 17: set the correct image location as you configured it in the BuildContainer job
 
@@ -73,32 +77,43 @@ Let’s get started!
 
     `fra.ocir.io/mytenancy/oowhol/joduatp2:latest`
 
-    ![](images/670/edit_yaml.png)
+    ![](images/670/edit_yaml-1.png)
+
+  - Notice the **imagePullSecret name** parameter on line 22.  In case you created you own secret, you need to enter the correct name on this line.  For the shared Kuberentes instance, this name is **jleoow_oicsecret** and should already be set correctly.
 
   - Use the **Commit** button to save your changes.
-
+  
   
 
-### Step 3: ***Optional*** - Personalize the deployment on the cluster
+### Step 3:  Personalize the deployment on the cluster
 
 <u>In case you are sharing a Kubernetes instance with other participants</u>, you need to make sure your deployment can be distinguished from the ones belonging to your colleagues.  You can perform the below steps to achieve this:
 
-- In the **Git** tab of Developer Cloud, re-open the file **atp2.yaml**.  You need to make following extra changes:
+- In the **Git** tab of Developer Cloud, re-open the file **atp2.yaml**.  You need to make following changes:
 
   - Line 4, 8, 13, 16, 27 and 35 : replace the string **atp2** with a string containing your initials, for example for "jle" : **atp2jle**
-  - Line 22: use the name of your secret which you created in part 5, containing your initials as in the green box on th picture below
-
-  ![](images/670/edit_yaml2_2.png)
-
-  - Hit **Commit** to save your changes.
-
   
 
+![](images/670/edit_yaml2_3.png)
+
+- 
+  
+- Hit **Commit** to save your changes.
+  
+
+  
 - In the **Git** tab of Developer Cloud, open the file **kubescript.sh** by clicking on it, and go into editing mode by clicking on the small pencil in the upper right
 
   - On line 4 and 6, add your initials in front of the strings beginning with **atp2**
-  - ![](images/670/kubescript.png)
+  
+  - This should match exactly the personalization done in the previous step !
+  
+    
+  
+    ![](images/670/kubescript-1.png)
+  
   - Hit **Commit** to save the changes
+  
   - As you can see, this shell script refers to the actual Kubernetes deployment configuration file **atp2.yaml**.  
 
 ### Step 4: Execute and validate your new job
@@ -107,7 +122,7 @@ Let’s get started!
 
 - Wait for the job to finish, then check the build log:
 
-  ![](images/670/image067.png) 
+  ![](images/670/image067-1.png) 
 
 - Inspect the build job log file to validate correct execution
 
@@ -119,7 +134,9 @@ Let’s get started!
 
 ### Step 5: Setting up kubectl
 
-You need to configure your terminal window to point to the kubeconfig configuration file that belongs to the cluster you just created. This file has been generated during the terraform setup of your cluster.
+First download and set up the **kubectl** executable on your machine.  You can follow [the detailed steps on this page](env-setup-kubectl.md) for more information.
+
+Next you need to configure your terminal window to point to the kubeconfig configuration file that belongs to the cluster you just created. This file has been generated during the terraform setup of your cluster.
 
 The *kubeconfig* file contains the necessary details and parameters to connect to Oracle Container Engine (Kubernetes cluster). The *clusters* parameter defines the available clusters. 
 
@@ -131,7 +148,7 @@ export KUBECONFIG=~/Downloads/kubeconfig
 
 
 
-*Remark: in case you are not using a VNC viewer and running these commands locally on a Windows machine, the correct syntax is:*
+*Remark: in case you are running these commands on a Windows machine, the correct syntax is:*
 
 ```
 				set KUBECONFIG=c:\Downloads\kubeconfig

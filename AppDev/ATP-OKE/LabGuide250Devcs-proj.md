@@ -27,7 +27,7 @@ In this section, you’ll provision a complete development platform for your tea
 
 
 
-![](images/150/image001-2.png)
+![](images/150/image001-3.png)
 
 
 
@@ -39,23 +39,23 @@ In this section, you’ll provision a complete development platform for your tea
 
   - Click **Next**
 
-    ![](images/150/image002.png)
+    ![](images/150/image002-1.png)
 
 - Click **Empty Project**, then click **Next**.
 
-  ![](images/150/image003.png)
+  ![](images/150/image003-1.png)
 
 - Select your preferred wiki markup language, then click **Finish**
 
-  ![](images/150/image004.png)
+  ![](images/150/image004-1.png)
 
 - Wait while the project modules are provisioned, which can take a minute or two. You can see the indicators turn green as the associated modules are provisioned.
 
-  ![](images/150/image005.png)
+  ![](images/150/image005-1.png)
 
 - When everything is provisioned, the project Home page opens, which contains details about your newly created project:
 
-  ![](images/150/image006.png)
+  ![](images/150/image006-1.png)
 
   Let’s take a look at this page (you may need to scroll to see the whole thing): 
   - On the left side is an activity feed. 
@@ -80,44 +80,17 @@ In this section, you’ll provision a complete development platform for your tea
 
   - Enter https://github.com/CloudTestDrive/ATPDocker.git in the text box: 
 
-    ![](images/150/image10-2.png)
+    ![](images/150/image010-3.png)
 
 - Click **Create**.
 
   You should now be on the Code tab, which shows that you have a new DevCS git repository, NodeJSDocker.git.  This new repository contains imported code from the GitHub repository you specified.
 
-  ![](images/150/image011-2.png)
+  ![](images/150/image011-3.png)
 
 
 
-
-### Step 3:  Cloning your repository locally
-
-In order to easily update and upload files into your Developer repository, we will clone the newly created DevCS repository onto your (VM) machine.
-
-- <u>When using an Oracle provided environment</u>, go to your VNC viewer desktop and open a Terminal window.
-- <u>When using a personal instance</u>, open a Terminal window on your laptop
-- In the home directory, create a directory where you will clone the repository, and move into this directory:
-
-```
-mkdir dev
-
-cd dev
-```
-
-
-
-- Copy the URL of your newly created repository in Developer cloud, by navigating to the "Project Home" page on the left, then selecting the **Clone** button of your repository on the right.  Select **Clone with HTTPS** and the URL will be copied.
-
-![](images/150/image013.png)
-
-Now you can enter a command similar to the one below to clone your repository, pasting the URL you just copied 
-
-`git clone https://<user_name>@ctddevcs-<instance_name>.developer.ocp.oraclecloud.com/ctddevcs-<instance_name>/s/ctddevcs-<instance_name>_atpdocker_1741/scm/ATPDocker.git`
-
-This will result in following output:
-
-![](images/150/image014.png)
+- **Running on your personal Trial instance** ?  Then you have [one more step](LabGuide250Devcs-proj_own1.md) to perform, cloning the Developer git repository to your local environment.  
 
 
 
