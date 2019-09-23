@@ -192,7 +192,7 @@ Enter the following in create Compartment window
 
 - The user details can be found in your main cloud dasboard / Identity/ Users / click on api.user
 
-![alt text](images/devcs/OCI_user_details_new.png.png)
+![alt text](images/devcs/OCI_user_details_new.png)
 
 
 
