@@ -3,7 +3,7 @@
 ![](../../common/images/customer.logo2.png)
 # Microservices on ATP
 
-## Part 5: Deploy your container on top of your Kubernetes Cluster
+## Deploy your container on top of your Kubernetes Cluster
 
 #### **Introduction**
 

@@ -3,7 +3,7 @@
 ![](../../common/images/customer.logo2.png)
 # Microservices on ATP
 
-## Part 4: Build a Container image with the aone application runing on ATP
+## Build a Container image with the aone application runing on ATP
 
 #### **Introduction**
 
