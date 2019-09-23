@@ -58,6 +58,7 @@ Let’s get started!
 
   - Enter the name of the file "mykubeconfig"
 
+
   - Open your local **mykubeconfig** file **with a plain text editor** and copy the content into the editor window of your browser:
 
     ![](images/670/im52.png)
@@ -257,3 +258,4 @@ Because you did all this via a CI/CD chain, making a small change in the source 
 ---
 [Go to ATP Overview Page](../../ATP/readme.md)
 
+@

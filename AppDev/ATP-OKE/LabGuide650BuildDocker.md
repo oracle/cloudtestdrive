@@ -28,15 +28,16 @@ Open your project in Develoepr Cloud, and follow the steps below:
   - Registry URL: fill in the URL of your OCI Repository.  Example for an instance based in Frankfurt:
      https://fra.ocir.io  , but replace the "fra" by the correct code : **phx** for Phenix,  **lhr** for London, ...
      
-  - The **Username** is composed of {object namespace}/{username}, for example **oractdemeabdmnative/api.user** 
+- The **Username** is composed of {object namespace}/{username}, for example **oractdemeabdmnative/api.user** 
+  
+- To get your "object-storage-namespace" name, you must navigate to the "Administration" and "Tenancy Details" menu:
+  
+   <img src="images/650/im41.png" style="zoom: 50%;" />
+  
+   Here  you can see the name of your Object Storage Namespace
+  
+   <img src="images/650/im42.2.png" style="zoom: 25%;" />
 
-  - To get your "object-storage-namespace" name, you must navigate to the "Administration" and "Tenancy Details" menu:
-
-     <img src="/Users/jleemans/dev/github/old/cloudtestdrive/AppDev/ATP-OKE/images/650/im41.png" style="zoom: 50%;" />
-
-     Here  you can see the name of your Object Storage Namespace
-
-     <img src="images/650/im42.2.png" style="zoom: 25%;" />
 
   - Type your password **token** in the **Password** field - **attention, this is not the password** ! Typically a string looking like : i!co>5426CWaLZ&_Zh!r
 
@@ -73,7 +74,7 @@ Open your project in Develoepr Cloud, and follow the steps below:
 
 - Leave the **Automatically perform build on SCM commit** check box **unchecked**.
 
-  ![](images/650/im41.png)
+  ![](images/650/im51.png)
 
   
 
@@ -119,7 +120,7 @@ Open your project in Develoepr Cloud, and follow the steps below:
     
   - In the **Source** radio buttons, click **Context root in Workspace**.
 
-    ![](images/650/im42.png)
+    ![](images/650/im52.png)
 
 - From the **Add Builder** drop-down, select **Docker Builder->Docker push**. 
   - Your **Registry Host** and **Image Name** should be pre-filled with the previously specified values.
