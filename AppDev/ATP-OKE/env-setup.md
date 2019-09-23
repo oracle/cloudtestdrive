@@ -164,14 +164,14 @@ Enter the following in create Compartment window
 
   - Copy the OCID of this new user in a tempporary file
 
-  ![img](images/devcs/OCI_user_details_new.png)
+  ![alt text](images/devcs/OCI_user_details_new.png)
 
 
 - Create an Auth Token for the user api.user
 
   - Take care to copy the Token string in a file on your PC : you will nbeed it later, and you cannot retrieve it back from the console.
 
-    ![](images/660/Auth_token.png)
+    ![img](images/660/Auth_token.png)
 
   
 
