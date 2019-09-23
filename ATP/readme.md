@@ -22,8 +22,12 @@ In this hands-on lab you will get first-hand experience with Oracle’s new Auto
   In case you are using a personal Cloud Trial Account, you will need to prepare your Cloud Environment to be able to execute these labs.  See [instructions on this page](../AppDev/ATP-OKE/README.md) for all details.
 
   
+  
+- **Want to connect to the Autonomous Database first?**
 
+  Most people attending this lab will already have experienced connecting to an ATP database and discovering it's features in the base Autonomous Database lab.  If this would not be the case for you, your instructor will advise you to execute these [initial ATP steps](initial_atp_steps.md).
 
+  
 
 ## Lab Instructions ##
 
@@ -34,6 +38,10 @@ This section will take you through the steps to set up a CI/CD environment for d
 - **Part 2:** [Create and populate the Database objects](../AppDev/ATP-OKE/LabGuide400DataLoadingIntoATP.md) in your ATP database with Developer Cloud
 - **Part 3:** [Build a Container image with the aone application running on ATP](../AppDev/ATP-OKE/LabGuide650BuildDocker.md)
 - **Part 4:** [Deploy your container on top of your Kubernetes Cluster](../AppDev/ATP-OKE/LabGuide670DeployDocker.md)
+
+
+
+- **OPTIONAL Part 5**:   [Spin up a Managed Kubernetes environment with Terraform](../AppDev/ATP-OKE/LabGuide660OKE_Create.md) 
 
 
 
