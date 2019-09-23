@@ -152,13 +152,13 @@ Enter the following in create Compartment window
 
     - On a Mac : open a console window and execute following commands
 
-    - ```
-      mkdir ./mykey
-      openssl genrsa -out ./mykey/api_key.pem 2048
-      openssl rsa -pubout -in ./mykey/api_key.pem -out ./mykey/api_key_public.pem
-      ```
+      - ```
+        mkdir ./mykey
+        openssl genrsa -out ./mykey/api_key.pem 2048
+        openssl rsa -pubout -in ./mykey/api_key.pem -out ./mykey/api_key_public.pem
+        ```
 
-    - For help on how to create an API signing key follow the steps here: https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm
+    - On Windows : For help on how to create an API signing key (in PEM format) follow the steps here: https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm
 
   - Copy the fingerprint of your API key in a temporary file
 
@@ -189,6 +189,8 @@ Enter the following in create Compartment window
 ![alt text](images/devcs/OCI_Tenancy_details_new.png)
 
 ![alt text](images/devcs/OCI_tenancy_details_new (2).png)
+
+- The user details can be found in your main cloud dasboard / Identity/ Users / click on api.user
 
 ![alt text](images/devcs/OCI_user_details_new.png.png)
 
