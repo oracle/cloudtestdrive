@@ -158,15 +158,14 @@ Enter the following in create Compartment window
       openssl rsa -pubout -in ./mykey/api_key.pem -out ./mykey/api_key_public.pem
       ```
 
-    - On a Windows PC, you can use [puttygen](https://www.ssh.com/ssh/putty/download).exe to create a key.
+    - For help on how to create an API signing key follow the steps here: https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm
 
   - Copy the fingerprint of your API key in a temporary file
 
   - Copy the OCID of this new user in a tempporary file
 
-  ![](images/660/OCI_user_details_new.png)
+  ![img](images/devcs/OCI_user_details_new.png)
 
-- For help on how to create an API signing key follow the steps here: https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm
 
 - Create an Auth Token for the user api.user
 
@@ -175,7 +174,6 @@ Enter the following in create Compartment window
     ![](images/660/Auth_token.png)
 
   
-
 
 
 #### Connect to your OCI tenancy to configure Compute & Storage using OCI credentials
@@ -191,6 +189,10 @@ Enter the following in create Compartment window
 ![alt text](images/devcs/OCI_Tenancy_details_new.png)
 
 ![alt text](images/devcs/OCI_tenancy_details_new (2).png)
+
+![alt text](images/devcs/OCI_user_details_new.png.png)
+
+
 
 
 
