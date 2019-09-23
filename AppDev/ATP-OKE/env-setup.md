@@ -164,9 +164,9 @@ Enter the following in create Compartment window
 
   - Copy the OCID of this new user in a tempporary file
 
-  ![](images/660/OkeUser.png)
+  ![](images/660/OCI_user_details_new.png)
 
-
+- For help on how to create an API signing key follow the steps here: https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm
 
 - Create an Auth Token for the user api.user
 
