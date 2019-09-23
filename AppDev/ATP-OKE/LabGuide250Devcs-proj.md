@@ -90,6 +90,8 @@ In this section, you’ll provision a complete development platform for your tea
 
 
 
+- **Running on your personal Trial instance** ?  Then you have [one more step](LabGuide250Devcs-proj_own1.md) to perform, cloning the Developer git repository to your local environment.  
+
 
 
 You are now ready to start configuring your CI/CD flows in this project!

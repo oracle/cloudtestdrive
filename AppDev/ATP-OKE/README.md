@@ -37,7 +37,7 @@ This lab is composed of the steps outlined below.  Please walk through the vario
 You finished the setup part of your environment, and you can now start with the creation of your CI/CD flows in Developer Cloud:
 
 - **Part 1:** [Setting up your Developer Cloud project](LabGuide250Devcs-proj.md)
-- **Part 2:** [Create and populate the Database objects](LabGuide400DataLoadingIntoATP.md) in your ATP database with Developer Cloud
+- **Part 2:** [Create and populate the Database objects](LabGuide400DataLoadingIntoATP_own.md) in your ATP database with Developer Cloud
 - **Part 3:** [Spin up a Managed Kubernetes environment with Terraform](LabGuide660OKE_Create.md)
 - **Part 4:** [Build a Container image with the aone application running on ATP](LabGuide650BuildDocker.md)
 - **Part 5:** [Deploy your container on top of your Kubernetes Cluster](LabGuide670DeployDocker.md)

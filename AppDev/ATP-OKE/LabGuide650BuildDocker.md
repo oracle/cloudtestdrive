@@ -24,9 +24,20 @@ Open your project in Develoepr Cloud, and follow the steps below:
 - In the Dialog Box, enter following parameters
 
   - Registry Name: **MyOCIR**
+
   - Registry URL: fill in the URL of your OCI Repository.  Example for an instance based in Frankfurt:
      https://fra.ocir.io  , but replace the "fra" by the correct code : **phx** for Phenix,  **lhr** for London, ...
+     
   - The **Username** is composed of {object namespace}/{username}, for example **oractdemeabdmnative/api.user** 
+
+  - To get your "object-storage-namespace" name, you must navigate to the "Administration" and "Tenancy Details" menu:
+
+     <img src="/Users/jleemans/dev/github/old/cloudtestdrive/AppDev/ATP-OKE/images/650/im41.png" style="zoom: 50%;" />
+
+     Here  you can see the name of your Object Storage Namespace
+
+     <img src="images/650/im42.2.png" style="zoom: 25%;" />
+
   - Type your password **token** in the **Password** field - **attention, this is not the password** ! Typically a string looking like : i!co>5426CWaLZ&_Zh!r
 
   ![](images/650/im01-1.png)
@@ -134,7 +145,14 @@ Before we can run the Build Job we just created, we need to parametrize some scr
   - The connect string is  **jleoow_high**, where jleoow is your database name.
   - Hit the **Commit** button to save the modifications.
 
-- You are now ready to try out your Build Job in the next step!
+
+
+
+- **Running on your personal Trial instance** ?  Then you have [two more steps](LabGuide650BuildDocker_own1.md) to perform.
+
+
+
+You are now ready to try out your Build Job in the next step!
 
 
 

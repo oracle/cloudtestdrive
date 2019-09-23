@@ -50,7 +50,7 @@ Let’s get started!
 
 ### Step 2: Configure the environment to point to your cloud instance
 
-- Upload the kubeconfig file into the repository.  During the creation of the cluster, a file called **mykubeconfig** was generated.  This file is required to connect to your cluster from within the build job.  In case you skipped the optional step 3 to create your own cluster, your instructor will provide you with the appropriate kubeconfig file.
+- Upload the kubeconfig file into the repository.  During the creation of the cluster, a file called **mykubeconfig** was generated.  This file is required to connect to your cluster from within the build job.  In case you are using a common Kubernetes cluster, your instructor will provide you with the appropriate kubeconfig file.
 
   - In Developer Cloud, navigate to the top level of your git repository, and hit the **+ File** button:
 
@@ -78,8 +78,10 @@ Let’s get started!
 
     ![](images/670/edit_yaml-1.png)
 
-  - Use the **Commit** button to save your changes.
+  - Notice the **imagePullSecret name** parameter on line 22.  In case you created you own secret, you need to enter the correct name on this line.  For the shared Kuberentes instance, this name is **jleoow_oicsecret** and should already be set correctly.
 
+  - Use the **Commit** button to save your changes.
+  
   
 
 ### Step 3:  Personalize the deployment on the cluster
@@ -90,7 +92,10 @@ Let’s get started!
 
   - Line 4, 8, 13, 16, 27 and 35 : replace the string **atp2** with a string containing your initials, for example for "jle" : **atp2jle**
   
+
 ![](images/670/edit_yaml2_3.png)
+
+- 
   
 - Hit **Commit** to save your changes.
   
