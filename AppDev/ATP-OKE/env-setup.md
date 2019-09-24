@@ -74,22 +74,6 @@ To access your Developer Cloud Instance, refresh the page and use the hamburger 
 
 
 
-#### Configuring your DevCS Instance ####
-
-Once the instance is available, you need to configure a few things to be able to create projects and run builds:
-
-- Create a dedicated user with specific privileges
-- Add a public key to the user profile
-- Create a group for DevCS users
-- Add a DevCS policy in the **root** compartment
-- Then configure the OCI connection using the references to these OCI objects you just created.
-
-You will use the **OCI** type of setup, please ignore the *OCI Classic* setup instructions.
-
-A detailed explanation of these steps is provided in [this section of the Developer Cloud Documentation](https://docs.oracle.com/en/cloud/paas/developer-cloud/csdcs/service-setup.html#GUID-0FCE0C4F-75F4-43BC-8699-EBE039DA5E7A).  Navigate to that page, then use the **Back** button of your browser to returrn to this location.
-
-
-
 ### **STEP 2: Create a Compartment**
 
 - In the Cloud Infrastructure Console, click on the hamburger menu on the top left of the screen. From the pull-out menu, under Identity, click Compartments.
