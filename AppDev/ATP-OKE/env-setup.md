@@ -173,7 +173,21 @@ Enter the following in create Compartment window
 
     ![img](images/660/Auth_token.png)
 
-  
+- Add the **api.user** to the administrator group
+
+
+  - Navigate to the **Identity** and **Groups** menu
+
+    ![img](images/660/Groups.png)
+
+
+  - Open the group **Administrators**
+
+  - Click the **Add User to Group** button, and select the **api.user**
+
+    ![img](images/660/AddUser.png)
+
+  - Click the **add** button to finalize the operation
 
 
 #### Connect to your OCI tenancy to configure Compute & Storage using OCI credentials
@@ -205,14 +219,14 @@ Enter the following in create Compartment window
 ![alt text](images/devcs/NewTemplate2.png)
 
 
-- In the dialog box, specify a name, for example **DockerOCIOKE**  and use the default **Oracle Linux 7** image.  Then hit the **Create** button.
+- In the dialog box, specify a name, for example **OKE2**  and use the default **Oracle Linux 7** image.  Then hit the **Create** button.
 
-  ![alt text](images/devcs/im04.png)
+  ![alt text](images/devcs/im04-1.png)
 
 
-- Now select the template you just created (DockerOCIOKE), and add the required software packages by clicking on the **Configure Software** button.
+- Now select the template you just created (OKE2), and add the required software packages by clicking on the **Configure Software** button.
 
-![alt text](images/devcs/im05-2.png)
+![alt text](images/devcs/im05-3.png)
 
 - Select the following packages:
   - Docker 17,2
@@ -234,13 +248,13 @@ Enter the following in create Compartment window
   
   - Choose **Quantity = 1**
   
-  - Select the **VM Template** you just created: **DockerOCIOKE**
+  - Select the **VM Template** you just created: **OKE2**
   
   - Set the **Region** to **eu-Frankfurt-1**
   
   - Select the compute **Shape** : **VM.Standard2.2**
   
-    ![alt text](images/devcs/im08.png)
+    ![alt text](images/devcs/im08-1.png)
 
 You finished all the steps to finalize the Developer Cloud setup.  
 
