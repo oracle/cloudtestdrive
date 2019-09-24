@@ -134,20 +134,22 @@ Enter the following in create Compartment window
 
   - Add an API key: you need a private/public key pair, and you need to paste the public one into the key field. 
 
-    - On a Mac : open a console window and execute following commands
+    - You can use the following [OpenSSL](http://www.openssl.org/) commands to generate the key pair in the required PEM format. If you're using Windows, you'll need to install [Git Bash for Windows](https://git-scm.com/download/win) and run the commands with that tool.
 
+    - Open a console window and execute following commands
+  
       - ```
         mkdir ./mykey
         openssl genrsa -out ./mykey/api_key.pem 2048
-        openssl rsa -pubout -in ./mykey/api_key.pem -out ./mykey/api_key_public.pem
+      openssl rsa -pubout -in ./mykey/api_key.pem -out ./mykey/api_key_public.pem
         ```
 
-    - On Windows : For help on how to create an API signing key (in PEM format) follow the steps here: https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm
+    - For more details on this key creation, see the [documentation](https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm).
 
   - Copy the fingerprint of your API key in a temporary file
 
-  - Copy the OCID of this new user in a tempporary file
-
+  - Copy the OCID of this new user in a temporary file
+  
   ![alt text](images/devcs/OCI_user_details_new.png)
 
 
