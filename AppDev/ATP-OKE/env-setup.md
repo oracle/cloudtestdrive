@@ -32,53 +32,45 @@ This page will guide you through the following activities :
 
 This step will guide you through the setup of a new Developer Cloud instance :
 
-- Enabling DevCS on your Dashboard
+- Go to DevCS on your Dashboard
 - Creating a Developer Cloud instance
 - Configuring the Storage and Build parameters for your DevCS instance
 
 
 
-#### Enable DevCS on your PaaS dashboard ####
+#### Go to DevCS on your dashboard ####
 
-- Login to your cloud account and navigate to the PaaS dashboard:
+- Login to your cloud account and find DevCS service:
 
-![alt text](images/devcs/dashboard.png)
+![alt text](images/devcs/dashboard_new.png)
 
-In case your cloud account is linked straight to the OCI dashboard, you need to use the following menu item on the left to reach the PaaS dashboard:
-
-![alt text](images/devcs/gotopaas.png)
-
-
-
-- Make sure the "Developer Cloud" service is "visible" on the dashboard as in the above screenshot.  If this is not the case, use the "Customize Dashboard" button to enable it.
-
-![alt text](images/devcs/customize.png)
+- Open DevCS service
 
 #### Create an instance ####
 
-- Go into the Developer Cloud Service Overview by clicking on the Service title
+-  You should have no existing instances.  If you have, you can skip the following steps and just validate you have a build engine witht the correct libraries included.
 
-![alt text](images/devcs/service.png)
-
-- Open the Service Console.  You should have no existing instances.  If you have, you can skip the following steps and just validate you have a build engine witht the correct libraries included.
-
-![alt text](images/devcs/empty.png)
+![alt text](images/devcs/DevCS_create_instance_new.png)
 
 - Use the "Create Instance" button to create a new Developer Cloud instance
 
-![alt text](images/devcs/create.png)
+![alt text](images/devcs/create_new.png)
+
+Note: You should match the region selected with your home region.
+
+![alt text](images/devcs/region_match_new.png)
 
 - Hit the "Next" button and then "Create"
 
-![alt text](images/devcs/confirm.png)
+![alt text](images/devcs/confirm_new.png)
 
 - Now the instance is being created.  This will take a few minutes, you can hit the small arrow to requery the status.
 
-![alt text](images/devcs/creating.png)
+![alt text](images/devcs/creating_new.png)
 
 #### Access your DevCS Environment ####
 
-To access your Developer Cloud Instance, use the hzmburger menu on the right to view the menu item **Access Service Instance**.  Right-click to save the URL, you will need this link later in the labs.
+To access your Developer Cloud Instance, refresh the page and use the hamburger menu on the right to view the menu item **Access Service Instance**.  Right-click to save the URL (copy link address), you will need this link later in the labs.
 
 
 
@@ -98,12 +90,119 @@ A detailed explanation of these steps is provided in [this section of the Develo
 
 
 
+### **STEP 2: Create a Compartment**
+
+- In the Cloud Infrastructure Console, click on the hamburger menu on the top left of the screen. From the pull-out menu, under Identity, click Compartments.
+
+![](images/100/Compartments.jpeg)
+
+
+
+- You will see the list of compartments currently available in your instance, which will include at least the root compartment of your tenancy (with has the tenancy name). 
+  - ![](images/100/ListCompartmentsCTDOKE.png)
+- Click on **Create Compartment** button to start the compartment creation process
+
+![](images/100/CreateCompartment4.png)
+
+Enter the following in create Compartment window
+
+- **Name**: Enter **CTDOKE**
+- **Description**: Enter a description for the compartment
+- **Parent Compartment**:  select the root compartment.
+- Click on the **Create Compartment** link 
+
+- You can verify the compartment created on Compartments page
+
+
+### **STEP 3**: Add a Policy Statement for OKE
+
+- If you are using an Instructor provided instance, this policy will already be defined.
+
+- Before the Oracle managed Kubernetes service can create compute instances in your OCI tenancy, we must explicitly give it permission to do so using a policy statement. From the OCI Console navigation menu, choose **Identity->Policies**.
+
+  ![img](images/devcs/LabGuide200-13c980fa.png)
+
+- In the Compartment drop down menu on the left side, choose the **root compartment**. It will have the same name as your OCI tenancy (Cloud Account Name).
+
+  ![img](images/devcs/LabGuide200-a321171a.png)
+
+- Click **PSM-root-policy**
+
+  ![img](images/devcs/LabGuide200-e67b7705.png)
+
+- Click the **Add Policy Statement** button
+
+  ![img](images/devcs/LabGuide200-3d4a7471.png)
+
+- In the Statement box, enter: `allow service OKE to manage all-resources in tenancy` and click **Add Statement**
+
+  ![img](images/devcs/LabGuide200-bd5bcbd1.png)
+
+
+
+### STEP 4: Create an API user with a certificate
+
+**ATTENTION** : if you are using an Instructor-provided instance, a user called **api.user** will already have been set up for you, and the keys, fingerprints and tokens of this user will be provided to you.
+
+- Add an API (non-SSO) user with an API key:
+
+  - Navigate to the "Identity" , "Users" screen and add a user called "api.user"
+
+  - Add an API key: you need a private/public key pair, and you need to paste the public one into the key field. 
+
+    - On a Mac : open a console window and execute following commands
+
+      - ```
+        mkdir ./mykey
+        openssl genrsa -out ./mykey/api_key.pem 2048
+        openssl rsa -pubout -in ./mykey/api_key.pem -out ./mykey/api_key_public.pem
+        ```
+
+    - On Windows : For help on how to create an API signing key (in PEM format) follow the steps here: https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm
+
+  - Copy the fingerprint of your API key in a temporary file
+
+  - Copy the OCID of this new user in a tempporary file
+
+  ![alt text](images/devcs/OCI_user_details_new.png)
+
+
+- Create an Auth Token for the user api.user
+
+  - Take care to copy the Token string in a file on your PC : you will nbeed it later, and you cannot retrieve it back from the console.
+
+    ![img](images/660/Auth_token.png)
+
+  
+
+
+#### Connect to your OCI tenancy to configure Compute & Storage using OCI credentials
+
+- On the left-side menu, select the top level **Organization** menu, then click on **OCI Account** in the top menu.  Next you can hit the **Connect** button.
+
+![alt text](images/devcs/Connect_OCIaccount_new.png)
+
+![alt text](images/devcs/Configure_OCIaccount_new.png)
+
+- The OCI credentials can be found in your main cloud dasboard / Administration / Tenancy details
+
+![alt text](images/devcs/OCI_Tenancy_details_new.png)
+
+![alt text](images/devcs/OCI_tenancy_details_new_2.png)
+
+- The user details can be found in your main cloud dasboard / Identity/ Users / click on api.user
+
+![alt text](images/devcs/OCI_user_details_new.png)
+
+
+
+
+
 #### Create a Virtual Machine
 
 - On the left-side menu, select the top level **Organization** menu, then click on **Virtual Machines Templates** in the top menu.  Next you can hit the **Create Template** button.
 
 ![alt text](images/devcs/NewTemplate2.png)
-
 
 
 - In the dialog box, specify a name, for example **DockerOCIOKE**  and use the default **Oracle Linux 7** image.  Then hit the **Create** button.
@@ -146,95 +245,6 @@ A detailed explanation of these steps is provided in [this section of the Develo
 You finished all the steps to finalize the Developer Cloud setup.  
 
 
-
-### **STEP 2: Create a Compartment**
-
-- In the Cloud Infrastructure Console, click on the hamburger menu on the top left of the screen. From the pull-out menu, under Identity, click Compartments.
-
-![](images/100/Compartments.jpeg)
-
-
-
-- You will see the list of compartments currently available in your instance, which will include at least the root compartment of your tenancy (with has the tenancy name). 
-  - ![](images/100/ListCompartmentsCTDOKE.png)
-- Click on **Create Compartment** button to start the compartment creation process
-
-![](images/100/CreateCompartment4.png)
-
-Enter the following in create Compartment window
-
-- **Name**: Enter **CTDOKE**
-- **Description**: Enter a description for the compartment
-- **Parent Compartment**:  select the root compartment.
-- Click on the **Create Compartment** link 
-
-- You can verify the compartment created on Compartments page
-
-
-
-
-
-### **STEP 3**: Add a Policy Statement for OKE
-
-- If you are using an Instructor provided instance, this policy will already be defined.
-
-- Before the Oracle managed Kubernetes service can create compute instances in your OCI tenancy, we must explicitly give it permission to do so using a policy statement. From the OCI Console navigation menu, choose **Identity->Policies**.
-
-  ![img](images/devcs/LabGuide200-13c980fa.png)
-
-- In the Compartment drop down menu on the left side, choose the **root compartment**. It will have the same name as your OCI tenancy (Cloud Account Name).
-
-  ![img](images/devcs/LabGuide200-a321171a.png)
-
-- Click **PSM-root-policy**
-
-  ![img](images/devcs/LabGuide200-e67b7705.png)
-
-- Click the **Add Policy Statement** button
-
-  ![img](images/devcs/LabGuide200-3d4a7471.png)
-
-- In the Statement box, enter: `allow service OKE to manage all-resources in tenancy` and click **Add Statement**
-
-  ![img](images/devcs/LabGuide200-bd5bcbd1.png)
-
-
-
-### STEP 4: Create an API user with a certificate
-
-**ATTENTION** : if you are using an Instructor-provided instance, a user called **api.user** will already have been set up for you, and the keys, fingerprints and tokens of this user will be provided to you.
-
-- Add an API (non-SSO) user with an API key:
-
-  - Navigate to the "Identity" , "Users" screen and add a user called "api.user"
-
-  - Add an API key: you need a private/public key pair, and you need to paste the public one into the key field. 
-
-    - On a Mac : open a console window and execute following commands
-
-    - ```
-      mkdir ./mykey
-      openssl genrsa -out ./mykey/api_key.pem 2048
-      openssl rsa -pubout -in ./mykey/api_key.pem -out ./mykey/api_key_public.pem
-      ```
-
-    - On a Windows PC, you can use [puttygen](https://www.ssh.com/ssh/putty/download).exe to create a key.
-
-  - Copy the fingerprint of your API key in a temporary file
-
-  - Copy the OCID of this new user in a tempporary file
-
-  ![](images/660/OkeUser.png)
-
-
-
-- Create an Auth Token for the user api.user
-
-  - Take care to copy the Token string in a file on your PC : you will nbeed it later, and you cannot retrieve it back from the console.
-
-    ![](images/660/Auth_token.png)
-
-  
 
 ### STEP 5: Install the required software on your laptop
 
