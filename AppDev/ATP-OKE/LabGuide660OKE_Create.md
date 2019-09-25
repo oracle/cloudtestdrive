@@ -26,6 +26,7 @@ Below you find a detailed description of these steps, with screendumps and expla
 You need to collect a series of OCID's from your instance in order for Terraform to access your instance:
 - Tenancy OCID
 - Region name
+- Object Storage Namespace
 - Compartiment OCID
 - User OCID
 - API Key fingerprint
@@ -36,7 +37,7 @@ You need to collect a series of OCID's from your instance in order for Terraform
 
 Screen shots of the various locations to find this information
 
-- **Tenancy OCID** and **Region Name**:
+- **Tenancy OCID, Object Storage Namespace** and **Region Name**:
   - Navigate to "Administration", "Tenancy Details"
   ![](images/660/OkeTenancy.png)
   
@@ -146,12 +147,12 @@ resource "oci_core_virtual_network" "K8SVNC" {
 
     ```bash
     kubectl create secret docker-registry <your-initials>-ocirsecret
-    --docker-server=<region-code>.ocir.io --docker-username='<tenancy-name>/<oci-username>' --docker-password='<oci-auth-token>' --docker-email='<email-address>'
+    --docker-server=<region-code>.ocir.io --docker-username='<Object-Storage-Namespace>/<oci-username>' --docker-password='<oci-auth-token>' --docker-email='<email-address>'
     ```
 
     - **your-initials** as part of the name of the secret so this is your individual secret in case you are working in a shared environment
     - **region-code** is for example **fra** for Frankfurt, **iad** for Ashburn, etc.  See [here](https://docs.cloud.oracle.com/iaas/Content/Registry/Concepts/registryprerequisites.htm#Availab) for details.
-    - **tenancy-name** is the name of your Cloud tenancy
+    - **Object-Storage-Namespace** is the name of Object Storage Namespace you noted down.
     - **oci-username** is the name of the **api.user** you just created
     - **oci-auth-token** is the **Auth Token** you just created and noted down
   - **email-address** is mandatory but not used, can be jdoe@acme.com
@@ -159,7 +160,7 @@ resource "oci_core_virtual_network" "K8SVNC" {
 - Example command:
   
     ```bash
-    kubectl create secret docker-registry jle-ocirsecret --docker-server=fra.ocir.io --docker-username='mytenancy/api.user' --docker-password='k]j64r{1sJSSF-;)K8' --docker-email='jdoe@acme.com'
+    kubectl create secret docker-registry jle-ocirsecret --docker-server=fra.ocir.io --docker-username='epqldntjs/api.user' --docker-password='k]j64r{1sJSSF-;)K8' --docker-email='jdoe@acme.com'
   ```
   
   The result should be 
