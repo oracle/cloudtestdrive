@@ -1,6 +1,6 @@
 [Go to the Cloud Test Drive Overview](../../readme.md)
 
-![](/Users/jleemans/dev/github/cloudtestdrive/common/images/customer.logo2.png)
+![](../../common/images/customer.logo2.png)
 
 # Autonomous Database for APEX Developers #
 
