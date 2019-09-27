@@ -2,6 +2,7 @@
     "workshop": {
         "title": "Autonomous Database for APEX Developers",
         "description": "Autonomous Database for APEX Developers",
+        "theme": "default",
         "versions": [
            {
             "name": "Self-Guided",
