@@ -2,7 +2,6 @@
     "workshop": {
         "title": "Autonomous Database for APEX Developers",
         "description": "Autonomous Database for APEX Developers",
-        "interactive":"https://launch.oracle.com/?ad4apex",
         "versions": [
            {
             "name": "Self-Guided",
