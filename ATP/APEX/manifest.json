@@ -1,50 +1,38 @@
 {
     "workshop": {
         "title": "Autonomous Database for APEX Developers",
-        "description": "Welcome to the Autonomous Database for APEX Developers workshop. This workshop provides as series of hands on labs that will give you an understanding of the Oracle Autonomous database (specificially Autonomous Transaction Processing) and how it benefits APEX applicatons.",
-        "interactive":"https://launch.oracle.com/?ad4apex",
-        "versions": [
-           {
-            "name": "Self-Guided",
-            "description": "Individual self-guided learning",
-            "imageUrl": "https://oracle.github.io/learning-library/workshops/common-content/images/common/Self-Service.png"
-          }
-        ],
+        "description": "Autonomous Database for APEX Developers",
+        "theme": "default",
         "labs": [
             {
                 "number": "100",
                 "filename": "L100.md",
                 "title": "Lab 100: Introduction",
                 "description": "Provisioning the database and APEX services",
-                "labels": {"version": "Self-Guided"}
             },
             {
                 "number": "200",
                 "filename": "L200.md",
                 "title": "Lab 200: Adding Spatial to your APEX app",
                 "description": "Add geospatial functionality to your APEX app",
-                "labels": {"version": "Self-Guided"}
             },
             {
                 "number": "300",
                 "filename": "L300.md",
                 "title": "Lab 300: Add Machine Learning to your APEX app",
                 "description": "Make an existing APEX intelligent by adding Machine Learning to it",
-                "labels": {"version": "Self-Guided"}
             },
             {
                 "number": "400",
                 "filename": "L400.md",
                 "title": "Lab 400: Add Security to your APEX app",
                 "description": "Add data redaction to hide sensitive information",
-                "labels": {"version": "Self-Guided"}
             },
             {
                 "number": "500",
                 "filename": "L500.md",
                 "title": "Lab 500: Add Analytics to your APEX app",
                 "description": "Give your APEX users self service access to the data in the APEX app and integrate it ",
-                "labels": {"version": "Self-Guided"}
             }
         ]
     }
