@@ -89,9 +89,9 @@ resource "oci_core_virtual_network" "K8SVNC" {
 - run `terraform plan` to validate your config
 
    - You should see 13 objects to be created
-
-   - ![](images/660/terra_plan.png)
+- ![](images/660/terra_plan.png)
    - **Attention:** you might get an error on the version of your kubernetes cluster.  The version of Kubernetes specified in the file "k8s.ft" might be a too old version as compared to the versions made available by the OKE service.  If you encounter this error, verify the available versions on the OKE console that are available.
+   - **Attention:** You might also get an error on the version of the Linux Image to use for the Worker Nodes.  If you encounter this, please check available Linux versions in your datacenter and correct the file **k8s.ft** accordingly.
 - run `terraform apply` to spin up your infrastructure
 
    - ![](images/660/terra_apply.png)
