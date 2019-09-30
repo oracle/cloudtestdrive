@@ -12,7 +12,7 @@ During this day you will be able to experience the various cloud services hands-
 
 
 ## Application Development ##
-+ *New* [Microservices using Autonomous ATP and Managed Containers](AppDev/ATP-OKE/README.md) - This lab will setup a CI/CD flow in Developer Cloud to deploy microservices to an ATP & OKE infrastructure
++ [Microservices using Autonomous ATP and Managed Containers](AppDev/ATP-OKE/README.md) - This lab will cover the complete setup of Developer Cloud, a Kubernetes Cluster and an Autonomous Database, and then build the CI/CD flow to deploy a Node-based microservice onto this infrastructure.
 + [AppDev Infrastructure lab](AppDev/AppDevInfra.md) - Set up the infrastructure to run your applications : create a Database and Application Servers, using DBaaS and JCS
 + Using **Wercker** CI/CD pipelines to [deploy an Angular Node application](AppDev/K8S/readme.md)
 + Run your first **serverless Functions** [using FnProject](AppDev/functions/function2_lab.md)
@@ -23,7 +23,7 @@ During this day you will be able to experience the various cloud services hands-
 
 ## Autonomous Databases
 
-- [Autonomous Transaction Processing for Developers](ATP/readme.md) Hands-on lab - In this lab you will get first-hand experience with Oracle’s new Autonomous Transaction Processing (ATP) database service and deploy a Microservice application onto a Kubernetes cluster using Developer Cloud.
+- [Autonomous Transaction Processing for Developers](ATP/readme.md) - This lab you will give you a first-hand impression of using Oracle’s Autonomous (ATP) database  from a Developers perspective, deploying a Node application onto a Kubernetes cluster leveraging the ATP Database.
 - [Develop APEX applications](ATP/APEX/readme.md) running on top of the Autonomous Transaction Processing Database.
 
 

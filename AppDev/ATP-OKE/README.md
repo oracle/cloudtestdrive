@@ -1,4 +1,4 @@
-[Go to the Cloud Test Drive Welcomer Page](../../README.md)
+[Go to the Cloud Test Drive Welcomer Page](../../readme.md)
 
 ![](../../common/images/customer.logo2.png)
 
@@ -21,6 +21,7 @@ To run these labs you will need access to an Oracle Cloud Account.  We have prep
   
 
 - <u>You are joining an in-person Oracle event</u>: your instructor will provide you the required credentials to access an environment that has already been prepared with the minimum policies, account credentials etc.  
+  
   ==> [Go to this page](../../ATP/readme.md) for detailed instructions
 
 
@@ -46,7 +47,7 @@ You finished the setup part of your environment, and you can now start with the 
 
 
 
-[Go to the Cloud Test Drive Welcomer Page](../../README.md)
+[Go to the Cloud Test Drive Welcomer Page](../../readme.md)
 
 
 
