@@ -3,8 +3,9 @@
 # Prerequisites for the workshop
 
 ## Step 1: Request an Oracle Trial account
-By registering for the workshop, your email address has been *whitelisted* for an Oracle Trial.
-Whitelisting means that you won't need a credit card or phone number.
+By registering for the workshop, your email address has been *whitelisted* for an Oracle Cloud Trial.
+
+This means you will have __500$ in credit__ for experimenting with a large variety of Oracle Cloud services, and you won't need a credit card to sign up.
 
 For this to work, it's important that you:
 - Use this __exact URL__ to create your trial: [http://bit.ly/registeroraclecloud](http://bit.ly/registeroraclecloud). 
