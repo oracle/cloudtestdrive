@@ -1,5 +1,3 @@
-[Go to ATP Overview Page](../../ATP/readme.md)
-
 ![](../../common/images/customer.logo2.png)
 # Microservices on ATP
 
@@ -255,7 +253,8 @@ Congratulations, you have finished this lab !!!!
 
 Because you did all this via a CI/CD chain, making a small change in the source code of your application will trigger the re-deployment and make your change immediately visible.
 
----
-[Go to ATP Overview Page](../../ATP/readme.md)
 
-@
+
+---
+
+Use the **Back Button** of your browser to go back to the overview page.

@@ -1,5 +1,3 @@
-[Go to ATP Overview Page](../../ATP/readme.md)
-
 ![](../../common/images/customer.logo2.png)
 # Microservices on ATP #
 
@@ -100,10 +98,9 @@ You are now ready to start configuring your CI/CD flows in this project!
 - build your application Docker Container
 - deploy the container to a Kubernetes cluster
 
-Go back to the overview page and select the next lab step to continue.
-
-
-
 ---
-[Go to ATP Overview Page](../../ATP/readme.md)
+
+Use the **Back Button** of your browser to go back to the overview page and select the next lab step to continue.
+
+
 

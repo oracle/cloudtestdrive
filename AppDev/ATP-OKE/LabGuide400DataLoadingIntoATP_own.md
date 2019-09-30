@@ -1,5 +1,3 @@
-[Go to ATP Overview Page](../../ATP/readme.md)
-
 ![](../../common/images/customer.logo2.png)
 
 # Microservices on ATP
@@ -144,13 +142,9 @@ Now navigate back to the Build job you launched.
 
 
 
+---
+
 **Congratulations**, You are now ready to move to the next lab.
 
-
-
-
-
-------
-
-[Go to ATP Overview Page](../../ATP/readme.md)
+Use the **Back Button** of your browser to go back to the overview page and select the next lab step to continue.
 

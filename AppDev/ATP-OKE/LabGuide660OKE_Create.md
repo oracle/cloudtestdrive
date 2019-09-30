@@ -1,5 +1,3 @@
-[Go to ATP Overview Page](../../ATP/readme.md)
-
 ![](../../common/images/customer.logo2.png)
 
 # Microservices on ATP
@@ -175,4 +173,4 @@ resource "oci_core_virtual_network" "K8SVNC" {
 
 ---
 
-[Go to ATP Overview Page](../../ATP/readme.md)
+Use the **Back Button** of your browser to go back to the overview page and select the next lab step to continue.

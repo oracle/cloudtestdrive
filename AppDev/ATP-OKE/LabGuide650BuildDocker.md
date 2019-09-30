@@ -1,5 +1,3 @@
-[Go to ATP Overview Page](../../ATP/readme.md)
-
 ![](../../common/images/customer.logo2.png)
 # Microservices on ATP
 
@@ -27,7 +25,7 @@ Open your project in Develoepr Cloud, and follow the steps below:
 
   - Registry URL: fill in the URL of your OCI Repository.  Example for an instance based in Frankfurt:
      https://fra.ocir.io  , but replace the "fra" by the correct code : **phx** for Phenix,  **lhr** for London, ...
-     
+  
 - The **Username** is composed of {object namespace}/{username}, for example **oractdemeabdmnative/api.user** 
   
 - To get your "object-storage-namespace" name, you must navigate to the "Administration" and "Tenancy Details" menu:
@@ -190,4 +188,4 @@ You have finished this part of the lab, navigate to the next step to continue!
 
 
 ---
-[Go to ATP Overview Page](../../ATP/readme.md)
+Use the **Back Button** of your browser to go back to the overview page and select the next lab step to continue.
