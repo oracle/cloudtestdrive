@@ -13,7 +13,7 @@ Let’s get started!
 
 ### Step 1: Configure the connection to your OCIR Docker Repository
 
-Open your project in Develoepr Cloud, and follow the steps below:
+Open your project in Developer Cloud, and follow the steps below:
 
 - Click **Docker** in the left navigation bar, then click **Link External Repository**.
 
@@ -112,7 +112,7 @@ Open your project in Develoepr Cloud, and follow the steps below:
 
   - Select the **MyOCIR** registry from the dropdown field of the  **Registry Host** field (should be pre-filled in)
 
-  - The **Image Name** is composed as follows: my_instance_name/your_repo_name/image_name
+  - The **Image Name** is composed as follows: my_tenancy_namespace/your_repo_name/image_name
     - Example : oractdemeabdmnative/jle_repo/atp01
     - Use your initials in the repo name to distinguish from other users
     

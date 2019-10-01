@@ -71,9 +71,9 @@ Let’s get started!
 
   - Line 17: set the correct image location as you configured it in the BuildContainer job
 
-  - Example for datacenter in Frankfurt (**fra**), tenancy name **mytenancy**, repo path **oowhol** and image name joduatp2:latest container name: 
+  - Example for datacenter in Frankfurt (**fra**), tenancy object storage namespace **mytenancy_namespace**, repo path **oowhol** and image name joduatp2:latest container name: 
 
-    `fra.ocir.io/mytenancy/oowhol/joduatp2:latest`
+    `fra.ocir.io/mytenancy_namespace/oowhol/joduatp2:latest`
 
     ![](images/670/edit_yaml-1.png)
 
