@@ -1,0 +1,1594 @@
+4,1,100622,,Rite Pharmaceuticals Inc Project,25,5,Silver,The Netherlands,Administration,Bob Boyle,2016-05,2016-05-01T00:00:00
+4,2,100091,,Rite Pharmaceuticals Inc Project,80,1,Silver,Germany,Accounting,Bob Boyle,2016-05,2016-05-02T00:00:00
+4,3,106777,,Rite Pharmaceuticals Inc Project,80,2,Bronze,Germany,Accounting,Bob Boyle,2016-05,2016-05-03T00:00:00
+4,4,107840,,Rite Pharmaceuticals Inc Project,120,2,Gold,Germany,Accounting,Bob Boyle,2016-05,2016-05-04T00:00:00
+4,5,104137,,Rite Pharmaceuticals Inc Project,80,4,Platinum,Germany,Accounting,Bob Boyle,2016-05,2016-05-05T00:00:00
+4,6,103836,,Rite Pharmaceuticals Inc Project,80,6,Silver,Germany,Accounting,Bob Boyle,2016-05,2016-05-06T00:00:00
+4,7,105440,,Rite Pharmaceuticals Inc Project,215,1,Silver,Germany,Business Consulting,Bob Boyle,2016-05,2016-05-07T00:00:00
+4,8,102903,,Rite Pharmaceuticals Inc Project,120,2,Bronze,Germany,Business Consulting,Bob Boyle,2016-05,2016-05-08T00:00:00
+4,9,102127,,Rite Pharmaceuticals Inc Project,90,2,Bronze,Germany,Accounting,Bob Boyle,2016-05,2016-05-09T00:00:00
+4,10,106941,,Rite Pharmaceuticals Inc Project,95,2,Gold,Germany,Accounting,Bob Boyle,2016-05,2016-05-10T00:00:00
+4,11,107895,,Rite Pharmaceuticals Inc Project,215,2,Gold,Germany,Accounting,Bob Boyle,2016-05,2016-05-11T00:00:00
+4,12,102096,,Rite Pharmaceuticals Inc Project,30,3,Platinum,Germany,Accounting,Bob Boyle,2016-05,2016-05-12T00:00:00
+4,13,106189,,Rite Pharmaceuticals Inc Project,247.5,5,Silver,Germany,Accounting,Bob Boyle,2016-05,2016-05-13T00:00:00
+4,14,107534,,Rite Pharmaceuticals Inc Project,95,6,Gold,Germany,Business Consulting,Bob Boyle,2016-05,2016-05-14T00:00:00
+4,15,104086,,Rite Pharmaceuticals Inc Project,120,6,Silver,Germany,Accounting,Bob Boyle,2016-05,2016-05-15T00:00:00
+4,16,103030,,Rite Pharmaceuticals Inc Project,192.5,6,Bronze,Germany,Accounting,Bob Boyle,2016-05,2016-05-16T00:00:00
+4,17,102297,,Rite Pharmaceuticals Inc Project,25,7,Silver,Germany,Administration,Bob Boyle,2016-05,2016-05-17T00:00:00
+4,18,106212,,Rite Pharmaceuticals Inc Project,192.5,8,Gold,Germany,Accounting,Bob Boyle,2016-05,2016-05-18T00:00:00
+4,19,102130,,Rite Pharmaceuticals Inc Project,175,10,Gold,Germany,Accounting,Bob Boyle,2016-05,2016-05-19T00:00:00
+4,20,100978,,Rite Pharmaceuticals Inc Project,145,13,Platinum,Germany,Accounting,Bob Boyle,2016-05,2016-05-20T00:00:00
+4,21,103203,,Rite Pharmaceuticals Inc Project,100,1,Gold,Germany,Accounting,Bob Boyle,2016-05,2016-05-21T00:00:00
+4,22,101210,,Rite Pharmaceuticals Inc Project,100,1,Bronze,Germany,Accounting,Bob Boyle,2016-05,2016-05-22T00:00:00
+4,23,103000,,Rite Pharmaceuticals Inc Project,145,3,Bronze,Germany,Accounting,Bob Boyle,2016-05,2016-05-23T00:00:00
+4,24,100190,,Rite Pharmaceuticals Inc Project,100,3,Gold,Germany,Accounting,Bob Boyle,2016-05,2016-05-24T00:00:00
+4,25,104987,,Rite Pharmaceuticals Inc Project,197.5,3,Bronze,Germany,Business Consulting,Bob Boyle,2016-05,2016-05-25T00:00:00
+4,26,106104,,Rite Pharmaceuticals Inc Project,247.5,3,Gold,Germany,Business Consulting,Bob Boyle,2016-05,2016-05-26T00:00:00
+4,27,105382,,Rite Pharmaceuticals Inc Project,145,4,Silver,Germany,Business Consulting,Bob Boyle,2016-05,2016-05-27T00:00:00
+4,28,101286,,Rite Pharmaceuticals Inc Project,192.5,4,Silver,Germany,Accounting,Bob Boyle,2016-05,2016-05-28T00:00:00
+4,29,106215,,Rite Pharmaceuticals Inc Project,197.5,5,Silver,Germany,Accounting,Bob Boyle,2016-05,2016-05-29T00:00:00
+4,30,105808,,Rite Pharmaceuticals Inc Project,247.5,6,Platinum,Germany,Accounting,Bob Boyle,2016-05,2016-05-30T00:00:00
+4,31,101209,,Rite Pharmaceuticals Inc Project,247.5,7,Gold,Germany,Accounting,Bob Boyle,2016-05,2016-05-01T00:00:00
+4,32,100055,,Rite Pharmaceuticals Inc Project,135,13,Platinum,Germany,Accounting,Bob Boyle,2016-05,2016-05-02T00:00:00
+4,33,105260,,Rite Pharmaceuticals Inc Project,192.5,3,Silver,Germany,Accounting,Bob Boyle,2016-05,2016-05-03T00:00:00
+4,34,101088,,Rite Pharmaceuticals Inc Project,180,5,Gold,Germany,Business Consulting,Bob Boyle,2016-05,2016-05-04T00:00:00
+4,35,104649,,Rite Pharmaceuticals Inc Project,192.5,5,Platinum,Germany,Accounting,Bob Boyle,2016-05,2016-05-05T00:00:00
+4,36,105553,,Rite Pharmaceuticals Inc Project,120,6,Bronze,Germany,Business Consulting,Bob Boyle,2016-05,2016-05-06T00:00:00
+4,37,103837,,Rite Pharmaceuticals Inc Project,215,8,Silver,Germany,Accounting,Bob Boyle,2016-05,2016-05-07T00:00:00
+4,38,105608,,Rite Pharmaceuticals Inc Project,187.5,9,Silver,Germany,Administration,Bob Boyle,2016-05,2016-05-08T00:00:00
+4,39,104170,,Rite Pharmaceuticals Inc Project,180,9,Gold,Germany,Accounting,Bob Boyle,2016-05,2016-05-09T00:00:00
+4,40,106696,,Rite Pharmaceuticals Inc Project,145,13,Silver,Germany,Accounting,Bob Boyle,2016-05,2016-05-10T00:00:00
+4,41,100893,,Rite Pharmaceuticals Inc Project,25,6,Gold,The Netherlands,Business Consulting,Bob Boyle,2016-06,2016-06-11T00:00:00
+4,42,101829,,Rite Pharmaceuticals Inc Project,25,7,Platinum,The Netherlands,Business Consulting,Bob Boyle,2016-06,2016-06-12T00:00:00
+4,43,102800,,Rite Pharmaceuticals Inc Project,180,1,Silver,Germany,Accounting,Bob Boyle,2016-06,2016-06-13T00:00:00
+4,44,105192,,Rite Pharmaceuticals Inc Project,80,1,Silver,Germany,Business Consulting,Bob Boyle,2016-06,2016-06-14T00:00:00
+4,45,106908,,Rite Pharmaceuticals Inc Project,25,3,Platinum,Germany,Administration,Bob Boyle,2016-06,2016-06-15T00:00:00
+4,46,105719,,Rite Pharmaceuticals Inc Project,160,3,Gold,Germany,Administration,Bob Boyle,2016-06,2016-06-16T00:00:00
+4,47,101815,,Rite Pharmaceuticals Inc Project,160,10,Bronze,Germany,Business Consulting,Bob Boyle,2016-06,2016-06-17T00:00:00
+4,48,100841,,Rite Pharmaceuticals Inc Project,180,1,Silver,Germany,Accounting,Bob Boyle,2016-06,2016-06-18T00:00:00
+4,49,101109,,Rite Pharmaceuticals Inc Project,90,1,Bronze,Germany,Business Consulting,Bob Boyle,2016-06,2016-06-19T00:00:00
+4,50,102888,,Rite Pharmaceuticals Inc Project,240,1,Bronze,Germany,Business Consulting,Bob Boyle,2016-06,2016-06-20T00:00:00
+4,51,101152,,Rite Pharmaceuticals Inc Project,192.5,2,Gold,Germany,Accounting,Bob Boyle,2016-06,2016-06-21T00:00:00
+4,52,105177,,Rite Pharmaceuticals Inc Project,215,3,Silver,Germany,Business Consulting,Bob Boyle,2016-06,2016-06-22T00:00:00
+4,53,101705,,Rite Pharmaceuticals Inc Project,120,3,Silver,Germany,Accounting,Bob Boyle,2016-06,2016-06-23T00:00:00
+4,54,107948,,Rite Pharmaceuticals Inc Project,120,4,Platinum,Germany,Business Consulting,Bob Boyle,2016-06,2016-06-24T00:00:00
+4,55,103471,,Rite Pharmaceuticals Inc Project,47.5,4,Gold,Germany,Business Consulting,Bob Boyle,2016-06,2016-06-25T00:00:00
+4,56,102700,,Rite Pharmaceuticals Inc Project,180,4,Bronze,Germany,Accounting,Bob Boyle,2016-06,2016-06-26T00:00:00
+4,57,105770,,Rite Pharmaceuticals Inc Project,120,4,Silver,Germany,Accounting,Bob Boyle,2016-06,2016-06-27T00:00:00
+4,58,107015,,Rite Pharmaceuticals Inc Project,247.5,6,Gold,Germany,Business Consulting,Bob Boyle,2016-06,2016-06-28T00:00:00
+1,225,100945,,Premenos Technology Corp Project,180,4,Gold,The Netherlands,Accounting,Carl Douglas,2016-07,2016-07-15T00:00:00
+1,226,100061,,Premenos Technology Corp Project,120,4,Gold,The Netherlands,Accounting,Carl Douglas,2016-07,2016-07-16T00:00:00
+1,227,105058,,Premenos Technology Corp Project,200,4,Silver,The Netherlands,Accounting,Carl Douglas,2016-07,2016-07-17T00:00:00
+1,228,100102,,Premenos Technology Corp Project,200,4,Platinum,The Netherlands,Accounting,Carl Douglas,2016-07,2016-07-18T00:00:00
+1,229,101156,,Premenos Technology Corp Project,200,4,Silver,The Netherlands,Accounting,Carl Douglas,2016-07,2016-07-19T00:00:00
+1,230,103541,,Premenos Technology Corp Project,160,5,Gold,The Netherlands,Business Consulting,Carl Douglas,2016-07,2016-07-20T00:00:00
+1,231,100221,,Premenos Technology Corp Project,120,5,Silver,The Netherlands,Accounting,Carl Douglas,2016-07,2016-07-21T00:00:00
+1,232,100016,,Premenos Technology Corp Project,25,5,Silver,The Netherlands,Accounting,Carl Douglas,2016-07,2016-07-22T00:00:00
+1,233,100217,,Premenos Technology Corp Project,160,6,Gold,The Netherlands,Accounting,Carl Douglas,2016-07,2016-07-23T00:00:00
+1,234,100648,,Premenos Technology Corp Project,25,6,Silver,The Netherlands,Accounting,Carl Douglas,2016-07,2016-07-24T00:00:00
+1,235,106547,,Premenos Technology Corp Project,25,7,Silver,The Netherlands,Accounting,Carl Douglas,2016-07,2016-07-25T00:00:00
+1,236,104492,,Premenos Technology Corp Project,200,7,Gold,The Netherlands,Accounting,Carl Douglas,2016-07,2016-07-26T00:00:00
+1,237,106371,,Premenos Technology Corp Project,80,10,Silver,The Netherlands,Administration,Carl Douglas,2016-07,2016-07-27T00:00:00
+1,238,103341,,Premenos Technology Corp Project,180,3,Silver,Germany,Business Consulting,Carl Douglas,2016-07,2016-07-28T00:00:00
+1,239,100590,,Premenos Technology Corp Project,80,3,Bronze,Germany,Administration,Carl Douglas,2016-07,2016-07-29T00:00:00
+1,240,105495,,Premenos Technology Corp Project,180,7,Silver,Germany,Business Consulting,Carl Douglas,2016-07,2016-07-30T00:00:00
+1,241,100015,,Premenos Technology Corp Project,62.5,8,Silver,Germany,Accounting,Carl Douglas,2016-07,2016-07-01T00:00:00
+1,242,100753,,Premenos Technology Corp Project,100,10,Bronze,Germany,Accounting,Carl Douglas,2016-07,2016-07-02T00:00:00
+1,243,105140,,Premenos Technology Corp Project,100,1,Gold,Germany,Accounting,Carl Douglas,2016-07,2016-07-03T00:00:00
+1,244,105201,,Premenos Technology Corp Project,150,1,Silver,Germany,Business Consulting,Carl Douglas,2016-07,2016-07-04T00:00:00
+1,245,104305,,Premenos Technology Corp Project,200,2,Silver,Germany,Business Consulting,Carl Douglas,2016-07,2016-07-05T00:00:00
+1,246,103487,,Premenos Technology Corp Project,150,2,Silver,Germany,Business Consulting,Carl Douglas,2016-07,2016-07-06T00:00:00
+1,247,100419,,Premenos Technology Corp Project,225,3,Gold,Germany,Accounting,Carl Douglas,2016-07,2016-07-07T00:00:00
+1,248,105063,,Premenos Technology Corp Project,100,4,Silver,Germany,Accounting,Carl Douglas,2016-07,2016-07-08T00:00:00
+1,249,107974,,Premenos Technology Corp Project,100,6,Bronze,Germany,Business Consulting,Carl Douglas,2016-07,2016-07-09T00:00:00
+1,250,105660,,Premenos Technology Corp Project,220,1,Silver,Germany,Accounting,Carl Douglas,2016-07,2016-07-10T00:00:00
+1,251,105708,,Premenos Technology Corp Project,165,9,Silver,Germany,Administration,Carl Douglas,2016-07,2016-07-11T00:00:00
+1,252,106540,,Premenos Technology Corp Project,247.5,2,Silver,Germany,Accounting,Carl Douglas,2016-07,2016-07-12T00:00:00
+1,253,105208,,Premenos Technology Corp Project,240,5,Silver,Germany,Business Consulting,Carl Douglas,2016-07,2016-07-13T00:00:00
+1,254,104683,,Premenos Technology Corp Project,180,2,Silver,The Netherlands,Administration,Carl Douglas,2016-08,2016-08-14T00:00:00
+1,255,103545,,Premenos Technology Corp Project,180,3,Silver,The Netherlands,Accounting,Carl Douglas,2016-08,2016-08-15T00:00:00
+1,256,103985,,Premenos Technology Corp Project,200,5,Silver,The Netherlands,Business Consulting,Carl Douglas,2016-08,2016-08-16T00:00:00
+1,257,104504,,Premenos Technology Corp Project,180,8,Silver,The Netherlands,Accounting,Carl Douglas,2016-08,2016-08-17T00:00:00
+1,258,104096,,Premenos Technology Corp Project,200,8,Gold,The Netherlands,Accounting,Carl Douglas,2016-08,2016-08-18T00:00:00
+1,259,107628,,Premenos Technology Corp Project,200,8,Silver,The Netherlands,Accounting,Carl Douglas,2016-08,2016-08-19T00:00:00
+1,260,105154,,Premenos Technology Corp Project,200,9,Silver,The Netherlands,Business Consulting,Carl Douglas,2016-08,2016-08-20T00:00:00
+1,261,103500,,Premenos Technology Corp Project,80,1,Platinum,Germany,Business Consulting,Carl Douglas,2016-08,2016-08-21T00:00:00
+1,262,104309,,Premenos Technology Corp Project,100,3,Silver,Germany,Accounting,Carl Douglas,2016-08,2016-08-22T00:00:00
+1,263,104190,,Premenos Technology Corp Project,165,2,Silver,Germany,Accounting,Carl Douglas,2016-08,2016-08-23T00:00:00
+1,264,103449,,Premenos Technology Corp Project,247.5,2,Silver,Germany,Business Consulting,Carl Douglas,2016-08,2016-08-24T00:00:00
+1,265,104853,,Premenos Technology Corp Project,247.5,2,Silver,Germany,Administration,Carl Douglas,2016-08,2016-08-25T00:00:00
+1,266,107123,,Premenos Technology Corp Project,240,2,Platinum,Germany,Administration,Carl Douglas,2016-08,2016-08-26T00:00:00
+1,267,107989,,Premenos Technology Corp Project,200,1,Gold,The Netherlands,Business Consulting,Carl Douglas,2016-09,2016-09-27T00:00:00
+1,268,100108,,Premenos Technology Corp Project,25,2,Silver,The Netherlands,Accounting,Carl Douglas,2016-09,2016-09-28T00:00:00
+1,269,106541,,Premenos Technology Corp Project,200,2,Silver,The Netherlands,Accounting,Carl Douglas,2016-09,2016-09-29T00:00:00
+1,270,108155,,Premenos Technology Corp Project,25,7,Silver,The Netherlands,Business Consulting,Carl Douglas,2016-09,2016-09-30T00:00:00
+1,271,107063,,Premenos Technology Corp Project,180,3,Platinum,Germany,Accounting,Carl Douglas,2016-09,2016-09-01T00:00:00
+4,272,100169,,Rite Pharmaceuticals Inc Project,55,6,Platinum,The Netherlands,Accounting,Cindy Cochran,2016-05,2016-05-02T00:00:00
+4,273,105038,,Rite Pharmaceuticals Inc Project,264,2,Silver,Germany,Accounting,Cindy Cochran,2016-05,2016-05-03T00:00:00
+4,274,100242,,Rite Pharmaceuticals Inc Project,352,2,Platinum,Germany,Administration,Cindy Cochran,2016-05,2016-05-04T00:00:00
+4,275,102210,,Rite Pharmaceuticals Inc Project,176,3,Platinum,Germany,Accounting,Cindy Cochran,2016-05,2016-05-05T00:00:00
+4,276,104134,,Rite Pharmaceuticals Inc Project,264,5,Bronze,Germany,Accounting,Cindy Cochran,2016-05,2016-05-06T00:00:00
+4,277,101784,,Rite Pharmaceuticals Inc Project,396,1,Gold,Germany,Accounting,Cindy Cochran,2016-05,2016-05-07T00:00:00
+4,278,103346,,Rite Pharmaceuticals Inc Project,352,1,Gold,Germany,Business Consulting,Cindy Cochran,2016-05,2016-05-08T00:00:00
+4,59,101897,,Rite Pharmaceuticals Inc Project,247.5,1,Silver,Germany,Business Consulting,Bob Boyle,2016-06,2016-06-29T00:00:00
+4,60,100741,,Rite Pharmaceuticals Inc Project,247.5,1,Gold,Germany,Accounting,Bob Boyle,2016-06,2016-06-30T00:00:00
+4,61,105849,,Rite Pharmaceuticals Inc Project,247.5,2,Silver,Germany,Accounting,Bob Boyle,2016-06,2016-06-01T00:00:00
+4,62,104320,,Rite Pharmaceuticals Inc Project,247.5,2,Gold,Germany,Administration,Bob Boyle,2016-06,2016-06-02T00:00:00
+4,63,100845,,Rite Pharmaceuticals Inc Project,240,2,Platinum,Germany,Business Consulting,Bob Boyle,2016-06,2016-06-03T00:00:00
+4,64,101762,,Rite Pharmaceuticals Inc Project,132.5,3,Platinum,Germany,Accounting,Bob Boyle,2016-06,2016-06-04T00:00:00
+4,65,102129,,Rite Pharmaceuticals Inc Project,240,3,Gold,Germany,Accounting,Bob Boyle,2016-06,2016-06-05T00:00:00
+4,66,102302,,Rite Pharmaceuticals Inc Project,132.5,5,Bronze,Germany,Administration,Bob Boyle,2016-06,2016-06-06T00:00:00
+4,67,102134,,Rite Pharmaceuticals Inc Project,240,6,Gold,Germany,Accounting,Bob Boyle,2016-06,2016-06-07T00:00:00
+4,68,106314,,Rite Pharmaceuticals Inc Project,247.5,10,Gold,Germany,Accounting,Bob Boyle,2016-06,2016-06-08T00:00:00
+4,69,102231,,Rite Pharmaceuticals Inc Project,247.5,1,Gold,Germany,Accounting,Bob Boyle,2016-06,2016-06-09T00:00:00
+4,70,105781,,Rite Pharmaceuticals Inc Project,247.5,2,Silver,Germany,Accounting,Bob Boyle,2016-06,2016-06-10T00:00:00
+4,71,105782,,Rite Pharmaceuticals Inc Project,180,3,Silver,Germany,Accounting,Bob Boyle,2016-06,2016-06-11T00:00:00
+4,72,100092,,Rite Pharmaceuticals Inc Project,160,1,Silver,The Netherlands,Accounting,Bob Boyle,2016-07,2016-07-12T00:00:00
+4,73,106006,,Rite Pharmaceuticals Inc Project,200,1,Platinum,The Netherlands,Business Consulting,Bob Boyle,2016-07,2016-07-13T00:00:00
+4,74,104921,,Rite Pharmaceuticals Inc Project,80,1,Bronze,The Netherlands,Accounting,Bob Boyle,2016-07,2016-07-14T00:00:00
+4,75,103210,,Rite Pharmaceuticals Inc Project,200,1,Platinum,The Netherlands,Accounting,Bob Boyle,2016-07,2016-07-15T00:00:00
+4,76,101158,,Rite Pharmaceuticals Inc Project,200,1,Gold,The Netherlands,Accounting,Bob Boyle,2016-07,2016-07-16T00:00:00
+4,77,105199,,Rite Pharmaceuticals Inc Project,200,1,Silver,The Netherlands,Business Consulting,Bob Boyle,2016-07,2016-07-17T00:00:00
+4,78,103501,,Rite Pharmaceuticals Inc Project,200,1,Gold,The Netherlands,Business Consulting,Bob Boyle,2016-07,2016-07-18T00:00:00
+4,79,100778,,Rite Pharmaceuticals Inc Project,200,2,Gold,The Netherlands,Administration,Bob Boyle,2016-07,2016-07-19T00:00:00
+4,80,104668,,Rite Pharmaceuticals Inc Project,200,3,Gold,The Netherlands,Administration,Bob Boyle,2016-07,2016-07-20T00:00:00
+4,81,104765,,Rite Pharmaceuticals Inc Project,40,3,Silver,The Netherlands,Accounting,Bob Boyle,2016-07,2016-07-21T00:00:00
+4,82,104826,,Rite Pharmaceuticals Inc Project,40,5,Platinum,The Netherlands,Accounting,Bob Boyle,2016-07,2016-07-22T00:00:00
+1,83,105948,,Premenos Technology Corp Project,200,5,Gold,The Netherlands,Business Consulting,Bob Boyle,2016-07,2016-07-23T00:00:00
+1,84,106026,,Premenos Technology Corp Project,200,8,Silver,The Netherlands,Business Consulting,Bob Boyle,2016-07,2016-07-24T00:00:00
+1,85,101005,,Premenos Technology Corp Project,25,9,Bronze,The Netherlands,Administration,Bob Boyle,2016-07,2016-07-25T00:00:00
+1,86,106178,,Premenos Technology Corp Project,40,11,Platinum,The Netherlands,Accounting,Bob Boyle,2016-07,2016-07-26T00:00:00
+1,87,104148,,Premenos Technology Corp Project,62.5,1,Silver,Germany,Accounting,Bob Boyle,2016-07,2016-07-27T00:00:00
+1,88,106209,,Premenos Technology Corp Project,180,2,Bronze,Germany,Accounting,Bob Boyle,2016-07,2016-07-28T00:00:00
+1,89,106890,,Premenos Technology Corp Project,120,3,Bronze,Germany,Administration,Bob Boyle,2016-07,2016-07-29T00:00:00
+1,90,100191,,Premenos Technology Corp Project,80,5,Gold,Germany,Accounting,Bob Boyle,2016-07,2016-07-30T00:00:00
+1,91,105801,,Premenos Technology Corp Project,62.5,5,Gold,Germany,Accounting,Bob Boyle,2016-07,2016-07-01T00:00:00
+1,92,107335,,Premenos Technology Corp Project,120,6,Silver,Germany,Accounting,Bob Boyle,2016-07,2016-07-02T00:00:00
+1,93,107127,,Premenos Technology Corp Project,120,6,Silver,Germany,Administration,Bob Boyle,2016-07,2016-07-03T00:00:00
+1,94,106909,,Premenos Technology Corp Project,200,2,Gold,Germany,Administration,Bob Boyle,2016-07,2016-07-04T00:00:00
+1,95,100930,,Premenos Technology Corp Project,75,2,Platinum,Germany,Accounting,Bob Boyle,2016-07,2016-07-05T00:00:00
+1,96,103227,,Premenos Technology Corp Project,100,3,Gold,Germany,Accounting,Bob Boyle,2016-07,2016-07-06T00:00:00
+1,97,104976,,Premenos Technology Corp Project,225,7,Silver,Germany,Business Consulting,Bob Boyle,2016-07,2016-07-07T00:00:00
+1,98,105256,,Premenos Technology Corp Project,75,10,Gold,Germany,Accounting,Bob Boyle,2016-07,2016-07-08T00:00:00
+1,99,103948,,Premenos Technology Corp Project,82.5,1,Gold,Germany,Business Consulting,Bob Boyle,2016-07,2016-07-09T00:00:00
+1,100,107009,,Premenos Technology Corp Project,110,7,Gold,Germany,Business Consulting,Bob Boyle,2016-07,2016-07-10T00:00:00
+1,101,107416,,Premenos Technology Corp Project,247.5,12,Platinum,Germany,Accounting,Bob Boyle,2016-07,2016-07-11T00:00:00
+1,102,100652,,Premenos Technology Corp Project,240,6,Bronze,Germany,Accounting,Bob Boyle,2016-07,2016-07-12T00:00:00
+1,103,107126,,Premenos Technology Corp Project,200,2,Gold,The Netherlands,Administration,Bob Boyle,2016-08,2016-08-13T00:00:00
+1,104,103643,,Premenos Technology Corp Project,80,2,Bronze,The Netherlands,Administration,Bob Boyle,2016-08,2016-08-14T00:00:00
+1,105,105505,,Premenos Technology Corp Project,50,3,Silver,The Netherlands,Business Consulting,Bob Boyle,2016-08,2016-08-15T00:00:00
+1,106,104998,,Premenos Technology Corp Project,37.5,4,Silver,The Netherlands,Business Consulting,Bob Boyle,2016-08,2016-08-16T00:00:00
+1,107,107980,,Premenos Technology Corp Project,200,5,Bronze,The Netherlands,Business Consulting,Bob Boyle,2016-08,2016-08-17T00:00:00
+1,108,103732,,Premenos Technology Corp Project,120,6,Gold,The Netherlands,Accounting,Bob Boyle,2016-08,2016-08-18T00:00:00
+1,109,101638,,Premenos Technology Corp Project,120,6,Gold,The Netherlands,Administration,Bob Boyle,2016-08,2016-08-19T00:00:00
+1,110,103911,,Premenos Technology Corp Project,180,1,Bronze,Germany,Business Consulting,Bob Boyle,2016-08,2016-08-20T00:00:00
+1,111,107119,,Premenos Technology Corp Project,120,3,Platinum,Germany,Administration,Bob Boyle,2016-08,2016-08-21T00:00:00
+1,112,106105,,Premenos Technology Corp Project,180,6,Gold,Germany,Business Consulting,Bob Boyle,2016-08,2016-08-22T00:00:00
+1,113,105944,,Premenos Technology Corp Project,225,2,Silver,Germany,Business Consulting,Bob Boyle,2016-08,2016-08-23T00:00:00
+1,114,108164,,Premenos Technology Corp Project,100,4,Silver,Germany,Business Consulting,Bob Boyle,2016-08,2016-08-24T00:00:00
+1,115,106093,,Premenos Technology Corp Project,150,12,Gold,Germany,Accounting,Bob Boyle,2016-08,2016-08-25T00:00:00
+1,116,104174,,Premenos Technology Corp Project,82.5,1,Silver,Germany,Accounting,Bob Boyle,2016-08,2016-08-26T00:00:00
+1,117,107968,,Premenos Technology Corp Project,165,3,Gold,Germany,Business Consulting,Bob Boyle,2016-08,2016-08-27T00:00:00
+1,118,107084,,Premenos Technology Corp Project,220,6,Silver,Germany,Accounting,Bob Boyle,2016-08,2016-08-28T00:00:00
+1,119,103658,,Premenos Technology Corp Project,120,2,Gold,The Netherlands,Administration,Bob Boyle,2016-09,2016-09-29T00:00:00
+1,120,105896,,Premenos Technology Corp Project,25,4,Gold,The Netherlands,Business Consulting,Bob Boyle,2016-09,2016-09-30T00:00:00
+1,121,107252,,Premenos Technology Corp Project,80,14,Platinum,The Netherlands,Business Consulting,Bob Boyle,2016-09,2016-09-01T00:00:00
+1,122,102605,,Premenos Technology Corp Project,80,1,Silver,Germany,Accounting,Carl Douglas,2016-05,2016-05-02T00:00:00
+1,123,100412,,Premenos Technology Corp Project,120,1,Gold,Germany,Accounting,Carl Douglas,2016-05,2016-05-03T00:00:00
+1,124,106182,,Premenos Technology Corp Project,80,1,Silver,Germany,Accounting,Carl Douglas,2016-05,2016-05-04T00:00:00
+1,125,105214,,Premenos Technology Corp Project,80,1,Silver,Germany,Business Consulting,Carl Douglas,2016-05,2016-05-05T00:00:00
+1,126,106344,,Premenos Technology Corp Project,80,3,Silver,Germany,Accounting,Carl Douglas,2016-05,2016-05-06T00:00:00
+1,127,108130,,Premenos Technology Corp Project,120,4,Silver,Germany,Accounting,Carl Douglas,2016-05,2016-05-07T00:00:00
+1,128,103540,,Premenos Technology Corp Project,80,4,Silver,Germany,Administration,Carl Douglas,2016-05,2016-05-08T00:00:00
+1,129,100218,,Premenos Technology Corp Project,80,1,Gold,Germany,Business Consulting,Carl Douglas,2016-05,2016-05-09T00:00:00
+1,130,100862,,Premenos Technology Corp Project,40,1,Bronze,Germany,Business Consulting,Carl Douglas,2016-05,2016-05-10T00:00:00
+1,131,104959,,Premenos Technology Corp Project,225,1,Silver,Germany,Business Consulting,Carl Douglas,2016-05,2016-05-11T00:00:00
+1,132,104857,,Premenos Technology Corp Project,75,2,Bronze,Germany,Administration,Carl Douglas,2016-05,2016-05-12T00:00:00
+1,133,103852,,Premenos Technology Corp Project,100,2,Platinum,Germany,Business Consulting,Carl Douglas,2016-05,2016-05-13T00:00:00
+1,134,104185,,Premenos Technology Corp Project,100,2,Silver,Germany,Accounting,Carl Douglas,2016-05,2016-05-14T00:00:00
+1,135,106893,,Premenos Technology Corp Project,75,2,Silver,Germany,Administration,Carl Douglas,2016-05,2016-05-15T00:00:00
+1,136,104743,,Premenos Technology Corp Project,80,2,Gold,Germany,Accounting,Carl Douglas,2016-05,2016-05-16T00:00:00
+1,137,100223,,Premenos Technology Corp Project,40,3,Silver,Germany,Business Consulting,Carl Douglas,2016-05,2016-05-17T00:00:00
+1,138,101939,,Premenos Technology Corp Project,40,3,Silver,Germany,Business Consulting,Carl Douglas,2016-05,2016-05-18T00:00:00
+1,139,107245,,Premenos Technology Corp Project,160,4,Platinum,Germany,Business Consulting,Carl Douglas,2016-05,2016-05-19T00:00:00
+1,140,100673,,Premenos Technology Corp Project,200,6,Bronze,Germany,Accounting,Carl Douglas,2016-05,2016-05-20T00:00:00
+1,141,105392,,Premenos Technology Corp Project,160,7,Silver,Germany,Business Consulting,Carl Douglas,2016-05,2016-05-21T00:00:00
+1,142,104506,,Premenos Technology Corp Project,80,7,Silver,Germany,Accounting,Carl Douglas,2016-05,2016-05-22T00:00:00
+1,143,102683,,Premenos Technology Corp Project,82.5,1,Silver,Germany,Accounting,Carl Douglas,2016-05,2016-05-23T00:00:00
+1,144,106345,,Premenos Technology Corp Project,247.5,1,Silver,Germany,Business Consulting,Carl Douglas,2016-05,2016-05-24T00:00:00
+1,145,108053,,Premenos Technology Corp Project,82.5,1,Silver,Germany,Business Consulting,Carl Douglas,2016-05,2016-05-25T00:00:00
+1,146,104345,,Premenos Technology Corp Project,165,2,Silver,Germany,Administration,Carl Douglas,2016-05,2016-05-26T00:00:00
+1,147,105390,,Premenos Technology Corp Project,110,3,Platinum,Germany,Business Consulting,Carl Douglas,2016-05,2016-05-27T00:00:00
+1,148,101730,,Premenos Technology Corp Project,165,3,Platinum,Germany,Accounting,Carl Douglas,2016-05,2016-05-28T00:00:00
+1,149,100418,,Premenos Technology Corp Project,160,3,Silver,Germany,Accounting,Carl Douglas,2016-05,2016-05-29T00:00:00
+1,150,101502,,Premenos Technology Corp Project,247.5,5,Silver,Germany,Business Consulting,Carl Douglas,2016-05,2016-05-30T00:00:00
+1,151,100415,,Premenos Technology Corp Project,110,5,Gold,Germany,Accounting,Carl Douglas,2016-05,2016-05-01T00:00:00
+1,152,103854,,Premenos Technology Corp Project,120,7,Bronze,Germany,Business Consulting,Carl Douglas,2016-05,2016-05-02T00:00:00
+1,153,103739,,Premenos Technology Corp Project,180,1,Silver,Germany,Accounting,Carl Douglas,2016-05,2016-05-03T00:00:00
+1,154,105583,,Premenos Technology Corp Project,247.5,1,Gold,Germany,Business Consulting,Carl Douglas,2016-05,2016-05-04T00:00:00
+1,155,105825,,Premenos Technology Corp Project,120,2,Gold,Germany,Accounting,Carl Douglas,2016-05,2016-05-05T00:00:00
+1,156,104299,,Premenos Technology Corp Project,180,3,Gold,Germany,Accounting,Carl Douglas,2016-05,2016-05-06T00:00:00
+1,157,102464,,Premenos Technology Corp Project,180,3,Silver,Germany,Accounting,Carl Douglas,2016-05,2016-05-07T00:00:00
+1,158,105821,,Premenos Technology Corp Project,247.5,3,Gold,Germany,Accounting,Carl Douglas,2016-05,2016-05-08T00:00:00
+1,159,105838,,Premenos Technology Corp Project,240,4,Gold,Germany,Accounting,Carl Douglas,2016-05,2016-05-09T00:00:00
+1,160,104709,,Premenos Technology Corp Project,120,6,Silver,Germany,Administration,Carl Douglas,2016-05,2016-05-10T00:00:00
+1,161,107292,,Premenos Technology Corp Project,150,6,Platinum,Germany,Accounting,Carl Douglas,2016-05,2016-05-11T00:00:00
+1,162,104948,,Premenos Technology Corp Project,240,6,Bronze,Germany,Business Consulting,Carl Douglas,2016-05,2016-05-12T00:00:00
+1,163,102056,,Premenos Technology Corp Project,160,6,Silver,Germany,Accounting,Carl Douglas,2016-05,2016-05-13T00:00:00
+1,164,100014,,Premenos Technology Corp Project,247.5,9,Gold,Germany,Accounting,Carl Douglas,2016-05,2016-05-14T00:00:00
+1,165,105512,,Premenos Technology Corp Project,240,14,Gold,Germany,Business Consulting,Carl Douglas,2016-05,2016-05-15T00:00:00
+1,166,100126,,Premenos Technology Corp Project,25,2,Silver,The Netherlands,Accounting,Carl Douglas,2016-06,2016-06-16T00:00:00
+1,167,102665,,Premenos Technology Corp Project,25,2,Platinum,The Netherlands,Administration,Carl Douglas,2016-06,2016-06-17T00:00:00
+1,168,106544,,Premenos Technology Corp Project,25,2,Silver,The Netherlands,Accounting,Carl Douglas,2016-06,2016-06-18T00:00:00
+1,169,101501,,Premenos Technology Corp Project,25,4,Gold,The Netherlands,Business Consulting,Carl Douglas,2016-06,2016-06-19T00:00:00
+1,170,100829,,Premenos Technology Corp Project,40,7,Gold,The Netherlands,Accounting,Carl Douglas,2016-06,2016-06-20T00:00:00
+1,171,105237,,Premenos Technology Corp Project,25,8,Gold,The Netherlands,Accounting,Carl Douglas,2016-06,2016-06-21T00:00:00
+1,172,100413,,Premenos Technology Corp Project,50,11,Silver,The Netherlands,Accounting,Carl Douglas,2016-06,2016-06-22T00:00:00
+1,173,101750,,Premenos Technology Corp Project,80,1,Bronze,Germany,Accounting,Carl Douglas,2016-06,2016-06-23T00:00:00
+1,174,106226,,Premenos Technology Corp Project,80,2,Silver,Germany,Accounting,Carl Douglas,2016-06,2016-06-24T00:00:00
+1,175,103036,,Premenos Technology Corp Project,80,2,Gold,Germany,Administration,Carl Douglas,2016-06,2016-06-25T00:00:00
+1,176,104871,,Premenos Technology Corp Project,120,2,Gold,Germany,Administration,Carl Douglas,2016-06,2016-06-26T00:00:00
+1,177,107225,,Premenos Technology Corp Project,80,5,Gold,Germany,Business Consulting,Carl Douglas,2016-06,2016-06-27T00:00:00
+1,178,104494,,Premenos Technology Corp Project,80,5,Gold,Germany,Accounting,Carl Douglas,2016-06,2016-06-28T00:00:00
+1,179,103209,,Premenos Technology Corp Project,80,7,Silver,Germany,Accounting,Carl Douglas,2016-06,2016-06-29T00:00:00
+1,180,105503,,Premenos Technology Corp Project,225,1,Silver,Germany,Business Consulting,Carl Douglas,2016-06,2016-06-30T00:00:00
+1,181,105502,,Premenos Technology Corp Project,75,1,Silver,Germany,Business Consulting,Carl Douglas,2016-06,2016-06-01T00:00:00
+1,182,101878,,Premenos Technology Corp Project,120,2,Gold,Germany,Business Consulting,Carl Douglas,2016-06,2016-06-02T00:00:00
+1,183,107114,,Premenos Technology Corp Project,180,2,Gold,Germany,Administration,Carl Douglas,2016-06,2016-06-03T00:00:00
+1,184,101106,,Premenos Technology Corp Project,75,3,Gold,Germany,Business Consulting,Carl Douglas,2016-06,2016-06-04T00:00:00
+1,185,100228,,Premenos Technology Corp Project,75,3,Silver,Germany,Business Consulting,Carl Douglas,2016-06,2016-06-05T00:00:00
+1,186,100423,,Premenos Technology Corp Project,200,3,Silver,Germany,Accounting,Carl Douglas,2016-06,2016-06-06T00:00:00
+1,187,101433,,Premenos Technology Corp Project,80,4,Silver,Germany,Business Consulting,Carl Douglas,2016-06,2016-06-07T00:00:00
+1,188,102259,,Premenos Technology Corp Project,80,4,Gold,Germany,Business Consulting,Carl Douglas,2016-06,2016-06-08T00:00:00
+1,189,104713,,Premenos Technology Corp Project,150,5,Silver,Germany,Accounting,Carl Douglas,2016-06,2016-06-09T00:00:00
+1,190,104500,,Premenos Technology Corp Project,160,5,Silver,Germany,Accounting,Carl Douglas,2016-06,2016-06-10T00:00:00
+1,191,100411,,Premenos Technology Corp Project,160,7,Gold,Germany,Accounting,Carl Douglas,2016-06,2016-06-11T00:00:00
+1,192,103472,,Premenos Technology Corp Project,200,11,Gold,Germany,Business Consulting,Carl Douglas,2016-06,2016-06-12T00:00:00
+1,193,103458,,Premenos Technology Corp Project,225,13,Silver,Germany,Business Consulting,Carl Douglas,2016-06,2016-06-13T00:00:00
+1,194,106534,,Premenos Technology Corp Project,225,18,Gold,Germany,Accounting,Carl Douglas,2016-06,2016-06-14T00:00:00
+1,195,103326,,Premenos Technology Corp Project,220,1,Platinum,Germany,Accounting,Carl Douglas,2016-06,2016-06-15T00:00:00
+1,196,101781,,Premenos Technology Corp Project,200,1,Silver,Germany,Accounting,Carl Douglas,2016-06,2016-06-16T00:00:00
+1,197,101930,,Premenos Technology Corp Project,82.5,1,Silver,Germany,Business Consulting,Carl Douglas,2016-06,2016-06-17T00:00:00
+1,198,102076,,Premenos Technology Corp Project,200,2,Silver,Germany,Accounting,Carl Douglas,2016-06,2016-06-18T00:00:00
+1,199,101805,,Premenos Technology Corp Project,165,2,Silver,Germany,Accounting,Carl Douglas,2016-06,2016-06-19T00:00:00
+1,200,102633,,Premenos Technology Corp Project,110,2,Bronze,Germany,Administration,Carl Douglas,2016-06,2016-06-20T00:00:00
+1,201,101173,,Premenos Technology Corp Project,165,3,Bronze,Germany,Accounting,Carl Douglas,2016-06,2016-06-21T00:00:00
+1,202,101597,,Premenos Technology Corp Project,82.5,5,Bronze,Germany,Accounting,Carl Douglas,2016-06,2016-06-22T00:00:00
+1,203,102149,,Premenos Technology Corp Project,247.5,7,Silver,Germany,Accounting,Carl Douglas,2016-06,2016-06-23T00:00:00
+1,204,106533,,Premenos Technology Corp Project,247.5,14,Gold,Germany,Accounting,Carl Douglas,2016-06,2016-06-24T00:00:00
+1,205,106878,,Premenos Technology Corp Project,150,1,Gold,Germany,Accounting,Carl Douglas,2016-06,2016-06-25T00:00:00
+1,206,102904,,Premenos Technology Corp Project,240,1,Platinum,Germany,Business Consulting,Carl Douglas,2016-06,2016-06-26T00:00:00
+1,207,106757,,Premenos Technology Corp Project,240,1,Platinum,Germany,Accounting,Carl Douglas,2016-06,2016-06-27T00:00:00
+1,208,100245,,Premenos Technology Corp Project,150,2,Platinum,Germany,Administration,Carl Douglas,2016-06,2016-06-28T00:00:00
+1,209,103680,,Premenos Technology Corp Project,120,2,Gold,Germany,Administration,Carl Douglas,2016-06,2016-06-29T00:00:00
+1,210,104502,,Premenos Technology Corp Project,240,2,Gold,Germany,Accounting,Carl Douglas,2016-06,2016-06-30T00:00:00
+1,211,107186,,Premenos Technology Corp Project,240,5,Silver,Germany,Accounting,Carl Douglas,2016-06,2016-06-01T00:00:00
+1,212,107226,,Premenos Technology Corp Project,240,9,Gold,Germany,Business Consulting,Carl Douglas,2016-06,2016-06-02T00:00:00
+1,213,100737,,Premenos Technology Corp Project,120,10,Platinum,Germany,Accounting,Carl Douglas,2016-06,2016-06-03T00:00:00
+1,214,100219,,Premenos Technology Corp Project,200,1,Gold,The Netherlands,Business Consulting,Carl Douglas,2016-07,2016-07-04T00:00:00
+1,215,104301,,Premenos Technology Corp Project,80,1,Gold,The Netherlands,Business Consulting,Carl Douglas,2016-07,2016-07-05T00:00:00
+1,216,100225,,Premenos Technology Corp Project,180,1,Gold,The Netherlands,Business Consulting,Carl Douglas,2016-07,2016-07-06T00:00:00
+1,217,103805,,Premenos Technology Corp Project,200,1,Platinum,The Netherlands,Accounting,Carl Douglas,2016-07,2016-07-07T00:00:00
+1,218,106157,,Premenos Technology Corp Project,40,1,Platinum,The Netherlands,Accounting,Carl Douglas,2016-07,2016-07-08T00:00:00
+1,219,104681,,Premenos Technology Corp Project,80,2,Gold,The Netherlands,Administration,Carl Douglas,2016-07,2016-07-09T00:00:00
+1,220,107622,,Premenos Technology Corp Project,120,2,Silver,The Netherlands,Administration,Carl Douglas,2016-07,2016-07-10T00:00:00
+1,221,100222,,Premenos Technology Corp Project,200,2,Silver,The Netherlands,Business Consulting,Carl Douglas,2016-07,2016-07-11T00:00:00
+1,222,100420,,Premenos Technology Corp Project,200,2,Gold,The Netherlands,Accounting,Carl Douglas,2016-07,2016-07-12T00:00:00
+1,223,100454,,Premenos Technology Corp Project,25,3,Platinum,The Netherlands,Accounting,Carl Douglas,2016-07,2016-07-13T00:00:00
+1,224,100818,,Premenos Technology Corp Project,25,3,Gold,The Netherlands,Accounting,Carl Douglas,2016-07,2016-07-14T00:00:00
+5,442,105661,,JP Corp Project,396,1,Silver,Germany,Accounting,Colby Morris,2016-05,2016-05-22T00:00:00
+5,443,105832,,JP Corp Project,440,1,Bronze,Germany,Accounting,Colby Morris,2016-05,2016-05-23T00:00:00
+5,444,102909,,JP Corp Project,352,1,Gold,Germany,Business Consulting,Colby Morris,2016-05,2016-05-24T00:00:00
+5,445,102729,,JP Corp Project,176,2,Gold,Germany,Administration,Colby Morris,2016-05,2016-05-25T00:00:00
+5,446,100131,,JP Corp Project,88,2,Gold,Germany,Accounting,Colby Morris,2016-05,2016-05-26T00:00:00
+5,447,105942,,JP Corp Project,220,2,Silver,Germany,Business Consulting,Colby Morris,2016-05,2016-05-27T00:00:00
+5,448,107669,,JP Corp Project,495,3,Gold,Germany,Accounting,Colby Morris,2016-05,2016-05-28T00:00:00
+5,449,101590,,JP Corp Project,55,4,Silver,Germany,Accounting,Colby Morris,2016-05,2016-05-29T00:00:00
+5,450,101613,,JP Corp Project,55,5,Gold,Germany,Administration,Colby Morris,2016-05,2016-05-30T00:00:00
+5,451,107722,,JP Corp Project,181.5,1,Silver,Germany,Accounting,Colby Morris,2016-05,2016-05-01T00:00:00
+5,452,101622,,JP Corp Project,544.5,2,Gold,Germany,Administration,Colby Morris,2016-05,2016-05-02T00:00:00
+5,453,100128,,JP Corp Project,247.5,2,Gold,Germany,Accounting,Colby Morris,2016-05,2016-05-03T00:00:00
+5,454,105547,,JP Corp Project,264,4,Silver,Germany,Business Consulting,Colby Morris,2016-05,2016-05-04T00:00:00
+5,455,103790,,JP Corp Project,484,5,Platinum,Germany,Accounting,Colby Morris,2016-05,2016-05-05T00:00:00
+5,456,100114,,JP Corp Project,352,5,Gold,Germany,Accounting,Colby Morris,2016-05,2016-05-06T00:00:00
+5,457,102173,,JP Corp Project,242,15,Gold,Germany,Accounting,Colby Morris,2016-05,2016-05-07T00:00:00
+5,458,103917,,JP Corp Project,181.5,18,Gold,Germany,Business Consulting,Colby Morris,2016-05,2016-05-08T00:00:00
+5,459,105267,,JP Corp Project,264,1,Gold,Germany,Accounting,Colby Morris,2016-05,2016-05-09T00:00:00
+5,460,101871,,JP Corp Project,528,1,Silver,Germany,Business Consulting,Colby Morris,2016-05,2016-05-10T00:00:00
+5,461,101134,,JP Corp Project,264,2,Silver,Germany,Business Consulting,Colby Morris,2016-05,2016-05-11T00:00:00
+5,462,105712,,JP Corp Project,264,2,Silver,Germany,Administration,Colby Morris,2016-05,2016-05-12T00:00:00
+5,463,100129,,JP Corp Project,396,2,Gold,Germany,Accounting,Colby Morris,2016-05,2016-05-13T00:00:00
+5,464,104873,,JP Corp Project,528,2,Gold,Germany,Administration,Colby Morris,2016-05,2016-05-14T00:00:00
+5,465,107580,,JP Corp Project,396,4,Gold,Germany,Business Consulting,Colby Morris,2016-05,2016-05-15T00:00:00
+5,466,104188,,JP Corp Project,330,4,Bronze,Germany,Accounting,Colby Morris,2016-05,2016-05-16T00:00:00
+5,467,106238,,JP Corp Project,396,6,Gold,Germany,Accounting,Colby Morris,2016-05,2016-05-17T00:00:00
+5,468,105705,,JP Corp Project,264,6,Bronze,Germany,Administration,Colby Morris,2016-05,2016-05-18T00:00:00
+5,469,107147,,JP Corp Project,528,8,Gold,Germany,Accounting,Colby Morris,2016-05,2016-05-19T00:00:00
+5,470,106012,,JP Corp Project,528,8,Silver,Germany,Business Consulting,Colby Morris,2016-05,2016-05-20T00:00:00
+5,471,100912,,JP Corp Project,264,9,Gold,Germany,Business Consulting,Colby Morris,2016-05,2016-05-21T00:00:00
+5,472,105274,,JP Corp Project,544.5,11,Bronze,Germany,Accounting,Colby Morris,2016-05,2016-05-22T00:00:00
+5,473,100110,,JP Corp Project,330,12,Bronze,Germany,Accounting,Colby Morris,2016-05,2016-05-23T00:00:00
+5,474,101419,,JP Corp Project,55,1,Platinum,The Netherlands,Business Consulting,Colby Morris,2016-06,2016-06-24T00:00:00
+5,475,100994,,JP Corp Project,55,2,Gold,The Netherlands,Administration,Colby Morris,2016-06,2016-06-25T00:00:00
+5,476,100844,,JP Corp Project,55,4,Gold,The Netherlands,Business Consulting,Colby Morris,2016-06,2016-06-26T00:00:00
+5,477,102172,,JP Corp Project,55,9,Gold,The Netherlands,Accounting,Colby Morris,2016-06,2016-06-27T00:00:00
+5,478,100870,,JP Corp Project,55,9,Platinum,The Netherlands,Business Consulting,Colby Morris,2016-06,2016-06-28T00:00:00
+5,479,101794,,JP Corp Project,55,11,Silver,The Netherlands,Accounting,Colby Morris,2016-06,2016-06-29T00:00:00
+5,480,105515,,JP Corp Project,396,1,Silver,Germany,Business Consulting,Colby Morris,2016-06,2016-06-30T00:00:00
+5,481,106578,,JP Corp Project,55,2,Gold,Germany,Accounting,Colby Morris,2016-06,2016-06-01T00:00:00
+5,482,107670,,JP Corp Project,396,3,Gold,Germany,Accounting,Colby Morris,2016-06,2016-06-02T00:00:00
+5,483,100866,,JP Corp Project,264,4,Bronze,Germany,Business Consulting,Colby Morris,2016-06,2016-06-03T00:00:00
+5,484,104119,,JP Corp Project,396,4,Bronze,Germany,Accounting,Colby Morris,2016-06,2016-06-04T00:00:00
+5,485,107348,,JP Corp Project,176,4,Bronze,Germany,Accounting,Colby Morris,2016-06,2016-06-05T00:00:00
+5,486,101744,,JP Corp Project,176,5,Silver,Germany,Accounting,Colby Morris,2016-06,2016-06-06T00:00:00
+5,487,102151,,JP Corp Project,396,5,Bronze,Germany,Accounting,Colby Morris,2016-06,2016-06-07T00:00:00
+5,488,102145,,JP Corp Project,176,8,Bronze,Germany,Accounting,Colby Morris,2016-06,2016-06-08T00:00:00
+5,489,107875,,JP Corp Project,495,2,Silver,Germany,Accounting,Colby Morris,2016-06,2016-06-09T00:00:00
+5,490,102923,,JP Corp Project,264,2,Silver,Germany,Business Consulting,Colby Morris,2016-06,2016-06-10T00:00:00
+5,491,101904,,JP Corp Project,330,4,Silver,Germany,Business Consulting,Colby Morris,2016-06,2016-06-11T00:00:00
+5,492,100745,,JP Corp Project,440,4,Gold,Germany,Accounting,Colby Morris,2016-06,2016-06-12T00:00:00
+5,493,101632,,JP Corp Project,440,4,Gold,Germany,Administration,Colby Morris,2016-06,2016-06-13T00:00:00
+5,494,104186,,JP Corp Project,264,6,Bronze,Germany,Accounting,Colby Morris,2016-06,2016-06-14T00:00:00
+5,495,101792,,JP Corp Project,440,7,Gold,Germany,Accounting,Colby Morris,2016-06,2016-06-15T00:00:00
+5,496,106788,,JP Corp Project,440,8,Silver,Germany,Accounting,Colby Morris,2016-06,2016-06-16T00:00:00
+5,497,100617,,JP Corp Project,165,8,Platinum,Germany,Administration,Colby Morris,2016-06,2016-06-17T00:00:00
+5,498,102152,,JP Corp Project,220,8,Silver,Germany,Accounting,Colby Morris,2016-06,2016-06-18T00:00:00
+5,499,101094,,JP Corp Project,330,11,Gold,Germany,Business Consulting,Colby Morris,2016-06,2016-06-19T00:00:00
+5,500,100856,,JP Corp Project,440,1,Silver,Germany,Business Consulting,Colby Morris,2016-06,2016-06-20T00:00:00
+5,501,101464,,JP Corp Project,440,2,Silver,Germany,Business Consulting,Colby Morris,2016-06,2016-06-21T00:00:00
+5,502,101004,,JP Corp Project,484,2,Silver,Germany,Administration,Colby Morris,2016-06,2016-06-22T00:00:00
+5,503,101867,,JP Corp Project,363,3,Silver,Germany,Business Consulting,Colby Morris,2016-06,2016-06-23T00:00:00
+5,504,102627,,JP Corp Project,440,3,Gold,Germany,Administration,Colby Morris,2016-06,2016-06-24T00:00:00
+5,505,105305,,JP Corp Project,544.5,5,Bronze,Germany,Accounting,Colby Morris,2016-06,2016-06-25T00:00:00
+2,562,102118,,Ayurve Inc Project,240,7,Bronze,Germany,Accounting,Helena Sprague,2016-05,2016-05-22T00:00:00
+2,563,100437,,Ayurve Inc Project,162.5,7,Silver,Germany,Accounting,Helena Sprague,2016-05,2016-05-23T00:00:00
+2,564,100344,,Ayurve Inc Project,40,1,Silver,The Netherlands,Business Consulting,Helena Sprague,2016-06,2016-06-24T00:00:00
+2,565,101514,,Ayurve Inc Project,160,2,Silver,Germany,Accounting,Helena Sprague,2016-06,2016-06-25T00:00:00
+2,566,106464,,Ayurve Inc Project,25,2,Silver,Germany,Accounting,Helena Sprague,2016-06,2016-06-26T00:00:00
+2,567,102385,,Ayurve Inc Project,160,2,Silver,Germany,Business Consulting,Helena Sprague,2016-06,2016-06-27T00:00:00
+2,568,101516,,Ayurve Inc Project,80,4,Silver,Germany,Business Consulting,Helena Sprague,2016-06,2016-06-28T00:00:00
+2,569,102389,,Ayurve Inc Project,80,6,Silver,Germany,Business Consulting,Helena Sprague,2016-06,2016-06-29T00:00:00
+2,570,103317,,Ayurve Inc Project,25,8,Silver,Germany,Business Consulting,Helena Sprague,2016-06,2016-06-30T00:00:00
+2,571,100171,,Ayurve Inc Project,80,2,Silver,Germany,Business Consulting,Helena Sprague,2016-06,2016-06-01T00:00:00
+2,572,102115,,Ayurve Inc Project,180,4,Silver,Germany,Accounting,Helena Sprague,2016-06,2016-06-02T00:00:00
+2,573,106470,,Ayurve Inc Project,125,10,Silver,Germany,Business Consulting,Helena Sprague,2016-06,2016-06-03T00:00:00
+2,574,102216,,Ayurve Inc Project,150,18,Gold,Germany,Accounting,Helena Sprague,2016-06,2016-06-04T00:00:00
+2,575,104275,,Ayurve Inc Project,110,6,Silver,Germany,Accounting,Helena Sprague,2016-06,2016-06-05T00:00:00
+2,576,100428,,Ayurve Inc Project,82.5,6,Silver,Germany,Accounting,Helena Sprague,2016-06,2016-06-06T00:00:00
+2,577,102214,,Ayurve Inc Project,247.5,12,Silver,Germany,Accounting,Helena Sprague,2016-06,2016-06-07T00:00:00
+2,578,106468,,Ayurve Inc Project,25,2,Silver,The Netherlands,Accounting,Helena Sprague,2016-07,2016-07-08T00:00:00
+2,579,106221,,Ayurve Inc Project,200,2,Gold,The Netherlands,Administration,Helena Sprague,2016-07,2016-07-09T00:00:00
+2,580,100175,,Ayurve Inc Project,200,2,Gold,The Netherlands,Accounting,Helena Sprague,2016-07,2016-07-10T00:00:00
+2,581,100341,,Ayurve Inc Project,25,2,Silver,The Netherlands,Accounting,Helena Sprague,2016-07,2016-07-11T00:00:00
+2,582,100073,,Ayurve Inc Project,200,3,Bronze,The Netherlands,Accounting,Helena Sprague,2016-07,2016-07-12T00:00:00
+2,583,100077,,Ayurve Inc Project,200,3,Bronze,The Netherlands,Accounting,Helena Sprague,2016-07,2016-07-13T00:00:00
+2,584,104423,,Ayurve Inc Project,40,4,Silver,The Netherlands,Accounting,Helena Sprague,2016-07,2016-07-14T00:00:00
+2,585,104156,,Ayurve Inc Project,160,4,Silver,The Netherlands,Accounting,Helena Sprague,2016-07,2016-07-15T00:00:00
+2,586,100172,,Ayurve Inc Project,160,2,Gold,Germany,Accounting,Helena Sprague,2016-07,2016-07-16T00:00:00
+2,587,100074,,Ayurve Inc Project,62.5,6,Silver,Germany,Accounting,Helena Sprague,2016-07,2016-07-17T00:00:00
+2,588,104429,,Ayurve Inc Project,62.5,7,Silver,Germany,Business Consulting,Helena Sprague,2016-07,2016-07-18T00:00:00
+2,589,100098,,Ayurve Inc Project,125,18,Gold,Germany,Administration,Helena Sprague,2016-07,2016-07-19T00:00:00
+2,590,100076,,Ayurve Inc Project,180,18,Platinum,Germany,Accounting,Helena Sprague,2016-07,2016-07-20T00:00:00
+2,591,106200,,Ayurve Inc Project,165,1,Bronze,Germany,Accounting,Helena Sprague,2016-07,2016-07-21T00:00:00
+2,592,100026,,Ayurve Inc Project,110,2,Silver,Germany,Accounting,Helena Sprague,2016-07,2016-07-22T00:00:00
+2,593,100057,,Ayurve Inc Project,220,8,Gold,Germany,Business Consulting,Helena Sprague,2016-07,2016-07-23T00:00:00
+2,594,100075,,Ayurve Inc Project,220,8,Silver,Germany,Accounting,Helena Sprague,2016-07,2016-07-24T00:00:00
+2,595,101278,,Ayurve Inc Project,165,12,Silver,Germany,Business Consulting,Helena Sprague,2016-07,2016-07-25T00:00:00
+2,596,100027,,Ayurve Inc Project,225,5,Silver,Germany,Accounting,Helena Sprague,2016-07,2016-07-26T00:00:00
+2,597,106198,,Ayurve Inc Project,175,20,Silver,Germany,Accounting,Helena Sprague,2016-07,2016-07-27T00:00:00
+2,598,104426,,Ayurve Inc Project,50,2,Silver,The Netherlands,Business Consulting,Helena Sprague,2016-08,2016-08-28T00:00:00
+2,599,102213,,Ayurve Inc Project,80,7,Gold,The Netherlands,Accounting,Helena Sprague,2016-08,2016-08-29T00:00:00
+2,600,103774,,Ayurve Inc Project,200,15,Silver,The Netherlands,Accounting,Helena Sprague,2016-08,2016-08-30T00:00:00
+2,601,106396,,Ayurve Inc Project,100,19,Silver,The Netherlands,Accounting,Helena Sprague,2016-08,2016-08-01T00:00:00
+2,602,104409,,Ayurve Inc Project,180,3,Platinum,Germany,Business Consulting,Helena Sprague,2016-08,2016-08-02T00:00:00
+2,603,104364,,Ayurve Inc Project,160,7,Platinum,Germany,Accounting,Helena Sprague,2016-08,2016-08-03T00:00:00
+2,604,104158,,Ayurve Inc Project,110,7,Platinum,Germany,Accounting,Helena Sprague,2016-08,2016-08-04T00:00:00
+2,605,100032,,Ayurve Inc Project,200,7,Silver,The Netherlands,Accounting,Helena Sprague,2016-09,2016-09-05T00:00:00
+2,606,102533,,Ayurve Inc Project,120,8,Silver,The Netherlands,Business Consulting,Helena Sprague,2016-09,2016-09-06T00:00:00
+2,607,105496,,Ayurve Inc Project,150,13,Silver,The Netherlands,Business Consulting,Helena Sprague,2016-09,2016-09-07T00:00:00
+2,608,106267,,Ayurve Inc Project,160,8,Bronze,Germany,Accounting,Helena Sprague,2016-09,2016-09-08T00:00:00
+3,609,104664,,Apex Graphics Project,176,1,Bronze,Germany,Accounting,James Numan,2016-05,2016-05-09T00:00:00
+3,610,100039,,Apex Graphics Project,352,2,Silver,Germany,Accounting,James Numan,2016-05,2016-05-10T00:00:00
+3,611,102447,,Apex Graphics Project,88,2,Gold,Germany,Accounting,James Numan,2016-05,2016-05-11T00:00:00
+3,612,103585,,Apex Graphics Project,176,4,Gold,Germany,Business Consulting,James Numan,2016-05,2016-05-12T00:00:00
+3,613,101178,,Apex Graphics Project,264,16,Silver,Germany,Accounting,James Numan,2016-05,2016-05-13T00:00:00
+3,614,106881,,Apex Graphics Project,495,1,Gold,Germany,Accounting,James Numan,2016-05,2016-05-14T00:00:00
+3,615,104478,,Apex Graphics Project,165,1,Gold,Germany,Accounting,James Numan,2016-05,2016-05-15T00:00:00
+3,616,105704,,Apex Graphics Project,176,2,Gold,Germany,Administration,James Numan,2016-05,2016-05-16T00:00:00
+3,617,105803,,Apex Graphics Project,220,2,Gold,Germany,Accounting,James Numan,2016-05,2016-05-17T00:00:00
+3,618,102617,,Apex Graphics Project,352,2,Gold,Germany,Accounting,James Numan,2016-05,2016-05-18T00:00:00
+3,619,104482,,Apex Graphics Project,220,3,Gold,Germany,Accounting,James Numan,2016-05,2016-05-19T00:00:00
+3,620,103112,,Apex Graphics Project,165,3,Platinum,Germany,Accounting,James Numan,2016-05,2016-05-20T00:00:00
+3,621,107850,,Apex Graphics Project,330,4,Platinum,Germany,Accounting,James Numan,2016-05,2016-05-21T00:00:00
+3,622,105298,,Apex Graphics Project,165,4,Platinum,Germany,Accounting,James Numan,2016-05,2016-05-22T00:00:00
+3,683,102053,,Apex Graphics Project,330,3,Gold,Germany,Accounting,James Numan,2016-06,2016-06-23T00:00:00
+3,684,104569,,Apex Graphics Project,176,4,Gold,Germany,Business Consulting,James Numan,2016-06,2016-06-24T00:00:00
+3,685,103037,,Apex Graphics Project,330,6,Platinum,Germany,Administration,James Numan,2016-06,2016-06-25T00:00:00
+3,686,100486,,Apex Graphics Project,495,7,Gold,Germany,Business Consulting,James Numan,2016-06,2016-06-26T00:00:00
+3,687,100591,,Apex Graphics Project,330,8,Gold,Germany,Administration,James Numan,2016-06,2016-06-27T00:00:00
+3,688,100649,,Apex Graphics Project,440,9,Gold,Germany,Accounting,James Numan,2016-06,2016-06-28T00:00:00
+3,689,101894,,Apex Graphics Project,264,15,Bronze,Germany,Business Consulting,James Numan,2016-06,2016-06-29T00:00:00
+3,690,102918,,Apex Graphics Project,330,19,Silver,Germany,Business Consulting,James Numan,2016-06,2016-06-30T00:00:00
+3,691,100199,,Apex Graphics Project,181.5,1,Gold,Germany,Business Consulting,James Numan,2016-06,2016-06-01T00:00:00
+3,692,101759,,Apex Graphics Project,242,1,Gold,Germany,Accounting,James Numan,2016-06,2016-06-02T00:00:00
+3,693,100959,,Apex Graphics Project,440,2,Bronze,Germany,Accounting,James Numan,2016-06,2016-06-03T00:00:00
+3,694,100746,,Apex Graphics Project,181.5,3,Silver,Germany,Accounting,James Numan,2016-06,2016-06-04T00:00:00
+3,695,108031,,Apex Graphics Project,242,4,Silver,Germany,Business Consulting,James Numan,2016-06,2016-06-05T00:00:00
+3,696,107693,,Apex Graphics Project,242,5,Gold,Germany,Accounting,James Numan,2016-06,2016-06-06T00:00:00
+3,697,102664,,Apex Graphics Project,440,7,Bronze,Germany,Administration,James Numan,2016-06,2016-06-07T00:00:00
+3,698,105675,,Apex Graphics Project,363,11,Bronze,Germany,Accounting,James Numan,2016-06,2016-06-08T00:00:00
+3,699,107486,,Apex Graphics Project,528,1,Bronze,Germany,Business Consulting,James Numan,2016-06,2016-06-09T00:00:00
+3,700,100742,,Apex Graphics Project,264,1,Silver,Germany,Accounting,James Numan,2016-06,2016-06-10T00:00:00
+3,701,102437,,Apex Graphics Project,330,1,Gold,Germany,Accounting,James Numan,2016-06,2016-06-11T00:00:00
+3,702,101496,,Apex Graphics Project,330,1,Gold,Germany,Business Consulting,James Numan,2016-06,2016-06-12T00:00:00
+3,703,100632,,Apex Graphics Project,330,3,Bronze,Germany,Accounting,James Numan,2016-06,2016-06-13T00:00:00
+3,704,101832,,Apex Graphics Project,544.5,3,Gold,Germany,Business Consulting,James Numan,2016-06,2016-06-14T00:00:00
+3,705,105786,,Apex Graphics Project,330,5,Platinum,Germany,Accounting,James Numan,2016-06,2016-06-15T00:00:00
+3,706,100985,,Apex Graphics Project,264,5,Platinum,Germany,Accounting,James Numan,2016-06,2016-06-16T00:00:00
+3,707,102052,,Apex Graphics Project,528,6,Gold,Germany,Accounting,James Numan,2016-06,2016-06-17T00:00:00
+3,708,103456,,Apex Graphics Project,528,8,Silver,Germany,Business Consulting,James Numan,2016-06,2016-06-18T00:00:00
+3,709,103536,,Apex Graphics Project,264,9,Gold,Germany,Business Consulting,James Numan,2016-06,2016-06-19T00:00:00
+3,710,105718,,Apex Graphics Project,264,14,Silver,Germany,Administration,James Numan,2016-06,2016-06-20T00:00:00
+3,711,102238,,Apex Graphics Project,330,17,Gold,Germany,Business Consulting,James Numan,2016-06,2016-06-21T00:00:00
+3,712,100572,,Apex Graphics Project,55,1,Silver,The Netherlands,Accounting,James Numan,2016-07,2016-07-22T00:00:00
+3,713,103743,,Apex Graphics Project,55,1,Platinum,The Netherlands,Accounting,James Numan,2016-07,2016-07-23T00:00:00
+3,714,106134,,Apex Graphics Project,176,1,Gold,The Netherlands,Accounting,James Numan,2016-07,2016-07-24T00:00:00
+3,715,100889,,Apex Graphics Project,264,1,Gold,The Netherlands,Business Consulting,James Numan,2016-07,2016-07-25T00:00:00
+3,716,100408,,Apex Graphics Project,55,3,Gold,The Netherlands,Accounting,James Numan,2016-07,2016-07-26T00:00:00
+3,717,107888,,Apex Graphics Project,176,3,Silver,The Netherlands,Accounting,James Numan,2016-07,2016-07-27T00:00:00
+3,718,106014,,Apex Graphics Project,88,4,Silver,The Netherlands,Business Consulting,James Numan,2016-07,2016-07-28T00:00:00
+3,719,100396,,Apex Graphics Project,55,4,Gold,The Netherlands,Accounting,James Numan,2016-07,2016-07-29T00:00:00
+3,720,100405,,Apex Graphics Project,352,4,Silver,The Netherlands,Accounting,James Numan,2016-07,2016-07-30T00:00:00
+3,721,100768,,Apex Graphics Project,440,6,Bronze,The Netherlands,Administration,James Numan,2016-07,2016-07-01T00:00:00
+3,722,105498,,Apex Graphics Project,440,8,Platinum,The Netherlands,Business Consulting,James Numan,2016-07,2016-07-02T00:00:00
+3,723,106952,,Apex Graphics Project,440,11,Gold,The Netherlands,Accounting,James Numan,2016-07,2016-07-03T00:00:00
+3,724,106097,,Apex Graphics Project,176,1,Silver,Germany,Accounting,James Numan,2016-07,2016-07-04T00:00:00
+3,725,103537,,Apex Graphics Project,176,1,Gold,Germany,Business Consulting,James Numan,2016-07,2016-07-05T00:00:00
+3,726,104278,,Apex Graphics Project,137.5,1,Gold,Germany,Accounting,James Numan,2016-07,2016-07-06T00:00:00
+3,727,100574,,Apex Graphics Project,176,2,Gold,Germany,Accounting,James Numan,2016-07,2016-07-07T00:00:00
+3,728,106219,,Apex Graphics Project,176,2,Gold,Germany,Accounting,James Numan,2016-07,2016-07-08T00:00:00
+3,729,106745,,Apex Graphics Project,137.5,2,Silver,Germany,Administration,James Numan,2016-07,2016-07-09T00:00:00
+3,730,105197,,Apex Graphics Project,352,5,Platinum,Germany,Business Consulting,James Numan,2016-07,2016-07-10T00:00:00
+3,731,107754,,Apex Graphics Project,396,6,Gold,Germany,Administration,James Numan,2016-07,2016-07-11T00:00:00
+3,732,100979,,Apex Graphics Project,220,1,Gold,Germany,Accounting,James Numan,2016-07,2016-07-12T00:00:00
+3,733,100485,,Apex Graphics Project,165,3,Gold,Germany,Accounting,James Numan,2016-07,2016-07-13T00:00:00
+3,734,100594,,Apex Graphics Project,495,6,Gold,Germany,Administration,James Numan,2016-07,2016-07-14T00:00:00
+3,735,100402,,Apex Graphics Project,363,4,Gold,Germany,Accounting,James Numan,2016-07,2016-07-15T00:00:00
+3,736,100401,,Apex Graphics Project,528,2,Gold,Germany,Accounting,James Numan,2016-07,2016-07-16T00:00:00
+3,737,103673,,Apex Graphics Project,528,2,Gold,Germany,Administration,James Numan,2016-07,2016-07-17T00:00:00
+3,738,106366,,Apex Graphics Project,544.5,3,Bronze,Germany,Administration,James Numan,2016-07,2016-07-18T00:00:00
+3,739,104283,,Apex Graphics Project,330,7,Gold,Germany,Business Consulting,James Numan,2016-07,2016-07-19T00:00:00
+3,740,104479,,Apex Graphics Project,176,1,Gold,The Netherlands,Accounting,James Numan,2016-08,2016-08-20T00:00:00
+3,741,107700,,Apex Graphics Project,82.5,1,Silver,The Netherlands,Accounting,James Numan,2016-08,2016-08-21T00:00:00
+3,742,105513,,Apex Graphics Project,110,5,Gold,The Netherlands,Business Consulting,James Numan,2016-08,2016-08-22T00:00:00
+3,623,105908,,Apex Graphics Project,440,4,Bronze,Germany,Business Consulting,James Numan,2016-05,2016-05-23T00:00:00
+3,624,101609,,Apex Graphics Project,264,5,Silver,Germany,Administration,James Numan,2016-05,2016-05-24T00:00:00
+3,625,103453,,Apex Graphics Project,352,5,Platinum,Germany,Business Consulting,James Numan,2016-05,2016-05-25T00:00:00
+3,626,104568,,Apex Graphics Project,440,6,Gold,Germany,Business Consulting,James Numan,2016-05,2016-05-26T00:00:00
+3,627,107195,,Apex Graphics Project,495,8,Silver,Germany,Business Consulting,James Numan,2016-05,2016-05-27T00:00:00
+3,628,104526,,Apex Graphics Project,165,9,Gold,Germany,Accounting,James Numan,2016-05,2016-05-28T00:00:00
+3,629,100997,,Apex Graphics Project,396,13,Silver,Germany,Administration,James Numan,2016-05,2016-05-29T00:00:00
+3,630,107964,,Apex Graphics Project,181.5,1,Bronze,Germany,Business Consulting,James Numan,2016-05,2016-05-30T00:00:00
+3,631,101493,,Apex Graphics Project,242,1,Silver,Germany,Business Consulting,James Numan,2016-05,2016-05-01T00:00:00
+3,632,105287,,Apex Graphics Project,363,2,Silver,Germany,Accounting,James Numan,2016-05,2016-05-02T00:00:00
+3,633,100203,,Apex Graphics Project,544.5,2,Gold,Germany,Business Consulting,James Numan,2016-05,2016-05-03T00:00:00
+3,634,103251,,Apex Graphics Project,242,2,Bronze,Germany,Accounting,James Numan,2016-05,2016-05-04T00:00:00
+3,635,103145,,Apex Graphics Project,242,2,Gold,Germany,Business Consulting,James Numan,2016-05,2016-05-05T00:00:00
+3,636,100400,,Apex Graphics Project,242,3,Gold,Germany,Accounting,James Numan,2016-05,2016-05-06T00:00:00
+3,637,102270,,Apex Graphics Project,181.5,3,Silver,Germany,Administration,James Numan,2016-05,2016-05-07T00:00:00
+3,638,107410,,Apex Graphics Project,247.5,4,Platinum,Germany,Accounting,James Numan,2016-05,2016-05-08T00:00:00
+3,639,104351,,Apex Graphics Project,247.5,6,Gold,Germany,Accounting,James Numan,2016-05,2016-05-09T00:00:00
+3,640,101831,,Apex Graphics Project,484,7,Silver,Germany,Business Consulting,James Numan,2016-05,2016-05-10T00:00:00
+3,641,104848,,Apex Graphics Project,247.5,9,Platinum,Germany,Accounting,James Numan,2016-05,2016-05-11T00:00:00
+3,642,101414,,Apex Graphics Project,181.5,11,Silver,Germany,Business Consulting,James Numan,2016-05,2016-05-12T00:00:00
+3,643,106636,,Apex Graphics Project,264,1,Platinum,Germany,Accounting,James Numan,2016-05,2016-05-13T00:00:00
+3,644,102679,,Apex Graphics Project,396,1,Silver,Germany,Accounting,James Numan,2016-05,2016-05-14T00:00:00
+3,645,100201,,Apex Graphics Project,396,1,Gold,Germany,Business Consulting,James Numan,2016-05,2016-05-15T00:00:00
+3,646,107571,,Apex Graphics Project,396,1,Bronze,Germany,Business Consulting,James Numan,2016-05,2016-05-16T00:00:00
+3,647,104329,,Apex Graphics Project,352,2,Platinum,Germany,Administration,James Numan,2016-05,2016-05-17T00:00:00
+3,648,106524,,Apex Graphics Project,264,3,Gold,Germany,Accounting,James Numan,2016-05,2016-05-18T00:00:00
+3,649,104483,,Apex Graphics Project,264,3,Gold,Germany,Accounting,James Numan,2016-05,2016-05-19T00:00:00
+3,650,106526,,Apex Graphics Project,396,4,Gold,Germany,Accounting,James Numan,2016-05,2016-05-20T00:00:00
+3,651,100404,,Apex Graphics Project,528,4,Silver,Germany,Accounting,James Numan,2016-05,2016-05-21T00:00:00
+3,652,102990,,Apex Graphics Project,544.5,5,Gold,Germany,Accounting,James Numan,2016-05,2016-05-22T00:00:00
+3,653,102714,,Apex Graphics Project,352,5,Bronze,Germany,Accounting,James Numan,2016-05,2016-05-23T00:00:00
+3,654,107975,,Apex Graphics Project,264,5,Silver,Germany,Business Consulting,James Numan,2016-05,2016-05-24T00:00:00
+3,655,107125,,Apex Graphics Project,352,7,Gold,Germany,Administration,James Numan,2016-05,2016-05-25T00:00:00
+3,656,100012,,Apex Graphics Project,544.5,7,Gold,Germany,Accounting,James Numan,2016-05,2016-05-26T00:00:00
+3,657,104488,,Apex Graphics Project,264,8,Gold,Germany,Accounting,James Numan,2016-05,2016-05-27T00:00:00
+3,658,100398,,Apex Graphics Project,396,12,Gold,Germany,Accounting,James Numan,2016-05,2016-05-28T00:00:00
+3,659,107183,,Apex Graphics Project,55,3,Gold,The Netherlands,Accounting,James Numan,2016-06,2016-06-29T00:00:00
+3,660,101912,,Apex Graphics Project,55,10,Gold,The Netherlands,Business Consulting,James Numan,2016-06,2016-06-30T00:00:00
+3,661,102237,,Apex Graphics Project,55,12,Gold,The Netherlands,Accounting,James Numan,2016-06,2016-06-01T00:00:00
+3,662,106873,,Apex Graphics Project,352,1,Silver,Germany,Accounting,James Numan,2016-06,2016-06-02T00:00:00
+3,663,106530,,Apex Graphics Project,55,2,Gold,Germany,Business Consulting,James Numan,2016-06,2016-06-03T00:00:00
+3,664,107941,,Apex Graphics Project,176,2,Silver,Germany,Business Consulting,James Numan,2016-06,2016-06-04T00:00:00
+3,665,101848,,Apex Graphics Project,352,2,Silver,Germany,Business Consulting,James Numan,2016-06,2016-06-05T00:00:00
+3,666,106608,,Apex Graphics Project,264,3,Gold,Germany,Accounting,James Numan,2016-06,2016-06-06T00:00:00
+3,667,100202,,Apex Graphics Project,176,3,Gold,Germany,Accounting,James Numan,2016-06,2016-06-07T00:00:00
+3,668,103894,,Apex Graphics Project,352,3,Bronze,Germany,Business Consulting,James Numan,2016-06,2016-06-08T00:00:00
+3,669,103503,,Apex Graphics Project,176,4,Platinum,Germany,Business Consulting,James Numan,2016-06,2016-06-09T00:00:00
+3,670,100196,,Apex Graphics Project,264,4,Gold,Germany,Accounting,James Numan,2016-06,2016-06-10T00:00:00
+3,671,102449,,Apex Graphics Project,176,5,Gold,Germany,Accounting,James Numan,2016-06,2016-06-11T00:00:00
+3,672,101492,,Apex Graphics Project,176,5,Gold,Germany,Administration,James Numan,2016-06,2016-06-12T00:00:00
+3,673,101417,,Apex Graphics Project,264,6,Silver,Germany,Business Consulting,James Numan,2016-06,2016-06-13T00:00:00
+3,674,100593,,Apex Graphics Project,352,11,Silver,Germany,Administration,James Numan,2016-06,2016-06-14T00:00:00
+3,675,105578,,Apex Graphics Project,396,15,Gold,Germany,Business Consulting,James Numan,2016-06,2016-06-15T00:00:00
+3,676,104279,,Apex Graphics Project,330,1,Gold,Germany,Business Consulting,James Numan,2016-06,2016-06-16T00:00:00
+3,677,100851,,Apex Graphics Project,220,1,Platinum,Germany,Business Consulting,James Numan,2016-06,2016-06-17T00:00:00
+3,678,102241,,Apex Graphics Project,264,1,Gold,Germany,Business Consulting,James Numan,2016-06,2016-06-18T00:00:00
+3,679,107005,,Apex Graphics Project,352,2,Silver,Germany,Business Consulting,James Numan,2016-06,2016-06-19T00:00:00
+3,680,101699,,Apex Graphics Project,440,2,Silver,Germany,Accounting,James Numan,2016-06,2016-06-20T00:00:00
+3,681,100198,,Apex Graphics Project,264,2,Gold,Germany,Business Consulting,James Numan,2016-06,2016-06-21T00:00:00
+3,682,101495,,Apex Graphics Project,396,2,Gold,Germany,Business Consulting,James Numan,2016-06,2016-06-22T00:00:00
+5,506,101725,,JP Corp Project,242,8,Gold,Germany,Accounting,Colby Morris,2016-06,2016-06-26T00:00:00
+5,507,106252,,JP Corp Project,181.5,8,Gold,Germany,Accounting,Colby Morris,2016-06,2016-06-27T00:00:00
+5,508,103192,,JP Corp Project,264,1,Silver,Germany,Accounting,Colby Morris,2016-06,2016-06-28T00:00:00
+5,509,102965,,JP Corp Project,264,1,Gold,Germany,Business Consulting,Colby Morris,2016-06,2016-06-29T00:00:00
+5,510,101423,,JP Corp Project,528,2,Silver,Germany,Business Consulting,Colby Morris,2016-06,2016-06-30T00:00:00
+5,511,102147,,JP Corp Project,528,9,Bronze,Germany,Accounting,Colby Morris,2016-06,2016-06-01T00:00:00
+1,512,101293,,Premenos Technology Corp Project,544.5,9,Platinum,Germany,Accounting,Colby Morris,2016-06,2016-06-02T00:00:00
+1,513,106253,,Premenos Technology Corp Project,528,10,Bronze,Germany,Accounting,Colby Morris,2016-06,2016-06-03T00:00:00
+1,514,102415,,Premenos Technology Corp Project,544.5,10,Gold,Germany,Accounting,Colby Morris,2016-06,2016-06-04T00:00:00
+1,515,101353,,Premenos Technology Corp Project,528,11,Gold,Germany,Business Consulting,Colby Morris,2016-06,2016-06-05T00:00:00
+1,516,101297,,Premenos Technology Corp Project,440,1,Silver,The Netherlands,Business Consulting,Colby Morris,2016-07,2016-07-06T00:00:00
+1,517,106236,,Premenos Technology Corp Project,55,1,Gold,The Netherlands,Accounting,Colby Morris,2016-07,2016-07-07T00:00:00
+1,518,103061,,Premenos Technology Corp Project,55,3,Bronze,The Netherlands,Accounting,Colby Morris,2016-07,2016-07-08T00:00:00
+1,519,100263,,Premenos Technology Corp Project,176,3,Silver,The Netherlands,Administration,Colby Morris,2016-07,2016-07-09T00:00:00
+1,520,104211,,Premenos Technology Corp Project,440,4,Gold,The Netherlands,Accounting,Colby Morris,2016-07,2016-07-10T00:00:00
+1,521,105427,,Premenos Technology Corp Project,352,4,Gold,The Netherlands,Business Consulting,Colby Morris,2016-07,2016-07-11T00:00:00
+1,522,100113,,Premenos Technology Corp Project,396,5,Gold,The Netherlands,Accounting,Colby Morris,2016-07,2016-07-12T00:00:00
+1,523,104213,,Premenos Technology Corp Project,440,6,Gold,The Netherlands,Accounting,Colby Morris,2016-07,2016-07-13T00:00:00
+1,524,104187,,Premenos Technology Corp Project,440,7,Platinum,The Netherlands,Accounting,Colby Morris,2016-07,2016-07-14T00:00:00
+1,525,100587,,Premenos Technology Corp Project,264,4,Silver,Germany,Administration,Colby Morris,2016-07,2016-07-15T00:00:00
+1,526,100037,,Premenos Technology Corp Project,352,16,Bronze,Germany,Accounting,Colby Morris,2016-07,2016-07-16T00:00:00
+1,527,107962,,Premenos Technology Corp Project,495,1,Silver,Germany,Business Consulting,Colby Morris,2016-07,2016-07-17T00:00:00
+1,528,105894,,Premenos Technology Corp Project,440,1,Gold,Germany,Business Consulting,Colby Morris,2016-07,2016-07-18T00:00:00
+1,529,106099,,Premenos Technology Corp Project,330,1,Silver,Germany,Business Consulting,Colby Morris,2016-07,2016-07-19T00:00:00
+1,530,100105,,Premenos Technology Corp Project,330,1,Platinum,Germany,Accounting,Colby Morris,2016-07,2016-07-20T00:00:00
+1,531,107250,,Premenos Technology Corp Project,165,2,Gold,Germany,Business Consulting,Colby Morris,2016-07,2016-07-21T00:00:00
+1,532,107553,,Premenos Technology Corp Project,544.5,2,Gold,Germany,Business Consulting,Colby Morris,2016-07,2016-07-22T00:00:00
+1,533,101144,,Premenos Technology Corp Project,181.5,3,Platinum,Germany,Business Consulting,Colby Morris,2016-07,2016-07-23T00:00:00
+1,534,100752,,Premenos Technology Corp Project,544.5,4,Gold,Germany,Accounting,Colby Morris,2016-07,2016-07-24T00:00:00
+1,535,100104,,Premenos Technology Corp Project,484,8,Bronze,Germany,Accounting,Colby Morris,2016-07,2016-07-25T00:00:00
+1,536,104214,,Premenos Technology Corp Project,544.5,9,Gold,Germany,Accounting,Colby Morris,2016-07,2016-07-26T00:00:00
+1,537,107289,,Premenos Technology Corp Project,396,1,Platinum,The Netherlands,Accounting,Colby Morris,2016-08,2016-08-27T00:00:00
+1,538,103492,,Premenos Technology Corp Project,352,1,Platinum,The Netherlands,Business Consulting,Colby Morris,2016-08,2016-08-28T00:00:00
+1,539,102902,,Premenos Technology Corp Project,396,1,Gold,The Netherlands,Business Consulting,Colby Morris,2016-08,2016-08-29T00:00:00
+1,540,107668,,Premenos Technology Corp Project,110,2,Gold,The Netherlands,Business Consulting,Colby Morris,2016-08,2016-08-30T00:00:00
+1,541,105937,,Premenos Technology Corp Project,55,4,Bronze,The Netherlands,Business Consulting,Colby Morris,2016-08,2016-08-01T00:00:00
+1,542,107841,,Premenos Technology Corp Project,165,4,Gold,The Netherlands,Accounting,Colby Morris,2016-08,2016-08-02T00:00:00
+1,543,108152,,Premenos Technology Corp Project,264,4,Gold,The Netherlands,Business Consulting,Colby Morris,2016-08,2016-08-03T00:00:00
+1,544,107757,,Premenos Technology Corp Project,440,3,Gold,Germany,Administration,Colby Morris,2016-08,2016-08-04T00:00:00
+1,545,105975,,Premenos Technology Corp Project,220,9,Gold,Germany,Business Consulting,Colby Morris,2016-08,2016-08-05T00:00:00
+1,546,106728,,Premenos Technology Corp Project,544.5,5,Silver,Germany,Administration,Colby Morris,2016-08,2016-08-06T00:00:00
+1,547,104537,,Premenos Technology Corp Project,192.5,11,Gold,Germany,Accounting,Colby Morris,2016-08,2016-08-07T00:00:00
+1,548,105500,,Premenos Technology Corp Project,544.5,1,Silver,Germany,Business Consulting,Colby Morris,2016-08,2016-08-08T00:00:00
+1,549,107997,,Premenos Technology Corp Project,528,4,Gold,Germany,Business Consulting,Colby Morris,2016-08,2016-08-09T00:00:00
+1,550,104603,,Premenos Technology Corp Project,88,1,Gold,The Netherlands,Accounting,Colby Morris,2016-09,2016-09-10T00:00:00
+2,551,103555,,Ayurve Inc Project,75,4,Silver,Germany,Accounting,Helena Sprague,2016-05,2016-05-11T00:00:00
+2,552,100347,,Ayurve Inc Project,80,5,Silver,Germany,Business Consulting,Helena Sprague,2016-05,2016-05-12T00:00:00
+2,553,105358,,Ayurve Inc Project,200,5,Silver,Germany,Business Consulting,Helena Sprague,2016-05,2016-05-13T00:00:00
+2,554,100451,,Ayurve Inc Project,80,7,Gold,Germany,Accounting,Helena Sprague,2016-05,2016-05-14T00:00:00
+2,555,106465,,Ayurve Inc Project,150,8,Silver,Germany,Business Consulting,Helena Sprague,2016-05,2016-05-15T00:00:00
+2,556,104256,,Ayurve Inc Project,82.5,2,Platinum,Germany,Accounting,Helena Sprague,2016-05,2016-05-16T00:00:00
+2,557,102493,,Ayurve Inc Project,150,9,Gold,Germany,Business Consulting,Helena Sprague,2016-05,2016-05-17T00:00:00
+2,558,105598,,Ayurve Inc Project,120,17,Silver,Germany,Business Consulting,Helena Sprague,2016-05,2016-05-18T00:00:00
+2,559,100193,,Ayurve Inc Project,180,2,Silver,Germany,Accounting,Helena Sprague,2016-05,2016-05-19T00:00:00
+2,560,104109,,Ayurve Inc Project,240,3,Silver,Germany,Accounting,Helena Sprague,2016-05,2016-05-20T00:00:00
+2,561,100348,,Ayurve Inc Project,120,3,Silver,Germany,Business Consulting,Helena Sprague,2016-05,2016-05-21T00:00:00
+4,279,107204,,Rite Pharmaceuticals Inc Project,352,2,Silver,Germany,Business Consulting,Cindy Cochran,2016-05,2016-05-09T00:00:00
+4,280,101120,,Rite Pharmaceuticals Inc Project,176,2,Silver,Germany,Business Consulting,Cindy Cochran,2016-05,2016-05-10T00:00:00
+4,281,100020,,Rite Pharmaceuticals Inc Project,264,2,Platinum,Germany,Accounting,Cindy Cochran,2016-05,2016-05-11T00:00:00
+4,282,104250,,Rite Pharmaceuticals Inc Project,352,3,Platinum,Germany,Accounting,Cindy Cochran,2016-05,2016-05-12T00:00:00
+4,283,100321,,Rite Pharmaceuticals Inc Project,264,3,Platinum,Germany,Accounting,Cindy Cochran,2016-05,2016-05-13T00:00:00
+4,284,103102,,Rite Pharmaceuticals Inc Project,220,3,Gold,Germany,Accounting,Cindy Cochran,2016-05,2016-05-14T00:00:00
+4,285,104103,,Rite Pharmaceuticals Inc Project,330,4,Silver,Germany,Accounting,Cindy Cochran,2016-05,2016-05-15T00:00:00
+4,286,102670,,Rite Pharmaceuticals Inc Project,55,5,Gold,Germany,Accounting,Cindy Cochran,2016-05,2016-05-16T00:00:00
+4,287,100336,,Rite Pharmaceuticals Inc Project,176,6,Silver,Germany,Business Consulting,Cindy Cochran,2016-05,2016-05-17T00:00:00
+4,288,104153,,Rite Pharmaceuticals Inc Project,330,6,Platinum,Germany,Accounting,Cindy Cochran,2016-05,2016-05-18T00:00:00
+4,289,105535,,Rite Pharmaceuticals Inc Project,330,10,Bronze,Germany,Business Consulting,Cindy Cochran,2016-05,2016-05-19T00:00:00
+4,290,106310,,Rite Pharmaceuticals Inc Project,264,1,Gold,Germany,Accounting,Cindy Cochran,2016-05,2016-05-20T00:00:00
+4,291,106449,,Rite Pharmaceuticals Inc Project,544.5,1,Silver,Germany,Business Consulting,Cindy Cochran,2016-05,2016-05-21T00:00:00
+4,292,106375,,Rite Pharmaceuticals Inc Project,544.5,2,Platinum,Germany,Administration,Cindy Cochran,2016-05,2016-05-22T00:00:00
+4,293,101074,,Rite Pharmaceuticals Inc Project,247.5,2,Bronze,Germany,Business Consulting,Cindy Cochran,2016-05,2016-05-23T00:00:00
+4,294,100063,,Rite Pharmaceuticals Inc Project,352,2,Gold,Germany,Accounting,Cindy Cochran,2016-05,2016-05-24T00:00:00
+4,295,100324,,Rite Pharmaceuticals Inc Project,242,2,Platinum,Germany,Business Consulting,Cindy Cochran,2016-05,2016-05-25T00:00:00
+4,296,100460,,Rite Pharmaceuticals Inc Project,352,2,Bronze,Germany,Accounting,Cindy Cochran,2016-05,2016-05-26T00:00:00
+4,297,100426,,Rite Pharmaceuticals Inc Project,363,2,Silver,Germany,Accounting,Cindy Cochran,2016-05,2016-05-27T00:00:00
+4,298,108002,,Rite Pharmaceuticals Inc Project,544.5,3,Gold,Germany,Business Consulting,Cindy Cochran,2016-05,2016-05-28T00:00:00
+4,299,100018,,Rite Pharmaceuticals Inc Project,242,3,Platinum,Germany,Accounting,Cindy Cochran,2016-05,2016-05-29T00:00:00
+4,300,105290,,Rite Pharmaceuticals Inc Project,247.5,3,Silver,Germany,Accounting,Cindy Cochran,2016-05,2016-05-30T00:00:00
+4,301,104352,,Rite Pharmaceuticals Inc Project,363,3,Gold,Germany,Accounting,Cindy Cochran,2016-05,2016-05-01T00:00:00
+4,302,106455,,Rite Pharmaceuticals Inc Project,363,3,Platinum,Germany,Administration,Cindy Cochran,2016-05,2016-05-02T00:00:00
+4,303,100022,,Rite Pharmaceuticals Inc Project,544.5,3,Silver,Germany,Accounting,Cindy Cochran,2016-05,2016-05-03T00:00:00
+4,304,108145,,Rite Pharmaceuticals Inc Project,363,4,Gold,Germany,Business Consulting,Cindy Cochran,2016-05,2016-05-04T00:00:00
+4,305,106937,,Rite Pharmaceuticals Inc Project,264,5,Platinum,Germany,Accounting,Cindy Cochran,2016-05,2016-05-05T00:00:00
+4,306,106726,,Rite Pharmaceuticals Inc Project,544.5,6,Gold,Germany,Administration,Cindy Cochran,2016-05,2016-05-06T00:00:00
+4,307,103151,,Rite Pharmaceuticals Inc Project,484,7,Silver,Germany,Business Consulting,Cindy Cochran,2016-05,2016-05-07T00:00:00
+4,308,105074,,Rite Pharmaceuticals Inc Project,264,8,Gold,Germany,Administration,Cindy Cochran,2016-05,2016-05-08T00:00:00
+4,309,100338,,Rite Pharmaceuticals Inc Project,247.5,9,Platinum,Germany,Business Consulting,Cindy Cochran,2016-05,2016-05-09T00:00:00
+4,310,100935,,Rite Pharmaceuticals Inc Project,352,1,Gold,Germany,Accounting,Cindy Cochran,2016-05,2016-05-10T00:00:00
+4,311,103723,,Rite Pharmaceuticals Inc Project,528,1,Silver,Germany,Accounting,Cindy Cochran,2016-05,2016-05-11T00:00:00
+4,312,107223,,Rite Pharmaceuticals Inc Project,396,1,Platinum,Germany,Business Consulting,Cindy Cochran,2016-05,2016-05-12T00:00:00
+4,313,100240,,Rite Pharmaceuticals Inc Project,528,2,Bronze,Germany,Administration,Cindy Cochran,2016-05,2016-05-13T00:00:00
+4,314,102476,,Rite Pharmaceuticals Inc Project,352,2,Gold,Germany,Accounting,Cindy Cochran,2016-05,2016-05-14T00:00:00
+4,315,102973,,Rite Pharmaceuticals Inc Project,264,2,Gold,Germany,Accounting,Cindy Cochran,2016-05,2016-05-15T00:00:00
+4,316,100069,,Rite Pharmaceuticals Inc Project,528,2,Platinum,Germany,Accounting,Cindy Cochran,2016-05,2016-05-16T00:00:00
+4,317,100157,,Rite Pharmaceuticals Inc Project,396,2,Silver,Germany,Administration,Cindy Cochran,2016-05,2016-05-17T00:00:00
+4,318,102059,,Rite Pharmaceuticals Inc Project,330,2,Platinum,Germany,Accounting,Cindy Cochran,2016-05,2016-05-18T00:00:00
+4,319,106461,,Rite Pharmaceuticals Inc Project,264,2,Platinum,Germany,Business Consulting,Cindy Cochran,2016-05,2016-05-19T00:00:00
+4,320,101606,,Rite Pharmaceuticals Inc Project,352,3,Silver,Germany,Administration,Cindy Cochran,2016-05,2016-05-20T00:00:00
+4,321,100164,,Rite Pharmaceuticals Inc Project,396,3,Gold,Germany,Accounting,Cindy Cochran,2016-05,2016-05-21T00:00:00
+4,322,107959,,Rite Pharmaceuticals Inc Project,330,3,Silver,Germany,Business Consulting,Cindy Cochran,2016-05,2016-05-22T00:00:00
+4,323,107659,,Rite Pharmaceuticals Inc Project,396,4,Bronze,Germany,Administration,Cindy Cochran,2016-05,2016-05-23T00:00:00
+4,324,104763,,Rite Pharmaceuticals Inc Project,544.5,5,Silver,Germany,Accounting,Cindy Cochran,2016-05,2016-05-24T00:00:00
+4,325,103466,,Rite Pharmaceuticals Inc Project,264,5,Bronze,Germany,Business Consulting,Cindy Cochran,2016-05,2016-05-25T00:00:00
+4,326,100361,,Rite Pharmaceuticals Inc Project,396,6,Gold,Germany,Accounting,Cindy Cochran,2016-05,2016-05-26T00:00:00
+4,327,106176,,Rite Pharmaceuticals Inc Project,396,6,Bronze,Germany,Accounting,Cindy Cochran,2016-05,2016-05-27T00:00:00
+4,328,100583,,Rite Pharmaceuticals Inc Project,528,7,Bronze,Germany,Accounting,Cindy Cochran,2016-05,2016-05-28T00:00:00
+4,329,104149,,Rite Pharmaceuticals Inc Project,352,7,Bronze,Germany,Accounting,Cindy Cochran,2016-05,2016-05-29T00:00:00
+4,330,102369,,Rite Pharmaceuticals Inc Project,396,8,Platinum,Germany,Business Consulting,Cindy Cochran,2016-05,2016-05-30T00:00:00
+4,331,106434,,Rite Pharmaceuticals Inc Project,396,9,Platinum,Germany,Business Consulting,Cindy Cochran,2016-05,2016-05-01T00:00:00
+4,332,104577,,Rite Pharmaceuticals Inc Project,330,10,Gold,Germany,Business Consulting,Cindy Cochran,2016-05,2016-05-02T00:00:00
+4,333,100330,,Rite Pharmaceuticals Inc Project,396,11,Platinum,Germany,Business Consulting,Cindy Cochran,2016-05,2016-05-03T00:00:00
+4,334,105216,,Rite Pharmaceuticals Inc Project,55,2,Silver,The Netherlands,Business Consulting,Cindy Cochran,2016-06,2016-06-04T00:00:00
+4,335,100524,,Rite Pharmaceuticals Inc Project,55,2,Platinum,The Netherlands,Accounting,Cindy Cochran,2016-06,2016-06-05T00:00:00
+4,336,102064,,Rite Pharmaceuticals Inc Project,55,3,Platinum,The Netherlands,Accounting,Cindy Cochran,2016-06,2016-06-06T00:00:00
+4,337,102093,,Rite Pharmaceuticals Inc Project,55,4,Bronze,The Netherlands,Accounting,Cindy Cochran,2016-06,2016-06-07T00:00:00
+4,338,100268,,Rite Pharmaceuticals Inc Project,55,6,Gold,The Netherlands,Accounting,Cindy Cochran,2016-06,2016-06-08T00:00:00
+4,339,105245,,Rite Pharmaceuticals Inc Project,396,1,Gold,Germany,Accounting,Cindy Cochran,2016-06,2016-06-09T00:00:00
+4,340,100928,,Rite Pharmaceuticals Inc Project,176,1,Silver,Germany,Accounting,Cindy Cochran,2016-06,2016-06-10T00:00:00
+4,341,102065,,Rite Pharmaceuticals Inc Project,352,4,Silver,Germany,Accounting,Cindy Cochran,2016-06,2016-06-11T00:00:00
+4,342,100968,,Rite Pharmaceuticals Inc Project,176,7,Silver,Germany,Accounting,Cindy Cochran,2016-06,2016-06-12T00:00:00
+4,343,101783,,Rite Pharmaceuticals Inc Project,396,1,Platinum,Germany,Accounting,Cindy Cochran,2016-06,2016-06-13T00:00:00
+4,344,102062,,Rite Pharmaceuticals Inc Project,352,2,Silver,Germany,Accounting,Cindy Cochran,2016-06,2016-06-14T00:00:00
+4,345,104102,,Rite Pharmaceuticals Inc Project,220,3,Platinum,Germany,Accounting,Cindy Cochran,2016-06,2016-06-15T00:00:00
+4,346,101716,,Rite Pharmaceuticals Inc Project,440,3,Gold,Germany,Accounting,Cindy Cochran,2016-06,2016-06-16T00:00:00
+4,347,106257,,Rite Pharmaceuticals Inc Project,176,5,Platinum,Germany,Accounting,Cindy Cochran,2016-06,2016-06-17T00:00:00
+4,348,102175,,Rite Pharmaceuticals Inc Project,440,5,Platinum,Germany,Accounting,Cindy Cochran,2016-06,2016-06-18T00:00:00
+4,349,102376,,Rite Pharmaceuticals Inc Project,176,7,Platinum,Germany,Administration,Cindy Cochran,2016-06,2016-06-19T00:00:00
+4,350,105166,,Rite Pharmaceuticals Inc Project,440,7,Silver,Germany,Business Consulting,Cindy Cochran,2016-06,2016-06-20T00:00:00
+4,351,101833,,Rite Pharmaceuticals Inc Project,440,7,Silver,Germany,Business Consulting,Cindy Cochran,2016-06,2016-06-21T00:00:00
+4,352,107433,,Rite Pharmaceuticals Inc Project,264,8,Silver,Germany,Business Consulting,Cindy Cochran,2016-06,2016-06-22T00:00:00
+4,353,102359,,Rite Pharmaceuticals Inc Project,544.5,1,Platinum,Germany,Business Consulting,Cindy Cochran,2016-06,2016-06-23T00:00:00
+4,354,102060,,Rite Pharmaceuticals Inc Project,440,1,Silver,Germany,Accounting,Cindy Cochran,2016-06,2016-06-24T00:00:00
+4,355,100519,,Rite Pharmaceuticals Inc Project,544.5,1,Silver,Germany,Accounting,Cindy Cochran,2016-06,2016-06-25T00:00:00
+4,356,101563,,Rite Pharmaceuticals Inc Project,440,1,Gold,Germany,Accounting,Cindy Cochran,2016-06,2016-06-26T00:00:00
+4,357,102361,,Rite Pharmaceuticals Inc Project,181.5,2,Platinum,Germany,Business Consulting,Cindy Cochran,2016-06,2016-06-27T00:00:00
+4,358,102380,,Rite Pharmaceuticals Inc Project,181.5,3,Platinum,Germany,Accounting,Cindy Cochran,2016-06,2016-06-28T00:00:00
+4,359,105182,,Rite Pharmaceuticals Inc Project,242,3,Platinum,Germany,Business Consulting,Cindy Cochran,2016-06,2016-06-29T00:00:00
+4,360,105036,,Rite Pharmaceuticals Inc Project,484,4,Bronze,Germany,Accounting,Cindy Cochran,2016-06,2016-06-30T00:00:00
+4,361,100977,,Rite Pharmaceuticals Inc Project,440,4,Silver,Germany,Accounting,Cindy Cochran,2016-06,2016-06-01T00:00:00
+4,362,100874,,Rite Pharmaceuticals Inc Project,363,4,Bronze,Germany,Business Consulting,Cindy Cochran,2016-06,2016-06-02T00:00:00
+4,363,107977,,Rite Pharmaceuticals Inc Project,484,4,Gold,Germany,Business Consulting,Cindy Cochran,2016-06,2016-06-03T00:00:00
+4,364,100849,,Rite Pharmaceuticals Inc Project,484,5,Platinum,Germany,Business Consulting,Cindy Cochran,2016-06,2016-06-04T00:00:00
+4,365,100427,,Rite Pharmaceuticals Inc Project,484,10,Platinum,Germany,Administration,Cindy Cochran,2016-06,2016-06-05T00:00:00
+4,366,102377,,Rite Pharmaceuticals Inc Project,528,1,Silver,Germany,Business Consulting,Cindy Cochran,2016-06,2016-06-06T00:00:00
+4,367,107475,,Rite Pharmaceuticals Inc Project,330,1,Gold,Germany,Business Consulting,Cindy Cochran,2016-06,2016-06-07T00:00:00
+4,368,104404,,Rite Pharmaceuticals Inc Project,528,1,Platinum,Germany,Accounting,Cindy Cochran,2016-06,2016-06-08T00:00:00
+4,369,102370,,Rite Pharmaceuticals Inc Project,528,3,Platinum,Germany,Accounting,Cindy Cochran,2016-06,2016-06-09T00:00:00
+4,370,102063,,Rite Pharmaceuticals Inc Project,330,4,Silver,Germany,Accounting,Cindy Cochran,2016-06,2016-06-10T00:00:00
+4,371,103513,,Rite Pharmaceuticals Inc Project,330,4,Gold,Germany,Business Consulting,Cindy Cochran,2016-06,2016-06-11T00:00:00
+4,372,102081,,Rite Pharmaceuticals Inc Project,264,5,Silver,Germany,Accounting,Cindy Cochran,2016-06,2016-06-12T00:00:00
+4,373,100333,,Rite Pharmaceuticals Inc Project,264,6,Silver,Germany,Accounting,Cindy Cochran,2016-06,2016-06-13T00:00:00
+4,374,101916,,Rite Pharmaceuticals Inc Project,544.5,7,Gold,Germany,Business Consulting,Cindy Cochran,2016-06,2016-06-14T00:00:00
+4,375,105215,,Rite Pharmaceuticals Inc Project,544.5,8,Silver,Germany,Business Consulting,Cindy Cochran,2016-06,2016-06-15T00:00:00
+4,376,105434,,Rite Pharmaceuticals Inc Project,544.5,8,Gold,Germany,Business Consulting,Cindy Cochran,2016-06,2016-06-16T00:00:00
+4,377,106548,,Rite Pharmaceuticals Inc Project,528,9,Platinum,Germany,Accounting,Cindy Cochran,2016-06,2016-06-17T00:00:00
+4,378,100993,,Rite Pharmaceuticals Inc Project,544.5,10,Silver,Germany,Administration,Cindy Cochran,2016-06,2016-06-18T00:00:00
+4,379,100755,,Rite Pharmaceuticals Inc Project,176,1,Gold,The Netherlands,Accounting,Cindy Cochran,2016-07,2016-07-19T00:00:00
+4,380,105965,,Rite Pharmaceuticals Inc Project,440,1,Platinum,The Netherlands,Business Consulting,Cindy Cochran,2016-07,2016-07-20T00:00:00
+4,381,104101,,Rite Pharmaceuticals Inc Project,55,1,Silver,The Netherlands,Accounting,Cindy Cochran,2016-07,2016-07-21T00:00:00
+4,382,100322,,Rite Pharmaceuticals Inc Project,440,1,Platinum,The Netherlands,Accounting,Cindy Cochran,2016-07,2016-07-22T00:00:00
+4,383,106192,,Rite Pharmaceuticals Inc Project,55,1,Platinum,The Netherlands,Accounting,Cindy Cochran,2016-07,2016-07-23T00:00:00
+4,384,100053,,Rite Pharmaceuticals Inc Project,440,1,Bronze,The Netherlands,Accounting,Cindy Cochran,2016-07,2016-07-24T00:00:00
+4,385,100071,,Rite Pharmaceuticals Inc Project,55,1,Platinum,The Netherlands,Accounting,Cindy Cochran,2016-07,2016-07-25T00:00:00
+4,386,100328,,Rite Pharmaceuticals Inc Project,55,2,Platinum,The Netherlands,Business Consulting,Cindy Cochran,2016-07,2016-07-26T00:00:00
+4,387,100072,,Rite Pharmaceuticals Inc Project,88,2,Gold,The Netherlands,Accounting,Cindy Cochran,2016-07,2016-07-27T00:00:00
+4,388,100021,,Rite Pharmaceuticals Inc Project,55,2,Silver,The Netherlands,Accounting,Cindy Cochran,2016-07,2016-07-28T00:00:00
+4,389,100425,,Rite Pharmaceuticals Inc Project,88,2,Platinum,The Netherlands,Accounting,Cindy Cochran,2016-07,2016-07-29T00:00:00
+4,390,100017,,Rite Pharmaceuticals Inc Project,55,2,Platinum,The Netherlands,Accounting,Cindy Cochran,2016-07,2016-07-30T00:00:00
+4,391,107307,,Rite Pharmaceuticals Inc Project,55,3,Silver,The Netherlands,Accounting,Cindy Cochran,2016-07,2016-07-01T00:00:00
+4,392,100581,,Rite Pharmaceuticals Inc Project,352,3,Gold,The Netherlands,Accounting,Cindy Cochran,2016-07,2016-07-02T00:00:00
+4,393,104152,,Rite Pharmaceuticals Inc Project,55,3,Gold,The Netherlands,Accounting,Cindy Cochran,2016-07,2016-07-03T00:00:00
+4,394,100271,,Rite Pharmaceuticals Inc Project,352,3,Gold,The Netherlands,Accounting,Cindy Cochran,2016-07,2016-07-04T00:00:00
+4,395,104077,,Rite Pharmaceuticals Inc Project,440,3,Bronze,The Netherlands,Business Consulting,Cindy Cochran,2016-07,2016-07-05T00:00:00
+4,396,108072,,Rite Pharmaceuticals Inc Project,55,4,Platinum,The Netherlands,Business Consulting,Cindy Cochran,2016-07,2016-07-06T00:00:00
+4,397,100320,,Rite Pharmaceuticals Inc Project,440,4,Platinum,The Netherlands,Business Consulting,Cindy Cochran,2016-07,2016-07-07T00:00:00
+4,398,106143,,Rite Pharmaceuticals Inc Project,440,4,Platinum,The Netherlands,Accounting,Cindy Cochran,2016-07,2016-07-08T00:00:00
+4,399,100339,,Rite Pharmaceuticals Inc Project,55,4,Platinum,The Netherlands,Accounting,Cindy Cochran,2016-07,2016-07-09T00:00:00
+4,400,106358,,Rite Pharmaceuticals Inc Project,396,5,Silver,The Netherlands,Administration,Cindy Cochran,2016-07,2016-07-10T00:00:00
+4,401,106142,,Rite Pharmaceuticals Inc Project,440,5,Silver,The Netherlands,Accounting,Cindy Cochran,2016-07,2016-07-11T00:00:00
+4,402,100023,,Rite Pharmaceuticals Inc Project,440,5,Platinum,The Netherlands,Accounting,Cindy Cochran,2016-07,2016-07-12T00:00:00
+4,403,104055,,Rite Pharmaceuticals Inc Project,440,8,Gold,The Netherlands,Accounting,Cindy Cochran,2016-07,2016-07-13T00:00:00
+4,404,100508,,Rite Pharmaceuticals Inc Project,440,10,Gold,The Netherlands,Accounting,Cindy Cochran,2016-07,2016-07-14T00:00:00
+4,405,105238,,Rite Pharmaceuticals Inc Project,396,1,Silver,Germany,Accounting,Cindy Cochran,2016-07,2016-07-15T00:00:00
+4,406,100319,,Rite Pharmaceuticals Inc Project,137.5,1,Silver,Germany,Accounting,Cindy Cochran,2016-07,2016-07-16T00:00:00
+4,407,106169,,Rite Pharmaceuticals Inc Project,396,5,Platinum,Germany,Accounting,Cindy Cochran,2016-07,2016-07-17T00:00:00
+4,408,100134,,Rite Pharmaceuticals Inc Project,137.5,5,Platinum,Germany,Accounting,Cindy Cochran,2016-07,2016-07-18T00:00:00
+4,409,100334,,Rite Pharmaceuticals Inc Project,176,12,Silver,Germany,Business Consulting,Cindy Cochran,2016-07,2016-07-19T00:00:00
+4,410,107120,,Rite Pharmaceuticals Inc Project,220,4,Silver,Germany,Administration,Cindy Cochran,2016-07,2016-07-20T00:00:00
+4,411,103879,,Rite Pharmaceuticals Inc Project,495,4,Silver,Germany,Business Consulting,Cindy Cochran,2016-07,2016-07-21T00:00:00
+4,412,106647,,Rite Pharmaceuticals Inc Project,440,6,Platinum,Germany,Accounting,Cindy Cochran,2016-07,2016-07-22T00:00:00
+4,413,100318,,Rite Pharmaceuticals Inc Project,220,7,Platinum,Germany,Business Consulting,Cindy Cochran,2016-07,2016-07-23T00:00:00
+4,414,100332,,Rite Pharmaceuticals Inc Project,242,3,Platinum,Germany,Administration,Cindy Cochran,2016-07,2016-07-24T00:00:00
+4,415,106806,,Rite Pharmaceuticals Inc Project,181.5,3,Silver,Germany,Accounting,Cindy Cochran,2016-07,2016-07-25T00:00:00
+4,416,104104,,Rite Pharmaceuticals Inc Project,363,6,Silver,Germany,Accounting,Cindy Cochran,2016-07,2016-07-26T00:00:00
+4,417,106444,,Rite Pharmaceuticals Inc Project,544.5,1,Platinum,Germany,Accounting,Cindy Cochran,2016-07,2016-07-27T00:00:00
+4,418,100024,,Rite Pharmaceuticals Inc Project,528,1,Silver,Germany,Accounting,Cindy Cochran,2016-07,2016-07-28T00:00:00
+4,419,107587,,Rite Pharmaceuticals Inc Project,330,2,Silver,Germany,Business Consulting,Cindy Cochran,2016-07,2016-07-29T00:00:00
+4,420,106463,,Rite Pharmaceuticals Inc Project,528,2,Platinum,Germany,Accounting,Cindy Cochran,2016-07,2016-07-30T00:00:00
+4,421,101346,,Rite Pharmaceuticals Inc Project,264,1,Silver,The Netherlands,Business Consulting,Cindy Cochran,2016-08,2016-08-01T00:00:00
+4,422,106145,,Rite Pharmaceuticals Inc Project,55,1,Silver,The Netherlands,Accounting,Cindy Cochran,2016-08,2016-08-02T00:00:00
+4,423,105027,,Rite Pharmaceuticals Inc Project,440,2,Gold,The Netherlands,Accounting,Cindy Cochran,2016-08,2016-08-03T00:00:00
+4,424,107755,,Rite Pharmaceuticals Inc Project,55,2,Gold,The Netherlands,Administration,Cindy Cochran,2016-08,2016-08-04T00:00:00
+4,425,104938,,Rite Pharmaceuticals Inc Project,165,9,Silver,The Netherlands,Business Consulting,Cindy Cochran,2016-08,2016-08-05T00:00:00
+4,426,105149,,Rite Pharmaceuticals Inc Project,440,9,Platinum,The Netherlands,Accounting,Cindy Cochran,2016-08,2016-08-06T00:00:00
+4,427,100331,,Rite Pharmaceuticals Inc Project,176,9,Platinum,The Netherlands,Administration,Cindy Cochran,2016-08,2016-08-07T00:00:00
+4,428,104454,,Rite Pharmaceuticals Inc Project,544.5,1,Silver,Germany,Business Consulting,Cindy Cochran,2016-08,2016-08-08T00:00:00
+4,429,104252,,Rite Pharmaceuticals Inc Project,181.5,5,Platinum,Germany,Accounting,Cindy Cochran,2016-08,2016-08-09T00:00:00
+4,430,107713,,Rite Pharmaceuticals Inc Project,242,9,Silver,Germany,Accounting,Cindy Cochran,2016-08,2016-08-10T00:00:00
+4,431,103681,,Rite Pharmaceuticals Inc Project,528,2,Gold,Germany,Administration,Cindy Cochran,2016-08,2016-08-11T00:00:00
+4,432,102362,,Rite Pharmaceuticals Inc Project,396,2,Platinum,The Netherlands,Accounting,Cindy Cochran,2016-09,2016-09-12T00:00:00
+4,433,102110,,Rite Pharmaceuticals Inc Project,55,4,Platinum,The Netherlands,Accounting,Cindy Cochran,2016-09,2016-09-13T00:00:00
+4,434,100170,,Rite Pharmaceuticals Inc Project,440,4,Platinum,The Netherlands,Accounting,Cindy Cochran,2016-09,2016-09-14T00:00:00
+4,435,103620,,Rite Pharmaceuticals Inc Project,396,1,Silver,Germany,Accounting,Cindy Cochran,2016-09,2016-09-15T00:00:00
+5,436,104733,,JP Corp Project,88,1,Silver,Germany,Accounting,Colby Morris,2016-05,2016-05-16T00:00:00
+5,437,104900,,JP Corp Project,176,1,Gold,Germany,Accounting,Colby Morris,2016-05,2016-05-17T00:00:00
+5,438,100112,,JP Corp Project,264,2,Bronze,Germany,Accounting,Colby Morris,2016-05,2016-05-18T00:00:00
+5,439,101474,,JP Corp Project,176,4,Silver,Germany,Business Consulting,Colby Morris,2016-05,2016-05-19T00:00:00
+5,440,102999,,JP Corp Project,330,1,Silver,Germany,Accounting,Colby Morris,2016-05,2016-05-20T00:00:00
+5,441,101588,,JP Corp Project,176,1,Gold,Germany,Accounting,Colby Morris,2016-05,2016-05-21T00:00:00
+2,976,101608,,Ayurve Inc Project,247.5,3,Platinum,Germany,Administration,Kristen Garrity,2016-06,2016-06-16T00:00:00
+2,977,100562,,Ayurve Inc Project,110,3,Silver,Germany,Accounting,Kristen Garrity,2016-06,2016-06-17T00:00:00
+2,978,107902,,Ayurve Inc Project,82.5,4,Gold,Germany,Accounting,Kristen Garrity,2016-06,2016-06-18T00:00:00
+2,979,107217,,Ayurve Inc Project,220,4,Gold,Germany,Business Consulting,Kristen Garrity,2016-06,2016-06-19T00:00:00
+2,980,101771,,Ayurve Inc Project,247.5,5,Platinum,Germany,Accounting,Kristen Garrity,2016-06,2016-06-20T00:00:00
+2,981,105002,,Ayurve Inc Project,220,6,Gold,Germany,Business Consulting,Kristen Garrity,2016-06,2016-06-21T00:00:00
+2,982,100206,,Ayurve Inc Project,165,7,Silver,Germany,Business Consulting,Kristen Garrity,2016-06,2016-06-22T00:00:00
+2,983,104204,,Ayurve Inc Project,220,7,Silver,Germany,Accounting,Kristen Garrity,2016-06,2016-06-23T00:00:00
+3,984,100210,,Apex Graphics Project,150,1,Platinum,Germany,Business Consulting,Kristen Garrity,2016-06,2016-06-24T00:00:00
+3,985,104290,,Apex Graphics Project,240,2,Platinum,Germany,Accounting,Kristen Garrity,2016-06,2016-06-25T00:00:00
+3,986,105639,,Apex Graphics Project,150,2,Silver,Germany,Business Consulting,Kristen Garrity,2016-06,2016-06-26T00:00:00
+3,987,101684,,Apex Graphics Project,240,3,Bronze,Germany,Accounting,Kristen Garrity,2016-06,2016-06-27T00:00:00
+3,988,106333,,Apex Graphics Project,150,3,Platinum,Germany,Business Consulting,Kristen Garrity,2016-06,2016-06-28T00:00:00
+3,989,106009,,Apex Graphics Project,240,4,Gold,Germany,Business Consulting,Kristen Garrity,2016-06,2016-06-29T00:00:00
+3,990,103951,,Apex Graphics Project,150,4,Silver,Germany,Business Consulting,Kristen Garrity,2016-06,2016-06-30T00:00:00
+3,991,101776,,Apex Graphics Project,240,5,Silver,Germany,Accounting,Kristen Garrity,2016-06,2016-06-01T00:00:00
+3,992,105638,,Apex Graphics Project,247.5,5,Silver,Germany,Business Consulting,Kristen Garrity,2016-06,2016-06-02T00:00:00
+3,993,106618,,Apex Graphics Project,120,9,Gold,Germany,Business Consulting,Kristen Garrity,2016-06,2016-06-03T00:00:00
+3,994,100915,,Apex Graphics Project,247.5,13,Gold,Germany,Business Consulting,Kristen Garrity,2016-06,2016-06-04T00:00:00
+4,995,100644,,Rite Pharmaceuticals Inc Project,25,1,Platinum,The Netherlands,Accounting,Kristen Garrity,2016-07,2016-07-05T00:00:00
+4,996,100642,,Rite Pharmaceuticals Inc Project,40,1,Silver,The Netherlands,Accounting,Kristen Garrity,2016-07,2016-07-06T00:00:00
+4,997,100285,,Rite Pharmaceuticals Inc Project,80,1,Platinum,The Netherlands,Accounting,Kristen Garrity,2016-07,2016-07-07T00:00:00
+4,998,103747,,Rite Pharmaceuticals Inc Project,80,1,Silver,The Netherlands,Accounting,Kristen Garrity,2016-07,2016-07-08T00:00:00
+4,999,100121,,Rite Pharmaceuticals Inc Project,200,1,Silver,The Netherlands,Accounting,Kristen Garrity,2016-07,2016-07-09T00:00:00
+4,1000,100123,,Rite Pharmaceuticals Inc Project,40,1,Silver,The Netherlands,Accounting,Kristen Garrity,2016-07,2016-07-10T00:00:00
+4,1001,104293,,Rite Pharmaceuticals Inc Project,200,2,Platinum,The Netherlands,Business Consulting,Kristen Garrity,2016-07,2016-07-11T00:00:00
+4,1002,104206,,Rite Pharmaceuticals Inc Project,200,3,Platinum,The Netherlands,Accounting,Kristen Garrity,2016-07,2016-07-12T00:00:00
+4,1003,100297,,Rite Pharmaceuticals Inc Project,120,3,Platinum,The Netherlands,Accounting,Kristen Garrity,2016-07,2016-07-13T00:00:00
+4,1004,100975,,Rite Pharmaceuticals Inc Project,40,4,Silver,The Netherlands,Accounting,Kristen Garrity,2016-07,2016-07-14T00:00:00
+4,1005,103867,,Rite Pharmaceuticals Inc Project,200,4,Bronze,The Netherlands,Business Consulting,Kristen Garrity,2016-07,2016-07-15T00:00:00
+4,1006,103257,,Rite Pharmaceuticals Inc Project,25,5,Platinum,The Netherlands,Accounting,Kristen Garrity,2016-07,2016-07-16T00:00:00
+4,1007,100289,,Rite Pharmaceuticals Inc Project,40,5,Platinum,The Netherlands,Accounting,Kristen Garrity,2016-07,2016-07-17T00:00:00
+4,1008,105013,,Rite Pharmaceuticals Inc Project,180,5,Platinum,The Netherlands,Accounting,Kristen Garrity,2016-07,2016-07-18T00:00:00
+4,1009,103600,,Rite Pharmaceuticals Inc Project,40,5,Platinum,The Netherlands,Business Consulting,Kristen Garrity,2016-07,2016-07-19T00:00:00
+4,1010,100208,,Rite Pharmaceuticals Inc Project,25,6,Platinum,The Netherlands,Accounting,Kristen Garrity,2016-07,2016-07-20T00:00:00
+4,1011,100288,,Rite Pharmaceuticals Inc Project,200,7,Silver,The Netherlands,Accounting,Kristen Garrity,2016-07,2016-07-21T00:00:00
+4,1012,100578,,Rite Pharmaceuticals Inc Project,25,7,Gold,The Netherlands,Accounting,Kristen Garrity,2016-07,2016-07-22T00:00:00
+4,1013,100293,,Rite Pharmaceuticals Inc Project,180,7,Silver,The Netherlands,Accounting,Kristen Garrity,2016-07,2016-07-23T00:00:00
+1,1014,104376,,Premenos Technology Corp Project,62.5,3,Platinum,Germany,Accounting,Kristen Garrity,2016-07,2016-07-24T00:00:00
+1,1015,106976,,Premenos Technology Corp Project,62.5,3,Bronze,Germany,Business Consulting,Kristen Garrity,2016-07,2016-07-25T00:00:00
+1,1016,105665,,Premenos Technology Corp Project,80,4,Silver,Germany,Accounting,Kristen Garrity,2016-07,2016-07-26T00:00:00
+1,1017,100213,,Premenos Technology Corp Project,160,7,Silver,Germany,Business Consulting,Kristen Garrity,2016-07,2016-07-27T00:00:00
+1,1018,100250,,Premenos Technology Corp Project,80,9,Gold,Germany,Administration,Kristen Garrity,2016-07,2016-07-28T00:00:00
+1,1019,105437,,Premenos Technology Corp Project,112.5,15,Platinum,Germany,Business Consulting,Kristen Garrity,2016-07,2016-07-29T00:00:00
+5,1020,100653,,JP Corp Project,100,1,Silver,Germany,Accounting,Kristen Garrity,2016-07,2016-07-30T00:00:00
+5,1021,100880,,JP Corp Project,75,1,Gold,Germany,Business Consulting,Kristen Garrity,2016-07,2016-07-01T00:00:00
+5,1022,104839,,JP Corp Project,100,1,Gold,Germany,Accounting,Kristen Garrity,2016-07,2016-07-02T00:00:00
+5,1023,106089,,JP Corp Project,100,1,Silver,Germany,Accounting,Kristen Garrity,2016-07,2016-07-03T00:00:00
+5,1024,106800,,JP Corp Project,150,1,Platinum,Germany,Accounting,Kristen Garrity,2016-07,2016-07-04T00:00:00
+5,1025,105066,,JP Corp Project,225,3,Gold,Germany,Accounting,Kristen Garrity,2016-07,2016-07-05T00:00:00
+5,1026,104288,,JP Corp Project,225,4,Silver,Germany,Business Consulting,Kristen Garrity,2016-07,2016-07-06T00:00:00
+5,1027,105798,,JP Corp Project,225,5,Gold,Germany,Accounting,Kristen Garrity,2016-07,2016-07-07T00:00:00
+2,1028,105711,,Ayurve Inc Project,110,2,Silver,Germany,Administration,Kristen Garrity,2016-07,2016-07-08T00:00:00
+3,1029,107001,,Apex Graphics Project,240,3,Silver,Germany,Business Consulting,Kristen Garrity,2016-07,2016-07-09T00:00:00
+3,1030,103508,,Apex Graphics Project,150,3,Bronze,Germany,Business Consulting,Kristen Garrity,2016-07,2016-07-10T00:00:00
+3,1031,105679,,Apex Graphics Project,240,3,Bronze,Germany,Accounting,Kristen Garrity,2016-07,2016-07-11T00:00:00
+5,1090,102500,,JP Corp Project,107.5,2,Bronze,Germany,Administration,Lisa Jones,2016-05,2016-05-10T00:00:00
+5,1091,106483,,JP Corp Project,102.5,2,Gold,Germany,Business Consulting,Lisa Jones,2016-05,2016-05-11T00:00:00
+5,1092,101528,,JP Corp Project,80,2,Platinum,Germany,Administration,Lisa Jones,2016-05,2016-05-12T00:00:00
+5,1093,102501,,JP Corp Project,100,2,Bronze,Germany,Accounting,Lisa Jones,2016-05,2016-05-13T00:00:00
+5,1094,102043,,JP Corp Project,120,2,Gold,Germany,Accounting,Lisa Jones,2016-05,2016-05-14T00:00:00
+5,1095,102103,,JP Corp Project,115,2,Bronze,Germany,Administration,Lisa Jones,2016-05,2016-05-15T00:00:00
+5,1096,100298,,JP Corp Project,40,2,Gold,Germany,Accounting,Lisa Jones,2016-05,2016-05-16T00:00:00
+5,1097,102350,,JP Corp Project,25,3,Silver,Germany,Business Consulting,Lisa Jones,2016-05,2016-05-17T00:00:00
+5,1098,103405,,JP Corp Project,100,3,Bronze,Germany,Business Consulting,Lisa Jones,2016-05,2016-05-18T00:00:00
+5,1099,102794,,JP Corp Project,80,3,Bronze,Germany,Accounting,Lisa Jones,2016-05,2016-05-19T00:00:00
+5,1100,101379,,JP Corp Project,120,3,Gold,Germany,Business Consulting,Lisa Jones,2016-05,2016-05-20T00:00:00
+5,1101,105613,,JP Corp Project,87.5,3,Platinum,Germany,Administration,Lisa Jones,2016-05,2016-05-21T00:00:00
+5,1102,106493,,JP Corp Project,132.5,4,Gold,Germany,Business Consulting,Lisa Jones,2016-05,2016-05-22T00:00:00
+5,1103,104941,,JP Corp Project,80,4,Silver,Germany,Business Consulting,Lisa Jones,2016-05,2016-05-23T00:00:00
+5,1104,105643,,JP Corp Project,115,4,Silver,Germany,Accounting,Lisa Jones,2016-05,2016-05-24T00:00:00
+5,1105,107053,,JP Corp Project,107.5,5,Platinum,Germany,Accounting,Lisa Jones,2016-05,2016-05-25T00:00:00
+5,1106,100058,,JP Corp Project,87.5,5,Silver,Germany,Accounting,Lisa Jones,2016-05,2016-05-26T00:00:00
+5,1107,100160,,JP Corp Project,75,5,Platinum,Germany,Accounting,Lisa Jones,2016-05,2016-05-27T00:00:00
+5,1108,102347,,JP Corp Project,100,5,Gold,Germany,Accounting,Lisa Jones,2016-05,2016-05-28T00:00:00
+5,1109,100432,,JP Corp Project,87.5,6,Bronze,Germany,Business Consulting,Lisa Jones,2016-05,2016-05-29T00:00:00
+5,1110,104518,,JP Corp Project,75,6,Silver,Germany,Business Consulting,Lisa Jones,2016-05,2016-05-30T00:00:00
+5,1111,104333,,JP Corp Project,75,6,Silver,Germany,Administration,Lisa Jones,2016-05,2016-05-01T00:00:00
+5,1112,100185,,JP Corp Project,100,6,Silver,Germany,Business Consulting,Lisa Jones,2016-05,2016-05-02T00:00:00
+5,1113,101523,,JP Corp Project,80,6,Silver,Germany,Administration,Lisa Jones,2016-05,2016-05-03T00:00:00
+5,1114,101933,,JP Corp Project,87.5,7,Gold,Germany,Business Consulting,Lisa Jones,2016-05,2016-05-04T00:00:00
+5,1115,107651,,JP Corp Project,50,8,Platinum,Germany,Administration,Lisa Jones,2016-05,2016-05-05T00:00:00
+5,1116,100589,,JP Corp Project,50,10,Platinum,Germany,Administration,Lisa Jones,2016-05,2016-05-06T00:00:00
+5,1117,105999,,JP Corp Project,62.5,1,Gold,Germany,Business Consulting,Lisa Jones,2016-05,2016-05-07T00:00:00
+5,1118,100306,,JP Corp Project,117.5,1,Gold,Germany,Accounting,Lisa Jones,2016-05,2016-05-08T00:00:00
+5,1119,101567,,JP Corp Project,117.5,2,Gold,Germany,Accounting,Lisa Jones,2016-05,2016-05-09T00:00:00
+5,1120,106492,,JP Corp Project,120,4,Gold,Germany,Accounting,Lisa Jones,2016-05,2016-05-10T00:00:00
+5,1121,102400,,JP Corp Project,117.5,5,Gold,Germany,Accounting,Lisa Jones,2016-05,2016-05-11T00:00:00
+5,1122,102339,,JP Corp Project,125,1,Gold,Germany,Accounting,Lisa Jones,2016-05,2016-05-12T00:00:00
+5,1123,106439,,JP Corp Project,125,2,Silver,Germany,Administration,Lisa Jones,2016-05,2016-05-13T00:00:00
+5,1124,105460,,JP Corp Project,125,2,Gold,Germany,Administration,Lisa Jones,2016-05,2016-05-14T00:00:00
+5,1125,105463,,JP Corp Project,125,3,Gold,Germany,Administration,Lisa Jones,2016-05,2016-05-15T00:00:00
+5,1126,103349,,JP Corp Project,125,4,Platinum,Germany,Business Consulting,Lisa Jones,2016-05,2016-05-16T00:00:00
+5,1127,106708,,JP Corp Project,125,7,Silver,Germany,Administration,Lisa Jones,2016-05,2016-05-17T00:00:00
+5,1128,101354,,JP Corp Project,25,2,Silver,The Netherlands,Business Consulting,Lisa Jones,2016-06,2016-06-18T00:00:00
+5,1129,100436,,JP Corp Project,25,4,Silver,The Netherlands,Business Consulting,Lisa Jones,2016-06,2016-06-19T00:00:00
+5,1130,105516,,JP Corp Project,25,5,Gold,The Netherlands,Business Consulting,Lisa Jones,2016-06,2016-06-20T00:00:00
+5,1131,102398,,JP Corp Project,25,5,Gold,The Netherlands,Accounting,Lisa Jones,2016-06,2016-06-21T00:00:00
+5,1132,100364,,JP Corp Project,40,6,Silver,The Netherlands,Business Consulting,Lisa Jones,2016-06,2016-06-22T00:00:00
+5,1133,100189,,JP Corp Project,25,7,Bronze,The Netherlands,Business Consulting,Lisa Jones,2016-06,2016-06-23T00:00:00
+5,1134,105158,,JP Corp Project,80,1,Gold,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-24T00:00:00
+5,1135,102479,,JP Corp Project,80,1,Silver,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-25T00:00:00
+5,1136,101689,,JP Corp Project,80,1,Bronze,Germany,Accounting,Lisa Jones,2016-06,2016-06-26T00:00:00
+5,1137,106421,,JP Corp Project,180,1,Gold,Germany,Accounting,Lisa Jones,2016-06,2016-06-27T00:00:00
+5,1138,103233,,JP Corp Project,160,2,Bronze,Germany,Accounting,Lisa Jones,2016-06,2016-06-28T00:00:00
+5,1139,101865,,JP Corp Project,180,3,Silver,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-29T00:00:00
+5,1140,105784,,JP Corp Project,25,4,Platinum,Germany,Accounting,Lisa Jones,2016-06,2016-06-30T00:00:00
+5,1141,103818,,JP Corp Project,160,4,Gold,Germany,Accounting,Lisa Jones,2016-06,2016-06-01T00:00:00
+5,1142,104768,,JP Corp Project,25,5,Silver,Germany,Administration,Lisa Jones,2016-06,2016-06-02T00:00:00
+5,1143,102409,,JP Corp Project,160,5,Platinum,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-03T00:00:00
+5,1144,101312,,JP Corp Project,120,5,Gold,Germany,Administration,Lisa Jones,2016-06,2016-06-04T00:00:00
+5,1145,102230,,JP Corp Project,80,6,Bronze,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-05T00:00:00
+5,1146,100248,,JP Corp Project,120,8,Silver,Germany,Administration,Lisa Jones,2016-06,2016-06-06T00:00:00
+5,1147,106556,,JP Corp Project,80,14,Gold,Germany,Accounting,Lisa Jones,2016-06,2016-06-07T00:00:00
+5,1148,104449,,JP Corp Project,120,1,Platinum,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-08T00:00:00
+5,1149,100839,,JP Corp Project,100,1,Bronze,Germany,Accounting,Lisa Jones,2016-06,2016-06-09T00:00:00
+5,1150,103495,,JP Corp Project,102.5,1,Gold,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-10T00:00:00
+5,1151,102200,,JP Corp Project,120,1,Platinum,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-11T00:00:00
+5,1152,101837,,JP Corp Project,115,1,Gold,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-12T00:00:00
+5,1153,101861,,JP Corp Project,100,2,Silver,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-13T00:00:00
+3,1032,104368,,Apex Graphics Project,247.5,5,Platinum,Germany,Accounting,Kristen Garrity,2016-07,2016-07-12T00:00:00
+3,1033,104205,,Apex Graphics Project,247.5,6,Silver,Germany,Accounting,Kristen Garrity,2016-07,2016-07-13T00:00:00
+3,1034,107988,,Apex Graphics Project,240,9,Silver,Germany,Business Consulting,Kristen Garrity,2016-07,2016-07-14T00:00:00
+4,1035,107422,,Rite Pharmaceuticals Inc Project,25,1,Bronze,The Netherlands,Business Consulting,Kristen Garrity,2016-08,2016-08-15T00:00:00
+4,1036,104294,,Rite Pharmaceuticals Inc Project,200,1,Silver,The Netherlands,Business Consulting,Kristen Garrity,2016-08,2016-08-16T00:00:00
+4,1037,104855,,Rite Pharmaceuticals Inc Project,50,2,Silver,The Netherlands,Administration,Kristen Garrity,2016-08,2016-08-17T00:00:00
+4,1038,105080,,Rite Pharmaceuticals Inc Project,160,2,Platinum,The Netherlands,Administration,Kristen Garrity,2016-08,2016-08-18T00:00:00
+4,1039,105806,,Rite Pharmaceuticals Inc Project,37.5,2,Silver,The Netherlands,Accounting,Kristen Garrity,2016-08,2016-08-19T00:00:00
+4,1040,104142,,Rite Pharmaceuticals Inc Project,180,2,Silver,The Netherlands,Accounting,Kristen Garrity,2016-08,2016-08-20T00:00:00
+4,1041,107814,,Rite Pharmaceuticals Inc Project,200,3,Gold,The Netherlands,Accounting,Kristen Garrity,2016-08,2016-08-21T00:00:00
+4,1042,104847,,Rite Pharmaceuticals Inc Project,75,4,Silver,The Netherlands,Accounting,Kristen Garrity,2016-08,2016-08-22T00:00:00
+4,1043,107882,,Rite Pharmaceuticals Inc Project,25,7,Gold,The Netherlands,Accounting,Kristen Garrity,2016-08,2016-08-23T00:00:00
+4,1044,105850,,Rite Pharmaceuticals Inc Project,200,8,Bronze,The Netherlands,Accounting,Kristen Garrity,2016-08,2016-08-24T00:00:00
+4,1045,105231,,Rite Pharmaceuticals Inc Project,50,13,Gold,The Netherlands,Accounting,Kristen Garrity,2016-08,2016-08-25T00:00:00
+4,1046,105096,,Rite Pharmaceuticals Inc Project,80,19,Silver,The Netherlands,Administration,Kristen Garrity,2016-08,2016-08-26T00:00:00
+1,1047,107286,,Premenos Technology Corp Project,80,1,Gold,Germany,Accounting,Kristen Garrity,2016-08,2016-08-27T00:00:00
+5,1048,104063,,JP Corp Project,150,4,Gold,Germany,Business Consulting,Kristen Garrity,2016-08,2016-08-28T00:00:00
+2,1049,105379,,Ayurve Inc Project,110,1,Silver,Germany,Business Consulting,Kristen Garrity,2016-08,2016-08-29T00:00:00
+2,1050,107679,,Ayurve Inc Project,110,1,Silver,Germany,Business Consulting,Kristen Garrity,2016-08,2016-08-30T00:00:00
+2,1051,104071,,Ayurve Inc Project,165,3,Bronze,Germany,Business Consulting,Kristen Garrity,2016-08,2016-08-01T00:00:00
+5,1052,105235,,JP Corp Project,110,8,Silver,Germany,Accounting,Kristen Garrity,2016-08,2016-08-02T00:00:00
+4,1053,103914,,Rite Pharmaceuticals Inc Project,120,1,Gold,The Netherlands,Business Consulting,Kristen Garrity,2016-09,2016-09-03T00:00:00
+4,1054,105289,,Rite Pharmaceuticals Inc Project,120,1,Silver,The Netherlands,Accounting,Kristen Garrity,2016-09,2016-09-04T00:00:00
+4,1055,102956,,Rite Pharmaceuticals Inc Project,25,4,Gold,The Netherlands,Business Consulting,Kristen Garrity,2016-09,2016-09-05T00:00:00
+1,1056,102334,,Premenos Technology Corp Project,120,2,Silver,Germany,Accounting,Kristen Garrity,2016-09,2016-09-06T00:00:00
+5,1057,100086,,JP Corp Project,25,1,Bronze,The Netherlands,Accounting,Lisa Jones,2016-05,2016-05-07T00:00:00
+5,1058,100186,,JP Corp Project,25,1,Bronze,The Netherlands,Business Consulting,Lisa Jones,2016-05,2016-05-08T00:00:00
+5,1059,100080,,JP Corp Project,25,1,Bronze,The Netherlands,Accounting,Lisa Jones,2016-05,2016-05-09T00:00:00
+5,1060,100940,,JP Corp Project,25,1,Platinum,The Netherlands,Accounting,Lisa Jones,2016-05,2016-05-10T00:00:00
+5,1061,101060,,JP Corp Project,25,1,Gold,The Netherlands,Accounting,Lisa Jones,2016-05,2016-05-11T00:00:00
+5,1062,100051,,JP Corp Project,25,2,Gold,The Netherlands,Accounting,Lisa Jones,2016-05,2016-05-12T00:00:00
+5,1063,100162,,JP Corp Project,25,2,Bronze,The Netherlands,Accounting,Lisa Jones,2016-05,2016-05-13T00:00:00
+5,1064,100144,,JP Corp Project,25,3,Bronze,The Netherlands,Accounting,Lisa Jones,2016-05,2016-05-14T00:00:00
+5,1065,100139,,JP Corp Project,25,3,Gold,The Netherlands,Accounting,Lisa Jones,2016-05,2016-05-15T00:00:00
+5,1066,100359,,JP Corp Project,25,3,Gold,The Netherlands,Accounting,Lisa Jones,2016-05,2016-05-16T00:00:00
+5,1067,100942,,JP Corp Project,25,4,Silver,The Netherlands,Accounting,Lisa Jones,2016-05,2016-05-17T00:00:00
+5,1068,100290,,JP Corp Project,25,4,Platinum,The Netherlands,Accounting,Lisa Jones,2016-05,2016-05-18T00:00:00
+5,1069,100310,,JP Corp Project,25,4,Platinum,The Netherlands,Business Consulting,Lisa Jones,2016-05,2016-05-19T00:00:00
+5,1070,100358,,JP Corp Project,25,6,Gold,The Netherlands,Business Consulting,Lisa Jones,2016-05,2016-05-20T00:00:00
+5,1071,100367,,JP Corp Project,25,8,Platinum,The Netherlands,Business Consulting,Lisa Jones,2016-05,2016-05-21T00:00:00
+5,1072,100133,,JP Corp Project,25,9,Gold,The Netherlands,Accounting,Lisa Jones,2016-05,2016-05-22T00:00:00
+5,1073,100948,,JP Corp Project,25,9,Silver,The Netherlands,Accounting,Lisa Jones,2016-05,2016-05-23T00:00:00
+5,1074,100595,,JP Corp Project,25,15,Platinum,The Netherlands,Administration,Lisa Jones,2016-05,2016-05-24T00:00:00
+5,1075,101118,,JP Corp Project,25,16,Silver,The Netherlands,Business Consulting,Lisa Jones,2016-05,2016-05-25T00:00:00
+5,1076,107477,,JP Corp Project,120,1,Silver,Germany,Business Consulting,Lisa Jones,2016-05,2016-05-26T00:00:00
+5,1077,106284,,JP Corp Project,80,4,Bronze,Germany,Accounting,Lisa Jones,2016-05,2016-05-27T00:00:00
+5,1078,105511,,JP Corp Project,80,5,Platinum,Germany,Business Consulting,Lisa Jones,2016-05,2016-05-28T00:00:00
+5,1079,104973,,JP Corp Project,80,7,Silver,Germany,Business Consulting,Lisa Jones,2016-05,2016-05-29T00:00:00
+5,1080,107235,,JP Corp Project,120,7,Silver,Germany,Business Consulting,Lisa Jones,2016-05,2016-05-30T00:00:00
+5,1081,100598,,JP Corp Project,80,9,Silver,Germany,Administration,Lisa Jones,2016-05,2016-05-01T00:00:00
+5,1082,107708,,JP Corp Project,100,1,Gold,Germany,Accounting,Lisa Jones,2016-05,2016-05-02T00:00:00
+5,1083,108141,,JP Corp Project,100,1,Platinum,Germany,Business Consulting,Lisa Jones,2016-05,2016-05-03T00:00:00
+5,1084,103787,,JP Corp Project,100,1,Gold,Germany,Accounting,Lisa Jones,2016-05,2016-05-04T00:00:00
+5,1085,100440,,JP Corp Project,87.5,1,Silver,Germany,Business Consulting,Lisa Jones,2016-05,2016-05-05T00:00:00
+5,1086,102199,,JP Corp Project,80,1,Silver,Germany,Business Consulting,Lisa Jones,2016-05,2016-05-06T00:00:00
+5,1087,104450,,JP Corp Project,107.5,1,Platinum,Germany,Business Consulting,Lisa Jones,2016-05,2016-05-07T00:00:00
+5,1088,100452,,JP Corp Project,80,1,Gold,Germany,Business Consulting,Lisa Jones,2016-05,2016-05-08T00:00:00
+5,1089,101923,,JP Corp Project,120,1,Silver,Germany,Business Consulting,Lisa Jones,2016-05,2016-05-09T00:00:00
+3,743,103066,,Apex Graphics Project,396,6,Silver,The Netherlands,Accounting,James Numan,2016-08,2016-08-23T00:00:00
+3,744,103674,,Apex Graphics Project,440,16,Silver,The Netherlands,Administration,James Numan,2016-08,2016-08-24T00:00:00
+3,745,108029,,Apex Graphics Project,396,5,Gold,Germany,Business Consulting,James Numan,2016-08,2016-08-25T00:00:00
+3,746,105967,,Apex Graphics Project,440,1,Silver,Germany,Business Consulting,James Numan,2016-08,2016-08-26T00:00:00
+3,747,107864,,Apex Graphics Project,330,1,Bronze,Germany,Accounting,James Numan,2016-08,2016-08-27T00:00:00
+3,748,106528,,Apex Graphics Project,440,3,Silver,Germany,Accounting,James Numan,2016-08,2016-08-28T00:00:00
+3,749,104485,,Apex Graphics Project,495,3,Gold,Germany,Accounting,James Numan,2016-08,2016-08-29T00:00:00
+3,750,105580,,Apex Graphics Project,484,2,Gold,Germany,Accounting,James Numan,2016-08,2016-08-30T00:00:00
+3,751,106520,,Apex Graphics Project,176,1,Gold,The Netherlands,Accounting,James Numan,2016-09,2016-09-01T00:00:00
+3,752,102445,,Apex Graphics Project,55,2,Silver,The Netherlands,Accounting,James Numan,2016-09,2016-09-02T00:00:00
+3,753,107945,,Apex Graphics Project,440,3,Silver,The Netherlands,Business Consulting,James Numan,2016-09,2016-09-03T00:00:00
+3,754,100244,,Apex Graphics Project,352,4,Gold,The Netherlands,Administration,James Numan,2016-09,2016-09-04T00:00:00
+3,755,101147,,Apex Graphics Project,264,9,Platinum,The Netherlands,Business Consulting,James Numan,2016-09,2016-09-05T00:00:00
+3,756,108005,,Apex Graphics Project,396,2,Silver,Germany,Business Consulting,James Numan,2016-09,2016-09-06T00:00:00
+3,757,103627,,Apex Graphics Project,120,1,Silver,Germany,Accounting,Julian Henderson,2016-05,2016-05-07T00:00:00
+3,758,104748,,Apex Graphics Project,120,2,Platinum,Germany,Accounting,Julian Henderson,2016-05,2016-05-08T00:00:00
+3,759,106304,,Apex Graphics Project,80,3,Gold,Germany,Accounting,Julian Henderson,2016-05,2016-05-09T00:00:00
+3,760,100264,,Apex Graphics Project,160,3,Gold,Germany,Administration,Julian Henderson,2016-05,2016-05-10T00:00:00
+3,761,100564,,Apex Graphics Project,120,4,Silver,Germany,Accounting,Julian Henderson,2016-05,2016-05-11T00:00:00
+3,762,100302,,Apex Graphics Project,80,6,Bronze,Germany,Business Consulting,Julian Henderson,2016-05,2016-05-12T00:00:00
+3,763,103053,,Apex Graphics Project,137.5,13,Gold,Germany,Administration,Julian Henderson,2016-05,2016-05-13T00:00:00
+3,764,106301,,Apex Graphics Project,100,2,Bronze,Germany,Accounting,Julian Henderson,2016-05,2016-05-14T00:00:00
+3,765,104318,,Apex Graphics Project,150,3,Gold,Germany,Administration,Julian Henderson,2016-05,2016-05-15T00:00:00
+3,766,101299,,Apex Graphics Project,80,4,Bronze,Germany,Business Consulting,Julian Henderson,2016-05,2016-05-16T00:00:00
+3,767,101882,,Apex Graphics Project,160,4,Silver,Germany,Business Consulting,Julian Henderson,2016-05,2016-05-17T00:00:00
+3,768,102636,,Apex Graphics Project,180,7,Platinum,Germany,Administration,Julian Henderson,2016-05,2016-05-18T00:00:00
+3,769,102556,,Apex Graphics Project,80,8,Silver,Germany,Accounting,Julian Henderson,2016-05,2016-05-19T00:00:00
+3,770,105816,,Apex Graphics Project,180,9,Silver,Germany,Accounting,Julian Henderson,2016-05,2016-05-20T00:00:00
+3,771,102620,,Apex Graphics Project,165,1,Gold,Germany,Accounting,Julian Henderson,2016-05,2016-05-21T00:00:00
+3,772,100988,,Apex Graphics Project,82.5,1,Bronze,Germany,Accounting,Julian Henderson,2016-05,2016-05-22T00:00:00
+3,773,101799,,Apex Graphics Project,112.5,1,Gold,Germany,Accounting,Julian Henderson,2016-05,2016-05-23T00:00:00
+3,774,104199,,Apex Graphics Project,120,1,Silver,Germany,Accounting,Julian Henderson,2016-05,2016-05-24T00:00:00
+3,775,100050,,Apex Graphics Project,112.5,2,Silver,Germany,Accounting,Julian Henderson,2016-05,2016-05-25T00:00:00
+3,776,101512,,Apex Graphics Project,247.5,2,Silver,Germany,Administration,Julian Henderson,2016-05,2016-05-26T00:00:00
+3,777,101508,,Apex Graphics Project,220,2,Gold,Germany,Business Consulting,Julian Henderson,2016-05,2016-05-27T00:00:00
+3,778,106302,,Apex Graphics Project,220,3,Gold,Germany,Accounting,Julian Henderson,2016-05,2016-05-28T00:00:00
+3,779,101368,,Apex Graphics Project,112.5,3,Gold,Germany,Business Consulting,Julian Henderson,2016-05,2016-05-29T00:00:00
+3,780,101876,,Apex Graphics Project,110,3,Gold,Germany,Business Consulting,Julian Henderson,2016-05,2016-05-30T00:00:00
+3,781,101720,,Apex Graphics Project,112.5,3,Silver,Germany,Accounting,Julian Henderson,2016-05,2016-05-01T00:00:00
+3,782,107920,,Apex Graphics Project,112.5,4,Bronze,Germany,Accounting,Julian Henderson,2016-05,2016-05-02T00:00:00
+3,783,100116,,Apex Graphics Project,112.5,4,Bronze,Germany,Accounting,Julian Henderson,2016-05,2016-05-03T00:00:00
+3,784,106732,,Apex Graphics Project,220,5,Silver,Germany,Administration,Julian Henderson,2016-05,2016-05-04T00:00:00
+3,785,101707,,Apex Graphics Project,165,5,Gold,Germany,Accounting,Julian Henderson,2016-05,2016-05-05T00:00:00
+3,786,104692,,Apex Graphics Project,110,5,Gold,Germany,Administration,Julian Henderson,2016-05,2016-05-06T00:00:00
+3,787,107629,,Apex Graphics Project,165,6,Gold,Germany,Accounting,Julian Henderson,2016-05,2016-05-07T00:00:00
+3,788,101820,,Apex Graphics Project,160,1,Silver,Germany,Business Consulting,Julian Henderson,2016-05,2016-05-08T00:00:00
+3,789,101507,,Apex Graphics Project,120,2,Bronze,Germany,Business Consulting,Julian Henderson,2016-05,2016-05-09T00:00:00
+3,790,100179,,Apex Graphics Project,247.5,2,Gold,Germany,Accounting,Julian Henderson,2016-05,2016-05-10T00:00:00
+3,791,100049,,Apex Graphics Project,240,2,Gold,Germany,Accounting,Julian Henderson,2016-05,2016-05-11T00:00:00
+3,792,106303,,Apex Graphics Project,247.5,3,Gold,Germany,Accounting,Julian Henderson,2016-05,2016-05-12T00:00:00
+3,793,105595,,Apex Graphics Project,180,13,Silver,Germany,Administration,Julian Henderson,2016-05,2016-05-13T00:00:00
+3,794,100831,,Apex Graphics Project,25,1,Bronze,The Netherlands,Accounting,Julian Henderson,2016-06,2016-06-14T00:00:00
+3,795,100488,,Apex Graphics Project,25,2,Gold,The Netherlands,Accounting,Julian Henderson,2016-06,2016-06-15T00:00:00
+3,796,101919,,Apex Graphics Project,25,3,Silver,The Netherlands,Business Consulting,Julian Henderson,2016-06,2016-06-16T00:00:00
+3,797,100980,,Apex Graphics Project,80,1,Silver,Germany,Accounting,Julian Henderson,2016-06,2016-06-17T00:00:00
+3,798,100760,,Apex Graphics Project,160,1,Platinum,Germany,Accounting,Julian Henderson,2016-06,2016-06-18T00:00:00
+3,799,100941,,Apex Graphics Project,180,1,Gold,Germany,Accounting,Julian Henderson,2016-06,2016-06-19T00:00:00
+3,800,102343,,Apex Graphics Project,25,2,Bronze,Germany,Business Consulting,Julian Henderson,2016-06,2016-06-20T00:00:00
+3,801,102090,,Apex Graphics Project,80,2,Gold,Germany,Accounting,Julian Henderson,2016-06,2016-06-21T00:00:00
+3,802,100178,,Apex Graphics Project,120,2,Bronze,Germany,Accounting,Julian Henderson,2016-06,2016-06-22T00:00:00
+3,803,100857,,Apex Graphics Project,80,4,Silver,Germany,Business Consulting,Julian Henderson,2016-06,2016-06-23T00:00:00
+3,804,101835,,Apex Graphics Project,80,6,Silver,Germany,Business Consulting,Julian Henderson,2016-06,2016-06-24T00:00:00
+3,805,100897,,Apex Graphics Project,80,7,Gold,Germany,Business Consulting,Julian Henderson,2016-06,2016-06-25T00:00:00
+3,806,107297,,Apex Graphics Project,180,7,Gold,Germany,Accounting,Julian Henderson,2016-06,2016-06-26T00:00:00
+3,807,100127,,Apex Graphics Project,80,9,Bronze,Germany,Accounting,Julian Henderson,2016-06,2016-06-27T00:00:00
+3,808,101682,,Apex Graphics Project,75,1,Silver,Germany,Accounting,Julian Henderson,2016-06,2016-06-28T00:00:00
+3,809,100747,,Apex Graphics Project,150,1,Platinum,Germany,Accounting,Julian Henderson,2016-06,2016-06-29T00:00:00
+3,810,107699,,Apex Graphics Project,80,1,Silver,Germany,Accounting,Julian Henderson,2016-06,2016-06-30T00:00:00
+3,811,101510,,Apex Graphics Project,100,2,Gold,Germany,Accounting,Julian Henderson,2016-06,2016-06-01T00:00:00
+3,812,107197,,Apex Graphics Project,80,3,Bronze,Germany,Business Consulting,Julian Henderson,2016-06,2016-06-02T00:00:00
+3,813,101076,,Apex Graphics Project,80,3,Gold,Germany,Business Consulting,Julian Henderson,2016-06,2016-06-03T00:00:00
+3,814,106992,,Apex Graphics Project,160,3,Bronze,Germany,Business Consulting,Julian Henderson,2016-06,2016-06-04T00:00:00
+3,815,100900,,Apex Graphics Project,100,4,Gold,Germany,Business Consulting,Julian Henderson,2016-06,2016-06-05T00:00:00
+3,816,106088,,Apex Graphics Project,40,7,Silver,Germany,Accounting,Julian Henderson,2016-06,2016-06-06T00:00:00
+3,817,107417,,Apex Graphics Project,75,8,Platinum,Germany,Accounting,Julian Henderson,2016-06,2016-06-07T00:00:00
+3,818,104130,,Apex Graphics Project,75,11,Bronze,Germany,Accounting,Julian Henderson,2016-06,2016-06-08T00:00:00
+3,819,101016,,Apex Graphics Project,225,11,Silver,Germany,Administration,Julian Henderson,2016-06,2016-06-09T00:00:00
+3,820,100754,,Apex Graphics Project,200,11,Bronze,Germany,Accounting,Julian Henderson,2016-06,2016-06-10T00:00:00
+3,821,101895,,Apex Graphics Project,150,18,Bronze,Germany,Business Consulting,Julian Henderson,2016-06,2016-06-11T00:00:00
+3,822,101506,,Apex Graphics Project,200,1,Gold,Germany,Accounting,Julian Henderson,2016-06,2016-06-12T00:00:00
+3,823,100182,,Apex Graphics Project,165,2,Silver,Germany,Administration,Julian Henderson,2016-06,2016-06-13T00:00:00
+3,824,107865,,Apex Graphics Project,220,2,Bronze,Germany,Accounting,Julian Henderson,2016-06,2016-06-14T00:00:00
+3,825,102223,,Apex Graphics Project,220,2,Silver,Germany,Administration,Julian Henderson,2016-06,2016-06-15T00:00:00
+3,826,102178,,Apex Graphics Project,110,2,Silver,Germany,Accounting,Julian Henderson,2016-06,2016-06-16T00:00:00
+3,827,106391,,Apex Graphics Project,82.5,3,Gold,Germany,Accounting,Julian Henderson,2016-06,2016-06-17T00:00:00
+3,828,100601,,Apex Graphics Project,247.5,4,Silver,Germany,Administration,Julian Henderson,2016-06,2016-06-18T00:00:00
+3,829,101017,,Apex Graphics Project,82.5,6,Platinum,Germany,Administration,Julian Henderson,2016-06,2016-06-19T00:00:00
+3,830,103118,,Apex Graphics Project,82.5,7,Gold,Germany,Business Consulting,Julian Henderson,2016-06,2016-06-20T00:00:00
+3,831,104384,,Apex Graphics Project,120,1,Bronze,Germany,Business Consulting,Julian Henderson,2016-06,2016-06-21T00:00:00
+3,832,106122,,Apex Graphics Project,240,1,Gold,Germany,Business Consulting,Julian Henderson,2016-06,2016-06-22T00:00:00
+3,833,101301,,Apex Graphics Project,120,1,Platinum,Germany,Business Consulting,Julian Henderson,2016-06,2016-06-23T00:00:00
+3,834,102787,,Apex Graphics Project,240,1,Silver,Germany,Accounting,Julian Henderson,2016-06,2016-06-24T00:00:00
+3,835,102229,,Apex Graphics Project,240,1,Bronze,Germany,Business Consulting,Julian Henderson,2016-06,2016-06-25T00:00:00
+3,836,106250,,Apex Graphics Project,120,1,Bronze,Germany,Accounting,Julian Henderson,2016-06,2016-06-26T00:00:00
+3,837,106772,,Apex Graphics Project,120,2,Gold,Germany,Accounting,Julian Henderson,2016-06,2016-06-27T00:00:00
+3,838,103773,,Apex Graphics Project,150,5,Gold,Germany,Accounting,Julian Henderson,2016-06,2016-06-28T00:00:00
+3,839,103749,,Apex Graphics Project,247.5,5,Gold,Germany,Accounting,Julian Henderson,2016-06,2016-06-29T00:00:00
+3,840,105041,,Apex Graphics Project,120,1,Bronze,The Netherlands,Accounting,Julian Henderson,2016-07,2016-07-30T00:00:00
+3,841,100301,,Apex Graphics Project,200,1,Silver,The Netherlands,Business Consulting,Julian Henderson,2016-07,2016-07-01T00:00:00
+3,842,103784,,Apex Graphics Project,180,1,Gold,The Netherlands,Accounting,Julian Henderson,2016-07,2016-07-02T00:00:00
+3,843,101303,,Apex Graphics Project,200,1,Bronze,The Netherlands,Business Consulting,Julian Henderson,2016-07,2016-07-03T00:00:00
+3,844,100514,,Apex Graphics Project,25,1,Silver,The Netherlands,Accounting,Julian Henderson,2016-07,2016-07-04T00:00:00
+3,845,103920,,Apex Graphics Project,25,2,Gold,The Netherlands,Business Consulting,Julian Henderson,2016-07,2016-07-05T00:00:00
+3,846,107831,,Apex Graphics Project,180,2,Gold,The Netherlands,Accounting,Julian Henderson,2016-07,2016-07-06T00:00:00
+3,847,106500,,Apex Graphics Project,200,2,Silver,The Netherlands,Administration,Julian Henderson,2016-07,2016-07-07T00:00:00
+3,848,100672,,Apex Graphics Project,25,2,Silver,The Netherlands,Accounting,Julian Henderson,2016-07,2016-07-08T00:00:00
+3,849,100181,,Apex Graphics Project,25,2,Gold,The Netherlands,Accounting,Julian Henderson,2016-07,2016-07-09T00:00:00
+3,850,103807,,Apex Graphics Project,200,3,Silver,The Netherlands,Accounting,Julian Henderson,2016-07,2016-07-10T00:00:00
+3,851,105093,,Apex Graphics Project,25,3,Silver,The Netherlands,Administration,Julian Henderson,2016-07,2016-07-11T00:00:00
+3,852,100101,,Apex Graphics Project,200,3,Silver,The Netherlands,Business Consulting,Julian Henderson,2016-07,2016-07-12T00:00:00
+3,853,106812,,Apex Graphics Project,180,4,Gold,The Netherlands,Administration,Julian Henderson,2016-07,2016-07-13T00:00:00
+3,854,100910,,Apex Graphics Project,25,5,Gold,The Netherlands,Business Consulting,Julian Henderson,2016-07,2016-07-14T00:00:00
+3,855,100573,,Apex Graphics Project,25,5,Silver,The Netherlands,Accounting,Julian Henderson,2016-07,2016-07-15T00:00:00
+3,856,100136,,Apex Graphics Project,200,5,Silver,The Netherlands,Accounting,Julian Henderson,2016-07,2016-07-16T00:00:00
+3,857,100048,,Apex Graphics Project,40,6,Bronze,The Netherlands,Accounting,Julian Henderson,2016-07,2016-07-17T00:00:00
+3,858,103216,,Apex Graphics Project,25,8,Gold,The Netherlands,Accounting,Julian Henderson,2016-07,2016-07-18T00:00:00
+3,859,105053,,Apex Graphics Project,180,10,Gold,The Netherlands,Accounting,Julian Henderson,2016-07,2016-07-19T00:00:00
+3,860,105590,,Apex Graphics Project,25,10,Gold,The Netherlands,Business Consulting,Julian Henderson,2016-07,2016-07-20T00:00:00
+3,861,103621,,Apex Graphics Project,80,1,Silver,Germany,Accounting,Julian Henderson,2016-07,2016-07-21T00:00:00
+3,862,104954,,Apex Graphics Project,80,1,Gold,Germany,Business Consulting,Julian Henderson,2016-07,2016-07-22T00:00:00
+3,863,105180,,Apex Graphics Project,180,2,Silver,Germany,Business Consulting,Julian Henderson,2016-07,2016-07-23T00:00:00
+3,864,104529,,Apex Graphics Project,62.5,3,Silver,Germany,Accounting,Julian Henderson,2016-07,2016-07-24T00:00:00
+3,865,100192,,Apex Graphics Project,62.5,6,Bronze,Germany,Accounting,Julian Henderson,2016-07,2016-07-25T00:00:00
+3,866,107344,,Apex Graphics Project,62.5,6,Silver,Germany,Accounting,Julian Henderson,2016-07,2016-07-26T00:00:00
+3,867,100117,,Apex Graphics Project,80,11,Silver,Germany,Accounting,Julian Henderson,2016-07,2016-07-27T00:00:00
+3,868,101073,,Apex Graphics Project,75,1,Platinum,Germany,Business Consulting,Julian Henderson,2016-07,2016-07-28T00:00:00
+3,869,100267,,Apex Graphics Project,200,4,Gold,Germany,Accounting,Julian Henderson,2016-07,2016-07-29T00:00:00
+3,870,107634,,Apex Graphics Project,200,4,Silver,Germany,Business Consulting,Julian Henderson,2016-07,2016-07-30T00:00:00
+3,871,100685,,Apex Graphics Project,225,8,Platinum,Germany,Administration,Julian Henderson,2016-07,2016-07-01T00:00:00
+3,872,103552,,Apex Graphics Project,200,12,Silver,Germany,Business Consulting,Julian Henderson,2016-07,2016-07-02T00:00:00
+3,873,103892,,Apex Graphics Project,200,13,Bronze,Germany,Business Consulting,Julian Henderson,2016-07,2016-07-03T00:00:00
+3,874,106171,,Apex Graphics Project,165,1,Bronze,Germany,Accounting,Julian Henderson,2016-07,2016-07-04T00:00:00
+3,875,100300,,Apex Graphics Project,110,1,Bronze,Germany,Accounting,Julian Henderson,2016-07,2016-07-05T00:00:00
+3,876,106380,,Apex Graphics Project,82.5,2,Bronze,Germany,Administration,Julian Henderson,2016-07,2016-07-06T00:00:00
+3,877,107982,,Apex Graphics Project,165,2,Gold,Germany,Business Consulting,Julian Henderson,2016-07,2016-07-07T00:00:00
+3,878,103922,,Apex Graphics Project,240,2,Gold,Germany,Business Consulting,Julian Henderson,2016-07,2016-07-08T00:00:00
+3,879,100743,,Apex Graphics Project,240,2,Silver,Germany,Accounting,Julian Henderson,2016-07,2016-07-09T00:00:00
+3,880,106425,,Apex Graphics Project,200,1,Bronze,The Netherlands,Business Consulting,Julian Henderson,2016-08,2016-08-10T00:00:00
+3,881,108033,,Apex Graphics Project,25,1,Silver,The Netherlands,Business Consulting,Julian Henderson,2016-08,2016-08-11T00:00:00
+3,882,101138,,Apex Graphics Project,100,1,Silver,The Netherlands,Business Consulting,Julian Henderson,2016-08,2016-08-12T00:00:00
+3,883,105086,,Apex Graphics Project,25,2,Silver,The Netherlands,Administration,Julian Henderson,2016-08,2016-08-13T00:00:00
+3,884,103489,,Apex Graphics Project,200,2,Bronze,The Netherlands,Business Consulting,Julian Henderson,2016-08,2016-08-14T00:00:00
+3,885,106172,,Apex Graphics Project,80,2,Gold,The Netherlands,Accounting,Julian Henderson,2016-08,2016-08-15T00:00:00
+3,886,102221,,Apex Graphics Project,160,2,Gold,The Netherlands,Accounting,Julian Henderson,2016-08,2016-08-16T00:00:00
+3,887,107636,,Apex Graphics Project,200,3,Silver,The Netherlands,Administration,Julian Henderson,2016-08,2016-08-17T00:00:00
+3,888,105227,,Apex Graphics Project,25,3,Silver,The Netherlands,Business Consulting,Julian Henderson,2016-08,2016-08-18T00:00:00
+3,889,106424,,Apex Graphics Project,37.5,5,Silver,The Netherlands,Business Consulting,Julian Henderson,2016-08,2016-08-19T00:00:00
+3,890,107300,,Apex Graphics Project,100,1,Platinum,Germany,Accounting,Julian Henderson,2016-08,2016-08-20T00:00:00
+3,891,103842,,Apex Graphics Project,100,1,Gold,Germany,Accounting,Julian Henderson,2016-08,2016-08-21T00:00:00
+3,892,105824,,Apex Graphics Project,220,3,Bronze,Germany,Accounting,Julian Henderson,2016-08,2016-08-22T00:00:00
+3,893,104704,,Apex Graphics Project,220,5,Silver,Germany,Administration,Julian Henderson,2016-08,2016-08-23T00:00:00
+3,894,106737,,Apex Graphics Project,165,6,Gold,Germany,Administration,Julian Henderson,2016-08,2016-08-24T00:00:00
+3,895,104645,,Apex Graphics Project,220,8,Silver,Germany,Accounting,Julian Henderson,2016-08,2016-08-25T00:00:00
+3,896,103742,,Apex Graphics Project,240,2,Gold,Germany,Accounting,Julian Henderson,2016-08,2016-08-26T00:00:00
+3,897,105812,,Apex Graphics Project,200,1,Platinum,The Netherlands,Accounting,Julian Henderson,2016-09,2016-09-27T00:00:00
+3,898,103180,,Apex Graphics Project,25,2,Gold,The Netherlands,Business Consulting,Julian Henderson,2016-09,2016-09-28T00:00:00
+3,899,102177,,Apex Graphics Project,25,2,Silver,The Netherlands,Accounting,Julian Henderson,2016-09,2016-09-29T00:00:00
+3,900,107569,,Apex Graphics Project,25,5,Silver,The Netherlands,Business Consulting,Julian Henderson,2016-09,2016-09-30T00:00:00
+1,901,105992,,Premenos Technology Corp Project,120,1,Silver,Germany,Business Consulting,Kristen Garrity,2016-05,2016-05-01T00:00:00
+1,902,100377,,Premenos Technology Corp Project,80,3,Silver,Germany,Administration,Kristen Garrity,2016-05,2016-05-02T00:00:00
+1,903,107886,,Premenos Technology Corp Project,80,5,Gold,Germany,Accounting,Kristen Garrity,2016-05,2016-05-03T00:00:00
+5,904,103612,,JP Corp Project,80,1,Platinum,Germany,Accounting,Kristen Garrity,2016-05,2016-05-04T00:00:00
+5,905,107682,,JP Corp Project,160,1,Platinum,Germany,Business Consulting,Kristen Garrity,2016-05,2016-05-05T00:00:00
+5,906,102006,,JP Corp Project,80,1,Silver,Germany,Accounting,Kristen Garrity,2016-05,2016-05-06T00:00:00
+5,907,101910,,JP Corp Project,120,1,Silver,Germany,Business Consulting,Kristen Garrity,2016-05,2016-05-07T00:00:00
+5,908,103601,,JP Corp Project,100,2,Platinum,Germany,Accounting,Kristen Garrity,2016-05,2016-05-08T00:00:00
+5,909,103059,,JP Corp Project,150,2,Gold,Germany,Administration,Kristen Garrity,2016-05,2016-05-09T00:00:00
+5,910,107254,,JP Corp Project,200,4,Gold,Germany,Business Consulting,Kristen Garrity,2016-05,2016-05-10T00:00:00
+5,911,106334,,JP Corp Project,150,4,Platinum,Germany,Business Consulting,Kristen Garrity,2016-05,2016-05-11T00:00:00
+5,912,104075,,JP Corp Project,200,4,Silver,Germany,Business Consulting,Kristen Garrity,2016-05,2016-05-12T00:00:00
+5,913,101226,,JP Corp Project,25,5,Gold,Germany,Accounting,Kristen Garrity,2016-05,2016-05-13T00:00:00
+5,914,107194,,JP Corp Project,80,6,Platinum,Germany,Accounting,Kristen Garrity,2016-05,2016-05-14T00:00:00
+5,915,104369,,JP Corp Project,100,6,Silver,Germany,Accounting,Kristen Garrity,2016-05,2016-05-15T00:00:00
+5,916,102035,,JP Corp Project,160,6,Silver,Germany,Business Consulting,Kristen Garrity,2016-05,2016-05-16T00:00:00
+5,917,103314,,JP Corp Project,200,7,Platinum,Germany,Accounting,Kristen Garrity,2016-05,2016-05-17T00:00:00
+2,918,107337,,Ayurve Inc Project,80,10,Silver,Germany,Accounting,Kristen Garrity,2016-05,2016-05-18T00:00:00
+2,919,106246,,Ayurve Inc Project,247.5,1,Silver,Germany,Accounting,Kristen Garrity,2016-05,2016-05-19T00:00:00
+2,920,100585,,Ayurve Inc Project,220,2,Silver,Germany,Administration,Kristen Garrity,2016-05,2016-05-20T00:00:00
+2,921,105642,,Ayurve Inc Project,220,2,Platinum,Germany,Accounting,Kristen Garrity,2016-05,2016-05-21T00:00:00
+2,922,106330,,Ayurve Inc Project,247.5,3,Silver,Germany,Business Consulting,Kristen Garrity,2016-05,2016-05-22T00:00:00
+2,923,104968,,Ayurve Inc Project,110,4,Gold,Germany,Business Consulting,Kristen Garrity,2016-05,2016-05-23T00:00:00
+2,924,105355,,Ayurve Inc Project,112.5,5,Platinum,Germany,Accounting,Kristen Garrity,2016-05,2016-05-24T00:00:00
+2,925,107298,,Ayurve Inc Project,120,5,Gold,Germany,Accounting,Kristen Garrity,2016-05,2016-05-25T00:00:00
+2,926,101893,,Ayurve Inc Project,112.5,6,Gold,Germany,Business Consulting,Kristen Garrity,2016-05,2016-05-26T00:00:00
+2,927,102974,,Ayurve Inc Project,220,8,Silver,Germany,Accounting,Kristen Garrity,2016-05,2016-05-27T00:00:00
+2,928,100212,,Ayurve Inc Project,110,9,Silver,Germany,Business Consulting,Kristen Garrity,2016-05,2016-05-28T00:00:00
+3,929,107540,,Apex Graphics Project,160,1,Silver,Germany,Business Consulting,Kristen Garrity,2016-05,2016-05-29T00:00:00
+3,930,101786,,Apex Graphics Project,120,1,Silver,Germany,Accounting,Kristen Garrity,2016-05,2016-05-30T00:00:00
+3,931,107742,,Apex Graphics Project,120,2,Platinum,Germany,Administration,Kristen Garrity,2016-05,2016-05-01T00:00:00
+3,932,100292,,Apex Graphics Project,180,2,Silver,Germany,Accounting,Kristen Garrity,2016-05,2016-05-02T00:00:00
+3,933,106020,,Apex Graphics Project,180,3,Silver,Germany,Business Consulting,Kristen Garrity,2016-05,2016-05-03T00:00:00
+3,934,105210,,Apex Graphics Project,180,3,Silver,Germany,Business Consulting,Kristen Garrity,2016-05,2016-05-04T00:00:00
+3,935,100122,,Apex Graphics Project,120,3,Silver,Germany,Accounting,Kristen Garrity,2016-05,2016-05-05T00:00:00
+3,936,104377,,Apex Graphics Project,120,3,Platinum,Germany,Business Consulting,Kristen Garrity,2016-05,2016-05-06T00:00:00
+3,937,106115,,Apex Graphics Project,120,3,Silver,Germany,Business Consulting,Kristen Garrity,2016-05,2016-05-07T00:00:00
+3,938,103161,,Apex Graphics Project,240,3,Silver,Germany,Business Consulting,Kristen Garrity,2016-05,2016-05-08T00:00:00
+3,939,100295,,Apex Graphics Project,120,3,Platinum,Germany,Business Consulting,Kristen Garrity,2016-05,2016-05-09T00:00:00
+3,940,100209,,Apex Graphics Project,247.5,4,Platinum,Germany,Accounting,Kristen Garrity,2016-05,2016-05-10T00:00:00
+3,941,105384,,Apex Graphics Project,247.5,4,Gold,Germany,Business Consulting,Kristen Garrity,2016-05,2016-05-11T00:00:00
+3,942,106337,,Apex Graphics Project,240,5,Silver,Germany,Business Consulting,Kristen Garrity,2016-05,2016-05-12T00:00:00
+3,943,108024,,Apex Graphics Project,180,7,Gold,Germany,Business Consulting,Kristen Garrity,2016-05,2016-05-13T00:00:00
+3,944,101556,,Apex Graphics Project,240,12,Silver,Germany,Business Consulting,Kristen Garrity,2016-05,2016-05-14T00:00:00
+3,945,107998,,Apex Graphics Project,120,14,Gold,Germany,Business Consulting,Kristen Garrity,2016-05,2016-05-15T00:00:00
+4,946,101770,,Rite Pharmaceuticals Inc Project,25,2,Silver,The Netherlands,Accounting,Kristen Garrity,2016-06,2016-06-16T00:00:00
+4,947,100766,,Rite Pharmaceuticals Inc Project,25,2,Platinum,The Netherlands,Accounting,Kristen Garrity,2016-06,2016-06-17T00:00:00
+4,948,102165,,Rite Pharmaceuticals Inc Project,25,7,Platinum,The Netherlands,Accounting,Kristen Garrity,2016-06,2016-06-18T00:00:00
+4,949,105666,,Rite Pharmaceuticals Inc Project,25,8,Bronze,The Netherlands,Accounting,Kristen Garrity,2016-06,2016-06-19T00:00:00
+4,950,101947,,Rite Pharmaceuticals Inc Project,25,9,Gold,The Netherlands,Business Consulting,Kristen Garrity,2016-06,2016-06-20T00:00:00
+1,951,104924,,Premenos Technology Corp Project,160,1,Silver,Germany,Accounting,Kristen Garrity,2016-06,2016-06-21T00:00:00
+1,952,107007,,Premenos Technology Corp Project,25,1,Gold,Germany,Business Consulting,Kristen Garrity,2016-06,2016-06-22T00:00:00
+1,953,101631,,Premenos Technology Corp Project,120,2,Gold,Germany,Administration,Kristen Garrity,2016-06,2016-06-23T00:00:00
+1,954,102164,,Premenos Technology Corp Project,120,3,Silver,Germany,Accounting,Kristen Garrity,2016-06,2016-06-24T00:00:00
+1,955,102336,,Premenos Technology Corp Project,25,5,Platinum,Germany,Business Consulting,Kristen Garrity,2016-06,2016-06-25T00:00:00
+1,956,102253,,Premenos Technology Corp Project,120,7,Silver,Germany,Business Consulting,Kristen Garrity,2016-06,2016-06-26T00:00:00
+1,957,102037,,Premenos Technology Corp Project,160,7,Gold,Germany,Business Consulting,Kristen Garrity,2016-06,2016-06-27T00:00:00
+1,958,101929,,Premenos Technology Corp Project,180,8,Platinum,Germany,Business Consulting,Kristen Garrity,2016-06,2016-06-28T00:00:00
+1,959,100216,,Premenos Technology Corp Project,160,11,Platinum,Germany,Business Consulting,Kristen Garrity,2016-06,2016-06-29T00:00:00
+1,960,100952,,Premenos Technology Corp Project,160,16,Gold,Germany,Accounting,Kristen Garrity,2016-06,2016-06-30T00:00:00
+5,961,106947,,JP Corp Project,180,1,Silver,Germany,Accounting,Kristen Garrity,2016-06,2016-06-01T00:00:00
+5,962,105862,,JP Corp Project,40,1,Silver,Germany,Accounting,Kristen Garrity,2016-06,2016-06-02T00:00:00
+5,963,100863,,JP Corp Project,80,1,Platinum,Germany,Business Consulting,Kristen Garrity,2016-06,2016-06-03T00:00:00
+5,964,106502,,JP Corp Project,225,2,Gold,Germany,Administration,Kristen Garrity,2016-06,2016-06-04T00:00:00
+5,965,104367,,JP Corp Project,100,2,Platinum,Germany,Accounting,Kristen Garrity,2016-06,2016-06-05T00:00:00
+5,966,103403,,JP Corp Project,75,2,Silver,Germany,Business Consulting,Kristen Garrity,2016-06,2016-06-06T00:00:00
+5,967,100491,,JP Corp Project,200,6,Silver,Germany,Business Consulting,Kristen Garrity,2016-06,2016-06-07T00:00:00
+5,968,101215,,JP Corp Project,120,9,Bronze,Germany,Accounting,Kristen Garrity,2016-06,2016-06-08T00:00:00
+5,969,102250,,JP Corp Project,100,11,Platinum,Germany,Accounting,Kristen Garrity,2016-06,2016-06-09T00:00:00
+5,970,104690,,JP Corp Project,160,14,Gold,Germany,Administration,Kristen Garrity,2016-06,2016-06-10T00:00:00
+5,971,102878,,JP Corp Project,120,16,Platinum,Germany,Accounting,Kristen Garrity,2016-06,2016-06-11T00:00:00
+2,972,103004,,Ayurve Inc Project,200,1,Bronze,Germany,Accounting,Kristen Garrity,2016-06,2016-06-12T00:00:00
+2,973,101555,,Ayurve Inc Project,200,2,Platinum,Germany,Administration,Kristen Garrity,2016-06,2016-06-13T00:00:00
+2,974,101560,,Ayurve Inc Project,200,2,Platinum,Germany,Accounting,Kristen Garrity,2016-06,2016-06-14T00:00:00
+2,975,102335,,Ayurve Inc Project,200,2,Platinum,Germany,Accounting,Kristen Garrity,2016-06,2016-06-15T00:00:00
+2,1342,101467,,Ayurve Inc Project,160,3,Bronze,Germany,Business Consulting,Ralph Ambers,2016-06,2016-06-22T00:00:00
+2,1343,107488,,Ayurve Inc Project,80,5,Gold,Germany,Business Consulting,Ralph Ambers,2016-06,2016-06-23T00:00:00
+2,1344,105628,,Ayurve Inc Project,160,7,Gold,Germany,Accounting,Ralph Ambers,2016-06,2016-06-24T00:00:00
+2,1345,104112,,Ayurve Inc Project,160,7,Silver,Germany,Accounting,Ralph Ambers,2016-06,2016-06-25T00:00:00
+2,1346,102122,,Ayurve Inc Project,80,1,Silver,Germany,Accounting,Ralph Ambers,2016-06,2016-06-26T00:00:00
+2,1347,105364,,Ayurve Inc Project,180,1,Silver,Germany,Business Consulting,Ralph Ambers,2016-06,2016-06-27T00:00:00
+2,1348,100809,,Ayurve Inc Project,200,1,Silver,Germany,Accounting,Ralph Ambers,2016-06,2016-06-28T00:00:00
+2,1349,102274,,Ayurve Inc Project,75,2,Silver,Germany,Administration,Ralph Ambers,2016-06,2016-06-29T00:00:00
+2,1350,105929,,Ayurve Inc Project,40,2,Gold,Germany,Business Consulting,Ralph Ambers,2016-06,2016-06-30T00:00:00
+2,1351,101284,,Ayurve Inc Project,225,2,Silver,Germany,Business Consulting,Ralph Ambers,2016-06,2016-06-01T00:00:00
+2,1352,100982,,Ayurve Inc Project,150,2,Platinum,Germany,Accounting,Ralph Ambers,2016-06,2016-06-02T00:00:00
+2,1353,107409,,Ayurve Inc Project,100,3,Silver,Germany,Accounting,Ralph Ambers,2016-06,2016-06-03T00:00:00
+2,1354,104433,,Ayurve Inc Project,180,3,Silver,Germany,Accounting,Ralph Ambers,2016-06,2016-06-04T00:00:00
+2,1355,100744,,Ayurve Inc Project,225,3,Platinum,Germany,Accounting,Ralph Ambers,2016-06,2016-06-05T00:00:00
+2,1356,102873,,Ayurve Inc Project,100,3,Silver,Germany,Accounting,Ralph Ambers,2016-06,2016-06-06T00:00:00
+2,1357,107016,,Ayurve Inc Project,150,3,Gold,Germany,Business Consulting,Ralph Ambers,2016-06,2016-06-07T00:00:00
+2,1358,100751,,Ayurve Inc Project,180,4,Gold,Germany,Accounting,Ralph Ambers,2016-06,2016-06-08T00:00:00
+2,1359,100490,,Ayurve Inc Project,160,5,Gold,Germany,Business Consulting,Ralph Ambers,2016-06,2016-06-09T00:00:00
+2,1360,106887,,Ayurve Inc Project,120,5,Silver,Germany,Accounting,Ralph Ambers,2016-06,2016-06-10T00:00:00
+2,1361,100614,,Ayurve Inc Project,200,5,Gold,Germany,Administration,Ralph Ambers,2016-06,2016-06-11T00:00:00
+2,1362,103127,,Ayurve Inc Project,150,6,Silver,Germany,Business Consulting,Ralph Ambers,2016-06,2016-06-12T00:00:00
+2,1363,108129,,Ayurve Inc Project,40,7,Silver,Germany,Accounting,Ralph Ambers,2016-06,2016-06-13T00:00:00
+2,1364,103324,,Ayurve Inc Project,225,7,Silver,Germany,Business Consulting,Ralph Ambers,2016-06,2016-06-14T00:00:00
+2,1365,100356,,Ayurve Inc Project,75,9,Silver,Germany,Business Consulting,Ralph Ambers,2016-06,2016-06-15T00:00:00
+2,1366,100495,,Ayurve Inc Project,150,10,Gold,Germany,Business Consulting,Ralph Ambers,2016-06,2016-06-16T00:00:00
+2,1367,101358,,Ayurve Inc Project,150,15,Silver,Germany,Business Consulting,Ralph Ambers,2016-06,2016-06-17T00:00:00
+2,1368,101539,,Ayurve Inc Project,200,2,Silver,Germany,Administration,Ralph Ambers,2016-06,2016-06-18T00:00:00
+2,1369,102021,,Ayurve Inc Project,200,2,Silver,Germany,Business Consulting,Ralph Ambers,2016-06,2016-06-19T00:00:00
+2,1370,101856,,Ayurve Inc Project,200,2,Silver,Germany,Business Consulting,Ralph Ambers,2016-06,2016-06-20T00:00:00
+2,1371,103325,,Ayurve Inc Project,200,2,Silver,Germany,Business Consulting,Ralph Ambers,2016-06,2016-06-21T00:00:00
+2,1372,100859,,Ayurve Inc Project,200,3,Silver,Germany,Business Consulting,Ralph Ambers,2016-06,2016-06-22T00:00:00
+2,1373,101611,,Ayurve Inc Project,200,3,Gold,Germany,Administration,Ralph Ambers,2016-06,2016-06-23T00:00:00
+2,1374,102217,,Ayurve Inc Project,220,5,Silver,Germany,Accounting,Ralph Ambers,2016-06,2016-06-24T00:00:00
+2,1375,101096,,Ayurve Inc Project,200,7,Silver,Germany,Business Consulting,Ralph Ambers,2016-06,2016-06-25T00:00:00
+2,1376,103477,,Ayurve Inc Project,110,7,Silver,Germany,Business Consulting,Ralph Ambers,2016-06,2016-06-26T00:00:00
+2,1377,101948,,Ayurve Inc Project,247.5,8,Bronze,Germany,Business Consulting,Ralph Ambers,2016-06,2016-06-27T00:00:00
+2,1378,101294,,Ayurve Inc Project,200,9,Platinum,Germany,Accounting,Ralph Ambers,2016-06,2016-06-28T00:00:00
+2,1379,101283,,Ayurve Inc Project,120,1,Silver,Germany,Business Consulting,Ralph Ambers,2016-06,2016-06-29T00:00:00
+2,1380,105082,,Ayurve Inc Project,240,2,Platinum,Germany,Administration,Ralph Ambers,2016-06,2016-06-30T00:00:00
+2,1381,102042,,Ayurve Inc Project,120,3,Silver,Germany,Accounting,Ralph Ambers,2016-06,2016-06-01T00:00:00
+2,1382,104431,,Ayurve Inc Project,240,3,Silver,Germany,Accounting,Ralph Ambers,2016-06,2016-06-02T00:00:00
+2,1383,101602,,Ayurve Inc Project,240,4,Bronze,Germany,Administration,Ralph Ambers,2016-06,2016-06-03T00:00:00
+2,1384,100838,,Ayurve Inc Project,240,6,Gold,Germany,Accounting,Ralph Ambers,2016-06,2016-06-04T00:00:00
+2,1385,100354,,Ayurve Inc Project,247.5,7,Silver,Germany,Business Consulting,Ralph Ambers,2016-06,2016-06-05T00:00:00
+2,1386,104080,,Ayurve Inc Project,40,2,Bronze,The Netherlands,Business Consulting,Ralph Ambers,2016-07,2016-07-06T00:00:00
+2,1387,100351,,Ayurve Inc Project,200,2,Silver,The Netherlands,Accounting,Ralph Ambers,2016-07,2016-07-07T00:00:00
+2,1388,101181,,Ayurve Inc Project,200,3,Bronze,The Netherlands,Accounting,Ralph Ambers,2016-07,2016-07-08T00:00:00
+2,1389,103322,,Ayurve Inc Project,80,3,Silver,The Netherlands,Accounting,Ralph Ambers,2016-07,2016-07-09T00:00:00
+2,1390,100081,,Ayurve Inc Project,180,4,Silver,The Netherlands,Accounting,Ralph Ambers,2016-07,2016-07-10T00:00:00
+2,1391,100349,,Ayurve Inc Project,200,4,Silver,The Netherlands,Accounting,Ralph Ambers,2016-07,2016-07-11T00:00:00
+2,1392,100883,,Ayurve Inc Project,25,4,Bronze,The Netherlands,Business Consulting,Ralph Ambers,2016-07,2016-07-12T00:00:00
+2,1393,100634,,Ayurve Inc Project,200,5,Platinum,The Netherlands,Accounting,Ralph Ambers,2016-07,2016-07-13T00:00:00
+2,1394,106475,,Ayurve Inc Project,80,5,Silver,The Netherlands,Business Consulting,Ralph Ambers,2016-07,2016-07-14T00:00:00
+2,1395,100078,,Ayurve Inc Project,200,7,Silver,The Netherlands,Accounting,Ralph Ambers,2016-07,2016-07-15T00:00:00
+2,1396,105010,,Ayurve Inc Project,200,9,Silver,The Netherlands,Accounting,Ralph Ambers,2016-07,2016-07-16T00:00:00
+2,1397,100352,,Ayurve Inc Project,200,12,Silver,The Netherlands,Business Consulting,Ralph Ambers,2016-07,2016-07-17T00:00:00
+2,1398,105899,,Ayurve Inc Project,120,1,Gold,Germany,Business Consulting,Ralph Ambers,2016-07,2016-07-18T00:00:00
+2,1399,104947,,Ayurve Inc Project,80,1,Silver,Germany,Business Consulting,Ralph Ambers,2016-07,2016-07-19T00:00:00
+2,1400,100987,,Ayurve Inc Project,62.5,1,Gold,Germany,Accounting,Ralph Ambers,2016-07,2016-07-20T00:00:00
+2,1401,105430,,Ayurve Inc Project,80,5,Silver,Germany,Business Consulting,Ralph Ambers,2016-07,2016-07-21T00:00:00
+2,1402,105007,,Ayurve Inc Project,80,5,Silver,Germany,Business Consulting,Ralph Ambers,2016-07,2016-07-22T00:00:00
+1,1462,102318,,Premenos Technology Corp Project,165,2,Platinum,Germany,Accounting,Will Mugatu,2016-05,2016-05-22T00:00:00
+1,1463,100280,,Premenos Technology Corp Project,112.5,2,Silver,Germany,Accounting,Will Mugatu,2016-05,2016-05-23T00:00:00
+1,1464,106400,,Premenos Technology Corp Project,220,3,Platinum,Germany,Accounting,Will Mugatu,2016-05,2016-05-24T00:00:00
+1,1465,107677,,Premenos Technology Corp Project,110,6,Platinum,Germany,Accounting,Will Mugatu,2016-05,2016-05-25T00:00:00
+1,1466,104355,,Premenos Technology Corp Project,220,8,Silver,Germany,Accounting,Will Mugatu,2016-05,2016-05-26T00:00:00
+1,1467,100256,,Premenos Technology Corp Project,160,9,Silver,Germany,Administration,Will Mugatu,2016-05,2016-05-27T00:00:00
+1,1468,102715,,Premenos Technology Corp Project,40,12,Silver,Germany,Accounting,Will Mugatu,2016-05,2016-05-28T00:00:00
+1,1469,104945,,Premenos Technology Corp Project,150,1,Platinum,Germany,Business Consulting,Will Mugatu,2016-05,2016-05-29T00:00:00
+1,1470,101451,,Premenos Technology Corp Project,120,1,Platinum,Germany,Business Consulting,Will Mugatu,2016-05,2016-05-30T00:00:00
+1,1471,100956,,Premenos Technology Corp Project,150,1,Silver,Germany,Accounting,Will Mugatu,2016-05,2016-05-01T00:00:00
+1,1472,104979,,Premenos Technology Corp Project,180,2,Gold,Germany,Business Consulting,Will Mugatu,2016-05,2016-05-02T00:00:00
+1,1473,104996,,Premenos Technology Corp Project,120,2,Gold,Germany,Business Consulting,Will Mugatu,2016-05,2016-05-03T00:00:00
+1,1474,103595,,Premenos Technology Corp Project,160,3,Platinum,Germany,Accounting,Will Mugatu,2016-05,2016-05-04T00:00:00
+1,1475,107848,,Premenos Technology Corp Project,120,4,Gold,Germany,Accounting,Will Mugatu,2016-05,2016-05-05T00:00:00
+1,1476,102668,,Premenos Technology Corp Project,120,4,Silver,Germany,Administration,Will Mugatu,2016-05,2016-05-06T00:00:00
+1,1477,100873,,Premenos Technology Corp Project,120,10,Bronze,Germany,Business Consulting,Will Mugatu,2016-05,2016-05-07T00:00:00
+1,1478,101681,,Premenos Technology Corp Project,25,1,Bronze,The Netherlands,Accounting,Will Mugatu,2016-06,2016-06-08T00:00:00
+1,1479,103140,,Premenos Technology Corp Project,25,1,Silver,The Netherlands,Business Consulting,Will Mugatu,2016-06,2016-06-09T00:00:00
+1,1480,106407,,Premenos Technology Corp Project,25,1,Platinum,The Netherlands,Accounting,Will Mugatu,2016-06,2016-06-10T00:00:00
+1,1481,106619,,Premenos Technology Corp Project,25,4,Silver,The Netherlands,Accounting,Will Mugatu,2016-06,2016-06-11T00:00:00
+1,1482,101693,,Premenos Technology Corp Project,25,4,Silver,The Netherlands,Accounting,Will Mugatu,2016-06,2016-06-12T00:00:00
+1,1483,100785,,Premenos Technology Corp Project,25,5,Platinum,The Netherlands,Administration,Will Mugatu,2016-06,2016-06-13T00:00:00
+1,1484,101126,,Premenos Technology Corp Project,40,5,Silver,The Netherlands,Business Consulting,Will Mugatu,2016-06,2016-06-14T00:00:00
+1,1485,100852,,Premenos Technology Corp Project,40,10,Platinum,The Netherlands,Business Consulting,Will Mugatu,2016-06,2016-06-15T00:00:00
+1,1486,105960,,Premenos Technology Corp Project,25,1,Gold,Germany,Business Consulting,Will Mugatu,2016-06,2016-06-16T00:00:00
+1,1487,105868,,Premenos Technology Corp Project,180,1,Silver,Germany,Accounting,Will Mugatu,2016-06,2016-06-17T00:00:00
+1,1488,105145,,Premenos Technology Corp Project,180,2,Silver,Germany,Accounting,Will Mugatu,2016-06,2016-06-18T00:00:00
+1,1489,103024,,Premenos Technology Corp Project,180,3,Bronze,Germany,Accounting,Will Mugatu,2016-06,2016-06-19T00:00:00
+1,1490,104831,,Premenos Technology Corp Project,180,4,Platinum,Germany,Accounting,Will Mugatu,2016-06,2016-06-20T00:00:00
+1,1491,102539,,Premenos Technology Corp Project,120,1,Silver,Germany,Business Consulting,Will Mugatu,2016-06,2016-06-21T00:00:00
+1,1492,100501,,Premenos Technology Corp Project,200,1,Platinum,Germany,Business Consulting,Will Mugatu,2016-06,2016-06-22T00:00:00
+1,1493,102160,,Premenos Technology Corp Project,150,1,Platinum,Germany,Accounting,Will Mugatu,2016-06,2016-06-23T00:00:00
+1,1494,107110,,Premenos Technology Corp Project,100,1,Gold,Germany,Accounting,Will Mugatu,2016-06,2016-06-24T00:00:00
+1,1495,105203,,Premenos Technology Corp Project,75,2,Silver,Germany,Business Consulting,Will Mugatu,2016-06,2016-06-25T00:00:00
+1,1496,100786,,Premenos Technology Corp Project,200,2,Gold,Germany,Administration,Will Mugatu,2016-06,2016-06-26T00:00:00
+1,1497,101641,,Premenos Technology Corp Project,75,2,Silver,Germany,Administration,Will Mugatu,2016-06,2016-06-27T00:00:00
+1,1498,101157,,Premenos Technology Corp Project,150,2,Silver,Germany,Accounting,Will Mugatu,2016-06,2016-06-28T00:00:00
+1,1499,101002,,Premenos Technology Corp Project,120,3,Gold,Germany,Administration,Will Mugatu,2016-06,2016-06-29T00:00:00
+1,1500,100500,,Premenos Technology Corp Project,200,3,Platinum,Germany,Accounting,Will Mugatu,2016-06,2016-06-30T00:00:00
+1,1501,104739,,Premenos Technology Corp Project,160,4,Silver,Germany,Accounting,Will Mugatu,2016-06,2016-06-01T00:00:00
+1,1502,108154,,Premenos Technology Corp Project,180,4,Gold,Germany,Business Consulting,Will Mugatu,2016-06,2016-06-02T00:00:00
+1,1503,100504,,Premenos Technology Corp Project,180,4,Silver,Germany,Business Consulting,Will Mugatu,2016-06,2016-06-03T00:00:00
+1,1504,101365,,Premenos Technology Corp Project,100,4,Gold,Germany,Business Consulting,Will Mugatu,2016-06,2016-06-04T00:00:00
+1,1505,107492,,Premenos Technology Corp Project,80,5,Silver,Germany,Business Consulting,Will Mugatu,2016-06,2016-06-05T00:00:00
+1,1506,100496,,Premenos Technology Corp Project,150,5,Silver,Germany,Accounting,Will Mugatu,2016-06,2016-06-06T00:00:00
+1,1507,103033,,Premenos Technology Corp Project,120,6,Gold,Germany,Administration,Will Mugatu,2016-06,2016-06-07T00:00:00
+1,1508,100613,,Premenos Technology Corp Project,80,7,Silver,Germany,Administration,Will Mugatu,2016-06,2016-06-08T00:00:00
+1,1509,103386,,Premenos Technology Corp Project,220,1,Gold,Germany,Business Consulting,Will Mugatu,2016-06,2016-06-09T00:00:00
+1,1510,101928,,Premenos Technology Corp Project,165,1,Gold,Germany,Business Consulting,Will Mugatu,2016-06,2016-06-10T00:00:00
+1,1511,102544,,Premenos Technology Corp Project,200,1,Silver,Germany,Business Consulting,Will Mugatu,2016-06,2016-06-11T00:00:00
+1,1512,107675,,Premenos Technology Corp Project,165,1,Platinum,Germany,Business Consulting,Will Mugatu,2016-06,2016-06-12T00:00:00
+1,1513,102032,,Premenos Technology Corp Project,200,1,Silver,Germany,Business Consulting,Will Mugatu,2016-06,2016-06-13T00:00:00
+1,1514,101098,,Premenos Technology Corp Project,165,1,Silver,Germany,Business Consulting,Will Mugatu,2016-06,2016-06-14T00:00:00
+1,1515,104585,,Premenos Technology Corp Project,82.5,1,Silver,Germany,Business Consulting,Will Mugatu,2016-06,2016-06-15T00:00:00
+1,1516,101742,,Premenos Technology Corp Project,200,3,Bronze,Germany,Accounting,Will Mugatu,2016-06,2016-06-16T00:00:00
+1,1572,107935,,Premenos Technology Corp Project,80,1,Gold,The Netherlands,Business Consulting,Will Mugatu,2016-08,2016-08-12T00:00:00
+1,1573,100255,,Premenos Technology Corp Project,100,2,Gold,The Netherlands,Administration,Will Mugatu,2016-08,2016-08-13T00:00:00
+1,1574,104680,,Premenos Technology Corp Project,200,2,Silver,The Netherlands,Administration,Will Mugatu,2016-08,2016-08-14T00:00:00
+1,1575,106901,,Premenos Technology Corp Project,100,2,Gold,The Netherlands,Administration,Will Mugatu,2016-08,2016-08-15T00:00:00
+1,1576,104358,,Premenos Technology Corp Project,50,2,Platinum,The Netherlands,Accounting,Will Mugatu,2016-08,2016-08-16T00:00:00
+1,1577,107549,,Premenos Technology Corp Project,200,5,Gold,The Netherlands,Business Consulting,Will Mugatu,2016-08,2016-08-17T00:00:00
+1,1578,106397,,Premenos Technology Corp Project,25,5,Silver,The Netherlands,Accounting,Will Mugatu,2016-08,2016-08-18T00:00:00
+1,1579,105032,,Premenos Technology Corp Project,37.5,6,Gold,The Netherlands,Accounting,Will Mugatu,2016-08,2016-08-19T00:00:00
+1,1580,106398,,Premenos Technology Corp Project,160,4,Silver,Germany,Accounting,Will Mugatu,2016-08,2016-08-20T00:00:00
+1,1581,104969,,Premenos Technology Corp Project,80,6,Bronze,Germany,Business Consulting,Will Mugatu,2016-08,2016-08-21T00:00:00
+1,1582,105152,,Premenos Technology Corp Project,225,1,Silver,Germany,Accounting,Will Mugatu,2016-08,2016-08-22T00:00:00
+1,1583,106394,,Premenos Technology Corp Project,150,2,Gold,Germany,Accounting,Will Mugatu,2016-08,2016-08-23T00:00:00
+1,1584,107594,,Premenos Technology Corp Project,100,4,Bronze,Germany,Business Consulting,Will Mugatu,2016-08,2016-08-24T00:00:00
+1,1585,104356,,Premenos Technology Corp Project,225,11,Silver,Germany,Accounting,Will Mugatu,2016-08,2016-08-25T00:00:00
+1,1586,104200,,Premenos Technology Corp Project,220,1,Silver,Germany,Accounting,Will Mugatu,2016-08,2016-08-26T00:00:00
+1,1587,104126,,Premenos Technology Corp Project,110,1,Silver,Germany,Accounting,Will Mugatu,2016-08,2016-08-27T00:00:00
+1,1588,104582,,Premenos Technology Corp Project,247.5,3,Platinum,Germany,Accounting,Will Mugatu,2016-08,2016-08-28T00:00:00
+1,1589,105226,,Premenos Technology Corp Project,82.5,4,Platinum,Germany,Business Consulting,Will Mugatu,2016-08,2016-08-29T00:00:00
+1,1590,105213,,Premenos Technology Corp Project,247.5,1,Gold,Germany,Business Consulting,Will Mugatu,2016-08,2016-08-30T00:00:00
+1,1591,107984,,Premenos Technology Corp Project,240,4,Silver,Germany,Business Consulting,Will Mugatu,2016-08,2016-08-01T00:00:00
+1,1592,103099,,Premenos Technology Corp Project,180,1,Gold,The Netherlands,Accounting,Will Mugatu,2016-09,2016-09-02T00:00:00
+1,1593,101704,,Premenos Technology Corp Project,200,2,Platinum,The Netherlands,Accounting,Will Mugatu,2016-09,2016-09-03T00:00:00
+1,1594,105376,,Premenos Technology Corp Project,40,4,Platinum,The Netherlands,Accounting,Will Mugatu,2016-09,2016-09-04T00:00:00
+1,1517,101200,,Premenos Technology Corp Project,200,3,Silver,Germany,Accounting,Will Mugatu,2016-06,2016-06-17T00:00:00
+1,1518,100832,,Premenos Technology Corp Project,165,3,Silver,Germany,Accounting,Will Mugatu,2016-06,2016-06-18T00:00:00
+1,1519,102317,,Premenos Technology Corp Project,165,4,Platinum,Germany,Accounting,Will Mugatu,2016-06,2016-06-19T00:00:00
+1,1520,106167,,Premenos Technology Corp Project,82.5,6,Silver,Germany,Accounting,Will Mugatu,2016-06,2016-06-20T00:00:00
+1,1521,103594,,Premenos Technology Corp Project,165,6,Platinum,Germany,Accounting,Will Mugatu,2016-06,2016-06-21T00:00:00
+1,1522,101816,,Premenos Technology Corp Project,82.5,9,Silver,Germany,Business Consulting,Will Mugatu,2016-06,2016-06-22T00:00:00
+1,1523,106620,,Premenos Technology Corp Project,240,1,Silver,Germany,Business Consulting,Will Mugatu,2016-06,2016-06-23T00:00:00
+1,1524,101351,,Premenos Technology Corp Project,150,1,Silver,Germany,Business Consulting,Will Mugatu,2016-06,2016-06-24T00:00:00
+1,1525,101190,,Premenos Technology Corp Project,150,1,Silver,Germany,Accounting,Will Mugatu,2016-06,2016-06-25T00:00:00
+1,1526,103065,,Premenos Technology Corp Project,150,1,Gold,Germany,Accounting,Will Mugatu,2016-06,2016-06-26T00:00:00
+1,1527,100502,,Premenos Technology Corp Project,240,2,Platinum,Germany,Business Consulting,Will Mugatu,2016-06,2016-06-27T00:00:00
+1,1528,105548,,Premenos Technology Corp Project,240,3,Gold,Germany,Business Consulting,Will Mugatu,2016-06,2016-06-28T00:00:00
+1,1529,100964,,Premenos Technology Corp Project,120,3,Silver,Germany,Accounting,Will Mugatu,2016-06,2016-06-29T00:00:00
+1,1530,100506,,Premenos Technology Corp Project,240,8,Platinum,Germany,Accounting,Will Mugatu,2016-06,2016-06-30T00:00:00
+1,1531,104758,,Premenos Technology Corp Project,240,19,Silver,Germany,Accounting,Will Mugatu,2016-06,2016-06-01T00:00:00
+1,1532,103722,,Premenos Technology Corp Project,25,1,Bronze,The Netherlands,Accounting,Will Mugatu,2016-07,2016-07-02T00:00:00
+1,1533,107415,,Premenos Technology Corp Project,160,1,Silver,The Netherlands,Accounting,Will Mugatu,2016-07,2016-07-03T00:00:00
+1,1534,100120,,Premenos Technology Corp Project,200,1,Platinum,The Netherlands,Accounting,Will Mugatu,2016-07,2016-07-04T00:00:00
+1,1535,100499,,Premenos Technology Corp Project,180,1,Platinum,The Netherlands,Accounting,Will Mugatu,2016-07,2016-07-05T00:00:00
+1,1536,100119,,Premenos Technology Corp Project,25,1,Platinum,The Netherlands,Accounting,Will Mugatu,2016-07,2016-07-06T00:00:00
+1,1537,106716,,Premenos Technology Corp Project,200,2,Silver,The Netherlands,Administration,Will Mugatu,2016-07,2016-07-07T00:00:00
+1,1538,100247,,Premenos Technology Corp Project,200,2,Platinum,The Netherlands,Administration,Will Mugatu,2016-07,2016-07-08T00:00:00
+1,1539,108132,,Premenos Technology Corp Project,180,2,Platinum,The Netherlands,Accounting,Will Mugatu,2016-07,2016-07-09T00:00:00
+1,1540,107273,,Premenos Technology Corp Project,25,3,Platinum,The Netherlands,Accounting,Will Mugatu,2016-07,2016-07-10T00:00:00
+1,1541,103670,,Premenos Technology Corp Project,200,3,Silver,The Netherlands,Administration,Will Mugatu,2016-07,2016-07-11T00:00:00
+1,1542,107026,,Premenos Technology Corp Project,25,4,Gold,The Netherlands,Business Consulting,Will Mugatu,2016-07,2016-07-12T00:00:00
+1,1543,103190,,Premenos Technology Corp Project,25,4,Gold,The Netherlands,Accounting,Will Mugatu,2016-07,2016-07-13T00:00:00
+1,1544,107306,,Premenos Technology Corp Project,25,5,Platinum,The Netherlands,Accounting,Will Mugatu,2016-07,2016-07-14T00:00:00
+1,1545,105912,,Premenos Technology Corp Project,200,7,Platinum,The Netherlands,Business Consulting,Will Mugatu,2016-07,2016-07-15T00:00:00
+1,1546,100118,,Premenos Technology Corp Project,25,9,Silver,The Netherlands,Accounting,Will Mugatu,2016-07,2016-07-16T00:00:00
+1,1547,100510,,Premenos Technology Corp Project,180,1,Gold,Germany,Accounting,Will Mugatu,2016-07,2016-07-17T00:00:00
+1,1548,105255,,Premenos Technology Corp Project,180,1,Bronze,Germany,Accounting,Will Mugatu,2016-07,2016-07-18T00:00:00
+1,1549,100044,,Premenos Technology Corp Project,62.5,1,Silver,Germany,Accounting,Will Mugatu,2016-07,2016-07-19T00:00:00
+1,1550,100043,,Premenos Technology Corp Project,80,2,Silver,Germany,Accounting,Will Mugatu,2016-07,2016-07-20T00:00:00
+1,1551,105189,,Premenos Technology Corp Project,80,3,Gold,Germany,Business Consulting,Will Mugatu,2016-07,2016-07-21T00:00:00
+1,1552,100916,,Premenos Technology Corp Project,80,4,Silver,Germany,Business Consulting,Will Mugatu,2016-07,2016-07-22T00:00:00
+1,1553,100891,,Premenos Technology Corp Project,80,4,Silver,Germany,Business Consulting,Will Mugatu,2016-07,2016-07-23T00:00:00
+1,1554,100281,,Premenos Technology Corp Project,80,5,Platinum,Germany,Accounting,Will Mugatu,2016-07,2016-07-24T00:00:00
+1,1555,107685,,Premenos Technology Corp Project,80,6,Silver,Germany,Accounting,Will Mugatu,2016-07,2016-07-25T00:00:00
+1,1556,106790,,Premenos Technology Corp Project,80,6,Platinum,Germany,Accounting,Will Mugatu,2016-07,2016-07-26T00:00:00
+1,1557,100284,,Premenos Technology Corp Project,80,6,Platinum,Germany,Accounting,Will Mugatu,2016-07,2016-07-27T00:00:00
+1,1558,100275,,Premenos Technology Corp Project,62.5,6,Silver,Germany,Accounting,Will Mugatu,2016-07,2016-07-28T00:00:00
+1,1559,100273,,Premenos Technology Corp Project,160,11,Silver,Germany,Accounting,Will Mugatu,2016-07,2016-07-29T00:00:00
+1,1560,103876,,Premenos Technology Corp Project,80,12,Silver,Germany,Business Consulting,Will Mugatu,2016-07,2016-07-30T00:00:00
+1,1561,100277,,Premenos Technology Corp Project,200,2,Platinum,Germany,Accounting,Will Mugatu,2016-07,2016-07-01T00:00:00
+1,1562,108139,,Premenos Technology Corp Project,200,3,Silver,Germany,Accounting,Will Mugatu,2016-07,2016-07-02T00:00:00
+1,1563,100283,,Premenos Technology Corp Project,150,4,Platinum,Germany,Accounting,Will Mugatu,2016-07,2016-07-03T00:00:00
+1,1564,105439,,Premenos Technology Corp Project,165,1,Bronze,Germany,Business Consulting,Will Mugatu,2016-07,2016-07-04T00:00:00
+1,1565,103662,,Premenos Technology Corp Project,82.5,3,Platinum,Germany,Administration,Will Mugatu,2016-07,2016-07-05T00:00:00
+1,1566,105020,,Premenos Technology Corp Project,82.5,3,Gold,Germany,Accounting,Will Mugatu,2016-07,2016-07-06T00:00:00
+1,1567,104753,,Premenos Technology Corp Project,240,3,Silver,Germany,Accounting,Will Mugatu,2016-07,2016-07-07T00:00:00
+1,1568,107846,,Premenos Technology Corp Project,150,3,Gold,Germany,Accounting,Will Mugatu,2016-07,2016-07-08T00:00:00
+1,1569,104286,,Premenos Technology Corp Project,247.5,6,Platinum,Germany,Business Consulting,Will Mugatu,2016-07,2016-07-09T00:00:00
+1,1570,103989,,Premenos Technology Corp Project,160,1,Bronze,The Netherlands,Business Consulting,Will Mugatu,2016-08,2016-08-10T00:00:00
+1,1571,107860,,Premenos Technology Corp Project,25,1,Silver,The Netherlands,Accounting,Will Mugatu,2016-08,2016-08-11T00:00:00
+2,1403,103474,,Ayurve Inc Project,80,7,Silver,Germany,Business Consulting,Ralph Ambers,2016-07,2016-07-23T00:00:00
+2,1404,105552,,Ayurve Inc Project,75,1,Platinum,Germany,Business Consulting,Ralph Ambers,2016-07,2016-07-24T00:00:00
+2,1405,104115,,Ayurve Inc Project,75,1,Silver,Germany,Accounting,Ralph Ambers,2016-07,2016-07-25T00:00:00
+2,1406,100759,,Ayurve Inc Project,75,1,Silver,Germany,Accounting,Ralph Ambers,2016-07,2016-07-26T00:00:00
+2,1407,104325,,Ayurve Inc Project,150,3,Bronze,Germany,Administration,Ralph Ambers,2016-07,2016-07-27T00:00:00
+2,1408,104434,,Ayurve Inc Project,200,4,Silver,Germany,Business Consulting,Ralph Ambers,2016-07,2016-07-28T00:00:00
+2,1409,104830,,Ayurve Inc Project,225,4,Silver,Germany,Accounting,Ralph Ambers,2016-07,2016-07-29T00:00:00
+2,1410,104512,,Ayurve Inc Project,75,7,Silver,Germany,Accounting,Ralph Ambers,2016-07,2016-07-30T00:00:00
+2,1411,100834,,Ayurve Inc Project,100,9,Silver,Germany,Accounting,Ralph Ambers,2016-07,2016-07-01T00:00:00
+2,1412,107148,,Ayurve Inc Project,165,3,Silver,Germany,Accounting,Ralph Ambers,2016-07,2016-07-02T00:00:00
+2,1413,100030,,Ayurve Inc Project,165,5,Silver,Germany,Accounting,Ralph Ambers,2016-07,2016-07-03T00:00:00
+2,1414,104435,,Ayurve Inc Project,247.5,6,Silver,Germany,Accounting,Ralph Ambers,2016-07,2016-07-04T00:00:00
+2,1415,105817,,Ayurve Inc Project,220,7,Platinum,Germany,Accounting,Ralph Ambers,2016-07,2016-07-05T00:00:00
+2,1416,101201,,Ayurve Inc Project,247.5,1,Gold,Germany,Accounting,Ralph Ambers,2016-07,2016-07-06T00:00:00
+2,1417,107406,,Ayurve Inc Project,150,1,Silver,Germany,Business Consulting,Ralph Ambers,2016-07,2016-07-07T00:00:00
+2,1418,103841,,Ayurve Inc Project,240,1,Gold,Germany,Accounting,Ralph Ambers,2016-07,2016-07-08T00:00:00
+2,1419,101281,,Ayurve Inc Project,150,1,Silver,Germany,Accounting,Ralph Ambers,2016-07,2016-07-09T00:00:00
+2,1420,105700,,Ayurve Inc Project,240,2,Platinum,Germany,Administration,Ralph Ambers,2016-07,2016-07-10T00:00:00
+2,1421,103455,,Ayurve Inc Project,247.5,3,Silver,Germany,Business Consulting,Ralph Ambers,2016-07,2016-07-11T00:00:00
+2,1422,100884,,Ayurve Inc Project,247.5,6,Gold,Germany,Business Consulting,Ralph Ambers,2016-07,2016-07-12T00:00:00
+2,1423,105504,,Ayurve Inc Project,247.5,7,Gold,Germany,Business Consulting,Ralph Ambers,2016-07,2016-07-13T00:00:00
+2,1424,107062,,Ayurve Inc Project,247.5,7,Bronze,Germany,Accounting,Ralph Ambers,2016-07,2016-07-14T00:00:00
+2,1425,105365,,Ayurve Inc Project,25,1,Silver,The Netherlands,Business Consulting,Ralph Ambers,2016-08,2016-08-15T00:00:00
+2,1426,103485,,Ayurve Inc Project,25,3,Gold,The Netherlands,Business Consulting,Ralph Ambers,2016-08,2016-08-16T00:00:00
+2,1427,104513,,Ayurve Inc Project,50,4,Silver,The Netherlands,Accounting,Ralph Ambers,2016-08,2016-08-17T00:00:00
+2,1428,105363,,Ayurve Inc Project,200,4,Silver,The Netherlands,Accounting,Ralph Ambers,2016-08,2016-08-18T00:00:00
+2,1429,106155,,Ayurve Inc Project,25,6,Silver,The Netherlands,Accounting,Ralph Ambers,2016-08,2016-08-19T00:00:00
+2,1430,104657,,Ayurve Inc Project,120,6,Platinum,The Netherlands,Accounting,Ralph Ambers,2016-08,2016-08-20T00:00:00
+2,1431,105046,,Ayurve Inc Project,25,6,Silver,The Netherlands,Accounting,Ralph Ambers,2016-08,2016-08-21T00:00:00
+2,1432,105198,,Ayurve Inc Project,50,9,Silver,The Netherlands,Business Consulting,Ralph Ambers,2016-08,2016-08-22T00:00:00
+2,1433,103973,,Ayurve Inc Project,25,11,Silver,The Netherlands,Business Consulting,Ralph Ambers,2016-08,2016-08-23T00:00:00
+2,1434,107293,,Ayurve Inc Project,200,12,Platinum,The Netherlands,Accounting,Ralph Ambers,2016-08,2016-08-24T00:00:00
+2,1435,105837,,Ayurve Inc Project,120,4,Gold,Germany,Accounting,Ralph Ambers,2016-08,2016-08-25T00:00:00
+2,1436,108067,,Ayurve Inc Project,225,1,Silver,Germany,Business Consulting,Ralph Ambers,2016-08,2016-08-26T00:00:00
+2,1437,107407,,Ayurve Inc Project,240,5,Silver,Germany,Business Consulting,Ralph Ambers,2016-08,2016-08-27T00:00:00
+2,1438,101357,,Ayurve Inc Project,25,1,Bronze,The Netherlands,Business Consulting,Ralph Ambers,2016-09,2016-09-28T00:00:00
+2,1439,102804,,Ayurve Inc Project,25,4,Platinum,The Netherlands,Accounting,Ralph Ambers,2016-09,2016-09-29T00:00:00
+2,1440,102471,,Ayurve Inc Project,200,4,Silver,The Netherlands,Accounting,Ralph Ambers,2016-09,2016-09-30T00:00:00
+2,1441,107695,,Ayurve Inc Project,120,5,Bronze,The Netherlands,Accounting,Ralph Ambers,2016-09,2016-09-01T00:00:00
+2,1442,106815,,Ayurve Inc Project,200,5,Silver,The Netherlands,Administration,Ralph Ambers,2016-09,2016-09-02T00:00:00
+2,1443,105491,,Ayurve Inc Project,180,9,Bronze,Germany,Business Consulting,Ralph Ambers,2016-09,2016-09-03T00:00:00
+1,1444,106624,,Premenos Technology Corp Project,120,1,Platinum,Germany,Business Consulting,Will Mugatu,2016-05,2016-05-04T00:00:00
+1,1445,102159,,Premenos Technology Corp Project,80,1,Silver,Germany,Accounting,Will Mugatu,2016-05,2016-05-05T00:00:00
+1,1446,105964,,Premenos Technology Corp Project,80,1,Silver,Germany,Business Consulting,Will Mugatu,2016-05,2016-05-06T00:00:00
+1,1447,100204,,Premenos Technology Corp Project,80,3,Platinum,Germany,Business Consulting,Will Mugatu,2016-05,2016-05-07T00:00:00
+1,1448,101361,,Premenos Technology Corp Project,120,4,Bronze,Germany,Business Consulting,Will Mugatu,2016-05,2016-05-08T00:00:00
+1,1449,102788,,Premenos Technology Corp Project,137.5,10,Platinum,Germany,Accounting,Will Mugatu,2016-05,2016-05-09T00:00:00
+1,1450,105536,,Premenos Technology Corp Project,137.5,11,Gold,Germany,Business Consulting,Will Mugatu,2016-05,2016-05-10T00:00:00
+1,1451,100927,,Premenos Technology Corp Project,80,1,Gold,Germany,Business Consulting,Will Mugatu,2016-05,2016-05-11T00:00:00
+1,1452,105634,,Premenos Technology Corp Project,80,1,Platinum,Germany,Business Consulting,Will Mugatu,2016-05,2016-05-12T00:00:00
+1,1453,105078,,Premenos Technology Corp Project,80,2,Platinum,Germany,Administration,Will Mugatu,2016-05,2016-05-13T00:00:00
+1,1454,106743,,Premenos Technology Corp Project,150,2,Gold,Germany,Administration,Will Mugatu,2016-05,2016-05-14T00:00:00
+1,1455,102322,,Premenos Technology Corp Project,120,3,Platinum,Germany,Accounting,Will Mugatu,2016-05,2016-05-15T00:00:00
+1,1456,107239,,Premenos Technology Corp Project,180,3,Silver,Germany,Business Consulting,Will Mugatu,2016-05,2016-05-16T00:00:00
+1,1457,104578,,Premenos Technology Corp Project,160,5,Silver,Germany,Accounting,Will Mugatu,2016-05,2016-05-17T00:00:00
+1,1458,106217,,Premenos Technology Corp Project,75,7,Platinum,Germany,Accounting,Will Mugatu,2016-05,2016-05-18T00:00:00
+1,1459,108003,,Premenos Technology Corp Project,165,1,Silver,Germany,Business Consulting,Will Mugatu,2016-05,2016-05-19T00:00:00
+1,1460,107881,,Premenos Technology Corp Project,247.5,1,Platinum,Germany,Accounting,Will Mugatu,2016-05,2016-05-20T00:00:00
+1,1461,101024,,Premenos Technology Corp Project,110,2,Gold,Germany,Accounting,Will Mugatu,2016-05,2016-05-21T00:00:00
+5,1154,103561,,JP Corp Project,80,2,Silver,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-14T00:00:00
+5,1155,101380,,JP Corp Project,102.5,2,Gold,Germany,Administration,Lisa Jones,2016-06,2016-06-15T00:00:00
+5,1156,100602,,JP Corp Project,100,2,Gold,Germany,Administration,Lisa Jones,2016-06,2016-06-16T00:00:00
+5,1157,101525,,JP Corp Project,107.5,2,Silver,Germany,Administration,Lisa Jones,2016-06,2016-06-17T00:00:00
+5,1158,104659,,JP Corp Project,107.5,2,Gold,Germany,Accounting,Lisa Jones,2016-06,2016-06-18T00:00:00
+5,1159,101213,,JP Corp Project,120,2,Gold,Germany,Accounting,Lisa Jones,2016-06,2016-06-19T00:00:00
+5,1160,100999,,JP Corp Project,100,2,Silver,Germany,Administration,Lisa Jones,2016-06,2016-06-20T00:00:00
+5,1161,102482,,JP Corp Project,117.5,2,Platinum,Germany,Accounting,Lisa Jones,2016-06,2016-06-21T00:00:00
+5,1162,102408,,JP Corp Project,115,3,Platinum,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-22T00:00:00
+5,1163,106488,,JP Corp Project,120,3,Silver,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-23T00:00:00
+5,1164,100433,,JP Corp Project,80,3,Gold,Germany,Accounting,Lisa Jones,2016-06,2016-06-24T00:00:00
+5,1165,102404,,JP Corp Project,117.5,4,Silver,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-25T00:00:00
+5,1166,100366,,JP Corp Project,100,4,Platinum,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-26T00:00:00
+5,1167,103134,,JP Corp Project,75,5,Platinum,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-27T00:00:00
+5,1168,106613,,JP Corp Project,80,6,Gold,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-28T00:00:00
+5,1169,102205,,JP Corp Project,100,7,Gold,Germany,Accounting,Lisa Jones,2016-06,2016-06-29T00:00:00
+5,1170,107697,,JP Corp Project,75,7,Gold,Germany,Accounting,Lisa Jones,2016-06,2016-06-30T00:00:00
+5,1171,101687,,JP Corp Project,107.5,7,Silver,Germany,Accounting,Lisa Jones,2016-06,2016-06-01T00:00:00
+5,1172,100435,,JP Corp Project,107.5,8,Gold,Germany,Accounting,Lisa Jones,2016-06,2016-06-02T00:00:00
+5,1173,102108,,JP Corp Project,117.5,8,Bronze,Germany,Accounting,Lisa Jones,2016-06,2016-06-03T00:00:00
+5,1174,103610,,JP Corp Project,120,9,Gold,Germany,Accounting,Lisa Jones,2016-06,2016-06-04T00:00:00
+5,1175,103332,,JP Corp Project,117.5,9,Platinum,Germany,Accounting,Lisa Jones,2016-06,2016-06-05T00:00:00
+5,1176,101711,,JP Corp Project,120,9,Platinum,Germany,Accounting,Lisa Jones,2016-06,2016-06-06T00:00:00
+5,1177,101530,,JP Corp Project,102.5,11,Platinum,Germany,Administration,Lisa Jones,2016-06,2016-06-07T00:00:00
+5,1178,100370,,JP Corp Project,107.5,12,Gold,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-08T00:00:00
+5,1179,100458,,JP Corp Project,117.5,13,Silver,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-09T00:00:00
+5,1180,106395,,JP Corp Project,40,13,Platinum,Germany,Accounting,Lisa Jones,2016-06,2016-06-10T00:00:00
+5,1181,101452,,JP Corp Project,120,16,Gold,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-11T00:00:00
+5,1182,101760,,JP Corp Project,110,1,Gold,Germany,Accounting,Lisa Jones,2016-06,2016-06-12T00:00:00
+5,1183,101859,,JP Corp Project,102.5,1,Gold,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-13T00:00:00
+5,1184,101439,,JP Corp Project,102.5,1,Silver,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-14T00:00:00
+5,1185,101942,,JP Corp Project,102.5,2,Bronze,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-15T00:00:00
+5,1186,103786,,JP Corp Project,110,2,Silver,Germany,Accounting,Lisa Jones,2016-06,2016-06-16T00:00:00
+5,1187,106306,,JP Corp Project,110,2,Platinum,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-17T00:00:00
+5,1188,107656,,JP Corp Project,110,3,Bronze,Germany,Administration,Lisa Jones,2016-06,2016-06-18T00:00:00
+5,1189,102407,,JP Corp Project,102.5,3,Platinum,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-19T00:00:00
+5,1190,103665,,JP Corp Project,82.5,3,Silver,Germany,Administration,Lisa Jones,2016-06,2016-06-20T00:00:00
+5,1191,106112,,JP Corp Project,127.5,4,Bronze,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-21T00:00:00
+5,1192,104712,,JP Corp Project,110,5,Gold,Germany,Accounting,Lisa Jones,2016-06,2016-06-22T00:00:00
+5,1193,102203,,JP Corp Project,102.5,5,Bronze,Germany,Accounting,Lisa Jones,2016-06,2016-06-23T00:00:00
+5,1194,102480,,JP Corp Project,102.5,5,Silver,Germany,Administration,Lisa Jones,2016-06,2016-06-24T00:00:00
+5,1195,103156,,JP Corp Project,82.5,6,Platinum,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-25T00:00:00
+5,1196,106735,,JP Corp Project,127.5,14,Platinum,Germany,Administration,Lisa Jones,2016-06,2016-06-26T00:00:00
+5,1197,101517,,JP Corp Project,112.5,15,Gold,Germany,Administration,Lisa Jones,2016-06,2016-06-27T00:00:00
+5,1198,104540,,JP Corp Project,102.5,1,Silver,Germany,Business Consulting,Lisa Jones,2016-06,2016-06-28T00:00:00
+5,1199,105616,,JP Corp Project,102.5,3,Bronze,Germany,Administration,Lisa Jones,2016-06,2016-06-29T00:00:00
+5,1200,103766,,JP Corp Project,102.5,5,Gold,Germany,Accounting,Lisa Jones,2016-06,2016-06-30T00:00:00
+5,1201,103725,,JP Corp Project,102.5,6,Bronze,Germany,Accounting,Lisa Jones,2016-06,2016-06-01T00:00:00
+5,1202,106770,,JP Corp Project,102.5,7,Silver,Germany,Accounting,Lisa Jones,2016-06,2016-06-02T00:00:00
+5,1203,105085,,JP Corp Project,102.5,9,Gold,Germany,Administration,Lisa Jones,2016-06,2016-06-03T00:00:00
+5,1204,106150,,JP Corp Project,100,13,Silver,Germany,Accounting,Lisa Jones,2016-06,2016-06-04T00:00:00
+5,1205,104902,,JP Corp Project,155,1,Silver,The Netherlands,Accounting,Lisa Jones,2016-07,2016-07-05T00:00:00
+5,1206,103188,,JP Corp Project,25,1,Platinum,The Netherlands,Business Consulting,Lisa Jones,2016-07,2016-07-06T00:00:00
+5,1207,104239,,JP Corp Project,80,2,Silver,The Netherlands,Administration,Lisa Jones,2016-07,2016-07-07T00:00:00
+5,1208,105458,,JP Corp Project,25,2,Gold,The Netherlands,Administration,Lisa Jones,2016-07,2016-07-08T00:00:00
+5,1209,100308,,JP Corp Project,120,2,Silver,The Netherlands,Administration,Lisa Jones,2016-07,2016-07-09T00:00:00
+5,1210,101313,,JP Corp Project,25,2,Gold,The Netherlands,Administration,Lisa Jones,2016-07,2016-07-10T00:00:00
+5,1211,100002,,JP Corp Project,25,2,Gold,The Netherlands,Accounting,Lisa Jones,2016-07,2016-07-11T00:00:00
+5,1212,100443,,JP Corp Project,25,2,Bronze,The Netherlands,Accounting,Lisa Jones,2016-07,2016-07-12T00:00:00
+5,1213,108015,,JP Corp Project,40,2,Gold,The Netherlands,Business Consulting,Lisa Jones,2016-07,2016-07-13T00:00:00
+5,1214,106759,,JP Corp Project,160,2,Silver,The Netherlands,Accounting,Lisa Jones,2016-07,2016-07-14T00:00:00
+5,1215,100067,,JP Corp Project,155,2,Bronze,The Netherlands,Accounting,Lisa Jones,2016-07,2016-07-15T00:00:00
+5,1216,100363,,JP Corp Project,155,2,Silver,The Netherlands,Business Consulting,Lisa Jones,2016-07,2016-07-16T00:00:00
+5,1217,100299,,JP Corp Project,25,2,Platinum,The Netherlands,Accounting,Lisa Jones,2016-07,2016-07-17T00:00:00
+5,1218,104517,,JP Corp Project,80,3,Gold,The Netherlands,Accounting,Lisa Jones,2016-07,2016-07-18T00:00:00
+5,1219,100357,,JP Corp Project,155,3,Gold,The Netherlands,Accounting,Lisa Jones,2016-07,2016-07-19T00:00:00
+5,1220,100159,,JP Corp Project,25,3,Platinum,The Netherlands,Business Consulting,Lisa Jones,2016-07,2016-07-20T00:00:00
+5,1221,105015,,JP Corp Project,155,3,Silver,The Netherlands,Accounting,Lisa Jones,2016-07,2016-07-21T00:00:00
+5,1222,105446,,JP Corp Project,25,3,Bronze,The Netherlands,Business Consulting,Lisa Jones,2016-07,2016-07-22T00:00:00
+5,1223,100926,,JP Corp Project,155,3,Gold,The Netherlands,Business Consulting,Lisa Jones,2016-07,2016-07-23T00:00:00
+5,1224,106877,,JP Corp Project,80,4,Bronze,The Netherlands,Accounting,Lisa Jones,2016-07,2016-07-24T00:00:00
+5,1225,106107,,JP Corp Project,120,4,Bronze,The Netherlands,Business Consulting,Lisa Jones,2016-07,2016-07-25T00:00:00
+5,1226,103263,,JP Corp Project,25,4,Silver,The Netherlands,Accounting,Lisa Jones,2016-07,2016-07-26T00:00:00
+5,1227,100311,,JP Corp Project,25,4,Platinum,The Netherlands,Business Consulting,Lisa Jones,2016-07,2016-07-27T00:00:00
+5,1228,106574,,JP Corp Project,25,5,Gold,The Netherlands,Accounting,Lisa Jones,2016-07,2016-07-28T00:00:00
+5,1229,105156,,JP Corp Project,155,6,Bronze,The Netherlands,Business Consulting,Lisa Jones,2016-07,2016-07-29T00:00:00
+5,1230,106435,,JP Corp Project,155,6,Bronze,The Netherlands,Accounting,Lisa Jones,2016-07,2016-07-30T00:00:00
+5,1231,103491,,JP Corp Project,120,8,Silver,The Netherlands,Business Consulting,Lisa Jones,2016-07,2016-07-01T00:00:00
+5,1232,105168,,JP Corp Project,160,8,Silver,The Netherlands,Business Consulting,Lisa Jones,2016-07,2016-07-02T00:00:00
+5,1233,105077,,JP Corp Project,120,10,Gold,The Netherlands,Administration,Lisa Jones,2016-07,2016-07-03T00:00:00
+5,1234,104452,,JP Corp Project,40,14,Gold,The Netherlands,Business Consulting,Lisa Jones,2016-07,2016-07-04T00:00:00
+5,1235,107074,,JP Corp Project,40,18,Silver,The Netherlands,Accounting,Lisa Jones,2016-07,2016-07-05T00:00:00
+5,1236,100568,,JP Corp Project,180,1,Gold,Germany,Accounting,Lisa Jones,2016-07,2016-07-06T00:00:00
+5,1237,105834,,JP Corp Project,120,1,Silver,Germany,Accounting,Lisa Jones,2016-07,2016-07-07T00:00:00
+5,1238,105600,,JP Corp Project,160,2,Gold,Germany,Administration,Lisa Jones,2016-07,2016-07-08T00:00:00
+5,1239,100365,,JP Corp Project,80,2,Silver,Germany,Business Consulting,Lisa Jones,2016-07,2016-07-09T00:00:00
+5,1240,100062,,JP Corp Project,80,2,Bronze,Germany,Administration,Lisa Jones,2016-07,2016-07-10T00:00:00
+5,1241,105605,,JP Corp Project,80,3,Silver,Germany,Administration,Lisa Jones,2016-07,2016-07-11T00:00:00
+5,1242,107502,,JP Corp Project,62.5,4,Gold,Germany,Business Consulting,Lisa Jones,2016-07,2016-07-12T00:00:00
+5,1243,100316,,JP Corp Project,62.5,4,Silver,Germany,Administration,Lisa Jones,2016-07,2016-07-13T00:00:00
+5,1244,106433,,JP Corp Project,62.5,11,Platinum,Germany,Business Consulting,Lisa Jones,2016-07,2016-07-14T00:00:00
+5,1245,104458,,JP Corp Project,150,14,Gold,Germany,Administration,Lisa Jones,2016-07,2016-07-15T00:00:00
+5,1246,106933,,JP Corp Project,75,1,Gold,Germany,Accounting,Lisa Jones,2016-07,2016-07-16T00:00:00
+5,1247,104389,,JP Corp Project,75,1,Gold,Germany,Business Consulting,Lisa Jones,2016-07,2016-07-17T00:00:00
+5,1248,104248,,JP Corp Project,100,2,Gold,Germany,Administration,Lisa Jones,2016-07,2016-07-18T00:00:00
+5,1249,106362,,JP Corp Project,102.5,2,Gold,Germany,Administration,Lisa Jones,2016-07,2016-07-19T00:00:00
+5,1250,100304,,JP Corp Project,102.5,2,Gold,Germany,Administration,Lisa Jones,2016-07,2016-07-20T00:00:00
+5,1251,104396,,JP Corp Project,100,2,Gold,Germany,Accounting,Lisa Jones,2016-07,2016-07-21T00:00:00
+5,1252,100183,,JP Corp Project,100,4,Platinum,Germany,Business Consulting,Lisa Jones,2016-07,2016-07-22T00:00:00
+5,1253,100307,,JP Corp Project,100,7,Gold,Germany,Business Consulting,Lisa Jones,2016-07,2016-07-23T00:00:00
+5,1254,100158,,JP Corp Project,115,10,Silver,Germany,Business Consulting,Lisa Jones,2016-07,2016-07-24T00:00:00
+5,1255,105223,,JP Corp Project,110,1,Bronze,Germany,Business Consulting,Lisa Jones,2016-07,2016-07-25T00:00:00
+5,1256,103420,,JP Corp Project,110,2,Gold,Germany,Business Consulting,Lisa Jones,2016-07,2016-07-26T00:00:00
+5,1257,106505,,JP Corp Project,112.5,2,Bronze,Germany,Administration,Lisa Jones,2016-07,2016-07-27T00:00:00
+5,1258,105611,,JP Corp Project,110,4,Platinum,Germany,Administration,Lisa Jones,2016-07,2016-07-28T00:00:00
+5,1259,107763,,JP Corp Project,112.5,5,Gold,Germany,Administration,Lisa Jones,2016-07,2016-07-29T00:00:00
+5,1260,107843,,JP Corp Project,82.5,6,Silver,Germany,Accounting,Lisa Jones,2016-07,2016-07-30T00:00:00
+5,1261,103355,,JP Corp Project,127.5,6,Gold,Germany,Administration,Lisa Jones,2016-07,2016-07-01T00:00:00
+5,1262,104267,,JP Corp Project,112.5,6,Silver,Germany,Business Consulting,Lisa Jones,2016-07,2016-07-02T00:00:00
+5,1263,104147,,JP Corp Project,110,7,Gold,Germany,Accounting,Lisa Jones,2016-07,2016-07-03T00:00:00
+5,1264,104393,,JP Corp Project,127.5,7,Platinum,Germany,Business Consulting,Lisa Jones,2016-07,2016-07-04T00:00:00
+5,1265,101193,,JP Corp Project,127.5,4,Silver,Germany,Accounting,Lisa Jones,2016-07,2016-07-05T00:00:00
+5,1266,100165,,JP Corp Project,122.5,5,Gold,Germany,Accounting,Lisa Jones,2016-07,2016-07-06T00:00:00
+5,1267,107497,,JP Corp Project,155,2,Gold,The Netherlands,Administration,Lisa Jones,2016-08,2016-08-07T00:00:00
+5,1268,101601,,JP Corp Project,60,2,Silver,The Netherlands,Accounting,Lisa Jones,2016-08,2016-08-08T00:00:00
+5,1269,106566,,JP Corp Project,155,2,Bronze,The Netherlands,Accounting,Lisa Jones,2016-08,2016-08-09T00:00:00
+5,1270,107552,,JP Corp Project,80,2,Platinum,The Netherlands,Business Consulting,Lisa Jones,2016-08,2016-08-10T00:00:00
+5,1271,107500,,JP Corp Project,160,3,Gold,The Netherlands,Administration,Lisa Jones,2016-08,2016-08-11T00:00:00
+5,1272,104447,,JP Corp Project,155,5,Silver,The Netherlands,Business Consulting,Lisa Jones,2016-08,2016-08-12T00:00:00
+5,1273,103565,,JP Corp Project,80,5,Silver,The Netherlands,Business Consulting,Lisa Jones,2016-08,2016-08-13T00:00:00
+5,1274,101125,,JP Corp Project,180,5,Platinum,The Netherlands,Business Consulting,Lisa Jones,2016-08,2016-08-14T00:00:00
+5,1275,103475,,JP Corp Project,25,6,Gold,The Netherlands,Business Consulting,Lisa Jones,2016-08,2016-08-15T00:00:00
+5,1276,106491,,JP Corp Project,25,9,Platinum,The Netherlands,Business Consulting,Lisa Jones,2016-08,2016-08-16T00:00:00
+5,1277,103569,,JP Corp Project,155,10,Platinum,The Netherlands,Administration,Lisa Jones,2016-08,2016-08-17T00:00:00
+5,1278,103570,,JP Corp Project,160,8,Platinum,Germany,Administration,Lisa Jones,2016-08,2016-08-18T00:00:00
+5,1279,103573,,JP Corp Project,160,13,Platinum,Germany,Administration,Lisa Jones,2016-08,2016-08-19T00:00:00
+5,1280,106783,,JP Corp Project,100,1,Bronze,Germany,Accounting,Lisa Jones,2016-08,2016-08-20T00:00:00
+5,1281,104335,,JP Corp Project,102.5,4,Silver,Germany,Administration,Lisa Jones,2016-08,2016-08-21T00:00:00
+5,1282,105393,,JP Corp Project,75,4,Gold,Germany,Business Consulting,Lisa Jones,2016-08,2016-08-22T00:00:00
+5,1283,105087,,JP Corp Project,115,4,Bronze,Germany,Administration,Lisa Jones,2016-08,2016-08-23T00:00:00
+5,1284,105697,,JP Corp Project,115,5,Silver,Germany,Administration,Lisa Jones,2016-08,2016-08-24T00:00:00
+5,1285,107094,,JP Corp Project,102.5,16,Gold,Germany,Accounting,Lisa Jones,2016-08,2016-08-25T00:00:00
+5,1286,103422,,JP Corp Project,110,2,Gold,Germany,Administration,Lisa Jones,2016-08,2016-08-26T00:00:00
+5,1287,103567,,JP Corp Project,82.5,2,Silver,Germany,Administration,Lisa Jones,2016-08,2016-08-27T00:00:00
+5,1288,104721,,JP Corp Project,110,3,Gold,Germany,Accounting,Lisa Jones,2016-08,2016-08-28T00:00:00
+5,1289,107567,,JP Corp Project,112.5,5,Gold,Germany,Business Consulting,Lisa Jones,2016-08,2016-08-29T00:00:00
+5,1290,107437,,JP Corp Project,100,8,Gold,Germany,Administration,Lisa Jones,2016-08,2016-08-30T00:00:00
+5,1291,106576,,JP Corp Project,37.5,10,Silver,Germany,Business Consulting,Lisa Jones,2016-08,2016-08-01T00:00:00
+5,1292,107499,,JP Corp Project,122.5,3,Gold,Germany,Administration,Lisa Jones,2016-08,2016-08-02T00:00:00
+5,1293,106282,,JP Corp Project,122.5,6,Platinum,Germany,Business Consulting,Lisa Jones,2016-08,2016-08-03T00:00:00
+5,1294,107093,,JP Corp Project,25,1,Gold,The Netherlands,Accounting,Lisa Jones,2016-09,2016-09-04T00:00:00
+5,1295,105457,,JP Corp Project,155,1,Gold,The Netherlands,Business Consulting,Lisa Jones,2016-09,2016-09-05T00:00:00
+5,1296,107877,,JP Corp Project,25,1,Silver,The Netherlands,Accounting,Lisa Jones,2016-09,2016-09-06T00:00:00
+5,1297,105281,,JP Corp Project,80,1,Gold,The Netherlands,Accounting,Lisa Jones,2016-09,2016-09-07T00:00:00
+5,1298,103871,,JP Corp Project,160,1,Platinum,The Netherlands,Business Consulting,Lisa Jones,2016-09,2016-09-08T00:00:00
+5,1299,103575,,JP Corp Project,180,2,Bronze,The Netherlands,Administration,Lisa Jones,2016-09,2016-09-09T00:00:00
+5,1300,105601,,JP Corp Project,80,3,Silver,The Netherlands,Administration,Lisa Jones,2016-09,2016-09-10T00:00:00
+5,1301,100314,,JP Corp Project,155,5,Gold,The Netherlands,Accounting,Lisa Jones,2016-09,2016-09-11T00:00:00
+5,1302,106288,,JP Corp Project,80,9,Gold,Germany,Accounting,Lisa Jones,2016-09,2016-09-12T00:00:00
+2,1303,105366,,Ayurve Inc Project,120,4,Silver,Germany,Business Consulting,Ralph Ambers,2016-05,2016-05-13T00:00:00
+2,1304,101449,,Ayurve Inc Project,80,8,Bronze,Germany,Business Consulting,Ralph Ambers,2016-05,2016-05-14T00:00:00
+2,1305,103982,,Ayurve Inc Project,100,1,Silver,Germany,Business Consulting,Ralph Ambers,2016-05,2016-05-15T00:00:00
+2,1306,101300,,Ayurve Inc Project,180,1,Silver,Germany,Business Consulting,Ralph Ambers,2016-05,2016-05-16T00:00:00
+2,1307,102397,,Ayurve Inc Project,25,2,Silver,Germany,Business Consulting,Ralph Ambers,2016-05,2016-05-17T00:00:00
+2,1308,103647,,Ayurve Inc Project,200,2,Silver,Germany,Administration,Ralph Ambers,2016-05,2016-05-18T00:00:00
+2,1309,101410,,Ayurve Inc Project,160,2,Bronze,Germany,Business Consulting,Ralph Ambers,2016-05,2016-05-19T00:00:00
+2,1310,101696,,Ayurve Inc Project,180,2,Silver,Germany,Accounting,Ralph Ambers,2016-05,2016-05-20T00:00:00
+2,1311,102291,,Ayurve Inc Project,225,2,Gold,Germany,Administration,Ralph Ambers,2016-05,2016-05-21T00:00:00
+2,1312,106201,,Ayurve Inc Project,150,3,Silver,Germany,Accounting,Ralph Ambers,2016-05,2016-05-22T00:00:00
+2,1313,100350,,Ayurve Inc Project,80,3,Silver,Germany,Business Consulting,Ralph Ambers,2016-05,2016-05-23T00:00:00
+2,1314,101010,,Ayurve Inc Project,120,3,Silver,Germany,Administration,Ralph Ambers,2016-05,2016-05-24T00:00:00
+2,1315,101873,,Ayurve Inc Project,120,4,Gold,Germany,Business Consulting,Ralph Ambers,2016-05,2016-05-25T00:00:00
+2,1316,105059,,Ayurve Inc Project,75,4,Silver,Germany,Accounting,Ralph Ambers,2016-05,2016-05-26T00:00:00
+2,1317,101068,,Ayurve Inc Project,25,5,Platinum,Germany,Accounting,Ralph Ambers,2016-05,2016-05-27T00:00:00
+2,1318,104276,,Ayurve Inc Project,225,17,Silver,Germany,Accounting,Ralph Ambers,2016-05,2016-05-28T00:00:00
+2,1319,104054,,Ayurve Inc Project,247.5,1,Silver,Germany,Accounting,Ralph Ambers,2016-05,2016-05-29T00:00:00
+2,1320,105620,,Ayurve Inc Project,82.5,2,Silver,Germany,Business Consulting,Ralph Ambers,2016-05,2016-05-30T00:00:00
+2,1321,107246,,Ayurve Inc Project,110,3,Bronze,Germany,Business Consulting,Ralph Ambers,2016-05,2016-05-01T00:00:00
+2,1322,100177,,Ayurve Inc Project,160,3,Silver,Germany,Accounting,Ralph Ambers,2016-05,2016-05-02T00:00:00
+2,1323,106554,,Ayurve Inc Project,165,5,Silver,Germany,Accounting,Ralph Ambers,2016-05,2016-05-03T00:00:00
+2,1324,101936,,Ayurve Inc Project,110,6,Gold,Germany,Business Consulting,Ralph Ambers,2016-05,2016-05-04T00:00:00
+2,1325,103891,,Ayurve Inc Project,82.5,6,Silver,Germany,Business Consulting,Ralph Ambers,2016-05,2016-05-05T00:00:00
+2,1326,100431,,Ayurve Inc Project,247.5,7,Silver,Germany,Accounting,Ralph Ambers,2016-05,2016-05-06T00:00:00
+2,1327,102395,,Ayurve Inc Project,220,8,Silver,Germany,Business Consulting,Ralph Ambers,2016-05,2016-05-07T00:00:00
+2,1328,102393,,Ayurve Inc Project,40,14,Silver,Germany,Business Consulting,Ralph Ambers,2016-05,2016-05-08T00:00:00
+2,1329,105250,,Ayurve Inc Project,240,1,Silver,Germany,Accounting,Ralph Ambers,2016-05,2016-05-09T00:00:00
+2,1330,100033,,Ayurve Inc Project,247.5,1,Silver,Germany,Accounting,Ralph Ambers,2016-05,2016-05-10T00:00:00
+2,1331,102391,,Ayurve Inc Project,160,1,Silver,Germany,Business Consulting,Ralph Ambers,2016-05,2016-05-11T00:00:00
+2,1332,101872,,Ayurve Inc Project,247.5,3,Silver,Germany,Business Consulting,Ralph Ambers,2016-05,2016-05-12T00:00:00
+2,1333,103750,,Ayurve Inc Project,240,6,Gold,Germany,Accounting,Ralph Ambers,2016-05,2016-05-13T00:00:00
+2,1334,107854,,Ayurve Inc Project,180,12,Bronze,Germany,Accounting,Ralph Ambers,2016-05,2016-05-14T00:00:00
+2,1335,100664,,Ayurve Inc Project,25,1,Silver,The Netherlands,Accounting,Ralph Ambers,2016-06,2016-06-15T00:00:00
+2,1336,102472,,Ayurve Inc Project,25,3,Silver,The Netherlands,Accounting,Ralph Ambers,2016-06,2016-06-16T00:00:00
+2,1337,101006,,Ayurve Inc Project,25,3,Gold,The Netherlands,Administration,Ralph Ambers,2016-06,2016-06-17T00:00:00
+2,1338,101100,,Ayurve Inc Project,25,4,Platinum,The Netherlands,Business Consulting,Ralph Ambers,2016-06,2016-06-18T00:00:00
+2,1339,102786,,Ayurve Inc Project,120,1,Gold,Germany,Accounting,Ralph Ambers,2016-06,2016-06-19T00:00:00
+2,1340,104436,,Ayurve Inc Project,25,1,Silver,Germany,Business Consulting,Ralph Ambers,2016-06,2016-06-20T00:00:00
+2,1341,105979,,Ayurve Inc Project,160,2,Silver,Germany,Business Consulting,Ralph Ambers,2016-06,2016-06-21T00:00:00
