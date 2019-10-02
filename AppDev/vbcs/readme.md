@@ -40,7 +40,7 @@ Developing a Mobile App
 
 To run these labs you will need access to an Oracle Cloud Account.  If you are participating in a live event, your instructor will provide you the required credentials.
 
-If you are running these labs on your own, please get a [Trial account](https://myservices.us.oraclecloud.com/mycloud/signup?sourceType=:ex:tb:::RC_EMMK181016P00010:Virtual_WS_DEV&SC=:ex:tb:::RC_EMMK181016P00010:Virtual_WS_DEV&pcode=EMMK181016P00010) or set up your corporate UC subscription for this lab.   In this case you also need to **perform one extra step**: instantiate your VBCS instance inside your tenancy.  You can find [the detailed instructions for this task here](create_instance/lab00.md).
+If you are running these labs on your own, please get a [Trial account](https://myservices.us.oraclecloud.com/mycloud/signup?sourceType=:eng:eo:ie::RC_EMMK190802P00027:Vlab_Visualbuilder) or set up your corporate UC subscription for this lab.   In this case you also need to **perform one extra step**: instantiate your VBCS instance inside your tenancy.  You can find [the detailed instructions for this task here](create_instance/lab00.md).
 
 
 ### Lab Instructions ###
