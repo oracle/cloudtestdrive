@@ -36,13 +36,11 @@ This section will take you through the steps to set up a CI/CD environment for d
 
 - **Part 1:** [Setting up your Developer Cloud project](../AppDev/ATP-OKE/LabGuide250Devcs-proj.md)
 - **Part 2:** [Create and populate the Database objects](../AppDev/ATP-OKE/LabGuide400DataLoadingIntoATP.md) in your ATP database with Developer Cloud
+
+- **OPTIONAL**:   [Spin up a Managed Kubernetes environment with Terraform](../AppDev/ATP-OKE/LabGuide660OKE_Create.md) 
+
 - **Part 3:** [Build a Container image with the aone application running on ATP](../AppDev/ATP-OKE/LabGuide650BuildDocker.md)
 - **Part 4:** [Deploy your container on top of your Kubernetes Cluster](../AppDev/ATP-OKE/LabGuide670DeployDocker.md)
-
-
-
-- **OPTIONAL Part 5**:   [Spin up a Managed Kubernetes environment with Terraform](../AppDev/ATP-OKE/LabGuide660OKE_Create.md) 
-
 
 
 ---
