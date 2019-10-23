@@ -16,7 +16,7 @@ In real life, you would want to set up a more sophisticated logic to manage your
 
 - Personalize the SQL script with your initials in the db table
 - Create and run a Build to create your database objects
-- Validate creation via SQLDeveloper
+- Validate creation via SQL Developer Web
 
 
 
@@ -103,7 +103,23 @@ Now navigate back to the Build job you launched.
 
 
 
-- Optionally you can now re-connect with SQLDeveloper to your database and verify the objects were created correctly.
+Now validate the table was created successfully using the build in SQL Developer Web tool
+
+- Navigate to your OCI console, and select the ATP database you are using
+
+![](./images/400/db_select.png)
+
+- On the Database Details page, navigate to the **Service Console**, then select **SQL Developer Web**
+
+![](./images/400/DB_Console.png)
+
+- You can now visualize the tables in the database, and execute a query against the table you just created:
+
+  `select * from items_yourInitials`
+
+  To execute the query, hit the green arrow "Run Statement" icon
+
+  ![](./images/400/sql_select.png)
 
 
 

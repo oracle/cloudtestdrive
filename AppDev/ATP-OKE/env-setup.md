@@ -18,7 +18,6 @@ This page will guide you through the following activities :
   - git
   - kubectl
   - terraform
-  - Sql Developer
 
 
 
@@ -352,12 +351,6 @@ Terraform is an open-source infrastructure as code software tool created by Hash
 - Add the terraform command to your path
   - On Mac: export PATH=$PATH:`pwd`
   - On Windows: go to System Steetings, Advanced, Environment Variables, and add the path to your Terraform directory 
-
-
-
-##### Installing Oracle SQL Developer
-
-You should have Oracle SQL Developer installed on your machine. If not, you can download the latest version from [here](https://www.oracle.com/technetwork/developer-tools/sql-developer/downloads/index.html).
 
 
 

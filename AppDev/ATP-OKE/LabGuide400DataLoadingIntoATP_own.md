@@ -16,7 +16,7 @@ In real life, you would want to set up a more sophisticated logic to manage your
 
 - Personalize the SQL script with your initials in the db table
 - Create and run a Build to create your database objects
-- Validate creation via SQLDeveloper
+- Validate creation via SQL Developer Web
 
 
 
@@ -138,7 +138,15 @@ Now navigate back to the Build job you launched.
 
 
 
-- Optionally you can now re-connect with SQLDeveloper to your database and verify the objects were created correctly.
+- You can now re-connect with **SQL Developer Web** to your database and verify the objects were created correctly:
+
+`select * from items`
+
+To execute the query, hit the green arrow "Run Statement" icon
+
+![](images/400/sql_2.png)
+
+
 
 
 
