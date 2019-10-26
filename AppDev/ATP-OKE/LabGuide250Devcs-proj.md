@@ -17,48 +17,30 @@ Let’s get started!
 
 In this section, you’ll provision a complete development platform for your team by leveraging DevCS’s web interface.
 
-- Access your Developer Cloud Instance
-  - <u>When using on an Oracle-provided environment</u>: On your VNC viewer, using Firefox, Navigate to the Developer Cloud Service Instance link provided by your instructor.
-  - <u>When using a Personal Trial</u>: Use the URL to your Developer Cloud Console you saved during the setup of your environment 
-
-- On the Welcome page, click **New Project**.
+- Access your Developer Cloud Instance by following the link provided to you in the access document
 
 
 
-![](images/150/image001-3.png)
+We pre-created a Developer Cloud project environment for you to use.  In order to access this environment, perform following steps : 
+
+- On the Welcome page, click **All** to see all projects in the environment.
+
+  ![](images/150/image001-3c.png)
+
+- Locate the project you have been assigned to according to the **Number** your instructor will have assigned to you : for example if you are **participant 09**, and your event is called **my_event**, please use project **09_myevent**.
+
+- Now click on the hamburger icon on the right of your project, and select the option **Assign me as Owner**.
+
+- You can now access your project and are ready to start the exercise.
 
 
 
-- Give your project a name that begins with your own name, such as **JohnDunbarATPLab**, to make your project unique.  Then: 
+![](images/150/image006-1.png)
 
-  - Enter a **Description**, such as **ATP Lab Project**.
-
-  - Leave the Security setting specified as **Private**.
-
-  - Click **Next**
-
-    ![](images/150/image002-1.png)
-
-- Click **Empty Project**, then click **Next**.
-
-  ![](images/150/image003-1.png)
-
-- Select your preferred wiki markup language, then click **Finish**
-
-  ![](images/150/image004-1.png)
-
-- Wait while the project modules are provisioned, which can take a minute or two. You can see the indicators turn green as the associated modules are provisioned.
-
-  ![](images/150/image005-1.png)
-
-- When everything is provisioned, the project Home page opens, which contains details about your newly created project:
-
-  ![](images/150/image006-1.png)
-
-  Let’s take a look at this page (you may need to scroll to see the whole thing): 
-  - On the left side is an activity feed. 
-  - Tabs on the right side show you where the Git source code and Maven repositories are located.
-  - Also on the right you can see project statistics, as well as the UI where you can manage team members.  Let’s take a look at that UI now. 
+Let’s take a look at this page (you may need to scroll to see the whole thing): 
+- On the left side is an activity feed. 
+- Tabs on the right side show you where the Git source code and Maven repositories are located.
+- Also on the right you can see project statistics, as well as the UI where you can manage team members.  Let’s take a look at that UI now. 
 
 
 
