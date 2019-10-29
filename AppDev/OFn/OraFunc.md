@@ -81,7 +81,7 @@ You're now ready to start creating, deploying, and invoking functions.
 
 Log in to the Console as a functions developer and under **Solutions and Platform**, go to **Developer Services** and click **Functions**, and:
 
-Select the compartment specified in the Fn Project CLI context.  
+- Select the compartment **CTDOKE**
 
 Click **Create Application** and specify:
 
