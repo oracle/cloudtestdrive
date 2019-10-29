@@ -44,9 +44,9 @@ $ fn update context api-url https://functions.eu-frankfurt-1.oci.oraclecloud.com
 $ fn update context registry fra.ocir.io/<tenancy-namespace>/<your-repo-name>
 ```
 
-where '<tenancy-namespace>' is the tenancy's auto-generated Object Storage namespace string shown on the Tenancy Information page.
+where "tenancy-namespace" is the tenancy's auto-generated Object Storage namespace string shown on the Tenancy Information page.
 
-and the '<your-repo-name>' parameter is the repository name you can choose, for example using your initials : jle-fn-repo
+and the "your-repo-name" parameter is the repository name you can choose, for example using your initials : jle-fn-repo
 
 For example:
 
@@ -65,7 +65,7 @@ $ docker login fra.ocir.io
 ```
 
 When prompted, enter the name of the user you will be using  : api.user - this needs to be entered as 
-"<tenancy-namespace>"/api.user .
+"tenancy-namespace/api.user" .
 
 When prompted for a password, enter api.user's  auth token as provided in your access document
 
