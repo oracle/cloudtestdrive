@@ -19,7 +19,7 @@ In this section, you’ll provision a complete development platform for your tea
 
 - Access your Developer Cloud Instance by following the link provided to you in the access document
 
-
+  
 
 We pre-created a Developer Cloud project environment for you to use.  In order to access this environment, perform following steps : 
 
@@ -30,6 +30,10 @@ We pre-created a Developer Cloud project environment for you to use.  In order t
 - Locate the project you have been assigned to according to the **Number** your instructor will have assigned to you : for example if you are **participant 09**, and your event is called **my_event**, please use project **09_myevent**.
 
 - Now click on the hamburger icon on the right of your project, and select the option **Assign me as Owner**.
+
+![](images/150/assign.png)
+
+
 
 - You can now access your project and are ready to start the exercise.
 
