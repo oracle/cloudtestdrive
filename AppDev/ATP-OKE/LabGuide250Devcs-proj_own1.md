@@ -26,7 +26,7 @@ cd dev
 
 - Copy the URL of your newly created repository in Developer cloud, by navigating to the "Project Home" page on the left, then selecting the **Clone** button of your repository on the right.  Select **Clone with HTTPS** and the URL will be copied.
 
-![](/Users/jleemans/dev/github/old/cloudtestdrive/AppDev/ATP-OKE/images/150/image013.png)
+![](images/150/image013.png)
 
 Now you can enter a command similar to the one below to clone your repository
 
@@ -39,7 +39,7 @@ The result should look like:
 
 This will result in following output:
 
-![](/Users/jleemans/dev/github/old/cloudtestdrive/AppDev/ATP-OKE/images/150/image014.png)
+![](images/150/image014.png)
 
 
 
