@@ -22,7 +22,7 @@ Also distributing the config file to larger audiences is much easier using a V1 
 
 ### Steps to execute ###
 
-In order to execute these steps, you will need a recent version of the OCI CLI (2.6.4 or above) on at least one machine.  Installation of OCI CLI is detailed here.
+In order to execute these steps, you will need a recent version of the OCI CLI (2.6.4 or above) on at least one machine.  Installation of OCI CLI is detailed [here](https://docs.cloud.oracle.com/iaas/Content/API/SDKDocs/cliinstall.htm).
 
 - Obtain the V2 Certificate of your cluster
 
@@ -177,28 +177,28 @@ In order to execute these steps, you will need a recent version of the OCI CLI (
 
       Note: addresses and names in the above example are ficticious, no real addresses or certificates are shown.
 
-      - New Structure
+    - New Structure
 
-        ```
-        apiVersion: v1
-        clusters:
-        - cluster:
-            certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURqRENDQW5TZ0F3SUJBZ0lVWElCNDhGOURBR0kwYW9tWHVOQUkrOHY0dGNNd0RRWUpLb1pJaHZjTkFRRUwKQlFBd1hqRUxNQWtHQTFVRUJoTUNWVk14RGpBTUJnTlZCQWdUQlZSbGVHRnpNUTh3RFFZRFZRUUhFd1pCZFhOMAphVzR4RHpBTkJnTlZCQW9UQms5eVlXTnNaVEVNTUFvR0ExVUVDeE1EVDBSWU1ROHdEUVlEVlFRREV3WkxPRk1nClEwRXdIaGNOTVRrd09ESXdNVEl3Tm ... RHpQNwpCcEhYdmFoWnBZeTlRM0xhMjJtblZOenR5MCtRbDNOdnRlVnY0bGlLQUV3RytBaWVrSGZtQ083VGxGUnAxNGRaCjNiZ2hqLzRKWjF4b25Nb2RCWFBGSG9nSUUwcFYyc09GcDNRTHh3TlpTNzh5dnkxd1QyL2R0VjVJSHZ0Q3VCZmgKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
-            server: https://cqwinyw.eu-frankfurt-1.clusters.oci.oraclecloud.com:6443
-          name: cluster-cqwinyw
-        contexts:
-        - context:
-            cluster: cluster-cqwinyw
-            user: user-cqwinyw
-          name: context-cqwinyw
-        current-context: context-cqwinyw
-        kind: ""
-        users:
-        - name: user-cqwinyw
-          user:
-            token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb5SJwwov6PjaADT-FqSO9ZgJEg6uUVXuPa03jmqyRB20HmsTvuDabVoK7Ky7Uug7V8J9yK4oOOK5d0aRRdgHXzxZd2yO8C4ggqsr1KQsfdlU4xRWglaZGI4S31ohCApJ0MUHaVnP5WkbC4FiTZAQ5fO_LcCokapzCLQyIuD5Ksdnj5Ad2ymiLQQ71TUNccN7BMX5aM4RHmztpEHOVbElCWXwyhWr3NR1Z1ar9s5ec6iHBqfkp_s8TvxPBLyUdy9OjCWy3iLQ4Lt4qpxsjwE4NE7KioDPX2Snb6NWFK7lvldjYX4tdkpWdQHBNmqaD8CuVCRdEQ
-        
-        ```
+      ```
+      apiVersion: v1
+      clusters:
+      - cluster:
+          certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURqRENDQW5TZ0F3SUJBZ0lVWElCNDhGOURBR0kwYW9tWHVOQUkrOHY0dGNNd0RRWUpLb1pJaHZjTkFRRUwKQlFBd1hqRUxNQWtHQTFVRUJoTUNWVk14RGpBTUJnTlZCQWdUQlZSbGVHRnpNUTh3RFFZRFZRUUhFd1pCZFhOMAphVzR4RHpBTkJnTlZCQW9UQms5eVlXTnNaVEVNTUFvR0ExVUVDeE1EVDBSWU1ROHdEUVlEVlFRREV3WkxPRk1nClEwRXdIaGNOTVRrd09ESXdNVEl3Tm ... RHpQNwpCcEhYdmFoWnBZeTlRM0xhMjJtblZOenR5MCtRbDNOdnRlVnY0bGlLQUV3RytBaWVrSGZtQ083VGxGUnAxNGRaCjNiZ2hqLzRKWjF4b25Nb2RCWFBGSG9nSUUwcFYyc09GcDNRTHh3TlpTNzh5dnkxd1QyL2R0VjVJSHZ0Q3VCZmgKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+          server: https://cqwinyw.eu-frankfurt-1.clusters.oci.oraclecloud.com:6443
+        name: cluster-cqwinyw
+      contexts:
+      - context:
+          cluster: cluster-cqwinyw
+          user: user-cqwinyw
+        name: context-cqwinyw
+      current-context: context-cqwinyw
+      kind: ""
+      users:
+      - name: user-cqwinyw
+        user:
+          token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb5SJwwov6PjaADT-FqSO9ZgJEg6uUVXuPa03jmqyRB20HmsTvuDabVoK7Ky7Uug7V8J9yK4oOOK5d0aRRdgHXzxZd2yO8C4ggqsr1KQsfdlU4xRWglaZGI4S31ohCApJ0MUHaVnP5WkbC4FiTZAQ5fO_LcCokapzCLQyIuD5Ksdnj5Ad2ymiLQQ71TUNccN7BMX5aM4RHmztpEHOVbElCWXwyhWr3NR1Z1ar9s5ec6iHBqfkp_s8TvxPBLyUdy9OjCWy3iLQ4Lt4qpxsjwE4NE7KioDPX2Snb6NWFK7lvldjYX4tdkpWdQHBNmqaD8CuVCRdEQ
+      
+      ```
 
   - Now reset your **KUBECONFIG** environment variable to point to your new kubeconfig file and validate you are able to access the cluster.
 
