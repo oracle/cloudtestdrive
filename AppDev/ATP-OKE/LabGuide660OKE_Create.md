@@ -155,23 +155,24 @@ resource "oci_core_virtual_network" "K8SVNC" {
     - **Object-Storage-Namespace** is the name of Object Storage Namespace you noted down.
     - **oci-username** is the name of the **api.user** you just created
     - **oci-auth-token** is the **Auth Token** you just created and noted down
+    
   - **email-address** is mandatory but not used, can be jdoe@acme.com
   
-- Example command:
+  - Example command:
   
     ```bash
     kubectl create secret docker-registry jle-ocirsecret --docker-server=fra.ocir.io --docker-username='epqldntjs/api.user' --docker-password='k]j64r{1sJSSF-;)K8' --docker-email='jdoe@acme.com'
-  ```
+    ```
   
-  The result should be 
+    
+  
+    The result should be 
   
     ```
     secret/jle-ocirsecret created
     ```
   
-    
-
-
+  
 
 ---
 

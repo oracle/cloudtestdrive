@@ -14,7 +14,7 @@ Also distributing the config file to larger audiences is much easier using a V1 
 
 
 
-**Warning :  FOR TESTING ONLY, DO NOT USE IN REAL-LIFE SITUATIONS**.  This procedure will open up admin access to your cluster for anybody who has a copy of the config file
+**Warning :  FOR TESTING ONLY, DO NOT USE IN REAL-LIFE SITUATIONS**.  This procedure will open up admin access to your cluster for anybody who has a copy of the config file.
 
 
 
