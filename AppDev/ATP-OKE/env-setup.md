@@ -10,14 +10,17 @@ In case you are using a personal instance, either obtained via a free trial or u
 
 This page will guide you through the following activities :
 
-- Step 1: Set up Developer Cloud Service
-- Step 2: Create a compartment called CTDOKE which we will use in this lab
-- Step 3: Add a Policy statement for OKE
-- Step 4: Create an API user with a certificate
-- Step 5: Install some software on your local machine:
-  - git
-  - kubectl
-  - terraform
+- Part A : Set up your Cloud Infrastructure
+  - Step 1: Create a compartment called CTDOKE which we will use in this lab
+  - Step 2: Add a Policy statement for OKE
+  - Step 3: Create an API user with a certificate
+- Part B : Install some software on your local machine:
+  - Step 4: Install git
+  - Step 5: Install kubectl
+  - Step 6 : Install terraform
+- Part C : Set up Developer Cloud Service
+  - Step 7 : Create an Instance
+  - Step 8 : Configure the new DevCS instance
 
 
 
@@ -25,55 +28,11 @@ This page will guide you through the following activities :
 
 
 
-## Steps to execute
-
-### Step 1: Setting up Developer Cloud Service ###
-
-This step will guide you through the setup of a new Developer Cloud instance :
-
-- Go to DevCS on your Dashboard
-- Creating a Developer Cloud instance
-- Configuring the Storage and Build parameters for your DevCS instance
+## Part A : Set up your Cloud Infrastructure
 
 
 
-#### Go to DevCS on your dashboard ####
-
-- Login to your cloud account and find DevCS service:
-
-![alt text](images/devcs/dashboard_new.png)
-
-- Open DevCS service
-
-#### Create an instance ####
-
--  You should have no existing instances.  If you have, you can skip the following steps and just validate you have a build engine witht the correct libraries included.
-
-![alt text](images/devcs/DevCS_create_instance_new.png)
-
-- Use the "Create Instance" button to create a new Developer Cloud instance
-
-![alt text](images/devcs/create_new.png)
-
-Note: You should match the region selected with your home region.
-
-![alt text](images/devcs/region_match_new.png)
-
-- Hit the "Next" button and then "Create"
-
-![alt text](images/devcs/confirm_new.png)
-
-- Now the instance is being created.  This will take a few minutes, you can hit the small arrow to requery the status.
-
-![alt text](images/devcs/creating_new.png)
-
-#### Access your DevCS Environment ####
-
-To access your Developer Cloud Instance, refresh the page and use the hamburger menu on the right to view the menu item **Access Service Instance**.  Right-click to save the URL (copy link address), you will need this link later in the labs.
-
-
-
-### **STEP 2: Create a Compartment**
+### **STEP 1: Create a Compartment**
 
 - In the Cloud Infrastructure Console, click on the hamburger menu on the top left of the screen. From the pull-out menu, under Identity, click Compartments.
 
@@ -93,11 +52,12 @@ Enter the following in create Compartment window
 - **Description**: Enter a description for the compartment
 - **Parent Compartment**:  select the root compartment.
 - Click on the **Create Compartment** link 
-
 - You can verify the compartment created on Compartments page
 
 
-### **STEP 3**: Add a Policy Statement for OKE
+
+
+### **STEP 2**: Add a Policy Statement for OKE
 
 - If you are using an Instructor provided instance, this policy will already be defined.
 
@@ -123,7 +83,7 @@ Enter the following in create Compartment window
 
 
 
-### STEP 4: Create an API user with a certificate
+### STEP 3: Create an API user with a certificate
 
 **ATTENTION** : if you are using an Instructor-provided instance, a user called **api.user** will already have been set up for you, and the keys, fingerprints and tokens of this user will be provided to you.
 
@@ -175,86 +135,19 @@ Enter the following in create Compartment window
   - Click the **add** button to finalize the operation
 
 
-#### Connect to your OCI tenancy to configure Compute & Storage using OCI credentials
 
-- On the left-side menu, select the top level **Organization** menu, then click on **OCI Account** in the top menu.  Next you can hit the **Connect** button.
-
-![alt text](images/devcs/Connect_OCIaccount_new.png)
-
-![alt text](images/devcs/Configure_OCIaccount_new.png)
-
-- The OCI credentials can be found in your main cloud dasboard / Administration / Tenancy details
-
-![alt text](images/devcs/OCI_Tenancy_details_new.png)
-
-![alt text](images/devcs/OCI_tenancy_details_new_2.png)
-
-- The user details can be found in your main cloud dasboard / Identity/ Users / click on api.user
-
-![alt text](images/devcs/OCI_user_details_new.png)
+## Part B: Install required software on your Laptop ##
 
 
 
-
-
-#### Create a Virtual Machine
-
-- On the left-side menu, select the top level **Organization** menu, then click on **Virtual Machines Templates** in the top menu.  Next you can hit the **Create Template** button.
-
-![alt text](images/devcs/NewTemplate2.png)
-
-
-- In the dialog box, specify a name, for example **OKE2**  and use the default **Oracle Linux 7** image.  Then hit the **Create** button.
-
-  ![alt text](images/devcs/im04-1.png)
-
-
-- Now select the template you just created (OKE2), and add the required software packages by clicking on the **Configure Software** button.
-
-![alt text](images/devcs/im05-3.png)
-
-- Select the following packages:
-  - Docker 17,2
-  - Kubectl
-  - OCIcli ==> this will prompt you to also install Python3
-  - SQLcl 18
-
-![alt text](images/devcs/im06-2.png)
-
-
-
-- Finally, navigate to the **Build Virtual Machines** menu on the top menu, and hit the **+ Create VM** button.
-
-  ![alt text](images/devcs/im07-2.png)
-
-  
-  
-  In the dialog that pops up, enter following values:
-  
-  - Choose **Quantity = 1**
-  
-  - Select the **VM Template** you just created: **OKE2**
-  
-  - Set the **Region** to **eu-Frankfurt-1**
-  
-  - Select the compute **Shape** : **VM.Standard2.2**
-  
-    ![alt text](images/devcs/im08-1.png)
-
-You finished all the steps to finalize the Developer Cloud setup.  
-
-
-
-### STEP 5: Install the required software on your laptop
-
-#### Installing git
+### STEP 4: Installing git
 
 In order to easily update and upload files into your Developer repository, we will clone the newly created DevCS repository onto your machine.  For this you need to install **git** on your laptop.   
 
 - Download the software for your OS on [this location](https://git-scm.com/downloads) 
 - In this tutorial we will use the command line to execute the required git operations, but if you have a git GUI installed (like GitHub Desktop or GitKraken) you can execute the equivalent operations through these tools.
 
-#### Installing kubectl
+### Step 5 : Installing kubectl
 
 This page covers how to install the Kubernetes command line interface and connect to your Kubernetes cluster
 
@@ -338,11 +231,7 @@ Unable to connect to the server: dial tcp 192.168.99.100:8443: connectex: A conn
 
 
 
----
-
-
-
-#### Installing terraform
+### Step 6 : Installing terraform
 
 Terraform is an open-source infrastructure as code software tool created by HashiCorp. It enables users to define and provision a datacenter infrastructure using a high-level configuration language known as Hashicorp Configuration Language
 
@@ -353,6 +242,154 @@ Terraform is an open-source infrastructure as code software tool created by Hash
   - On Windows: go to System Steetings, Advanced, Environment Variables, and add the path to your Terraform directory 
 
 
+
+
+
+
+## Part C : Set up your Cloud Infrastructure
+
+
+
+### Step 7 : Setting up Developer Cloud Service ###
+
+This step will guide you through the setup of a new Developer Cloud instance :
+
+- Go to DevCS on your Dashboard
+- Creating a Developer Cloud instance
+- Configuring the Storage and Build parameters for your DevCS instance
+
+
+
+#### Go to DevCS on your dashboard ####
+
+- Login to your cloud account and find DevCS service:
+
+![alt text](images/devcs/dashboard_new.png)
+
+- Open DevCS service
+
+
+
+#### Create an instance ####
+
+-  You should have no existing instances.  If you have, you can skip the following steps and just validate you have a build engine witht the correct libraries included.
+
+![alt text](images/devcs/DevCS_create_instance_new.png)
+
+
+
+- Use the "Create Instance" button to create a new Developer Cloud instance
+
+![alt text](images/devcs/create_new.png)
+
+Note: You should match the region selected with your home region.
+
+![alt text](images/devcs/region_match_new.png)
+
+
+
+- Hit the "Next" button and then "Create"
+
+![alt text](images/devcs/confirm_new.png)
+
+
+
+- Now the instance is being created.  This will take a few minutes, you can hit the small arrow to requery the status.
+
+![alt text](images/devcs/creating_new.png)
+
+
+
+#### Access your DevCS Environment ####
+
+To access your Developer Cloud Instance, refresh the page and use the hamburger menu on the right to access the menu item **Access Service Instance**. 
+
+
+
+
+
+
+### Step 8 : Configure DevCS Compute & Storage using OCI credentials
+
+To configure DevCS to use the OCI Compute resources for its build engines, we need to manually provide the OCI credentials in the DevCSD setup menu.
+
+**Attention !!** 
+
+In the following section you will need to switch repeatedly between the DevCS console (on the left in the below screenshot, the "OCI Credentials" screen) and the OCI Cloud Interface where you need to collect a number of parameters of your instance (on the right in the below screenshot)
+
+**Take a minute to set up 2 browser windows that allow easy switching between these 2 screens** to cut and paste parameters between them ! 
+
+![alt text](images/devcs/dualscreen.png)
+
+
+
+
+
+- In DevCS, on the left-side menu, select the top level **Organization** menu, then click on **OCI Account** in the top menu.  Next you can hit the **Connect** button.
+
+![alt text](images/devcs/Connect_OCIaccount_new.png)
+
+![alt text](images/devcs/Configure_OCIaccount_new.png)
+
+- The OCI credentials can be found in your main cloud dasboard / Administration / Tenancy details
+
+![alt text](images/devcs/OCI_Tenancy_details_new.png)
+
+![alt text](images/devcs/OCI_tenancy_details_new_2.png)
+
+- The user details can be found in your main cloud dasboard / Identity/ Users / click on api.user
+
+![alt text](images/devcs/OCI_user_details_new.png)
+
+
+
+
+
+#### Create a Virtual Machine
+
+- On the left-side menu, select the top level **Organization** menu, then click on **Virtual Machines Templates** in the top menu.  Next you can hit the **Create Template** button.
+
+![alt text](images/devcs/NewTemplate2.png)
+
+
+- In the dialog box, specify a name, for example **OKE2**  and use the default **Oracle Linux 7** image.  Then hit the **Create** button.
+
+  ![alt text](images/devcs/im04-1.png)
+
+
+- Now select the template you just created (OKE2), and add the required software packages by clicking on the **Configure Software** button.
+
+![alt text](images/devcs/im05-3.png)
+
+- Select the following packages:
+  - Docker 17,2
+  - Kubectl
+  - OCIcli ==> this will prompt you to also install Python3
+  - SQLcl 18
+
+![alt text](images/devcs/im06-2.png)
+
+
+
+- Finally, navigate to the **Build Virtual Machines** menu on the top menu, and hit the **+ Create VM** button.
+
+  ![alt text](images/devcs/im07-2.png)
+
+  
+  
+  In the dialog that pops up, enter following values:
+  
+  - Choose **Quantity = 1**
+  
+  - Select the **VM Template** you just created: **OKE2**
+  
+  - Set the **Region** to **eu-Frankfurt-1**
+  
+  - Select the compute **Shape** : **VM.Standard2.2**
+  
+    ![alt text](images/devcs/im08-1.png)
+
+You finished all the steps of the Developer Cloud setup.  
 
 
 
