@@ -113,7 +113,7 @@ Now you will configure a secure connection to your Database using Oracle SQL Dev
 
 - Click on  **DB Connection** to open up Database Connection pop-up window
 
-![](images/200/Picture200-2-2.png)
+![](images/200/picture200-2-2.png)
 
 - Click on **Download Wallet** to supply a password for the wallet and download your client credentials, using the default "Instance Wallet" type.
 
