@@ -56,6 +56,12 @@ Enter the following in create Compartment window
 
 
 
+After you successfully created the compartment, note down the **Compartment OCID**, you will need it later in the lab :
+
+![](images/100/comp_ocid.png)
+
+
+
 
 ### **STEP 2**: Add a Policy Statement for OKE
 
@@ -100,7 +106,7 @@ Enter the following in create Compartment window
       - ```
         mkdir ./mykey
         openssl genrsa -out ./mykey/api_key.pem 2048
-      openssl rsa -pubout -in ./mykey/api_key.pem -out ./mykey/api_key_public.pem
+        openssl rsa -pubout -in ./mykey/api_key.pem -out ./mykey/api_key_public.pem
         ```
 
     - For more details on this key creation, see the [documentation](https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm).
@@ -114,7 +120,7 @@ Enter the following in create Compartment window
 
 - Create an Auth Token for the user api.user
 
-  - Take care to copy the Token string in a file on your PC : you will nbeed it later, and you cannot retrieve it back from the console.
+  - Take care to copy the Token string in a file on your PC : you will need it later, and you cannot retrieve it back from the console.
 
     ![img](images/660/Auth_token.png)
 
@@ -341,7 +347,7 @@ In the following section you will need to switch repeatedly between the DevCS co
 
 ![alt text](images/devcs/OCI_user_details_new.png)
 
-
+- You should have noted the OCID of the **CTDOKE** Compartment earlier in this section just after the creation.
 
 
 
@@ -362,7 +368,7 @@ In the following section you will need to switch repeatedly between the DevCS co
 ![alt text](images/devcs/im05-3.png)
 
 - Select the following packages:
-  - Docker 17,2
+  - Docker 17.2
   - Kubectl
   - OCIcli ==> this will prompt you to also install Python3
   - SQLcl 18
@@ -385,9 +391,9 @@ In the following section you will need to switch repeatedly between the DevCS co
   
   - Set the **Region** to **eu-Frankfurt-1**
   
-  - Select the compute **Shape** : **VM.Standard2.2**
+  - Select the compute **Shape** : **VM.Standard2.1**
   
-    ![alt text](images/devcs/im08-1.png)
+    ![alt text](images/devcs/im08-2.png)
 
 You finished all the steps of the Developer Cloud setup.  
 

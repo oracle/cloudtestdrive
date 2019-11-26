@@ -27,75 +27,63 @@ This lab walks you through the steps to get started using the Oracle Autonomous 
 
 ![](./images/100/Picture100-21.jpeg)
 
+
+
 - Select the compartment you created previously 
+- Click on **Create Autonomous Database** button to start the instance creation process
 
-![](./images/100/DemoComp.png)
-
--  Click on **Create Autonomous Transaction Processing Database** button to start the instance creation process
-
-![](./images/100/Picture100-23.jpeg)
-
--  This will bring up Create ATP Database screen where you specify the configurations of the instance
-
-![](./images/100/Picture100-24.jpeg)
+![](./images/100/DemoComp-1.png)
 
 
-#### Note: Oracle Cloud Infrastructure allows logical isolation of users within a tenant through Compartments. This allows multiple users and business units to share a tenant account while being isolated from each other.
 
-If you have chosen the compartment you do not have privileges on, you will not be able to see or provision instance in it.
+-  This will bring up Create Autonomous Database screen where you specify the configurations of the instance
+   -  Verify your compartment is selected
+   -  Specify a name for the instance, for example containing your initials for easy reference
+   -  Select **Transaction Processing**
+   -  Select **Serverless**
 
-More information about Compartments and Policies is provided in the OCI Identity and Access Management documentation [here](https://docs.cloud.oracle.com/iaas/Content/Identity/Tasks/managingcompartments.htm?tocpath=Services%7CIAM%7C_____13).
+![](./images/100/Picture100-24-1.png)
 
--  Verify your own compartment is selected
 
-![](./images/100/Picture100-26.jpeg)
 
--  Specify a name for the instance, for example containing your initials for easy reference
-
-![](./images/100/Picture100-27.jpeg)
-
-- For this lab we are not checking Dedicate Infrastructure
-
--  You can choose an instance shape, specified by the CPU count and storage size. Default CPU count is 1 and storage is 1 TB.
-
-![](./images/100/Picture100-28.jpeg)
-
--  Specify the password for the instance
-
-#### For this lab, we will be using the following as password
+- Select a OCPU Count of 1
+- Select 1 TB of storage
+- Specify the password for the instance, for example : 
 
 ```
 WElcome_123#
 ```
 
-![](./images/100/Picture100-29.jpeg)
 
-- License Type: You will see 2 options under licensing options. 
 
-**My organization already owns Oracle database software licenses**: Oracle allows you to bring your unused on-prem licenses to the cloud and your instances are billed at a discounted rate. This is the default option so ensure you have the right license type for this subscription.
-
-![](./images/100/Picture100-34.jpeg)
+![](./images/100/Picture100-28-2.png)
 
 
 
-**Subscribe to new database software licenses and the database cloud service**: Your cloud service instance should include database license. This is an all-inclusive cost and you do not need to bring any additional licenses to cloud.
-
-![](./images/100/Picture100-35.jpeg)
-
-- Tagging is a metadata system that allows you to organize and track resources within your tenancy. Tags are composed of keys and values that can be attached to resources. 
-
-More information about Tags and Tag Namespaces is provided in the OCI Identity and Access Management documentation [here](https://docs.cloud.oracle.com/iaas/Content/Identity/Concepts/taggingoverview.htm).
+- Select 
 
 
-![](./images/100/Picture100-36.jpeg)
 
-For this workshop we will not be creating any TAG NAMESPACE. 
 
-- Make sure you have everything filled all required details
 
--  Click on **Create Autonomous Transaction Processing Database** to start provisioning the instance
 
-![](./images/100/Picture100-31.jpeg)
+
+- Choose a license type: You will see 2 options.   
+  - **Bring Your Own License (BYOL)** :  Oracle allows you to bring your unused on-prem licenses to the cloud and your instances are billed at a discounted rate. This is the default option so ensure you have the right license type for this subscription.
+  - If you do not have available on-premise Licenses, select the option **License Included**, in this case License fees will be included in the hourly rate of your database.
+
+![](./images/100/Picture100-34.png)
+
+
+
+
+
+- Click on **Create Autonomous Database** to start provisioning the instance
+
+
+
+
+
 
 - Once you create ATP Database it would take 2-3 minutes for the instance to be provisioned.
 
@@ -125,9 +113,9 @@ Now you will configure a secure connection to your Database using Oracle SQL Dev
 
 - Click on  **DB Connection** to open up Database Connection pop-up window
 
-![](images/200/Picture200-2.png)
+![](images/200/Picture200-2-2.png)
 
-- Click on **Download** to supply a password for the wallet and download your client credentials.
+- Click on **Download Wallet** to supply a password for the wallet and download your client credentials, using the default "Instance Wallet" type.
 
 #### Example password:
 
@@ -146,11 +134,19 @@ Lets connect to the database you just created using the build-in **SQL Developer
 
 - Navigate to your OCI console, and select the ATP database you are using
 
-![](images/400/db_select.png)
+  ![](images/400/db_select.png)
 
-- On the Database Details page, navigate to the **Service Console**, then select **SQL Developer Web**
+  
 
-![](images/400/DB_console.png)
+- On the Database Details page, navigate to the **Service Console**, 
+
+  ![](images/400/service_console.png)
+
+  
+
+- Then select **Development** in the left-hand menu, and then the tile labeled **SQL Developer Web** 
+
+  ![](images/400/DB_console.png)
 
 - You can now visualize the tables in the database, and execute queries.  Of course this is an empty database for now, we will reuse this tool later to check you have deployed objects into the database via Developer Cloud.
 
