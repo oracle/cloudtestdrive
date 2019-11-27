@@ -50,8 +50,16 @@ Screen shots of the various locations to find this information
   ![](images/660/OkeUser.png)
   
 - **Private Key API Path**
+  
   - This is the local path on your laptop where the private key file is located.  
+  
   - In case you are running Terraform on a Linux instance that was provided to you, you can download the private key using the Firefox browser and the document link provided by your instructor.
+  
+  - **Attention** : when on windows, you need to use following syntax for entering your path : 
+  
+    "\\\Data\\\keys\\\API_key\\\api_key.pem"	
+  
+    because the 
 
 
 
@@ -88,8 +96,9 @@ resource "oci_core_virtual_network" "K8SVNC" {
 - ![](images/660/terra_init.png)
 - run `terraform plan` to validate your config
 
-   - You should see 13 objects to be created
-- ![](images/660/terra_plan.png)
+   - You should see 10 objects to be created
+   
+   
    - **Attention**: In case you are running your tenancy in a datacenter with only 1 Availability Domain, you will get an error at this point, saying "**Error: Invalid index**.  Edit your **k8s.tf** and remove the last 2 elements of the Node Pool configuration referring to AD's no. 2 and 3.  
      Re-run the **terraform plan** command to validate it passes this time.
 - run `terraform apply` to spin up your infrastructure
