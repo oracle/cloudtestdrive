@@ -11,21 +11,9 @@ Because you are working in your own Cloud Tenancy, you need to perform a few ext
 
 ## Steps
 
-- Navigate to the **Git** page of your Developer project
+- On your PC, navigate to the directory where you cloned your **Git** repository
 
-- Open the file **Dockerfile**, and hit the Edit button (pencil icon upper right) to change the file
-
-- On line 17, change the **COPY** comman to reflect the name of your wallet directory:
-
-  - For example, if your wallet folder is named **APT1**, replace the original line with the blow text:
-
-    ```dockerfile
-    COPY ./wallet_ATP1 ./wallet_NODEAPPDB2
-    ```
-
-- Hit the **Commit** button (upper right) to save your changes.
-
-- Now navigate into your wallet folder by clicking on it, then select the file **sqlnet.ora** and hit the "Edit" pencil icon.
+- Navigate into your database wallet folder, and editthe file **sqlnet.ora** 
 
   - In this file, replace the default line below:
 
@@ -42,6 +30,7 @@ Because you are working in your own Cloud Tenancy, you need to perform a few ext
     ```
 
   - This will allow us to simply set the environment variable $TNS_ADMIN to the correct path.
+
 
 
 
