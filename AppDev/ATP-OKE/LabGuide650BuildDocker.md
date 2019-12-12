@@ -120,7 +120,7 @@ Open your project in Developer Cloud, and follow the steps below:
 
     ![](images/650/im52.png)
 
-- From the **Add Builder** drop-down, select **Docker Builder->Docker push**. 
+- Using the **Add Step** drop-down, select **Docker Builder->Docker push**. 
   - Your **Registry Host** and **Image Name** should be pre-filled with the previously specified values.
 
   ![](images/650/im46-1.png)
