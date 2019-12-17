@@ -18,16 +18,16 @@ Instructions on this page are for instructors setting up a class to execute the 
 
 ### Preparing DevCS
 
-Project creation in DevCS typically takes 2 minutes for a single project creation.  Unfortunately, if you have 20 participants, who all execute the project creation at the same moment - as this is the very first step of the lab - you might see a serious increase in the creation time, as the creation of projects in a tenancy seems to be a sequential process.
+Project creation in DevCS typically takes 2 minutes for a single project creation.  But if you have 20 participants, who all execute the project creation at the same moment, you might see an increase in the creation time, as the creation of projects in a single tenancy is a sequential process.
 
 Therefore we changed the initial step of the lab, requiring Lab Instructors to set up the DevCS projects for their labs ahead of time.
 
 - Navigate to the DevCS console, and hit the **+ Create** button.
   - Enter a name of the project, using a naming convention using the number of the participant, followed by the name or location of your event
     Example : *1_London*
-  - Keep all other parametes as default (private repo, Englidh language, empty project, markdown Wiki)
+  - Keep all other parametes as default (private repo, English language, empty project, markdown Wiki)
   - Hit the finish button
-- As soon as you see the Provisioning screen of the project with the various elements being set up, hit the "Oracle Developer Cloud" button in the top left of the screen to return to the menu page
+- As soon as you see the Provisioning screen of the project with the various elements being set up, hit the "Oracle Developer Cloud" icon in the top left of the screen to return to the starting page
 - You can now immediately launch the next project creation (name : *2_London*)
 - Please make sure not to have more that 3 project creations running in parrallel, or execution time will increase
 - Repeat above steps until you have created the appropriate number of projects for your session.
@@ -43,7 +43,7 @@ This current version of the lab requires minimal installations of software on th
 - Participants need to install the **kubectl executable** to visualize the resulting deployments on the cluster.  As this is not an installation but just an executable to download, this will work even on "locked down" laptops.  
 - As an instructor, you can choose to show the Kubernetes dashboard on your screen, projecting the status of created deployments to avoid even this installation
 
-####Option 2 : Participants install OKE
+#### Option 2 : Participants install OKE
 
 - **Git** is required to download a copy of the project repository, containing the terraform scripts
 - **Terraform** is required to launch the OKE cluster
