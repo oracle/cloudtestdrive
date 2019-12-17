@@ -28,6 +28,10 @@ In this hands-on lab you will get first-hand experience with Oracle’s new Auto
   Most people attending this lab will already have experienced connecting to an ATP database and discovering it's features in the base Autonomous Database lab.  If this would not be the case for you, your instructor will advise you to execute these [initial ATP steps](initial_atp_steps.md).
 
   
+  
+- If you are a Lab Instructor, you need to perform some preparation the day before your workshop.  More info on [this page](instructors.md).
+
+  
 
 ## Lab Instructions ##
 
@@ -41,7 +45,6 @@ This section will take you through the steps to set up a CI/CD environment for d
 
 - **Part 3:** [Build a Container image with the aone application running on ATP](../AppDev/ATP-OKE/LabGuide650BuildDocker.md)
 - **Part 4:** [Deploy your container on top of your Kubernetes Cluster](../AppDev/ATP-OKE/LabGuide670DeployDocker.md)
-
 
 ---
 
