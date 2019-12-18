@@ -402,7 +402,7 @@ This function will require two extra Java libraries so these will have to be add
 - cloudevents-api - Defines the open source cloud events API. In this function the input to the function will be a CloudEvent object that encapsulates all the details of the event.
 - jackson-databind - Allows Java objects to be marshalled and unmarshalled to the JSON format used by REST APIs.
 
-Open the pom.xml in your favourite text editor. Paste the the following two dependencies into the file after the opening <dependencies> tag:
+Open the pom.xml in your favourite text editor. Paste the the following two dependencies into the file after the opening ***dependencies*** tag:
 
 ```xml
  <!-- Added for cloud events api -->
