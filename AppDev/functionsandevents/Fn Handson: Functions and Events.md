@@ -65,27 +65,27 @@ Enter the tenancy name provided in the lab details and then log in with your ass
 
 ![](image2019-9-23_14-13-50.png)
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-9-23_14-15-12.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-9-23_14-15-12.png?version=1&modificationDate=1571038497000&api=v2)
+![](image2019-9-23_14-15-12.png)
 
 You will need to reset the password on first login so go ahead and do that. The password and user will be removed at the end of the workshop so to keep things simple go ahead and create your own password or use Welcome#### if you cant think of anything.
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-9-23_14-17-44.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-9-23_14-17-44.png?version=1&modificationDate=1571038497000&api=v2)
+![image2019-9-23_14-17-44](image2019-9-23_14-17-44.png)
 
-Once logged in, in the top right hand corner click the user avatar ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-8-28_6-10-53.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-8-28_6-10-53.png?version=1&modificationDate=1571043692000&api=v2) and then in the menu that is displayed, select your username which will appear under the heading titled 'Profile'.
+Once logged in, in the top right hand corner click the user avatar ![image2019-8-28_6-10-53](image2019-8-28_6-10-53.png) and then in the menu that is displayed, select your username which will appear under the heading titled 'Profile'.
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-9-23_10-33-31.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-9-23_10-33-31.png?version=1&modificationDate=1571043692000&api=v2)
+![image2019-9-23_10-33-31](image2019-9-23_10-33-31.png)
 
 Click on your username to navigate to the user detail page.
 
 ### Add a public key to your user in the oci console
 
-As part of the setup for this lab, we have provisioned everyone with a user of Oracle's Cloud (OCI) which you should have the details of. We have also performed some of the configuration steps to get Fn working with Oracle Functions. You will now complete these steps ...
+*As part of the setup for this lab, we have provisioned everyone with a user of Oracle's Cloud Infrastructure (OCI) which you should have the details of. We have also performed some of the configuration steps to get Fn working with Oracle Functions. You will now complete these steps ...*
 
 In order for the Fn CLI to make API calls to OCI it's necessary to set up an API signing key in the OCI console.
 
-Under resources on the left hand side click "API Keys" and then press the ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-8-28_6-39-9.png](https://confluence.oraclecorp.com/confluence/download/thumbnails/1494653687/image2019-8-28_6-39-9.png?version=1&modificationDate=1571043692000&api=v2) button.
+Under resources on the left hand side click "API Keys" and then press the![image2019-8-28_6-39-9](image2019-8-28_6-39-9.png)  button.
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-8-28_6-35-6.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-8-28_6-35-6.png?version=1&modificationDate=1571043692000&api=v2)
+![image2019-8-28_6-35-6](image2019-8-28_6-35-6.png)
 
 In the dialog box enter the following public key including **all** the hyphens:
 
