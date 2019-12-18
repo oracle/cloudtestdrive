@@ -30,9 +30,9 @@ If you are using a windows based laptop, you will need to utilise an ssh client 
 
 **NOTE**: Some client setups have experienced ssh session timeouts with Putty and if you get this, please enable connection keepalive.
 
-Please refer to [Appendix A](https://confluence.oraclecorp.com/confluence/plugins/viewsource/viewpagesrc.action?pageId=1494653687#FnHandson:FunctionsandEvents-AppendixA) for some assistance with using Putty if you are unfamiliar with it.
+Please refer to Appendix A for some assistance with using Putty if you are unfamiliar with it.
 
-Please refer to [Appendix B](https://confluence.oraclecorp.com/confluence/plugins/viewsource/viewpagesrc.action?pageId=1494653687#FnHandson:FunctionsandEvents-AppendixB) if you would prefer to use the Chrome secure shell extension
+Please refer to Appendix B if you would prefer to use the Chrome secure shell extension
 
 ### Download & Install the Fn project CLI
 
@@ -99,9 +99,7 @@ yoTTRlQS9WnIFqQbsvEiwKvMMwzJFmha6axXZhk7joINAg75cEUlD8ZP81Fsq0bX
 /wIDAQAB
 -----END PUBLIC KEY-----
 
-
-
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-8-27_8-46-37.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-8-27_8-46-37.png?version=1&modificationDate=1571043692000&api=v2)
+![image2019-8-27_8-46-37](image2019-8-27_8-46-37.png)
 
 Press 'Add' and the key will appear in the list.
 
@@ -127,9 +125,9 @@ As part of the later steps to configure Fn to use OCI, we will need to have the 
 
 On the User Details screen locate on the left hand side the 'Auth Tokens' link and press it.
 
-In the centre of the screen you will see a button labeled 'Generate Token'
+In the centre of the screen you will see a button labelled 'Generate Token'
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-8-28_11-29-53.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-8-28_11-29-53.png?version=1&modificationDate=1571043692000&api=v2)
+![image2019-8-28_11-29-53](image2019-8-28_11-29-53.png)
 
 Press the 'Generate Token' button.
 
@@ -139,13 +137,13 @@ Enter the following text
 
 'Token for Fn lab work'
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-8-28_11-31-21.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-8-28_11-31-21.png?version=1&modificationDate=1571043692000&api=v2)
+![image2019-8-28_11-31-21](image2019-8-28_11-31-21.png)
 
 Hit the 'Generate Token' button.
 
 The new token will be displayed and you will need to copy the full token and **make sure you paste it to a local text** file on your laptop for safekeeping.
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-8-28_11-32-26.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-8-28_11-32-26.png?version=1&modificationDate=1571043692000&api=v2)
+![image2019-8-28_11-32-26](image2019-8-28_11-32-26.png)
 
 Close the token generation window once you have the token safely copied to a local text file.
 
@@ -155,11 +153,11 @@ The user's OCID is also required as part of the set up and this can also be obta
 
 On the User Details screen locate the 'User Information' tab
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-8-28_6-50-54.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-8-28_6-50-54.png?version=1&modificationDate=1571043692000&api=v2)
+![image2019-8-28_6-50-54](image2019-8-28_6-50-54.png)
 
 There is a field that lists the OCID. Click the 'Copy' link to copy the OCID and paste it to a temporary text file on your laptop. 
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-8-28_6-52-42.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-8-28_6-52-42.png?version=1&modificationDate=1571043692000&api=v2)
+![image2019-8-28_6-52-42](image2019-8-28_6-52-42.png)
 
 In the SSH session to your lab VM you opened at the start of this lab open the /home/opc/.oci/config file in a suitable text editor such as vi or nano. Locate the line 
 
@@ -180,9 +178,7 @@ tenancy=ocid1.tenancy.oc1..aaaaaaaafipe4lmow7rfrn5f3egpg3xgur6v2q2wgvb3id4ehwujn
 region=eu-frankfurt-1
 ```
 
-
-
-Save the file and exit when you have made the change (in vi ESC wq RETURN
+Save the file and exit when you have made the change (in vi use *ESC* then *wq* then *RETURN*)
 
 For those unfamiliar editing under Linux and using vi please reach out to to one of the trainers. 
 
@@ -297,11 +293,11 @@ Login Succeeded
 
 In the OCI Console change the region to the Frankfurt region in the grey bar across the top of the console. Select the region drop down and pick "Germany Central (Frankfurt)".
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-1_16-4-41.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-10-1_16-4-41.png?version=1&modificationDate=1571038677000&api=v2)
+![image2019-10-1_16-4-41](image2019-10-1_16-4-41.png)
 
-In the browser session where you logged into the OCI Console look for the ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-8-28_11-40-56.png](https://confluence.oraclecorp.com/confluence/download/thumbnails/1494653687/image2019-8-28_11-40-56.png?version=1&modificationDate=1571038677000&api=v2) menu in the top left hand of the screen and press it.
+In the browser session where you logged into the OCI Console look for the  ![image2019-8-28_11-40-56](image2019-8-28_11-40-56.png)menu in the top left hand of the screen and press it.
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-8-28_11-52-25.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-8-28_11-52-25.png?version=1&modificationDate=1571038677000&api=v2)
+![image2019-8-28_11-52-25](image2019-8-28_11-52-25.png)
 
 From the list presented hover your mouse over 'Developer Services and more options appear.
 
@@ -309,11 +305,11 @@ Press your mouse on 'Functions'
 
 Before we can use Functions we need to select a compartment to utilise and you will be presented with a screen similar to this:
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-1_16-6-12.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-10-1_16-6-12.png?version=1&modificationDate=1571038677000&api=v2)
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-1_16-6-12.png](image2019-10-1_16-6-12.png)
 
 From the 'Pick a Compartment' expand the root by pressing on the '+' to the side of its name:
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-1_16-7-1.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-10-1_16-7-1.png?version=1&modificationDate=1571038677000&api=v2)
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-1_16-7-1.png](image2019-10-1_16-7-1.png)
 
 Search the list for 'CloudPursuit' and expand that.
 
@@ -321,7 +317,7 @@ From the sub compartment list **select** 'Tooling', expand that and then select 
 
 You will now be presented with the Functions User Interface where we will create a new application. As you are sharing this compartment with other delegates you may well already see applications listed.
 
-Create a new application by pressing on the button ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-8-28_12-23-5.png](https://confluence.oraclecorp.com/confluence/download/thumbnails/1494653687/image2019-8-28_12-23-5.png?version=1&modificationDate=1571038797000&api=v2)
+Create a new application by pressing on the button ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-8-28_12-23-5.png](image2019-8-28_12-23-5.png)
 
 The 'New Application' window will appear and you need to give a name and the VCN and subnet you will use to access it over.
 
@@ -329,11 +325,11 @@ Give the name as imagecatalogapp*NN where the NN* is replaced with your delegate
 
 The **VCN** and subnet to be used are within a different compartment to the one you are creating the application in and so in the VCN field press on the 'Change Compartment' link.
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-8-28_12-29-29.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-8-28_12-29-29.png?version=1&modificationDate=1571038797000&api=v2)
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-8-28_12-29-29.png](image2019-8-28_12-29-29.png)
 
 From the list presented look for 'fnworkshopmaster' and select it.
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-1_16-18-36.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-10-1_16-18-36.png?version=1&modificationDate=1571038797000&api=v2)
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-1_16-18-36.png](image2019-10-1_16-18-36.png)
 
 When selected you can choose the VCN fnvcn
 
@@ -343,7 +339,7 @@ The **subnet** Fn Public Subnet (Regional) can then be selected.
 
 The screen will look similar to the example below with a different application name depending on your delegate id.
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-14_15-41-54.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-10-14_15-41-54.png?version=1&modificationDate=1571038914000&api=v2)
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-14_15-41-54.png](image2019-10-14_15-41-54.png)
 
 Hit 'Create' when done. Confirm your new application is listed in the compartment.
 
@@ -371,8 +367,24 @@ $ fn init --runtime java imagecatalogfunction
 
 This will create the boilerplate code and configuration for our new function. The func.yaml will have a description of the function. A pom.xml file will also be created. Maven is used to build the Java function and the POM file lists the required libraries and build steps. The src directory contains two code trees, one for the actual function code and one for a test suite. The folder structure should look like this:
 
-```
-[opc@labvm99 ~]$ tree --charset=ascii imagecatalogfunction/ imagecatalogfunction/ |-- func.yaml |-- pom.xml `-- src    |-- main    |   `-- java    |       `-- com    |           `-- example    |               `-- fn    |                   `-- HelloFunction.java    `-- test        `-- java            `-- com                `-- example                    `-- fn                        `-- HelloFunctionTest.java 11 directories, 4 files 
+```asc
+[opc@labvm99 ~]$ tree --charset=ascii imagecatalogfunction/
+imagecatalogfunction/
+|-- func.yaml
+|-- pom.xml
+`-- src
+    |-- main
+    |   `-- java
+    |       `-- com
+    |           `-- example
+    |               `-- fn
+    |                   `-- HelloFunction.java
+    `-- test
+        `-- java
+            `-- com
+                `-- example
+                    `-- fn
+                        `-- HelloFunctionTest.java
 ```
 
 Change directory into the imagecatalogfunction directory:
@@ -392,8 +404,20 @@ This function will require two extra Java libraries so these will have to be add
 
 Open the pom.xml in your favourite text editor. Paste the the following two dependencies into the file after the opening <dependencies> tag:
 
-```
-                           io.cloudevents           cloudevents-api           0.2.1                                   com.fasterxml.jackson.core           jackson-databind           2.9.9           compile         
+```xml
+ <!-- Added for cloud events api -->
+<dependency>
+   <groupId>io.cloudevents</groupId>
+   <artifactId>cloudevents-api</artifactId>
+   <version>0.2.1</version>
+</dependency>
+<!-- Added for JSON serialization -->
+<dependency>
+   <groupId>com.fasterxml.jackson.core</groupId>
+   <artifactId>jackson-databind</artifactId>
+   <version>2.9.9</version>
+   <scope>compile</scope>
+</dependency> 
 ```
 
 Close and save the file. 
@@ -406,8 +430,15 @@ memory: 512
 
  The file should look like:
 
-```
-schema_version: 20180708 name: imagecatalogfunction version: 0.0.64 runtime: java build_image: fnproject/fn-java-fdk-build:jdk11-1.0.102 run_image: fnproject/fn-java-fdk:jre11-1.0.102 cmd: com.example.fn.HelloFunction::handleRequest memory: 512
+```yaml
+schema_version: 20180708
+name: imagecatalogfunction
+version: 0.0.64
+runtime: java
+build_image: fnproject/fn-java-fdk-build:jdk11-1.0.102
+run_image: fnproject/fn-java-fdk:jre11-1.0.102
+cmd: com.example.fn.HelloFunction::handleRequest
+memory: 512
 ```
 
 Save and close func.yaml
@@ -424,11 +455,11 @@ This should pretty print a JSON payload with all the rows currently in the CATAL
 
 As an alternate way of viewing the JSON payload you can always use the online JSON editor [https://jsoneditoronline.org/](https://jsoneditoronline.org/#/)
 
-Open the editor in a new browser tab and hit the ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-16_10-47-43.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-10-16_10-47-43.png?version=1&modificationDate=1571194063000&api=v2) button.
+Open the editor in a new browser tab and hit the ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-16_10-47-43.png](image2019-10-16_10-47-43.png) button.
 
 Copy the complete JSON payload returned from the command above and paste into the left hand pane deleting the '{}' already there.
 
-Hit the ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-16_10-51-32.png](https://confluence.oraclecorp.com/confluence/download/thumbnails/1494653687/image2019-10-16_10-51-32.png?version=1&modificationDate=1571194293000&api=v2)button in the middle of the panes to see the JSON formatted properly in the right hand pane.
+Hit the ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-16_10-51-32.png](image2019-10-16_10-51-32.png)button in the middle of the panes to see the JSON formatted properly in the right hand pane.
 
 In the right hand pane expand items to see the current number of items in the database table.
 
@@ -468,8 +499,13 @@ Open the test java file at ~/fnwork/imagecatalogfunction/src/test/java/com/examp
 
 
 
-```
-@Test public void shouldReturnGreeting() { //testing.givenEvent().enqueue(); //testing.thenRun(HelloFunction.class, "handleRequest"); //FnResult result = testing.getOnlyResult(); //assertEquals("Hello, world!", result.getBodyAsString()); }
+```java
+@Test public void shouldReturnGreeting() { 
+    //testing.givenEvent().enqueue(); 
+    //testing.thenRun(HelloFunction.class, "handleRequest"); 
+    //FnResult result = testing.getOnlyResult(); 
+    //assertEquals("Hello, world!", result.getBodyAsString()); 
+}
 ```
 
 
@@ -502,11 +538,11 @@ Open the OCI console at [https://console.eu-frankfurt-1.oraclecloud.com](https:/
 
 Ensure that you are working in the Frankfurt OCI data centre in the top menu bar:
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-11_10-46-44.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-10-11_10-46-44.png?version=1&modificationDate=1570762004000&api=v2)
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-11_10-46-44.png](image2019-10-11_10-46-44.png)
 
 Ensure that you are in the fnworkshopstudent compartment in the compartment picker:
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-11_10-48-23.png](https://confluence.oraclecorp.com/confluence/download/thumbnails/1494653687/image2019-10-11_10-48-23.png?version=1&modificationDate=1570762103000&api=v2)
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-11_10-48-23.png](image2019-10-11_10-48-23.png)
 
 You should see a list of buckets , one for each user. Locate your bucket, it will be named after your user id. 
 
@@ -528,15 +564,15 @@ Description: Detects new objects in bucket and triggers imagecatalogfunction
 
 In the Event Matching section leave the first drop down set the "Event Type". In the Service Name drop down select "Object Storage". In the Event Type drop down enter "Object - Create". The Rule Condition should look like:
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-11_11-17-3.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-10-11_11-17-3.png?version=1&modificationDate=1570763817000&api=v2)
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-11_11-17-3.png](image2019-10-11_11-17-3.png)
 
 Add another condition to specify exactly which bucket triggers this rule. Press the "+ Add Condition" button. Select "Attribute" as the condition type and then bucketName as the "Attribute Name". In "Attribute Values" enter the name of your bucket e.g. fnuser99. 
 
- ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-11_11-21-41.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-10-11_11-21-41.png?version=1&modificationDate=1570764097000&api=v2)
+ ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-11_11-21-41.png](image2019-10-11_11-21-41.png)
 
 In the Actions section specify the Action Type as Functions. Select the fnworkshopstudent compartment, your function application (based on your student number) and your function itself. 
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-11_11-24-16.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-10-11_11-24-16.png?version=1&modificationDate=1570764253000&api=v2)
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-11_11-24-16.png](image2019-10-11_11-24-16.png)
 
 Press "Create Rule" to create your rule - this button is right at the bottom left of the screen and sometimes hard to spot.
 
@@ -546,7 +582,7 @@ Navigate back to the Object Storage page in the OCI Console, locate the bucket n
 
 In the console click the blue Upload Objects button, in the dialog box click "select files" and pick an image file from your laptop (it doesn't matter which).
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-14_16-15-28.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-10-14_16-15-28.png?version=1&modificationDate=1571040930000&api=v2)
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-14_16-15-28.png](image2019-10-14_16-15-28.png)
 
 Press the "Upload Objects" button to upload the object. The function will be triggered in a few seconds.
 
@@ -587,9 +623,7 @@ There will be other entries from other students but you should recognise the fil
 
 Again you might find it easier to use the online JSON editor [https://jsoneditoronline.org/](https://jsoneditoronline.org/#/) to view the output and then search the items details to find the image you uploaded.
 
-
-
-![img](https://confluence.oraclecorp.com/confluence/plugins/servlet/confluence/placeholder/macro?definition=e2FuY2hvcjpBcHBlbmRpeCBBfQ&locale=en_GB&version=2)Appendix A: How do you use Putty with Windows to ssh to an OCI based virtual machine?
+## Appendix A: How do you use Putty with Windows to ssh to an OCI based virtual machine?
 
 As part of this hands on lab there is a need to ssh on to a virtual machine. If you are using a Windows based laptop and are not sure how to use the ssh client Putty, available to install, this guide will help.
 
@@ -601,11 +635,11 @@ Execute Putty from the desktop shortcut created at installation time or by searc
 
 Using the Public IP Address for the virtual machine you want to ssh to enter this in the 'Hostname (or IP address) section of the Putty configuration screen.
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-3-7_6-49-53.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-3-7_6-49-53.png?version=1&modificationDate=1571117000000&api=v2)
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-3-7_6-49-53.png](image2019-3-7_6-49-53.png)
 
 Now in the left-hand pane select Connection → SSH → Auth
 
- ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-3-7_6-51-39.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-3-7_6-51-39.png?version=1&modificationDate=1571117000000&api=v2)
+ ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-3-7_6-51-39.png](image2019-3-7_6-51-39.png)
 
 Press the 'Browse' button and search for the private key file downloaded as part of the artifacts.zip earlier. You are looking for the file **id_rsa.ppk**
 
@@ -613,23 +647,25 @@ If you wish to enable connection keepalive (if you experience session dropout) s
 
 The screen below should help here.
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-7_11-11-59.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-10-7_11-11-59.png?version=1&modificationDate=1571117000000&api=v2)
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-7_11-11-59.png](image2019-10-7_11-11-59.png)
 
 Now press the 'Open' button at the bottom of the panel.
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-3-7_6-56-32.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-3-7_6-56-32.png?version=1&modificationDate=1571117000000&api=v2)
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-3-7_6-56-32.png](image2019-3-7_6-56-32.png)
 
 Say 'Yes' to trust the key and add it to Putty's cache.
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-3-7_7-28-1.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-3-7_7-28-1.png?version=1&modificationDate=1571117000000&api=v2)
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-3-7_7-28-1.png](image2019-3-7_7-28-1.png)
 
 Give the username as opc when prompted in the new putty terminal session and hit RETURN
 
 You should now be logged in to your virtual machine.
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-3-7_7-29-15.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-3-7_7-29-15.png?version=1&modificationDate=1571117000000&api=v2)
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-3-7_7-29-15.png](image2019-3-7_7-29-15.png)
 
-# ![img](https://confluence.oraclecorp.com/confluence/plugins/servlet/confluence/placeholder/macro?definition=e2FuY2hvcjpBcHBlbmRpeCBCfQ&locale=en_GB&version=2)Appendix B: How do you use the Chrome SSH client extension to ssh to an OCI based virtual machine?
+
+
+## Appendix B: How do you use the Chrome SSH client extension to ssh to an OCI based virtual machine?
 
 As part of this hands on lab there is a need to use ssh to a virtual machine. If you are using a Windows based laptop and are not sure how to do this, then this guide for using the Chrome browser extension might help.
 
@@ -637,9 +673,9 @@ Open the Chrome browser and open a new tab
 
 Enter this url for the chrome ssh client extension inside the Chrome web store : https://chrome.google.com/webstore/detail/secure-shell-extension/iodihamcpbpeioajjeobimgagajmlibd?hl=en
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-9-10_4-23-17.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-9-10_4-23-17.png?version=1&modificationDate=1571117091000&api=v2)
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-9-10_4-23-17.png](image2019-9-10_4-23-17.png)
 
-Press the ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-9-10_4-14-43.png](https://confluence.oraclecorp.com/confluence/download/thumbnails/1494653687/image2019-9-10_4-14-43.png?version=1&modificationDate=1571117091000&api=v2) button.
+Press the ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-9-10_4-14-43.png](image2019-9-10_4-14-43.png) button.
 
 Press the 'Add extension' button presented.
 
@@ -647,11 +683,11 @@ After a few seconds you will see that the extension has been added and you are g
 
 At the top right of chrome you should see this new icon for the ssh client.
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-9-10_4-27-24.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-9-10_4-27-24.png?version=1&modificationDate=1571117091000&api=v2)
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-9-10_4-27-24.png](image2019-9-10_4-27-24.png)
 
 Click on this icon and select 'Connection Dialog'
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-9-10_4-32-33.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-9-10_4-32-33.png?version=1&modificationDate=1571117091000&api=v2)
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-9-10_4-32-33.png](image2019-9-10_4-32-33.png)
 
 In the dialog that appears firstly press the button marked ;Import ...' and select the id.rsa private key that was downloaded as part of this lab in the artifacts.zip.
 
@@ -661,7 +697,7 @@ Put the ip address of the virtual server you have been allocated for this lab in
 
 The details should be similar to those shown below.
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-9-10_4-39-31.png](https://confluence.oraclecorp.com/confluence/download/attachments/1494653687/image2019-9-10_4-39-31.png?version=1&modificationDate=1571117091000&api=v2)
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-9-10_4-39-31.png](image2019-9-10_4-39-31.png)
 
 When ready press the '[ENTER] Connect' button.
 
@@ -677,7 +713,7 @@ Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
 
 You now have an ssh session to your virtual machine!
 
-# Appendix C: Links to more information
+## Appendix C: Links to more information
 
 ### Oracle Functions
 
