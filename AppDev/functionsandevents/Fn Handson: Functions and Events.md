@@ -445,10 +445,10 @@ Save and close func.yaml
 
 ### Test the database REST API
 
-The function will interact with an Autonomous Transaction Processing database running in the same tenancy. The function will insert rows into the database via the ORDS REST API. Test that the API is accessible from your lab VM with the following command:
+The function will interact with an Autonomous Transaction Processing database running in the same tenancy. The function will insert rows into the database via the ORDS REST API. Test that the API is accessible from your lab VM with the following command ***replacing fnuser99 with the name of your bucket***:
 
 ```
-curl https://vx7tqpyaop2tflx-fnworkshopdb.adb.eu-frankfurt-1.oraclecloudapps.com/ords/fnworkshop/catalog/ | jq . 
+curl https://vx7tqpyaop2tflx-fnworkshopdb.adb.eu-frankfurt-1.oraclecloudapps.com/ords/fnworkshop/catalog/?q={"bucketname":"fnuser99"} | jq . 
 ```
 
 This should pretty print a JSON payload with all the rows currently in the CATALOG table in the database. 
@@ -592,10 +592,10 @@ In the metrics graphs you should see a point appear for the first function invoc
 
 The backend ATP database can be checked by the REST API.
 
-Issue the following curl command as you did earlier to query all the rows in the CATALOG table:
+Issue the following curl command as you did earlier to query all the rows in the CATALOG table ***replacing fnuser99 with the name of your bucket***:
 
 ```
-curl https://vx7tqpyaop2tflx-fnworkshopdb.adb.eu-frankfurt-1.oraclecloudapps.com/ords/fnworkshop/catalog/ | jq .
+curl https://vx7tqpyaop2tflx-fnworkshopdb.adb.eu-frankfurt-1.oraclecloudapps.com/ords/fnworkshop/catalog/?q={"bucketname":"fnuser99"} | jq .
 ```
 
 The response will be in JSON format and you should see an entry for the file you just uploaded e.g.
