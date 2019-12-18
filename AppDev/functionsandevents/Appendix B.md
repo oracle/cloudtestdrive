@@ -6,9 +6,9 @@ Open the Chrome browser and open a new tab
 
 Enter this url for the chrome ssh client extension inside the Chrome web store : https://chrome.google.com/webstore/detail/secure-shell-extension/iodihamcpbpeioajjeobimgagajmlibd?hl=en
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-9-10_4-23-17.png](/home/amyles/fnaas/cloudtestdrive/AppDev/functionsandevents/image2019-9-10_4-23-17.png)
+![image2019-9-10_4-23-17](image2019-9-10_4-23-17.png)
 
-Press the ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-9-10_4-14-43.png](/home/amyles/fnaas/cloudtestdrive/AppDev/functionsandevents/image2019-9-10_4-14-43.png) button.
+Press the  ![image2019-9-10_4-14-43](image2019-9-10_4-14-43.png)button.
 
 Press the 'Add extension' button presented.
 
@@ -16,11 +16,11 @@ After a few seconds you will see that the extension has been added and you are g
 
 At the top right of chrome you should see this new icon for the ssh client.
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-9-10_4-27-24.png](/home/amyles/fnaas/cloudtestdrive/AppDev/functionsandevents/image2019-9-10_4-27-24.png)
+![image2019-9-10_4-27-24](image2019-9-10_4-27-24.png)
 
 Click on this icon and select 'Connection Dialog'
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-9-10_4-32-33.png](/home/amyles/fnaas/cloudtestdrive/AppDev/functionsandevents/image2019-9-10_4-32-33.png)
+![image2019-9-10_4-32-33](image2019-9-10_4-32-33.png)
 
 In the dialog that appears firstly press the button marked ;Import ...' and select the id.rsa private key that was downloaded as part of this lab in the artifacts.zip.
 
@@ -30,7 +30,7 @@ Put the ip address of the virtual server you have been allocated for this lab in
 
 The details should be similar to those shown below.
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-9-10_4-39-31.png](/home/amyles/fnaas/cloudtestdrive/AppDev/functionsandevents/image2019-9-10_4-39-31.png)
+![image2019-9-10_4-39-31](image2019-9-10_4-39-31.png)
 
 When ready press the '[ENTER] Connect' button.
 
