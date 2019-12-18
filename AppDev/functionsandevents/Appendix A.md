@@ -36,3 +36,4 @@ Give the username as opc when prompted in the new putty terminal session and hit
 
 You should now be logged in to your virtual machine!
 
+![image2019-3-7_7-29-15](image2019-3-7_7-29-15.png)
