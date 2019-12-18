@@ -23,16 +23,16 @@ We have created you an Oracle Linux 7 based virtual machine within the Oracle Cl
 Use the SSH client of your choice to SSH to your lab virtual machine which will be assigned at the start of the workshop. SSH as the **opc** user and use the id_rsa private key. For example on Mac or Linux use the following command:
 
 ```
-$ ssh -i /id_rsa opc@ 
+$ ssh -i /path/to/id_rsa opc@your.vm.ip.address
 ```
 
 If you are using a windows based laptop, you will need to utilise an ssh client such as Putty or Mobaxterm. If you use Putty then you will need to utilise the .ppk version of the private key also included in the artifacts.zip downloaded earlier.
 
 **NOTE**: Some client setups have experienced ssh session timeouts with Putty and if you get this, please enable connection keepalive.
 
-Please refer to Appendix A for some assistance with using Putty if you are unfamiliar with it.
+Please refer to [Appendix A](Appendix A.md) for some assistance with using Putty if you are unfamiliar with it.
 
-Please refer to Appendix B if you would prefer to use the Chrome secure shell extension
+Please refer to [Appendix B](Appendix B.md) if you would prefer to use the Chrome secure shell extension
 
 ### Download & Install the Fn project CLI
 
