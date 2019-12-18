@@ -12,7 +12,7 @@ More details of the Oracle Events Service can be found here: https://docs.cloud.
 
 ### Requirements
 
-This hands on lab, although standalone would benefit from a basic understanding of the Fn project and OCI Functions support. If you do not feel you have this sufficiently then it would be worthwhile asking the trainers about arranging a further session on these aspects for you or your team.Experience of using ssh clients would be beneficial but not essential.A picture image on your laptop that can be uploaded to object storage to trigger the function.
+This hands on lab, although standalone would benefit from a basic understanding of the Fn project and OCI Functions support. If you do not feel you have this sufficiently then it would be worthwhile asking the trainers about arranging a further session on these aspects for you or your team. Experience of using ssh clients would be beneficial but not essential. A picture image on your laptop that can be uploaded to object storage to trigger the function.
 
 ###  Download lab artefacts file by clicking on the link in the student handout that you will have been sent prior to the course.
 

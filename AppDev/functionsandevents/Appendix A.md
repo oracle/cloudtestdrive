@@ -10,7 +10,7 @@ Execute Putty from the desktop shortcut created at installation time or by searc
 
 Using the Public IP Address for the virtual machine you want to ssh to enter this in the 'Hostname (or IP address) section of the Putty configuration screen.
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-3-7_6-49-53.png](/home/amyles/fnaas/cloudtestdrive/AppDev/functionsandevents/image2019-3-7_6-49-53.png)
+![image2019-3-7_6-49-53](image2019-3-7_6-49-53.png)
 
 Now in the left-hand pane select Connection → SSH → Auth
 
