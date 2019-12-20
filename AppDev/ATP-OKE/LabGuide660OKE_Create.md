@@ -67,30 +67,12 @@ Screen shots of the various locations to find this information
 
 - Open a new Terminal window, and navigate to the **terraform_0.12** folder in the **ATPDocker** git repository folder
 
-- Edit the file terraform.tfvars and enter your instance OCID's on the first lines, using the information collected in the previous section
+- Edit the file terraform.tfvars 
 
-- Now edit the file **k8s.tf** and add your initials to the **name** of the kubernetes cluster:
+   - Enter your instance OCID's on the first lines, using the information collected in the previous section
+   - Enter your initials for the  the parameter **Participant_Initials**
 
-   ```
-   resource "oci_containerengine_cluster" "k8s_cluster" {
-   	compartment_id = "${var.compartment_ocid}"
-   	kubernetes_version = "v1.12.6"
-   	name = "k8s_cluster_atp_myInitials"
-   	vcn_id = "${oci_core_virtual_network.K8SVNC.id}"
-   ```
-
-- Edit the file **network.tf** and do the same for the **display_name** of the Virtual Network:
-
-```
-resource "oci_core_virtual_network" "K8SVNC" {
-  cidr_block     = "${var.VPC-CIDR}"
-  compartment_id = "${var.compartment_ocid}"
-  display_name   = "K8S-VNC-ATP-MyInitials"
-  dns_label      = "k8s"
-}
-```
-
-
+   
 
 - Run `terraform init` in this directory, all dependencies, including oci v3 should download
 - ![](images/660/terra_init.png)
@@ -109,14 +91,14 @@ resource "oci_core_virtual_network" "K8SVNC" {
    - **Attention:** You might also get an error on the version of the Linux Image to use for the Worker Nodes.  If you encounter this, please check available Linux versions in your datacenter and correct the file **k8s.tf** accordingly.
 - Observe the resulting files that were created on your machine : 
    - **terraform.tfstate**: this file contains the details of the created elements.  Terraform will require this file when you do an update to your configuration file and you want top apply this change to the infrastructure.
-   -  **mykubeconfig**: this is the config file that allows you to connect to your newly created Kubernetes cluster.  You will need it in the next steps to access the kubernetes management console.
+   -  **mykubeconfig_0**: this is the config file that allows you to connect to your newly created Kubernetes cluster.  You will need it in the next steps to access the kubernetes management console.
 
 ### Step 3: Validate and connect to the Kubernetes cluster
 
 - validate the resulting K8S infrastructure :
 
    - ```bash
-     export KUBECONFIG=./mykubeconfig
+     export KUBECONFIG=./mykubeconfig_0
      kubectl version
      kubectl get nodes
      ```
