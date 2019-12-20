@@ -95,6 +95,23 @@ Screen shots of the various locations to find this information
 
 ### Step 3: Validate and connect to the Kubernetes cluster
 
+- make sure you have the OCI CLI client side software installed on your environment
+
+   - Validate with following command :
+   
+      ```
+      oci --version
+      ```
+   
+      This should return a version number of 2.6.14 or above
+
+   - If you don't have the CLI installed, follow [these instructions](https://docs.cloud.oracle.com/iaas/Content/API/SDKDocs/cliinstall.htm) to install it. 
+   
+      - First install the CLI
+   - Next configure the CLI to point to your tenancy
+   
+   
+   
 - validate the resulting K8S infrastructure :
 
    - ```bash
@@ -118,7 +135,18 @@ Screen shots of the various locations to find this information
          10.0.12.2   Ready    node    14s   v1.12.6
          ```
 
-         
+
+
+
+---
+
+- **Attention** : As of 16-Dec-2019, the use of a v1 token certificate for the kubeconfig is not supported anymore.  Please [follow the instructions on this page](env-setup-kubeconfig.md) to obtain a valid and permanent certificate for your cluster, and create a new kubeconfig file with this token.
+
+   **==> ATTENTION**: be sure to use the modified kubeconfig file in the remainder of this tutorial !
+
+---
+
+
 
 - To access the Kubernetes console:
 
@@ -126,10 +154,8 @@ Screen shots of the various locations to find this information
      kubectl proxy
      ```
 
-     
-
-   - Then navigate in a browser on your VNC Viewer to the following address:   
-     http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/login
+   - Then navigate in a browser to the following address:   
+  http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/login
 
 
 - Set up a "Secret" to allow you to pull images from your private repository:
