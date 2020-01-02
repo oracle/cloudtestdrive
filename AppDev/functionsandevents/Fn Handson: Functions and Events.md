@@ -186,8 +186,10 @@ Fn installs with a default context but now we need to create a second to allow t
 
 On your lab virtual machine SSH session issue the following commands:
 
-```
-$ fn create context oci --provider oracle $ fn use ctx oci $ fn ls ctx
+```bash
+$ fn create context oci --provider oracle 
+$ fn use ctx oci 
+$ fn ls ctx
 ```
 
 The output should have an asterix against the new Fn context.
