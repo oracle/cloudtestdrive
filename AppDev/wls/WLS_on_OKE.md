@@ -99,7 +99,7 @@ Once the cluster is created (the nodes will continue to be created), you can acc
   - You are now ready to download the image :
 
     ```
-    docker login
+    docker login container-registry.oracle.com
     
     docker pull container-registry.oracle.com/middleware/weblogic:12.2.1.3
     ```
