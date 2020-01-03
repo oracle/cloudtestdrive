@@ -1,0 +1,43 @@
+Tracing
+=======
+We now managed to achieve the situation where we have a set of microservices that cooperate to perform specific function.
+However we don't know exactly how they are operating in reality, we do of course know how they operate in terms of our design!
+Helidon has built-in support for tracing. There are several actions that we need to take to implement this.
+Firstly we need to deploy a tracing engine, Helidon supports several tracing engines, but for this lab we will use the Zipkin 
+engine. For now we will use docker to run Zipkin. In the Kubeneres labs we will see how we can run Zipkin in Kubernetes.
+Assuming that you have docker installed and running open a terminal and run the following command to start Zipkin in a container
+docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin
+You won't see any output from this, just the container id, but if you go to http://localhost:9411/zipkin/ you will see the front end 
+and can confirm it's running.
+
+You normally would need to add the zipkin packages into the pom.xml file, but that's already been done for you.
+
+Update the conf/storefront-config.yaml file and conf/stockmanager-conf.yaml files in both projects, uncomment the tracing stuff to 
+specify the relevant project name as the service and the host as "zipkin" (there is actually a default value already set in the
+microprofile-config.properties file, but we're going to override that here 
+
+Make a request, say reserving stock
+curl -X POST -u jill:password http://localhost:8080/store/reserveStock
+body
+{"requestedItem":"Pencil", "requestedCount":7}
+Now go to the zipkin url and click find traces, you'll see the list of traces, if you expand it you can see that the trace covers 
+operations in both microservices, even though they are in separate JVM's
+
+To stop the Zipkin container do :
+docker stop zipkin
+
+
+Metrics
+=======
+Provide information on the way it is working
+Add @Counted to the StorefrontResources class, restart it
+look at http://localhost:9080/metrics see that there are metrics in the list, for example 
+application:ft_com_oracle_labs_helidon_storefront_resources_storefront_resource_list_all_stock_invocations_total
+The metrics are are generated automatically due to the @Counted annotation and are updated by the infrastructure as it processes each 
+call, make a few requests and see the counter increment
+Can also add @Timed(name = "listAllStockTimer") to the list all stock to generate metrics on how long the call takes
+See the metrics around
+application:com_oracle_labs_helidon_storefront_resources_storefront_resource_list_all_stock_timer_rate_per_second guage
+can'd have both @Counted and @Timer on the entire class for some reason, but you can have a one and then per method annotations (if the 
+per method is expressly named)
+

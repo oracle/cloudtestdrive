@@ -1,0 +1,131 @@
+This set of classes operate on the database.
+They provide CRUD functionality for the database front end, specifically modifying the database tables.
+
+Configuring the project to be personal to you
+=============================================
+In the conf/stockmanager-config.xml file change the departmentOrg to be your name, initials or something that's going to be 
+unique (you're all working against the same database table, and we need to split your data) 
+The way this operates is that the StockResource will automatically and transparently add the departmentOrg to the primary key 
+in all requests, this is not something you're likely to do in production
+
+Quick overview of the database functionality
+============================================
+The database code used Java Persistance to define the database interactions.
+If you look at the database classes in the com.oracle.labs.helidon.stockmanager.database package you'll see that they have some 
+annotations on them. Let's look at the StockLevel class first
+@Data, @NoArgsConstructor and @AllArgsConstructor are Lombok annotations that tell Lombok to automatically create the constructors,
+getters and setters, toString, equals and hashcode. We could of course do this manually or use tooling in the IDE to generate them, 
+but using Lombok means that the source code is less cluttered and also that if we change the class (say by adding new fields) all of 
+the related methods and constructors update automatically.
+The other annotations are used by Java persistence to identify what the classes are :
+@Entity means that this is something that JPA can save into the database
+@Table specifies the table name to use, a default will be generated based on the class name, but it's nicer to know exactly what we're
+getting
+@EmbeddedId means that the primary key is this object, because it's embedded the actual primary key will be multiple values.
+@Column defines the details of the column name, again it can be generated automatically, but this will force a specific name.
+
+Looking at the StockId class
+The Lombok annotations are the same
+The @Embeddable means that JPS will construct the primary key using the fields in this class
+As with the StockLevel we're choosing our own column names using @Column rather than letting the system chose them for us.
+
+The Java Persistence system at runtime looks for these annotations and will automatically setup the database mappings based on them.
+The actual JPA implementation that's being used here is hibernate, it's an open source project, and it will not only handle the database
+interactions for us, but if needed create the database tables on our behalf (this is controlled by the hibernate.hbm2ddl.auto setting 
+in the persistence.xml file) Of course in a production environment you would not want to do this, but in a development environment it 
+can speed things up 
+
+The entity manager represents the connection to the JPA system, it can be used to locate existing object and create new ones (see 
+the StockResource.createStockLevel method) Can merge updates to existing data (see the StockResource.adjustStockLevel method) and
+delete objects in the database (see the StockResource.deleteStockItem method)
+
+It is important to note that each item retrieved from or saved to the database is a different instance, so retrieving the same object 
+twice is two separate objects, which contain the same data, not two references to the same object. This means that you need to think 
+carefully if you're going to implement comparisons or equality (hence the benefits of Lombok generating this type of code automatically for us)
+
+Configuring the database
+========================
+Initially it's setup to use the JPA / JTA (transaction system) to load in the configuration.
+The database settings are defined in the conf/stockmanager-config.yaml file and in the src/main/resources/META-INF/persistence.xml 
+file. The latter is automatically read by the Helidon and the config is handed to the Java Persistence layers.
+
+Using path parameters
+=====================
+In the Storefront object we were processing Java objects directly (the helidon framework was converting them to / from JSON for us) but 
+here (to show what's possible) If you look at the StockResource.createStockLevel method you will see the @Path provides names fo the 
+parameters and @PathParam binds the to the method arguments. It's also possible to use forms params here
+
+Getting an entity manager
+=========================
+JPA requires an entity manager, but we don't however need to setup the entity manager itself, we can have Helidon do that for us by using the 
+@PersistenceContext annotation to do the injection.
+In the Stock Manager file uncomment the @PersistenceContext annotation on the entity Manager declaration. Note that the name of the persistence
+context is defined as a hard coded String, and there is no mechanism for it to be injected via a config property (this is one area where
+manually setting it up is advantageous) however this is not as restrictive as it seems as the name just refers to entries in the various 
+property files, so if we do want to change the database details we can achieve that by modifying the config files, and that can be done
+without source code modifications..
+Using this will also ensure that the entity manager is correctly shutdown when the program exits
+Also remove the lines in the constructor that create the entity manager factory and entity manager instance. This will mean that you're not trying 
+to create them by hand (The @PersistenceContext will actually overwrite what you do in the constructor as it's called once the class instance
+is constructed.
+Note that Helidon is planned (this is not a commitment) to have a data persistence abstraction layer which will make it even easier to interact 
+with persisted data.
+Run the stockmanager.main class
+Use postman or curl to create some stock items, these need to be done as a user with admin rights so do the following commands against a running 
+stockmanager service 
+curl -x GET-u jack:password http://localhost:8081/stockLevel
+Works, but probably no content (if there is your departmentOrg setting is not unique)
+curl -X PUT -u jack:password http://localhost:8081/stockLevel/rivet/5000
+You will note that the code generates an error, this is because it's trying to modify the database, and Helidon created entity management knows that 
+this should be done in a transaction.
+
+Automatic Transactions
+======================
+We could manually ask the entity manager to start and and transactions, but that's a load of extra code. Let's use the Java Transaction manager to 
+do it for us.
+Uncomment the @Transactional annotation for the StockResource class.
+This means that every                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 operation in the class will be wrapped in a transaction automatically, If the method returns normally (so no exceptions thrown)
+then the transaction will be automatically committed, but if the transaction returned abnormally (e.g. an exception was thrown) then the transaction
+will be rolled back.
+This will apply if there were multiple entity managers or database modification actions operating within the method.
+
+Note on @Transaction and @Fallback
+==================================
+In the current version of Helidon there is a conflict between the processing of @Transactional and @Fallback, if a class (or method)
+has the @Fallback annotation then the transaction will not be created. Sadly at the moment there is no workaround, but it's expected (but 
+not guaranteed) that the Helidon Data functionality (which is planned to make persistence a lot easier) will fix that problem.
+
+Testing the stockmanager works
+==============================
+Use postman or curl to create some stock items, these need to be done as a user with admin rights so do the following commands against a running 
+stockmanager service 
+curl -X PUT -u jack:password http://localhost:8081/stockLevel/rivet/5000
+curl -X PUT -u jack:password http://localhost:8081/stockLevel/rivets/5000
+curl -X PUT -u jack:password http://localhost:8081/stockLevel/chair/200
+curl -X PUT -u jack:password http://localhost:8081/stockLevel/door/50
+curl -X PUT -u jack:password http://localhost:8081/stockLevel/window/100
+curl -X PUT -u jack:password http://localhost:8081/stockLevel/window/100
+
+Note that on the 2nd attempt to add the window we get an errror, there are already items with that name present.
+Note that on sucess the return is the newly created object
+
+Use postman of curl to get the current stock list
+curl -X GET -u jack:password http://localhost:8081/stockLevel
+Note that we have "accidentally created two versions of the rivet, let's remove one
+Use postman or curl to remove it
+curl -X DELETE -u jack:password http://localhost:8081/stockLevel/rivets
+Now we will see it removed from the list.
+curl -X GET -u jack:password http://localhost:8081/stockLevel
+
+Finally let's test reserving some stock
+Use postman of curl to get the current stock list
+
+Setting up in docker
+====================
+This is great, but the microservices are usually packaged into a docker container so they can be easily distributed.
+The pom.xml file is configured to use jib to do this, that will automatically build a docker container for you, however 
+jib places a few files in the wrong places in the docker container, so there is a Dockerfile to run to adjust these
+Finally we can push the container image to an external repository which will allow it to be easily accessed.
+The script buildPushToFraOcirIO.sh will perform the steps needed to do this, however you will need to have done a docker login 
+*prior* to running this script.
+You will also need to modify the registry information in the scripts to reflect your registry setup 

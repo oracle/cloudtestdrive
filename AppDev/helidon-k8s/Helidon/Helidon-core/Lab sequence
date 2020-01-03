@@ -1,0 +1,177 @@
+Describe the basic existing classes and what they do
+Two java bundles, one for the storefront with basic business logic, stockmanager does the RDBMS interations
+Initially using a simplified version with a dummy backend (we'll enable that later)
+
+For the labs to help you identify where to change the code there are comments that tie up to the spe in this document. For 
+example if a step says apply a @GET annotation at com.oracle.labs.helidon.storefront.StorefrontResource.class-LSREST.1 you  need to open 
+the class StorefrontResource in package com.oracle.labs.helidon.storefront. because it says .class that means that the annotation is on the 
+class, is it was for example com.oracle.labs.helidon.storefront.StorefrontResource.listAllStork-LSREST.2 it means the method listAllStock
+in some cases it's a field name rather than a method name
+
+Note - this does not cover the pom.xml file, it needs mentioning but do we really want to be editing it all the time ?
+
+Make the list stock REST Service available
+==========================================
+Enable the StorefrontResource @Path
+Make Storefront @RequestScoped
+Make the listAllStock method @GET, @Path @Produces are present
+Note that the result is a Collection of Item details, and is automatically converted into the JSON because of @Produces
+Run and test against http://localhost:8080/store/stockLevel
+
+explain about server setup in main and storefrontapplication for class list
+
+Note that this uses a fake data set (see dummy.StockManagerDummy if you're interested)
+
+Make the reserveStock REST service available
+=============================================
+In the StorefrontRecourse class
+Note that for now we're working against a dummy data set, so making a change is not permanent
+Enable the reserveStockLevels @Post @Path @Produces @Consumes annotations
+Note that the body of the request is automatically converted from the JSON into the itemRequest param
+call and see that the pencil cound has changed compared to the previous list
+{"requestedItem":"Pencil", "requestedCount":7}
+
+Authentication
+==============
+Problem is anyone can access our service, let's add some security
+Add @Authenticated to the StorefrontResource class, this is applied to every REST call in the class (could also add to individual 
+ones) now have to have a user for every access
+Try accessing the list endpoint, without setting the user details, will get an 401 unauthorized error
+Set the username and password (list below) access now works
+For this lab using hard coded (in the confsecure/storefront-security.yaml so that needs to be in the config setup), but in reality 
+this file would configure things to use an external identity service !
+users are jack, jill, joe password for all is password
+
+Adding extra endpoints to the application (and scope implications)
+==================================================================
+A big application may have multiple sets of services, grouped into resources, we're looking at the Storefront resource that handles the stock interactions
+But what if we want to modify the minimum change remotely, can create a new rest endpoint to handle this
+Add the ConfigurationResource to the classes in StoreFrontApplication
+ConfiguationResource is @ApplicationScoped
+Now the endpoint http://localhost:8080/minimumChange is added, can access this, it's not @Authenticated (at class or method) so anyone can call it
+Note that the POST is @Authenticated but also @RolesAllowed, requires that the user be in the admin role to access this
+If you POST to it with an integer in the body (no need to wrap it in JSON, but do need the jack/password user details as that one has the admin role) you'll find 
+that the next get shows the changes value, this is the CongirutationRecourse is across the application, and it has a minimum  change request
+However ... making a modification to the minimum change just modifies the version tied to the ConfigurarionResource, the StorefrontResource has it's own version. So 
+this doesn;t actually do what we want !
+Test this by setting the mnnimum change to 1, then trying to get a single item
+Add the StatusResource as well, it's just does a hello world curl -i http://localhost:8080/status returning a bit of config info (more on this later)
+
+Injecting classes and resources
+===============================
+Say we want to avoid creating class instances and have the system do it for us
+Minimum change controls the minimum change for a reservation, we want this to apply across all of the requests.
+In the ConfigurationResource class @Inject the minimum change in the Storefront rather than building it by hand
+In the StorefrontResourece class @Inject the miniumum change
+Look at the MinimumChange class, note @ApplicationScoped - means only one across the entire setup
+This is because we don't want a different minimum change value each time
+The Injection system knows we only need one and will re-use one the first is created
+@RequestScoped means there is once instance across a request
+There are other types of scope - see https://stackoverflow.com/questions/7031885/how-to-choose-the-right-bean-scope
+
+Java classes vs Response
+========================
+Helidon can let us specifically craft an HTTP Response if we want, The ConfigurationResrouce shows how this is don
+though in most cases you don't need to do this, it's sometimes sensible. The Failure handling below shows how we can handle converting 
+exceptions into respinse codes
+
+
+Injecting properties from configuration
+=======================================
+Property inheritance order (top is java system properties, unix env, then config options in order specified, META-INF/microprofile.config is added by default if nothing is specified)
+In Main add the conf/storefront-config.yaml source in, note it is optional, if the file is not there no error, for non optional 
+the config source must be there - good to hit the error in advance, not sometime downstream !
+In minimum change uncomment the second constructor
+Note it also has @Inject - the system will look to inject a value into the constructor and use this for creating injectable objects
+@ConfigProperty tries to locate the property in the properties stack and apply it, now to change the 
+default we just change the config.
+Look at the conf1/storefront-config.yaml file, it has two settings,change the minimumDecrement to a value of your choice, but make it 
+realistic so below 10 would be a good idea.
+edit storecftont-config.yam l, ato the app section 
+  minimumdecrement: 3
+
+Now the minimum is set to three compared to the coding default of 2
+Also note that there are multiple configuration sources, these are read in order thay are declared, and the first value that matches 
+is returned. Why have multiple sources ? It allows the data to be independently set, in many runtime environments you may have different 
+people responsible for different areas and thus different configurations.
+Having class path as well as local files resources also allows you to have a file containiner default values shipped with your microservice 
+and thus always available, you can then use a local file based version to override the speciffic values you want to without having to 
+mess aroudn and change the distribution (which is likely to cause problems in a automated deployment situation)
+
+Monitoring the configuration for changes
+========================================
+By default config read at startup, but it's also possible to define a config source that periodically checks for changes.
+In the Storefront.Main class buildConfig method update the configiuration for the storefront-congig line to be :
+ConfigSources.file("conf/storefront-config.yaml").pollingStrategy(PollingStrategies::watch).optional()
+
+We'll see later in the Kuberneties labs why we're using conf1 and conf directories, but it also demonstrates that you don;t need to have both in the same place
+
+This means that the configuration source will check periodically if the file has changes and if so will re-load it updating the config data to reflect any changes. Then when the information is retrived from the config it will reflect the latest version.
+When allowing for changing the configuration consideration needs to be given to when the data is actually extracted from the configuration. If you look at the StatusResource class you'l see that it's RequestScoped. This means that a new instance is created per request, and the propeties that are @Injected reflect the value of those propertieds at the time the instance was created (it it had been application scoped this woudl have been true as well, but as application scoped means there is only one per application we would have got the value when it was created,, and no updates when the configuration changed.
+
+Run the program and access the status resource. 
+curl -i http://localhost:8080/status
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Sun, 29 Dec 2019 14:50:07 GMT
+connection: keep-alive
+content-length: 46
+
+{"name":"My Shop","alive":true,"frozen":false}
+
+Note that it returns a name of "My Shop", (the default value in META-INF/microprofile-config.properties is "Name Not Set", but the conf/storefront-config.yaml overrides that)
+
+LEAVE THE PROGRAM RUNNING !
+
+Edit the conf/storefront-config.yaml file and change it to something unique to you (Say your name) then save the file
+
+Access the status resource again
+curl -i http://localhost:8080/status
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Sun, 29 Dec 2019 14:51:24 GMT
+connection: keep-alive
+content-length: 48
+
+{"name":"Tims Shop","alive":true,"frozen":false}
+
+Note that the name is now what you changed it to ("Tims Shop" in this case)
+
+(It may take a short while for the modified file to be recognized and loaded, Helidon checks for config modifications in the background, it seems in my testing to recognize changes within 30 seconds, but usually it's faster)
+
+Of course this is a very simple change in configuration, but the principle applies to any configuration file change. So if you do have configuration information you expect to change whilst the program is running this is a very simple way to handle that without yourself having to remember to check for an process updates.
+
+
+Separating functionality by port
+================================
+Helidon can deliver service using multiple ports, for example separating out the administration functions (e.g. metrics, health etc.) from
+the operational functions.
+Look at the config file in conf/storefront-network.yamp and you will see that it defines two network ports, the primary one on port 8080
+and an additional one on port 9080, then it specifies which port the metrics and health services will bund to (the 0.0.0.0 means listen 
+on all interfaces, not a speficic IP address)
+If you modify the Main class and include the conf/storefront-network.yaml fle, then restart the service you will see in the diagnostic 
+output that two channels are now in use, the default on 8080 and admin on 9080.
+
+2019.11.27 16:35:11 INFO io.helidon.webserver.NettyWebServer Thread[nioEventLoopGroup-2-2,10,main]: Channel '@default' started: [id: 0xd964f1e7, L:/0:0:0:0:0:0:0:0:8080]
+2019.11.27 16:35:11 INFO io.helidon.webserver.NettyWebServer Thread[nioEventLoopGroup-2-1,10,main]: Channel 'admin' started: [id: 0x65a8faa0, L:/0:0:0:0:0:0:0:0:9080]
+
+We will look more in the the services like health that are available on the admin port in a later exercise.
+
+
+Handling failures
+=================
+Remove the StockManagerDummy instance in the StorefrontResource class (It will be null now when the methods are called
+Save and run with a request. Hardly surprisingly the request fails. Note the null pointer in the logs for both /store/reserveStock and /store/stockLevel methods
+Enable the @Fallback on the reserveStock method, now get an error description back, but it's not possible using 
+this approach of calling a FallBack method to get the exception details and such like
+
+
+Handling code exceptions
+========================
+Enable the @Fallback annotation on the StorefrontResource reserveStorkItems method
+This calls a method on the handler class (look at the class if you like) which generates data, lots more info on what the
+error cause was.
+The class is in resource.fallbacn
+Can define failure conditions, e.g. add @Timeout(value = 15, unit = ChronoUnit.SECONDS) to the StorefrontResource class, now
+every REST call that does not finish in 15 will generate a timed out http response automatically
+There are other options here, for example circuit breakers
