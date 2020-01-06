@@ -73,7 +73,7 @@ This labs looks at how Helidion can help you gather data on the fow of operating
 
 ##Cloud Native support in Helidon
 This last Helidon lab looks as the features in Helidon that are designed to provide support for cloud native functionality in deployment systems like Kubernetes. For example to help report if a program is still running, but is actually failing to operate (for example it's in a deadlock)
-(The Helidon support for Cloud Native Operations labs](Helidon-cloud-native/helidon-cloud-native.md)
+[The Helidon support for Cloud Native Operations labs](Helidon-cloud-native/helidon-cloud-native.md)
 
 
 #What's next
