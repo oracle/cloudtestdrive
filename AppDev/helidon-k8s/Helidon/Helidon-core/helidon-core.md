@@ -1,4 +1,13 @@
-#The Helidon core
+[Go to Helidon for Cloud Native Page](../Helidon-labs.md)
+
+![](/Users/jleemans/dev/github/tg-helidon/cloudtestdrive/common/images/customer.logo2.png)
+
+# Migration of Monolith to Cloud Native
+
+## A. Helidon for Cloud Native
+
+## 1. The Helidon core
+
 Where we look at our initial java classes and REST enable them.
 
 Before anything happens you need to open the Eclipse IDE. There is an Eclipse icon on the desktop, double click it, and wait for Eclipse to start.
@@ -7,7 +16,7 @@ For all of the steps in this section of the lab we will be using the helidon-lab
 
 The main class we will be using is the com.oracle.labs.helidon.storefront.resources.StorefrontResource.java Locate it in the Eclipse project explorer (Hierarchical browser on the left of the Eclipse window) and open it.
 
-#Make the list stock REST Service available
+### Make the list stock REST Service available
 The first thing a REST service must do is provide a REST end point that can be called. Helidon makes this process very easy.
 
 For our first bit of Helidon work we're going to REST enable a Java method that returns data, it doesn;t take any input.
@@ -37,7 +46,7 @@ It's pretty simple, when called it does some logging, then gets a Collection of 
 But how to we REST enable it ?
 
 Firstly we need to tell Helidon that the StorefrontResource class responds to REST messages. At the start of the class definition place the annotations
- 
+
 ```
 @Path("/store")
 @RequestScoped
@@ -83,7 +92,7 @@ These annotations mean :
 `@GET` the method will be called in response to http GET requests, For REST services by convention the GET method is the one called when retrieving data.
 
 `@Path("/stocklevel")` that it will respond to the relative (to the class) path /stocklevel As the class as a whole is under /stock the actual effective path combined the two so it's /stock/stocklevel 
- 
+
 `@Produces(MediaType.APPLICATION_JSON)` means that the framework will convert the resulting object into JSON format (there are other formats available, for example APPLICATION_XML, but JSON is nice for humans to read and parse, and it also relatively compact compared to XML)
 
 This Produces annotation is very important to understand. It means that the framework handles all of the work in getting the right data type from the result for us and embedding it in the body of the REST response. We don't have to modify our code to generate the JSON (this is often a non trivial bit of work. We could if we wanted support multiple data formats as the return and the framework will chose the right format based on the type the headers in the incoming request asked for. This single annotation is doing a *lot* of work for us behind the scenes.
@@ -306,7 +315,7 @@ content-length: 106
 ```
 Now you've seen how Helidon can not only REST enable methods, but also handle the processing of method parameters as well as returned objects to and from the REST request.
 
-#Authentication
+### Authentication
 The problem is anyone who has access to the IP address and post can access our service, in this case that may not be a problem when retrieving data (though in most cases is woudl be) but we don;t want anyone causing problems by making people thing there are no pencils in the post room !
 
 So we need to add some security. Fortunately Helidon makes this very easy.
@@ -393,7 +402,7 @@ Stop the application using the square stop button on the console tab.
 
 With a single annotation and a config file we've now ensured that our service is secured !
 
-#Adding extra endpoints to the application (and scope implications)
+### Adding extra endpoints to the application (and scope implications)
 A big application may have multiple sets of services, grouped into resources, so far we're looking at the StorefrontResource that handles the stock interactions. But what if we want to have other resources for other parts of the application ? 
 
 Let's look at the reserveStockItem method, you'll see that the code uses a minimumChange to ensure that at least a certain number of items are taken.
@@ -597,8 +606,7 @@ Save the StorefrontApplication.java file. We'll look at what the StatusResource 
 
 Add the StatusResource as well, it's just does a hello world curl -i http://localhost:8080/status returning a bit of config info (more on this later)
 
-Injecting classes and resources
-===============================
+### Injecting classes and resources
 We've now got ways to setup the MinimumChange and have it persistent, but it's now being used in multiple locations, the ConfigurationResource and the StorefrontResource, and at the moment they both create an instance, so though the Configuration resource (being application scoped) only exists once it's not actually using the same instance of the MinimumChange as the StorefrontResoruce. So a change to the value via the ConfigurationResource won;t actually be reflected in the behaviour of the Storefront resource. But of a problem that !
 
 Java itself can be used to solve this, we could create a factory to create a single instance, then and hide the MinimumChange constructor so it couldn't be created outside the factory, but that's a lot of hassle if we were to have to do this for all classes in an application. Fortunately for us Helidon has a solution which is connected with a capability called the Dependence Injection system which helps us with this, as well as providing a way to inject the object instances it creates.
@@ -718,7 +726,7 @@ This time the request worked as the business logic in the StorefrontResource cla
 Of course there are lots of situations where you'd want to use dependency injection like this which are different situations, for example you may just not want to have to deal with constructors !
 
 
-#Constructors and Injecting properties from configuration
+### Constructors and Injecting properties from configuration
 Those with more Java experience will be wondering how Helidon knows which constructor to use when creating an instance to `@Inject` The answer is simple, unless instructed differently Helidon will use the no  args constructor. In fact it couldn't use anything different as how would it know what values to use for parameters ?
 
 This of course may be a problem if the constructor if you want to use does actually require values for it's parameters.
@@ -831,7 +839,7 @@ We can use the Helidon configuration properties system to make changes to the be
 
 Configuration properties are stored as basic strings and Helidon will convert them automatically for numbers, booleans and the other basic Java types. If you need to have a configuration property converted into a different type (say an object representing an IP address) then you can create a converter that is given the String from the configuration properties and returns the new object type. This way you can place any type you have (or can write) a converted for as a property.
 
-#Monitoring the configuration for changes
+### Monitoring the configuration for changes
 By default configuration files are read at startup, but it's also possible to define a configuration source that periodically checks for changes, enabling modifications tot he configuration to be dynamically reflected in the properties used by the Injection system..
 
 In the buildConfig method of com.oracle.labs.helidon.storefront.Main class  update the configuration for the storefront-config config file
@@ -901,7 +909,7 @@ Note that the name is now what you changed it to ("Tims Shop" in this case)
 Of course this is a very simple change in configuration, but the principle applies to any configuration file change. So if you do have configuration information you expect to change whilst the program is running this is a very simple way to handle that without yourself having to remember to check for an process updates.
 
 
-#Separating functionality by port
+### Separating functionality by port
 Helidon can deliver service using multiple ports, for example separating out the administration functions (e.g. metrics, health etc.) from the operational functions.
 
 Look at the contents config file in conf/storefront-network.yaml 
@@ -954,7 +962,7 @@ One nice point there is to note that it's not just your code that uses these pro
 We will look more in the the services like health that are available on the admin port in a later exercise.
 
 
-#Handling failures
+### Handling failures
 It's a fact of life that problems sometimes occur. We saw in the console output earlier that the reserveStockItem method will throw a MinimumChangeException if the request does not exceed the specified minimum change.
 
 The problem is that at the moment all the caller gets to find out is that there's been a 500 server error. That's not a lot of help debugging things !
@@ -1036,7 +1044,7 @@ At least now the called is getting something useful !
 However it's not possible using this approach of calling a FallBack method to get the exception details and such like, so while we can do somethign that the client can process we still don;t get all tof the details to let us create a sensible error message, for example there is a very big difference in how to resolve the problem if the stockManager tried to access an unknown host than if the service running on that host had an SQL authentication error.
 
 
-#Handling code exceptions
+### Handling code exceptions
 Helidon has another approach error handling we're going to look at here that does let us get a *lot* of information around the error and why it happened. Unfortunately there isn't a simple way for the developer to process that data, but let's see an example of it.
 
 In the reserveStockItems method of the com.oracle.labs.helidon.storefront.resources.StorefrontResource add the annotation `@Fallback(StorefrontFallbackHandler.class)`
@@ -1071,8 +1079,8 @@ connection: keep-alive
 Now the caller has more details on what went wrong.
 
 The fallback class is com.oracle.labs.helidon.storefront.resources.fallback.StorefrontFallbackHandler. If you're interested do have a look at it, but be warned it has quite a lot of slightly complex Java code for manipulating stacks, parameters and so on.
- 
-#Handling runtime exceptions
+
+### Handling runtime exceptions
 Some problems occur just because the environment hasn't behaved the way we want. For example it's not unknown for a service to make a call to another service (more on this coming up) and that other service just doesn't respond in time due to a network error.
 
 To help handle this type of thing and at least get a response back to the called Helidon supports a number of fault tolerance annotations in addition to the @Fallback annotation.
@@ -1103,7 +1111,7 @@ Now every REST call that does not finish in 15 will generate a timed out http re
 
 Sort of going and deliberately putting delays into the code for now we can't test this.
 
-#Finished the helidon code functionality
+### Finished the helidon code functionality
 Congratulations, you've finished the core Helidon functionality section of the lab.
 
 You've seen how we can use Helidon to place a REST service environment around existing code, to make that code deliver rest services and to transfer data to and from the existing code and the REST requests / responses.
@@ -1114,3 +1122,19 @@ By combining the Helidon REST framework with a security provider we're able to a
 
 Finally we've looked at the functionality Helidon provides for handling problems when the code is running.
 
+
+
+### Next Lab
+
+The next lab in the *Helidon for Cloud Native* section is 
+
+- 2. Databases and Helidon : This looks at how you can access databases within a Helidon based application.
+     [The database lab](../Helidon-data/helidon-data.md)
+
+
+
+---
+
+
+
+[Go to *Helidon for Cloud Native* overview Page](../Helidon-labs.md)
