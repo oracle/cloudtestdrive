@@ -1,6 +1,6 @@
 [Go to Helidon for Cloud Native Page](../Helidon-labs.md)
 
-![](/Users/jleemans/dev/github/tg-helidon/cloudtestdrive/common/images/customer.logo2.png)
+![](../../../../common/images/customer.logo2.png)
 
 # Migration of Monolith to Cloud Native
 
@@ -1128,8 +1128,9 @@ Finally we've looked at the functionality Helidon provides for handling problems
 
 The next lab in the *Helidon for Cloud Native* section is 
 
-- 2. Databases and Helidon : This looks at how you can access databases within a Helidon based application.
-     [The database lab](../Helidon-data/helidon-data.md)
+**2. Databases and Helidon** : This looks at how you can access databases within a Helidon based application.
+
+[The database lab](../Helidon-data/helidon-data.md)
 
 
 

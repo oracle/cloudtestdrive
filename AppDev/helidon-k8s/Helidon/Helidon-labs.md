@@ -73,30 +73,35 @@ This is a deliberately simple example, the goal is to see how these two modules 
 
 ### 1. Core Helidon
 The core labs are designed to show how you can take a some existing Java code and REST enable it so it can operate as a standalone service. This includes not just the REST API, but also configuration, error handling and security.
+
 [The core Helidon lab](Helidon-core/helidon-core.md)
 
 
 
 ### 2. Databases and Helidon
 This looks at how you can access databases within a Helidon based application.
+
 [The database lab](Helidon-data/helidon-data.md)
 
 
 
 ### 3. Communicating services with Helidon
 This lab shows the support in Helidon for switching from a direct method call to using a REST call without modifying the calling method.
+
 [The cross service communication lab](Helidon-to-Other-Microservices/helidon-to-other-microservices.md)
 
 
 
 ### 4. Supporting operations activities with Helidon
 This labs looks at how Helidion can help you gather data on the fow of operating when you make a call and how your program is being used. This information can help you learn how to optimize your miroservices, especially in deployments where you have a request propagating across many separate microservices.
+
 [The Helidon support for Ops lab](Helidon-Operations/helidon-operations.md)
 
 
 
 ### 5. Cloud Native support in Helidon
 This last Helidon lab looks as the features in Helidon that are designed to provide support for cloud native functionality in deployment systems like Kubernetes. For example to help report if a program is still running, but is actually failing to operate (for example it's in a deadlock)
+
 [The Helidon support for Cloud Native Operations lab](Helidon-cloud-native/helidon-cloud-native.md)
 
 
