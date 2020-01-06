@@ -1,0 +1,15 @@
+{
+    "workshop": {
+        "title": "Weblogic Cloud Workshop",
+        "description": "Weblogic Cloud Workshop",
+        "theme": "default",
+        "labs": [
+			{
+                "number": "01",
+                "filename": "wlscnonjrf.md",
+                "title": "Non JRF WLSC",
+                "description": "WebLogic Cloud - non JRF"
+            }
+        ]
+    }
+}
