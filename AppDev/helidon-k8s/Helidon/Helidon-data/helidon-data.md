@@ -1,4 +1,13 @@
-#Helidon and Databases
+[Go to Helidon for Cloud Native Page](../Helidon-labs.md)
+
+![](../../../../common/images/customer.logo2.png)
+
+# Migration of Monolith to Cloud Native
+
+## A. Helidon for Cloud Native
+
+## 2. Helidon and Databases
+
 Unlike SPRING with the SPRINGData projects microprofile (and thus Helidon) to not currently have a built in mechanism for accessing databases. This is however something that is being looked at and hopefully at some point there will be a Microprofile standard for accessing data which Helidon can implement. At that point these labs will be updated to reflect the changes.
 
 However, just because Microprofile and thus Helidon do not have a set of data access annotations and abstractions themselves does not mean you can't access databases (and other persistence solutions) from with Helidon microservcies. You simply use the existing technologies such as the Java Persistence API (JPA) and the JTA (Java Transaction API)
@@ -13,15 +22,15 @@ If you wanted to change the database instance or the JPA implementation in a dep
 
 As mentioned in the helidon core labs we are only looking at the programming aspects here. We do not cover the Maven pom.xml file. If you want to use this code as a starting point for your own projects then we strongly recommend looking at the pom.xml file so you can see what dependencies are made available to the projects.
 
-#What's in the lab
+**What's in the lab**
 We will be looking at the helidon-labs-stockmanager project. This set of classes operate on the database and provides Create Read, Update, Delete (CRUD) functionality for the database front end, specifically modifying the database tables. It will be called by the storefront.
 
-#What's not in this lab
+**What's not in this lab**
 This lab does not attempt to go into all of the detail or JPA and JTA, the goal is to see how they can be handled in a Helidon based microservice. Because of that the lab does not go into great about how those Java API's operate. 
 
 If you want to understand JPA and JTA in a lot of detail there are courses available, and of course lots of books on the subject
 
-#Configuring the project to be personal to you
+### Configuring the project to be personal to you
 For this project all attendees will be operating on a shared database, updating the same table. To ensure that your work doesn't interfere with other peoples work you need to provide a unique identity for yourself
 
 In the helidon-labs-stockmanager project conf/stockmanager-config.xml file add a property department with be **your** your name, initials or something that's going to be unique. I changed mine to be `timg` but **YOURS MUST BE DIFFERENT FROM MINE AND EVEYONE ELSES.** We suggest you write your chosen name on a board so other folks will know what's already been taken !
@@ -36,7 +45,7 @@ app:
 
 The way this operates is that the StockResource will automatically and transparently add the department to the primary key in all requests, this is not something you're likely to do in production, but here as we're focusing on the coding rather than starting up multiple databases it makes the lab go faster.
 
-#What's the difference from the storefront labs ?
+### What's the difference from the storefront labs ?
 This set of labs sections concentrates on the data accesses. You are assumed to be familiar with things like @POST, @ApplicationScope, loading configurations and such like.
 
 There is less coding than the helidon core lab and more reading here.
@@ -45,10 +54,17 @@ This lab also uses exactly the same security configuration so users jack, jill a
 
 I'm also assuming that you'll remember how to stop and start the Main class (though of course for **this** lab you'll be using the com.oracle.labs.helidon.stockmanager.MAIN class, not the storefront version) so you won't be reminded on that.
 
-#Before you start
+---
+
+**Before you start**
 Please makes sure that for now you have **stopped** the storefront application.
 
-#Quick overview of the database functionality
+---
+
+
+
+
+### Quick overview of the database functionality
 The com.oracle.labs.helidon.stockmanager.resources.StockmanagerResource class is the primary class we'll be working with in this lab. If you're not familar with JPA however there are some other classes you shoudl liik at.
 
 The classes in the com.oracle.labs.helidon.stockmanager.database package represent the actual structure of the database. In the database configuration we tell the JPA, JTA layers these are the classes we want the database to represent. You'll see that they have some annotations on them, some of which will be familiar. Let's look at the StockLevel class first:
@@ -116,12 +132,12 @@ For this lab we've got a little bit of logic around those entity manager functio
 
 It is important to note that each item retrieved from or saved to the database using the entity manager is almost certainly a different instance of the object. Even if you save an object then look at the returned object that has "just been saved" ! So retrieving the same object twice is two separate objects, which contain the same data, not two references to the same object. This means that you need to think carefully if you're going to implement comparisons or equality (hence the benefits of Lombok generating this type of code automatically for us)
 
-##Configuring the database
-Initially it's setup to use the JPA / JTA (transaction system) to load in the configuration. The database settings are defined in the confsecure/stockmanager-database.yaml file and in the src/main/resources/META-INF/persistence.xml file. The latter is automatically read by the JPA and the config is processed using the Helidon configuration system and handed to the Java Persistence layers.
+**Configuring the database**
+Initially the database is setup to use the JPA / JTA (transaction system) to load in the configuration. The database settings are defined in the confsecure/stockmanager-database.yaml file and in the src/main/resources/META-INF/persistence.xml file. The latter is automatically read by the JPA and the config is processed using the Helidon configuration system and handed to the Java Persistence layers.
 
 The split between the files is more one of the stockmanager-database.yaml file contains things that are specific to a database instance, e.g. usernames, passwords, JDBC Urls. Wheras the persietence.xml file defines stuff that's not instance specific but is project specific, for example which classes are persisted.
 
-#Using path parameters for methods
+### Using path parameters for methods
 In the Storefront object we were processing Java objects directly as out method arguments (the helidon framework was converting them to / from JSON for us) 
 
 For the StockmanagerResource (really I did this just to show it's possible) we are using @PathParams. a path param is basically part of the URL that can contain data, for example a GET method with a `@Path("/stocklevel/{item}")` when called with /stockLevel/Pencil would extract the Pencil and make it available as the PathParam "item"
@@ -144,7 +160,7 @@ Here (to make it clear whatn's happening) I've used the same name for the path a
 
 Other possible sources for the params are @QueryParam and @FormsParam. Which one you chose will depend on what the URL you are expecting (or want) to get.
 
-#Getting an entity manager
+### Getting an entity manager
 JPA requires an entity manager to do the work of interacting with the database for us. Historically however that would require code like the following which is in the Stockmanager constructor.
 
 ```
@@ -271,7 +287,7 @@ javax.persistence.TransactionRequiredException
 `TransactionRequiredException` sounds pretty serious, and it is, it's because we're trying to modify the database, and Helidon created entity management knows that 
 this should be done in a transaction. Whenever you modify a database it's a pretty good rule of thumb that you need a transaction to keep things safa and consistent, even when the modification is a single row in a single database.
 
-#Automatic Transactions
+### Automatic Transactions
 We could manually ask the entity manager to start and and transactions, but that's a load of extra code, and the possible paths if there are problems to do the rollback or commit are significant. Let's use the Java Transaction API (JTA) to do it for us.
 
 Fortunately for us all we need is an @Transactional annotation and Heliton will trigger the JTA to do the right things.
@@ -290,10 +306,18 @@ This means that every operation in the class will be wrapped in a transaction au
 
 This will apply if there were multiple entity managers or database modification actions operating within the method. So if the method modifies data in several databases then they woudl all suceed of fail. This your database ACID (Atomic, Consistent, Isolated and Durable) semantics are maintained 
 
-#Note on @Transaction and @Fallback
+
+
+---
+
+**Note on @Transaction and @Fallback**
 In the current version of Helidon there is a conflict between the processing of @Transactional and @Fallback, if a class (or method) has the @Fallback annotation then the transaction will not be created, which causes all sorts of problems  Sadly at the moment there is no workaround, though the development team are working on a fix to, but it's expected (but not guaranteed) that the Helidon Data functionality (which is planned to make persistence a lot easier) will fix that problem.
 
-#Creating some data and testing the stockmanager works
+---
+
+
+
+### Creating some data and testing the stockmanager works
 Use curl to create some stock items, these need to be done as a user with admin rights so do the following commands against a running 
 stockmanager service 
 
@@ -428,14 +452,33 @@ content-length: 148
 
 **Please leave the stockmanager running, we're going to use it in the next few labs**
 
-#Summary
+
+
+### Summary
 We haven't looked at JPA / JTA in much detail, but we've seen how the Helidon configuration system can be used to supply configuration data to the JPA and JTA as they are being setup.
 
 We've seen how we can use the Helidon dependency injection system with the `@PersistenceContext` annotation to create and manage entity managers for us.
 
 We've used the `@Transactional` annotation to make our entire class use JTA transactions
 
-We'va also seen how we can bring use @PathParam to provide us with a different way of gathering data from a REST request and passing it to our methods.
+We've also seen how we can bring use @PathParam to provide us with a different way of gathering data from a REST request and passing it to our methods.
 
 
 
+The next lab in the *Helidon for Cloud Native* section is 
+
+**3. Communicating services with Helidon** : This lab shows the support in Helidon for switching from a direct method call to using a REST call without modifying the calling method.
+
+[The cross service communication lab](../Helidon-to-Other-Microservices/helidon-to-other-microservices.md)
+
+
+
+
+
+
+
+---
+
+
+
+[Go to *Helidon for Cloud Native* overview Page](../Helidon-labs.md)
