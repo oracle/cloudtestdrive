@@ -1,0 +1,180 @@
+#Communicating between microservcies
+#Standards ?
+For one thing (person, program etc.) to talk to another it does of course need to talk the same language, in the ase of microservcies this is generaly based on the ideas in REST, which is an **architectural style, not a standard** (Anyone who tries to say that REST is a standard should go read the [Wikipedia REST article](https://en.wikipedia.org/wiki/Representational_state_transfer))
+
+REST is generally implemented using http(s) as the transport using XML or JSON text in the body of the request to represent data if needed, so though REST is **not** a standard usually we can get it to work using these mechanisms.
+
+#Implementing communications (historically)
+Historically much of the work on creating REST based microservice frameworks in Java has concentrated on the server side. Creating the client side connection has required the developer to create the connection themselves. For example the following.
+
+```
+private ItemDetails setItemCount(ItemDetails newDetails) {
+    // business logic happens here
+    // let's sent the data
+	try {
+		URL url = new URL("http://my.service.com/store/stocklevel) ;
+		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+         con.setRequestMethod("POST"); 
+         con.setRequestProperty("Content-Type", "application/json");  
+         con.setDoOutput(true); 
+
+         OutputStream os = con.getOutputStream(); 
+         jaxbContext.createMarshaller().marshal(neDetails, os); 
+         os.flush(); 
+
+         ItemDetails resultingItemDetails ;
+         if (con.getResponseCode() == 200) {
+            // now get the result
+            BufferedReader respIn = new BufferedReader(new InputStreamReader(con.getInputStream())) ;
+            String respLine ;
+            String response ;
+            while ((respLine = respIn.readline()) != null) {
+               response+= respLine ;
+            }
+            respIn.close() ;
+            ObjectMapper detailsMapper = new ObjectMapper() ;
+            resultingItemDetails = detailsMapper.readVale(response, itemDetails.class) ;
+         } else {
+            throw Exception("Didn't get OK from service") ;
+         }
+         return resultingItemDetails ;
+         con.disconnect(); 
+    } catch(Exception e) { 
+         throw new RuntimeException(e); 
+    } 
+}
+```
+
+Over time this got a bit easier with wrapper classes 
+
+```
+private void deleteItem(String itemName) {
+   RestTeplateBuilder rtb = new RestTemplateBuilder() ;
+   RestTemplate = rtb.build() ;
+   rt.delete("http://my.service.com/store/stocklevel"), itemName);
+}
+```
+
+But it's still not as simple as calling the method we want directly
+
+```
+private void deleteItem(String itemName) {
+   StockManager manager = new StockManager() ;
+   stockmanager.delete(itemName) ;
+```
+We could of course build a class ourselves that has a delete method that does the REST work in the class, but that's just pushing it down a layer !
+   
+#RestClients
+Fortunately for us Eclipse microprofile have created a solution to this in a manner
+
+Best software development practice is to to follow the [loose coupling design patterns](https://en.wikipedia.org/wiki/Loose_coupling) so that the caller can't see the details of the implementation. In Java this is achieved using interfaces, so a developer created an interface for externally use that defines the functionality and then a separate class the implements it, this is especially true if your class is in a library class or a different package.
+
+All a developer then need to do is to have your caller create an instance of the class (or preferably have a factory create it) and interact with the actual implementation using the interface, which is by definition public and (if designed properly) will not expose any of the implementation details.
+
+With Helidon and the Rest Client functionality all we need to do is to annotate the interface with details of paths and such like, add the @RegisterRestClient annotation and then inject it as a Rest client to the class that uses it. Then we can carry on using the interface as if it was an interface for a local class, for example 
+
+```
+	ItemDetails itemDetails = stockManager.getStockItem(itemRequest.getRequestedItem());
+```
+
+We don't need to change any of our code that uses the interface at all !
+
+Let's do this for real. You should have kept the stockmanager service running. If not then please start it.
+
+We're going to be using the com.oracle.labs.helidob.storefront.restclients.StockManager.java interface and the com.oracle.labs.helidob.storefront.resources.StorefrontResource class. open them in the editor.
+
+First let's look at the StockManager interface.
+
+```
+public interface StockManager {
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<ItemDetails> getAllStockLevels();
+
+	@GET
+	@Path("/{itemName}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ItemDetails getStockItem(@PathParam("itemName") String itemName);
+
+	@POST
+	@Path("/{itemName}/{itemCount}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ItemDetails setStockItemLevel(@PathParam("itemName") String itemName,
+			@PathParam("itemCount") Integer itemCount);
+}
+```
+
+Apart from being an interface (so only method names, not implementations) this looks very like the getAllStockLevels, getStockItem and setStockItemLevel methods in the com.oracle.labs.helidob.stockmanager.resources.StockResource class in the stock manager project. We have the same request types, paths, params etc.
+
+Let's set this up as something that can be build into a REST client, add the `@RegisterRestClient(configKey = "StockManager")` and `@ApplicationScoped` annotations to the interface and save it.
+
+```
+@ApplicationScoped
+@RegisterRestClient(configKey = "StockManager")
+public interface StockManager {
+```
+
+The annotation tells Helidon that this is something that can be used as a REST client, the configKey parameter to the annotation tells Helidon that the configuration settings (URL to use and so on) will be in the configuration properties with property names starting with StockManager (if we didn't specify a configuration key the fully qualifies class name would be used for the start of the properties, in this case com.oracle.labs.helidob.storefront.resources.StorefronResource )
+
+As the URL and so on is pretty standard they are defined in the microprofile-config.properties file in src/main/resources These are the relevant lines
+
+```
+StockManager/mp-rest/url=http://stockmanager:8081/stocklevel
+StockManager/mp-rest/connectTimeout=5000
+StockManager/mp-rest/responseTimeout=5000
+```
+
+The only thing we absolutely have to specify is the URL, though this can be specified as an option in the `RegisterRestClient` if desired. The timeouts and so on are really for convenience, we could also (if it wasn't defined in the interface itself) specify the scope of the rest client. Note that configuration property settings will override those in the sorce code.
+
+Also in the microprofile-config.properties file are details for another REST client
+
+```
+com.oracle.labs.helidon.storefront.restclients.StockManagerStatus/mp-rest/url=http://stockmanager:8081/status
+```
+
+As you can probably guess this is for the REST client com.oracle.labs.helidon.storefront.restclients.StockManagerStatus, but in this case I didn't specify a config key in the `@RegisterRestClient` annotation, so it defaulted to the fully qualified classname based property names.
+
+##Creating the REST client.
+It's possible to manually create a REST client using the interface, but it's far better to let Helidon use the @RestClient coupled with @Inject to do this for us. That way we don't have to worry about closing the client to reclaim resources and so on.
+
+In the com.oracle.labs.helidob.storefront.resources.StorefrontResource locate where the field of type StockManager is defined, add the @Inject and @RestClient annotations to it and remove the null initializer.
+
+```
+	@Inject
+	@RestClient
+	private StockManager stockManager;
+```
+
+Now when the StorefrontResource class is initialized the Helidon runtime will dynamically create (if needed, or use an existing instance as appropriate depending on the scope) a class that looks like the interface, but under the covers does all of the work to make the REST calls and process the response into the returned objects. Exceptions are also correctly handled.
+
+Basically this looks pretty simple in comparisson to making all of the http requests by hand !
+
+Save the changes to the files and run the storefront main class.
+
+let's try accessing the storefront service, this use the REST Client to pass the request to the stockmanager service which will (as before) go to the database. This may take a few seconds to respond to the first request as there is a lot of stuff which is initialized on demand here. 
+
+```
+$ curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Mon, 6 Jan 2020 14:33:57 GMT
+connection: keep-alive
+content-length: 148
+
+[{"itemCount":5000,"itemName":"pin"},{"itemCount":150,"itemName":"Pencil"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":100,"itemName":"Book"}]
+```
+
+We have now got the data back from the database itself. Our client is working, and with very little effort !
+
+
+#Async requests
+You may have noticed the delay in the request, if you try the request again it's much faster, this is because the second time all of the lazy initialization will have been done. But in some cases it may be that every call to a request takes a long time (perhaps it's getting data from a real physical service !) which may leave the client execution blocked until the request completes.
+
+One solution to this is to make the request, then go and do something else while waiting for the response. We're not going go to into detail on this, but the REST client supports the use of async operations by having the returned object not be the actual object (which would require the entire call sequence to have completed) but a object called a `CompletionStage` The CompletionStag objects are created by the framework on the client side, so the response is much faster, and by looking into the CompletionStage object it's possible to determine if the call has finished, and if so what the result was. While waiting for it to finish the code can do other things.
+
+#Authentication
+You may be wondering about the authentication here. When we made the curl call we specified the usersername and password, but that was to the storefront service. None of our code event sees the user name / password, that's all done by the framework, so how can it be passed on to the stockmanager service (which if it didn't get the username and password would have thrown a 401 Unauthorized error.
+
+The solution to this is another reason why using Helidon (or other microprofile based frameworks) is exceptionally useful. Helidon automatically extracts the authorization data for us when it received the storefront request. That information is held within the framework as part of the request and when the subsequent requests are made via the REST Client is till automatically add the authentication data for us. Thus the users information is propagated throughout the sequence of requests.
+
+This is why we've used the same user credentials, and in a production environment you'd use the same security system across both services.
