@@ -1,6 +1,6 @@
 [Go to the Cloud Test Drive Welcomer Page](../../readme.md)
 
-![](/Users/jleemans/dev/github/tg-helidon/cloudtestdrive/common/images/customer.logo2.png)
+![](../../common/images/customer.logo2.png)
 
 # Migration of Monolith to Cloud Native
 
