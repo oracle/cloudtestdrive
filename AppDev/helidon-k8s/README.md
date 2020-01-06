@@ -15,6 +15,8 @@ The Helidon part of the labs show how to Split the Monolith into microservices u
 
 To do these labs you must be familiar with Java at a basic lavel (able to understand classes, constructors, methods etc.) and a bit familiar with the Eclipse IDE
 
+[The Helidon labs](Helidon/Helidon-labs.md)
+
 # Using Docker
 The Docker part of the labs covers how we use JIB to create a docker image, run it, then to move the configuration and secrets externally to the docker image, finally we look at how to push the docker image to a repository
 
