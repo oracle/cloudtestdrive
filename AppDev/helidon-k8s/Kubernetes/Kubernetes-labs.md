@@ -72,7 +72,7 @@ Once a service is running in Kubernetes we want to start seeing how well it's wo
 
 Monitoring metrics may also help us determining things like how changes when releasing a new version of the service may effect it's operation, for example does adding a database index increase the services efficiency by reducing lookup times, or increase it by adding extra work when updating the data. With this information you can determine if a change is worthwhile keeping.
 
-[Prometheus lab](monitoring-kubernetes/MonitoringLabs.md)
+[Prometheus lab](monitoring-kubernetes/MonitoringWithPrometheusLab.md)
 
 ### 3. Monitoring services - Grafana for data display
 As you've seen Prometheus is great at capturing the data, but it's not the worlds best tool for displaying the data. Fortunately for us there is an open source tool called **Grafana** which is way better than Prometheus at this.
