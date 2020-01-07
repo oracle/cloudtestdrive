@@ -168,7 +168,7 @@ As the stockmanager is now up the storefront has it's dependencies satisfied and
 
 ### End of the lab
 You have finished all the labs in this initial section **A. Helidon**.  
-You can return to the top level and start working on Section **B. Using Docker** : this part of the lab, you can proceed to the next step of this lab:
+You can now start working on Section [B. Using Docker](../../Docker/DockerLabs.md)
 
 
 
