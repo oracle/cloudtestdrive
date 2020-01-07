@@ -323,7 +323,7 @@ docker stop zipkin
 
 
 
-Congratulations, you are now running your microservices on Docker!  Next step is to use these images to run on a Kubernetes cluster.  For this, navigate to the next chapter, [C. Deploying in Kubernetes](../Docker/DockerLabs.md)
+Congratulations, you are now running your microservices on Docker!  Next step is to use these images to run on a Kubernetes cluster.  For this, navigate to the next chapter, [C. Deploying in Kubernetes](../Kubernetes/Kubernetes-labs.md)
 
 
 
