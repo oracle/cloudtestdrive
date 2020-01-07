@@ -1322,7 +1322,7 @@ The storefront-config.yaml file has now changed to reflect the modifications you
 
 If we now get the status resource data again it's also updated
 
-```
+```bash
 $ curl -i -X GET http://localhost:80/sf/status
 HTTP/1.1 200 OK
 Server: openresty/1.15.8.2
@@ -1341,9 +1341,21 @@ To remove the pods we can't just kill of the containers (assuming you had access
 
 We just use
 
-```kubectl delete -f <deployment>.yaml
-
+```bash
+$ kubectl delete -f <deployment>.yaml
 ```
 
 To speed things up there is a script undeploy.sh in the helidon-kuberneties (but don't run this yet, lots more to do in the labs !)
+
+
+
+
+
+
+
+---
+
+You have reached the end of this lab !!
+
+Use your **back** button to return to the **C. Deploying to Kubernetes** section
 
