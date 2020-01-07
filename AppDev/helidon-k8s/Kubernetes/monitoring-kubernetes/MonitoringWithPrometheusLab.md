@@ -355,7 +355,7 @@ If we look at the data we can see that the retrieved value is 0 (it may be anoth
 
 Let's make a few calls to list the stock and see what we get
 
-Execute the following a few times
+Execute the following a few times, **replacing *localhost* with your Ingress endpoint**
 
 ```
 $ curl -i -X GET -u jack:password http://localhost:80/store/stocklevel
@@ -404,7 +404,6 @@ It's also possible to do things like separate out pods that are being used for t
 
 ### But it's not a very good visualization
 Prometheus was not designed to be a high end graphing tool, the graphs cannot for instance be saved so you can get back to them later. For that we need to move on to the next lab and have a look at the capabilities of Grafana
-
 
 
 

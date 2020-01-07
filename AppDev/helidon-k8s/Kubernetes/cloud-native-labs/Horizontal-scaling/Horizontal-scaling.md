@@ -1,9 +1,17 @@
-#Horizontal Scaling labs
+[Go to Overview Page](../Kubernetes-labs.md)
+
+![](../../../../common/images/customer.logo2.png)
+
+# Migration of Monolith to Cloud Native
+
+## C. Deploying to Kubernetes
+## 5. Horizontal Scaling labs
+
 In most cases (especially if the services were developed using the principles defined in [The 12 factors](https://12factor.net/)) a microservice is horizontally scalable.
 
 Kubernetes has built in support for easily managing the horizontal scaling of services.
 
-#Manual scaling
+### Manual scaling
 In many of the labs when you've looked at the contents of the namespace wou'll have seen things called replica sets, and may have wondered what they are. We can get this info using kubectl. In a terminal window
 
 ```
@@ -77,8 +85,19 @@ If on the deployments page we scroll down we'll see the list of events for that 
 
 If you are on a Kubernetes cluster with multiple physical nodes the scaling operation will try and place the pods on different nodes, protecting the service so if one node fails for any reason the other nodes can still be used to provide the service.
 
-#Horizontal Pod Autoscaling
+### Horizontal Pod Autoscaling
 Strictly speaking this should be called Horizontal Deployment Autoscaling 
 This currently relies on a Kubernetes feature called heapster that's been deprecated. but here's the page
 [K8S Docs HPA](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
 This lab content will be updated later once we've worked this out.
+
+
+
+
+
+
+---
+
+You have reached the end of this lab !!
+
+Use your **back** button to return to the **C. Deploying to Kubernetes** section

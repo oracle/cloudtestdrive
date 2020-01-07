@@ -92,7 +92,7 @@ The process for installing and using Grafana is detailed in the next lab :
 
 Kubernetes doesn't just provide a platform to run containers in, it also provides a base for many other things including a comprehensive service availability framework which handles monitoring containers and services to see if they are still running, are still alive and are capable of responding to requests.
 
-Fo understand how this works see the [Health Readiness Liveness labs.](Health-readiness-liveness/Health-liveness-readiness.md)
+Fo understand how this works see the [Health Readiness Liveness labs.](cloud-native-labs/Health-readiness-liveness/Health-liveness-readiness.md)
 
 
 
@@ -100,7 +100,7 @@ Fo understand how this works see the [Health Readiness Liveness labs.](Health-re
 
 Kubernetes also supports horizontal scaling of services, enabling multiple instances of a service to run with the load being shared amongst all of them.
 
-[The Replica set labs](Horizontal-scaling/Horizontal-scaling.md) 
+[The Replica set labs](cloud-native-labs/Horizontal-scaling/Horizontal-scaling.md) 
 
 
 
@@ -108,7 +108,7 @@ Kubernetes also supports horizontal scaling of services, enabling multiple insta
 
 Commonly when a service is deployed it will be updated, Kubernetes provides support for performing rolling upgrades, ensuring that the service continues running during the upgrade. Built into this are easy ways to reverse a deployment roll out to one of it's previous states.
 
-[Rolling updates labs](Rolling-updates/Rolling-updates.md)
+[Rolling updates labs](cloud-native-labs/Rolling-updates/Rolling-updates.md)
 
 
 

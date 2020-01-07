@@ -1,11 +1,20 @@
-#Visualizing using Grafana
+[Go to Overview Page](../Kubernetes-labs.md)
+
+![](../../../../common/images/customer.logo2.png)
+
+# Migration of Monolith to Cloud Native
+
+## C. Deploying to Kubernetes
+## 3. Visualizing using Grafana
+
+### **Introduction**
 As we've seen while Prometheus can gather lots of data it's not exactly the most powerful visualization mechanism.
 
 Grafana on the other hand is a very powerful open source visualization engine and it can take data from many sources, including Prometheus.
 
 One point on rafana, the core engine is Open source with all that indicates, however some of the additional component features (for example specific dashboard configurations, plugins for graph types etc.) are not open source and are chargable, for this lab we will only use a small subset of the features that are open source.
 
-##Installing Grafana
+### Installing Grafana
 Like many other Kubernetes services Grafana is available to install using helm. By default the helm chart does not create a volume for the storage of the grafana configuration. This would be a problem in a production environment, so we're going to use the persistent storage option defined inthe helm chart for Grafana to create a storage volume. Note this is specific to the helm chart, helm charts for different services may do this automatically (e.g. the chart for Prometheus) may use a different property setting, or may not provide an option at all. You'll need to look at the documentation for your specific chart.
 In a terminal window type
 
@@ -248,7 +257,7 @@ Connection: keep-alive
 and after it updates it'll look something like 
 ![grafana-stock-perfprmance-dashboard-with-data](images/grafana-stock-perfprmance-dashboard-with-data.png)
 
-#More complex dashboards
+### More complex dashboards
 This is a fairly simple dashboard, far more complex ones are easily achievable using a combination or Prometheus and Grafana. As an example we're going to look at a prebuild dashboard for
 
 Click the Grafana logo ![grafana-logo](images/grafana-logo.png) on the upper left. Then on the left side menu click the settings "cog" and then Datasources.
@@ -279,3 +288,14 @@ Click on the Prometheus 2.0 Stats option to see an example dashboard of stats fo
 
 ![grafana-prometheus-stats-dashboard](images/grafana-prometheus-stats-dashboard.png)
 
+
+
+
+
+
+
+---
+
+You have reached the end of this lab !!
+
+Use your **back** button to return to the **C. Deploying to Kubernetes** section

@@ -1,4 +1,14 @@
-#Rolling Updates
+[Go to Overview Page](../Kubernetes-labs.md)
+
+![](../../../../common/images/customer.logo2.png)
+
+# Migration of Monolith to Cloud Native
+
+## C. Deploying to Kubernetes
+## 6. Rolling Updates
+
+### **Introduction**
+
 One of the problems when deploying an application is how to update it while still delivering service, and perhaps more important (but usually given little consideration) how to revert the changes in the event that the update fails to work in some way.
 
 Changes by the way come in multiple areas, it could be application code changes (Kubernetes sees these as a change in the container image) or it could be a change in the configuration defining a deployment (and it's replica sets / pods)
@@ -11,11 +21,11 @@ For *both* cases Kubernetes will keep track of the changes and will undetake a r
 
 As a general observation though it may be tempting to just go in and modify the configuration directly with kubectl this is a **bad** thing to do, it's likely to lead to unrecorded cchanges in your configuration management system so in the event that you had to do a complete restart of the system (say replicating to a different cluster) changes manually done with kubectl are likely to be forgotten. It is **strongly** recommended that you make changes by modifying your yaml file, and that the yaml file itself has a versioning scheme so you can identify exactly what versions of the service a given yaml vfile version provides. If you must make changes using kubectl (say you need to make a minor change in a test environment) then as soon as you decide it should be permanent then make the corresponding change in the yaml file *and do a rolling upgrade using the yaml file to ensure you are using the correct configuration* (after all, you may have made a typo in either the kubectl or yaml file.)
 
-#How to do a rolling upgrade in our setup
+### How to do a rolling upgrade in our setup
 
 So far we've been stopping our services (the undeploy.sh script deletes the deployments) and then creating new ones (the deploy.sh script applies the deployment configurations for us) This results in service down time, and we don't want that. But before we can switch to properly using rolling upgrades there are a few bits of configuration we should do
 
-##Pod counts
+####Pod counts
 Kubernetes aims to keep a service running during the rolling upgrade, it does this by starting new pods to run the service, then stopping old ones once the new ones are ready. Through the magic of services and using labels as selectors the Kubernetes run time adds and removed pods from the service. This will work with a deployment whose replica sets only contain a single pod (he new pod will be started before the old one is stopped) but if your service contains multiple pods it will use some configuration rules to try and manage the process in a more balanced manner.
 
 We are going to once again edit the storefront-deployment.yaml file to give Kubernetes some rules to follow when doing a rolling upgrade. Importantly however we're going to edit a *Copy* of the file so we have a history.
@@ -94,12 +104,12 @@ spec:
 
 Save the changes (making sure you save to storefront-deployment-v0.0.1.yaml)
 
-##Readiness probes
+**Readiness probes**
 Unless your service comes on line almost instantly then you don't want requests being passed to it before it's ready to service them, Equally you don't want currently running pods being stopped before a replacement service is available. 
 
 The readiness probes we discussed earlier help ensure that we actually have operational pods, not just pods that are running. Though not required defining a suitable readiness probe is recommended to ensure service continuity.
 
-##Actually doing the rollout
+### Actually doing the rollout
 To do the roll out we're just going to apply the new file. Kuberneties will compare that to the old config and update appropriately.
 
 ```
@@ -127,9 +137,9 @@ We can see that the previous state of the deployment resulted from us doing the 
 
 One point to note here, these changes *only* modified the deployment roll out configuration, there was no need to actually stop or start any pods as those were unchanged.
 
-#Making a change that updates the pods
+### Making a change that updates the pods
 
-##Preparing our new image
+**Preparing our new image**
 Let's do something that will trigger the pods to update, we're going to change the image. If you are doing the version of this lab combined with Helidon in the helidon-labs-storefront folder the buildV0.0.2PushToRepo.sh script will create and push a new version of the container image for version 0.0.2
 
 **Before building the image**  change the com.oracle.labs.helidon.storefront.resources.StatusResource class changing the version text of the data returned by the isAlive method to see the difference
@@ -204,7 +214,7 @@ There is a lot of output, most of which has been removed in the example output a
 
 (Note the Maven output may refer to v0.0.1, don't worry this is because we haven't changes the version details in the maven pom.xml file. The later stages of the process override this.)
 
-##Applying our new image
+### Applying our new image
 To apply the new v0.0.2 image we need to upgrade the configuration again. As discussed above this we would *normally* and following best practice do this my creating a new version of the deployment yaml file (say storefront-deploymentv0.0.2.yaml to match the container and code versions)
 
 However ... for the purpose of showing how this can be done using kubectl we are going to do this using the command line, not a configuration file change. This **might** be somethign you'd do in a test environment, but **don't** do it in a production environment or your change management processes may end up broken.
@@ -406,8 +416,8 @@ Events:
   Normal  ScalingReplicaSet  22m   deployment-controller  Scaled down replica set storefront-5f777cb4f5 to 1
   Normal  ScalingReplicaSet  22m   deployment-controller  Scaled up replica set storefront-79d7d954d6 to 4
   Normal  ScalingReplicaSet  21m   deployment-controller  Scaled down replica set storefront-5f777cb4f5 to 0
- ```
- 
+```
+
 We see the usual deployment info, the Image is indeed the new one we specified, `fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:0.0.2` and the events log section shows us the various stages of rolling out the update.
 
 We should of course check that out update is correctly delivering a service
@@ -440,7 +450,7 @@ Connection: keep-alive
 ```
 As expected it's reporting version 0.0.2
 
-##Rolling back a update
+### Rolling back a update
 In this case the update worked, but what would happen if it had for some reason failed. Fortunately for us Kuberntes keeps the old replica set around, which includes the config for just this reason. 
 
 Let's get the replica set list
@@ -643,7 +653,7 @@ Connection: keep-alive
 
 Normally of course the testing of the pods would be linked into CI/CD automated tooling that would trigger the rollback if it detected a problem automatically, but here we're trying to show you the capabilities of Kubernetes rather than just run automation.
 
-#Important note on external services
+#### Important note on external services
 Kubernetes can manage changes and rollbacks within it's environment, provided the older versions of the changes are available. So don't delete your old container images unless you're sure you won't need them ! Kubernetes can handle the older versions of the config itself, but always a good idea to keep an archive of them anyway, in case your cluster crashes and takes your change history with it.
 
 However, Kubernetes itself cannot manage changes outside it's environment. It may seem obvious, but Kubernetes is about compute, not persistence, and in most cases the persistence layer is external to Kubernetes on the providers storage environments.
@@ -657,3 +667,14 @@ The newer automated tooling integrating CI/CD with automated A/B resting means t
 The important thing is to have a strategy for combining microservice rollouts (and roll backs) with persistence (or other external to Kubernetes) changes is critical.
 
 See the further info for links on this.
+
+
+
+
+
+
+---
+
+You have reached the end of this lab !!
+
+Use your **back** button to return to the **C. Deploying to Kubernetes** section
