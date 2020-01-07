@@ -115,7 +115,7 @@ The com.oracle.labs.helidon.storefront.Main class starts the process. We're goin
 
 How does Helidon know what classes it needs to create REST endpoints for ? Well the annotations system does that.
 
-Look at the class com.oracle.labs.helidon.storefront.StorefrontApplication
+Look at the class com.oracle.labs.helidon.storefront.StorefrontApplication, add the `@ApplicationScoped` and `@ApplicationPath("/")` annotations as below
 
 ```
 @ApplicationScoped
@@ -497,7 +497,7 @@ The result is 2, this is the default defined in the MinimumChange class. There i
 Now let's change the value
 
 ```
- curl -i -X POST -u jill:password -d "3"  -H "Content-type:application/json" http://localhost:8080/minimumChange
+$ curl -i -X POST -u jill:password -d "3"  -H "Content-type:application/json" http://localhost:8080/minimumChange
 HTTP/1.1 403 Forbidden
 Content-Length: 0
 Date: Sun, 5 Jan 2020 13:58:22 GMT
@@ -507,7 +507,7 @@ connection: keep-alive
 Well, that's a new error message, we're forbidden to access the resource, even though we've provided a valid username and password. This is because of the `@RolesAllowed({ "admin" })`  annotation. User Jill is not one of the admins, to access a method with this annotation we need an admin, and that's jack. Let's try again using jack as the user
 
 ```
-6$ curl -i -X POST -u jack:password -d 3  -H "Content-type:application/json" http://localhost:8080/minimumChange
+$ curl -i -X POST -u jack:password -d 3  -H "Content-type:application/json" http://localhost:8080/minimumChange
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 13:58:08 GMT
@@ -564,7 +564,7 @@ content-length: 1
 It is. Now when make the change
 
 ```
-6$ curl -i -X POST -u jack:password -d 3  -H "Content-type:application/json" http://localhost:8080/minimumChange
+$ curl -i -X POST -u jack:password -d 3  -H "Content-type:application/json" http://localhost:8080/minimumChange
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 14:11:48 GMT
@@ -577,7 +577,7 @@ content-length: 1
 And see if the change has held across requests
 
 ```
-$ curl -i -XGET" http://localhost:8080/minimumChange
+$ curl -i -X GET http://localhost:8080/minimumChange
 HTTP/1.1 200 OK
 Content-Type: text/plain
 Date: Sun, 5 Jan 2020 14:11:52 GMT
@@ -602,9 +602,23 @@ While we're here we're also going to add the StatusResource.class to the com.ora
 	}
 ```
 
-Save the StorefrontApplication.java file. We'll look at what the StatusResource us used for later
+Save the StorefrontApplication.java file and restart the program
+
+We'll test the status is there
+
+```
+$ curl -i -X GET http://localhost:8080/status
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Tue, 7 Jan 2020 16:30:30 GMT
+connection: keep-alive
+content-length: 54
+
+{"name":"Name Not Set","alive":true,"version":"0.0.1"}
+```
 
 Add the StatusResource as well, it's just does a hello world curl -i http://localhost:8080/status returning a bit of config info (more on this later)
+We'll look at what the StatusResource us used for later
 
 ### Injecting classes and resources
 We've now got ways to setup the MinimumChange and have it persistent, but it's now being used in multiple locations, the ConfigurationResource and the StorefrontResource, and at the moment they both create an instance, so though the Configuration resource (being application scoped) only exists once it's not actually using the same instance of the MinimumChange as the StorefrontResoruce. So a change to the value via the ConfigurationResource won;t actually be reflected in the behavior of the Storefront resource. But of a problem that !
@@ -632,7 +646,13 @@ public class ConfigurationResource {
 Strictly speaking there's no need to remove the manual instantiation as the @Inject annotation is processed later on in the class construction, but it's good practice not to create object we won't use.
 
 
-In the StorefrontResourece class @Inject the miniumumChange as well. As the Helidon framework knows that MinimumChange is ApplcationScoped this means that every tie a new StorefrontResource is created (once per request) the **same** instance of MinimumChange will be used (which is also the instance used in the ConfigurationResource)
+In the StorefrontResourece class @Inject the miniumumChange insted of creating an instance as well. 
+
+```
+	@Inject
+	private MinimumChange minimumChange;
+```
+As the Helidon framework knows that MinimumChange is ApplcationScoped this means that every tie a new StorefrontResource is created (once per request) the **same** instance of MinimumChange will be used (which is also the instance used in the ConfigurationResource)
 
 Save all of the class files, make sure that any previously running instance of the program is stopped and start it again with the saved changes.
 
@@ -735,7 +755,7 @@ To use a constructor that is not the default no args constructor then you need t
 
 Fortunately for us Helidon can get values to use for a constructor form the configuration, using the `@ConfigProperty` annotation on a constructors arguments
 
-Open the com.oracle.labs.helidon.storefront.data.MinimumChange class and add a constructor as below
+Open the com.oracle.labs.helidon.storefront.data.MinimumChange class and add an additional constructor as below (keep the no args constructor)
 
 ```
     @Inject
@@ -797,7 +817,7 @@ Note it is optional, if the file is not there no error, it's just skipped. if th
 
 We'll see later in the Kuberneties labs why we're using configuration files in the conf and confsecure directories, but it does demonstrate that you don't need to have all of your config in the same place
 
-Edit at the conf/storefront-config.yaml file, 
+Look at the conf/storefront-config.yaml file, 
 
 ```
 app:
@@ -1066,7 +1086,8 @@ This annotation means the in the event of an exception Helidon will call a metho
 
 Let's save the change and run the program, making a call to the reserveStockItem REST API endpoint.
 
-```$ curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":6}' http://localhost:8080/store/reserveStock
+```
+$ curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":6}' http://localhost:8080/store/reserveStock
 HTTP/1.1 500 Internal Server Error
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 16:16:54 GMT
