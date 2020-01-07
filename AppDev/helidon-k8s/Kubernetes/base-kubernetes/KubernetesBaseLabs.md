@@ -1,4 +1,4 @@
-[Go to Overview Page](../README.md)
+[Go to Overview Page](../Kubernetes-labs.md)
 
 ![](../../../../common/images/customer.logo2.png)
 
