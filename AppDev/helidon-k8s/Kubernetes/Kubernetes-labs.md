@@ -1,8 +1,14 @@
-#Kubernetes labs
-The Kubernetes labs are broken down into several sections
+[Go to Overview Page](../README.md)
 
-#What we expect from you
-We have tried to set the labs up so that you do not need to be an expert in Kubernetes to run them. However we do expect that ypou have some basic knowledge of how to use a computer, open terminals etc.
+![](../../../common/images/customer.logo2.png)
+
+# Migration of Monolith to Cloud Native
+
+## C. Deploying to Kubernetes 
+
+### **Introduction**
+
+We have tried to set the labs up so that you do not need to be an expert in Kubernetes to run them. However we do expect that you have some basic knowledge of how to use a computer, open terminals etc.
 
 The host operating system for the virtual machines we use for attendees to run the lab use Linux, we expect you to have some familiarity with Linux, and especially the terminal environment. We assume that you know enough that when you see something like the following instruction and sample text
 
@@ -50,22 +56,38 @@ Labels:         app=kubernetes-dashboard
 
 We do assume that you will recognize that the output of the first command will be different form the output we give, and that in the second command the `kubernetes-dashboard-58d96f69b8-lgk9t` will need to be replaced with whatever the first command returned on your environment when you ran it. We to try to remind folks about this occasionally, but if we did so everywhere it would get tedious for people havign to read it.
 
-#The Labs themselves
-##Basic Kuberneties
+## The Labs
+
+### 1. Basic Kuberneties
 This section covers how to run the docker images in kubenetes, how to use kuberneties secrets to hold configuration and access information, how to use an ingress to expose your application on a web port. Basically this covers how to make your docker based services run in in a kubernetes cluster.
 
 We also look at using Helm to install kubernetes "infractructure" such as the ingress server
+
 [The basic kubernetes labs](base-kubernetes/KubernetesBaseLabs.md)
 
-##Monitoring services in Kubernetes
+
+
+### 2. Monitoring services in Kubernetes
 Once a service is running in Kubernetes we want to start seeing how well it's working in terms of the load on the service. At a basic level this is CPU / IO's but more interesting are things like the number of requests being serviced.
 
 Monitoring metrics may also help us determining things like how changes when releasing a new version of the service may effect it's operation, for example does adding a database index increase the services efficiency by reducing lookup times, or increase it by adding extra work when updating the data. With this information you can determine if a change is worthwhile keeping.
 
 [The monitoring labs](monitoring-kubernetes/MonitoringLabs.md)
-##Cloud Native capabilities in Kubernetes
 
-Kubernetes has a number of features which go beyond just running containers. These are covered in the [Kubernetes cloud native labs.](cloud-native-labs/KubernetesCloudNativeLabs.md)
 
-#Further Information
+
+**Further Information**
 For links to useful web pages and other information that I found while writing these labs see [further information](further-information/further-information.md)
+
+
+
+### What's next
+Great, another section finished !
+
+You are now ready to go to the next level in the section called [D. the Cloud Native Labs](cloud-native-labs/KubernetesCloudNativeLabs.md)
+
+
+
+------
+
+[Go to Overview Page](../README.md)

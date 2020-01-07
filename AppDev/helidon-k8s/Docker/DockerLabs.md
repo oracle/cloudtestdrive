@@ -1,7 +1,15 @@
-# Running the docker images locally 
+[Go to Overview Page](../README.md)
 
-*** DO WE NEED A SHORT INTRO TO DOCKER AND THE STRUCTURE OF IMAGES FILES AND LAYER ? ***
+![](../../../common/images/customer.logo2.png)
 
+# Migration of Monolith to Cloud Native
+
+## B. Running as a docker images locally
+
+### **Introduction**
+*To Do : Add a short introduction on docker and how we will use it in this lab*
+
+### Prerequisites
 Important, to run this you will need the working storefront and stockmanager microservices (as per the Helidon labs) connected to the database.
 
 You will need docker running locally on your machine to build the images (This has been done for you if you're using the VM image we provide.)
@@ -27,12 +35,12 @@ docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin
 
 Once you have build the local docker containers then you can run them, be sure you have started zipkin (see previously)
 
-# Self contained images
+### Self contained images
 Initially you might think that the easiest thing to do when creating a docker image is to simply package up all of the configuration into the docker image so it's entirely self contained. The problem with this is that quite often configuration information changes after the image has been built, for example between test and deployment, and creating different images for each configuration is challenging (you may have lots of different configuration options, and may not even be able to define them all) and worse can result in embedding things like database access or other security configuration information into the docker images. This latter is especially critical if you are storing your image on an external or public repository where it can be accessed by anyone !
 
 To get around this docker provides a mechanism called volumes to have configuration files stored externally and injected into the container at run time.
 
-# Externalising the configuration
+### Externalising the configuration
 The following is an example of the approach taken when separating the executable from the configuration. 
 
 Firstly you'll need to create a docker image that contains the required executable elements. We've actually set up tooling to support this using jib (Java Image Builder) which is a Maven plugin - you've been using Maven already to manage dependencies, though you may not have realized this.
@@ -52,245 +60,8 @@ mvn package
 [INFO] Using 'UTF-8' encoding to copy filtered resources.
 [INFO] Copying 3 resources
 [INFO] 
-[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ storefront ---
-[INFO] Nothing to compile - all classes are up to date
-[INFO] 
-[INFO] --- jandex-maven-plugin:1.0.6:jandex (make-index) @ storefront ---
-[INFO] 
-[INFO] --- maven-resources-plugin:3.0.2:testResources (default-testResources) @ storefront ---
-[INFO] Using 'UTF-8' encoding to copy filtered resources.
-[INFO] Copying 1 resource
-[INFO] 
-[INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ storefront ---
-[INFO] Nothing to compile - all classes are up to date
-[INFO] 
-[INFO] --- maven-surefire-plugin:2.19.1:test (default-test) @ storefront ---
-[INFO] 
-[INFO] --- maven-dependency-plugin:2.9:copy-dependencies (copy-dependencies) @ storefront ---
-[INFO] org.glassfish.jersey.media:jersey-media-json-processing:jar:2.29.1 already exists in destination.
-[INFO] io.zipkin.brave:brave:jar:5.0.0 already exists in destination.
-[INFO] org.jboss.spec.javax.annotation:jboss-annotations-api_1.3_spec:jar:1.0.0.Final already exists in destination.
-[INFO] io.reactivex:rxjava:jar:1.2.0 already exists in destination.
-[INFO] commons-configuration:commons-configuration:jar:1.8 already exists in destination.
-[INFO] io.helidon.common:helidon-common-configurable:jar:1.3.1 already exists in destination.
-[INFO] commons-beanutils:commons-beanutils:jar:1.9.3 already exists in destination.
-[INFO] io.helidon.bundles:helidon-bundles-config:jar:1.3.1 already exists in destination.
-[INFO] com.fasterxml.jackson.core:jackson-databind:jar:2.9.8 already exists in destination.
-[INFO] io.helidon.security.abac:helidon-security-abac-policy:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.webclient:helidon-webclient-jaxrs:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.microprofile.bundles:helidon-microprofile-1.2:jar:1.3.1 already exists in destination.
-[INFO] com.sun.activation:jakarta.activation:jar:1.2.1 already exists in destination.
-[INFO] javax.xml.bind:jaxb-api:jar:2.3.0 already exists in destination.
-[INFO] org.jboss.narayana:common:jar:5.9.3.Final already exists in destination.
-[INFO] io.helidon.tracing:helidon-tracing:jar:1.3.1 already exists in destination.
-[INFO] io.projectreactor:reactor-core:jar:3.1.5.RELEASE already exists in destination.
-[INFO] io.helidon.microprofile.openapi:helidon-microprofile-openapi:jar:1.3.1 already exists in destination.
-[INFO] org.glassfish.jersey.ext.microprofile:jersey-mp-rest-client:jar:2.29.1 already exists in destination.
-[INFO] javax.activation:javax.activation-api:jar:1.2.0 already exists in destination.
-[INFO] io.helidon.health:helidon-health:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.microprofile.bundles:helidon-microprofile-1.1:jar:1.3.1 already exists in destination.
-[INFO] org.jboss.weld.probe:weld-probe-core:jar:3.1.1.Final already exists in destination.
-[INFO] io.helidon.security.abac:helidon-security-abac-role:jar:1.3.1 already exists in destination.
-[INFO] org.jboss:jandex:jar:2.1.1.Final already exists in destination.
-[INFO] dom4j:dom4j:jar:1.6.1 already exists in destination.
-[INFO] org.eclipse.microprofile.metrics:microprofile-metrics-api:jar:1.1 already exists in destination.
-[INFO] jakarta.json:jakarta.json-api:jar:1.1.5 already exists in destination.
-[INFO] io.helidon.microprofile.bundles:helidon-microprofile-2.2:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.security.integration:helidon-security-integration-common:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.serviceconfiguration:helidon-serviceconfiguration-hikaricp:jar:1.3.1 already exists in destination.
-[INFO] commons-lang:commons-lang:jar:2.6 already exists in destination.
-[INFO] org.hibernate.javax.persistence:hibernate-jpa-2.1-api:jar:1.0.0.Final already exists in destination.
-[INFO] io.helidon.config:helidon-config-object-mapping:jar:1.3.1 already exists in destination.
-[INFO] org.jboss.weld.module:weld-jta:jar:3.1.1.Final already exists in destination.
-[INFO] com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.9.8 already exists in destination.
-[INFO] io.helidon.tracing:helidon-tracing-jersey:jar:1.3.1 already exists in destination.
-[INFO] javax.enterprise:cdi-api:jar:2.0.SP1 already exists in destination.
-[INFO] org.glassfish.jersey.inject:jersey-hk2:jar:2.29.1 already exists in destination.
-[INFO] org.jboss.weld:weld-api:jar:3.1.Final already exists in destination.
-[INFO] io.netty:netty-codec-http2:jar:4.1.39.Final already exists in destination.
-[INFO] org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:jar:1.0.1.Final already exists in destination.
-[INFO] io.helidon.health:helidon-health-checks:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.security.integration:helidon-security-integration-jersey-client:jar:1.3.1 already exists in destination.
-[INFO] io.zipkin.reporter2:zipkin-sender-urlconnection:jar:2.6.0 already exists in destination.
-[INFO] io.helidon.metrics:helidon-metrics:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.security:helidon-security-annotations:jar:1.3.1 already exists in destination.
-[INFO] jakarta.validation:jakarta.validation-api:jar:2.0.2 already exists in destination.
-[INFO] org.codehaus.plexus:plexus-utils:jar:2.0.6 already exists in destination.
-[INFO] org.apache.maven:maven-plugin-api:jar:3.0.3 already exists in destination.
-[INFO] org.jboss.classfilewriter:jboss-classfilewriter:jar:1.2.4.Final already exists in destination.
-[INFO] com.netflix.archaius:archaius-core:jar:0.4.1 already exists in destination.
-[INFO] io.helidon.integrations.cdi:helidon-integrations-cdi-jta:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.integrations.cdi:helidon-integrations-cdi-jta-weld:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.tracing:helidon-tracing-jersey-client:jar:1.3.1 already exists in destination.
-[INFO] org.glassfish.jersey.core:jersey-client:jar:2.29.1 already exists in destination.
-[INFO] io.helidon.security:helidon-security-jwt:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.jersey:helidon-jersey-common:jar:1.3.1 already exists in destination.
-[INFO] antlr:antlr:jar:2.7.7 already exists in destination.
-[INFO] org.jboss.weld.se:weld-se-core:jar:3.1.1.Final already exists in destination.
-[INFO] io.opentracing:opentracing-noop:jar:0.31.0 already exists in destination.
-[INFO] org.codehaus.plexus:plexus-component-annotations:jar:1.5.5 already exists in destination.
-[INFO] org.eclipse.microprofile.fault-tolerance:microprofile-fault-tolerance-api:jar:2.0 already exists in destination.
-[INFO] org.glassfish.hk2:osgi-resource-locator:jar:1.0.3 already exists in destination.
-[INFO] io.helidon.common:helidon-common-mapper:jar:1.3.1 already exists in destination.
-[INFO] org.eclipse:yasson:jar:1.0.3 already exists in destination.
-[INFO] io.helidon.common:helidon-common:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.jersey:helidon-jersey-client:jar:1.3.1 already exists in destination.
-[INFO] org.eclipse.microprofile.config:microprofile-config-api:jar:1.3 already exists in destination.
-[INFO] com.fasterxml.jackson.core:jackson-annotations:jar:2.9.0 already exists in destination.
-[INFO] org.jboss.weld.environment:weld-environment-common:jar:3.1.1.Final already exists in destination.
-[INFO] io.helidon.bundles:helidon-bundles-security:jar:1.3.1 already exists in destination.
-[INFO] org.reactivestreams:reactive-streams:jar:1.0.2 already exists in destination.
-[INFO] io.helidon.config:helidon-config:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.common:helidon-common-http:jar:1.3.1 already exists in destination.
-[INFO] io.smallrye:smallrye-open-api:jar:1.1.1 already exists in destination.
-[INFO] com.fasterxml.jackson.core:jackson-core:jar:2.9.8 already exists in destination.
-[INFO] io.helidon.security.providers:helidon-security-providers-oidc-common:jar:1.3.1 already exists in destination.
-[INFO] io.netty:netty-codec-http:jar:4.1.39.Final already exists in destination.
-[INFO] org.eclipse.microprofile.health:microprofile-health-api:jar:2.0.1 already exists in destination.
-[INFO] io.helidon.webserver:helidon-webserver:jar:1.3.1 already exists in destination.
-[INFO] org.glassfish.jersey.ext.cdi:jersey-weld2-se:jar:2.29.1 already exists in destination.
-[INFO] io.helidon.integrations.cdi:helidon-integrations-cdi-jpa:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.common:helidon-common-service-loader:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.config:helidon-config-encryption:jar:1.3.1 already exists in destination.
-[INFO] io.netty:netty-handler:jar:4.1.39.Final already exists in destination.
-[INFO] org.glassfish.jersey.core:jersey-server:jar:2.29.1 already exists in destination.
-[INFO] org.codehaus.plexus:plexus-classworlds:jar:2.4 already exists in destination.
-[INFO] org.sonatype.sisu:sisu-guice:jar:no_aop:2.9.4 already exists in destination.
-[INFO] org.jboss.narayana.jta:jta:jar:5.9.3.Final already exists in destination.
-[INFO] io.helidon.microprofile.server:helidon-microprofile-server:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.security.integration:helidon-security-integration-webserver:jar:1.3.1 already exists in destination.
-[INFO] jakarta.ws.rs:jakarta.ws.rs-api:jar:2.1.5 already exists in destination.
-[INFO] io.helidon.security:helidon-security:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.openapi:helidon-openapi:jar:1.3.1 already exists in destination.
-[INFO] commons-collections:commons-collections:jar:3.2.2 already exists in destination.
-[INFO] io.helidon.microprofile:helidon-microprofile-fault-tolerance:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.media.jsonp:helidon-media-jsonp-server:jar:1.3.1 already exists in destination.
-[INFO] org.slf4j:slf4j-api:jar:1.7.25 already exists in destination.
-[INFO] org.jboss:jboss-transaction-spi:jar:7.6.0.Final already exists in destination.
-[INFO] io.helidon.jersey:helidon-jersey-server:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.microprofile.jwt:helidon-microprofile-jwt-auth-cdi:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.common:helidon-common-metrics:jar:1.3.1 already exists in destination.
-[INFO] io.opentracing:opentracing-util:jar:0.31.0 already exists in destination.
-[INFO] io.helidon.config:helidon-config-yaml:jar:1.3.1 already exists in destination.
-[INFO] org.yaml:snakeyaml:jar:1.23 already exists in destination.
-[INFO] io.helidon.tracing:helidon-tracing-zipkin:jar:1.3.1 already exists in destination.
-[INFO] org.sonatype.sisu:sisu-inject-plexus:jar:2.1.1 already exists in destination.
-[INFO] org.glassfish.hk2:hk2-locator:jar:2.6.1 already exists in destination.
-[INFO] org.javassist:javassist:jar:3.20.0-GA already exists in destination.
-[INFO] org.glassfish.hk2:hk2-utils:jar:2.6.1 already exists in destination.
-[INFO] io.helidon.security.providers:helidon-security-providers-abac:jar:1.3.1 already exists in destination.
-[INFO] org.hibernate.common:hibernate-commons-annotations:jar:5.0.1.Final already exists in destination.
-[INFO] io.netty:netty-resolver:jar:4.1.39.Final already exists in destination.
-[INFO] io.helidon.serviceconfiguration:helidon-serviceconfiguration-api:jar:1.3.1 already exists in destination.
-[INFO] org.glassfish.hk2.external:aopalliance-repackaged:jar:2.6.1 already exists in destination.
-[INFO] io.helidon.integrations.cdi:helidon-integrations-cdi-datasource:jar:1.3.1 already exists in destination.
-[INFO] org.apache.maven:maven-artifact:jar:3.0.3 already exists in destination.
-[INFO] io.helidon.security.integration:helidon-security-integration-jersey:jar:1.3.1 already exists in destination.
-[INFO] org.glassfish:javax.json:jar:1.1.4 already exists in destination.
-[INFO] mysql:mysql-connector-java:jar:8.0.17 already exists in destination.
-[INFO] commons-logging:commons-logging:jar:1.2 already exists in destination.
-[INFO] org.glassfish.hk2.external:jakarta.inject:jar:2.5.0 already exists in destination.
-[INFO] org.jboss.narayana.jta:cdi:jar:5.9.3.Final already exists in destination.
-[INFO] com.oracle.labs.helidon:helidon-labs-common:jar:0.0.1 already exists in destination.
-[INFO] io.netty:netty-common:jar:4.1.39.Final already exists in destination.
-[INFO] io.helidon.serviceconfiguration:helidon-serviceconfiguration-config-source:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.common:helidon-common-key-util:jar:1.3.1 already exists in destination.
-[INFO] org.slf4j:slf4j-jdk14:jar:1.7.26 already exists in destination.
-[INFO] io.netty:netty-buffer:jar:4.1.39.Final already exists in destination.
-[INFO] io.helidon.security.providers:helidon-security-providers-header:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.microprofile.health:helidon-microprofile-health:jar:1.3.1 already exists in destination.
-[INFO] javax.annotation:javax.annotation-api:jar:1.3.1 already exists in destination.
-[INFO] io.opentracing:opentracing-api:jar:0.31.0 already exists in destination.
-[INFO] org.jboss.jandex:jandex-maven-plugin:maven-plugin:1.0.6 already exists in destination.
-[INFO] io.zipkin.reporter2:zipkin-reporter:jar:2.6.0 already exists in destination.
-[INFO] org.hdrhistogram:HdrHistogram:jar:2.1.9 already exists in destination.
-[INFO] com.zaxxer:HikariCP:jar:2.7.8 already exists in destination.
-[INFO] org.eclipse.microprofile.rest.client:microprofile-rest-client-api:jar:1.3.3 already exists in destination.
-[INFO] io.helidon.microprofile.config:helidon-microprofile-config-cdi:jar:1.3.1 already exists in destination.
-[INFO] org.jboss.spec.javax.el:jboss-el-api_3.0_spec:jar:1.0.13.Final already exists in destination.
-[INFO] org.eclipse.microprofile.opentracing:microprofile-opentracing-api:jar:1.3.1 already exists in destination.
-[INFO] org.jboss.weld:weld-spi:jar:3.1.Final already exists in destination.
-[INFO] javax.inject:javax.inject:jar:1 already exists in destination.
-[INFO] jakarta.json.bind:jakarta.json.bind-api:jar:1.0.1 already exists in destination.
-[INFO] io.helidon.integrations.cdi:helidon-integrations-cdi-datasource-hikaricp:jar:1.3.1 already exists in destination.
-[INFO] com.netflix.hystrix:hystrix-core:jar:1.5.18 already exists in destination.
-[INFO] com.fasterxml:classmate:jar:1.3.0 already exists in destination.
-[INFO] io.helidon.microprofile.tracing:helidon-microprofile-tracing:jar:1.3.1 already exists in destination.
-[INFO] com.google.protobuf:protobuf-java:jar:3.6.1 already exists in destination.
-[INFO] io.helidon.security.providers:helidon-security-providers-jwt:jar:1.3.1 already exists in destination.
-[INFO] org.glassfish:jsonp-jaxrs:jar:1.1.5 already exists in destination.
-[INFO] io.zipkin.zipkin2:zipkin:jar:2.8.1 already exists in destination.
-[INFO] org.jboss.logging:jboss-logging:jar:3.3.0.Final already exists in destination.
-[INFO] io.helidon.security.abac:helidon-security-abac-scope:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.media.jsonp:helidon-media-jsonp-common:jar:1.3.1 already exists in destination.
-[INFO] io.netty:netty-transport:jar:4.1.39.Final already exists in destination.
-[INFO] io.helidon.microprofile.config:helidon-microprofile-config:jar:1.3.1 already exists in destination.
-[INFO] org.glassfish.jersey.core:jersey-common:jar:2.29 already exists in destination.
-[INFO] org.hibernate:hibernate-core:jar:5.2.12.Final already exists in destination.
-[INFO] org.jboss.spec.javax.interceptor:jboss-interceptors-api_1.2_spec:jar:1.0.0.Final already exists in destination.
-[INFO] org.glassfish.jersey.media:jersey-media-json-binding:jar:2.29 already exists in destination.
-[INFO] io.helidon.common:helidon-common-reactive:jar:1.3.1 already exists in destination.
-[INFO] com.typesafe:config:jar:1.3.3 already exists in destination.
-[INFO] org.sonatype.sisu:sisu-inject-bean:jar:2.1.1 already exists in destination.
-[INFO] org.glassfish.hk2:hk2-api:jar:2.6.1 already exists in destination.
-[INFO] io.helidon.security.providers:helidon-security-providers-common:jar:1.3.1 already exists in destination.
-[INFO] commons-io:commons-io:jar:2.6 already exists in destination.
-[INFO] io.helidon.microprofile:helidon-microprofile-security:jar:1.3.1 already exists in destination.
-[INFO] org.eclipse.microprofile.openapi:microprofile-openapi-api:jar:1.1.2 already exists in destination.
-[INFO] io.helidon.microprofile.metrics:helidon-microprofile-metrics:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.tracing:helidon-tracing-config:jar:1.3.1 already exists in destination.
-[INFO] org.eclipse.microprofile.jwt:microprofile-jwt-auth-api:jar:1.1.1 already exists in destination.
-[INFO] io.helidon.integrations.cdi:helidon-integrations-cdi-delegates:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.media:helidon-media-common:jar:1.3.1 already exists in destination.
-[INFO] jakarta.annotation:jakarta.annotation-api:jar:1.3.4 already exists in destination.
-[INFO] io.helidon.microprofile.rest-client:helidon-microprofile-rest-client:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.jersey:helidon-jersey-media-jsonp:jar:1.3.1 already exists in destination.
-[INFO] com.sun.xml.bind:jaxb-impl:jar:2.3.2 already exists in destination.
-[INFO] io.helidon.config:helidon-config-hocon:jar:1.3.1 already exists in destination.
-[INFO] org.glassfish:jakarta.json:jar:1.1.5 already exists in destination.
-[INFO] io.helidon.security.providers:helidon-security-providers-http-auth:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.microprofile.jwt:helidon-microprofile-jwt-auth:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.security.abac:helidon-security-abac-time:jar:1.3.1 already exists in destination.
-[INFO] org.glassfish.jersey.ext.cdi:jersey-cdi1x:jar:2.29.1 already exists in destination.
-[INFO] org.apache.maven:maven-model:jar:3.0.3 already exists in destination.
-[INFO] io.helidon.common:helidon-common-context:jar:1.3.1 already exists in destination.
-[INFO] net.jodah:failsafe:jar:1.1.0 already exists in destination.
-[INFO] io.helidon.security.providers:helidon-security-providers-oidc:jar:1.3.1 already exists in destination.
-[INFO] org.jboss.narayana.arjunacore:arjuna:jar:5.9.3.Final already exists in destination.
-[INFO] io.helidon.security.providers:helidon-security-providers-http-sign:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.security:helidon-security-util:jar:1.3.1 already exists in destination.
-[INFO] org.jboss.weld:weld-core-impl:jar:3.1.1.Final already exists in destination.
-[INFO] io.opentracing.brave:brave-opentracing:jar:0.31.0 already exists in destination.
-[INFO] io.netty:netty-codec:jar:4.1.39.Final already exists in destination.
-[INFO] io.helidon.integrations.cdi:helidon-integrations-cdi-reference-counted-context:jar:1.3.1 already exists in destination.
-[INFO] io.helidon.webserver:helidon-webserver-jersey:jar:1.3.1 already exists in destination.
-[INFO] org.jboss.shrinkwrap:shrinkwrap-api:jar:1.2.6 already exists in destination.
-[INFO] com.sun.xml.bind:jaxb-core:jar:2.3.0.1 already exists in destination.
-[INFO] 
-[INFO] --- maven-jar-plugin:2.5:jar (default-jar) @ storefront ---
-[INFO] Building jar: /Users/tg13456/Development/git/helidon-labs-storefront/target/storefront.jar
-[INFO] 
-[INFO] --- jib-maven-plugin:1.7.0:dockerBuild (default) @ storefront ---
-[INFO] 
-[INFO] Containerizing application to Docker daemon as jib-storefront, jib-storefront:0.0.1, jib-storefront...
-[WARNING] Base image 'openjdk:11' does not use a specific image digest - build may not be reproducible
-[INFO] The base image requires auth. Trying again for openjdk:11...
-[WARNING] The credential helper (docker-credential-desktop) has nothing for server URL: registry-1.docker.io
-[WARNING] 
-Got output:
-
-credentials not found in native keychain
-
-[WARNING] The credential helper (docker-credential-desktop) has nothing for server URL: registry.hub.docker.com
-[WARNING] 
-Got output:
-
-credentials not found in native keychain
-
-[INFO] Using base image with digest: sha256:f8a2da20d381369132aa0b9af37d36da15d96de4a59a11e336e7d0db80dbbebb
-[INFO] 
-[INFO] Container entrypoint set to [java, -server, -Djava.awt.headless=true, -XX:+UnlockExperimentalVMOptions, -XX:+UseG1GC, -cp, /app/resources:/app/classes:/app/libs/*, com.oracle.labs.helidon.storefront.Main]
-[INFO] 
+...
+...
 [INFO] Built image to Docker daemon as jib-storefront, jib-storefront:0.0.1, jib-storefront
 [INFO] Executing tasks:
 [INFO] [==============================] 100.0% complete
@@ -440,7 +211,7 @@ You may be asking in the storefront why do we need to inject configuration, and 
 
 Of course in a production environment you'd probably have a separate folder containing the relevant configuration information (it's highly likely that multiple services would use the same database setup for example) to the host configuration would be in there, not in the development folder.
 
-# Pushing your images to a container repository
+### Pushing your images to a container repository
 The docker container images are currently only held locally, that's not good if you want to distribute them or run them in other locations. We can save the images in an external repository, This could be public - e.g. dockerhub.com, private to your organization or in a cloud registry like the Oracle OCIR. Note that if you wanted to there are docker image save and docker image load commands that will save and load image files from a tar ball, but that's unlikely to be as easy to use as a repository, especially when trying to manage distribution across a large enterprise environment.
 
 As there are probably many attendees doing the lab we need to separate the different images out, so we're also going to use your initials / name / something unique 
@@ -485,7 +256,7 @@ latest: digest: sha256:7f5638210c48dd39d458ba946e13e82b56922c3b99096d3372301c1f2
 ```
 
 (While a layer is being pushed you'll see a progress bar, the above shows the final output.)
-  
+
 
 Note that the first time you run this most if not all of the layers will be pushed, however subsequent runs only the layers that have changes will need to be pushed, which speeds things up a lot, so if the 0.0.1 tagged version is pushed (this is the same actual image, just a different name, again don't actually run this, just look at it)
 
@@ -527,9 +298,17 @@ content-length: 184
 ```
 As before if you want to look at the trace then in a web browser goto https://localhost:9411/zipkin
 
-Just a note here on where the images are actually coming from. We're actually still using the local one as that's what we pushed, so docker recognizes that there is no point in re-downloading it again. If you want force the use of the remote image then use the the `docker images` commands to get a list of images and then and `docker rmi -f <images id's>` to remove the images you've build if you want to actually force downloading them from the cloud. If you do this then the docker run command will pull all of the images layers it doesn't have locally into the local docker images cache (the next time its run they will already be in the cache and it will use that rather than downloading them again.)
+Just a note here on where the images are actually coming from. We're actually still using the local one as that's what we pushed, so docker recognizes that there is no point in re-downloading it again. If you want force the use of the remote image then use the command
+`docker image`
+to get a list of images and then and 
+`docker rmi -f <images id`
+to remove the images you have build if you want to actually force downloading them from the cloud. If you do this then the docker run command will pull all of the images layers it doesn't have locally into the local docker images cache (the next time its run they will already be in the cache and it will use that rather than downloading them again.)
 
-to stop them Ctrl-C them or in a terminal do 
+
+
+### Cleaning up
+
+to stop the running images,  Ctrl-C them or in a terminal do 
 
 ```
 docker stop storefront stockmanager
@@ -539,3 +318,13 @@ Also we're going to stop the zipkin instance running as well as we're done with 
 ```
 docker stop zipkin
 ```
+
+
+
+Congratulations, you are now running your microservices on Docker!  Next step is to use these images to run on a Kubernetes cluster.  For this, navigate to the next chapter, [C. Deploying in Kubernetes](../Docker/DockerLabs.md)
+
+
+
+------
+
+[Go to Overview Page](../README.md)
