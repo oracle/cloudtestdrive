@@ -197,7 +197,7 @@ This is why we've used the same user credentials, and in a production environmen
 ### End of the lab
 You have finished this part of the lab, you can proceed to the next step of this lab:
 
-[4. Supporting operations activities with Helidon](Helidon-Operations/helidon-operations.md)
+[4. Supporting operations activities with Helidon](../Helidon-Operations/helidon-operations.md)
 
 
 
