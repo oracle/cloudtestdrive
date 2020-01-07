@@ -21,7 +21,7 @@ Dockerfile			README-Lombok			app.yaml			buildV0.0.2PushToRepo.sh	etc				runLocal
 ObjectStore			README.md			buildLocalExternalConfig.sh	conf				pom.xml				runRepo.sh
 ```
 
-That you will know you need to cd to the folder (if you're not already there !) type ls (not the preceding $) and that the output will be DBScripts et all (so you don't type that)
+That means you will know you need to cd to the folder (if you're not already there !) type ls (not the preceding $) and that the output will be DBScripts et all (so you don't type that)
 
 Also there are a number of situations in the labs where we will be running a command to get some information and then expect you to use the returned information in the next command. For example in the case we say 
 

@@ -1,13 +1,21 @@
-#Supporting cloud native operations with Helidon
+[Go to Helidon for Cloud Native Page](../Helidon-labs.md)
+
+![](../../../../common/images/customer.logo2.png)
+
+# Migration of Monolith to Cloud Native
+
+## A. Helidon for Cloud Native
+
+## 5. Supporting cloud native operations with Helidon
+
 Most cloud native platforms (and Kubernetes in particular) need to know is a microservcies is running at all, if it's capable to responding to requests and if it has access to all the dependent services it needs to operate. In the event that these conditions are not fulfilled the cloud native platform will take steps like re-starting a microservice instance, or stopping sending it requests for a short while.
 
 The exercises in this section show how you can use Helidon to directly support the cloud native capabilities that Kubernetes uses. It does not directly cover using them in Kubernetes however, but if you're doing the microservices in kubernetes sections of the workshop then this will make sense when you do it.
 
-
-#Monitoring and metrics
+**Monitoring and metrics**
 Kuberneties does not itself have built in monitoring tools, however many users of Kuberneties use Prometheus which can use the /metrics API Helidon provides and we saw in the operations section of these labs to extract data on the operation and performance of a microservice.
 
-#Health
+### Health
 Helidon has built in health info as standard. By default this is available on the same port as the service, but our runtime config (conf/storefront-network.yaml) separates these  onto different ports (8080 for the service, 9080 for the non service) 
 
 Look at http://localhost:9080/health to see the details of the default health servcie
@@ -25,7 +33,7 @@ content-length: 460
 
 The default info contains information on the microservcies use of resources (CPU, Memory , disk usage and so on)
 
-#Liveness
+### Liveness
 Services like kubenetes will know if a microservice has crashed as the application will have exited, but detecting that the service is not properly responding to requests is harder. Eventually most programs will get into some kind of resource starvation request like a deadlock. Cloud native platforms like Kubernetes have `liveness` tests which check to see if the microservice is alive (e.g. not in deadlock) If the service is not responding then the cloud native platform can restart it.
 
 Provding a Liveness capability is pretty simple. Somewhere in the class structure you just need a class that implements the HealthCheck interface (Helidon uses this interface to know what method to call to run the test) and is annotated with `@Liveness` 
@@ -79,7 +87,7 @@ The health endpoint now includes the data we return from the Liveness check, in 
 {"name":"storefront-live","state":"UP","status":"UP","data":{"frozen":false,"storename":"My Shop","uptime":3011}}
 ```
 
-#Readiness
+### Readiness
 If an application crashes then clearly the solution is to restart it, and in basically most cases if it's in deadlock the only option is to restart, so cloud native platforms like Kubernetes do just that in those situations. 
 
 There is however a different situation where a microservice itself can be behaving just fine, but it can't actually process requests because a service it depends on is for some reason not available. In many situations the downstream service will likely become available again - perhaps there has been a temporary network issue. 
@@ -138,3 +146,19 @@ content-length: 127
 ```
 
 As the stockmanager is now up the storefront has it's dependencies satisfied and it can respond that it's status is UP and it's ready to process requests. The cloud native infrastructure will then send it requests as needed.
+
+
+
+
+### End of the lab
+You have finished all the labs in this initial section **A. Helidon**.  
+You can return to the top level and start working on Section **B. Using Docker** : this part of the lab, you can proceed to the next step of this lab:
+
+
+
+
+
+---
+
+
+[Go to *Helidon for Cloud Native* overview Page](../Helidon-labs.md)

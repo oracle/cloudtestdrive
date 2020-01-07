@@ -45,10 +45,12 @@ The following is an example of the approach taken when separating the executable
 
 Firstly you'll need to create a docker image that contains the required executable elements. We've actually set up tooling to support this using jib (Java Image Builder) which is a Maven plugin - you've been using Maven already to manage dependencies, though you may not have realized this.
 
-The Maven package target (mvn package) to create the docker container in your local registry. Simply open a terminal, navigate to the two project directories in a terminal and type 
+The Maven package target (mvn package) to create the docker container in your local registry. Simply open a terminal, navigate to the two project directories in a terminal and type.
+
+On the VM desktop, these project directories will be under the `workspace` directory in your home directory.
 
 ```
-mvn package
+$ mvn package
 [MVNVM] Using maven: 3.5.2
 [INFO] Scanning for projects...
 [INFO] 
