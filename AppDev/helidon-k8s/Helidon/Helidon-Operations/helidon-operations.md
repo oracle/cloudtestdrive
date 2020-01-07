@@ -482,7 +482,7 @@ By default any of `@Metric`, `@Timed`, `@Counted` etc. will use a name that's de
 You have finished this part of the lab, you can proceed to the next step of this lab:
 
 
-[5. The Helidon support for Cloud Native Operations lab](Helidon-cloud-native/helidon-cloud-native.md)
+[5. The Helidon support for Cloud Native Operations lab](../Helidon-cloud-native/helidon-cloud-native.md)
 
 
 
