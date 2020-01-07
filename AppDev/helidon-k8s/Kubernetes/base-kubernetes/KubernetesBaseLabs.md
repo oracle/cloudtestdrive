@@ -204,20 +204,36 @@ But the benefit of a config file is that it's easily reproducible and can be cop
 There is then a "divider" of `---` between the next section, this tells kubectl / kubetnetes to start the next section as if it was a separate command, the benefit here is that it allows us to basically issue one command that does two actions.
 
 ```
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: kubernetes-dashboard-role
+rules:
+  - apiGroups:
+      - "*"
+    resources:
+      - "*"
+    verbs:
+      - "*"
+```
+
+This section is potentially dangerous, it's defining a cluster role that has all permissions to everything. In a production environment you'd want to restrict to specific capabilities, but for this lab it's easier to do the lot.
+
+```
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: dashboard-user
+  name: dashboard-user-role-binding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: kubernetes-dashboard
+  name: kubernetes-dashboard-role
 subjects:
 - kind: ServiceAccount
   name: dashboard-user
   namespace: kube-system
 ```
-The second section tells kubernetes to use the rbac.authorization.k8s.io service (This naming scheme uses DNS type naming and basically means the role based access controls capability of the authorization service in kubernetes.io) create a binding that connects the user dashboard-user in namespace kub-system to the kubernetes-dashboard role, basically anyone logged in as dashboard-user has cluster the ability to run the commands specified in the cluster kubernetes-dashboard role. In practice this means that when the kubernetes-dashboard asks the RBAC service it the user identified as dashboard-user is allowed to use the dashboard it will return yes, and this the dashboard service will allow the dashbaord user to log in and process requests. So basically standard type of Role Based Access Control ideas. 
+The last section tells kubernetes to use the rbac.authorization.k8s.io service (This naming scheme uses DNS type naming and basically means the role based access controls capability of the authorization service in kubernetes.io) create a binding that connects the user dashboard-user in namespace kub-system to the kubernetes-dashboard role, basically anyone logged in as dashboard-user has cluster the ability to run the commands specified in the cluster kubernetes-dashboard role. In practice this means that when the kubernetes-dashboard asks the RBAC service it the user identified as dashboard-user is allowed to use the dashboard it will return yes, and this the dashboard service will allow the dashbaord user to log in and process requests. So basically standard type of Role Based Access Control ideas. 
 
 ### A Note on Yaml
 kubectl can also take json input as well as yaml. Personally I think that using any data format (including yaml) where whitespace is sensitive and defines the structure is just asking for trouble (get an extra space to many or two few and you'de completely changed what you're trying to do) so my preference would be to use JSON. However (to be fair) json is a lot more verbose compared to yaml and the syntax can also lead to problems (though I think that a reasonable json editor will be a lot better than a yaml editor at finding problems and helping you fix them)
@@ -899,7 +915,7 @@ sm-config-map   2      37s
 We can get more details by getting the data in JSON or yaml, in this case I'm extracting it using yaml as that's the origional data format
 
 ```
-$ $ kubectl get configmap sf-config-map -o=yaml
+$ kubectl get configmap sf-config-map -o=yaml
 apiVersion: v1
 data:
   storefront-config.yaml: |-
@@ -1011,10 +1027,10 @@ Both are mounted read only as there's no need for the programs to modify them, s
 ```
 Lastly (in this config file) we define what each volume is based on, in this case we're saying that the volume sf-config-secure-vol (referenced earlier as being mounted on to /confsecure) has a source based on the secret called sf-conf-secure. the volume sf-config-map-vol (which is mounted onto /conf) will containe the contents of the config map sf-config-map There are many other different types of volume sources, including NFS, iSCSI, local storage to the kubernetes provider etc.
 
-To deploy the config file we just use kubectl to apply it (this is an example, don't type it)
+To deploy the config file we would just use kubectl to apply it (this is an example, don't type it)
 
 ```
-kubectl apply -f mydeployment.yaml
+$ kubectl apply -f mydeployment.yaml
 ```
 
 The script deploy.sh will apply all three deployment configuration files (storefrint, stockmanager, zipkin) for us. *** REMEMBER TO EDIT THE IMAGE LOCATION TO MATCH THE ONE YOU HAVE CHOSEN IN *BOTH* THE STOREFRONT AND STOCKMANAGER DEPLOYMENT FILES.
@@ -1145,18 +1161,18 @@ We can interact with the deployment using the public side of the ingress (it's l
 
 ```
 $ kubectl get services -n default
-NAME                                          TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
-ingress-nginx-nginx-ingress-controller        LoadBalancer   10.111.0.168    localhost     80:31934/TCP,443:31827/TCP   2d4h
-ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <none>        80/TCP                       2d4h
-kubernetes                                    ClusterIP      10.96.0.1       <none>        443/TCP                      5d2h
+NAME                                          TYPE           CLUSTER-IP      EXTERNAL-IP    PORT(S)                      AGE
+ingress-nginx-nginx-ingress-controller        LoadBalancer   10.111.0.168    132.145.232.69 80:31934/TCP,443:31827/TCP   2d4h
+ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <none>         80/TCP                       2d4h
+kubernetes                                    ClusterIP      10.96.0.1       <none>         443/TCP                      5d2h
 ```
 
-The External_IP column displays the external address. If running a local cluster this will be localhost:80, but in a cloud deployment it should be a public facing address (either on the internet or your companies private network)
+The External_IP column displays the external address. If running a local cluster this will be localhost:80, but in a cloud deployment it should be a public facing address as seen in the example above (either on the internet or your companies private network)
 
 Let's actually trying getting some data
 
 ```
-$ curl -i -X GET -u jack:password http://localhost:80/store/stocklevel
+$ curl -i -X GET -u jack:password http://132.145.232.69:80/store/stocklevel
 HTTP/1.1 200 OK
 Server: openresty/1.15.8.2
 Date: Sun, 29 Dec 2019 18:05:24 GMT
@@ -1166,6 +1182,8 @@ Connection: keep-alive
 
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
+
+(If you get 424 failed dependency / timeouts it's because the services are doing their lazy initialization, retry the request
 
 And to see what's happening when we made the request we can look into the pods logs. Here we use --tail=5 to limit the logs output to the last 5 lines of the storefront pod
 
@@ -1209,7 +1227,7 @@ Here we retrieve the last 20 lines, and can see the connection to the database i
 
 Using the logs function on the dashboard we'd see the same output, but you'd probabaly want to set the logs output there to refresh automatically.
 
-As we are runnig zipkin and have an ingress setup to let us access the zipkin pod let's look at just to show it working. In your browser go to <cluster IP.zipkin (or if running locally that's localhost:zipkin)
+As we are runnig zipkin and have an ingress setup to let us access the zipkin pod let's look at just to show it working. In your browser go to the ingress end point for your cluster, for example http://132.145.232.69/zipkin (or if running locally that's localhost:zipkin)
 ![List of traces in Zipkin](images/zipkin-traces-list.png)
 
 I then selected the most recent trace and retrieved the data from that
@@ -1219,7 +1237,7 @@ I then selected the most recent trace and retrieved the data from that
 Of course the other services are also available, for example we can get the minimum change using the re-writer rules
 
 ```
-$ curl -i -X GET http://localhost:80/sf/minimumChange
+$ curl -i -X GET http://132.145.232.69:80/sf/minimumChange
 HTTP/1.1 200 OK
 Server: openresty/1.15.8.2
 Date: Sun, 29 Dec 2019 18:33:15 GMT
@@ -1233,7 +1251,7 @@ Connection: keep-alive
 And in this case we are going to look at data on the admin port for the stock management service and get it's readiness data
 
 ```
-$ curl -i -X GET http://localhost:80/smmgt/health/ready
+$ curl -i -X GET http://132.145.232.69:80/smmgt/health/ready
 HTTP/1.1 200 OK
 Server: openresty/1.15.8.2
 Date: Sun, 29 Dec 2019 18:34:40 GMT
@@ -1250,7 +1268,7 @@ We saw in the helidon labs that it's possible to have the helidon framework moni
 Let's get the status resource data to see what it says 
 
 ```
-$ curl -i -X GET http://localhost:80/sf/status
+$ curl -i -X GET http://132.145.232.69:80/sf/status
 HTTP/1.1 200 OK
 Server: openresty/1.15.8.2
 Date: Sun, 29 Dec 2019 18:32:50 GMT
@@ -1323,7 +1341,7 @@ The storefront-config.yaml file has now changed to reflect the modifications you
 If we now get the status resource data again it's also updated
 
 ```bash
-$ curl -i -X GET http://localhost:80/sf/status
+$ curl -i -X GET http://132.145.232.69:80/sf/status
 HTTP/1.1 200 OK
 Server: openresty/1.15.8.2
 Date: Sun, 29 Dec 2019 21:24:26 GMT
@@ -1339,7 +1357,7 @@ aWe've shown how to change the config in helidon using config maps, but the same
 ### Stopping the pods
 To remove the pods we can't just kill of the containers (assuming you had access to the nodes to to that.) That would just trigger the pod to create a new container, to stop the actual pods we need to use kubectl (or we can also stop them in the dashboard) to delete the pods configuration. We can use this to remove any configuration that came from a yaml file :
 
-We just use
+We would use
 
 ```bash
 $ kubectl delete -f <deployment>.yaml
