@@ -45,7 +45,7 @@ The following is an example of the approach taken when separating the executable
 
 Firstly you'll need to create a docker image that contains the required executable elements. We've actually set up tooling to support this using jib (Java Image Builder) which is a Maven plugin - you've been using Maven already to manage dependencies, though you may not have realized this.
 
-The Maven package target (mvn package) to create the docker container in your local registry. Simply open a terminal, navigate to the two project directories in a terminal and type.
+Use the Maven package target (mvn package) to create the docker container in your local registry. Simply open a terminal, navigate to the each project directories in a terminal and type `mvn package` (best to let one finish before starting the next to reduce duplicate downloads into the cache)
 
 On the VM desktop, these project directories will be under the `workspace` directory in your home directory.
 
@@ -84,7 +84,7 @@ Note that jib does not copy every file into the right locations as needed by Hel
 once you've created the basic images by using mvn package you can manually create the new ones with the files in the right place using the docker command in the helidon-labs-stockmanager directory
 >
 ```
-docker build --tag stockmanager --file Dockerfile .
+$ docker build --tag stockmanager --file Dockerfile .
 Sending build context to Docker daemon  229.4kB
 Step 1/3 : FROM jib-stockmanager:latest
  ---> 21ff68d7abaf
@@ -108,7 +108,7 @@ In the helidon-labs-storefront directory
 
 
 ```
-docker build --tag storefront --file Dockerfile .
+$ docker build --tag storefront --file Dockerfile .
 Sending build context to Docker daemon  110.6kB
 Step 1/3 : FROM jib-storefront:latest
  ---> d04bbcb28160
@@ -124,14 +124,14 @@ Successfully built 90bd16d9e6bc
 Successfully tagged storefront:latest
 ```
 
-For your convenience there is a script in each directory called buildLocalExternalConfig.sh that will run a mvn build and the appropriate docker commands. You will need to run the script in *both* the directories (so once in the helidon-labs-storefront directory and once in the helidon-labs-stockmanager, it needs to be run from within the directory as that's where docker looks for the content) Initially it may take a few mins to run if it needs to download the appropriate base layers, but once they are downloaded it should speed up. It's best to let one build finish before starting the next one.
+For your convenience in the future there is a script in each directory called buildLocalExternalConfig.sh that will run a mvn build and the appropriate docker commands. You will need to run the script in *both* the directories (so once in the helidon-labs-storefront directory and once in the helidon-labs-stockmanager, it needs to be run from within the directory as that's where docker looks for the content) Initially it may take a few mins to run if it needs to download the appropriate base layers, but once they are downloaded it should speed up. It's best to let one build finish before starting the next one.
 
 If you look at the scripts you will see that they run the maven package process to create the docker image using jib. They they create a new docker image which has the changes needed to run helidon. These are the commands you'd have run by hand.
 
 You can explore the containers by running them to give you shell access (This is why we used a larger docker base image that includes a shell and other Unix utilities.) In the helidon-labs-stockmanager directory run the following command
 
 ```
-docker run --tty --interactive --rm --entrypoint=/bin/bash stockmanager
+$ docker run --tty --interactive --rm --entrypoint=/bin/bash stockmanager
 ```
 This command creates a docker container running the shell which is connected to your terminal. Once you're running in the container you can look around
 
@@ -146,14 +146,14 @@ root@1e640494f039:/# exit
 
 As you can see there is nothing in the /conf /confsecure or /Wallet_ATP directories .jib was told as part of it's config that these would be used for mounting external configuration, so it created the folders for us automatically.
 
-When you exited the container it shutdown as nothing was in there any more. 
+When you exited the container it shutdown as nothing was running in it any more. 
 
 If you're interested the docker flags are handled as following, --tty means to allocate a terminal connection and connect the standard output / error to the docker run command, --interactive means that you can type and your input will be connected to the containers standard input, --rm means that the container will be removed when it exits (this means you can reuse the container name and don't have lots of expired containers hanging around) Finally --entrypoint is the command to use when running the docker container, in this case the shell. jib actually set's up a java command to run your program as the default command if you don't override with --entrypoint.
 
 Let's use docker volumes (the docker --volume flag) to inject the configuration for us, each volume argument is the host file system name (this needs to be an absolute pathname) and the location inside the container to mount it. Again in the helidon-labs-stockmanager 
 
 ```
-docker run --tty --interactive --volume \`pwd\`/Wallet\_ATP:/Wallet\_ATP --volume \`pwd\`/conf:/conf --volume \`pwd\`/confsecure:/confsecure  --rm --entrypoint=/bin/bash stockmanager
+$ docker run --tty --interactive --volume `pwd`/Wallet_ATP:/Wallet_ATP --volume `pwd`/conf:/conf --volume `pwd`/confsecure:/confsecure  --rm --entrypoint=/bin/bash stockmanager
 ```
 As before we find ourselves in the container and the root directory looks the same
 
@@ -180,6 +180,16 @@ This script uses a docker command to locates the IP addresses of the containers 
 
 The script also used the --publish flag to the docker run command this sets up a port connection from the specified port on the host OS to the specified port within the container. This is how we make a network service available to outside the docker container.
 
+**If you have not stopped the stockmanager and storefront applications you were running in the helidon labs then they will have ownership of the ports** Please check now that they are not running
+
+If when running the docker containers you get bind errors like this
+
+```
+docker: Error response from daemon: driver failed programming external connectivity on endpoint stockmanager (6e43692b6b949efc6f48d2dc18a7d5b9954bb0e16ad8b5cdba341fcabb673c89): Error starting userland proxy: listen tcp 0.0.0.0:9081: bind: address already in use.
+```
+
+It means you've not stopped the storefront and / or stock manager programs running in Eclipse
+
 As the storefront depends on the stockmanager (and both depend on zipkin) it's important to ensure that the proper order is followed
 
 Make sure zipkin is running (see above)
@@ -191,7 +201,7 @@ In a different terminal in the helidon-labs-storefront directory run the runLoca
 If you now make a request to the storefront service you should get a response (As before we ar using curl here, but if you prefer feel free to use the postman program that's also installed in the VM)
 
 ```
-curl -i -X GET -u jack:password http://localhost:8080/store/stocklevel
+$ curl -i -X GET -u jack:password http://localhost:8080/store/stocklevel
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Mon, 23 Dec 2019 16:37:30 GMT
@@ -199,17 +209,51 @@ connection: keep-alive
 content-length: 184
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
-Should return the entries you added earlier. The outputs for the storefront and stockmanager containers will display the log data generated as the operation was performed.
+Should return the entries you added earlier. If you get a 424 Failed dependency / message it's because the lazy initialization has taken a while as the back end request has times out (remember the @Timeout annotation!) Just re-run the request
+
+The outputs for the storefront and stockmanager containers will display the log data generated as the operation was performed.
+
+Storefront example output
+
+```
+2020.01.07 17:29:34 INFO io.helidon.microprofile.faulttolerance.CommandRetrier Thread[helidon-2,5,server]: About to execute command with key listAllStock1387953623 on thread helidon-2
+2020.01.07 17:29:34 INFO com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[hystrix-io.helidon.microprofile.faulttolerance-2,5,server]: Requesting listing of all stock
+2020.01.07 17:29:34 INFO com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[hystrix-io.helidon.microprofile.faulttolerance-2,5,server]: Found 4 items
+```
+
+Stockmanager example output
+
+```
+^[c2020.01.07 17:29:11 INFO com.arjuna.ats.arjuna Thread[helidon-1,5,server]: ARJUNA012170: TransactionStatusManager started on port 35375 and host 127.0.0.1 with service com.arjuna.ats.arjuna.recovery.ActionStatusService
+2020.01.07 17:29:11 INFO com.oracle.labs.helidon.stockmanager.resources.StockResource Thread[helidon-1,5,server]: Getting all stock items
+2020.01.07 17:29:12 INFO org.hibernate.jpa.internal.util.LogHelper Thread[helidon-1,5,server]: HHH000204: Processing PersistenceUnitInfo [name: HelidonATPJTA]
+2020.01.07 17:29:12 INFO org.hibernate.Version Thread[helidon-1,5,server]: HHH000412: Hibernate Core {5.4.9.Final}
+2020.01.07 17:29:12 INFO org.hibernate.annotations.common.Version Thread[helidon-1,5,server]: HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020.01.07 17:29:13 INFO com.zaxxer.hikari.HikariDataSource Thread[helidon-1,5,server]: HikariPool-1 - Starting...
+2020.01.07 17:29:18 INFO com.zaxxer.hikari.HikariDataSource Thread[helidon-1,5,server]: HikariPool-1 - Start completed.
+2020.01.07 17:29:18 INFO org.hibernate.dialect.Dialect Thread[helidon-1,5,server]: HHH000400: Using dialect: org.hibernate.dialect.Oracle10gDialect
+2020.01.07 17:29:23 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator Thread[helidon-1,5,server]: HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.JBossStandAloneJtaPlatform]
+Hibernate: 
+    SELECT
+        departmentName,
+        itemName,
+        itemCount 
+    FROM
+        StockLevel 
+    WHERE
+        departmentName='timg'
+2020.01.07 17:29:24 INFO com.oracle.labs.helidon.stockmanager.resources.StockResource Thread[helidon-1,5,server]: Returning 4 stock items
+```
 
 If you want to see the traces in zipkin use the URL http://localhost:9411/zipkin as before
 
 To stop the containers do Ctrl-C in each of the windows, or in a separate terminal use docker to stop them
 
 ```
-docker stop storefront stockmanager
+$ docker stop storefront stockmanager
 ```
 
-You may be asking in the storefront why do we need to inject configuration, and not just copy it in and leave it, after all it has no database connection details. The reason is that though we could certainly build the configuration into the container that we should not do this with the authentication data, for a test environment you'd want to inject some hard coded authentication data, but in production you'd want to inject an external authentication service. You certainly would want the microservice to not have default authentication info that would be used if you forgot to do this, having a default that opens up security is a bad thing !
+You may be asking in the storefront why do we need to inject configuration using the docker volumes, and not just copy it in to the image, after all it has no database connection details ? The reason is that though we could certainly build the configuration into the container that we should not do this with the authentication data, for a test environment you'd want to inject some hard coded authentication data, but in production you'd want to inject an external authentication service. You certainly would want the microservice to not have default authentication info that would be used if you forgot to do this, having a default that opens up security is a bad thing !
 
 Of course in a production environment you'd probably have a separate folder containing the relevant configuration information (it's highly likely that multiple services would use the same database setup for example) to the host configuration would be in there, not in the development folder.
 
@@ -226,12 +270,13 @@ The ultimate full repo will look something like fra.ocir.io/oractdemeabdmnative/
 
 Update the repoConfig.sh scripts in both the helidon-labs-stockmanager and helidon-labs-storefront directories to reflect your chosen repo details. The info in the repoConfig.sh is used by the push and also the run scripts, so it will reduce the chance of errors.
 
+**For the beta run through only** We're still working on the use of secret keys to get the container images in Kubernetes, so for the beta test these images need to be in a public repo, contact Jan or Tim to go in and do this you.
+
 The build script is pretty similar to what we had before. It uses mvn package to create the initial image using jib, but the docker build command in the file is different (don't actually run this, just look at it)
 
 ```
-docker build  --tag my.repo.io/some-id/storefront:latest --tag $REPO/storefront:0.0.1 -f Dockerfile .
+$ docker build  --tag my.repo.io/some-id/storefront:latest --tag $REPO/storefront:0.0.1 -f Dockerfile .
 ```
-
 
 Note that we have two --tag commands so the resulting image will be pointed to by two names, not just one. Both of the names include the repository information (we use this later on when pushing the images) but they also have a :<something> after the container name we're used to seeing. This is used as the version number, this is not processed in any meaningful way that I've discovered (for example I've yet to find a tool that allows you to do something like Version 1.2.4 or later) but by convention you should tag the most recent version with :latest and all images should be tagged with a version number in the form of :<major>.<minor>.<micro> e.g. 1.2.4
 
@@ -240,7 +285,7 @@ Now the images are tagged with a name that included version and repo information
 To push an image to the repository just push it, for example (don't actually run this, just look at it)
 
 ```
-docker push my.repo.io/some-id/storefront:latest
+$ docker push my.repo.io/some-id/storefront:latest
 The push refers to repository [my.repo.io/some-id/storefront]
 fd17f594205f: Pushed 
 f2d4659d7ea1: Pushed 
@@ -263,7 +308,7 @@ latest: digest: sha256:7f5638210c48dd39d458ba946e13e82b56922c3b99096d3372301c1f2
 Note that the first time you run this most if not all of the layers will be pushed, however subsequent runs only the layers that have changes will need to be pushed, which speeds things up a lot, so if the 0.0.1 tagged version is pushed (this is the same actual image, just a different name, again don't actually run this, just look at it)
 
 ```
-docker push my.repo.io/some-id/storefront:0.0.1
+$ docker push my.repo.io/some-id/storefront:0.0.1
 The push refers to repository [my.repo.io/some-id/storefront]
 fd17f594205f: Layer already exists  
 f2d4659d7ea1: Layer already exists  
@@ -290,7 +335,7 @@ You can now run the images that have been pushed the cloud
 run the runRepo.sh script in both directories (as usual do the stockmanager first) then test it as before.
 
 ```
-curl -i -X GET -u jack:password http://localhost:8080/store/stocklevel
+$ curl -i -X GET -u jack:password http://localhost:8080/store/stocklevel
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Mon, 24 Dec 2019 13:32:13 GMT
@@ -298,6 +343,8 @@ connection: keep-alive
 content-length: 184
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
+
+(If it times out just re-run it)
 As before if you want to look at the trace then in a web browser goto https://localhost:9411/zipkin
 
 Just a note here on where the images are actually coming from. We're actually still using the local one as that's what we pushed, so docker recognizes that there is no point in re-downloading it again. If you want force the use of the remote image then use the command
