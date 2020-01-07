@@ -1,8 +1,45 @@
-#Monitoring with Prometheus
+[Go to Overview Page](../Kubernetes-labs.md)
 
-Prometheus will help[ us by scraping data from pods and storing it.
+![](../../../../common/images/customer.logo2.png)
 
-##Prometheus
+# Migration of Monolith to Cloud Native
+
+## C. Deploying to Kubernetes
+## 2. Monitoring with Prometheus
+
+### **Introduction**
+
+Monitoring a service in Kuberneties involves three components
+
+#### Generating the monitoring data.
+This is mostly done by the service itself, the metrics capability we created when building the Helidon labs are an example of this.
+
+Core Kubernetes services may also provide the ability to generate data, for example the Kubernetes DNS service can report on how many lookups it's performed.
+
+#### Capturing the data
+Just because the data is available something needs to extract it from the services, and store it. 
+
+#### Processing and Visualizing the data
+Once you have the data you need to be able to process it to visualize it and also report any alerts of problems.
+
+
+
+### Monitoring and visualization software
+We are going to use a very simple monitoring, we will use the metrics in our microservcies and the standard capabilities in the Kubernetes core services to generate data, then use the Prometheus to extract the data and Grafana to display it.
+
+These tools are of course not the only ones, but they are very widely used, and are available as Open Source projects.
+
+#### Namespace for the monitoring and visualization software
+So separate the monitoring services from the  other services we're going to put them into a new namespace. Type the following to create it.
+
+```$ kubectl create namespace monitoring
+namespace/monitoring created
+```
+
+
+
+### Prometheus
+
 Fortunately for us installing Prometheus is simple, we just use helm. Helm will install the most recent version of the chart, however the most recent version of Prometheus does not support Kubernetes 1.13, so if your provider does not support Kubernetes 1.14 or later then you need to specify a version using --version 9.1.0.
 
 if you are using Kubernetes 1.14 then helm charts up to 9.7.1 at least (the current chart version at the time of writing) are supported, so let's just install that. (Irritatingly I can't find an easy way to determine what chart versions are supported on what Kubernetes version)
@@ -96,7 +133,7 @@ Click the "Graph" or "Console" buttons to switch between them
 Note that the precise details shown will of course vary, especially if you've only recently started Prometheus.
 and non stacked modes. Click the + and - buttons next to the duration (default is 1 hour) to expand or shrink the time window of the data displayed, use the << and >> buttons to move the time window around within the overall data set (of course these may not be much use if you haven't got much data, but have a play if you like)
 
-#Specifying services to scrape
+### Specifying services to scrape
 The problem we have is that (currently) Prometheus is not collecting (scraping) any data from our services. Of course we may find info on the clusters behavior interesting, but out own services would be more interesting !
 
 We can see what services Prometheus is currently scraping by clicking on the Status menu (top of the screen) 
@@ -151,7 +188,7 @@ map[prometheus.io/path:/metrics prometheus.io/port:9080 prometheus.io/scrape:tru
 
 If you want to see how to script temporary changes then in the helidon-kubernetes/monitoring-kubernetes folder look at the script setupAnnotations.sh
 
-####***However***
+***However***
 In most cases we don't want these to be a temporary change, we want the Prometheus to monitor our pods if they restart (or we re-deploy)
 
 In the helidon-kubernetes folder edit the storefront-deployment.yaml file, look for the pod annotations (part of the spec / template / metadata section) which are currently commented out
@@ -297,7 +334,7 @@ If we now click on the "show more" button net to the kubernetes-pods label we'll
 
 ![prometheus-pods-storefront-updated](images/prometheus-pods-storefront-updated/png)
 
-#Let's look at our captured data
+### Let's look at our captured data
 Now we have configured Prometheus to scrape the data from our services we can look at the data it's been capturing.
 
 Firstly return to the Graph page in the Prometheus web page, just click on the Graph button at the top of the page.
@@ -365,6 +402,16 @@ Prometheus has a number of mathematical functions we can apply to the graphs it 
 
 It's also possible to do things like separate out pods that are being used for testing (say they have a deployment type of test rather than production) or many other parameters. If you want more details there is a link to the Prometheus Query language description in the further-information document
 
-#But it's not a very good visualization
-Prometheus was not designed to be a high end graphing tool, the graphs cannot for instance be saved so you can get back to them later. For that we need to move on to the next ;ab and have a look at the capabilities of Grafana
- 
+### But it's not a very good visualization
+Prometheus was not designed to be a high end graphing tool, the graphs cannot for instance be saved so you can get back to them later. For that we need to move on to the next lab and have a look at the capabilities of Grafana
+
+
+
+
+
+
+---
+
+You have reached the end of this lab !!
+
+Use your **back** button to return to the **C. Deploying to Kubernetes** section
