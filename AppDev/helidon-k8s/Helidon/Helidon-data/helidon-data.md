@@ -65,7 +65,7 @@ Please makes sure that for now you have **stopped** the storefront application.
 
 
 ### Quick overview of the database functionality
-The com.oracle.labs.helidon.stockmanager.resources.StockmanagerResource class is the primary class we'll be working with in this lab. If you're not familar with JPA however there are some other classes you shoudl liik at.
+The com.oracle.labs.helidon.stockmanager.resources.StockmanagerResource class is the primary class we'll be working with in this lab. If you're not familar with JPA however there are some other classes you should look at.
 
 The classes in the com.oracle.labs.helidon.stockmanager.database package represent the actual structure of the database. In the database configuration we tell the JPA, JTA layers these are the classes we want the database to represent. You'll see that they have some annotations on them, some of which will be familiar. Let's look at the StockLevel class first:
 
@@ -142,7 +142,7 @@ In the Storefront object we were processing Java objects directly as out method 
 
 For the StockmanagerResource (really I did this just to show it's possible) we are using @PathParams. a path param is basically part of the URL that can contain data, for example a GET method with a `@Path("/stocklevel/{item}")` when called with /stockLevel/Pencil would extract the Pencil and make it available as the PathParam "item"
 
-Let's look at the StockResource.createStockLevel method to see how this works (I've remvoed a bunch of other text here for clarity)
+Let's look at the StockResource.createStockLevel method to see how this works (I've removed a bunch of other text here for clarity)
 
 ```
 @Path("/{itemName}/{itemCount}")
