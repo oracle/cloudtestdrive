@@ -77,7 +77,7 @@ Monitoring metrics may also help us determining things like how changes when rel
 
 
 **Further Information**
-For links to useful web pages and other information that I found while writing these labs see [further information](further-information/further-information.md)
+For links to useful web pages and other information that I found while writing these labs [see this link](further-information/further-information.md)
 
 
 
