@@ -642,7 +642,7 @@ One thing that you may have notices is that the ingress controller is running in
 Of course they are also showing in the kuberntes dashboard (make sure you chose your namespace) in the Ingresses page under the Discovery and load balancing section
 
 If you look at the rules in the ingressConfig.yaml file you'll see they setup the following mappings
- 
+
 Direct mappings
 /zipkin -> zipkin:9411/zipkin
 /store -> storefront:8080/store
@@ -1323,6 +1323,7 @@ To remove the pods we can't just kill of the containers (assuming you had access
 We just use
 
 ```kubectl delete -f <deployment>.yaml
+
 ```
 
 To speed things up there is a script undeploy.sh in the helidon-kuberneties (but don't run this yet, lots more to do in the labs !)
