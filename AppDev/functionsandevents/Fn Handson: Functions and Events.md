@@ -28,9 +28,9 @@ If you are using a windows based laptop, you will need to utilise an ssh client 
 
 **NOTE**: Some client setups have experienced ssh session timeouts with Putty and if you get this, please enable connection keepalive.
 
-Please refer to \[Appendix A\]\(\./Appendix A\.md\) for some assistance with using Putty if you are unfamiliar with it\.
+Please refer to [Appendix A](Appendix\ A.md) for some assistance with using Putty if you are unfamiliar with it\.
 
-Please refer to \[Appendix B\]\(\./Appendix B\.md\) if you would prefer to use the Chrome secure shell extension
+Please refer to [Appendix B](Appendix\ B.md) if you would prefer to use the Chrome secure shell extension
 
 ### Download & Install the Fn project CLI
 
