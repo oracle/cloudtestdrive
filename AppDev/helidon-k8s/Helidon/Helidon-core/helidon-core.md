@@ -591,7 +591,7 @@ It's maintained the new value.
 
 Stop the program as usual.
 
-So we can see how to add additional sections of the application easily, just by adding additional resoruces providing them, but we've also seen how careful consideration needs to be made for the scope of an object.
+So we can see how to add additional sections of the application easily, just by adding additional resources providing them, but we've also seen how careful consideration needs to be made for the scope of an object.
 
 While we're here we're also going to add the StatusResource.class to the com.oracle.labs.helidon.storefront.StorefrontApplication classes list.
 
@@ -607,7 +607,7 @@ Save the StorefrontApplication.java file. We'll look at what the StatusResource 
 Add the StatusResource as well, it's just does a hello world curl -i http://localhost:8080/status returning a bit of config info (more on this later)
 
 ### Injecting classes and resources
-We've now got ways to setup the MinimumChange and have it persistent, but it's now being used in multiple locations, the ConfigurationResource and the StorefrontResource, and at the moment they both create an instance, so though the Configuration resource (being application scoped) only exists once it's not actually using the same instance of the MinimumChange as the StorefrontResoruce. So a change to the value via the ConfigurationResource won;t actually be reflected in the behaviour of the Storefront resource. But of a problem that !
+We've now got ways to setup the MinimumChange and have it persistent, but it's now being used in multiple locations, the ConfigurationResource and the StorefrontResource, and at the moment they both create an instance, so though the Configuration resource (being application scoped) only exists once it's not actually using the same instance of the MinimumChange as the StorefrontResoruce. So a change to the value via the ConfigurationResource won;t actually be reflected in the behavior of the Storefront resource. But of a problem that !
 
 Java itself can be used to solve this, we could create a factory to create a single instance, then and hide the MinimumChange constructor so it couldn't be created outside the factory, but that's a lot of hassle if we were to have to do this for all classes in an application. Fortunately for us Helidon has a solution which is connected with a capability called the Dependence Injection system which helps us with this, as well as providing a way to inject the object instances it creates.
 

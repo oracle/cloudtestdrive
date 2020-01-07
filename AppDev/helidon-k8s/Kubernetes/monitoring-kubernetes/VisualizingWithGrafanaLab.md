@@ -10,7 +10,7 @@ Like many other Kubernetes services Grafana is available to install using helm. 
 In a terminal window type
 
 ```
-$ helm install grafana --namespace monitoring stable/grafana --set persistence.enabled=true
+$ helm3 install grafana --namespace monitoring stable/grafana --set persistence.enabled=true
 NAME: grafana
 LAST DEPLOYED: Tue Dec 31 11:59:27 2019
 NAMESPACE: monitoring
