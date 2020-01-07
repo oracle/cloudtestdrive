@@ -75,111 +75,6 @@ Once logged in, in the top right hand corner click the user avatar ![image2019-8
 
 Click on your username to navigate to the user detail page.
 
-### Add a public key to your user in the oci console
-
-*As part of the setup for this lab, we have provisioned everyone with a user of Oracle's Cloud Infrastructure (OCI) which you should have the details of. We have also performed some of the configuration steps to get Fn working with Oracle Functions. You will now complete these steps ...*
-
-In order for the Fn CLI to make API calls to OCI it's necessary to set up an API signing key in the OCI console.
-
-Under resources on the left hand side click "API Keys" and then press the![image2019-8-28_6-39-9](image2019-8-28_6-39-9.png) button.
-
-![image2019-8-28_6-35-6](image2019-8-28_6-35-6.png)
-
-In the dialog box enter the following public key including **all** the hyphens:
-
-\-\-\-\-\-BEGIN PUBLIC KEY\-\-\-\-\-
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7BI3LMlsyeYEvNhknlHY
-ABenGj9FatlXsNoRVJcLZvJweg42ON2+N6WtwhujA6qhUEgypR4gx69b/YXiP0Zd
-EoZm13Qa0+t931Ww64NX1lFs48JRr8jlyU+oWE7hJBQFbI2TldeLWupbILIA0eL3
-pJJFRJ4AizRedOs1G3ISomYCNA/KEO5Mm1/SSJAh8V73D2xNMO4cH2BC5U5MNyRY
-uCAmsD4RdpCTBP/AuAyiVyfm7T6dSbf35kUfX/m1u4+ec2DhA7HtXdEr8sXqA1fw
-yoTTRlQS9WnIFqQbsvEiwKvMMwzJFmha6axXZhk7joINAg75cEUlD8ZP81Fsq0bX
-/wIDAQAB
-\-\-\-\-\-END PUBLIC KEY\-\-\-\-\-
-
-![image2019-8-27_8-46-37](image2019-8-27_8-46-37.png)
-
-Press 'Add' and the key will appear in the list.
-
-**NOTE**: If you find that the key is not recognised or deemed invalid, this may be due to copy and paste errors from .pdf.
-
-As an alternative approach the key file is on the virtual machine you are using.
-
-You can:
-
-```
-cat /home/opc/.oci/oci_api_key_public.pem
-```
-
-Copy the contents and paste this in instead.
-
-Check that once added the fingerprint of the private key is b1:0c:8c:39:c8:eb:25:79:ad:14:46:f1:53:01:dc:0e
-
-The public key and it's matching private key are also located on your lab virtual machine at /home/opc/.oci.
-
-### Create a new Auth Token for your user
-
-As part of the later steps to configure Fn to use OCI, we will need to have the local Docker setup running in your virtual machine be able to authenticate to a remote OCI hosted Docker registry. In order to allow this we need to generate an auth key that can be used. We will generate this now and keep the key safe in a local text file on your laptop until we need it in a later step. **Make sure you have a local text file open for this ahead of time** as the token is only shown once and then not retrievable again.
-
-On the User Details screen locate on the left hand side the 'Auth Tokens' link and press it.
-
-In the centre of the screen you will see a button labelled 'Generate Token'
-
-![image2019-8-28_11-29-53](image2019-8-28_11-29-53.png)
-
-Press the 'Generate Token' button.
-
-A dialogue box will appear where you need to give a description for the token you are about to generate.
-
-Enter the following text
-
-'Token for Fn lab work'
-
-![image2019-8-28_11-31-21](image2019-8-28_11-31-21.png)
-
-Hit the 'Generate Token' button.
-
-The new token will be displayed and you will need to copy the full token and **make sure you paste it to a local text** file on your laptop for safekeeping.
-
-![image2019-8-28_11-32-26](image2019-8-28_11-32-26.png)
-
-Close the token generation window once you have the token safely copied to a local text file.
-
-### Obtain the user Oracle Cloud ID (OCID)
-
-The user's OCID is also required as part of the set up and this can also be obtained from the OCI console you are logged into.
-
-On the User Details screen locate the 'User Information' tab
-
-![image2019-8-28_6-50-54](image2019-8-28_6-50-54.png)
-
-There is a field that lists the OCID. Click the 'Copy' link to copy the OCID and paste it to a temporary text file on your laptop.
-
-![image2019-8-28_6-52-42](image2019-8-28_6-52-42.png)
-
-In the SSH session to your lab VM you opened at the start of this lab open the /home/opc/.oci/config file in a suitable text editor such as vi or nano. Locate the line
-
-```
-user=user-ocid
-```
-
-and replace "user-ocid" with your OCI user's OCID obtained above. Save the file.
-
-Your config file should look similar to this but with your user OCID:
-
-```
-[fnworkshop_profile]
-user=ocid1.user.oc1..aaaaaaaa2oiew3puzz6rbplm6uu24bi6wqxulzdc7tg6qqbqs37nvcsq3fva
-fingerprint=b1:0c:8c:39:c8:eb:25:79:ad:14:46:f1:53:01:dc:0e
-key_file=/home/opc/.oci/oci_api_key.pem
-tenancy=ocid1.tenancy.oc1..aaaaaaaafipe4lmow7rfrn5f3egpg3xgur6v2q2wgvb3id4ehwujnpu5mb5q
-region=eu-frankfurt-1
-```
-
-Save the file and exit when you have made the change (in vi use *ESC* then *wq* then *RETURN*)
-
-For those unfamiliar editing under Linux and using vi please reach out to to one of the trainers.
-
 ### Create a new Fn context for OCI
 
 Fn installs with a default context but now we need to create a second to allow the Fn CLI to interact with the Oracle Functions service.
@@ -192,7 +87,7 @@ $ fn use ctx oci
 $ fn ls ctx
 ```
 
-The output should have an asterix against the new Fn context.
+The output should have an asterisk against the new Fn context.
 
 We now need to add the specific compartment within OCI to where we will create new Oracle Functions applications. We do this by providing the compartment OCID. For this lab it will be the same compartment for every student. The following Fn command needs to be executed in order to set this up.
 
@@ -239,7 +134,7 @@ provider: oracle
 registry: fra.ocir.io/oractdemeaoci/fnworkshop02
 ```
 
-If we now list the contexts that have been created for using Fn you should see 2. The default, local context and a new one called oci that should have an asterix against it to indicate that it is the current context being used.
+If we now list the contexts that have been created for using Fn you should see 2. The default, local context and a new one called oci that should have an asterisk against it to indicate that it is the current context being used.
 
 ```
 $ fn list contexts
@@ -261,7 +156,11 @@ If you get errors please let the organisers of the workshop know.
 
 Before we can use Fn to deploy functions to Oracle Functions, we need to ensure Docker running locally on the VM we are using can access the OCI image registry (OCIR) configured in the new context just created. To do this we need to have Docker login and thus store the credentials locally.
 
-Perform the following command:
+A user named *apiuser* will be used to login to OCIR. The apiuser password is store in an environment variable in the VM named API_AUTH_TOKEN. Display the password:
+
+`$ echo $API_AUTH_TOKEN`
+
+Copy the password to the clipboard. Perform the following command:
 
 ```
 $ docker login fra.ocir.io/oractdemeaoci
@@ -271,18 +170,16 @@ When prompted enter your tenancy-name/username assigned at the beginning of this
 
 ```
 tenancy-name/username
-eg: oractdemeaoci/fnuserNN
+eg: oractdemeaoci/apiuser
 ```
 
-Replace NN with your student number
-
-When prompted for your password paste in the 'Auth token' that you [generated earlier](https://confluence.oraclecorp.com/confluence/display/OSCEMEA/Fn+Handson+Part+1#FnHandsonPart1-AuthToken) and saved to a local text file.
+When prompted for your password paste in the 'Auth token' that you copied to the clipboard.
 
 Here is an example of what you should see when successfully logged in to the remote OCI registry:
 
 ```
 Username:
-oractdemeaoci/fnuser99
+oractdemeaoci/apiuser
 Password:
 Login Succeeded
 ```
@@ -321,17 +218,11 @@ The 'New Application' window will appear and you need to give a name and the VCN
 
 Give the name as imagecatalogapp*NN where the NN* is replaced with your delegate number (Given at the start of the hands on lab). eg imagecatalogapp01
 
-The **VCN** and subnet to be used are within a different compartment to the one you are creating the application in and so in the VCN field press on the 'Change Compartment' link.
+The **VCN** and subnet to be used are within the same compartment as the one you are creating the application in. So in the VCN field ensure that the VCN selected is *fnvcn*.
 
 ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-8-28_12-29-29.png](image2019-8-28_12-29-29.png)<br>
-<br>
-From the list presented look for 'fnworkshopmaster' and select it.
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-1_16-18-36.png](image2019-10-1_16-18-36.png)<br>
-<br>
-When selected you can choose the VCN fnvcn
-
-Do the same to change compartment for the subnet to be 'fnworkshopmaster'
+For the subnet ensure 'fnworkshopstudent' is selected as the compartment.
 
 The **subnet** Fn Public Subnet (Regional) can then be selected.
 
@@ -339,7 +230,9 @@ Under logging policy select "LOG TO OBJECT STORAGE", this will facilitate debugg
 
 The screen will look similar to the example below with a different application name depending on your delegate id.
 
-![](Screenshot%20from%202020-01-02%2011-27-41.png)Hit 'Create' when done. Confirm your new application is listed in the compartment.
+![](image.png)
+
+Hit 'Create' when done. Confirm your new application is listed in the compartment.
 
 Back in the lab vm SSH session test that you can see this new application.
 
@@ -354,7 +247,8 @@ Issue the following command and you should see your new application listed:
 The new function will be written in Java, one of the many languages supported by the Fn SDK. from your your lab VM ssh session create a work directory and change into it by issuing these commands:
 
 ```
-$ mkdir ~/fnwork $ cd ~/fnwork
+$ mkdir ~/fnwork 
+$ cd ~/fnwork
 ```
 
 Initialise a new function called "imagecatalogfunction".
@@ -444,10 +338,11 @@ Save and close func.yaml
 The function will interact with an Autonomous Transaction Processing database running in the same tenancy. The function will insert rows into the database via the ORDS REST API. Test that the API is accessible from your lab VM with the following command <i>**replacing fnuser99 with the name of your bucket**</i>:
 
 ```
-curl https://vx7tqpyaop2tflx-fnworkshopdb.adb.eu-frankfurt-1.oraclecloudapps.com/ords/fnworkshop/catalog/?q={"bucketname":"fnuser99"} | jq .
+$ curl -X GET -G https://vx7tqpyaop2tflx-fnworkshopdb.adb.eu-frankfurt-1.oraclecloudapps.com/ords/fnworkshop/catalog/ --data-urlencode 'q={"bucketname":"fnuser99"}' | jq . 
+
 ```
 
-This should pretty print a JSON payload with all the rows currently in the CATALOG table in the database.
+This should pretty print a JSON payload with all the rows currently in the CATALOG table in the database where the bucketname matches yours.
 
 As an alternate way of viewing the JSON payload you can always use the online JSON editor [https://jsoneditoronline.org/](https://jsoneditoronline.org/#/)
 
@@ -459,7 +354,7 @@ Hit the ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image
 
 In the right hand pane expand items to see the current number of items in the database table.
 
-**Set Function Application Configuration Variables**
+### **Set Function Application Configuration Variables**
 
 The REST end point will be configured as a configuration variable in the Function application. This is done with the Fn CLI (**substitute your student number for NN**):
 
@@ -534,7 +429,7 @@ Ensure that you are in the fnworkshopstudent compartment in the compartment pick
 
 ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-11_10-48-23.png](image2019-10-11_10-48-23.png)<br>
 <br>
-You should see a list of buckets , one for each user. Locate your bucket, it will be named after your user id.
+You should see a list of buckets , one for each user. Locate your bucket, it will be named after your user id. Note that the property "Emit Object Events" has been enabled which causes changes in the object store to fire events to the events service. This was set when the bucket was created for you. 
 
 By clicking on the bucket name created for you, you should see there are no objects currently uploaded.
 
@@ -576,7 +471,7 @@ In the console click the blue Upload Objects button, in the dialog box click "se
 <br>
 Press the "Upload Objects" button to upload the object. The function will be triggered in a few seconds.
 
-To check execution navigate to the Functions page in the console, select your application (imagecatalogappNN) and then the function (imagecatalogfunction).
+To check execution, navigate to the Functions page in the console, select your application (imagecatalogappNN) and then the function (imagecatalogfunction).
 
 In the metrics graphs you should see a point appear for the first function invocation.
 
@@ -585,7 +480,7 @@ The backend ATP database can be checked by the REST API.
 Issue the following curl command as you did earlier to query all the rows in the CATALOG table <i>**replacing fnuser99 with the name of your bucket**</i>:
 
 ```
-curl https://vx7tqpyaop2tflx-fnworkshopdb.adb.eu-frankfurt-1.oraclecloudapps.com/ords/fnworkshop/catalog/?q={"bucketname":"fnuser99"} | jq .
+$ curl -X GET -G https://vx7tqpyaop2tflx-fnworkshopdb.adb.eu-frankfurt-1.oraclecloudapps.com/ords/fnworkshop/catalog/ --data-urlencode 'q={"bucketname":"fnuser99"}' | jq .
 ```
 
 The response will be in JSON format and you should see an entry for the file you just uploaded e.g.
