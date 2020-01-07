@@ -23,6 +23,8 @@ For most standard services in Kubernetes Helm is used to install and configure n
 Using Helm 3
 Helm 3 is a client side only program that is used to configure the kubernetes cluster with the services you chose. If you're familiar with Helm 2 you will know about the cluster side component "tiller". This is no longer used in Helm 3
 
+**Note on helm** For these labs we are using a common client virtual machine and we use both helm 2 and 3 for different labs. For *these* labs we're using helm 3, and to differentiate it we've renamed the command to be helm3, if you installed helm in your own laptop the helm command (version 2 or version 3) will just be called helm, not helm3
+
 Helm is installed in the virtual machine, and configured to use the master chart repository
 
 Once you have Helm then we will use it to install kuberneties-dashboard (if it wasn't installed for you when you setup the cluster) In this case we didn't do that as we want to show you how to use Helm.
@@ -30,7 +32,7 @@ Once you have Helm then we will use it to install kuberneties-dashboard (if it w
 Setting up the kubernetes dashboard (or any) service using helm is pretty easy. it's basically a simple command. Run the following command
 
 ```
-$ helm install kubernetes-dashboard  stable/kubernetes-dashboard   --namespace kube-system
+$ helm3 install kubernetes-dashboard  stable/kubernetes-dashboard   --namespace kube-system
 NAME: kubernetes-dashboard
 LAST DEPLOYED: Tue Dec 24 13:51:24 2019
 NAMESPACE: kube-system
@@ -52,7 +54,7 @@ Note that Helm does all the work needed here, it creates the service, deployment
 We can see the staus of the Helm deployment, type 
 
 ```
-$ helm list --namespace kube-system
+$ helm3 list --namespace kube-system
 NAME                	NAMESPACE  	REVISION	UPDATED                             	STATUS  	CHART                      	APP VERSION
 kubernetes-dashboard	kube-system	1       	2019-12-24 16:16:48.112474 +0000 UTC	deployed	kubernetes-dashboard-1.10.1	1.10.1 
 ```
@@ -319,7 +321,7 @@ For this lab we're going to use an nginx based Ingress controller
 To install using Helm 3 it's very simple. Type :
 
 ```
-$ helm install ingress-nginx stable/nginx-ingress  --set rbac.create=true
+$ helm3 install ingress-nginx stable/nginx-ingress  --set rbac.create=true
 NAME: ingress-nginx
 LAST DEPLOYED: Fri Dec 27 13:05:55 2019
 NAMESPACE: default

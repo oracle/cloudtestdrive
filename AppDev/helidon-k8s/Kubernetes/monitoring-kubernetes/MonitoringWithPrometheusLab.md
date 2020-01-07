@@ -8,7 +8,7 @@ Fortunately for us installing Prometheus is simple, we just use helm. Helm will 
 if you are using Kubernetes 1.14 then helm charts up to 9.7.1 at least (the current chart version at the time of writing) are supported, so let's just install that. (Irritatingly I can't find an easy way to determine what chart versions are supported on what Kubernetes version)
 
 ```
-$ helm install prometheus stable/prometheus --namespace monitoring
+$ helm3 install prometheus stable/prometheus --namespace monitoring
 NAME: prometheus
 LAST DEPLOYED: Mon Dec 30 13:25:23 2019
 NAMESPACE: monitoring
