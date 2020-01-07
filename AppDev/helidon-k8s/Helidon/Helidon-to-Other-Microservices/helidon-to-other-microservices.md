@@ -132,7 +132,7 @@ StockManager/mp-rest/connectTimeout=5000
 StockManager/mp-rest/responseTimeout=5000
 ```
 
-The only thing we absolutely have to specify is the URL, though this can be specified as an option in the `RegisterRestClient` if desired. The timeouts and so on are really for convenience, we could also (if it wasn't defined in the interface itself) specify the scope of the rest client. Note that configuration property settings will override those in the sorce code.
+The only thing we absolutely have to specify is the URL, though this can be specified as an option in the `RegisterRestClient` if desired. The timeouts and so on are really for convenience, we could also (if it wasn't defined in the interface itself) specify the scope of the rest client. Note that configuration property settings will override those in the source code.
 
 Also in the microprofile-config.properties file are details for another REST client
 
@@ -157,7 +157,7 @@ Now when the StorefrontResource class is initialized the Helidon runtime will dy
 
 Basically this looks pretty simple in comparisson to making all of the http requests by hand !
 
-Save the changes to the files and run the storefront main class.
+Save the changes to the files and run the storefront main class. Also if it's not still running make sure to run the stockmanager.
 
 let's try accessing the storefront service, this use the REST Client to pass the request to the stockmanager service which will (as before) go to the database. This may take a few seconds to respond to the first request as there is a lot of stuff which is initialized on demand here. 
 
