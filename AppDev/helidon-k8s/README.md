@@ -41,11 +41,6 @@ Go to [the Kubernetes Labs](Kubernetes/Kubernetes-labs.md)
 
 
 
-# D. Cloud Native functionality
-Finally we look at how to make use of the cloud capabilities within Kubernetes, this includes capabilities such as Health checks on pods and services, performing rolling upgrades and monitoring and graphing using Prometheus and Grafana, 
-
-Go to [the Cloud Native Labs](Kubernetes/cloud-native-labs/KubernetesCloudNativeLabs.md)
-
 
 
 
