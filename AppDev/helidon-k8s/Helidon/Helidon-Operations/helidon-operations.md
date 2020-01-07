@@ -1,4 +1,13 @@
-#Helidon and operations
+[Go to Helidon for Cloud Native Page](../Helidon-labs.md)
+
+![](../../../../common/images/customer.logo2.png)
+
+# Migration of Monolith to Cloud Native
+
+## A. Helidon for Cloud Native
+
+## 4. Helidon and operations
+
 One thing that many developers forget is that once they have finished writing code that it still has to run and be maintained. With the introduction of DevOps a lot of developers suddenly found they were the ones being woken up in the middle of the night to fix problems in their code. That changes the perception a bit and not many developers are acutely aware that they will have ongoing involvement in the code well after the time it compiles cleanly and passed the text suite.
 
 To help maintain and operate systems after they have been released a lot of information is needed, especially in situations where a bug may be on one service, but not show up until the resulting data has passed through several other microservcies. 
@@ -7,7 +16,7 @@ Equally performance information is key to understanding how well the services ar
 
 Fortunately for us and other developers Helidon has support for tools and and producing data that will help diagnose problems, and determine if there is a problem in the first place.
 
-#Tracing
+### Tracing
 We now managed to achieve the situation where we have a set of microservices that cooperate to perform specific function. However we don't know exactly how they are operating in reality, we do of course know how they operate in terms of our design!
 
 Tracing in a microservices environment allows us to see the flow of a request across all of the microservices involved, not just the sequence of method calls in a particular service. 
@@ -68,7 +77,7 @@ I restarted both the storefront and stockmanager service, so the lazy initializa
 
 As you can see it took a long time for the stockmanager to perform it's initial action (it felt longer than the 3.496s it actually took !) but subsequent requests to the stockmanager were much faster. A developer may look at this trace and decide that it would be a good thing if the stockmanager took an action during it's initialization to setup the database connection then which woudl speed the first request up for users.
 
-#Metrics
+### Metrics
 Tracking solutions like Zipkin can provide us with detail on how a single request is processed, but they are not going to be able to tell us how many requests were made, and what the distribution of requests per second is. This is the kind of thing that is needed by the operations team to understand how the microservice is being used, and where enhancements may be a good idea (especially where to focus development work for performance enhancements)
 
 The pom.xml will need to be updated for the metrics, that's already been done for you here.
@@ -332,7 +341,7 @@ These are generated automatically because we've enabled fault tolerance, the ft_
 As we only just restarted the storefront it's not a surprise that these are all zero.
 
 
-##Limiting the output
+### Limiting the output
 
 If you like you can limit the scope of the returned metrics by specifying the scope in the request
 
@@ -353,7 +362,7 @@ application:com_oracle_labs_helidon_storefront_resources_storefront_resource_sto
 
 Of if you're only interested in a specific metric you can just retrieve that, provided it's been named.
 
-##With real counter data
+### With real counter data
 
 Let's make a couple of list stock requests, then look at the list_all_stock counter
 
@@ -410,7 +419,7 @@ We can see that now 5 requests in total have been made to the storefront resourc
 
 Why port 9080 ? Well you may recall that in the helidon core lab we defined the network as having two ports, one for the main application on port 8080 and another for admin functions on port 9080, we then specified that metrics (and health which we'll see later) were in the admin category so they are on the admin port. It's useful to splis these things so we don't risk the core function of the microservice getting mixed up with operation data.  
 
-##Other types of metrics
+### Other types of metrics
 There are other types of metrics, for examples times. in ther StorefrontResource class add a timer annotation `@Timed(name = "listAllStockTimer")` and a meter `@Metered(name = "listAllStockMeter", absolute = true)`  to the listAllStock method. The absolute=true on the meter means that the class name won't be prepended, it will just be called listAllStockMeter the timer as it doesn;t have absoluteTrue will have the class name added as a perfix.
 
 ```
@@ -461,8 +470,25 @@ application:list_all_stock_meter_five_min_rate_per_second 0.014179223683357264
 application:list_all_stock_meter_fifteen_min_rate_per_second 0.005264116322948982
 ```
 
-##Combining counters, metrics, times and so on
-You can have multiple annotations on your class / methods, but be careful that you don;t get naming coliccions, if you do your program will likely fail to start.
+### Combining counters, metrics, times and so on
+You can have multiple annotations on your class / methods, but be careful that you don't get naming coliccions, if you do your program will likely fail to start.
 
 By default any of `@Metric`, `@Timed`, `@Counted` etc. will use a name that's depending on the class / method name, it does **not** append the type of thing it's looking for. So if you had `@Counted` on the class and `@Timed` a class (or `@Counted` and `@Timed` on a particular method) then there would be a naming clash between the two of them. It's best to get into the habit of naming these, and putting the type in the name. Then you also get the additional benefit of being able to easily extract it using the metrics url like `http://localhost:9080/metrics/application/listAllStockMeter`
 
+
+
+
+### End of the lab
+You have finished this part of the lab, you can proceed to the next step of this lab:
+
+
+[5. The Helidon support for Cloud Native Operations lab](Helidon-cloud-native/helidon-cloud-native.md)
+
+
+
+
+
+---
+
+
+[Go to *Helidon for Cloud Native* overview Page](../Helidon-labs.md)

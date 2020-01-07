@@ -1,20 +1,40 @@
-It is assumed that you have done a docker login to the appropriate registry and have pushed the storefront and stockmanager
-to the repository
+[Go to Overview Page](../README.md)
 
-FOR NOW it seems that k8s on a laptop can't correctly authenticate to the devcs repos if they are private, so make sure the repo is
-set to public. If this is fixed need to have an imagePullSecret setup 
+![](../../../../common/images/customer.logo2.png)
 
-The above section needs more explanation, possible also tie it in to a devcs build pipeline ?
+# Migration of Monolith to Cloud Native
 
-# Kubernetes
-Docker is great, but it only runs on a local machine, and doesn't have all of the nice cloud native features of kuberntes.
-Let's see how to get those working.
+## C. Deploying to Kubernetes
+## 1. Basic Kubernetes
 
-It is assumed you have access to a Kuberneties cluster via kubeconf. If you are using the Client VM we provide this will have been setup for you.
+### **Introduction**
+It is assumed that you have done a docker login to the appropriate registry and have pushed the storefront and stockmanager to the repository.
 
-*** <Need description of k8s here - namespaces, services, deployments, replicasets, pods, containers ??? > ***
+FOR NOW we did not (yet) add the use of secrets to access the docker repository, so make sure the repository containing your docker image on the OCI Repository is set to public. 
 
-#Basic cluster infrastructure services install
+If this is fixed need to have an imagePullSecret setup 
+
+### Kubernetes
+Docker is great, but it only runs on a local machine, and doesn't have all of the nice cloud native features of kubernetes.
+It is assumed you have access to a Kubernetes cluster via the **kubectl** command line utility of Kubernetes.  onf.   If you are using the Client VM we provide this will have been setup for you.
+
+Access to the cluster is managed via a config file that by default is located in the $HOME/.kube folder, and is called `config`.  To check the setup, make sure to have copied your personal kubeconfig file at this location : 
+
+`ls $HOME/.kube`
+
+Now validate you can visualize elements of the cluster with the **kubectl** command
+
+`kubectl get nodes`
+
+```
+$ kubectl get nodes
+NAME    STATUS  ROLES  AGE  VERSION
+10.0.11.3  Ready  node  17d  v1.12.7
+```
+
+
+
+### Basic cluster infrastructure services install
 
 Usually a Kuberneties cluster comes with only the core kubernetes services installed that are needed to actually run the cluster (e.g. the API, DNS services.) Some providers also give you the option of installing other elements (e.g. Oracle Kubernetes Envrionment provides the option of installing the Helm 2 tiller pod and / or the Kubernetes dashboard) but here we're going to assume you have a minimal cluster with only the core services and will need to setup the other services before you run the rest of the system
 
@@ -59,7 +79,7 @@ NAME                	NAMESPACE  	REVISION	UPDATED                             	S
 kubernetes-dashboard	kube-system	1       	2019-12-24 16:16:48.112474 +0000 UTC	deployed	kubernetes-dashboard-1.10.1	1.10.1 
 ```
 
-We can see it's been deployed by Helm, this doesn't however mean that the pods are actually running yet (they may still be downloading) so to see the stauss of the pods type
+We can see it's been deployed by Helm, this doesn't however mean that the pods are actually running yet (they may still be downloading) so to see the status of the pods type.
 
 ```
 $ kubectl get all --namespace kube-system
@@ -150,7 +170,7 @@ kubernetes-dashboard-58d96f69b8-tlhgx   1/1     Running   0          43m
 
 Using kubectl to extract specific attributes of the JSON data and to filter resources using labels allows us to easily focus in on specific resources of interest in the cluster. Of course doing this is fine, but it turns out that the kubernetes dashboard can do most of this for us in more of a click based navigation model !
 
-###Accessing the kubernetes dashboard
+### Accessing the kubernetes dashboard
 
 First we're going to need create a user to access the dashbaord. This involves creating the user, then giving it the kubernetes-dashbaord role that helm created for us when it installed the dashbaord chart.
 
@@ -199,7 +219,7 @@ subjects:
 ```
 The second section tells kubernetes to use the rbac.authorization.k8s.io service (This naming scheme uses DNS type naming and basically means the role based access controls capability of the authorization service in kubernetes.io) create a binding that connects the user dashboard-user in namespace kub-system to the kubernetes-dashboard role, basically anyone logged in as dashboard-user has cluster the ability to run the commands specified in the cluster kubernetes-dashboard role. In practice this means that when the kubernetes-dashboard asks the RBAC service it the user identified as dashboard-user is allowed to use the dashboard it will return yes, and this the dashboard service will allow the dashbaord user to log in and process requests. So basically standard type of Role Based Access Control ideas. 
 
-##A NOTE ON YAML
+### A Note on Yaml
 kubectl can also take json input as well as yaml. Personally I think that using any data format (including yaml) where whitespace is sensitive and defines the structure is just asking for trouble (get an extra space to many or two few and you'de completely changed what you're trying to do) so my preference would be to use JSON. However (to be fair) json is a lot more verbose compared to yaml and the syntax can also lead to problems (though I think that a reasonable json editor will be a lot better than a yaml editor at finding problems and helping you fix them)
 
 Sadly (for me at least) yaml has been pretty widely adopted for use with kubernetes, so for the configuration files we're using here I've put them all onto yaml, if you'd like to convert them to json however please feel free :-)
@@ -227,7 +247,7 @@ Copy the contents of the token (in this case the `eyJh........W5iA` text, but it
 
 We now need to connect to the kubernetes-dashboard service, this gives us a problem as it's running on a network that it internal to the cluster. Fortunately for us kubernetes provides several mechanisms to expose a service outside the cluster network, for now we're going to use port-forwarding to only make it available on our local machine (other mechanisms exist to make a service available to any external system that can access the public IP address)
 
-run the following commands *** in a *new* terminal window***
+run the following commands ** in a *new* terminal window**
 
 ```
 $ export POD_NAME=$(kubectl get pods -n kube-system -l "app=kubernetes-dashboard,release=kubernetes-dashboard" -o jsonpath="{.items[0].metadata.name}")
@@ -245,7 +265,7 @@ Forwarding from [::1]:8443 -> 8443
 ```
 This will create a port forwarding on the local host, connecting port 8443 locally to the 8443 port on the specified pod running in the kube-system namespace.
 
-##Looking around tha dashboard.
+### Looking around the dashboard.
 In several of the labs we're going to be using the dashboard, so let's look around it a bit to get familiar with it's operation.
 
 Now open a web browser and go to page `https://localhost:8443/`
@@ -304,7 +324,7 @@ This opens a new tab / window with the log data which can be very useful when de
 ***Warning***
 For security and resource management reasons the port forwarding will not run forever. After a period of time of not being used (depending on the Kuberneties providers configuration, this can be anything from a small number of seconds e.g. 30 to many hours, and may be based on total time, or time since last operation) the port forwarding will time out. In this case the kubectl command will exit and return to the prompt. If you find that are unable to access the dashboard, or it does not reflect changes you've made check to see that the port forwarding is still running, and if it has exited just restart it.
 
-#Ingress for accepting external data
+### Ingress for accepting external data
 
 There is one other core service we need to install before we can start running out microservices, the Ingress controller. An Ingress controller provides the actual ingress capability, but it also needs to be configured (we will look at that later.)
 
@@ -348,13 +368,11 @@ ingress-nginx-nginx-ingress-controller   LoadBalancer   10.111.0.168   localhost
 ```
 In this case we can see that the load balancer has been created and the external-IP address is localhost, this is because I'm creating these examples using a Kubernetes cluster on my laptop, with a non local cluster it'll be an external to cluster IP address, usually accessible from the internet. 
 
-#Running your containers in Kuberneties
+### Running your containers in Kuberneties
 
 You now have the basic environment to deploy services, and we've looked a litle at how to use the Kubernetes dashboard and the kubectl command line.
 
 There are scripts to cover most of these steps, if you're on a Unix machine they will work just fine, but let's go through the steps.
-
-#Namespaces
 
 Firstly if you are running on a shared cluster you need to create a namespace, this is basically a "virtual" cluster that let's us separate out services from others that may be running in the cluster. If you have your own cluster it's still a good idea to have your own namespace so you can separate the lab from other activities in the cluster, letting you easily see what's happening in the lab and also no interfering with other cluster activities, and also easily delete it if needs be (deleting a namespace deletes everything in it)
 
@@ -443,7 +461,8 @@ Shows that the default namespace has two pods running, the Ingress controller, a
 
 Of course the kubernetes dashboard also understands namespaces. If you go to the dashboard page (http://localhost:8443 assuming you've got the port forwarding running) you can chose the namespace to use (initially the dashboard used the "default" namespace, so if you can't see what you're expecting there remember to change it to the namespace you've chosen. 
 
-#Services
+
+### Creating Services
 
 The next step is to create services, a service is basically a description of a set of microservice instances and the port(s) they listen on. These are basically different versions or the same version a microservice. A service effectively defines a logical endpoint that has a internal dns name inside the cluster and a virtual IP address bound to that name to enable communication to a service. It's also internal load balancer in that if there are multiple pods for a service it will switch between the pods, and also will remove pods from it's load balancer if they are not operating properly (We'll look at this side of a service later on.)
 
@@ -513,7 +532,7 @@ We can of course also use the kuberntes dashboard. Open the dashboard and make s
 
 If however you click on the service name in the services list in the dashboard wou'll see that there are no endpoints, or pods associated with the service. This is because we haven't (yet) started any pods with labels that match those specified in the selector of the services.
 
-#Accessing your services using an ingress
+### Accessing your services using an ingress
 Services can configure externally visible  load balancers for you, however this is not recommended for several reasons if using REST type accesses. 
 
 Firstly the load balancers that are created are not part of kubernetes, the service needs to communicate with the external cloud infrastructure to create them, this means that the cloud needs to provide load balancers and drivers for kubernetes to configure them, not all clouds may provide this in a consistent manner, so you may get unexpected behavior.
@@ -713,7 +732,7 @@ For more information on the nginx ingress controller and the different rules typ
 
 For see the doc more information on how the regular expressions with with see the [nginx ingress path matching page.](https://kubernetes.github.io/ingress-nginx/user-guide/ingress-path-matching/) 
 
-#Secrets and external configuration
+### Secrets and external configuration
 
 As when running the docker images we need to specify the external configuration for kubernetes. This is different from when running with docker though, in docker we just reference the local file system, however in kubernetes we don't even know what node a pod will be running on, so we need something different.
 
@@ -828,7 +847,7 @@ security:
 ```
 The dashboard is actually a lot easier in this case. In the dashboard (remembering to use the right namespace !) click on the secrets page in the Config and Store section of the left hand menu. You'll see the list of secrets. Select the sf-conf entry to see the list of files in the secret, then click on the eye icon next to the storefront-security.yaml (feel free to chose another if you prefer) to see the contents of the secret.
 
-#Config Maps
+### Config Maps
 Secrets are great for holding information that you don't want written visibly in your cluster, and you need to keep secret. But the problem with them is that if all the cluster management goes down then the secrets are lost and will need to be recreated. Note that some kubernetes implementations (the docker / kubernetes single node cluster on my laptop for example) do actually persist the secrets somewhere.
 
 For a lot of configuration information we want it to be persistent in the cluster configuration itself. This information would be for example values defining what our store name is, or other information that is not confidential.
@@ -906,7 +925,7 @@ metadata:
 
 As we'll see later we can also update the text by modifying the file and re-creating the config map, or using the dashboard to edit the yaml representing the config map.
 
-#Deploying the actual microservices
+### Deploying the actual microservices
 
 It's been quite a few steps (many of which are one off and don't have to be repeated for each application we want to run in Kuberntes) but we're finally ready to create the deployments and actually run our Helidon microservices inside of Kubernetes!
 
@@ -1225,7 +1244,7 @@ Connection: keep-alive
 {"outcome":"UP","status":"UP","checks":[{"name":"stockmanager-ready","state":"UP","status":"UP","data":{"department":"TestOrg","persistanceUnit":"HelidonATPJTA"}}]}
 ```
 
-#Changing the configuration
+### Changing the configuration
 We saw in the helidon labs that it's possible to have the helidon framework monitor the configuration files and triger a refresh of the configuration data if something changed. Let's see how that works in Kuberneties.
 
 Let's get the status resource data to see what it says 
@@ -1317,7 +1336,7 @@ Connection: keep-alive
 Of course there is time delay from the change being visible in the pod to the Helidon framework doing it's scan to detect the change and reloading the config, so yu may have to issue the curl command a few times to see when the change has fully propogated.
 aWe've shown how to change the config in helidon using config maps, but the same principle woudl apply if you were using secrets and modified those (though there isn't really a usable secret editor in the dashboard)
 
-#Stopping the pods
+### Stopping the pods
 To remove the pods we can't just kill of the containers (assuming you had access to the nodes to to that.) That would just trigger the pod to create a new container, to stop the actual pods we need to use kubectl (or we can also stop them in the dashboard) to delete the pods configuration. We can use this to remove any configuration that came from a yaml file :
 
 We just use
