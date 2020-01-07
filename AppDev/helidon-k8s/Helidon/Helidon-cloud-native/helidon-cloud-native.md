@@ -66,7 +66,16 @@ THe Liveness check we have here is **not** one that you would use in production.
 
 As another reason this particular Liveness checker is not production ready in that it's actually implemented so we can create a fake scenario where the system is not responding to a Liveness check if the file /frozen exists. This is provided so we can demonstrate how Kubernetes will behave in the event that a Liveness check does fail. Obviously in a production system you're not going to be doing that.
 
-Once you've added the `@Liveness` annotation to the LivenessChecker class save it and restart the application. 
+Once you've added the `@Liveness` annotation to the LivenessChecker class.
+
+```
+@ApplicationScoped
+@Liveness
+@Log
+public class LivenessChecker implements HealthCheck {
+```
+
+Save it and restart the application. 
 
 Look at the results of the health endpoint
 
@@ -99,6 +108,13 @@ Readiness is a way to let the microservices runtime determine if a service has e
 Open the come.oracle.labs.helidon.storefront.health.ReadinessChecker class, add the `@Readiness` annotation to the class (which already implements HealthCheck)
 
 Just for fun this class used a RestClient to make a request to the status method of the stockmanager.
+
+```
+@ApplicationScoped
+@Readiness
+@Log
+public class ReadinessChecker implements HealthCheck {
+```
 
 Save your changes and restart the storefront, if it's not already running also run the stockmanager as the storefront readiness makes a test request of the stockmanager status
 
