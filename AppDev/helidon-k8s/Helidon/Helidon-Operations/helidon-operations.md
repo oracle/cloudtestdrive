@@ -28,7 +28,7 @@ Firstly we need to deploy a tracing engine, Helidon supports several tracing eng
 In the VM you have docker installed and running, so to start zipkin just open a terminal and run the following command to start Zipkin in a container
 
 ```
-docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin 
+$ docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin 
 Starting zipkin docker image in detached mode
 d12b253c50b7793ca8e3eb64658efead336fa3880d3df040f12152b57347f067
 ```
