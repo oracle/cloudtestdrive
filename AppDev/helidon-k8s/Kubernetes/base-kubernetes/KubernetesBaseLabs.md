@@ -679,13 +679,20 @@ Of course they are also showing in the kuberntes dashboard (make sure you chose 
 If you look at the rules in the ingressConfig.yaml file you'll see they setup the following mappings
 
 Direct mappings
-/zipkin -> zipkin:9411/zipkin
-/store -> storefront:8080/store
-/stocklevel -> stockmanager:8081/stocklevel
-/sf/<stuff> -> storefront:8080/<stuff> e.g. /sf/status -> storefront:8080/status
-/sm/<stuff> -> stockmanager:8081/<stuff> e.g. /sm/status -> stockmanager:8081/status
-/sfmgt/<stuff> -> storefront:9080/<stuff> e.g. /sfmgt/health -> storefront:9080/health
-/smmgt/<stuff> -> stockmanager:9081/<stuff> e.g. /smmgt/metrics -> stockmanager:8081/metrics
+
+`/zipkin -> zipkin:9411/zipkin`
+
+`/store -> storefront:8080/store`
+
+`/stocklevel -> stockmanager:8081/stocklevel`
+
+`/sf/<stuff> -> storefront:8080/<stuff> e.g. /sf/status -> storefront:8080/status`
+
+`/sm/<stuff> -> stockmanager:8081/<stuff> e.g. /sm/status -> stockmanager:8081/status`
+
+`/sfmgt/<stuff> -> storefront:9080/<stuff> e.g. /sfmgt/health -> storefront:9080/health`
+
+`/smmgt/<stuff> -> stockmanager:9081/<stuff> e.g. /smmgt/metrics -> stockmanager:8081/metrics`
 
 Notice the different ports in use on the target.
 
