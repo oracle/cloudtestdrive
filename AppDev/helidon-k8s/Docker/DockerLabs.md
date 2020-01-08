@@ -328,7 +328,38 @@ Notice that the layers all already exist, so nothing needs to be uploaded at all
 
 To reduce the chance of typos here we've setup some scripts to assist you. Make sure you've updated the repository information in both of the repoConfig.sh scripts (there is one in each of the helidon-labs-storefront and helidon-labs-stockmanager folders)
 
-Run the buildPushToRepo.sh script in one of the project directories, then once it's finished in the other. The script will do the build then push the container images. The first time you push to the repository it may take a while as mentioned above because you've pushing all of the layers in the runtime, the next time however only changes layers will need to be pushed.
+Run the ./buildPushToRepo.sh script in one of the project directories, then once it's finished in the other. 
+
+```$ ./buildPushToRepo.sh 
+Using repository fra.ocir.io/oractdemeabdmnative/tg_repo
+[MVNVM] Using maven: 3.5.2
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Building storefront 0.0.1
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+
+<Bunch of mvn output and stuff deleted>
+
+ ---> 63d65abfcf0c
+Successfully built 63d65abfcf0c
+Successfully tagged fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:latest
+Successfully tagged fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:0.0.1
+The push refers to repository [fra.ocir.io/oractdemeabdmnative/tg_repo/storefront]
+61a16a955381: Pushed 
+0cae22e386b2: Pushed 
+
+<Bunch of deleted docker push output>
+
+1f59a4b2e206: Layer already exists 
+0ca7f54856c0: Layer already exists 
+ebb9ae013834: Layer already exists 
+0.0.1: digest: sha256:c993e660e73e681b7b5a8200b0a2e8baed0af1a52c334ef03284f13c27d4ed7c size: 2839
+build and pushed with tags 0.0.1
+```
+
+The script will do the build then push the container images. The first time you push to the repository it may take a while as mentioned above because you've pushing all of the layers in the runtime, the next time however only changes layers will need to be pushed.
 
 You can now run the images that have been pushed the cloud
 
