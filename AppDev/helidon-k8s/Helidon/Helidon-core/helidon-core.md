@@ -242,9 +242,9 @@ We're going to make this class respond to a POST request (in REST terms POST cal
 
 `@Consumes(MediaType.APPLICATION_JSON)` is an annotation that specifies that the input is expected to be in JSON format.
 
-The latter is very interesting here, it means that the Helidon framework will convert the JSON in the body of the incoming request into a ItsemRequest object automatically for us. If that's not possible (for example because the incoming data is not JSON or it is JSON but the JSON attributes don;t match the fields in ItemRequest class) then the framework will deal with creating an error and our reserveStock method won't even get called.
+The latter is very interesting here, it means that the Helidon framework will convert the JSON in the body of the incoming request into a ItemRequest object automatically for us. If that's not possible (for example because the incoming data is not JSON or it is JSON but the JSON attributes don't match the fields in ItemRequest class) then the framework will deal with creating an error and our reserveStock method won't even get called.
 
-So these 4 annotations specify that this method will be accessible using http POST requests on /store/reserveStock and will take JSON as input and produce JSON as output. Not bad for four lines of annotation !
+So these four annotations specify that this method will be accessible using HTTP POST requests on /store/reserveStock and will take JSON as input and produce JSON as output. Not bad for four lines of annotation !
 
 Basically in addition to running the server and configuring things Helidon is now doing all of the work of converting incoming JSON into the expected method parameters and of converting the outgoing object back into JSON !
 
