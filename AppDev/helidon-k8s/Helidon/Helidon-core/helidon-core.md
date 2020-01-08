@@ -206,7 +206,7 @@ Stop the service by clicking on the square stop button on the console tab
 Congratulations on creating your first REST API of the lab !
 
 ### Make the reserveStock REST service available
-We've seen how simple it is to make a existing Java method REST enabled and how to use the framework to start up a server for us. The next step is to look at how we REST enable a Java mathod that needs to take parameters from the REST request to do it's processing.
+We've seen how simple it is to make a existing Java method REST enabled and how to use the framework to start up a server for us. The next step is to look at how we REST enable a Java method that needs to take parameters from the REST request to do it's processing.
 
 In the com.oracle.labs.helidon.storefront.resources.StorefrontResource class locate the reserveStock method.
 
@@ -247,11 +247,9 @@ We're going to make this class respond to a POST request (in REST terms POST cal
 
 `@Consumes(MediaType.APPLICATION_JSON)` is an annotation that specifies that the input is expected to be in JSON format.
 
-The latter is very interesting here, it means that the Helidon framework will convert the JSON in the body of the incoming request into a ItsemRequest object automatically for us. If that's not possible (for example because the incoming data is not JSON or it is JSON but the JSON attributes don;t match the fields in ItemRequest class) then the framework will deal with creating an error and our reserveStock method won't even get called.
+The latter is very interesting here, it means that the Helidon framework will convert the JSON in the body of the incoming request into a ItsemRequest object automatically for us. If that's not possible (for example because the incoming data is not JSON or it is JSON but the JSON attributes don't match the fields in ItemRequest class) then the framework will deal with creating an error and our reserveStock method won't even get called.
 
-So these 4 annotations specify that this method will be accessible using http POST requests on /store/reserveStock and will take JSON as input and produce JSON as output. Not bad for four lines of annotation !
-
-Basically in addition to running the server and configuring things Helidon is now doing all of the work of converting incoming JSON into the expected method parameters and of converting the outgoing object back into JSON !
+So these 4 annotations specify that this method will be accessible using http POST requests on /store/reserveStock and will take JSON as input and produce JSON as output, automatically converting between object and JSON as required. Not bad for four lines of annotation !
 
 Save the changes to the StorefrontResource.java file and run the com.oracle.labs.helidon.storefront.Main class by clicking right on it, then choosing the "Run As" sub menu and "Java Application"
 
@@ -760,16 +758,21 @@ To use a constructor that is not the default no args constructor then you need t
 
 Fortunately for us Helidon can get values to use for a constructor form the configuration, using the `@ConfigProperty` annotation on a constructors arguments
 
-Open the com.oracle.labs.helidon.storefront.data.MinimumChange class and add an additional constructor as below (keep the no args constructor)
+Open the com.oracle.labs.helidon.storefront.data.MinimumChange class and add an additional constructor after the no args constructor, so the two constructors are as below
 
 ```
+
+	public MinimumChange() {
+		this.minimumChange.set(2);
+	}
+	
     @Inject
 	public MinimumChange(@ConfigProperty(name = "app.minimumchange") Integer initialMinimumChange) {
 		this.minimumChange.set(initialMinimumChange);
 	}
 ```
 
-The `@Inject` on  constructor means to use this constructors when creating instances for use with `@Inject` annotation on a field (Yes it would have been nicer if the two uses had different names) and `@ConfigProperty(name = "app.minimumchange")` tells Helidon to locate the property `app.minimumchange` in the Helidon configuration system.
+The `@Inject` on  constructor means to use this constructors when creating instances for use with the `@Inject` annotation on a field (Yes it would have been nicer if the two uses had different names) and the `@ConfigProperty(name = "app.minimumchange")` annotation on the parameter tells Helidon to locate the property `app.minimumchange` in the Helidon configuration system.
 
 If we save this change and restart the program then request the value for minimum change we'll see that it has a value of 3
 
@@ -982,7 +985,7 @@ Save the file then then restart the service you will see in the diagnostic outpu
 2020.01.05 15:24:03 INFO io.helidon.webserver.NettyWebServer Thread[nioEventLoopGroup-2-1,10,main]: Channel 'admin' started: [id: 0x6a962ef3, L:/0:0:0:0:0:0:0:0:9080]
 ```
 
-One nice point there is to note that it's not just your code that uses these properties, as we saw with the security options the Helidon framework itelf also used configitration information form the files you specify !
+One nice point there is to note that it's not just your code that uses these properties, as we saw with the security options the Helidon framework itself also used configuration information from the files you specify !
 
 We will look more in the the services like health that are available on the admin port in a later exercise.
 
