@@ -332,7 +332,7 @@ public class StorefrontResource {
    .....
 ```
 
-This simple single annotation tells Helidon that before even reaching your actual code that for all incomming requests the framework must check that the request includes valid authentication in some form. Note that @Authenticated does *not* specify what authentication mechanism is used, it could be basic auth (the obscured user name and password are in the request headers) or something more powerful like oauth2. We'll see in a bit more detail later in thei section how the security is defined.
+This simple single annotation tells Helidon that before even reaching your actual code that for all incomming requests the framework must check that the request includes valid authentication in some form. Note that @Authenticated does *not* specify what authentication mechanism is used, it could be basic auth (the obscured user name and password are in the request headers) or something more powerful like oauth2. We'll see in a bit more detail later in the section how the security is defined.
 
 Save the changes to the StorefrontResource.java file stop the program if it's running and run the service again (Main class -> Run As -> Java Application)
 
@@ -625,7 +625,7 @@ We've now got ways to setup the MinimumChange and have it persistent, but it's n
 
 Java itself can be used to solve this, we could create a factory to create a single instance, then and hide the MinimumChange constructor so it couldn't be created outside the factory, but that's a lot of hassle if we were to have to do this for all classes in an application. Fortunately for us Helidon has a solution which is connected with a capability called the Dependence Injection system which helps us with this, as well as providing a way to inject the object instances it creates.
 
-The actual creation of the instances is handled for us by Helidon, we just need to define the scope of the class as being ApplcaitonScoped (only a single instance per application) RequestScoped (An instances is created for the request and is used wherever needed within the request) There is also support for @SessionScoped where the created instance will be used across multiple http requests that together from a session, but we're not going to look into that further here.
+The actual creation of the instances is handled for us by Helidon, we just need to define the scope of the class as being ApplicationScoped (only a single instance per application) RequestScoped (An instances is created for the request and is used wherever needed within the request) There is also support for @SessionScoped where the created instance will be used across multiple http requests that together from a session, but we're not going to look into that further here.
 
 Firstly we need to edit the com.oracle.labs.helidon.storefront.data.MinimumChange class and make is ApplicationScoped (so only one instance no matter how often it's used in the application.)
 
@@ -646,13 +646,13 @@ public class ConfigurationResource {
 Strictly speaking there's no need to remove the manual instantiation as the @Inject annotation is processed later on in the class construction, but it's good practice not to create object we won't use.
 
 
-In the StorefrontResourece class @Inject the miniumumChange insted of creating an instance as well. 
+In the StorefrontResource class @Inject the miniumumChange instead of creating an instance as well. 
 
 ```
 	@Inject
 	private MinimumChange minimumChange;
 ```
-As the Helidon framework knows that MinimumChange is ApplcationScoped this means that every tie a new StorefrontResource is created (once per request) the **same** instance of MinimumChange will be used (which is also the instance used in the ConfigurationResource)
+As the Helidon framework knows that MinimumChange is ApplicationScoped this means that every tie a new StorefrontResource is created (once per request) the **same** instance of MinimumChange will be used (which is also the instance used in the ConfigurationResource)
 
 Save all of the class files, make sure that any previously running instance of the program is stopped and start it again with the saved changes.
 
@@ -764,7 +764,7 @@ Open the com.oracle.labs.helidon.storefront.data.MinimumChange class and add an 
 	}
 ```
 
-The `@Inject` on  constructor means to use this constructors when creating instances for use with `@Inject` annotation on a field (Yes it would have been nicer if the two uses had different names) and `@ConfigProperty(name = "app.minimumchange")` tells Helidon to locate the property `app.minimumchange` in the Helidon configuration system.
+The `@Inject` on  constructor means to use this constructor when creating instances for use with `@Inject` annotation on a field (Yes it would have been nicer if the two uses had different names) and `@ConfigProperty(name = "app.minimumchange")` tells Helidon to locate the property `app.minimumchange` in the Helidon configuration system.
 
 If we save this change and restart the program then request the value for minimum change we'll see that it has a value of 3
 
@@ -1061,7 +1061,7 @@ connection: keep-alive
 
 At least now the called is getting something useful !
 
-However it's not possible using this approach of calling a FallBack method to get the exception details and such like, so while we can do somethign that the client can process we still don;t get all tof the details to let us create a sensible error message, for example there is a very big difference in how to resolve the problem if the stockManager tried to access an unknown host than if the service running on that host had an SQL authentication error.
+However it's not possible using this approach of calling a FallBack method to get the exception details and such like, so while we can do something that the client can process, we still don't get all of the details to let us create a sensible error message, for example there is a very big difference in how to resolve the problem if the stockManager tried to access an unknown host than if the service running on that host had an SQL authentication error.
 
 
 ### Handling code exceptions
@@ -1112,11 +1112,11 @@ Timeouts - Stops a program waiting forever by limiting how long a REST call can 
 
 Retrys - Defines the criteria where the Helidon framework should automatically retry an operation rather than immediately giving up
 
-CircuitBreakers - Defines the situation were a load may be sufficiently high that accepting new requests woudl cause system wise problems, on the basis it's better to abandon a few requests than have all of them fail due to poor performance or resource starvation.
+CircuitBreakers - Defines the situation were a load may be sufficiently high that accepting new requests would cause system wise problems, on the basis it's better to abandon a few requests than have all of them fail due to poor performance or resource starvation.
 
-Fallbacks - we'ce already looked at these
+Fallbacks - we've already looked at these
 
-It's hard to actually simulate these in action, but we're going to show how to define a timeout. for the com.oracle.labs.helidon.storefront.resources.Storefrontesoruce class add the annotation `@Timeout(value = 15, unit = ChronoUnit.SECONDS)`
+It's hard to actually simulate these in action, but we're going to show how to define a timeout. for the com.oracle.labs.helidon.storefront.resources.StorefrontResource class add the annotation `@Timeout(value = 15, unit = ChronoUnit.SECONDS)`
 
 ```
 @Path("/store")
@@ -1130,7 +1130,7 @@ public class StorefrontResource {
 
 Now every REST call that does not finish in 15 will generate a timed out http response automatically. If there is a Fallback in place that will trigger the fallback, if there isn't a @Fallback then the caller will get a 408 Request Timed out" message and can determine if it's going to retry itself or not.
 
-Sort of going and deliberately putting delays into the code for now we can't test this.
+Short of going and deliberately putting delays into the code for now we can't test this.
 
 ### Finished the helidon code functionality
 Congratulations, you've finished the core Helidon functionality section of the lab.
