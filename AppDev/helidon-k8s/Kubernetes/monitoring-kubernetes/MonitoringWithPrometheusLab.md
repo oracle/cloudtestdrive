@@ -32,7 +32,8 @@ These tools are of course not the only ones, but they are very widely used, and 
 #### Namespace for the monitoring and visualization software
 So separate the monitoring services from the  other services we're going to put them into a new namespace. Type the following to create it.
 
-```$ kubectl create namespace monitoring
+```
+$ kubectl create namespace monitoring
 namespace/monitoring created
 ```
 
@@ -240,7 +241,8 @@ Make the same modifications to the stockmanager-deployment.yaml file so it now h
 
 In the helidon-kubernetes folder run the undeploy.sh script to remove the deployments
 
-``` ./undeploy.sh 
+``` 
+$ ./undeploy.sh 
 Deleting storefront deployment
 deployment.extensions "storefront" deleted
 Deleting stockmanager deployment
