@@ -194,11 +194,11 @@ As the storefront depends on the stockmanager (and both depend on zipkin) it's i
 
 Make sure zipkin is running (see above)
 
-Then run the runLocalExternalConfig.sh script in the helidon-labs-stockmanager directory (this generates log info so the script stays connected to the container to display the output)
+Then in a terminal goto the helidon-labs-stockmanager directory run the ./runLocalExternalConfig.sh script (this generates log info so the script stays connected to the container to display the output)
 
-In a different terminal in the helidon-labs-storefront directory run the runLocalExternalConfig.sh script, this will start the storefront running, again as it generates log data it will remain connected to the container so you can see the output.
+In a different terminal go to the helidon-labs-storefront directory run the ./runLocalExternalConfig.sh script there, this will start the storefront running, again as it generates log data it will remain connected to the container so you can see the output.
 
-If you now make a request to the storefront service you should get a response (As before we ar using curl here, but if you prefer feel free to use the postman program that's also installed in the VM)
+If you now make a request to the storefront service you should get a response (As before we are using curl here, but if you prefer feel free to use the postman program that's also installed in the VM)
 
 ```
 $ curl -i -X GET -u jack:password http://localhost:8080/store/stocklevel
@@ -328,11 +328,11 @@ Notice that the layers all already exist, so nothing needs to be uploaded at all
 
 To reduce the chance of typos here we've setup some scripts to assist you. Make sure you've updated the repository information in both of the repoConfig.sh scripts (there is one in each of the helidon-labs-storefront and helidon-labs-stockmanager folders)
 
-Run the buildPushToRepo.sh script in one of the project directories, then once it's finished in the other. The first time you push to the repository it may take a while as mentioned above because you've pushing all of the layers in the runtime, the next time however only changes layers will need to be pushed.
+Run the buildPushToRepo.sh script in one of the project directories, then once it's finished in the other. The script will do the build then push the container images. The first time you push to the repository it may take a while as mentioned above because you've pushing all of the layers in the runtime, the next time however only changes layers will need to be pushed.
 
 You can now run the images that have been pushed the cloud
 
-run the runRepo.sh script in both directories (as usual do the stockmanager first) then test it as before.
+run the ./runRepo.sh script in both directories (as you did before do the stockmanager first) then test it as before.
 
 ```
 $ curl -i -X GET -u jack:password http://localhost:8080/store/stocklevel
