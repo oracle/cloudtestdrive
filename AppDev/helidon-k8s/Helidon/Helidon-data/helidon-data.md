@@ -8,9 +8,9 @@
 
 ## 2. Helidon and Databases
 
-Unlike SPRING with the SPRINGData projects microprofile (and thus Helidon) to not currently have a built in mechanism for accessing databases. This is however something that is being looked at and hopefully at some point there will be a Microprofile standard for accessing data which Helidon can implement. At that point these labs will be updated to reflect the changes.
+Unlike SPRING with the SPRINGData projects microprofile (and thus Helidon) does not currently have a built in mechanism for accessing databases. This is however something that is being looked at and hopefully at some point there will be a Microprofile standard for accessing data which Helidon can implement. At that point these labs will be updated to reflect the changes.
 
-However, just because Microprofile and thus Helidon do not have a set of data access annotations and abstractions themselves does not mean you can't access databases (and other persistence solutions) from with Helidon microservcies. You simply use the existing technologies such as the Java Persistence API (JPA) and the JTA (Java Transaction API)
+However, just because Microprofile and thus Helidon do not have a set of data access annotations and abstractions themselves does not mean you can't access databases (and other persistence solutions) from with Helidon microservices. You simply use the existing technologies such as the Java Persistence API (JPA) and the JTA (Java Transaction API)
 
 In this set of lab modules we will look at how we can combine those with Helidon techniques such as the configuration mechanisms to implement database accesses.
 
@@ -52,12 +52,12 @@ There is less coding than the helidon core lab and more reading here.
 
 This lab also uses exactly the same security configuration so users jack, jill and joe are provided, with password password, and user jack is an admin as before.
 
-I'm also assuming that you'll remember how to stop and start the Main class (though of course for **this** lab you'll be using the com.oracle.labs.helidon.stockmanager.MAIN class, not the storefront version) so you won't be reminded on that.
+I'm also assuming that you'll remember how to stop and start the Main class (though of course for **this** lab you'll be using the com.oracle.labs.helidon.stockmanager.Main class, not the storefront version) so you won't be reminded on that.
 
 ---
 
 **Before you start**
-Please makes sure that for now you have **stopped** the storefront application.
+Please make sure that for now you have **stopped** the storefront application.
 
 ---
 
@@ -161,7 +161,7 @@ Here (to make it clear whatn's happening) I've used the same name for the path a
 Other possible sources for the params are @QueryParam and @FormsParam. Which one you chose will depend on what the URL you are expecting (or want) to get.
 
 ### Getting an entity manager
-JPA requires an entity manager to do the work of interacting with the database for us. Historically however that would require code like the following which is in the Stockmanager constructor.
+JPA requires an entity manager to do the work of interacting with the database for us. Historically however that would require code like the following which is in the StockResource constructor.
 
 ```
 	public StockResource(@ConfigProperty(name = "app.persistenceUnit") String persistenceUnitProvided,
@@ -179,7 +179,7 @@ Secondly we have to close the entity manager down when it's no longer needed, th
 
 Also why write code when we don't have to ? With Helidon we have the context and dependency injections capabilities, so we don't however need to setup the entity manager itself, we can have Helidon do that for us
 
-In the StockManager constructor remove the lines that setup the entity manager, it should now look like
+In the StockResource constructor remove the lines that setup the entity manager, it should now look like
 
 ```
 	public StockResource(@ConfigProperty(name = "app.persistenceUnit") String persistenceUnitProvided,
@@ -190,9 +190,10 @@ In the StockManager constructor remove the lines that setup the entity manager, 
 ```
 (we're just saving the params away for later use)
 
-Locate where the EntityManager is defined and add a `@PersistenceContext(unitName = "HelidonATPJTA")`
+Locate where the EntityManager is defined in the StockResource and add the `@PersistenceContext(unitName = "HelidonATPJTA")` annotation
 
 ```
+public class StockResource {
 	@PersistenceContext(unitName = "HelidonATPJTA")
 	private EntityManager entityManager; 
 ```
@@ -242,7 +243,7 @@ content-length: 2
 
 There should be **nothing** returned, if there is it means that you didn't chose a unique department value ! Chose something that is unique, update the stockmanager-config.yaml file department attribute and restart the program.
 
-Let's create some stock items, these need to be done as a user with admin rights so do the following command. Note there is a few seconds delay when you try this as the code does the database connection on demand.
+Let's create some stock items, these need to be done as a user with admin rights so do the following command. Note there is a few seconds delay when you try this as the code does the database connection on demand. (Note, this won't work !)
 
 ```
 $ curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pins/5000
@@ -321,12 +322,18 @@ In the current version of Helidon there is a conflict between the processing of 
 Use curl to create some stock items, these need to be done as a user with admin rights so do the following commands against a running 
 stockmanager service 
 
-curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pin/5000
-curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pins/5000
-curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pencil/200
-curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Eraser/50
-curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Book/100
-curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Book/50
+
+`curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pin/5000`
+
+`curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pins/5000`
+
+`curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pencil/200`
+
+`curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Eraser/50`
+
+`curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Book/100`
+
+`curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Book/50`
 
 ```
 $ curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pin/5000
@@ -385,7 +392,7 @@ On success the return is the newly created object
 
 Once the first operation has returned and the database connection is all setup the subsequent calls are much faster.
 
-Note that on the 2nd attempt to add the window we don't get anything back representing the newly create object - it's already there, and the logs give us error messages
+Note that on the 2nd attempt to add the books we don't get anything back representing the newly create object - it's already there, and the logs give us error messages
 get an error, there are already items with that name present.
 
 Use curl to get the current stock list
@@ -430,7 +437,7 @@ content-length: 148
 [{"itemCount":100,"itemName":"Book"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":200,"itemName":"Pencil"},{"itemCount":5000,"itemName":"pin"}]
 ```
 
-Finally let's test changing the level of some stock, we had 200 Pencils, let's reduce that to 1500
+Finally let's test changing the level of some stock, we had 200 Pencils, let's reduce that to 150
 
 ```
 $ curl -X POST  -u jack:password http://localhost:8081/stocklevel/Pencil/150
