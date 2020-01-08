@@ -100,7 +100,7 @@ This Produces annotation is very important to understand. It means that the fram
 ### But how does the framework know what to make available?
 We've updated a single class, but in a traditional Java program something else would be calling that class and starting the rest of the program. We need to have a class that does that for us and tells Helidon that this is a class we want enabled as a REST service.
 
-The com.oracle.labs.helidon.storefront.Main class starts the process. We're going to look into sections of this in more detail soon. but the main point here is to that the main method of the main class creates a Helidon server instance.
+The com.oracle.labs.helidon.storefront.Main class starts the process. We're going to look into sections of this in more detail soon, but the main point here is to that the main method of the main class creates a Helidon server instance.
 
 ```
 	public static void main(final String[] args) throws IOException {
@@ -203,7 +203,7 @@ Congratulations on creating your first REST API of the lab !
 ### Make the reserveStock REST service available
 We've seen how simple it is to make a existing Java method REST enabled and how to use the framework to start up a server for us. The next step is to look at how we REST enable a Java mathod that needs to take parameters from the REST request to do it's processing.
 
-In the com.oracle.labs.helidon.storefront.dummy.resources.StorefrontRecourse class locate the reserveStock method.
+In the com.oracle.labs.helidon.storefront.resources.StorefrontResource class locate the reserveStockItem method.
 
 ```
 	public ItemDetails reserveStockItem(ItemRequest itemRequest)
