@@ -28,7 +28,7 @@ If you are using a windows based laptop, you will need to utilise an ssh client 
 
 **NOTE**: Some client setups have experienced ssh session timeouts with Putty and if you get this, please enable connection keepalive.
 
-Please refer to [Appendix A](Appendix\ A.md) for some assistance with using Putty if you are unfamiliar with it\.
+Please refer to [Appendix A](Appendix\ A) for some assistance with using Putty if you are unfamiliar with it\.
 
 Please refer to [Appendix B](Appendix\ B.md) if you would prefer to use the Chrome secure shell extension
 
@@ -74,6 +74,8 @@ Once logged in, in the top right hand corner click the user avatar ![image2019-8
 ![image2019-9-23_10-33-31](image2019-9-23_10-33-31.png)
 
 Click on your username to navigate to the user detail page.
+
+We will return to the OCI console to configure the Functions and Events services later in the lab. 
 
 ### Create a new Fn context for OCI
 
