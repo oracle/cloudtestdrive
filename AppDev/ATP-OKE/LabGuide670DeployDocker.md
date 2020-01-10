@@ -48,21 +48,20 @@ Let’s get started!
 
 ### Step 2: Configure the environment to point to your cloud instance
 
-- Upload the kubeconfig file into the repository.  During the creation of the cluster, a file called **mykubeconfig** was generated.  This file is required to connect to your cluster from within the build job.  In case you are using a common Kubernetes cluster, your instructor will provide you with the appropriate kubeconfig file.
+- Upload the kubeconfig file into the repository.  During the creation of the cluster, a **kubeconfig** file was generated.  This file is required to connect to your cluster from within the build job.  In case you are using a common Kubernetes cluster, your instructor will provide you with the appropriate **kubeconfig** file.
 
   - In Developer Cloud, navigate to the top level of your git repository, and hit the **+ File** button:
 
     ![](images/670/im51.png)
 
-  - Enter the name of the file "mykubeconfig"
-
-
-  - Open your local **mykubeconfig** file **with a plain text editor** and copy the content into the editor window of your browser:
-
-    ![](images/670/im52.png)
-    
-    **Attention** : make sure NOT to accidentally insert any line feeds in the long lines 4 and 17 that contain a certificate.  See picture above how the file should look after the paste command.
-    
+  - Enter the name of the file : **mykubeconfig**
+  
+    - Open your local **mykubeconfig** file **with a plain text editor** and copy the content into the editor window of your browser:
+  
+  ![](images/670/im52.png)
+  
+  **Attention** : make sure NOT to accidentally insert any line feeds in the long lines 4 and 17 that contain a certificate.  See picture above how the file should look after the paste command.
+  
   - Commit the new file
 
   
@@ -132,16 +131,22 @@ Let’s get started!
 
 ### Step 5: Setting up kubectl
 
-First download and set up the **kubectl** executable on your machine.  You can follow [the detailed steps on this page](env-setup-kubectl.md) for more information.
+First make sure you have the **kubectl** executable available on the machine you are running this lab on :
+
+```
+kubectl --help
+```
+
+If not, you can follow [the detailed steps on this page](env-setup-kubectl.md) for setting up this utility.
 
 Next you need to configure your terminal window to point to the kubeconfig configuration file that belongs to the cluster you just created. This file has been generated during the terraform setup of your cluster.
 
 The *kubeconfig* file contains the necessary details and parameters to connect to Oracle Container Engine (Kubernetes cluster). The *clusters* parameter defines the available clusters. 
 
-When you execute a `kubectl` command first it tries to read the default configuration file: *config* file from default location. On Linux it is `~/.kube` and on Windows it is `c:\Users\<USERNAME>\.kube`. But you can store *config* file at different path and even with different name e.g.*kubeconfig*. Just set the configuration file location as KUBECONFIG environment variable in your command line terminal where you want to execute `kubectl` commands.
+When you execute a `kubectl` command first it tries to read the default configuration file: *config* file from default location. On Linux it is `~/.kube` and on Windows it is `c:\Users\<USERNAME>\.kube`. But you can store *config* file at different path and even with different name e.g. *mykubeconfig_0*. Just set the configuration file location as KUBECONFIG environment variable in your command line terminal where you want to execute `kubectl` commands.
 
 ```
-export KUBECONFIG=~/Downloads/kubeconfig
+export KUBECONFIG=~/Downloads/mykubeconfig_0
 ```
 
 
@@ -149,7 +154,7 @@ export KUBECONFIG=~/Downloads/kubeconfig
 *Remark: in case you are running these commands on a Windows machine, the correct syntax is:*
 
 ```
-				set KUBECONFIG=c:\Downloads\kubeconfig
+				set KUBECONFIG=c:\Downloads\mykubeconfig_0
 ```
 
 

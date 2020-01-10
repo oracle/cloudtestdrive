@@ -12,13 +12,27 @@ During this day you will be able to experience the various cloud services hands-
 
 
 ## Application Development ##
-+ [Microservices using Autonomous ATP and Managed Containers](AppDev/ATP-OKE/README.md) - This lab will cover the complete setup of Developer Cloud, a Kubernetes Cluster and an Autonomous Database, and then build the CI/CD flow to deploy a Node-based microservice onto this infrastructure.
-+ [AppDev Infrastructure lab](AppDev/AppDevInfra.md) - Set up the infrastructure to run your applications : create a Database and Application Servers, using DBaaS and JCS
-+ Using **Wercker** CI/CD pipelines to [deploy an Angular Node application](AppDev/K8S/readme.md)
+- [Microservices using Autonomous ATP and Managed Containers](AppDev/ATP-OKE/README.md)
+  This lab will cover the complete setup of Developer Cloud, a Kubernetes Cluster and an Autonomous Database, and then build the CI/CD flow to deploy a Node-based microservice onto this infrastructure.
+- Using **Wercker** CI/CD pipelines to [deploy an Angular Node application](AppDev/K8S/readme.md)
+
 + Run your first **serverless Functions** [using the Opensource FnProject](AppDev/functions/function2_lab.md) or by using the Oracle Managed service called [Oracle Functions](https://www.oracle.com/webfolder/technetwork/tutorials/infographics/oci_faas_gettingstarted_quickview/functions_quickview_top/functions_quickview/index.html#).  Or optionally [create a function from an exiting Docker](https://github.com/shaunsmith/functionslab-codeone19/blob/master/6-Container-as-Function.md) container.
 + Discover the **Helidon Microservices framework for Java** by running through the 2 Getting Started [Quickstarts](https://helidon.io/docs/latest/#/guides/01_overview) for the SE and MP flavour, and then continue with more advanced features like Metrics and Healthchecks in [this tutorial](https://github.com/tomas-langer/helidon-conference/blob/master/README.md)
 
 
+
+### WebLogic Labs   -- ***New*** ! --
+
++ [WebLogic Cloud - VM Image via Marketplace](https://oracle.github.io/cloudtestdrive/AppDev/wls/?page=wlscnonjrf.md) 
+  Launch WebLogic on OCI Virtual machines, using the pre-configured image provided by Oracle in the Marketplace
+
++ [Running WebLogic on Docker](AppDev/wls/WLS_on_Docker.md)
+  Spin up the official Oracle Docker Image for Weblogic and deploy a simple demo application on the server.
+
++ [Running WebLogic on Kubernetes](AppDev/wls/WLS_on_OKE.md)
+  Launch WebLogic on a Kubernetes cluster, using the WebLogic Operator to control your WebLogic environment
+
+  
 
 
 ## Autonomous Databases
