@@ -24,7 +24,7 @@ Access to the cluster is managed via a config file that by default is located in
 
 Now validate you can visualize elements of the cluster with the **kubectl** command
 
-`kubectl get nodes`
+`$ kubectl get nodes`
 
 ```
 $ kubectl get nodes
@@ -380,7 +380,7 @@ To see the progress in creating the Ingress service type :
 ```
 $ kubectl --namespace default get services -o wide ingress-nginx-nginx-ingress-controller
 NAME                                     TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)                      AGE   SELECTOR
-ingress-nginx-nginx-ingress-controller   LoadBalancer   10.111.0.168   localhost     80:31934/TCP,443:31827/TCP   61s   app=nginx-ingress,component=controller,release=ingress-nginx
+ingress-nginx-nginx-ingress-controller   LoadBalancer   10.111.0.168   localhost 80:31934/TCP,443:31827/TCP   61s   app=nginx-ingress,component=controller,release=ingress-nginx
 ```
 In this case we can see that the load balancer has been created and the external-IP address is localhost, this is because I'm creating these examples using a Kubernetes cluster on my laptop, with a non local cluster it'll be an external to cluster IP address, usually accessible from the internet. 
 
@@ -569,12 +569,14 @@ We have already installed the Ingress controller which actually operates the ing
 ```
 $ kubectl get services -n default
 NAME                                          TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
-ingress-nginx-nginx-ingress-controller        LoadBalancer   10.111.0.168    localhost     80:31934/TCP,443:31827/TCP   4h9m
+ingress-nginx-nginx-ingress-controller        LoadBalancer   10.111.0.168    132.18.12.23  80:31934/TCP,443:31827/TCP   4h9m
 ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <none>        80/TCP                       4h9m
 kubernetes                                    ClusterIP      10.96.0.1       <none>        443/TCP                      3d1h
 ```
 
 And of course using the dashboard (remembering to select default as the namespace) we can see the same in the list of services.
+
+**Note the External IP address** In the docs here they usually use localhost in the curl code, as I tested this using a cluster on my laptop. **BUT YOU ARE USING A PUBLIC CLUSTER** so **YOU** will need to use the ingress external IP instead of localhost
 
 There are however no actual ingress rules defined for us, we can see this my using kubectl to get the list of rules in our namespace (the rules we will define are specific to the namespace)
 
@@ -646,7 +648,7 @@ Note that it is possible to match multiple paths in the same ingress, and they c
 
 The file ingressConfig.yaml defines the ingress rules, the script setupIngress.sh will apply the config for us. This will configure the ingress controller with the URL and service processing details.
 
-In the helidon-labs/base-kubernetes folder use the following command (or run the setupIngres.sh script)
+In the helidon-kubernetes/base-kubernetes folder use the following command (or run the setupIngres.sh script)
 
 ```
 $ kubectl apply -f ingressConfig.yaml 
@@ -679,13 +681,20 @@ Of course they are also showing in the kuberntes dashboard (make sure you chose 
 If you look at the rules in the ingressConfig.yaml file you'll see they setup the following mappings
 
 Direct mappings
-/zipkin -> zipkin:9411/zipkin
-/store -> storefront:8080/store
-/stocklevel -> stockmanager:8081/stocklevel
-/sf/<stuff> -> storefront:8080/<stuff> e.g. /sf/status -> storefront:8080/status
-/sm/<stuff> -> stockmanager:8081/<stuff> e.g. /sm/status -> stockmanager:8081/status
-/sfmgt/<stuff> -> storefront:9080/<stuff> e.g. /sfmgt/health -> storefront:9080/health
-/smmgt/<stuff> -> stockmanager:9081/<stuff> e.g. /smmgt/metrics -> stockmanager:8081/metrics
+
+`/zipkin -> zipkin:9411/zipkin`
+
+`/store -> storefront:8080/store`
+
+`/stocklevel -> stockmanager:8081/stocklevel`
+
+`/sf/<stuff> -> storefront:8080/<stuff> e.g. /sf/status -> storefront:8080/status`
+
+`/sm/<stuff> -> stockmanager:8081/<stuff> e.g. /sm/status -> stockmanager:8081/status`
+
+`/sfmgt/<stuff> -> storefront:9080/<stuff> e.g. /sfmgt/health -> storefront:9080/health`
+
+`/smmgt/<stuff> -> stockmanager:9081/<stuff> e.g. /smmgt/metrics -> stockmanager:8081/metrics`
 
 Notice the different ports in use on the target.
 
@@ -694,7 +703,7 @@ This is of course great, but how do we know what port the ingress controller its
 ```
 $ kubectl get service -n default
 NAME                                          TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
-ingress-nginx-nginx-ingress-controller        LoadBalancer   10.111.0.168    localhost     80:31934/TCP,443:31827/TCP   5h50m
+ingress-nginx-nginx-ingress-controller        LoadBalancer   10.111.0.168    132.18.12.23     80:31934/TCP,443:31827/TCP   5h50m
 ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <none>        80/TCP                       5h50m
 kubernetes                                    ClusterIP      10.96.0.1       <none>        443/TCP                      3d3h
 
@@ -709,7 +718,7 @@ Or look up the ingress service in the namespace default in the dashboard, that w
 We now have a working endpoint, let's try accessing it (using curl here, but feel free to use a browser or postman)
 
 ```
-$ curl -i -X GET http://localhost/sf
+$ curl -i -X GET http://<ip address>/sf
 HTTP/1.1 503 Service Temporarily Unavailable
 Server: openresty/1.15.8.2
 Date: Fri, 27 Dec 2019 18:59:48 GMT
@@ -731,7 +740,7 @@ We got a service unavailable error. This is because that web page is regognised 
 If we tried to go to a URL that's not defined we will as expected get a 404 error
 
 ```
-$ curl -i -X GET http://localhost/unknowningress
+$ curl -i -X GET http://<ip address>/unknowningress
 HTTP/1.1 404 Not Found
 Server: openresty/1.15.8.2
 Date: Fri, 27 Dec 2019 19:03:52 GMT
@@ -760,7 +769,7 @@ Some data however probably should not be stored in a visible storage mechanism, 
 
 A secret can be mounted into the pod like any other type of volume. They represent a file, ***or*** a directory of files. This means you could have a single secret holding configuration information (for example the configuration file we're using for testing holding the usernames, passwords and roles, or the OJDBC wallet folder which contains a number of files.
 
-Creating a secret is pretty simple
+Creating a secret is pretty simple, for example (don't type this)
 
 ```
 $ kubectl create secret generic sm-wallet-atp --from-file=confdir/Wallet_ATP
@@ -772,6 +781,7 @@ The stock manager and storefront both require configuration data and the stock m
 There are also more specific secrets used for TLS certificates and pulling docker images from private registries, these have additional arguments to the create command
 
 The create-secrets.sh script deleted any existing secrets and sets up the secrets (in your chosen namespace.) In the helidon-kubernetes/base-kubernetes directory run the following command to create the secrets for us
+
 
 ```
 $ ./create-secrets.sh 
@@ -1167,7 +1177,7 @@ ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <no
 kubernetes                                    ClusterIP      10.96.0.1       <none>         443/TCP                      5d2h
 ```
 
-The External_IP column displays the external address. If running a local cluster this will be localhost:80, but in a cloud deployment it should be a public facing address as seen in the example above (either on the internet or your companies private network)
+The External_IP column displays the external address. If running a local cluster this will be <ip address>:80, but in a cloud deployment it should be a public facing address as seen in the example above (either on the internet or your companies private network)
 
 Let's actually trying getting some data
 
@@ -1284,7 +1294,7 @@ Connection: keep-alive
 We've mounted the sf-config-map (which contains the contents of storefront-config.yaml file) onto /conf1. Let's use a command to connect to the running pod (remember your storefront pod will have a different id so use kubectl get pods to retrieve that) and see how it looks in there, then exit the connection
 
 ```
-$ kubectl exec -it pod/storefront-588b4d69db-w244b -- /bin/bash
+$ kubectl exec -it storefront-588b4d69db-w244b -- /bin/bash
 root@storefront-588b4d69db-w244b:/# ls /conf
 storefront-config.yaml storefront-network.yaml
 root@storefront-588b4d69db-w244b:/# more /conf/storefront-config.yaml 
@@ -1324,7 +1334,7 @@ Click on the update button to save your changes, you'll see the changes reflecte
 Now let's return to the pod and see what's happened
 
 ```
-$ kubectl exec -it pod/storefront-588b4d69db-w244b -- /bin/bash
+$ kubectl exec -it storefront-588b4d69db-w244b -- /bin/bash
 root@storefront-588b4d69db-w244b:/# more /conf/storefront-config.yaml 
 app:
   storename: "Tims Shop"

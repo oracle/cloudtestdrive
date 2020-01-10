@@ -16,10 +16,18 @@ For all of the steps in this section of the lab we will be using the helidon-lab
 
 The main class we will be using is the com.oracle.labs.helidon.storefront.resources.StorefrontResource.java Locate it in the Eclipse project explorer (Hierarchical browser on the left of the Eclipse window) and open it.
 
+You see a couple of annotations already on place on the class (`@Log` and `@NoArgsConstructor`) These are being processed by [Lombok](https://projectlombok.org/) Lombok is a set of Java based tools tha use annotations to perform common tasks for us. In this case the `@Log` annotation tells Lombok to automatically generate a Java system logger using the class name as the loggers name. The `@NoArgsConstructor` does what the name suggests and creates a constructor for us without any arguments. 
+
+Lombok provides a wide variety of other useful annotations to speed up development, for example rather than manually creating getters and setters, hash codes and equals we can just use the @Lombok `@Data` annotation to create them for us automatically. As Lombok is executed when a class if compiled as we change the class any new fields would have getters / setters automatically created for us and any fields that had been removed would no longer have getters / setters created.
+
+It's not required that people use Lombok for java development of course, but I'm using it here to as to not clutter up the code, and also I'm lazy when it comes to coding and Lombok is a great tool for lazy coders :-)
+
+Enough on Lombok. Let's get to the Helidon work !
+
 ### Make the list stock REST Service available
 The first thing a REST service must do is provide a REST end point that can be called. Helidon makes this process very easy.
 
-For our first bit of Helidon work we're going to REST enable a Java method that returns data, it doesn;t take any input.
+For our first bit of Helidon work we're going to REST enable a Java method that returns data, it doesn't take any input.
 
 Find the listAllStock method in the StorefrontResource.java file
 
@@ -56,13 +64,6 @@ The `@Path("/store")` annotation means that each time the Helidon framework brin
 
 The `@RequestScoped` annotation means that the Helidon framework will create a new instance of the class automatically each time a rest request is made, and that the instance will be used for the duration of that request. This would allow us to modify the internal state of the class as the request is being processed and we can be sure that those modifications woudln't interfere with other subsequent or concurrent requests (well as long as we limit out changes to the StorefrontResource class of course)
 
-Wile we're here you may also have noticed a couple of other annotations already on place on the class. These are being processed by [Lombok](https://projectlombok.org/) Lombok is a set of Java based tools tha use annotations to perform common tasks for us. In this case the `@Log` annotation tells Lombok to automatically generate a Java system logger using the class name as the loggers name. The `@NoArgsConstructor` does what the name suggests and creates a constructor for us without any arguments. 
-
-Lombok provides a wide variety of other usefull annotations to speed up development, for example rather than manually creating getters and setters, hash codes and equals we can just use the @Lombok `@Data` annotation to create them for us automatically. As Lombok is executed when a class if compiled as we change the class any new fields would have getters / setters automatically created for us and any fields that had been removed would no longer have getters / setters created.
-
-It's not required that people use Lombok for java development of course, but I'm using it here to as to not clutter up the code, and also I'm lazy when it comes to coding and Lombok is a great tool for lazy coders :-)
-
-Enough on Lombok. Let's get back to the Helidon work !
 
 Our class definition now starts something like
 
@@ -113,7 +114,9 @@ The com.oracle.labs.helidon.storefront.Main class starts the process. We're goin
 	}
 ```
 
-How does Helidon know what classes it needs to create REST endpoints for ? Well the annotations system does that.
+How does Helidon know what classes it needs to create REST endpoints for ?
+
+We need to create a new class to provide this information, and add an annotation to is so Helidon knows that's the new class provides this information.
 
 Look at the class com.oracle.labs.helidon.storefront.StorefrontApplication, add the `@ApplicationScoped` and `@ApplicationPath("/")` annotations as below
 
@@ -137,7 +140,9 @@ There are several important elements here
 
 `@ApplicationPath("/")` Means that all the classes that provide REST services for the application will have a URL path starting with / So our listAllStock method will be /store/stocklevel If however the StorefrontAplication has been annotated `@ApplicationPath("/postroom")` then out listAllStock method woudl be on the path /postroom/store/stocklevel (the /postroom coming from the @ApplicationPath annotation on StorefrontApplication, /store from the @Path annotation on the StorefrontResource class and /stocklevel from the @Path annotation on the listAllStock method.
 
-the `extends Application` means that there is a getClasses method which returns a set of classes that form part of the application and actually do the work in responsind to requests.
+the `extends Application` means that there is a getClasses method which returns a set of classes that form part of the application and actually do the work in response to requests.
+
+Note that in this case Application is not a Helidon annotation.
 
 When the Helidon server starts up it looks for classes with the @ApplicationPath path annotation and that extend the Application interface and then calls the getClasses method on those to get a set of classes that it will then examine in more detail for other annotations.
 
@@ -201,7 +206,8 @@ Stop the service by clicking on the square stop button on the console tab
 Congratulations on creating your first REST API of the lab !
 
 ### Make the reserveStock REST service available
-We've seen how simple it is to make a existing Java method REST enabled and how to use the framework to start up a server for us. The next step is to look at how we REST enable a Java mathod that needs to take parameters from the REST request to do it's processing.
+We've seen how simple it is to make a existing Java method REST enabled and how to use the framework to start up a server for us. The next step is to look at how we REST enable a Java method that needs to take parameters from the REST request to do it's processing.
+
 
 In the com.oracle.labs.helidon.storefront.resources.StorefrontResource class locate the reserveStockItem method.
 
@@ -247,6 +253,7 @@ The latter is very interesting here, it means that the Helidon framework will co
 So these four annotations specify that this method will be accessible using HTTP POST requests on /store/reserveStock and will take JSON as input and produce JSON as output. Not bad for four lines of annotation !
 
 Basically in addition to running the server and configuring things Helidon is now doing all of the work of converting incoming JSON into the expected method parameters and of converting the outgoing object back into JSON !
+
 
 Save the changes to the StorefrontResource.java file and run the com.oracle.labs.helidon.storefront.Main class by clicking right on it, then choosing the "Run As" sub menu and "Java Application"
 
@@ -373,7 +380,7 @@ WWW-Authenticate: Basic realm="helidon"
 connection: keep-alive
 ```
 
-So how does the Authorized annotation determine what's allowed and what's not ? Basically it's defined using configuration files. We'll see later how Helidon is notified about them, but for now the security configuration we're using is below.
+So how does the Authorized annotation determine what's allowed and what's not ? Basically it's defined using configuration properties that are imported from a configuration file. We'll see later how Helidon is told where it's configuration files are, but for for your reference the security configuration we're using is below.
 
 ```
 security:
@@ -461,7 +468,7 @@ Lastly the get method returns plain text, the response isn't wrapped into JSON (
 
 So we've created code that will set and get the minimum change value it contains. Next we need to tell Helidon that it's a resource that should be processed, we do that by adding our new resource to the list of application classes.
 
-Open the com.oracle.labs.helidon.storefront.StorefrontApplication, add the ConfigurationResource.class to the set of returned classes
+We do now need to tell Helidon that the endpoints in ConfigurationResource are to be made available. Open the com.oracle.labs.helidon.storefront.StorefrontApplication, add the ConfigurationResource.class to the set of returned classes
 
 ```
 @ApplicationScoped
@@ -477,7 +484,7 @@ public class StorefrontApplication extends Application {
 }
 ```
 
-Save all modified files, and run the program.
+Save the modified StorefrontApplication, and run the program.
 
 First let's see what the current value is
 
@@ -561,7 +568,7 @@ content-length: 1
 2
 ```
 
-It is. Now when make the change
+It is. Now let's make the change again
 
 ```
 $ curl -i -X POST -u jack:password -d 3  -H "Content-type:application/json" http://localhost:8080/minimumChange
@@ -574,7 +581,7 @@ content-length: 1
 3
 ```
 
-And see if the change has held across requests
+And check that the change has held across requests
 
 ```
 $ curl -i -X GET http://localhost:8080/minimumChange
@@ -587,7 +594,7 @@ content-length: 1
 3
 ```
 
-It's maintained the new value.
+Great, it's done what we want and maintained the new value.
 
 Stop the program as usual.
 
@@ -755,14 +762,20 @@ To use a constructor that is not the default no args constructor then you need t
 
 Fortunately for us Helidon can get values to use for a constructor form the configuration, using the `@ConfigProperty` annotation on a constructors arguments
 
-Open the com.oracle.labs.helidon.storefront.data.MinimumChange class and add an additional constructor as below (keep the no args constructor)
+Open the com.oracle.labs.helidon.storefront.data.MinimumChange class and add an additional constructor after the no args constructor, so the two constructors are as below
 
 ```
+
+	public MinimumChange() {
+		this.minimumChange.set(2);
+	}
+	
     @Inject
 	public MinimumChange(@ConfigProperty(name = "app.minimumchange") Integer initialMinimumChange) {
 		this.minimumChange.set(initialMinimumChange);
 	}
 ```
+
 
 The `@Inject` on  constructor means to use this constructor when creating instances for use with `@Inject` annotation on a field (Yes it would have been nicer if the two uses had different names) and `@ConfigProperty(name = "app.minimumchange")` tells Helidon to locate the property `app.minimumchange` in the Helidon configuration system.
 
@@ -977,7 +990,7 @@ Save the file then then restart the service you will see in the diagnostic outpu
 2020.01.05 15:24:03 INFO io.helidon.webserver.NettyWebServer Thread[nioEventLoopGroup-2-1,10,main]: Channel 'admin' started: [id: 0x6a962ef3, L:/0:0:0:0:0:0:0:0:9080]
 ```
 
-One nice point there is to note that it's not just your code that uses these properties, as we saw with the security options the Helidon framework itelf also used configitration information form the files you specify !
+One nice point there is to note that it's not just your code that uses these properties, as we saw with the security options the Helidon framework itself also used configuration information from the files you specify !
 
 We will look more in the the services like health that are available on the admin port in a later exercise.
 

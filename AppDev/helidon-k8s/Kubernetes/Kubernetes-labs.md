@@ -23,7 +23,7 @@ ObjectStore			README.md			buildLocalExternalConfig.sh	conf				pom.xml				runRepo
 
 That means you will know you need to cd to the folder (if you're not already there !) type ls (not the preceding $) and that the output will be DBScripts et all (so you don't type that)
 
-Also there are a number of situations in the labs where we will be running a command to get some information and then expect you to use the returned information in the next command. For example in the case we say 
+Also there are a number of situations in the labs where we will be running a command to get some information and then expect you to use the returned information in the next command. **For example** (so don't run this) if the instructions say 
 
 *Run the kubectl command to get the pods list on the kubesystem namespace*
 
@@ -54,7 +54,7 @@ Labels:         app=kubernetes-dashboard
 <lots of output removed>
 ```
 
-We do assume that you will recognize that the output of the first command will be different form the output we give, and that in the second command the `kubernetes-dashboard-58d96f69b8-lgk9t` will need to be replaced with whatever the first command returned on your environment when you ran it. We to try to remind folks about this occasionally, but if we did so everywhere it would get tedious for people havign to read it.
+We do assume that you will recognize that the output you get from the first command would be different from the output we give, and that if you were to run the second command the `kubernetes-dashboard-58d96f69b8-lgk9t` will need to be replaced with whatever the first command returned on **your environment** when you ran it. We to try to remind folks about this occasionally, but if we did so everywhere it would get tedious for people having to read it.
 
 ## The Labs
 
