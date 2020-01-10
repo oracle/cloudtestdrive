@@ -116,8 +116,11 @@ Now check it's all working by going to `http://localhost:9090/graph`in a web bro
 
 ![Prometheus empty graphs page](images/prometheus-empty-graphs.png)
 
+Let's check that Prometheus is scraping some data. Click the "Insert Metric At Cursor" button, you will see a *lot* of possible choices exploring the various servcies built into Kubernetes (Including apiserver, Core DNS, Container stats, the number of various kubernetes objects like secrets, pods, configmaps and so on.)
 
+In the dropdown select `http_requests_total` you may have to chose the `promtetheus_http_requests_total` option if you can't find the plain http version (this depends on what the platform offers), then click the Execute button. 
 
+Alternatively rather than selecting frm the list you can just start to type `http_requests_total` into the Expression box, as you type a drop down will appear showing the possible metrics that match your typing so far, once the list of choices is small enough to see it chose `http_requests_total` from the list (or just finish typing the entire name and press return to select it) 
 
 You will be presented with either console text data
 
