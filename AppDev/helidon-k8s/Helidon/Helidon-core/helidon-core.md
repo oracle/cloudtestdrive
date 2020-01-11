@@ -14,14 +14,17 @@
 
 For all of the steps in this section of the lab we will be using the **helidon-labs-storefront** project in Eclipse. We will not be updating the Maven pom.xml file with the specific imports needed as we are focusing on the code side of things here, if you are going to be coding your own services we encourage you to look at the pom.xml file to see what dependencies we are making available to put project.
 
-The main class we will be using is the **com.oracle.labs.helidon.storefront.resources.StorefrontResource.java** Locate it in the Eclipse project explorer (Hierarchical browser on the left of the Eclipse window) and open it.
+The main class we will be using is **StorefrontResource.java**.   Locate it in the Eclipse project explorer (Hierarchical browser on the left of the Eclipse window) and open it.
 
 - Navigate to the **StorefrontResource** class:
-  - Open the project 
+  - Open the project *helidon-labs-storefront*
+  - Expand *src/main/java*, then *resources*, then double-click *StoreFrontResource.java*
+  
+  ![](images/eclipse-first-project.png)
   
   
 
-You see a couple of annotations already on place on the class (`@Log` and `@NoArgsConstructor`) These are being processed by [Lombok](https://projectlombok.org/) Lombok is a set of Java based tools tha use annotations to perform common tasks for us. In this case the `@Log` annotation tells Lombok to automatically generate a Java system logger using the class name as the loggers name. The `@NoArgsConstructor` does what the name suggests and creates a constructor for us without any arguments. 
+You see a couple of annotations already on place on the class definition (`@Log` and `@NoArgsConstructor`) These are being processed by [Lombok](https://projectlombok.org/).  Lombok is a set of Java based tools tha use annotations to perform common tasks for us. In this case the `@Log` annotation tells Lombok to automatically generate a Java system logger using the class name as the loggers name. The `@NoArgsConstructor` does what the name suggests and creates a constructor for us without any arguments. 
 
 Lombok provides a wide variety of other useful annotations to speed up development, for example rather than manually creating getters and setters, hash codes and equals we can just use the @Lombok `@Data` annotation to create them for us automatically. As Lombok is executed when a class if compiled as we change the class any new fields would have getters / setters automatically created for us and any fields that had been removed would no longer have getters / setters created.
 
@@ -34,7 +37,31 @@ The first thing a REST service must do is provide a REST end point that can be c
 
 For our first bit of Helidon work we're going to REST enable a Java method that returns data, it doesn't take any input.
 
-Find the listAllStock method in the StorefrontResource.java file
+Firstly we need to tell Helidon that the StorefrontResource class responds to REST messages. 
+
+- On top of the **StorefrontResource** *class definition* add the following 2 annotations:
+  - `@Path("/store")`
+  - `@RequestScoped`
+
+
+Your class definition now should look something like
+
+```
+@Path("/store")
+@RequestScoped
+@Log
+@NoArgsConstructor
+public class StorefrontResource {
+   .....
+```
+
+The `@Path("/store")` annotation means that each time the Helidon framework brings the StorefromtResource in as a REST service that all of the capabilities will be registered under the /store url (the application can provide a higher level URL if it wants, but we're not going to do that here.)
+
+The `@RequestScoped` annotation means that the Helidon framework will create a new instance of the class automatically each time a rest request is made, and that the instance will be used for the duration of that request. This would allow us to modify the internal state of the class as the request is being processed and we can be sure that those modifications woudln't interfere with other subsequent or concurrent requests (well as long as we limit out changes to the StorefrontResource class of course)
+
+Helidon will now REST enable the class, but it needs to know what specific methods will be REST endpoints.
+
+- Scroll to the **listAllStock** method in the StorefrontResource.java file
 
 ```
 	public Collection<ItemDetails> listAllStock() {
@@ -56,43 +83,27 @@ Find the listAllStock method in the StorefrontResource.java file
 
 It's pretty simple, when called it does some logging, then gets a Collection of ItemDetails and returns it, doing a bit of Exception handling as it does so. Hopefully this type of thing will be very familiar to you.
 
-But how to we REST enable it ?
+- Add the following annotations on the **listAllStock** method:
 
-Firstly we need to tell Helidon that the StorefrontResource class responds to REST messages. At the start of the class definition place the annotations
+  - ```
+    @GET
+    @Path("/stocklevel")
+    @Produces(MediaType.APPLICATION_JSON)
+    ```
 
-```
-@Path("/store")
-@RequestScoped
-```
+    
 
-The `@Path("/store")` annotation means that each time the Helidon framework brings the StorefromtResource in as a REST service that all of the capabilities will be registered under the /store url (the application can provide a higher level URL if it wants, but we're not going to do that here.)
-
-The `@RequestScoped` annotation means that the Helidon framework will create a new instance of the class automatically each time a rest request is made, and that the instance will be used for the duration of that request. This would allow us to modify the internal state of the class as the request is being processed and we can be sure that those modifications woudln't interfere with other subsequent or concurrent requests (well as long as we limit out changes to the StorefrontResource class of course)
-
-
-Our class definition now starts something like
+Your code now should look like : 
 
 ```
-@Path("/store")
-@RequestScoped
-@Log
-@NoArgsConstructor
-public class StorefrontResource {
-   .....
+		@GET
+		@Path("/stocklevel")
+		@Produces(MediaType.APPLICATION_JSON)
+		public Collection<ItemDetails> listAllStock() {
+			// log the request
+			log.info("Requesting listing of all stock");
 ```
 
-Helidon will now REST enable the class, but it needs to know what specific methods will be REST endpoints.
-
-Place the following annotations of the listAllStock method
-
-```
-	@GET
-	@Path("/stocklevel")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Collection<ItemDetails> listAllStock() {
-		// log the request
-		log.info("Requesting listing of all stock");
-```
 These annotations mean :
 
 `@GET` the method will be called in response to http GET requests, For REST services by convention the GET method is the one called when retrieving data.
@@ -108,6 +119,8 @@ We've updated a single class, but in a traditional Java program something else w
 
 The com.oracle.labs.helidon.storefront.Main class starts the process. We're going to look into sections of this in more detail soon, but the main point here is to that the main method of the main class creates a Helidon server instance.
 
+- Open the file **Main.java**, located in the project *helidon-labs-storefront*, and in the folder *src/main/java*
+
 ```
 	public static void main(final String[] args) throws IOException {
 		setupLogging();
@@ -121,9 +134,18 @@ The com.oracle.labs.helidon.storefront.Main class starts the process. We're goin
 
 How does Helidon know what classes it needs to create REST endpoints for ?
 
-We need to create a new class to provide this information, and add an annotation to is so Helidon knows that's the new class provides this information.
+We need to create a new class to provide this information, and add an annotation to it so Helidon knows that's the new class provides this information.
 
-Look at the class com.oracle.labs.helidon.storefront.StorefrontApplication, add the `@ApplicationScoped` and `@ApplicationPath("/")` annotations as below
+- Locate the class **StorefrontApplication**
+
+- add the following 2 annotations:
+
+  - ```
+    @ApplicationScoped
+    @ApplicationPath("/")
+    ```
+
+The result should look like : 
 
 ```
 @ApplicationScoped
@@ -151,10 +173,11 @@ Note that in this case Application is not a Helidon annotation.
 
 When the Helidon server starts up it looks for classes with the @ApplicationPath path annotation and that extend the Application interface and then calls the getClasses method on those to get a set of classes that it will then examine in more detail for other annotations.
 
-Save your changes to the StorefrontResource file. then let's run the program.
+- Save your changes to the StorefrontResource file by hitting this icon: <img src="images/eclipse-save2.png" style="zoom:33%;" />
 
 ### Running the storefront program.
-In the package explorer locate the class com.oracle.labs.helidon.storefront.Main class. click right on it and chose `Run As` then `Java Application`
+- locate the. file **Main.java**. 
+- Right-click on it and chose **Run As**, then **Java Application**
 
 ![Eclipse Run Storefront Application Main Class](images/eclipse-run-storefront-main.png)
 
@@ -162,27 +185,22 @@ Eclipse may automatically switch to the console for you, but if not in the lower
 
 ![Eclipse console tab](images/eclipse-run-console-tab.png)
 
-In the console you'll see a bunch of output representing the loging information generated as the storefront starts up
+In the console you'll see a bunch of output representing the loging information generated as the storefront starts up.
 
 ```
-2020.01.03 19:39:40 INFO com.oracle.labs.helidon.storefront.Main Thread[main,5,main]: Starting server
-2020.01.03 19:39:41 INFO org.jboss.weld.Version Thread[main,5,main]: WELD-000900: 3.1.1 (Final)
-2020.01.03 19:39:41 INFO org.jboss.weld.Bootstrap Thread[main,5,main]: WELD-ENV-000020: Using jandex for bean discovery
-2020.01.03 19:39:41 INFO org.jboss.weld.Event Thread[main,5,main]: WELD-000411: Observer method [BackedAnnotatedMethod] private io.helidon.microprofile.openapi.IndexBuilder.processAnnotatedType(@Observes ProcessAnnotatedType<X>) receives events for all annotated types. Consider restricting events using @WithAnnotations or a generic type with bounds.
-2020.01.03 19:39:41 INFO org.jboss.weld.Event Thread[main,5,main]: WELD-000411: Observer method [BackedAnnotatedMethod] public org.glassfish.jersey.ext.cdi1x.internal.ProcessAllAnnotatedTypes.processAnnotatedType(@Observes ProcessAnnotatedType<?>, BeanManager) receives events for all annotated types. Consider restricting events using @WithAnnotations or a generic type with bounds.
-2020.01.03 19:39:42 INFO org.jboss.weld.Bootstrap Thread[main,5,main]: WELD-ENV-002003: Weld SE container c9a54300-79f1-4568-b61e-d9aa8322d693 initialized
-2020.01.03 19:39:42 INFO io.smallrye.openapi.api.OpenApiDocument Thread[main,5,main]: OpenAPI document initialized: io.smallrye.openapi.api.models.OpenAPIImpl@28279a49
-2020.01.03 19:39:42 INFO io.helidon.webserver.NettyWebServer Thread[main,5,main]: Version: 1.3.1
+... 
 2020.01.03 19:39:42 INFO io.helidon.webserver.NettyWebServer Thread[nioEventLoopGroup-2-2,10,main]: Channel '@default' started: [id: 0xe4f91c20, L:/0:0:0:0:0:0:0:0:8080]
 2020.01.03 19:39:42 INFO io.helidon.microprofile.server.ServerImpl Thread[nioEventLoopGroup-2-2,10,main]: Server started on http://localhost:8080 (and all other host addresses) in 71 milliseconds.
 2020.01.03 19:39:42 INFO com.oracle.labs.helidon.storefront.Main Thread[main,5,main]: Running on http://localhost:8080
 ```
 
-We can see the URL that our server is running on http://localhost:8080 (8080 is the port we've chosen in the Heldion config, we'll look at this later)
+On the last line of the output, we can see the URL that our server is running on http://localhost:8080 (8080 is the port we've chosen in the Heldion config, we'll look at this later)
 
-Now in a terminal on the desktop let's try opening it (to open a terminal click right on the Linux desktop in the client VM and take the Terminal option)
+- Open a Terminal window on the desktop (use the icon *Terminal* or click right on the Linux desktop in the client VM and take the Terminal option)
+- Issue the following **curl** command to test the http://localhost:8080/store/stocklevel REST endpoint
+  - ` curl -i -X GET http://localhost:8080/store/stocklevel`
 
-Using curl let's test the http://localhost:8080/store/stocklevel REST endpoint 
+Example Result : 
 
 ```
 $ curl -i -X GET http://localhost:8080/store/stocklevel
@@ -204,7 +222,7 @@ In the Eclipse console tab you'll see the request being processed
 
 We've got data ! Admittedly this is using fake data for now for testing purposes, but it's always a good idea to do that so you have predictable data to run your test cases against (the test data is for now generated using the com.oracle.labs.helidon.storefront.dummy.StockManagerDummy)
 
-Stop the service by clicking on the square stop button on the console tab
+- **Stop** the service by clicking on the square stop button on the console tab
 
 ![eclipse-stop-console-tab](images/eclipse-stop-console-tab.png)
 
@@ -213,8 +231,8 @@ Congratulations on creating your first REST API of the lab !
 ### Make the reserveStock REST service available
 We've seen how simple it is to make a existing Java method REST enabled and how to use the framework to start up a server for us. The next step is to look at how we REST enable a Java method that needs to take parameters from the REST request to do it's processing.
 
-
-In the com.oracle.labs.helidon.storefront.resources.StorefrontResource class locate the reserveStockItem method.
+- Re-open the file **StorefrontResource.java** 
+- locate the **reserveStockItem** method.
 
 ```
 	public ItemDetails reserveStockItem(ItemRequest itemRequest)
@@ -232,7 +250,18 @@ In the com.oracle.labs.helidon.storefront.resources.StorefrontResource class loc
 .....
 ```
 
-We're going to make this class respond to a POST request (in REST terms POST calls are used to update existing data) Add the following annotations to the reserveStockItem method
+We're going to make this class respond to a POST request (in REST terms POST calls are used to update existing data)
+
+- **Add** the following annotations to the **reserveStockItem** method:
+
+  - ```
+    @POST
+    @Path("/reserveStock")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    ```
+
+The result should look like this : 
 
 ```
 	@POST
@@ -259,8 +288,8 @@ So these four annotations specify that this method will be accessible using HTTP
 
 Basically in addition to running the server and configuring things Helidon is now doing all of the work of converting incoming JSON into the expected method parameters and of converting the outgoing object back into JSON !
 
-
-Save the changes to the StorefrontResource.java file and run the com.oracle.labs.helidon.storefront.Main class by clicking right on it, then choosing the "Run As" sub menu and "Java Application"
+- Save the changes to the StorefrontResource.java file
+- Run the **storefront.Main** class by clicking right on it, then choosing the "Run As" sub menu and "Java Application"
 
 If when running you get Exception messages in the console about "Failed to start server" and a whole bunch of stack trace including a "Bind Exception: Address already in use" then you forgot to stop the server in the last part of the lab. You will need to close the current console tab by clicking on the X in the console tab options.
 
@@ -281,7 +310,11 @@ Once you see the server running line
 
 Then we can use curl to test it.
 
-First let's get the initial set of data
+- **Get the initial set of data:**
+
+  `curl -i -X GET http://localhost:8080/store/stocklevel`
+
+Example result:
 
 ```
 $ curl -i -X GET http://localhost:8080/store/stocklevel
@@ -300,6 +333,12 @@ Note that we have 12 Pencils
 
 Now we'll use curl to send a REST request that will reserve 4 pencils (Note we have to specify the content type in the header, this is an http standard thing)
 
+- **Reserve** 4 pencils:
+
+  `curl -i -X POST -H "Content-Type:application/json" -d '{"requestedItem":"Pencil", "requestedCount":4}' http://localhost:8080/store/reserveStock`
+
+Result:
+
 ```
 $ curl -i -X POST -H "Content-Type:application/json" -d '{"requestedItem":"Pencil", "requestedCount":4}' http://localhost:8080/store/reserveStock
 HTTP/1.1 200 OK
@@ -313,7 +352,11 @@ content-length: 35
 
 The returned object represents the updated view of the Pencil stock, as expected it's no longer 12 pencils, but 8.
 
-Let's confirm that by making a request to get details of all the stock
+- Check this calling the **stocklevel** methot again:
+
+  `curl -i -X GET http://localhost:8080/store/stocklevel`
+
+Result:
 
 ```
 $ curl -i -X GET http://localhost:8080/store/stocklevel
@@ -326,6 +369,10 @@ content-length: 106
 [{"itemCount":2,"itemName":"Pen"},{"itemCount":8,"itemName":"Pencil"},{"itemCount":27,"itemName":"Brush"}]
 ```
 Now you've seen how Helidon can not only REST enable methods, but also handle the processing of method parameters as well as returned objects to and from the REST request.
+
+
+
+
 
 ### Authentication
 The problem is anyone who has access to the IP address and post can access our service, in this case that may not be a problem when retrieving data (though in most cases is woudl be) but we don;t want anyone causing problems by making people thing there are no pencils in the post room !
