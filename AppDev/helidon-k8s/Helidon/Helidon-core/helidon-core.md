@@ -8,13 +8,18 @@
 
 ## 1. The Helidon core
 
-Where we look at our initial java classes and REST enable them.
+#### Where we look at our initial java classes and REST enable them.
 
-Before anything happens you need to open the Eclipse IDE. There is an Eclipse icon on the desktop, double click it, and wait for Eclipse to start.
+- Open the Eclipse IDE. There is an Eclipse icon on the desktop, double click it, and wait for Eclipse to start.
 
-For all of the steps in this section of the lab we will be using the helidon-labs-storefront project in Eclipse. We will not be updating the Maven pom.xml file with the specific imports needed as we are focusing on the code side of things here, if you are going to be coding your own services we encourage you to look at the pom.xml file to see what dependencies we are making available to put project.
+For all of the steps in this section of the lab we will be using the **helidon-labs-storefront** project in Eclipse. We will not be updating the Maven pom.xml file with the specific imports needed as we are focusing on the code side of things here, if you are going to be coding your own services we encourage you to look at the pom.xml file to see what dependencies we are making available to put project.
 
-The main class we will be using is the com.oracle.labs.helidon.storefront.resources.StorefrontResource.java Locate it in the Eclipse project explorer (Hierarchical browser on the left of the Eclipse window) and open it.
+The main class we will be using is the **com.oracle.labs.helidon.storefront.resources.StorefrontResource.java** Locate it in the Eclipse project explorer (Hierarchical browser on the left of the Eclipse window) and open it.
+
+- Navigate to the **StorefrontResource** class:
+  - Open the project 
+  
+  
 
 You see a couple of annotations already on place on the class (`@Log` and `@NoArgsConstructor`) These are being processed by [Lombok](https://projectlombok.org/) Lombok is a set of Java based tools tha use annotations to perform common tasks for us. In this case the `@Log` annotation tells Lombok to automatically generate a Java system logger using the class name as the loggers name. The `@NoArgsConstructor` does what the name suggests and creates a constructor for us without any arguments. 
 
