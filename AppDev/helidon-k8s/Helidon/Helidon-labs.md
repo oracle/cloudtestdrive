@@ -38,19 +38,19 @@ As an **explanation of the document** (so please don't do this bit)
 
 When you make REST calls in the examples we show the the curl command line call you should use in a terminal, along with sample output. 
 
-For example 
+Example 
 
-```
-$ curl -i -X GET -u jack:password http://localhost:80/store/stocklevel
-HTTP/1.1 200 OK
-Server: openresty/1.15.8.2
-Date: Mon, 30 Dec 2019 19:16:20 GMT
-Content-Type: application/json
-Content-Length: 184
-Connection: keep-alive
+    ```
+    $ curl -i -X GET -u jack:password http://localhost:80/store/stocklevel
+    HTTP/1.1 200 OK
+    Server: openresty/1.15.8.2
+    Date: Mon, 30 Dec 2019 19:16:20 GMT
+    Content-Type: application/json
+    Content-Length: 184
+    Connection: keep-alive
 
-[{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
-```
+    [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},   {"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
+    ```
 
 Please note that the $ symbol is the shell prompt (this will vary in each VM) and that the text after the `curl` line is the output. This may of course vary, for example as you add and reserve stock in the database the output will change.
 
