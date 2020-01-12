@@ -24,13 +24,16 @@ The main class we will be using is **StorefrontResource.java**.   Locate it in t
   
   
 
+<details><summary>More on Lombok</summary>
+<p>
 You see a couple of annotations already on place on the class definition (`@Log` and `@NoArgsConstructor`) These are being processed by [Lombok](https://projectlombok.org/).  Lombok is a set of Java based tools tha use annotations to perform common tasks for us. In this case the `@Log` annotation tells Lombok to automatically generate a Java system logger using the class name as the loggers name. The `@NoArgsConstructor` does what the name suggests and creates a constructor for us without any arguments. 
-
 Lombok provides a wide variety of other useful annotations to speed up development, for example rather than manually creating getters and setters, hash codes and equals we can just use the @Lombok `@Data` annotation to create them for us automatically. As Lombok is executed when a class if compiled as we change the class any new fields would have getters / setters automatically created for us and any fields that had been removed would no longer have getters / setters created.
 
 It's not required that people use Lombok for java development of course, but I'm using it here to as to not clutter up the code, and also I'm lazy when it comes to coding and Lombok is a great tool for lazy coders :-)
 
 Enough on Lombok. Let's get to the Helidon work !
+</p>
+</details>
 
 ### Make the list stock REST Service available
 The first thing a REST service must do is provide a REST end point that can be called. Helidon makes this process very easy.
@@ -55,9 +58,13 @@ public class StorefrontResource {
    .....
 ```
 
-The `@Path("/store")` annotation means that each time the Helidon framework brings the StorefromtResource in as a REST service that all of the capabilities will be registered under the /store url (the application can provide a higher level URL if it wants, but we're not going to do that here.)
 
+<details><summary>More Explanations</summary>
+<p>
+The `@Path("/store")` annotation means that each time the Helidon framework brings the StorefromtResource in as a REST service that all of the capabilities will be registered under the /store url (the application can provide a higher level URL if it wants, but we're not going to do that here.)
 The `@RequestScoped` annotation means that the Helidon framework will create a new instance of the class automatically each time a rest request is made, and that the instance will be used for the duration of that request. This would allow us to modify the internal state of the class as the request is being processed and we can be sure that those modifications woudln't interfere with other subsequent or concurrent requests (well as long as we limit out changes to the StorefrontResource class of course)
+</p>
+</details>
 
 Helidon will now REST enable the class, but it needs to know what specific methods will be REST endpoints.
 
@@ -352,7 +359,7 @@ content-length: 35
 
 The returned object represents the updated view of the Pencil stock, as expected it's no longer 12 pencils, but 8.
 
-- Check this calling the **stocklevel** methot again:
+- Check this calling the **stocklevel** method again:
 
   `curl -i -X GET http://localhost:8080/store/stocklevel`
 
@@ -377,9 +384,12 @@ Now you've seen how Helidon can not only REST enable methods, but also handle th
 ### Authentication
 The problem is anyone who has access to the IP address and post can access our service, in this case that may not be a problem when retrieving data (though in most cases is woudl be) but we don;t want anyone causing problems by making people thing there are no pencils in the post room !
 
-So we need to add some security. Fortunately Helidon makes this very easy.
+So we need to add some security. Fortunately Helidon makes this very easy, we just add @Authenticated to the StorefrontResource class, this is applied to every REST call in the class.  If we wanted to limit it authentication as required to specific methods we'd just place it on those methods.
 
-Add @Authenticated to the StorefrontResource class, this is applied to every REST call in the class (If we wanted to limit it authentication as required to specific methods we'd just place it on those methods.)
+- **Add** the annotation to the **StorefrontResource** class
+  - `@Authenticated`
+
+Result:
 
 ```
 @Path("/store")
@@ -395,7 +405,12 @@ This simple single annotation tells Helidon that before even reaching your actua
 
 Save the changes to the StorefrontResource.java file stop the program if it's running and run the service again (Main class -> Run As -> Java Application)
 
-Try accessing the list endpoint, without setting the user details.
+Try accessing the list endpoint, without setting the user details - we expect an error now:
+
+- Run the **curl** command : 
+  - `curl -i -X GET http://localhost:8080/store/stocklevel`
+
+Result:
 
 ```
 $  curl -i -X GET http://localhost:8080/store/stocklevel
