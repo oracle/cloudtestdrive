@@ -21,8 +21,8 @@ The main class we will be using is **StorefrontResource.java**.   Locate it in t
   - Expand *src/main/java*, then *resources*, then double-click *StoreFrontResource.java*
   
   ![](images/eclipse-first-project.png)
-  
-  
+
+---
 
 <details><summary><b>More on Lombok</b></summary>
 <p>
@@ -37,6 +37,12 @@ It's not required that people use Lombok for java development of course, but I'm
 Enough on Lombok. Let's get to the Helidon work !
 </p>
 </details>
+
+---
+
+
+
+
 
 ### Make the list stock REST Service available
 The first thing a REST service must do is provide a REST end point that can be called. Helidon makes this process very easy.
@@ -63,6 +69,8 @@ public class StorefrontResource {
    .....
 ```
 
+---
+
 <details><summary><b>About the annotations</b></summary>
 <p>
 
@@ -73,7 +81,7 @@ The `@RequestScoped` annotation means that the Helidon framework will create a n
 </p>
 </details>
 
-
+---
 
 Helidon will now REST enable the class, but it needs to know what specific methods will be REST endpoints.
 
@@ -120,8 +128,11 @@ public Collection<ItemDetails> listAllStock() {
 	log.info("Requesting listing of all stock");
 ```
 
-<details><summary><b>These annotations mean</b></summary>
+---
+
+<details><summary><b>The annotations explained</b></summary>
 <p>
+
 
 
 `@GET` the method will be called in response to http GET requests, For REST services by convention the GET method is the one called when retrieving data.
@@ -134,6 +145,8 @@ This Produces annotation is very important to understand. It means that the fram
 
 </p>
 </details>
+
+---
 
 
 
@@ -184,7 +197,7 @@ public class StorefrontApplication extends Application {
 }
 ```
 
-
+---
 
 <details><summary><b>Explaining the annotations</b></summary>
 <p>
@@ -202,6 +215,8 @@ When the Helidon server starts up it looks for classes with the @ApplicationPath
 </p>
 
 </details>
+
+---
 
 
 
