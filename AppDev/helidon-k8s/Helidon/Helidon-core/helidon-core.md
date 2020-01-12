@@ -24,8 +24,9 @@ The main class we will be using is **StorefrontResource.java**.   Locate it in t
   
   
 
-<details><summary>**More on Lombok**</summary>
+<details><summary><b>More on Lombok</b></summary>
 <p>
+
 
 You see a couple of annotations already on place on the class definition (`@Log` and `@NoArgsConstructor`) These are being processed by [Lombok](https://projectlombok.org/).  Lombok is a set of Java based tools tha use annotations to perform common tasks for us. In this case the `@Log` annotation tells Lombok to automatically generate a Java system logger using the class name as the loggers name. The `@NoArgsConstructor` does what the name suggests and creates a constructor for us without any arguments. 
 
@@ -60,11 +61,11 @@ public class StorefrontResource {
    .....
 ```
 
-<details><summary>**About the annotations**</summary>
+<details><summary><b>About the annotations</b></summary>
 <p>
 
-The `@Path("/store")` annotation means that each time the Helidon framework brings the StorefromtResource in as a REST service that all of the capabilities will be registered under the /store url (the application can provide a higher level URL if it wants, but we're not going to do that here.)
 
+The `@Path("/store")` annotation means that each time the Helidon framework brings the StorefromtResource in as a REST service that all of the capabilities will be registered under the /store url (the application can provide a higher level URL if it wants, but we're not going to do that here.)
 
 The `@RequestScoped` annotation means that the Helidon framework will create a new instance of the class automatically each time a rest request is made, and that the instance will be used for the duration of that request. This would allow us to modify the internal state of the class as the request is being processed and we can be sure that those modifications woudln't interfere with other subsequent or concurrent requests (well as long as we limit out changes to the StorefrontResource class of course)
 </p>
