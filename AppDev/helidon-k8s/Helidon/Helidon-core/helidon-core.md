@@ -46,13 +46,15 @@ For our first bit of Helidon work we're going to REST enable a Java method that 
 Firstly we need to tell Helidon that the StorefrontResource class responds to REST messages. 
 
 - On top of the **StorefrontResource** *class definition* add the following 2 annotations:
-  - `@Path("/store")`
-  - `@RequestScoped`
+  - ```java
+    @Path("/store")
+    @RequestScoped
+    ```
 
 
 Your class definition now should look something like
 
-```
+```java
 @Path("/store")
 @RequestScoped
 @Log
@@ -110,15 +112,17 @@ It's pretty simple, when called it does some logging, then gets a Collection of 
 Your code now should look like : 
 
 ```
-		@GET
-		@Path("/stocklevel")
-		@Produces(MediaType.APPLICATION_JSON)
-		public Collection<ItemDetails> listAllStock() {
-			// log the request
-			log.info("Requesting listing of all stock");
+@GET
+@Path("/stocklevel")
+@Produces(MediaType.APPLICATION_JSON)
+public Collection<ItemDetails> listAllStock() {
+	// log the request
+	log.info("Requesting listing of all stock");
 ```
 
-These annotations mean :
+<details><summary><b>These annotations mean</b></summary>
+<p>
+
 
 `@GET` the method will be called in response to http GET requests, For REST services by convention the GET method is the one called when retrieving data.
 
@@ -127,6 +131,11 @@ These annotations mean :
 `@Produces(MediaType.APPLICATION_JSON)` means that the framework will convert the resulting object into JSON format (there are other formats available, for example APPLICATION_XML, but JSON is nice for humans to read and parse, and it also relatively compact compared to XML)
 
 This Produces annotation is very important to understand. It means that the framework handles all of the work in getting the right data type from the result for us and embedding it in the body of the REST response. We don't have to modify our code to generate the JSON (this is often a non trivial bit of work. We could if we wanted support multiple data formats as the return and the framework will chose the right format based on the type the headers in the incoming request asked for. This single annotation is doing a *lot* of work for us behind the scenes.
+
+</p>
+</details>
+
+
 
 ### But how does the framework know what to make available?
 We've updated a single class, but in a traditional Java program something else would be calling that class and starting the rest of the program. We need to have a class that does that for us and tells Helidon that this is a class we want enabled as a REST service.
@@ -175,7 +184,10 @@ public class StorefrontApplication extends Application {
 }
 ```
 
-There are several important elements here
+
+
+<details><summary><b>Explaining the annotations</b></summary>
+<p>
 
 `@ApplicationScoped` Means that the Helidon framework will automatically create a *single* instance of the class for the entire application, whenever the framework is asked for an instance of StorefrontApplication that single instance will be returned.
 
@@ -186,6 +198,12 @@ the `extends Application` means that there is a getClasses method which returns 
 Note that in this case Application is not a Helidon annotation.
 
 When the Helidon server starts up it looks for classes with the @ApplicationPath path annotation and that extend the Application interface and then calls the getClasses method on those to get a set of classes that it will then examine in more detail for other annotations.
+
+</p>
+
+</details>
+
+
 
 - Save your changes to the StorefrontResource file by hitting this icon: <img src="images/eclipse-save2.png" style="zoom:33%;" />
 
