@@ -20,6 +20,10 @@ This lab aims to introduce you to the major capabilities provided by the Helidon
 We are using Helidon MP, this is an annotation based framework, where to utilize it you just place annotations (e.g. @Path("/mypath") on a class or method. There is no need to modify the code beyond that. Helidon also comes in a variety called Helidon SE. The SE framework however requires you to actually make the Java method calls yourself, so you'd have to change your code. Helidon MP actually converts the annotations at runtime into calls to the Helidon SE Java API, so there is no need to change your logic. Helidon MP is also similar in style to frameworks like SPRING which are also annotation based, so we've chosen the MP version for these labs.
 
 ### Requirements to do the labs
+- **Access to the Linux Desktop set up by your instructor**.   This environment will contain Eclipse and Firefox applications, as well as a set of comman-line tools you will need : maven, docker, kubectl.  In a next iteration of this lab we will provide instructions to set this up on your own laptop.
+  - You will have to install a VNC viewer on your laptop to access this environment.
+
+
 We have assumed you understand the basic concepts of what a REST service is.
 
 The labs **do require basic programming knowledge**. As Helidon is a Java set of libraries then of course you need to have an understanding of simple Java programming. The labs are deliberately designed not to require detailed understanding of complex Java technologies, though if you do happen to be a Java expert you may be able to apply that knowledge to gain deeper understanding of how Helidon operates.
@@ -38,24 +42,21 @@ As an **explanation of the document** (so please don't do this bit)
 
 When you make REST calls in the examples we show the the curl command line call you should use in a terminal, along with sample output. 
 
-For example 
+*Example:*
 
 ```
-$ curl -i -X GET -u jack:password http://localhost:80/store/stocklevel
-HTTP/1.1 200 OK
-Server: openresty/1.15.8.2
-Date: Mon, 30 Dec 2019 19:16:20 GMT
-Content-Type: application/json
-Content-Length: 184
-Connection: keep-alive
+    $ curl -i -X GET -u jack:password http://localhost:80/store/stocklevel
+    HTTP/1.1 200 OK
+    Server: openresty/1.15.8.2
+    Date: Mon, 30 Dec 2019 19:16:20 GMT
+    Content-Type: application/json
+    Content-Length: 184
+    Connection: keep-alive
 
-[{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
+    [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},   {"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
-
-Please note that the $ symbol is the shell prompt (this will vary in each VM) and that the text after the `curl` line is the output. This may of course vary, for example as you add and reserve stock in the database the output will change.
 
 If you want to use other REST client tools available to you feel free to use them as long as you are skilled in doing so, but be aware that the tutors may not be able to assist you with those tools. 
-
 
 
 
