@@ -1276,7 +1276,7 @@ The problem is that at the moment all the caller gets to find out is that there'
 
 Let's **force an error**. 
 
-- Open **StorefrontResource.java
+- Open **StorefrontResource.java**
 - Change the instantiation of the stockManager so it's now null and doesn't use the dummy implementation:
 
 ```
