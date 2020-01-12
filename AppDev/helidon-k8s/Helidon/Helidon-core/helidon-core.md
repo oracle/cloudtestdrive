@@ -562,6 +562,11 @@ With a single annotation and a config file we've now ensured that our service is
 ### Adding extra endpoints to the application (and scope implications)
 A big application may have multiple sets of services, grouped into resources, so far we're looking at the StorefrontResource that handles the stock interactions. But what if we want to have other resources for other parts of the application ? 
 
+---
+
+<details><summary><b>Looking at the class ConfigurationResource</b></summary>
+<p>
+
 Let's look at the reserveStockItem method, you'll see that the code uses a minimumChange to ensure that at least a certain number of items are taken.
 
 ```
@@ -578,6 +583,9 @@ if (itemRequest.getRequestedCount() <= minimumChange.getMinimumChange()) {
 
 We can test this by running the service (from now on we're going to assume that you remember to stop the old instance of the program before starting the new one) requesting the reservation of a single item (by default MinimumChange contains a value of 2, so lets see what happens when we request a single Pencil)
 
+- Run a **curl** command, we **expect an error**
+  - `curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":2}' http://localhost:8080/store/reserveStock`
+
 ```
 $ curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":2}' http://localhost:8080/store/reserveStock
 HTTP/1.1 500 Internal Server Error
@@ -586,7 +594,7 @@ Date: Sun, 5 Jan 2020 13:25:30 GMT
 connection: keep-alive
 ```
 
-The code has generated an error, if we look at the logs in the Console tab we'll see the details
+The code has generated an error, if we look at the logs in the Console tab we'll see the details.
 
 ```
 
@@ -602,7 +610,8 @@ We could of course change the value of the minimumChange by modifying our code, 
 
 Simple ! We just create a new resource with REST endpoints to handle this.
 
-Open at the com.oracle.labs.helidon.storefront.resources.ConfigurationResource class.
+- Navigate to the folder **resources**
+- Open the file **ConfigurationResource.java**
 
 You'll see it sets up a minimumChange value, and has methods for getting and setting the minimum change value. 
 
@@ -618,7 +627,16 @@ Lastly the get method returns plain text, the response isn't wrapped into JSON (
 
 So we've created code that will set and get the minimum change value it contains. Next we need to tell Helidon that it's a resource that should be processed, we do that by adding our new resource to the list of application classes.
 
-We do now need to tell Helidon that the endpoints in ConfigurationResource are to be made available. Open the com.oracle.labs.helidon.storefront.StorefrontApplication, add the ConfigurationResource.class to the set of returned classes
+</p>
+
+</details>
+
+---
+
+We do now need to tell Helidon that the endpoints in ConfigurationResource are to be made available. 
+
+- Open the **StorefrontApplication.java** file
+- On the last line, containing `return CollectionsHelper`, add the **ConfigurationResource.class** to the set of returned classes as in the below example:
 
 ```
 @ApplicationScoped
@@ -634,9 +652,12 @@ public class StorefrontApplication extends Application {
 }
 ```
 
-Save the modified StorefrontApplication, and run the program.
+- Save the modified StorefrontApplication, and run the program.
 
-First let's see what the current value is
+- Run **curl** to see what the current value is:
+  -  `curl -i -X GET http://localhost:8080/minimumChange`
+
+Result:
 
 ```
 $ curl -i -X GET http://localhost:8080/minimumChange
@@ -649,9 +670,12 @@ content-length: 1
 2
 ```
 
-The result is 2, this is the default defined in the MinimumChange class. There is no @Authenticated on the class or the get method, so no need to provide user details
+The result is 2, this is the default defined in the MinimumChange class. There is no @Authenticated on the class or the get method, so no need to provide user details.
 
-Now let's change the value
+- Now let's change the value - **expect an error**:
+  -  `curl -i -X POST -u jill:password -d "3"  -H "Content-type:application/json"`
+
+Result:
 
 ```
 $ curl -i -X POST -u jill:password -d "3"  -H "Content-type:application/json" http://localhost:8080/minimumChange
@@ -662,6 +686,11 @@ connection: keep-alive
 ```
 
 Well, that's a new error message, we're forbidden to access the resource, even though we've provided a valid username and password. This is because of the `@RolesAllowed({ "admin" })`  annotation. User Jill is not one of the admins, to access a method with this annotation we need an admin, and that's jack. Let's try again using jack as the user
+
+- Retry the change, using **jack** as user:
+  -  `curl -i -X POST -u jack:password -d 3  -H "Content-type:application/json"`
+
+Result:
 
 ```
 $ curl -i -X POST -u jack:password -d 3  -H "Content-type:application/json" http://localhost:8080/minimumChange
@@ -674,7 +703,12 @@ content-length: 1
 3
 ```
 
-Success, we've changed it, or have we ? Let's see what we actually have there
+Success, we've changed it.
+
+- Let's see what we actually have there:
+  -  `curl -i -X GET http://localhost:8080/minimumChange`
+
+Result:
 
 ```
 $ curl -i -X GET http://localhost:8080/minimumChange
@@ -689,11 +723,13 @@ content-length: 1
 
 It's still 2 ! How come ?
 
-The answer relates to the scope of the ConfigurationResource class. We've set it to be `@RequestScoped`, so Helidon creates a new instance for each request, and the new instance creates a new instance of the MinimumChange with the default value of 2. That's a problem, we need to be able to make this change and not have it immediately revert the next time it's accessed !
+The answer relates to the **scope** of the ConfigurationResource class. We've set it to be `@RequestScoped`, so Helidon creates a new instance for each request, and the new instance creates a new instance of the MinimumChange with the default value of 2. That's a problem, we need to be able to make this change and not have it immediately revert the next time it's accessed !
 
 How do we fix this ? Simple, we just change the ConfigurationResource class form being `@RequestScoped` to `@ApplicationScoped` The Helidon framework will now create only a single instance of the ConfigurationResource class and re-use it whenever Helidon needs it.
 
-Change `@RequestScoped` to `@ApplicationScoped` in the ConfigurationRecourse class and save it
+- Open the file **ConfigurationResourse.java**
+
+- Change `@RequestScoped` to `@ApplicationScoped` in the ConfigurationRecourse class and save it
 
 ```
 @Path("/minimumChange")
@@ -703,9 +739,10 @@ Change `@RequestScoped` to `@ApplicationScoped` in the ConfigurationRecourse cla
 public class ConfigurationResource {
 ```
 
-Stop the current version of the program running, then re-start it which will use the updated versions of the code.
+- Stop the current version of the program running, then re-start it which will use the updated versions of the code.
 
-Let's just check the current value is 2 as we expect
+- Let's just check the current value is 2 as we expect
+  -  `curl -i -X GET http://localhost:8080/minimumChange`
 
 ```
 $ curl -i -X GET http://localhost:8080/minimumChange
@@ -718,7 +755,10 @@ content-length: 1
 2
 ```
 
-It is. Now let's make the change again
+It is, we get 2 as a result, as expected.
+
+- Now let's make the change again
+  -  `curl -i -X POST -u jack:password -d 3  -H "Content-type:application/json"`
 
 ```
 $ curl -i -X POST -u jack:password -d 3  -H "Content-type:application/json" http://localhost:8080/minimumChange
@@ -731,7 +771,8 @@ content-length: 1
 3
 ```
 
-And check that the change has held across requests
+- And check that the change has held across requests
+  -  `curl -i -X GET http://localhost:8080/minimumChange`
 
 ```
 $ curl -i -X GET http://localhost:8080/minimumChange
@@ -746,11 +787,15 @@ content-length: 1
 
 Great, it's done what we want and maintained the new value.
 
-Stop the program as usual.
+- Stop the program as usual.
 
 So we can see how to add additional sections of the application easily, just by adding additional resources providing them, but we've also seen how careful consideration needs to be made for the scope of an object.
 
 While we're here we're also going to add the StatusResource.class to the com.oracle.labs.helidon.storefront.StorefrontApplication classes list.
+
+- Navigate to **StorefrontApplication.java**
+- Add another class to the list:
+  -  `StatusResource.class`
 
 ```
 	public Set<Class<?>> getClasses() {
@@ -759,9 +804,10 @@ While we're here we're also going to add the StatusResource.class to the com.ora
 	}
 ```
 
-Save the StorefrontApplication.java file and restart the program
+- Save the StorefrontApplication.java file and restart the program
 
-We'll test the status is there
+- We'll test the status is there:
+  -  `curl -i -X GET http://localhost:8080/status`
 
 ```
 $ curl -i -X GET http://localhost:8080/status
@@ -774,8 +820,10 @@ content-length: 54
 {"name":"Name Not Set","alive":true,"version":"0.0.1"}
 ```
 
-Add the StatusResource as well, it's just does a hello world curl -i http://localhost:8080/status returning a bit of config info (more on this later)
+
 We'll look at what the StatusResource us used for later
+
+
 
 ### Injecting classes and resources
 We've now got ways to setup the MinimumChange and have it persistent, but it's now being used in multiple locations, the ConfigurationResource and the StorefrontResource, and at the moment they both create an instance, so though the Configuration resource (being application scoped) only exists once it's not actually using the same instance of the MinimumChange as the StorefrontResoruce. So a change to the value via the ConfigurationResource won;t actually be reflected in the behavior of the Storefront resource. But of a problem that !
