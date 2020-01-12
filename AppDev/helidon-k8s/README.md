@@ -18,6 +18,30 @@ Finally we look at **monitoring and graphing** to extract data on how the system
 
 In the future the labs will include sections on auto-scaling and the use of a Service Mesh, and other Kuberneties based cloud native capabilities such as A/B testing of new releases etc.
 
+### Lab conventions
+
+This is a rather long lab, therefore we used a few layout tricks to make the reading of this tutorial more intuitive : 
+
+- If you see a "Bullet" sign, this means ***you*** need to perform some sort of **action**.  This can be 
+  - Opening a window and navigating to some point in a file system
+  - Executing some command on the command line of a terminal window :
+    -  For example : `ls -al`
+
+As we cover quite some theoretical concepts, we included pretty verbose explanations.  To make the lab easier to grasp, we placed the longer parts in *Collapsibles*:
+
+<details><summary><b>Click this part to expand !</b></summary>
+<p>
+
+If you feel you are already pretty familiar with a specific concept, you can just skip it, or read quickly through the text, then re-collapse the text section by re-clicking on the title. 
+
+</p>
+
+</details>
+
+
+
+
+
 # A. Helidon labs
 The Helidon part of the labs show how to Split the Monolith into microservices using Helidon REST, to access data and to extend the microservices to suppport cloud native capabilities
 
