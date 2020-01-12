@@ -250,7 +250,6 @@ On the last line of the output, we can see the URL that our server is running on
 Example Result : 
 
 ```
-$ curl -i -X GET http://localhost:8080/store/stocklevel
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Fri, 3 Jan 2020 19:45:16 GMT
@@ -386,7 +385,6 @@ Then we can use curl to test it.
 Example result:
 
 ```
-$ curl -i -X GET http://localhost:8080/store/stocklevel
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Sat, 4 Jan 2020 14:56:12 GMT
@@ -409,7 +407,6 @@ Now we'll use curl to send a REST request that will reserve 4 pencils (Note we h
 Result:
 
 ```
-$ curl -i -X POST -H "Content-Type:application/json" -d '{"requestedItem":"Pencil", "requestedCount":4}' http://localhost:8080/store/reserveStock
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 11:09:11 GMT
@@ -428,7 +425,6 @@ The returned object represents the updated view of the Pencil stock, as expected
 Result:
 
 ```
-$ curl -i -X GET http://localhost:8080/store/stocklevel
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 11:14:02 GMT
@@ -488,7 +484,6 @@ Try accessing the list endpoint, without setting the user details - we **expect 
 Result:
 
 ```
-$  curl -i -X GET http://localhost:8080/store/stocklevel
 HTTP/1.1 401 Unauthorized
 Content-Length: 0
 Date: Sun, 5 Jan 2020 11:27:55 GMT
@@ -507,7 +502,6 @@ If we try with a user / password, in this case username jill, password password 
 Result:
 
 ```
-$  curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 11:29:54 GMT
@@ -587,7 +581,6 @@ We can test this by running the service (from now on we're going to assume that 
   - `curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":2}' http://localhost:8080/store/reserveStock`
 
 ```
-$ curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":2}' http://localhost:8080/store/reserveStock
 HTTP/1.1 500 Internal Server Error
 Content-Length: 0
 Date: Sun, 5 Jan 2020 13:25:30 GMT
@@ -660,7 +653,6 @@ public class StorefrontApplication extends Application {
 Result:
 
 ```
-$ curl -i -X GET http://localhost:8080/minimumChange
 HTTP/1.1 200 OK
 Content-Type: text/plain
 Date: Sun, 5 Jan 2020 13:49:44 GMT
@@ -678,7 +670,7 @@ The result is 2, this is the default defined in the MinimumChange class. There i
 Result:
 
 ```
-$ curl -i -X POST -u jill:password -d "3"  -H "Content-type:application/json" http://localhost:8080/minimumChange
+http://localhost:8080/minimumChange
 HTTP/1.1 403 Forbidden
 Content-Length: 0
 Date: Sun, 5 Jan 2020 13:58:22 GMT
@@ -693,7 +685,7 @@ Well, that's a new error message, we're forbidden to access the resource, even t
 Result:
 
 ```
-$ curl -i -X POST -u jack:password -d 3  -H "Content-type:application/json" http://localhost:8080/minimumChange
+http://localhost:8080/minimumChange
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 13:58:08 GMT
@@ -711,7 +703,6 @@ Success, we've changed it.
 Result:
 
 ```
-$ curl -i -X GET http://localhost:8080/minimumChange
 HTTP/1.1 200 OK
 Content-Type: text/plain
 Date: Sun, 5 Jan 2020 14:02:05 GMT
@@ -745,7 +736,6 @@ public class ConfigurationResource {
   -  `curl -i -X GET http://localhost:8080/minimumChange`
 
 ```
-$ curl -i -X GET http://localhost:8080/minimumChange
 HTTP/1.1 200 OK
 Content-Type: text/plain
 Date: Sun, 5 Jan 2020 14:11:40 GMT
@@ -758,10 +748,9 @@ content-length: 1
 It is, we get 2 as a result, as expected.
 
 - Now let's make the change again
-  -  `curl -i -X POST -u jack:password -d 3  -H "Content-type:application/json"`
+  -   `curl -i -X POST -u jack:password -d 3  -H "Content-type:application/json" http://localhost:8080/minimumChange`
 
 ```
-$ curl -i -X POST -u jack:password -d 3  -H "Content-type:application/json" http://localhost:8080/minimumChange
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 14:11:48 GMT
@@ -775,7 +764,6 @@ content-length: 1
   -  `curl -i -X GET http://localhost:8080/minimumChange`
 
 ```
-$ curl -i -X GET http://localhost:8080/minimumChange
 HTTP/1.1 200 OK
 Content-Type: text/plain
 Date: Sun, 5 Jan 2020 14:11:52 GMT
@@ -810,7 +798,6 @@ While we're here we're also going to add the StatusResource.class to the com.ora
   -  `curl -i -X GET http://localhost:8080/status`
 
 ```
-$ curl -i -X GET http://localhost:8080/status
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Tue, 7 Jan 2020 16:30:30 GMT
@@ -821,50 +808,69 @@ content-length: 54
 ```
 
 
-We'll look at what the StatusResource us used for later
+We'll look at what the StatusResource is used for later
 
 
 
 ### Injecting classes and resources
-We've now got ways to setup the MinimumChange and have it persistent, but it's now being used in multiple locations, the ConfigurationResource and the StorefrontResource, and at the moment they both create an instance, so though the Configuration resource (being application scoped) only exists once it's not actually using the same instance of the MinimumChange as the StorefrontResoruce. So a change to the value via the ConfigurationResource won;t actually be reflected in the behavior of the Storefront resource. But of a problem that !
+
+---
+
+<details><summary><b>Sharing resources between classes</b></summary>
+<p>
+
+We've now got ways to setup the MinimumChange and have it persistent, but it's now being used in multiple locations, the ConfigurationResource and the StorefrontResource, and at the moment they both create an instance, so though the Configuration resource (being application scoped) only exists once it's not actually using the same instance of the MinimumChange as the StorefrontResource. So a change to the value via the ConfigurationResource won't actually be reflected in the behavior of the Storefront resource. Bit of a problem that !
 
 Java itself can be used to solve this, we could create a factory to create a single instance, then and hide the MinimumChange constructor so it couldn't be created outside the factory, but that's a lot of hassle if we were to have to do this for all classes in an application. Fortunately for us Helidon has a solution which is connected with a capability called the Dependence Injection system which helps us with this, as well as providing a way to inject the object instances it creates.
 
 The actual creation of the instances is handled for us by Helidon, we just need to define the scope of the class as being ApplicationScoped (only a single instance per application) RequestScoped (An instances is created for the request and is used wherever needed within the request) There is also support for @SessionScoped where the created instance will be used across multiple http requests that together from a session, but we're not going to look into that further here.
 
-Firstly we need to edit the com.oracle.labs.helidon.storefront.data.MinimumChange class and make is ApplicationScoped (so only one instance no matter how often it's used in the application.)
+</p>
+
+</details>
+
+---
+
+- In the storefront application, navigate to the folder **data** and open the file **MinimumChange.java**
+- Make the class **ApplicationScoped**, so only one instance no matter how often it's used in the application by adding an annotation to the class:
+  -  `@ApplicationScoped`
 
 ```
 @ApplicationScoped
 public class MinimumChange {
 ```
 
-We then edit the com.oracle.labs.helidon.storefront.ConfigurationResource class and instead of creating an instance of MinimumChange we use the @Inject annotation on the field. This tells Helidon that when creating an instance of the Configuration resource it should find the one instance of MinimumChange and set the field to use it (creating the MinimumChange instance if there isn't already one)
+- Edit the file **ConfigurationResource.java** 
+- Replace the creation of an instance of MinimumChange with the **@Inject annotation** on the field. 
 
-```
-public class ConfigurationResource {
-	private static final JsonBuilderFactory JSON = Json.createBuilderFactory(Collections.emptyMap());
-	@Inject
-	private MinimumChange minimumChange;
-```
+  - ```java
+  public class ConfigurationResource {
+	  private static final JsonBuilderFactory JSON = Json.createBuilderFactory(Collections.emptyMap());
+	  @Inject
+	  private MinimumChange minimumChange;
+	  ```
 
-Strictly speaking there's no need to remove the manual instantiation as the @Inject annotation is processed later on in the class construction, but it's good practice not to create object we won't use.
+This tells Helidon that when creating an instance of the Configuration resource it should find the one instance of MinimumChange and set the field to use it (creating the MinimumChange instance if there isn't already one)
 
+- Edit the file **StorefrontResource.java**
+- **@Inject** the miniumumChange instead of creating an instance as well. 
 
-In the StorefrontResource class @Inject the miniumumChange instead of creating an instance as well. 
+  - ```
+	  @Inject
+	  private MinimumChange minimumChange;
+	  ```
 
-```
-	@Inject
-	private MinimumChange minimumChange;
-```
 As the Helidon framework knows that MinimumChange is ApplicationScoped this means that every tie a new StorefrontResource is created (once per request) the **same** instance of MinimumChange will be used (which is also the instance used in the ConfigurationResource)
 
-Save all of the class files, make sure that any previously running instance of the program is stopped and start it again with the saved changes.
+- **Save** all of the class files
+- **Stop** any previously running instance of the program 
+- **Start** it again with the saved changes.
 
 First we'll try and make a change that is less than the default minimum by requesting 2 pencils
 
+-  `curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":2}' http://localhost:8080/store/reserveStock`
+
 ```
-$  curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":2}' http://localhost:8080/store/reserveStock
 HTTP/1.1 500 Internal Server Error
 Content-Length: 0
 Date: Sun, 5 Jan 2020 14:40:05 GMT
@@ -883,8 +889,9 @@ com.oracle.labs.helidon.storefront.exceptions.MinimumChangeException: The reserv
 
 If we try and get 3 pencils then of course it will work
 
+-  `curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":3}' http://localhost:8080/store/reserveStock`
+
 ```
-$ curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":3}' http://localhost:8080/store/reserveStock
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 14:46:43 GMT
@@ -896,8 +903,9 @@ content-length: 35
 
 And if we check the minimum change it is of course 2
 
+-  `curl -i -X GET http://localhost:8080/minimumChange`
+
 ```
-$ curl -i -X GET http://localhost:8080/minimumChange
 HTTP/1.1 200 OK
 Content-Type: text/plain
 Date: Sun, 5 Jan 2020 14:44:54 GMT
@@ -909,8 +917,9 @@ content-length: 1
 
 Let's use Jacks admin rights to change the minimum change to 1
 
+-  `curl -i -X POST -u jack:password -d 1  -H "Content-type:application/json" http://localhost:8080/minimumChange`
+
 ```
-$ curl -i -X POST -u jack:password -d 1  -H "Content-type:application/json" http://localhost:8080/minimumChange
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 14:47:51 GMT
@@ -922,8 +931,9 @@ content-length: 1
 
 We can confirm that the Configuration resource recognizes the update
 
+-  `curl -i -X GET http://localhost:8080/minimumChange`
+
 ```
-$ curl -i -X GET http://localhost:8080/minimumChange
 HTTP/1.1 200 OK
 Content-Type: text/plain
 Date: Sun, 5 Jan 2020 14:48:33 GMT
@@ -935,8 +945,9 @@ content-length: 1
 
 Now let have Jill try getting 2 pencils again
 
+-  `curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":2}' http://localhost:8080/store/reserveStock`
+
 ```
-$  curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":2}' http://localhost:8080/store/reserveStock
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 14:49:59 GMT
@@ -951,7 +962,12 @@ This time the request worked as the business logic in the StorefrontResource cla
 Of course there are lots of situations where you'd want to use dependency injection like this which are different situations, for example you may just not want to have to deal with constructors !
 
 
+
+
 ### Constructors and Injecting properties from configuration
+<details><summary><b>Some theory</b></summary>
+<p>
+
 Those with more Java experience will be wondering how Helidon knows which constructor to use when creating an instance to `@Inject` The answer is simple, unless instructed differently Helidon will use the no  args constructor. In fact it couldn't use anything different as how would it know what values to use for parameters ?
 
 This of course may be a problem if the constructor if you want to use does actually require values for it's parameters.
@@ -960,27 +976,50 @@ To use a constructor that is not the default no args constructor then you need t
 
 Fortunately for us Helidon can get values to use for a constructor form the configuration, using the `@ConfigProperty` annotation on a constructors arguments
 
-Open the com.oracle.labs.helidon.storefront.data.MinimumChange class and add an additional constructor after the no args constructor, so the two constructors are as below
+</p>
 
+</details>
+
+---
+
+
+
+- In folder **data**, open the file **MinimumChange.java**
+- Add an additional constructor after the no args constructor:
+
+  ```@Inject
+    	public MinimumChange(@ConfigProperty(name = "app.minimumchange") Integer initialMinimumChange) {
+    		this.minimumChange.set(initialMinimumChange);
+    	}
+  ```
+  
+
+The result should look like :
 ```
-
+...
 	public MinimumChange() {
 		this.minimumChange.set(2);
 	}
 	
-    @Inject
+	@Inject
 	public MinimumChange(@ConfigProperty(name = "app.minimumchange") Integer initialMinimumChange) {
 		this.minimumChange.set(initialMinimumChange);
 	}
+	
+	public Integer getMinimumChange() {
+		return minimumChange.get();
+	}
+...
 ```
 
 
-The `@Inject` on  constructor means to use this constructor when creating instances for use with `@Inject` annotation on a field (Yes it would have been nicer if the two uses had different names) and `@ConfigProperty(name = "app.minimumchange")` tells Helidon to locate the property `app.minimumchange` in the Helidon configuration system.
+The `@Inject` on  constructor means to use this constructor when creating instances for use with `@Inject` annotation on a field (Yes it would have been nicer if the two uses had different names).  The syntax `@ConfigProperty(name = "app.minimumchange")` tells Helidon to locate the property `app.minimumchange` in the Helidon configuration system.
 
-If we save this change and restart the program then request the value for minimum change we'll see that it has a value of 3
+- **Save** this change and **restart** the program
+- Request the value for minimum change,  we'll see that it has a value of 3
+  -  `curl -i -X GET http://localhost:8080/minimumChange`
 
 ```
-$ curl -i -X GET http://localhost:8080/minimumChange
 HTTP/1.1 200 OK
 Content-Type: text/plain
 Date: Sun, 5 Jan 2020 15:04:30 GMT
@@ -990,7 +1029,12 @@ content-length: 1
 3
 ```
 
-But where does that value of 3 come from ? Well Helidon by default looks for a file called `META-INF/microprofile-config.properties` in it's classpath. You can find this in Eclipse by opening the src/main/resources folder.
+---
+
+<details><summary><b>Where does that value come from?</b></summary>
+<p>
+
+Helidon by default looks for a file called `META-INF/microprofile-config.properties` in it's classpath. You can find this in Eclipse by opening the src/main/resources folder.
 
 By convention the `microprofile-config.properties` is the place where you put default values that you want your program to use so you can guarentee that a property has at least one value set. Amongst other content has a line 
 
@@ -1006,7 +1050,20 @@ Well Helidon has a quite powerful properties inheritance model based on differen
 
 Let's go an add a new config file to the list !
 
-In the buildConfig method of the com.oracle.labs.helidon.storefront.Main class add the conf/storefront-config.yaml source in to the list of property sources to scan make sure it's the first in the list.
+</p>
+
+</details>
+
+---
+
+
+
+- Open the file **Main.java** in the *src/main/java* folder
+- Locate the **buildConfig** method at the end of the file
+- Add the **conf/storefront-config.yaml** source as the ***first element*** in the list of property sources to scan.
+  -  `ConfigSources.file("conf/storefront-config.yaml").optional());`
+
+Result should look like : 
 
 ```
 	private static Config buildConfig() {
@@ -1018,11 +1075,16 @@ In the buildConfig method of the com.oracle.labs.helidon.storefront.Main class a
 				ConfigSources.file("conf/storefront-config.yaml").optional());
 		configSources.add(ConfigSources.file("confsecure/storefront-security.yaml"));
 		configSources.add(ConfigSources.classpath("META-INF/microprofile-config.properties"));
-
+	
 		// create a config builder using these sources.
 		return Config.builder().sources(configSources).build();
 	}
 ```
+
+---
+
+<details><summary><b>Precedence of configuration values</b></summary>
+<p>
 
 Note it is optional, if the file is not there no error, it's just skipped. if the configuration file is non optional (it **must** be there) leaving the .optional() out will generate an exception at start up. That may be harsh, but it's far better to know immediately there's a problem than to only find out a while later when your program seems to be using values you didn't expect !
 
@@ -1038,10 +1100,19 @@ app:
 
 It has two active properties, the minimumchange of 4 here will override the default of 3 specified in the microprofile-config.properties file, which (because we're using a different constructor) will override the default constructor of MinimumChange setting the value to 2.
 
-Save the changes to the files, stop and restart the program. Let's look at thwt the minimum change value is now
+Configuration properties are stored as basic strings and Helidon will convert them automatically for numbers, booleans and the other basic Java types. If you need to have a configuration property converted into a different type (say an object representing an IP address) then you can create a converter that is given the String from the configuration properties and returns the new object type. This way you can place any type you have (or can write) a converted for as a property.
+
+</p>
+
+</details>
+
+---
+
+- **Save** the changes to the files, **stop** and **restart** the program. 
+- Let's check that the minimum change value is now 4:
+  -  `curl -i -X GET http://localhost:8080/minimumChange`
 
 ```
-$ curl -i -X GET http://localhost:8080/minimumChange
 HTTP/1.1 200 OK
 Content-Type: text/plain
 Date: Sun, 5 Jan 2020 15:19:09 GMT
@@ -1051,31 +1122,33 @@ content-length: 1
 4
 ```
 
-Now the minimum is set to 4 compared to the coding default of 2. 
 
-Go and modify the conf/storefront-config.yaml again and change the minimumchange value to be 1. Then restart the program and let's see what it's reporting now
-
-```
-$ curl -i -X GET http://localhost:8080/minimumChange
-HTTP/1.1 200 OK
-Content-Type: text/plain
-Date: Sun, 5 Jan 2020 15:24:04 GMT
-connection: keep-alive
-content-length: 1
-
-1
-```
-
-We can use the Helidon configuration properties system to make changes to the behavior of the system now without having to change the value of the code.
-
-Configuration properties are stored as basic strings and Helidon will convert them automatically for numbers, booleans and the other basic Java types. If you need to have a configuration property converted into a different type (say an object representing an IP address) then you can create a converter that is given the String from the configuration properties and returns the new object type. This way you can place any type you have (or can write) a converted for as a property.
 
 ### Monitoring the configuration for changes
-By default configuration files are read at startup, but it's also possible to define a configuration source that periodically checks for changes, enabling modifications tot he configuration to be dynamically reflected in the properties used by the Injection system..
+<details><summary><b>How it works</b></summary>
+<p>
 
-In the buildConfig method of com.oracle.labs.helidon.storefront.Main class  update the configuration for the storefront-config config file
+By default configuration files are read at startup, but it's also possible to define a configuration source that periodically checks for changes, enabling modifications tot he configuration to be dynamically reflected in the properties used by the Injection system.
 
-```
+This is obtained by using the *pollingStrategy* method.
+
+Now as well as being optional it's also got a polling strategy. In this case the strategy will look for changes to the file on a regular basis and if it detects any it will re-load the file bringing in the latest settings for the properties in that file. This is important because when the information is retrieved from the config it will reflect the latest version.
+
+When allowing for changing the configuration consideration needs to be given to when the data is actually extracted from the configuration. If you look at the StatusResource class you'll see that it's RequestScoped. This means that a new instance is created per request, and the properties that are @Injected reflect the value of those properties at the time the instance was created. If it had been application scoped like the MinimumChange class this would have been true as well, but as application scoped means there is only one per application we would have got the value when it was created, and no updates when the configuration changed (which is actually the right behavior in that case, so all is fine :-)
+
+</p>
+
+</details>
+
+---
+
+
+
+- Open the Main.java file
+- Update the configuration for the storefront-config config file as follows:
+  -  `ConfigSources.file("conf/storefront-config.yaml").pollingStrategy(PollingStrategies::watch).optional());`
+
+```java
 	private static Config buildConfig() {
 		// Build up a list of config sources, as we will have 4 in the end we need to do
 		// it as a list as the source method only supports up to 3 args before requiring
@@ -1085,20 +1158,18 @@ In the buildConfig method of com.oracle.labs.helidon.storefront.Main class  upda
 				ConfigSources.file("conf/storefront-config.yaml").pollingStrategy(PollingStrategies::watch).optional());
 		configSources.add(ConfigSources.file("confsecure/storefront-security.yaml"));
 		configSources.add(ConfigSources.classpath("META-INF/microprofile-config.properties"));
-
+	
 		// create a config builder using these sources.
 		return Config.builder().sources(configSources).build();
 	}
 ```
 
-Now as well as being optional it's also got a polling strategy. In this case the strategy will look for changes to the file on a regular basis and if it detects any it will re-load the file bringing in the latest settings for the properties in that file. This is important because when the information is retrieved from the config it will reflect the latest version.
 
-When allowing for changing the configuration consideration needs to be given to when the data is actually extracted from the configuration. If you look at the StatusResource class you'll see that it's RequestScoped. This means that a new instance is created per request, and the properties that are @Injected reflect the value of those properties at the time the instance was created. If it had been application scoped like the MinimumChange class this would have been true as well, but as application scoped means there is only one per application we would have got the value when it was created, and no updates when the configuration changed (which is actually the right behavior in that case, so all is fine :-)
 
-Run the program and access the status resource. 
+- Run the program and access the status resource:
+  -  `curl -i -X GET http://localhost:8080/status`
 
 ```
-$ curl -i -X GET http://localhost:8080/status
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 15:37:12 GMT
@@ -1112,7 +1183,7 @@ Note that it returns a name of "My Shop", (the default value in META-INF/micropr
 
 ***LEAVE THE PROGRAM RUNNING !***
 
-Edit the conf/storefront-config.yaml file and change the storename property to something unique to you (Say your name) then save the file. This is my updated version
+- Edit the **conf/storefront-config.yaml** file and change the **storename** property to something unique to you (Say your name) then save the file. This is my updated version
 
 ```
 app:
@@ -1120,10 +1191,10 @@ app:
   minimumchange: 1
 ```
 
-Access the status resource again
+- Access the status resource again:
+  -  `curl -i -X GET http://localhost:8080/status`
 
 ```
-$ curl -i -X GET http://localhost:8080/status
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 15:40:32 GMT
@@ -1137,7 +1208,7 @@ Note that the name is now what you changed it to ("Tims Shop" in this case)
 
 (It may take a short while for the modified file to be recognized and loaded, Helidon checks for config modifications in the background, it seems in my testing to recognize changes within 30 seconds, but usually it's faster)
 
-Of course this is a very simple change in configuration, but the principle applies to any configuration file change. So if you do have configuration information you expect to change whilst the program is running this is a very simple way to handle that without yourself having to remember to check for an process updates.
+
 
 
 ### Separating functionality by port
@@ -1162,7 +1233,9 @@ health:
 ```
 You will see that it defines two network ports, the primary one on port 8080 and an additional one on port 9080, then it specifies which port the metrics and health services will bind to (the 0.0.0.0 means listen  on all interfaces, not a specific IP address)
 
-Let's get this to work, modify the com.oracle.labs.helidon.storefront.Main class and include the conf/storefront-network.yaml file into the config properties
+-  Open the file **Main.java**
+- Include the conf/storefront-network.yaml file into the config properties
+  -  `configSources.add(ConfigSources.file("conf/storefront-network.yaml").optional());`
 
 ```
 	private static Config buildConfig() {
@@ -1175,22 +1248,25 @@ Let's get this to work, modify the com.oracle.labs.helidon.storefront.Main class
 		configSources.add(ConfigSources.file("conf/storefront-network.yaml").optional());
 		configSources.add(ConfigSources.file("confsecure/storefront-security.yaml"));
 		configSources.add(ConfigSources.classpath("META-INF/microprofile-config.properties"));
-
+	
 		// create a config builder using these sources.
 		return Config.builder().sources(configSources).build();
 	}
 ```
 
-Save the file then then restart the service you will see in the diagnostic output that two channels are now in use, the default on 8080 and admin on 9080.
+- **Save** the file and then **restart** the service
+- Check the diagnostic output :  two channels are now in use, the default on 8080 and admin on 9080.
 
 ```
 2020.01.05 15:24:03 INFO io.helidon.webserver.NettyWebServer Thread[nioEventLoopGroup-2-2,10,main]: Channel '@default' started: [id: 0x415dfcba, L:/0:0:0:0:0:0:0:0:8080]
 2020.01.05 15:24:03 INFO io.helidon.webserver.NettyWebServer Thread[nioEventLoopGroup-2-1,10,main]: Channel 'admin' started: [id: 0x6a962ef3, L:/0:0:0:0:0:0:0:0:9080]
 ```
 
-One nice point there is to note that it's not just your code that uses these properties, as we saw with the security options the Helidon framework itself also used configuration information from the files you specify !
-
 We will look more in the the services like health that are available on the admin port in a later exercise.
+
+
+
+
 
 
 ### Handling failures
@@ -1198,16 +1274,19 @@ It's a fact of life that problems sometimes occur. We saw in the console output 
 
 The problem is that at the moment all the caller gets to find out is that there's been a 500 server error. That's not a lot of help debugging things !
 
-Let's force an error. In the com.oracle.labs.helidon.storefront.resources.StorefrontResource class change the instantiation of the stockManager so it's now null and doesn't use the dummy implementation
+Let's **force an error**. 
+
+- Open **StorefrontResource.java
+- Change the instantiation of the stockManager so it's now null and doesn't use the dummy implementation:
 
 ```
 	private StockManager stockManager = null;
 ```
 
-Save and run it then make a request. 
+- **Save** and **run** it, then make a request - **we expect an error**:
+  -  `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
 
 ```
-$ curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel
 HTTP/1.1 500 Internal Server Error
 Content-Length: 0
 Date: Sun, 5 Jan 2020 15:52:22 GMT
@@ -1219,12 +1298,14 @@ Hardly surprisingly the request fails. Note the null pointer in the console tab 
 ```
 2020.01.05 15:52:22 INFO com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[helidon-1,5,server]: Requesting listing of all stock
 java.lang.NullPointerException
-	at com.oracle.labs.helidon.storefront.resources.StorefrontResource.listAllStock(StorefrontResource.java:104)
-	at com.oracle.labs.helidon.storefront.resources.StorefrontResource$Proxy$_$$_WeldClientProxy.listAllStock(Unknown Source)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at 
+	...
 ```
 
-Fortunately for us Helidon provides a simple way to handle the problem. On the listAllStock method add the annotation `@Fallback(fallbackMethod = "failedListStockItem")`
+Fortunately for us Helidon provides a simple way to handle the problem. 
+
+- Locate the **listAllStock** method
+- Add the annotation `@Fallback(fallbackMethod = "failedListStockItem")`
 
 ```
 	@GET
@@ -1257,10 +1338,11 @@ Note that the fallback method must have **exactly** the same method signature (p
 
 In this case we are building a WebApplicationException which has a response of 424 (Failed Dependency) but you could if desired do something completely different, for example construct and return a default set of data (as long as the data you returned matched the return type of the original method.)
 
-Run the program again, this time we get the 424 error we expected when we call the REST endpoint to listAllStock
+- **Save** and **Run** the program again
+- Call the REST endpoint : 
+  - `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel` 
 
 ```
-$ curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel
 HTTP/1.1 424 Failed Dependency
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 16:01:34 GMT
@@ -1272,13 +1354,12 @@ connection: keep-alive
 
 At least now the called is getting something useful !
 
-However it's not possible using this approach of calling a FallBack method to get the exception details and such like, so while we can do something that the client can process, we still don't get all of the details to let us create a sensible error message, for example there is a very big difference in how to resolve the problem if the stockManager tried to access an unknown host than if the service running on that host had an SQL authentication error.
-
 
 ### Handling code exceptions
 Helidon has another approach error handling we're going to look at here that does let us get a *lot* of information around the error and why it happened. Unfortunately there isn't a simple way for the developer to process that data, but let's see an example of it.
 
-In the reserveStockItems method of the com.oracle.labs.helidon.storefront.resources.StorefrontResource add the annotation `@Fallback(StorefrontFallbackHandler.class)`
+- Navigate to folder *resources* and open the file **StorefrontResource.java**
+- Add the annotation `@Fallback(StorefrontFallbackHandler.class)`
 
 ```
 @POST
@@ -1295,10 +1376,11 @@ In the reserveStockItems method of the com.oracle.labs.helidon.storefront.resour
 
 This annotation means the in the event of an exception Helidon will call a method on the handler class (look at the class if you like) which generates a response for you. It has available lots more info on what the error cause was.
 
-Let's save the change and run the program, making a call to the reserveStockItem REST API endpoint.
+- Let's save the change and run the program, 
+- Make a call to the reserveStockItem REST API endpoint:
+  -  `curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":6}' http://localhost:8080/store/reserveStock`
 
 ```
-$ curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":6}' http://localhost:8080/store/reserveStock
 HTTP/1.1 500 Internal Server Error
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 16:16:54 GMT
@@ -1313,6 +1395,9 @@ Now the caller has more details on what went wrong.
 The fallback class is com.oracle.labs.helidon.storefront.resources.fallback.StorefrontFallbackHandler. If you're interested do have a look at it, but be warned it has quite a lot of slightly complex Java code for manipulating stacks, parameters and so on.
 
 ### Handling runtime exceptions
+<details><summary><b>About exceptions</b></summary>
+<p>
+
 Some problems occur just because the environment hasn't behaved the way we want. For example it's not unknown for a service to make a call to another service (more on this coming up) and that other service just doesn't respond in time due to a network error.
 
 To help handle this type of thing and at least get a response back to the called Helidon supports a number of fault tolerance annotations in addition to the @Fallback annotation.
@@ -1327,7 +1412,19 @@ CircuitBreakers - Defines the situation were a load may be sufficiently high tha
 
 Fallbacks - we've already looked at these
 
-It's hard to actually simulate these in action, but we're going to show how to define a timeout. for the com.oracle.labs.helidon.storefront.resources.StorefrontResource class add the annotation `@Timeout(value = 15, unit = ChronoUnit.SECONDS)`
+</p>
+
+</details>
+
+---
+
+
+
+It's hard to actually simulate these in action, but we're going to show how to define a timeout.
+
+- Open the file **StorefrontResource.java** class 
+- Add the annotation 
+  - `@Timeout(value = 15, unit = ChronoUnit.SECONDS)`
 
 ```
 @Path("/store")
@@ -1371,3 +1468,11 @@ The next lab in the *Helidon for Cloud Native* section is
 
 
 [Go to *Helidon for Cloud Native* overview Page](../Helidon-labs.md)
+
+```
+
+```
+
+```
+
+```
