@@ -321,6 +321,11 @@ The result should look like this :
 .....
 ```
 
+---
+
+<details><summary><b>The annotations explained</b></summary>
+<p>
+
 `@POST` as indicated above means the method will respond to http POST requests
 
 `@Path("/reserveStock")` as you'd expect means it will do it on /seserveStock but as the class itself has a path of /store tha absolute Path is /store/reserveStock (remember in the application it specifies a path starting at /)
@@ -335,8 +340,19 @@ So these four annotations specify that this method will be accessible using HTTP
 
 Basically in addition to running the server and configuring things Helidon is now doing all of the work of converting incoming JSON into the expected method parameters and of converting the outgoing object back into JSON !
 
+</p>
+
+</details>
+
+---
+
 - Save the changes to the StorefrontResource.java file
 - Run the **storefront.Main** class by clicking right on it, then choosing the "Run As" sub menu and "Java Application"
+
+---
+
+<details><summary><b>An error ?</b></summary>
+<p>
 
 If when running you get Exception messages in the console about "Failed to start server" and a whole bunch of stack trace including a "Bind Exception: Address already in use" then you forgot to stop the server in the last part of the lab. You will need to close the current console tab by clicking on the X in the console tab options.
 
@@ -347,6 +363,12 @@ This should switch to the still running tab. Click the square red stop icon in t
 ![eclipse-stop-console-tab](images/eclipse-stop-console-tab.png)
 
 Once the red stop icon turns grey the program is stopped and you can try re-starting the Main program as described above.
+
+</p>
+
+</details>
+
+---
 
 Once you see the server running line
 
@@ -422,9 +444,22 @@ Now you've seen how Helidon can not only REST enable methods, but also handle th
 
 
 ### Authentication
+---
+
+<details><summary><b>The theory</b></summary>
+<p>
+
 The problem is anyone who has access to the IP address and post can access our service, in this case that may not be a problem when retrieving data (though in most cases is woudl be) but we don;t want anyone causing problems by making people thing there are no pencils in the post room !
 
 So we need to add some security. Fortunately Helidon makes this very easy, we just add @Authenticated to the StorefrontResource class, this is applied to every REST call in the class.  If we wanted to limit it authentication as required to specific methods we'd just place it on those methods.
+
+This simple single annotation tells Helidon that before even reaching your actual code that for all incomming requests the framework must check that the request includes valid authentication in some form. Note that @Authenticated does *not* specify what authentication mechanism is used, it could be basic auth (the obscured user name and password are in the request headers) or something more powerful like oauth2. We'll see in a bit more detail later in the section how the security is defined.
+
+</p>
+
+</details>
+
+---
 
 - **Add** the annotation to the **StorefrontResource** class
   - `@Authenticated`
@@ -441,11 +476,11 @@ public class StorefrontResource {
    .....
 ```
 
-This simple single annotation tells Helidon that before even reaching your actual code that for all incomming requests the framework must check that the request includes valid authentication in some form. Note that @Authenticated does *not* specify what authentication mechanism is used, it could be basic auth (the obscured user name and password are in the request headers) or something more powerful like oauth2. We'll see in a bit more detail later in the section how the security is defined.
+- Save the changes to the StorefrontResource.java file 
+- Stop the program if it's running
+- Run the service again (Main class -> Run As -> Java Application)
 
-Save the changes to the StorefrontResource.java file stop the program if it's running and run the service again (Main class -> Run As -> Java Application)
-
-Try accessing the list endpoint, without setting the user details - we expect an error now:
+Try accessing the list endpoint, without setting the user details - we **expect an error** now:
 
 - Run the **curl** command : 
   - `curl -i -X GET http://localhost:8080/store/stocklevel`
@@ -465,6 +500,12 @@ As we would expect with no user details we get a 401 unauthorized error.
 
 If we try with a user / password, in this case username jill, password password (Yes, I know password is a very bad password, but this is for demo lab purposes only !)
 
+- **Curl command**
+
+  `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
+
+Result:
+
 ```
 $  curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel
 HTTP/1.1 200 OK
@@ -476,16 +517,10 @@ content-length: 107
 [{"itemCount":2,"itemName":"Pen"},{"itemCount":12,"itemName":"Pencil"},{"itemCount":27,"itemName":"Brush"}]
 ```
 
-If we try with a random password / username we get (as I'd hope you expect) an error as well
+---
 
-```
-$  curl -i -X GET -u zaphod:beeblebrox http://localhost:8080/store/stocklevel
-HTTP/1.1 401 Unauthorized
-Content-Length: 0
-Date: Sun, 5 Jan 2020 11:30:47 GMT
-WWW-Authenticate: Basic realm="helidon"
-connection: keep-alive
-```
+<details><summary><b>How does this work?</b></summary>
+<p>
 
 So how does the Authorized annotation determine what's allowed and what's not ? Basically it's defined using configuration properties that are imported from a configuration file. We'll see later how Helidon is told where it's configuration files are, but for for your reference the security configuration we're using is below.
 
@@ -512,9 +547,17 @@ This defined a very basic provider which is useful for testing (There are many o
 
 The config here has users named jack, jill, joe password for all is password. It also supports the concept of roles, where the code can check if a user has a role, thus allowing the framework to be instructed that anyone with role admin can access an endpoint, but disallowing other non admin users (even if they are authenticated)
 
-Stop the application using the square stop button on the console tab.
+</p>
+
+</details>
+
+---
+
+- **Stop** the application using the square stop button on the console tab.
 
 With a single annotation and a config file we've now ensured that our service is secured !
+
+
 
 ### Adding extra endpoints to the application (and scope implications)
 A big application may have multiple sets of services, grouped into resources, so far we're looking at the StorefrontResource that handles the stock interactions. But what if we want to have other resources for other parts of the application ? 
