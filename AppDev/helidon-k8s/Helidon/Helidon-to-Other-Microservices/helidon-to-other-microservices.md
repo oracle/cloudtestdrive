@@ -170,15 +170,28 @@ com.oracle.labs.helidon.storefront.restclients.StockManagerStatus/mp-rest/url=ht
 ```
 
 As you can probably guess this is for the REST client com.oracle.labs.helidon.storefront.restclients.StockManagerStatus, but in this case I didn't specify a config key in the `@RegisterRestClient` annotation, so it defaulted to the fully qualified classname based property names.
-
 </p></details>
+---
 
 
 
 ### Creating the REST client.
 It's possible to manually create a REST client using the interface, but it's far better to let Helidon use the @RestClient coupled with @Inject to do this for us. That way we don't have to worry about closing the client to reclaim resources and so on.
 
-In the com.oracle.labs.helidob.storefront.resources.StorefrontResource locate where the field of type StockManager is defined, add the @Inject and @RestClient annotations to it and remove the null initializer.
+- Navigate to the **resources** folder and open the file **StorefrontResource.java**
+
+- Locate the line where the **stockManager** is defined
+
+- Add the following annotations:
+
+  - ```
+    @Inject
+    @RestClient
+    ```
+
+- Remove the null initializer.
+
+Result:
 
 ```
 	@Inject
@@ -190,12 +203,14 @@ Now when the StorefrontResource class is initialized the Helidon runtime will dy
 
 Basically this looks pretty simple in comparisson to making all of the http requests by hand !
 
-Save the changes to the files and run the storefront main class. Also if it's not still running make sure to run the stockmanager.
+- **Save the changes** to the files
+- **Run** the storefront main class.
 
-let's try accessing the storefront service, this use the REST Client to pass the request to the stockmanager service which will (as before) go to the database. This may take a few seconds to respond to the first request as there is a lot of stuff which is initialized on demand here. 
+Let's try accessing the storefront service using **curl**.  This may take a few seconds to respond to the first request as there is a lot of stuff which is initialized on demand here. 
+
+-  `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
 
 ```
-$ curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Mon, 6 Jan 2020 14:33:57 GMT
@@ -210,20 +225,29 @@ We have now got the data back from the database itself. Our client is working, a
 
 
 ---
-**Async requests**
+<details><summary><b>Async requests</b></summary>
+<p>
+
 You may have noticed the delay in the request, if you try the request again it's much faster, this is because the second time all of the lazy initialization will have been done. But in some cases it may be that every call to a request takes a long time (perhaps it's getting data from a real physical service !) which may leave the client execution blocked until the request completes.
 
 One solution to this is to make the request, then go and do something else while waiting for the response. We're not going go to into detail on this, but the REST client supports the use of async operations by having the returned object not be the actual object (which would require the entire call sequence to have completed) but a object called a `CompletionStage` The CompletionStag objects are created by the framework on the client side, so the response is much faster, and by looking into the CompletionStage object it's possible to determine if the call has finished, and if so what the result was. While waiting for it to finish the code can do other things.
 
+</p></details>
 
+---
 
+<details><summary>Authentication</summary>
+<p>
 
-**Authentication**
 You may be wondering about the authentication here. When we made the curl call we specified the usersername and password, but that was to the storefront service. None of our code event sees the user name / password, that's all done by the framework, so how can it be passed on to the stockmanager service (which if it didn't get the username and password would have thrown a 401 Unauthorized error.
 
 The solution to this is another reason why using Helidon (or other microprofile based frameworks) is exceptionally useful. Helidon automatically extracts the authorization data for us when it received the storefront request. That information is held within the framework as part of the request and when the subsequent requests are made via the REST Client is till automatically add the authentication data for us. Thus the users information is propagated throughout the sequence of requests.
 
 This is why we've used the same user credentials, and in a production environment you'd use the same security system across both services.
+
+</p></details>
+
+---
 
 
 
