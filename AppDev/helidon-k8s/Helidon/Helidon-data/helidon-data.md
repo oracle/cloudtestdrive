@@ -8,6 +8,10 @@
 
 ## 2. Helidon and Databases
 
+<details><summary><b>Introduction to Databases</b></summary>
+<p>
+
+
 Unlike SPRING with the SPRINGData projects microprofile (and thus Helidon) does not currently have a built in mechanism for accessing databases. This is however something that is being looked at and hopefully at some point there will be a Microprofile standard for accessing data which Helidon can implement. At that point these labs will be updated to reflect the changes.
 
 However, just because Microprofile and thus Helidon do not have a set of data access annotations and abstractions themselves does not mean you can't access databases (and other persistence solutions) from with Helidon microservices. You simply use the existing technologies such as the Java Persistence API (JPA) and the JTA (Java Transaction API)
@@ -29,6 +33,14 @@ We will be looking at the helidon-labs-stockmanager project. This set of classes
 This lab does not attempt to go into all of the detail or JPA and JTA, the goal is to see how they can be handled in a Helidon based microservice. Because of that the lab does not go into great about how those Java API's operate. 
 
 If you want to understand JPA and JTA in a lot of detail there are courses available, and of course lots of books on the subject
+
+</p></details>
+
+---
+
+
+
+
 
 ### Configuring the project to be personal to you
 For this project all attendees will be operating on a shared database, updating the same table. To ensure that your work doesn't interfere with other peoples work you need to provide a unique identity for yourself
@@ -95,6 +107,9 @@ public class StockLevel {
 }
 ```
 
+<details><summary><b>The annotations explained</b></summary>
+<p>
+
 `@Data`, `@NoArgsConstructor` and `@AllArgsConstructor` are Lombok annotations that tell Lombok to automatically create the constructors,getters and setters, toString, equals and hashcode. We could of course do this manually or use tooling in the IDE to generate them, but using Lombok means that the source code is less cluttered and also that if we change the class (say by adding new fields) all of the related methods and constructors update automatically.
 
 The other annotations are used by Java persistence to identify what the classes are :
@@ -109,6 +124,12 @@ On our fields in the class
 `@EmbeddedId` means that the primary key is this object, because it's embedded the actual primary key can have multiple columns
 
 `@Column` defines the details of the column name, again it can be generated automatically, but this will force a specific name.
+
+</p></details>
+
+---
+
+
 
 - Open the file **StockId** in the same folder
 
@@ -127,6 +148,11 @@ public class StockId implements Serializable {
 	private String itemName;
 }
 ```
+
+
+<details><summary><b>The annotations explained</b></summary>
+<p>
+
 The Lombok annotations are the same
 
 The class level `@Embeddable` means that JPA treats thsi class as part of an Entity (so a DB row in this case) which means JPA will construct the primary key using the fields in this class
@@ -145,6 +171,10 @@ It is important to note that each item retrieved from or saved to the database u
 Initially the database is setup to use the JPA / JTA (transaction system) to load in the configuration. The database settings are defined in the confsecure/stockmanager-database.yaml file and in the src/main/resources/META-INF/persistence.xml file. The latter is automatically read by the JPA and the config is processed using the Helidon configuration system and handed to the Java Persistence layers.
 
 The split between the files is more one of the stockmanager-database.yaml file contains things that are specific to a database instance, e.g. usernames, passwords, JDBC Urls. Wheras the persietence.xml file defines stuff that's not instance specific but is project specific, for example which classes are persisted.
+
+</p></details>
+
+---
 
 
 
