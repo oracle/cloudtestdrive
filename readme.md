@@ -25,7 +25,7 @@ During this day you will be able to experience the various cloud services hands-
 
 ### WebLogic Labs   -- ***New*** ! --
 
-+ WebLogic Cloud - VM Image via Marketplace    --***under development, link coming soon***-- 
++ [WebLogic Cloud - VM Image via Marketplace](https://oracle.github.io/cloudtestdrive/AppDev/wls/?page=wlscnonjrf.md) 
   Launch WebLogic on OCI Virtual machines, using the pre-configured image provided by Oracle in the Marketplace
 
 + [Running WebLogic on Docker](AppDev/wls/WLS_on_Docker.md)
