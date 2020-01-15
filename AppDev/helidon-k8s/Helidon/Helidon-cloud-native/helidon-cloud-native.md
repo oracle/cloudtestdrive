@@ -18,10 +18,10 @@ Kuberneties does not itself have built in monitoring tools, however many users o
 ### Health
 Helidon has built in health info as standard. By default this is available on the same port as the service, but our runtime config (conf/storefront-network.yaml) separates these  onto different ports (8080 for the service, 9080 for the non service) 
 
-Look at http://localhost:9080/health to see the details of the default health servcie
+- Look at the details of the default health service:
+  -  `curl -i -X GET http://localhost:9080/health`
 
 ```
-$ curl -i -X GET http://localhost:9080/health
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Mon, 6 Jan 2020 18:28:28 GMT
@@ -38,7 +38,9 @@ Services like kubenetes will know if a microservice has crashed as the applicati
 
 Provding a Liveness capability is pretty simple. Somewhere in the class structure you just need a class that implements the HealthCheck interface (Helidon uses this interface to know what method to call to run the test) and is annotated with `@Liveness` 
 
-Open the com.oracle.labs.helidon.storefront.health.LivenessChecker class and add the `@Liveness` annotation
+- Navigate to the folder **health**, and open the file **LivenessChecker.java**
+- Add an annotation to the class definition:
+  -  `@Liveness`
 
 ```
 
@@ -60,27 +62,27 @@ Because this implements the HealthCheck interface it must provide a implementati
 	}
 ```
 
+<details><summary><b>What is a Liveliness check?</b></summary>
+<p>
+
 What you actually do in the liveness check requires careful consideration. It should not be to complex or use a lot of resources, because that in itself will reduce the resources available to process real requests. Yet the liveness check must also ensure that it actually tests something useful, there's no point in just returning "OK" if you don't actually test the operation of the microservice.
 
 THe Liveness check we have here is **not** one that you would use in production. WHile it does test the web service part of the Helidon stack it doesn't check the correct operation of the storefront. However the storefont is pretty simple so there's not really much that could be tested.
 
 As another reason this particular Liveness checker is not production ready in that it's actually implemented so we can create a fake scenario where the system is not responding to a Liveness check if the file /frozen exists. This is provided so we can demonstrate how Kubernetes will behave in the event that a Liveness check does fail. Obviously in a production system you're not going to be doing that.
 
-Once you've added the `@Liveness` annotation to the LivenessChecker class.
+</p></details>
+
+---
+
+
+
+- Save the changes and **restart** the application. 
+
+- Look at the results of the health endpoint:
+  -  `curl -i -X GET http://localhost:9080/health`
 
 ```
-@ApplicationScoped
-@Liveness
-@Log
-public class LivenessChecker implements HealthCheck {
-```
-
-Save it and restart the application. 
-
-Look at the results of the health endpoint
-
-```
-$ curl -i -X GET http://localhost:9080/health
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Mon, 6 Jan 2020 18:45:58 GMT
@@ -97,6 +99,9 @@ The health endpoint now includes the data we return from the Liveness check, in 
 ```
 
 ### Readiness
+<details><summary><b>Intro on Readiness</b></summary>
+<p>
+
 If an application crashes then clearly the solution is to restart it, and in basically most cases if it's in deadlock the only option is to restart, so cloud native platforms like Kubernetes do just that in those situations. 
 
 There is however a different situation where a microservice itself can be behaving just fine, but it can't actually process requests because a service it depends on is for some reason not available. In many situations the downstream service will likely become available again - perhaps there has been a temporary network issue. 
@@ -105,9 +110,15 @@ In this situation restarting the higher level microservice won;t solve the probl
 
 Readiness is a way to let the microservices runtime determine if a service has everything it needs to respond to requests. Helidon has a build in configuration to offer a readiness response to platforms like Kuberneties, but like Liveness you need to look at the actual implementation carefully, you don't want to be making expensive calls to the downstream service, but equally you want to make sure that it is responding. In particular if the downstream service does become ready again your readiness checker needs to return to reflecting that in the readiness response it generates.
 
-Open the come.oracle.labs.helidon.storefront.health.ReadinessChecker class, add the `@Readiness` annotation to the class (which already implements HealthCheck)
+</p></details>
 
-Just for fun this class used a RestClient to make a request to the status method of the stockmanager.
+---
+
+
+
+- Open the file **ReadinessChecker.java**
+- Add the following annotation to the class ReadinessChecker
+  -  `@Readiness`
 
 ```
 @ApplicationScoped
@@ -116,12 +127,12 @@ Just for fun this class used a RestClient to make a request to the status method
 public class ReadinessChecker implements HealthCheck {
 ```
 
-Save your changes and restart the storefront, if it's not already running also run the stockmanager as the storefront readiness makes a test request of the stockmanager status
+- Save your changes and **restart** the storefront
 
-Let's use the URL that goes direct to the storefront ready state
+- Call the URL that goes direct to the storefront ready state:
+  -  `curl -i -X GET http://localhost:9080/health/ready`
 
 ```
-$ curl -i -X GET http://localhost:9080/health/ready
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Mon, 6 Jan 2020 18:57:54 GMT
@@ -131,12 +142,17 @@ content-length: 127
 {"outcome":"UP","status":"UP","checks":[{"name":"storefront-ready","state":"UP","status":"UP","data":{"storename":"My Shop"}}]}
 ```
 
-The readiness check is informing us that the service is ready and can process requests, use the eclipse console tab to switch to and stop the stockmanager process and stop it.
+The readiness check is informing us that the service is ready and can process requests.
 
-Now let's make another readiness request
+Let's check that the service can indeed inform us of an issue - the backend storemanager not being available in this case :
+
+- On the **Eclipse console tab**, use the **Stop** button to stop the **stockmanager** process and stop it.
+
+Now let's make another readiness request to the storefront :
+
+-  `curl -i -X GET http://localhost:9080/health/ready`
 
 ```
-$ curl -i -X GET http://localhost:9080/health/ready
 HTTP/1.1 503 Service Unavailable
 Content-Type: application/json
 Date: Mon, 6 Jan 2020 19:00:05 GMT
@@ -148,10 +164,11 @@ connection: keep-alive
 
 The service is "DOWN" as it can't process requests properly, so a cloud native platform like Kubernetes would no longer send requests to this instance.
 
-Restart the stockmanager and as soon as it's up try the readiness test on the storefront again
+- Restart the stockmanager 
+- Rerun the readiness check:
+  -  `curl -i -X GET http://localhost:9080/health/ready`
 
 ```
-$ curl -i -X GET http://localhost:9080/health/ready
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Mon, 6 Jan 2020 19:01:33 GMT
