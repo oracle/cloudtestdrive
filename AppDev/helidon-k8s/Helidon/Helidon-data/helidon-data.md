@@ -107,6 +107,7 @@ public class StockLevel {
 }
 ```
 
+---
 <details><summary><b>The annotations explained</b></summary>
 <p>
 
@@ -148,7 +149,7 @@ public class StockId implements Serializable {
 	private String itemName;
 }
 ```
-
+---
 
 <details><summary><b>The annotations explained</b></summary>
 <p>
@@ -358,9 +359,10 @@ This will apply if there were multiple entity managers or database modification 
 ---
 
 <details><summary>Note on @Transaction and @Fallback</summary>
-
 <p>
+
 In the current version of Helidon there is a conflict between the processing of @Transactional and @Fallback, if a class (or method) has the @Fallback annotation then the transaction will not be created, which causes all sorts of problems  Sadly at the moment there is no workaround, though the development team are working on a fix to, but it's expected (but not guaranteed) that the Helidon Data functionality (which is planned to make persistence a lot easier) will fix that problem.
+
 
 </p>
 
