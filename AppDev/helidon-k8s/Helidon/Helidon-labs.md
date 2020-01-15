@@ -6,20 +6,30 @@
 
 ## A. Helidon for Cloud Native
 
-
 ### **Introduction**
+
+<details><summary><b>What is Helidon?</b></summary>
+<p>
 
 [Helidon](https://helidon.io) is an open source implementation of [Eclipse Microprofile](https://microprofile.io/) from Oracle. Through these labs we talk about Helidon, but it's key to remember that the work we're doing is applicable to *any* microprofile implementation, of which Helidon is one.
 
 Microprofile (and thus Helidon) are designed to be lighter weight than things like Java EE or Spring Boot, but also more standards based than Spring, so it has more stability from an API change perspective.
 
-Microprofile (and thus Helidon) are build on other pre-existing standards, for example the @GET annotation is used by microprofile (Helidon uses it to indicate a method respond to a http GET request), but the annotation itself is actually a Java web services annotation that microprofile uses. 
+Microprofile are build on other pre-existing standards, for example the @GET annotation is used by microprofile (Helidon uses it to indicate a method respond to a http GET request), but the annotation itself is actually a Java web services annotation that microprofile uses. 
 
 This lab aims to introduce you to the major capabilities provided by the Helidon implementation of Microprofile. It does this in a number of stages, starting with core capabilities such as REST enabling a class and moving on to features such as building clients to talk to other REST services and how to use Helidon to quickly create service elements that support Cloud Native tools such as Kubernetes.
 
 We are using Helidon MP, this is an annotation based framework, where to utilize it you just place annotations (e.g. @Path("/mypath") on a class or method. There is no need to modify the code beyond that. Helidon also comes in a variety called Helidon SE. The SE framework however requires you to actually make the Java method calls yourself, so you'd have to change your code. Helidon MP actually converts the annotations at runtime into calls to the Helidon SE Java API, so there is no need to change your logic. Helidon MP is also similar in style to frameworks like SPRING which are also annotation based, so we've chosen the MP version for these labs.
 
-### Requirements to do the labs
+</p></details>
+
+
+
+---
+
+<details><summary><b>Requirements for this Lab</b></summary>
+<p>
+
 - **Access to the Linux Desktop set up by your instructor**.   This environment will contain Eclipse and Firefox applications, as well as a set of comman-line tools you will need : maven, docker, kubectl.  In a next iteration of this lab we will provide instructions to set this up on your own laptop.
   - You will have to install a VNC viewer on your laptop to access this environment.
 
@@ -32,10 +42,28 @@ The labs were developed using the Eclipse IDE. Again you don't need to be an exp
 
 We do not expect you to know the details of the Maven build / packaging tool. In particular we are **not** going to be getting you to edit the pom.xml file (the Maven configuration file) for these projects. If you are familiar with Maven and the pom.xml file please feel free to explore it, or copy it for your own projects as a start point, but please do not make any changes.
 
-### How to do the coding in the labs
-Most of the labs explain what a specific Helidon features is and why it's useful, then there is a coding example with explanation of the feature. The coding example will usually tell you to modify a particular class (usually by providing you with the fully qualified name of the class, for example com.oracle.labs.helidon.stockmanager.Main) and make a specific change to a certain method (e.g. the buildConfig method or the constructor.) Occasionally it will tell you to just modify the class itself, for example adding an annotation. We try to be clear what the project is for each set of labs, but expect you to be able to use eclipse to open the right .java file (whish is referred to but it's fully qualified class name to you can navigate to it) and find the method. We have tried to put markers in place to indicate where you need to make the changes, but please remember that the changes are not comments (`// @Inject` on a method isn't actually going to do anything useful :-) )
+</p></details>
 
-### Testing your service as you go
+
+
+---
+
+<details><summary><b>How to do the coding in the labs</b></summary>
+<p>
+
+Most of the labs explain what a specific Helidon features is and why it's useful, then there is a coding example with explanation of the feature. The coding example will usually tell you to modify a particular class (usually by providing you with the fully qualified name of the class, for example com.oracle.labs.helidon.stockmanager.Main) and make a specific change to a certain method (e.g. the buildConfig method or the constructor.) 
+
+Occasionally it will tell you to just modify the class itself, for example adding an annotation. We try to be clear what the project is for each set of labs, but expect you to be able to use eclipse to open the right .java file (whish is referred to but it's fully qualified class name to you can navigate to it) and find the method. We have tried to put markers in place to indicate where you need to make the changes, but please remember that the changes are not comments (`// @Inject` on a method isn't actually going to do anything useful :-) )
+
+</p></details>
+
+
+
+---
+
+<details><summary><b>Testing your service as you go</b></summary>
+<p>
+
 These labs were designed so that at each stage as you add functionality you will have a working program. To test that you need to make REST calls. 
 
 As an **explanation of the document** (so please don't do this bit)
@@ -58,10 +86,12 @@ When you make REST calls in the examples we show the the curl command line call 
 
 If you want to use other REST client tools available to you feel free to use them as long as you are skilled in doing so, but be aware that the tutors may not be able to assist you with those tools. 
 
+</p></details>
 
 
 
-## The labs
+<details><summary><b>The Monolith application we will decompose</b></summary>
+<p>
 The labs follow the migration of a (admittedly) simple Java program to being a couple of separate microservices. The related Docker and Kubenetes labs then take the microservcies, how how to package and run them in Docker then deploy on Kubernetes in a Cloud Native format.
 
 At it's core the program allows a caller to request the levels of stock items held in a database, and to record items as having been removed. Think of this as perhaps a system that handles a post room or something. People may lookup what's there, take stationary and update the database when they do so. As a separate function not included here (but just to explain the scenario) the facilities manager may look at the database, order replacement items and update the stock levels when they are delivered.
@@ -73,8 +103,13 @@ The code does not provide a front end UI. It would normally be libraries that ar
 The basic program has two sets of functionality, split into two projects in Eclipse. A module (stockmanager) that interacts with a database table. This module allows Create Delete, Update and Deletes to be made on a table. A second module (storefront) provides a bit of business logic and processing, for example ensuring that business rules around minimum quantities are applied when taking stock.
 
 This is a deliberately simple example, the goal is to see how these two modules can be converted from a traditional **Monolith** type of approach into cloud native ready microservices, with as little as possible being changed in the actual code - we actually don't make *any* changes to the code logic, all of the modifications are done by adding annotations.
+</p></details>
 
 
+
+
+
+## The labs
 
 ### 1. Core Helidon
 The core labs are designed to show how you can take a some existing Java code and REST enable it so it can operate as a standalone service. This includes not just the REST API, but also configuration, error handling and security.
