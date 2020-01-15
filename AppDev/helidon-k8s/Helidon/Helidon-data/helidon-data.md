@@ -14,7 +14,7 @@ However, just because Microprofile and thus Helidon do not have a set of data ac
 
 In this set of lab modules we will look at how we can combine those with Helidon techniques such as the configuration mechanisms to implement database accesses.
 
-For the labs we will be using the Oracle Autonomous Transaction Processing database running in the Oracle Cloud, and have already installed in the client VM maven repository the required OJDBC jar files to support this. We have also down loaded into the environment the "Wallet" file for the database which defines the database configuration, access information and such like.
+For the labs we will be using the **Oracle Autonomous Transaction Processing database** running in the Oracle Cloud, and have already installed in the client VM maven repository the required OJDBC jar files to support this. We have also downloaded into the environment the "Wallet" file for the database which defines the database configuration, access information and such like.
 
 We are using the Hibernate implementation of the JPA standard to actually do the work of accessing the database. 
 
@@ -33,31 +33,35 @@ If you want to understand JPA and JTA in a lot of detail there are courses avail
 ### Configuring the project to be personal to you
 For this project all attendees will be operating on a shared database, updating the same table. To ensure that your work doesn't interfere with other peoples work you need to provide a unique identity for yourself
 
-In the helidon-labs-stockmanager project conf/stockmanager-config.xml file add a property department with be **your** your name, initials or something that's going to be unique. I changed mine to be `timg` but **YOURS MUST BE DIFFERENT FROM MINE AND EVEYONE ELSES.** We suggest you write your chosen name on a board so other folks will know what's already been taken !
+- In Eclipse, switch to the **helidon-labs-stockmanager** project.
+- Navigate into the folder **conf**
+- Open the file **stockmanager-config.xml**
+- In the `app:` section, add a property **department** with **your** your name, initials or something that's going to be **unique**:
+  -  `department: "your_name"`
 
-Example of the conf/stockmanager-config.xml updated with **my** name as the department, remember to use **your** chosen name **not mine !**
+Example :
 
 ```
 app:
   persistenceUnit: "HelidonATPJTA"
-  department: "timg"
+  department: "just_a_name"
 ```
 
-The way this operates is that the StockResource will automatically and transparently add the department to the primary key in all requests, this is not something you're likely to do in production, but here as we're focusing on the coding rather than starting up multiple databases it makes the lab go faster.
+The way this operates is that the StockResource will automatically and transparently add the department to the primary key in all requests.
 
-### What's the difference from the storefront labs ?
+**What's the difference from the storefront labs ?**
 This set of labs sections concentrates on the data accesses. You are assumed to be familiar with things like @POST, @ApplicationScope, loading configurations and such like.
 
 There is less coding than the helidon core lab and more reading here.
 
 This lab also uses exactly the same security configuration so users jack, jill and joe are provided, with password password, and user jack is an admin as before.
 
-I'm also assuming that you'll remember how to stop and start the Main class (though of course for **this** lab you'll be using the com.oracle.labs.helidon.stockmanager.Main class, not the storefront version) so you won't be reminded on that.
+
 
 ---
 
 **Before you start**
-Please make sure that for now you have **stopped** the storefront application.
+Please make sure that for now you have **stopped** the **storefront** application.
 
 ---
 
@@ -68,6 +72,9 @@ Please make sure that for now you have **stopped** the storefront application.
 The com.oracle.labs.helidon.stockmanager.resources.StockmanagerResource class is the primary class we'll be working with in this lab. If you're not familar with JPA however there are some other classes you should look at.
 
 The classes in the com.oracle.labs.helidon.stockmanager.database package represent the actual structure of the database. In the database configuration we tell the JPA, JTA layers these are the classes we want the database to represent. You'll see that they have some annotations on them, some of which will be familiar. Let's look at the StockLevel class first:
+
+- Expand the folder **src/main/java**, then the folder **database**
+- Open the file **StockLevel.java**
 
 ```
 @Data
@@ -103,6 +110,8 @@ On our fields in the class
 
 `@Column` defines the details of the column name, again it can be generated automatically, but this will force a specific name.
 
+- Open the file **StockId** in the same folder
+
 Looking at the StockId class
 
 ```
@@ -137,12 +146,18 @@ Initially the database is setup to use the JPA / JTA (transaction system) to loa
 
 The split between the files is more one of the stockmanager-database.yaml file contains things that are specific to a database instance, e.g. usernames, passwords, JDBC Urls. Wheras the persietence.xml file defines stuff that's not instance specific but is project specific, for example which classes are persisted.
 
+
+
 ### Using path parameters for methods
 In the Storefront object we were processing Java objects directly as out method arguments (the helidon framework was converting them to / from JSON for us) 
 
-For the StockmanagerResource (really I did this just to show it's possible) we are using @PathParams. a path param is basically part of the URL that can contain data, for example a GET method with a `@Path("/stocklevel/{item}")` when called with /stockLevel/Pencil would extract the Pencil and make it available as the PathParam "item"
+For the StockmanagerResource we are using @PathParams.  A path param is basically part of the URL that can contain data, for example a GET method with a `@Path("/stocklevel/{item}")` when called with /stockLevel/Pencil would extract the Pencil and make it available as the PathParam "item"
 
-Let's look at the StockResource.createStockLevel method to see how this works (I've removed a bunch of other text here for clarity)
+Let's look at the StockResource.createStockLevel method to see how this works
+
+- Navigate to folder **resources**
+- Open file **StockResource.java**
+- Locate the method **createStockLevel** approximately in the middle of the file
 
 ```
 @Path("/{itemName}/{itemCount}")
@@ -177,9 +192,10 @@ There are a several problems here. Firstly, we do this each time we create a new
 
 Secondly we have to close the entity manager down when it's no longer needed, that can result in some complex code paths to follow, especially if there are exceptions being handled as well.
 
-Also why write code when we don't have to ? With Helidon we have the context and dependency injections capabilities, so we don't however need to setup the entity manager itself, we can have Helidon do that for us
+Also why write code when we don't have to ? With Helidon we have the context and dependency injections capabilities, so we don't however need to setup the entity manager itself, we can have Helidon do that for us.
 
-In the StockResource constructor remove the lines that setup the entity manager, it should now look like
+- In file **StockResource.java**, scroll up to the constructor of the class **StockResource**
+- Remove the lines that set up the entity manager, it should now look like below:
 
 ```
 	public StockResource(@ConfigProperty(name = "app.persistenceUnit") String persistenceUnitProvided,
@@ -188,9 +204,8 @@ In the StockResource constructor remove the lines that setup the entity manager,
 		departmentProvider = departmentProviderProvided;
 	}
 ```
-(we're just saving the params away for later use)
-
-Locate where the EntityManager is defined in the StockResource and add the `@PersistenceContext(unitName = "HelidonATPJTA")` annotation
+- Scroll up to the **top** of the file, just below the class definition, and locate where the **EntityManager** is defined and add an annotation :
+  - `@PersistenceContext(unitName = "HelidonATPJTA")`
 
 ```
 public class StockResource {
@@ -202,8 +217,12 @@ Note that the name of the persistence context is defined as a hard coded String,
 
 Using Helidon to create our PersistenceContext will also ensure that the entity manager is correctly shutdown when the program exits so we won't have any resources hanging around in the database.
 
+- Run the **Main** class of the project (right-click on **Main.java**, *Run As*, then *Java Application*. 
 
-Run the com.oracle.labs.helidon.stockmanager.Main class. 
+---
+
+<details><summary><b>Error on app.department?</b></summary>
+<p>
 
 If it fails to run like this
 
@@ -220,7 +239,13 @@ Exception in thread "main" org.jboss.weld.exceptions.DeploymentException: Reques
 
 You haven't setup the stockmanager-config.yaml file with the department value. Go do that, restart the program and try again.
 
-Assuming you've got that bit right and you get the server started messages and urls like the following
+</p>
+
+</details>
+
+---
+
+The result should show the application listening on http://localhost:8081
 
 ```
 2020.01.05 18:30:33 INFO io.helidon.microprofile.server.ServerImpl Thread[nioEventLoopGroup-2-1,10,main]: Server started on http://localhost:8081 (and all other host addresses) in 69 milliseconds.
@@ -228,10 +253,10 @@ Assuming you've got that bit right and you get the server started messages and u
 
 ```
 
-Use curl to see what's there
+- Use curl to see what's there:
+  -  `curl -i -X GET -u jack:password http://localhost:8081/stocklevel`
 
 ```
-$ curl -i -X GET -u jack:password http://localhost:8081/stocklevel
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 18:54:06 GMT
@@ -243,29 +268,21 @@ content-length: 2
 
 There should be **nothing** returned, if there is it means that you didn't chose a unique department value ! Chose something that is unique, update the stockmanager-config.yaml file department attribute and restart the program.
 
-Let's create some stock items, these need to be done as a user with admin rights so do the following command. Note there is a few seconds delay when you try this as the code does the database connection on demand. (Note, this won't work !)
+- Let's try to create some stock items - **error expected**:
+  -  `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pins/5000`
+
+Note there is a few seconds delay when you try this as the code does the database connection on demand ... and then you get an error as expected: 
 
 ```
-$ curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pins/5000
 HTTP/1.1 500 Internal Server Error
 Content-Length: 0
 Date: Sun, 5 Jan 2020 18:54:43 GMT
 connection: keep-alive
 ```
 
-Opps, server error and no updated data back, should have got the item we just created
-
-Look at the console tab and you will that the code generates an error
+Look at the console tab and you will see that the code generates an error
 
 ```
-
-2020.01.05 18:54:43 INFO com.oracle.labs.helidon.stockmanager.resources.StockResource Thread[helidon-1,5,server]: Creating StockId(departmentName=timg, itemName=pins), with count 5000
-2020.01.05 18:54:44 INFO org.hibernate.jpa.internal.util.LogHelper Thread[helidon-1,5,server]: HHH000204: Processing PersistenceUnitInfo [name: HelidonATPJTA]
-2020.01.05 18:54:44 INFO org.hibernate.Version Thread[helidon-1,5,server]: HHH000412: Hibernate Core {5.4.9.Final}
-2020.01.05 18:54:44 INFO org.hibernate.annotations.common.Version Thread[helidon-1,5,server]: HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
-2020.01.05 18:54:44 INFO com.zaxxer.hikari.HikariDataSource Thread[helidon-1,5,server]: HikariPool-1 - Starting...
-2020.01.05 18:54:45 INFO com.zaxxer.hikari.HikariDataSource Thread[helidon-1,5,server]: HikariPool-1 - Start completed.
-2020.01.05 18:54:45 INFO org.hibernate.dialect.Dialect Thread[helidon-1,5,server]: HHH000400: Using dialect: org.hibernate.dialect.Oracle10gDialect
 2020.01.05 18:54:46 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator Thread[helidon-1,5,server]: HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.JBossStandAloneJtaPlatform]
 Hibernate: 
     select
@@ -280,20 +297,19 @@ Hibernate:
 2020.01.05 18:54:47 INFO com.oracle.labs.helidon.stockmanager.resources.StockResource Thread[helidon-1,5,server]: Creating StockLevel(stockId=StockId(departmentName=timg, itemName=pins), itemCount=5000)
 javax.persistence.TransactionRequiredException
 	at io.helidon.integrations.cdi.jpa.NonTransactionalEntityManager.persist(NonTransactionalEntityManager.java:92)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+...
 ```
 
-`TransactionRequiredException` sounds pretty serious, and it is, it's because we're trying to modify the database, and Helidon created entity management knows that 
-this should be done in a transaction. Whenever you modify a database it's a pretty good rule of thumb that you need a transaction to keep things safa and consistent, even when the modification is a single row in a single database.
+`TransactionRequiredException` sounds pretty serious, and it is, it's because we're trying to modify the database, and Helidon created entity management knows that this should be done in a transaction. Whenever you modify a database it's a pretty good rule of thumb that you need a transaction to keep things safe and consistent, even when the modification is a single row in a single database.
 
 ### Automatic Transactions
 We could manually ask the entity manager to start and and transactions, but that's a load of extra code, and the possible paths if there are problems to do the rollback or commit are significant. Let's use the Java Transaction API (JTA) to do it for us.
 
 Fortunately for us all we need is an @Transactional annotation and Heliton will trigger the JTA to do the right things.
 
-Add the @Transactional annotation to the StockResource class.
+- Still in file **StockResource.java**, locate the StockResource class definition
+- Add the transaction annotation on the top:
+  -  `@Transactional`
 
 
 ```
@@ -311,32 +327,29 @@ This will apply if there were multiple entity managers or database modification 
 
 ---
 
-**Note on @Transaction and @Fallback**
+<details><summary>Note on @Transaction and @Fallback</summary>
+
+<p>
 In the current version of Helidon there is a conflict between the processing of @Transactional and @Fallback, if a class (or method) has the @Fallback annotation then the transaction will not be created, which causes all sorts of problems  Sadly at the moment there is no workaround, though the development team are working on a fix to, but it's expected (but not guaranteed) that the Helidon Data functionality (which is planned to make persistence a lot easier) will fix that problem.
+
+</p>
+
+</details>
 
 ---
 
 
 
 ### Creating some data and testing the stockmanager works
-Use curl to create some stock items, these need to be done as a user with admin rights so do the following commands against a running 
-stockmanager service 
-
-
-`curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pin/5000`
-
-`curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pins/5000`
-
-`curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pencil/200`
-
-`curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Eraser/50`
-
-`curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Book/100`
-
-`curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Book/50`
+- Use curl to create some stock items :
+  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pin/5000`
+  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pins/5000`
+  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pencil/200`
+  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Eraser/50`
+  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Book/100`
+  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Book/50`
 
 ```
-$ curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pin/5000
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 18:58:43 GMT
@@ -345,60 +358,19 @@ content-length: 35
 
 {"itemCount":5000,"itemName":"pin"}
 
-$ curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pins/5000
-HTTP/1.1 200 OK
-Content-Type: application/json
-Date: Sun, 5 Jan 2020 18:59:19 GMT
-connection: keep-alive
-content-length: 36
-
-{"itemCount":5000,"itemName":"pins"}
-
-$ curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pencil/200
-HTTP/1.1 200 OK
-Content-Type: application/json
-Date: Sun, 5 Jan 2020 18:59:23 GMT
-connection: keep-alive
-content-length: 37
-
-{"itemCount":200,"itemName":"Pencil"}
-
-$ curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Eraser/50
-HTTP/1.1 200 OK
-Content-Type: application/json
-Date: Sun, 5 Jan 2020 18:59:29 GMT
-connection: keep-alive
-content-length: 36
-
-{"itemCount":50,"itemName":"Eraser"}
-
-$ curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Book/100
-HTTP/1.1 200 OK
-Content-Type: application/json
-Date: Sun, 5 Jan 2020 18:59:35 GMT
-connection: keep-alive
-content-length: 35
-
-{"itemCount":100,"itemName":"Book"}
-
-$ curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Book/50
-HTTP/1.1 500 Internal Server Error
-Content-Length: 0
-Date: Sun, 5 Jan 2020 18:59:39 GMT
-connection: keep-alive
+...
 ```
 
 On success the return is the newly created object
 
 Once the first operation has returned and the database connection is all setup the subsequent calls are much faster.
 
-Note that on the 2nd attempt to add the books we don't get anything back representing the newly create object - it's already there, and the logs give us error messages
-get an error, there are already items with that name present.
+Note that on the 2nd attempt to add the books we don't get anything back representing the newly create object - it's already there, and the logs give us an error message!
 
-Use curl to get the current stock list
+- Use curl to get the current stock list
+  -  `curl -i -X GET -u jack:password http://localhost:8081/stocklevel`
 
 ```
-$ curl -i -X GET -u jack:password http://localhost:8081/stocklevel
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 19:01:01 GMT
@@ -410,10 +382,10 @@ content-length: 185
 
 Note that we have "accidentally created two versions of the pin (pin and pins), let's remove one
 
-Use curl to remove it
+- Use curl to remove it
+  -  `curl -i -X DELETE -u jack:password http://localhost:8081/stocklevel/pins`
 
 ```
-$ curl -i -X DELETE -u jack:password http://localhost:8081/stocklevel/pins
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 19:01:38 GMT
@@ -422,32 +394,17 @@ content-length: 36
 
 {"itemCount":5000,"itemName":"pins"}
 ```
-(The details of the deleted item are returned)
 
-Now we will see it removed from the list.
-
-```
-$ curl -i -X GET -u jack:password http://localhost:8081/stocklevel
-HTTP/1.1 200 OK
-Content-Type: application/json
-Date: Sun, 5 Jan 2020 19:02:07 GMT
-connection: keep-alive
-content-length: 148
-
-[{"itemCount":100,"itemName":"Book"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":200,"itemName":"Pencil"},{"itemCount":5000,"itemName":"pin"}]
-```
 
 Finally let's test changing the level of some stock, we had 200 Pencils, let's reduce that to 150
 
-```
-$ curl -X POST  -u jack:password http://localhost:8081/stocklevel/Pencil/150
-{"itemCount":150,"itemName":"Pencil"}
-```
+-  `curl -X POST  -u jack:password http://localhost:8081/stocklevel/Pencil/150`
 
-Finally get the stock list again
+And we can check the stock levels are changed : 
+
+-  `curl -i -X GET -u jack:password http://localhost:8081/stocklevel`
 
 ```
-$ curl -i -X GET -u jack:password http://localhost:8081/stocklevel
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 19:03:11 GMT
