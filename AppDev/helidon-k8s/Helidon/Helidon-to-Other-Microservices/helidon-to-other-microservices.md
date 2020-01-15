@@ -12,7 +12,11 @@ For one thing (person, program etc.) to talk to another it does of course need t
 
 REST is generally implemented using http(s) as the transport using XML or JSON text in the body of the request to represent data if needed, so though REST is **not** a standard usually we can get it to work using these mechanisms.
 
-### Implementing communications (historically)
+---
+
+<details><summary><b>Implementing communications (historically)</b></summary>
+<p>
+
 Historically much of the work on creating REST based microservice frameworks in Java has concentrated on the server side. Creating the client side connection has required the developer to create the connection themselves. For example the following.
 
 ```
@@ -72,7 +76,8 @@ private void deleteItem(String itemName) {
 ```
 We could of course build a class ourselves that has a delete method that does the REST work in the class, but that's just pushing it down a layer !
 
-### RestClients
+**RestClients**
+
 Fortunately for us Eclipse microprofile have created a solution to this in a manner
 
 Best software development practice is to to follow the [loose coupling design patterns](https://en.wikipedia.org/wiki/Loose_coupling) so that the caller can't see the details of the implementation. In Java this is achieved using interfaces, so a developer created an interface for externally use that defines the functionality and then a separate class the implements it, this is especially true if your class is in a library class or a different package.
@@ -87,9 +92,18 @@ With Helidon and the Rest Client functionality all we need to do is to annotate 
 
 We don't need to change any of our code that uses the interface at all !
 
-Let's do this for real. You should have kept the stockmanager service running. If not then please start it.
+</p></details>
 
-We're going to be using the com.oracle.labs.helidob.storefront.restclients.StockManager.java interface and the com.oracle.labs.helidob.storefront.resources.StorefrontResource class. open them in the editor.
+---
+
+
+
+
+
+Let's do this for real. 
+
+- The **stockmanager** service should still be running, if not then please start it.
+- In project **helidon-labs-storefront**, navigate to folder **src/main/java**, then **restclients** and open the file **StockManager.java**
 
 First let's look at the StockManager interface.
 
@@ -112,9 +126,18 @@ public interface StockManager {
 }
 ```
 
-Apart from being an interface (so only method names, not implementations) this looks very like the getAllStockLevels, getStockItem and setStockItemLevel methods in the com.oracle.labs.helidob.stockmanager.resources.StockResource class in the stock manager project. We have the same request types, paths, params etc.
+Apart from being an interface (so only method names, not implementations) this looks very like the getAllStockLevels, getStockItem and setStockItemLevel methods in the StockResource class in the stock manager project. We have the same request types, paths, params etc.
 
-Let's set this up as something that can be build into a REST client, add the `@RegisterRestClient(configKey = "StockManager")` and `@ApplicationScoped` annotations to the interface and save it.
+Let's set this up as something that can be build into a REST client:
+
+- add the following annotations:
+
+  - ```
+    @RegisterRestClient(configKey = "StockManager")
+    @ApplicationScoped
+    ```
+
+The result should look like :
 
 ```
 @ApplicationScoped
@@ -122,7 +145,13 @@ Let's set this up as something that can be build into a REST client, add the `@R
 public interface StockManager {
 ```
 
-The annotation tells Helidon that this is something that can be used as a REST client, the configKey parameter to the annotation tells Helidon that the configuration settings (URL to use and so on) will be in the configuration properties with property names starting with StockManager (if we didn't specify a configuration key the fully qualifies class name would be used for the start of the properties, in this case com.oracle.labs.helidob.storefront.resources.StorefronResource )
+---
+
+<details><summary><b>Details on the annotations</b></summary><p>
+
+The annotation tells Helidon that this is something that can be used as a REST client, the configKey parameter to the annotation tells Helidon that the configuration settings (URL to use and so on) will be in the configuration properties with property names starting with StockManager.  
+
+If we didn't specify a configuration key the fully qualifies class name would be used for the start of the properties, in this case com.oracle.labs.helidob.storefront.resources.StorefronResource.
 
 As the URL and so on is pretty standard they are defined in the microprofile-config.properties file in src/main/resources These are the relevant lines
 
@@ -141,6 +170,10 @@ com.oracle.labs.helidon.storefront.restclients.StockManagerStatus/mp-rest/url=ht
 ```
 
 As you can probably guess this is for the REST client com.oracle.labs.helidon.storefront.restclients.StockManagerStatus, but in this case I didn't specify a config key in the `@RegisterRestClient` annotation, so it defaulted to the fully qualified classname based property names.
+
+</p></details>
+
+
 
 ### Creating the REST client.
 It's possible to manually create a REST client using the interface, but it's far better to let Helidon use the @RestClient coupled with @Inject to do this for us. That way we don't have to worry about closing the client to reclaim resources and so on.
