@@ -170,10 +170,14 @@ com.oracle.labs.helidon.storefront.restclients.StockManagerStatus/mp-rest/url=ht
 ```
 
 As you can probably guess this is for the REST client com.oracle.labs.helidon.storefront.restclients.StockManagerStatus, but in this case I didn't specify a config key in the `@RegisterRestClient` annotation, so it defaulted to the fully qualified classname based property names.
+
 </p></details>
+
+
+
 ---
 
-
+   
 
 ### Creating the REST client.
 It's possible to manually create a REST client using the interface, but it's far better to let Helidon use the @RestClient coupled with @Inject to do this for us. That way we don't have to worry about closing the client to reclaim resources and so on.
@@ -227,17 +231,17 @@ We have now got the data back from the database itself. Our client is working, a
 ---
 <details><summary><b>Async requests</b></summary>
 <p>
-
 You may have noticed the delay in the request, if you try the request again it's much faster, this is because the second time all of the lazy initialization will have been done. But in some cases it may be that every call to a request takes a long time (perhaps it's getting data from a real physical service !) which may leave the client execution blocked until the request completes.
 
-One solution to this is to make the request, then go and do something else while waiting for the response. We're not going go to into detail on this, but the REST client supports the use of async operations by having the returned object not be the actual object (which would require the entire call sequence to have completed) but a object called a `CompletionStage` The CompletionStag objects are created by the framework on the client side, so the response is much faster, and by looking into the CompletionStage object it's possible to determine if the call has finished, and if so what the result was. While waiting for it to finish the code can do other things.
+One solution to this is to make the request, then go and do something else while waiting for the response. We're not going go to into detail on this, but the REST client supports the use of async operations by having the returned object not be the actual object (which would require the entire call sequence to have completed) but a object called a `CompletionStage`. 
+
+The CompletionStag objects are created by the framework on the client side, so the response is much faster, and by looking into the CompletionStage object it's possible to determine if the call has finished, and if so what the result was. While waiting for it to finish the code can do other things.
 
 </p></details>
-
 ---
-
-<details><summary>Authentication</summary>
+<details><summary><b>Authentication</b></summary>
 <p>
+
 
 You may be wondering about the authentication here. When we made the curl call we specified the usersername and password, but that was to the storefront service. None of our code event sees the user name / password, that's all done by the framework, so how can it be passed on to the stockmanager service (which if it didn't get the username and password would have thrown a 401 Unauthorized error.
 
@@ -246,7 +250,6 @@ The solution to this is another reason why using Helidon (or other microprofile 
 This is why we've used the same user credentials, and in a production environment you'd use the same security system across both services.
 
 </p></details>
-
 ---
 
 
