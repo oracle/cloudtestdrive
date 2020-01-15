@@ -88,6 +88,8 @@ If you want to use other REST client tools available to you feel free to use the
 
 </p></details>
 
+---
+
 
 
 <details><summary><b>The Monolith application we will decompose</b></summary>
@@ -104,6 +106,8 @@ The basic program has two sets of functionality, split into two projects in Ecli
 
 This is a deliberately simple example, the goal is to see how these two modules can be converted from a traditional **Monolith** type of approach into cloud native ready microservices, with as little as possible being changed in the actual code - we actually don't make *any* changes to the code logic, all of the modifications are done by adding annotations.
 </p></details>
+
+---
 
 
 
