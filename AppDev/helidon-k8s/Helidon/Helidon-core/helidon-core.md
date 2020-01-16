@@ -843,7 +843,7 @@ public class MinimumChange {
 - Edit the file **ConfigurationResource.java** 
 - Replace the creation of an instance of MinimumChange with the **@Inject annotation** on the field. 
 
-```
+```java
   public class ConfigurationResource {
 	  private static final JsonBuilderFactory JSON = Json.createBuilderFactory(Collections.emptyMap());
 	  @Inject
