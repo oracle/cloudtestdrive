@@ -680,7 +680,7 @@ connection: keep-alive
 Well, that's a new error message, we're forbidden to access the resource, even though we've provided a valid username and password. This is because of the `@RolesAllowed({ "admin" })`  annotation. User Jill is not one of the admins, to access a method with this annotation we need an admin, and that's jack. Let's try again using jack as the user
 
 - Retry the change, using **jack** as user:
-  -  `curl -i -X POST -u jack:password -d 3  -H "Content-type:application/json" http://localhost:8080/minimumChange`
+  -  `curl -i -X POST -u jack:password -d "3"  -H "Content-type:application/json" http://localhost:8080/minimumChange`
 
 Result:
 
@@ -843,12 +843,12 @@ public class MinimumChange {
 - Edit the file **ConfigurationResource.java** 
 - Replace the creation of an instance of MinimumChange with the **@Inject annotation** on the field. 
 
-  - ```java
+```
   public class ConfigurationResource {
 	  private static final JsonBuilderFactory JSON = Json.createBuilderFactory(Collections.emptyMap());
 	  @Inject
 	  private MinimumChange minimumChange;
-	  ```
+```
 
 This tells Helidon that when creating an instance of the Configuration resource it should find the one instance of MinimumChange and set the field to use it (creating the MinimumChange instance if there isn't already one)
 
