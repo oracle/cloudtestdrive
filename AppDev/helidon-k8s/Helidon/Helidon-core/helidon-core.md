@@ -327,7 +327,7 @@ The result should look like this :
 
 `@POST` as indicated above means the method will respond to http POST requests
 
-`@Path("/reserveStock")` as you'd expect means it will do it on /seserveStock but as the class itself has a path of /store tha absolute Path is /store/reserveStock (remember in the application it specifies a path starting at /)
+`@Path("/reserveStock")` as you'd expect means it will do it on /reserveStock but as the class itself has a path of /store the absolute Path is /store/reserveStock (remember in the application it specifies a path starting at /)
 
 `@Produces(MediaType.APPLICATION_JSON)` as before means that the returned objects will be converted into JSON and embedded in the body of REST response, this is the same as the usage with the listAllStock method
 
@@ -449,7 +449,7 @@ The problem is anyone who has access to the IP address and post can access our s
 
 So we need to add some security. Fortunately Helidon makes this very easy, we just add @Authenticated to the StorefrontResource class, this is applied to every REST call in the class.  If we wanted to limit it authentication as required to specific methods we'd just place it on those methods.
 
-This simple single annotation tells Helidon that before even reaching your actual code that for all incomming requests the framework must check that the request includes valid authentication in some form. Note that @Authenticated does *not* specify what authentication mechanism is used, it could be basic auth (the obscured user name and password are in the request headers) or something more powerful like oauth2. We'll see in a bit more detail later in the section how the security is defined.
+This simple single annotation tells Helidon that before even reaching your actual code that for all incoming requests the framework must check that the request includes valid authentication in some form. Note that @Authenticated does *not* specify what authentication mechanism is used, it could be basic auth (the obscured user name and password are in the request headers) or something more powerful like oauth2. We'll see in a bit more detail later in the section how the security is defined.
 
 </p>
 
@@ -665,7 +665,7 @@ content-length: 1
 The result is 2, this is the default defined in the MinimumChange class. There is no @Authenticated on the class or the get method, so no need to provide user details.
 
 - Now let's change the value - **expect an error**:
-  -  `curl -i -X POST -u jill:password -d "3"  -H "Content-type:application/json"`
+  -  `curl -i -X POST -u jill:password -d "3"  -H "Content-type:application/json" http://localhost:8080/minimumChange`
 
 Result:
 
@@ -680,7 +680,7 @@ connection: keep-alive
 Well, that's a new error message, we're forbidden to access the resource, even though we've provided a valid username and password. This is because of the `@RolesAllowed({ "admin" })`  annotation. User Jill is not one of the admins, to access a method with this annotation we need an admin, and that's jack. Let's try again using jack as the user
 
 - Retry the change, using **jack** as user:
-  -  `curl -i -X POST -u jack:password -d 3  -H "Content-type:application/json"`
+  -  `curl -i -X POST -u jack:password -d "3"  -H "Content-type:application/json" http://localhost:8080/minimumChange`
 
 Result:
 
@@ -843,12 +843,12 @@ public class MinimumChange {
 - Edit the file **ConfigurationResource.java** 
 - Replace the creation of an instance of MinimumChange with the **@Inject annotation** on the field. 
 
-  - ```java
+```java
   public class ConfigurationResource {
 	  private static final JsonBuilderFactory JSON = Json.createBuilderFactory(Collections.emptyMap());
 	  @Inject
 	  private MinimumChange minimumChange;
-	  ```
+```
 
 This tells Helidon that when creating an instance of the Configuration resource it should find the one instance of MinimumChange and set the field to use it (creating the MinimumChange instance if there isn't already one)
 

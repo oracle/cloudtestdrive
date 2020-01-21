@@ -43,10 +43,11 @@ The following is an example of the approach taken when separating the executable
 
 Firstly you'll need to create a docker image that contains the required executable elements. We've actually set up tooling to support this using jib (Java Image Builder), which is a Maven plugin - you've been using Maven already to manage dependencies, though you may not have realized this.
 
-Use the Maven package target (mvn package) to create the docker container in your local registry. 
+Use the Maven package target (mvn package) to trigger jib to create the docker container in your local registry. 
 
 - Open a terminal window
 - Navigate to the **storefront** project directory
+  
   -  `cd workspace/helidon-labs-storefront/`
 - Run maven : `mvn package`
 
@@ -83,9 +84,10 @@ This operation will create two docker images. The mvn package triggers jib to ru
 
 The jib tool has many advantages over creating a docker image by hand, because it uses the pom.xml file to know what dependencies to copy over, so any changes to the dependencies will automatically be handled when jib is run.
 
-Note that jib does not copy every file into the right locations as needed by Helidon so there is a second stage to be done to get a functioning docker image for helidon. This runs a docker build against the image created by jib, the Dockerfile copies files form resource to the classes structure and then removed the origionals, resulting in a docker container that has everything in the places expected.
 
-So once you've created the basic images by using mvn package you can manually create the new ones with the files in the right place using the docker command in the helidon-labs-stockmanager directory:
+Note that jib does not copy every file into the right locations as needed by Helidon so there is a second stage to be done to get a functioning docker image for helidon. This runs a docker build against the image created by jib, the Dockerfile copies files in the container image from the resource to the classes directories and then removed the originals, resulting in a docker container that has everything in the places expected.
+
+Once you've created the basic images by using mvn package you can manually create the new ones with the files in the right place using the docker command in the helidon-labs-stockmanager directory:
 
 - In the terminal window, you should still be in the top directory of the **Stockmanager** project
 - Run a docker build :  `docker build --tag stockmanager --file Dockerfile .`
@@ -113,7 +115,6 @@ The --file flag specified the name of the file containing the commands to execut
 - Switch to the **Storefront** project: `cd ../helidon-labs-storefront/`
 - Run the docker build: `docker build --tag storefront --file Dockerfile .`
 
-
 ```
 Sending build context to Docker daemon  110.6kB
 Step 1/3 : FROM jib-storefront:latest
@@ -130,11 +131,11 @@ Successfully built 90bd16d9e6bc
 Successfully tagged storefront:latest
 ```
 
-For your convenience in the future there is a script in each directory called buildLocalExternalConfig.sh that will run a mvn build and the appropriate docker commands. You will need to run the script in *both* the directories (so once in the helidon-labs-storefront directory and once in the helidon-labs-stockmanager, it needs to be run from within the directory as that's where docker looks for the content) Initially it may take a few mins to run if it needs to download the appropriate base layers, but once they are downloaded it should speed up. It's best to let one build finish before starting the next one.
+For your convenience in the future there is a script in each directory called buildLocalExternalConfig.sh that will run a mvn build and the appropriate docker commands. You will need to run the script in *each* directory (so once in the helidon-labs-storefront directory and once in the helidon-labs-stockmanager, it needs to be run from within the directory as that's where docker looks for the content) Initially it may take a few mins to run if it needs to download the appropriate base layers, but once they are downloaded it should speed up. It's best to let one build finish before starting the next one.
 
 If you look at the scripts you will see that they run the maven package process to create the docker image using jib. They then create a new docker image which has the changes needed to run helidon. These are the commands you'd have run by hand.
 
-You can explore the containers by running them to give you shell access (This is why we used a larger docker base image that includes a shell and other Unix utilities.) 
+You can explore the containers by running them to give you shell access (This is why we used a larger docker base image that includes a shell and other Unix utilities, in production you'd use a minimal image.) 
 
 - Run the container:
   -  `docker run --tty --interactive --rm --entrypoint=/bin/bash stockmanager`
