@@ -230,6 +230,8 @@ The **subnet** Fn Public Subnet (Regional) can then be selected.
 
 Under logging policy select "LOG TO OBJECT STORAGE", this will facilitate debugging if needed. 
 
+Please refer to [Appendix C](AppendixC.md) if you would like to see more detail on using the logging.
+
 The screen will look similar to the example below with a different application name depending on your delegate id.
 
 ![](image.png)
