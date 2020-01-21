@@ -329,6 +329,10 @@ Let's update the repoConfig.sh scripts in both the helidon-labs-stockmanager and
 
 - Open file **repoConfig.sh** and edit the repo name again as above
 
+
+
+---
+
 <details><summary><b>About the script and the docker tags</b></summary>
 <p>
 
@@ -385,6 +389,12 @@ e4b20fcc48f4: Layer already exists
 latest: digest: sha256:7f5638210c48dd39d458ba946e13e82b56922c3b99096d3372301c1f234772af size: 2839
 ```
 Notice that the layers all already exist, so nothing needs to be uploaded at all (except of course to establish the name to image hash mapping)
+
+</p></details>
+
+---
+
+
 
 - Rebuild the images
 
