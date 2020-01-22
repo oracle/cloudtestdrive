@@ -10,15 +10,18 @@ More details of the Oracle Events Service can be found here: https://docs.cloud.
 
 ### Requirements
 
-This hands on lab, although standalone would benefit from a basic understanding of the Fn project and OCI Functions support. If you do not feel you have this sufficiently then it would be worthwhile asking the trainers about arranging a further session on these aspects for you or your team. Experience of using ssh clients would be beneficial but not essential. A picture image on your laptop that can be uploaded to object storage to trigger the function.
+This hands on lab, although standalone would benefit from a basic understanding of the Fn project and OCI Functions support. If you do not feel you have this sufficiently then it would be worthwhile asking the trainers about arranging a further session on these aspects for you or your team. 
+Experience of using ssh clients would be beneficial but not essential. 
+A picture image on your laptop that can be uploaded to object storage to trigger the function will be needed.
 
-### Download lab artefacts file by clicking on the link in the student handout that you will have been sent prior to the course.
+### Download lab artifacts file by clicking on the link in the student handout that you will have been sent prior to the course.
+Oncde downloaded to a temporary file on your laptop, extract the contents as these will be needed in the lab.
 
 ### SSH to your lab VM
 
-We have created you an Oracle Linux 7 based virtual machine within the Oracle Cloud to host this lab. The machine has been installed with Docker and some other prerequisites for installing and running Fn. You will continue this now ...
+We have created for you an Oracle Linux 7 based virtual machine within the Oracle Cloud to host this lab. The machine has been installed with Docker and some other prerequisites for installing and running Fn. You will continue this now ...
 
-Use the SSH client of your choice to SSH to your lab virtual machine which will be assigned at the start of the workshop. SSH as the **opc** user and use the id\_rsa private key. For example on Mac or Linux use the following command:
+Use the SSH client of your choice to SSH to your lab virtual machine which will have been assigned at the start of the workshop. SSH as the **opc** user and use the id\_rsa private key. For example on Mac or Linux use the following command:
 
 ```
 $ ssh -i /path/to/id_rsa opc@your.vm.ip.address
@@ -53,9 +56,12 @@ fn version 0.5.87
     /_/   /_/ /_/`
 ```
 
-### Log in to OCI Console
+### Self Registration & Logging in to OCI Console
 
-A new functions application will be used to host the actual function. This can be created via the Fn CLI or via the OCI Functions console, we will use the latter. Log in to the OCI console at [https://console.eu-frankfurt-1.oraclecloud.com](https://console.eu-frankfurt-1.oraclecloud.com/).
+A new functions application will be used to host the function that will get invoked when a image is uploaded. This can be created via the Fn CLI or via the OCI Functions console, we will use the latter. 
+Before you can use the OCI console and utilise the services within, you will need to complete a self registration process.
+
+Log in to the OCI console at [https://console.eu-frankfurt-1.oraclecloud.com](https://console.eu-frankfurt-1.oraclecloud.com/).
 
 Enter the tenancy name provided in the lab details and then log in with your assigned username and password.
 
@@ -75,6 +81,8 @@ Once logged in, in the top right hand corner click the user avatar ![image2019-8
 
 Click on your username to navigate to the user detail page.
 
+This demonstrates that you have been able to successfully log in and that the self registration process has completed.
+
 We will return to the OCI console to configure the Functions and Events services later in the lab. 
 
 ### Create a new Fn context for OCI
@@ -90,11 +98,19 @@ $ fn ls ctx
 ```
 
 The output should have an asterisk against the new Fn context.
+```bash
+CURRENT	NAME	PROVIDER	API URL			REGISTRY
+	default	default		http://localhost:8080
+*	oci	oracle
+```
 
-We now need to add the specific compartment within OCI to where we will create new Oracle Functions applications. We do this by providing the compartment OCID. For this lab it will be the same compartment for every student. The following Fn command needs to be executed in order to set this up.
+We now need to add the specific compartment within OCI to where you will create a new Oracle Functions application. 
+We do this by providing the compartment OCID. 
+For this lab it will be the same compartment for every student. The following Fn command needs to be executed in order to set this up.
+The OCID has been pre-defined as an environment variable in you lab vm to make this simpler.
 
 ```
-$ fn update context oracle.compartment-id ocid1.compartment.oc1..aaaaaaaabmmw7jy34fi5cmscp2ui4kvl6vy2lnebwhdki737nxrlp5wnlbrq
+$ fn update context oracle.compartment-id $COMP_OCID
 ```
 
 We now need to provide the api-url to the new context in order for Fn to communicate with Oracle Functions.
@@ -107,10 +123,16 @@ $ fn update context api-url https://functions.eu-frankfurt-1.oraclecloud.com
 
 We need to configure the appropriate Oracle Cloud registry to be utilised for the applications and functions that will be deployed.
 
-Issue the following command to do this, **replacing** the 99 with **your** student number (01 to 10).
+Issue the following command 
+
+**NOTE** In the following command:
+
+You will need to replace the _NN_ with **your** student number (01 - 10)
+
+You will need to replace _tenancyname_ with the tenancy name given at the start of the lab in the student handout
 
 ```
-$ fn update context registry fra.ocir.io/oractdemeaoci/fnworkshop99
+$ fn update context registry fra.ocir.io/_tenancyname_/fnworkshop_NN_
 ```
 
 Finally we need to allow the Fn context for oci to utilise the oci configuration you edited earlier. To do this issue the following command:
@@ -140,11 +162,16 @@ If we now list the contexts that have been created for using Fn you should see 2
 
 ```
 $ fn list contexts
+
+CURRENT	NAME	PROVIDER	API URL							REGISTRY
+	default	default		http://localhost:8080
+*	oci	oracle		https://functions.eu-frankfurt-1.oraclecloud.com	fra.ocir.io/oractdemeabdmnative/fnworkshop99
 ```
 
 ### Test our new Fn context for OCI
 
-We can now issue a simple list apps command from the Fn CLI to see if it is is configured properly. This will list all the currently created applications in the compartment within OCI that was configured for you to use. You are sharing this compartment with all the delegates and so it might show one or more applications depending on how far the others have got. The application names should be appended with a number indicating the delegate that created it.
+We can now issue a simple list apps command from the Fn CLI to see if it is is configured properly. This will list all the currently created applications in the compartment within OCI that was configured for you to use. 
+You are sharing this compartment with all the delegates and so it might show one or more applications depending on how far the others have got. The application names should be appended with a number indicating the delegate that created it.
 
 Issue the following command:
 
@@ -152,26 +179,41 @@ Issue the following command:
  $ fn list apps
 ```
 
+If no applications have been created yet, you should see output similar to below.
+
+```
+No apps found
+NAME	ID
+```
 If you get errors please let the organisers of the workshop know.
 
 ### Configure Docker to use the Oracle Cloud Image Registry configured in the new context
 
-Before we can use Fn to deploy functions to Oracle Functions, we need to ensure Docker running locally on the VM we are using can access the OCI image registry (OCIR) configured in the new context just created. To do this we need to have Docker login and thus store the credentials locally.
+Before we can use Fn to deploy functions to Oracle Functions, we need to ensure Docker that is running locally on the VM you are using can access the OCI image registry (OCIR) configured in the new context just created. 
+To do this we need to have Docker login and thus store the credentials locally.
 
-A user named *apiuser* will be used to login to OCIR. The apiuser password is store in an environment variable in the VM named API_AUTH_TOKEN. Display the password:
+A user named *apiuser* will be used to login to OCIR. The apiuser password is store in an environment variable in the VM named API_AUTH_TOKEN. 
+
+Display the password:
 
 `$ echo $API_AUTH_TOKEN`
 
-Copy the password to the clipboard. Perform the following command:
+Copy the password to the clipboard. 
 
+Then perform the following command:
+
+**NOTE** 
+
+You will need to replace _tenancyname_ with the tenancy name given at the start of the lab in the student handout
 ```
-$ docker login fra.ocir.io/oractdemeaoci
+$ docker login fra.ocir.io/_tenancyname_
 ```
 
-When prompted enter your tenancy-name/username assigned at the beginning of this lab. They will take this form:
+When prompted enter your _tenancyname_/apiuser 
 
+**NOTE** The user will be apiuser but the _tenancyname_ will be the one you are using and were assigned at the start of the lab
 ```
-tenancy-name/username
+tenancyname/apiuser
 eg: oractdemeaoci/apiuser
 ```
 
@@ -180,19 +222,20 @@ When prompted for your password paste in the 'Auth token' that you copied to the
 Here is an example of what you should see when successfully logged in to the remote OCI registry:
 
 ```
-Username:
-oractdemeaoci/apiuser
+Username:oractdemeaoci/apiuser
 Password:
 Login Succeeded
 ```
 
-### Create new Functions Application
+### Create a new Functions Application
+
+Now that we have completed the Fn based configuration we can turn our attention to the OCI console and start to build our function based application.
 
 In the OCI Console change the region to the Frankfurt region in the grey bar across the top of the console. Select the region drop down and pick "Germany Central (Frankfurt)".
 
 ![image2019-10-1_16-4-41](image2019-10-1_16-4-41.png)
 
-In the browser session where you logged into the OCI Console look for the ![image2019-8-28_11-40-56](image2019-8-28_11-40-56.png)menu in the top left hand of the screen and press it.
+In the browser session where you logged into the OCI Console look for the ![image2019-8-28_11-40-56](image2019-8-28_11-40-56.png) menu in the top left hand of the screen and press it.
 
 ![image2019-8-28_11-52-25](image2019-8-28_11-52-25.png)
 
@@ -202,8 +245,12 @@ Press your mouse on 'Functions'
 
 Before we can use Functions we need to select a compartment to utilise and you will be presented with a screen similar to this:
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-1_16-6-12.png](image2019-10-1_16-6-12.png)<br>
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-1_16-6-12.png](image2019-10-1_16-6-12.png)
 <br>
+
+This lab is run for students in a number of OCI tenancies where the compartments used can vary. 
+Please refer to the student handout you received at the beginning of this lab for the specific compartment to use and how to find it.
+ 
 From the 'Pick a Compartment' expand the root by pressing on the '+' to the side of its name:
 
 ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-1_16-7-1.png](image2019-10-1_16-7-1.png)<br>
@@ -216,17 +263,19 @@ You will now be presented with the Functions User Interface where we will create
 
 Create a new application by pressing on the button ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-8-28_12-23-5.png](image2019-8-28_12-23-5.png)<br>
 <br>
-The 'New Application' window will appear and you need to give a name and the VCN and subnet you will use to access it over.
+The 'New Application' window will appear and you need to give a name, a description, the VCN and subnet you will use to access it over.
 
-Give the name as imagecatalogapp*NN where the NN* is replaced with your delegate number (Given at the start of the hands on lab). eg imagecatalogapp01
+Give the name as imagecatalogapp_NN_ where the _NN_ is replaced with your delegate number (Given at the start of the hands on lab). eg imagecatalogapp01
 
 The **VCN** and subnet to be used are within the same compartment as the one you are creating the application in. So in the VCN field ensure that the VCN selected is *fnvcn*.
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-8-28_12-29-29.png](image2019-8-28_12-29-29.png)<br>
+![Function App VCN choice](fnvcnchoice.png)<br>
 
 For the subnet ensure 'fnworkshopstudent' is selected as the compartment.
 
 The **subnet** Fn Public Subnet (Regional) can then be selected.
+
+![Function App Subnet choice](fnsubnetchoice.png)<br>
 
 Under logging policy select "LOG TO OBJECT STORAGE", this will facilitate debugging if needed. 
 
