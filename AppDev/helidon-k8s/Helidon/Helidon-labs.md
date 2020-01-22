@@ -15,11 +15,11 @@
 
 Microprofile (and thus Helidon) are designed to be lighter weight than things like Java EE or Spring Boot, but also more standards based than Spring, so it has more stability from an API change perspective.
 
-Microprofile are build on other pre-existing standards, for example the @GET annotation is used by microprofile (Helidon uses it to indicate a method respond to a http GET request), but the annotation itself is actually a Java web services annotation that microprofile uses. 
+Microprofile are build on other pre-existing standards, for example the `@GET` annotation is used by microprofile (Helidon uses it to indicate a method respond to a http GET request), but the annotation itself is actually a Java web services annotation that microprofile uses. 
 
 This lab aims to introduce you to the major capabilities provided by the Helidon implementation of Microprofile. It does this in a number of stages, starting with core capabilities such as REST enabling a class and moving on to features such as building clients to talk to other REST services and how to use Helidon to quickly create service elements that support Cloud Native tools such as Kubernetes.
 
-We are using Helidon MP, this is an annotation based framework, where to utilize it you just place annotations (e.g. @Path("/mypath") on a class or method. There is no need to modify the code beyond that. Helidon also comes in a variety called Helidon SE. The SE framework however requires you to actually make the Java method calls yourself, so you'd have to change your code. Helidon MP actually converts the annotations at runtime into calls to the Helidon SE Java API, so there is no need to change your logic. Helidon MP is also similar in style to frameworks like SPRING which are also annotation based, so we've chosen the MP version for these labs.
+We are using Helidon MP, this is an annotation based framework, where to utilize it you just place annotations (e.g. `@Path("/mypath"`) on a class or method. There is no need to modify the code beyond that. Helidon also comes in a variety called Helidon SE. The SE framework however requires you to actually make the Java method calls yourself, so you'd have to change your code. Helidon MP actually converts the annotations at runtime into calls to the Helidon SE Java API, so there is no need to change your logic. Helidon MP is also similar in style to frameworks like __Spring__ which are also annotation based, so we've chosen the MP version for these labs.
 
 </p></details>
 
@@ -30,7 +30,7 @@ We are using Helidon MP, this is an annotation based framework, where to utilize
 <details><summary><b>Requirements for this Lab</b></summary>
 <p>
 
-- **Access to the Linux Desktop set up by your instructor**.   This environment will contain Eclipse and Firefox applications, as well as a set of comman-line tools you will need : maven, docker, kubectl.  In a next iteration of this lab we will provide instructions to set this up on your own laptop.
+- **Access to the Linux Desktop set up by your instructor**.   This environment will contain Eclipse and Firefox applications, as well as a set of command-line tools you will need : maven, docker, kubectl.  In a next iteration of this lab we will provide instructions to set this up on your own laptop.
   - You will have to install a VNC viewer on your laptop to access this environment.
 
 
@@ -51,9 +51,9 @@ We do not expect you to know the details of the Maven build / packaging tool. In
 <details><summary><b>How to do the coding in the labs</b></summary>
 <p>
 
-Most of the labs explain what a specific Helidon features is and why it's useful, then there is a coding example with explanation of the feature. The coding example will usually tell you to modify a particular class (usually by providing you with the fully qualified name of the class, for example com.oracle.labs.helidon.stockmanager.Main) and make a specific change to a certain method (e.g. the buildConfig method or the constructor.) 
+Most of the labs explain what a specific Helidon features is and why it's useful, then there is a coding example with explanation of the feature. The coding example will usually tell you to modify a particular class (usually by providing you with the fully qualified name of the class, for example `com.oracle.labs.helidon.stockmanager.Main`) and make a specific change to a certain method (e.g. the `buildConfig` method or the constructor.) 
 
-Occasionally it will tell you to just modify the class itself, for example adding an annotation. We try to be clear what the project is for each set of labs, but expect you to be able to use eclipse to open the right .java file (whish is referred to but it's fully qualified class name to you can navigate to it) and find the method. We have tried to put markers in place to indicate where you need to make the changes, but please remember that the changes are not comments (`// @Inject` on a method isn't actually going to do anything useful :-) )
+Occasionally it will tell you to just modify the class itself, for example adding an annotation. We try to be clear what the project is for each set of labs, but expect you to be able to use eclipse to open the right .java file (which is referred to but it's fully qualified class name to you can navigate to it) and find the method. We have tried to put markers in place to indicate where you need to make the changes, but please remember that the changes are not comments (`// @Inject` on a method isn't actually going to do anything useful :-) )
 
 </p></details>
 
@@ -94,11 +94,11 @@ If you want to use other REST client tools available to you feel free to use the
 
 <details><summary><b>The Monolith application we will decompose</b></summary>
 <p>
-The labs follow the migration of a (admittedly) simple Java program to being a couple of separate microservices. The related Docker and Kubenetes labs then take the microservcies, how how to package and run them in Docker then deploy on Kubernetes in a Cloud Native format.
+The labs follow the migration of a (admittedly) simple Java program to being a couple of separate microservices. The related Docker and Kubenetes labs then take the microservices, show how to package and run them in Docker and then deploy on Kubernetes in a Cloud Native format.
 
 At it's core the program allows a caller to request the levels of stock items held in a database, and to record items as having been removed. Think of this as perhaps a system that handles a post room or something. People may lookup what's there, take stationary and update the database when they do so. As a separate function not included here (but just to explain the scenario) the facilities manager may look at the database, order replacement items and update the stock levels when they are delivered.
 
-Fortunately this company is not run by people who think that the cost of a inter-departmental cross charge for a box of paper clips is good use of peoples (or developers) time, so when someone updates the database having taken stock there is no need to record who took what.
+Fortunately this company is not run by people who think that the cost of a inter-departmental cross charge for a box of paper clips is good use of people's (or developer's) time, so when someone updates the database having taken stock there is no need to record who took what.
 
 The code does not provide a front end UI. It would normally be libraries that are used part of a larger function.
 
