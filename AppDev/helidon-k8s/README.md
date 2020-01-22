@@ -16,7 +16,7 @@ Then we look at how to **run the docker containers in Kubernetes**, examining ho
 
 Finally we look at **monitoring and graphing** to extract data on how the system operates.
 
-In the future the labs will include sections on auto-scaling and the use of a Service Mesh, and other Kuberneties based cloud native capabilities such as A/B testing of new releases etc.
+In the future the labs will include sections on auto-scaling and the use of a Service Mesh, and other Kubernetes based cloud native capabilities such as A/B testing of new releases etc.
 
 ### Lab conventions
 
