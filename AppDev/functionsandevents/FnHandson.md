@@ -426,7 +426,7 @@ The function will insert rows into the database via the ORDS REST API.
 Test that the API is accessible from your lab VM with the following command <i>**replacing fnuser99 with the name of your bucket**</i>:
 
 ``` 
-$ curl -X GET -G https://cgipkrq1hwcdlkv-fnandeventsdb.adb.eu-frankfurt-1.oraclecloudapps.com/ords/fnworkshop/catalog/ --data-urlencode 'q={"bucketname":"fnuser99"}' | jq .
+$ curl -X GET -G $ATP_ORDS_URL --data-urlencode 'q={"bucketname":"fnuser99"}' | jq .
 
 ```
 
@@ -447,7 +447,7 @@ In the right hand pane expand items to see the current number of items in the da
 The Database REST endpoint will be configured as a configuration variable in the Function application. This is done with the Fn CLI (**substitute your student number for NN**):
 
 ```
-fn config app imagecatalogappNN ordsBaseURL https://cgipkrq1hwcdlkv-fnandeventsdb.adb.eu-frankfurt-1.oraclecloudapps.com/ords/fnworkshop/catalog/
+fn config app imagecatalogappNN ordsBaseURL $ATP_ORDS_URL
 ```
 
 We will also add another configuration variable. Issue the following command **again replacing NN with your student number**:
@@ -599,7 +599,7 @@ The backend ATP database can be checked by the REST API.
 Issue the following curl command as you did earlier to query all the rows in the CATALOG table <i>**replacing fnuser99 with the name of your bucket**</i>:
 
 ```
-$ curl -X GET -G https://cgipkrq1hwcdlkv-fnandeventsdb.adb.eu-frankfurt-1.oraclecloudapps.com/ords/fnworkshop/catalog/ --data-urlencode 'q={"bucketname":"fnuser99"}' | jq .
+$ curl -X GET -G $ATP_ORDS_URL --data-urlencode 'q={"bucketname":"fnuser99"}' | jq .
 ```
 
 The response will be in JSON format and you should see an entry for the file you just uploaded e.g.
@@ -615,7 +615,6 @@ The response will be in JSON format and you should see an entry for the file you
  "links": [
  {
  "rel": "self",
- "href": "https://vx7tqpyaop2tflx-fnworkshopdb.adb.eu-frankfurt-1.oraclecloudapps.com/ords/fnworkshop/catalog/11"
  }
  ]
  }
