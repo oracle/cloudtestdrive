@@ -32,9 +32,13 @@ On clicking on the link shown above, you will be presented with the contents of 
 If for any reason after 15 minutes from a function invocation the logging link does not appear, you can manually open a browser tab within Object Storage and select the same compartment as your function resides from the picker.
 Search the list of buckets presented for one that has the same name as the ocid for your function hosting compartment.
 
+Each object uploaded to this bucket will contain a snip of the logs and is named to include the ocid of the function that created it. As there are multiple students using the same compartment, you will need to be sure to grab log files only associated with your function ocid.
+
 ### Viewing the log files
 
 To view the contents of a specific log bundle that is available you will need to download it from object storage and then extract the contents.
+
+The log files available include the ocid of the generating function in their name to help find appropriate log bundles if needed.
 
 ![Download bundle](downloadlogbundle.png)
 
