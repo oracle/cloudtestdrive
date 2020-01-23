@@ -10,15 +10,18 @@ More details of the Oracle Events Service can be found here: https://docs.cloud.
 
 ### Requirements
 
-This hands on lab, although standalone would benefit from a basic understanding of the Fn project and OCI Functions support. If you do not feel you have this sufficiently then it would be worthwhile asking the trainers about arranging a further session on these aspects for you or your team. Experience of using ssh clients would be beneficial but not essential. A picture image on your laptop that can be uploaded to object storage to trigger the function.
+This hands on lab, although standalone would benefit from a basic understanding of the Fn project and OCI Functions support. If you do not feel you have this sufficiently then it would be worthwhile asking the trainers about arranging a further session on these aspects for you or your team. 
+Experience of using ssh clients would be beneficial but not essential. 
+A picture image on your laptop that can be uploaded to object storage to trigger the function will be needed.
 
-### Download lab artefacts file by clicking on the link in the student handout that you will have been sent prior to the course.
+### Download lab artifacts file by clicking on the link in the student handout that you will have been sent prior to the course.
+Oncde downloaded to a temporary file on your laptop, extract the contents as these will be needed in the lab.
 
 ### SSH to your lab VM
 
-We have created you an Oracle Linux 7 based virtual machine within the Oracle Cloud to host this lab. The machine has been installed with Docker and some other prerequisites for installing and running Fn. You will continue this now ...
+We have created for you an Oracle Linux 7 based virtual machine within the Oracle Cloud to host this lab. The machine has been installed with Docker and some other prerequisites for installing and running Fn. You will continue this now ...
 
-Use the SSH client of your choice to SSH to your lab virtual machine which will be assigned at the start of the workshop. SSH as the **opc** user and use the id\_rsa private key. For example on Mac or Linux use the following command:
+Use the SSH client of your choice to SSH to your lab virtual machine which will have been assigned at the start of the workshop. SSH as the **opc** user and use the id\_rsa private key. For example on Mac or Linux use the following command:
 
 ```
 $ ssh -i /path/to/id_rsa opc@your.vm.ip.address
@@ -28,9 +31,9 @@ If you are using a windows based laptop, you will need to utilise an ssh client 
 
 **NOTE**: Some client setups have experienced ssh session timeouts with Putty and if you get this, please enable connection keepalive.
 
-Please refer to [Appendix A](Appendix\ A) for some assistance with using Putty if you are unfamiliar with it\.
+Please refer to [Appendix A](AppendixA.md) for some assistance with using Putty if you are unfamiliar with it\.
 
-Please refer to [Appendix B](Appendix\ B.md) if you would prefer to use the Chrome secure shell extension
+Please refer to [Appendix B](AppendixB.md) if you would prefer to use the Chrome secure shell extension
 
 ### Download & Install the Fn project CLI
 
@@ -53,9 +56,12 @@ fn version 0.5.87
     /_/   /_/ /_/`
 ```
 
-### Log in to OCI Console
+### Self Registration & Logging in to OCI Console
 
-A new functions application will be used to host the actual function. This can be created via the Fn CLI or via the OCI Functions console, we will use the latter. Log in to the OCI console at [https://console.eu-frankfurt-1.oraclecloud.com](https://console.eu-frankfurt-1.oraclecloud.com/).
+A new functions application will be used to host the function that will get invoked when a image is uploaded. This can be created via the Fn CLI or via the OCI Functions console, we will use the latter. 
+Before you can use the OCI console and utilise the services within, you will need to complete a self registration process.
+
+Log in to the OCI console at [https://console.eu-frankfurt-1.oraclecloud.com](https://console.eu-frankfurt-1.oraclecloud.com/).
 
 Enter the tenancy name provided in the lab details and then log in with your assigned username and password.
 
@@ -75,6 +81,8 @@ Once logged in, in the top right hand corner click the user avatar ![image2019-8
 
 Click on your username to navigate to the user detail page.
 
+This demonstrates that you have been able to successfully log in and that the self registration process has completed.
+
 We will return to the OCI console to configure the Functions and Events services later in the lab. 
 
 ### Create a new Fn context for OCI
@@ -90,11 +98,19 @@ $ fn ls ctx
 ```
 
 The output should have an asterisk against the new Fn context.
+```bash
+CURRENT	NAME	PROVIDER	API URL			REGISTRY
+	default	default		http://localhost:8080
+*	oci	oracle
+```
 
-We now need to add the specific compartment within OCI to where we will create new Oracle Functions applications. We do this by providing the compartment OCID. For this lab it will be the same compartment for every student. The following Fn command needs to be executed in order to set this up.
+We now need to add the specific compartment within OCI to where you will create a new Oracle Functions application. 
+We do this by providing the compartment OCID. 
+For this lab it will be the same compartment for every student. The following Fn command needs to be executed in order to set this up.
+The OCID has been pre-defined as an environment variable in you lab vm to make this simpler.
 
 ```
-$ fn update context oracle.compartment-id ocid1.compartment.oc1..aaaaaaaabmmw7jy34fi5cmscp2ui4kvl6vy2lnebwhdki737nxrlp5wnlbrq
+$ fn update context oracle.compartment-id $COMP_OCID
 ```
 
 We now need to provide the api-url to the new context in order for Fn to communicate with Oracle Functions.
@@ -107,10 +123,16 @@ $ fn update context api-url https://functions.eu-frankfurt-1.oraclecloud.com
 
 We need to configure the appropriate Oracle Cloud registry to be utilised for the applications and functions that will be deployed.
 
-Issue the following command to do this, **replacing** the 99 with **your** student number (01 to 10).
+Issue the following command 
+
+**NOTE** In the following command:
+
+You will need to replace the _NN_ with **your** student number (01 - 10)
+
+You will need to replace _tenancyname_ with the tenancy name given at the start of the lab in the student handout
 
 ```
-$ fn update context registry fra.ocir.io/oractdemeaoci/fnworkshop99
+$ fn update context registry fra.ocir.io/_tenancyname_/fnworkshop_NN_
 ```
 
 Finally we need to allow the Fn context for oci to utilise the oci configuration you edited earlier. To do this issue the following command:
@@ -140,11 +162,16 @@ If we now list the contexts that have been created for using Fn you should see 2
 
 ```
 $ fn list contexts
+
+CURRENT	NAME	PROVIDER	API URL							REGISTRY
+	default	default		http://localhost:8080
+*	oci	oracle		https://functions.eu-frankfurt-1.oraclecloud.com	fra.ocir.io/oractdemeabdmnative/fnworkshop99
 ```
 
 ### Test our new Fn context for OCI
 
-We can now issue a simple list apps command from the Fn CLI to see if it is is configured properly. This will list all the currently created applications in the compartment within OCI that was configured for you to use. You are sharing this compartment with all the delegates and so it might show one or more applications depending on how far the others have got. The application names should be appended with a number indicating the delegate that created it.
+We can now issue a simple list apps command from the Fn CLI to see if it is is configured properly. This will list all the currently created applications in the compartment within OCI that was configured for you to use. 
+You are sharing this compartment with all the delegates and so it might show one or more applications depending on how far the others have got. The application names should be appended with a number indicating the delegate that created it.
 
 Issue the following command:
 
@@ -152,26 +179,41 @@ Issue the following command:
  $ fn list apps
 ```
 
+If no applications have been created yet, you should see output similar to below.
+
+```
+No apps found
+NAME	ID
+```
 If you get errors please let the organisers of the workshop know.
 
 ### Configure Docker to use the Oracle Cloud Image Registry configured in the new context
 
-Before we can use Fn to deploy functions to Oracle Functions, we need to ensure Docker running locally on the VM we are using can access the OCI image registry (OCIR) configured in the new context just created. To do this we need to have Docker login and thus store the credentials locally.
+Before we can use Fn to deploy functions to Oracle Functions, we need to ensure Docker that is running locally on the VM you are using can access the OCI image registry (OCIR) configured in the new context just created. 
+To do this we need to have Docker login and thus store the credentials locally.
 
-A user named *apiuser* will be used to login to OCIR. The apiuser password is store in an environment variable in the VM named API_AUTH_TOKEN. Display the password:
+A user named *apiuser* will be used to login to OCIR. The apiuser password is store in an environment variable in the VM named API_AUTH_TOKEN. 
+
+Display the password:
 
 `$ echo $API_AUTH_TOKEN`
 
-Copy the password to the clipboard. Perform the following command:
+Copy the password to the clipboard. 
 
+Then perform the following command:
+
+**NOTE** 
+
+You will need to replace _tenancyname_ with the tenancy name given at the start of the lab in the student handout
 ```
-$ docker login fra.ocir.io/oractdemeaoci
+$ docker login fra.ocir.io/_tenancyname_
 ```
 
-When prompted enter your tenancy-name/username assigned at the beginning of this lab. They will take this form:
+When prompted enter your _tenancyname_/apiuser 
 
+**NOTE** The user will be apiuser but the _tenancyname_ will be the one you are using and were assigned at the start of the lab
 ```
-tenancy-name/username
+tenancyname/apiuser
 eg: oractdemeaoci/apiuser
 ```
 
@@ -180,19 +222,54 @@ When prompted for your password paste in the 'Auth token' that you copied to the
 Here is an example of what you should see when successfully logged in to the remote OCI registry:
 
 ```
-Username:
-oractdemeaoci/apiuser
+Username:oractdemeaoci/apiuser
 Password:
 Login Succeeded
 ```
+### Verify Object Storage Bucket
 
-### Create new Functions Application
+Within the OCI console at [https://console.eu-frankfurt-1.oraclecloud.com](https://console.eu-frankfurt-1.oraclecloud.com/) where you logged in earlier, you now need to verify that an object storage bucket has been created and assigned to you and has the correct configuration in order to emit events.
+
+In the OCI Console if not already done, change the region to the Frankfurt region in the grey bar across the top of the console. Select the region drop down and pick "Germany Central (Frankfurt)".
+
+![image2019-10-1_16-4-41](image2019-10-1_16-4-41.png)
+
+In the browser session where you logged into the OCI Console look for the ![image2019-8-28_11-40-56](image2019-8-28_11-40-56.png) menu in the top left hand of the screen and press it.
+
+![Select Object Storage](chooseobjectstorage.png)
+
+From the list presented hover your mouse over 'Object Storage' and more options appear.
+
+Press your mouse on 'Object Storage'
+
+Ensure that you are in the fnworkshopstudent compartment in the compartment picker.
+
+See the delegate handout for instructions on finding the **fnworkshopstudent** compartment from the compartment picker.
+
+You should see a list of buckets , one for each user. 
+
+Locate your bucket, it will be named after your user id that would have been assigned at the start of the lab.
+If you are unsure please refer to the delegate handout you will have received at the start of the lab.
+
+If you have any problems please reach out to an instructor.
+
+Click on your bucket name
+
+Note that the property "Emit Object Events" has been enabled which causes changes in the object store to fire events to the events service. This was set when the bucket was created for you.
+
+![Select Object Storage](emitevents.png)
+
+By clicking on the bucket name created for you, you should see there are no objects currently uploaded.
+
+### Create a new Functions Application
+
+Now that we have completed the Fn based configuration we can turn our attention to the OCI console and start to build our function based application.
 
 In the OCI Console change the region to the Frankfurt region in the grey bar across the top of the console. Select the region drop down and pick "Germany Central (Frankfurt)".
 
 ![image2019-10-1_16-4-41](image2019-10-1_16-4-41.png)
 
-In the browser session where you logged into the OCI Console look for the ![image2019-8-28_11-40-56](image2019-8-28_11-40-56.png)menu in the top left hand of the screen and press it.
+In the browser session where you logged into the OCI Console look for the ![image2019-8-28_11-40-56](image2019-8-28_11-40-56.png) menu in the top left hand of the screen and press it.
 
 ![image2019-8-28_11-52-25](image2019-8-28_11-52-25.png)
 
@@ -202,33 +279,33 @@ Press your mouse on 'Functions'
 
 Before we can use Functions we need to select a compartment to utilise and you will be presented with a screen similar to this:
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-1_16-6-12.png](image2019-10-1_16-6-12.png)<br>
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-1_16-6-12.png](image2019-10-1_16-6-12.png)
 <br>
-From the 'Pick a Compartment' expand the root by pressing on the '+' to the side of its name:
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-1_16-7-1.png](image2019-10-1_16-7-1.png)<br>
-<br>
-Search the list for 'CloudPursuit' and expand that.
-
-From the sub compartment list **select** 'Tooling', expand that and then select 'fnworkshopstudent'
+This lab is run for students in a number of OCI tenancies where the compartments used can vary. 
+Please refer to the student handout you received at the beginning of this lab for the specific compartment to use and how to find it.
 
 You will now be presented with the Functions User Interface where we will create a new application. As you are sharing this compartment with other delegates you may well already see applications listed.
 
 Create a new application by pressing on the button ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-8-28_12-23-5.png](image2019-8-28_12-23-5.png)<br>
 <br>
-The 'New Application' window will appear and you need to give a name and the VCN and subnet you will use to access it over.
+The 'New Application' window will appear and you need to give a name, a description, the VCN and subnet you will use to access it over.
 
-Give the name as imagecatalogapp*NN where the NN* is replaced with your delegate number (Given at the start of the hands on lab). eg imagecatalogapp01
+Give the name as imagecatalogapp_NN_ where the _NN_ is replaced with your delegate number (Given at the start of the hands on lab). eg imagecatalogapp01
 
 The **VCN** and subnet to be used are within the same compartment as the one you are creating the application in. So in the VCN field ensure that the VCN selected is *fnvcn*.
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-8-28_12-29-29.png](image2019-8-28_12-29-29.png)<br>
+![Function App VCN choice](fnvcnchoice.png)<br>
 
 For the subnet ensure 'fnworkshopstudent' is selected as the compartment.
 
 The **subnet** Fn Public Subnet (Regional) can then be selected.
 
+![Function App Subnet choice](fnsubnetchoice.png)<br>
+
 Under logging policy select "LOG TO OBJECT STORAGE", this will facilitate debugging if needed. 
+
+Please refer to [Appendix C](AppendixC.md) if you would like to see more detail on using the logging.
 
 The screen will look similar to the example below with a different application name depending on your delegate id.
 
@@ -236,7 +313,7 @@ The screen will look similar to the example below with a different application n
 
 Hit 'Create' when done. Confirm your new application is listed in the compartment.
 
-Back in the lab vm SSH session test that you can see this new application.
+Back in the lab vm SSH session, test that you can see this new application.
 
 Issue the following command and you should see your new application listed:
 
@@ -244,9 +321,10 @@ Issue the following command and you should see your new application listed:
  $ fn list apps
 ```
 
-**Create a new function**
+###Create a new function
 
-The new function will be written in Java, one of the many languages supported by the Fn SDK. from your your lab VM ssh session create a work directory and change into it by issuing these commands:
+The new function will be written in Java. This is just one of the many languages supported by the Fn SDK. 
+From your your lab VM ssh session, create a working directory and change into it by issuing these commands:
 
 ```
 $ mkdir ~/fnwork 
@@ -259,7 +337,10 @@ Initialise a new function called "imagecatalogfunction".
 $ fn init --runtime java imagecatalogfunction
 ```
 
-This will create the boilerplate code and configuration for our new function. The func.yaml will have a description of the function. A pom.xml file will also be created. Maven is used to build the Java function and the POM file lists the required libraries and build steps. The src directory contains two code trees, one for the actual function code and one for a test suite. The folder structure should look like this:
+This will create the boilerplate code and configuration for your new function. The func.yaml will have a description of the function. A pom.xml file will also be created. 
+Maven is used to build the Java function and the POM file lists the required libraries and build steps. 
+The src directory contains two code trees, one for the actual function code and one for a test suite. 
+The folder structure should look like this:
 
 ``` asc
 [opc@labvm99 ~]$ tree --charset=ascii imagecatalogfunction/
@@ -281,7 +362,7 @@ imagecatalogfunction/
                         `-- HelloFunctionTest.java
 ```
 
-Change directory into the imagecatalogfunction directory:
+Change directory into the newly created imagecatalogfunction directory:
 
 ```
 $ cd imagecatalogfunction
@@ -289,12 +370,12 @@ $ cd imagecatalogfunction
 
 **Update POM file**
 
-This function will require two extra Java libraries so these will have to be added to the pom.xml file to allow Maven to download them and use in the build process.
+This function will require two extra Java libraries in order to work correctly and so these will have to be added to the pom.xml file to allow Maven to download them and use in the build process.
 
 * cloudevents-api - Defines the open source cloud events API. In this function the input to the function will be a CloudEvent object that encapsulates all the details of the event.
 * jackson-databind - Allows Java objects to be marshalled and unmarshalled to the JSON format used by REST APIs.
 
-Open the pom.xml in your favourite text editor. Paste the the following two dependencies into the file after the opening <i>**dependencies**</i> tag:
+Open the pom.xml in your favourite text editor. Paste the the following two dependencies into the file after the opening _**dependencies**_ tag:
 
 ``` xml
  <!-- Added for cloud events api -->
@@ -314,9 +395,10 @@ Open the pom.xml in your favourite text editor. Paste the the following two depe
 
 Close and save the file.
 
-### Increase Function Memory
+**Increase Function Memory**
 
-This function will require more than the minimum 128MB of memory allocated by default. Memory allocation can be specified in the OCI console or in the func.yaml file as we will do. Open the func.yaml file in your preferred text editor and paste the following on to the last line:
+This function will require more than the minimum 128MB of memory allocated by default. Memory allocation can be specified in the OCI console or in the func.yaml file as we will do. 
+Open the func.yaml file in your preferred text editor and paste the following on to the last line:
 
 memory: 512
 
@@ -325,7 +407,7 @@ The file should look like:
 ``` yaml
 schema_version: 20180708
 name: imagecatalogfunction
-version: 0.0.64
+version: 0.0.1
 runtime: java
 build_image: fnproject/fn-java-fdk-build:jdk11-1.0.102
 run_image: fnproject/fn-java-fdk:jre11-1.0.102
@@ -337,14 +419,18 @@ Save and close func.yaml
 
 ### Test the database REST API
 
-The function will interact with an Autonomous Transaction Processing database running in the same tenancy. The function will insert rows into the database via the ORDS REST API. Test that the API is accessible from your lab VM with the following command <i>**replacing fnuser99 with the name of your bucket**</i>:
+The function will interact with an Autonomous Transaction Processing database running in the same tenancy. 
+
+The function will insert rows into the database via the ORDS REST API. 
+
+Test that the API is accessible from your lab VM with the following command <i>**replacing fnuser99 with the name of your bucket**</i>:
+
+``` 
+$ curl -X GET -G $ATP_ORDS_URL --data-urlencode 'q={"bucketname":"fnuser99"}' | jq .
 
 ```
-$ curl -X GET -G https://vx7tqpyaop2tflx-fnworkshopdb.adb.eu-frankfurt-1.oraclecloudapps.com/ords/fnworkshop/catalog/ --data-urlencode 'q={"bucketname":"fnuser99"}' | jq . 
 
-```
-
-This should pretty print a JSON payload with all the rows currently in the CATALOG table in the database where the bucketname matches yours.
+This will pretty print a JSON payload with all the rows currently in the CATALOG table in the database where the bucketname matches the one you have been assigned.
 
 As an alternate way of viewing the JSON payload you can always use the online JSON editor [https://jsoneditoronline.org/](https://jsoneditoronline.org/#/)
 
@@ -356,12 +442,12 @@ Hit the ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image
 
 In the right hand pane expand items to see the current number of items in the database table.
 
-### **Set Function Application Configuration Variables**
+### Set Function Application Configuration Variables
 
-The REST end point will be configured as a configuration variable in the Function application. This is done with the Fn CLI (**substitute your student number for NN**):
+The Database REST endpoint will be configured as a configuration variable in the Function application. This is done with the Fn CLI (**substitute your student number for NN**):
 
 ```
-fn config app imagecatalogappNN ordsBaseURL https://vx7tqpyaop2tflx-fnworkshopdb.adb.eu-frankfurt-1.oraclecloudapps.com/ords/fnworkshop/catalog/
+fn config app imagecatalogappNN ordsBaseURL $ATP_ORDS_URL
 ```
 
 We will also add another configuration variable. Issue the following command **again replacing NN with your student number**:
@@ -370,13 +456,16 @@ We will also add another configuration variable. Issue the following command **a
 fn config app imagecatalogappNN imageUrl https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/
 ```
 
-These configuration variables will be read as environment variables within the function and can be read in whatever code the function is implemented in. It's also possible to set configurations at the individual function level.
+These configuration variables will be read as environment variables within the function and can be read in whatever code the function is implemented in. 
+It's also possible to set configurations at the individual function level.
 
 ### Update the Java code
 
-We require our function to accept the event payload, parse it's content and insert a record into the catalog table in the ATP database using the ORDS REST API. Some sample code has been written to do this for you. Examine the file at /home/opc/HelloFunction.java.
+We require our function to accept the event payload, parse it's content and insert a record into the catalog table in the ATP database using the ORDS REST API. 
+Some sample code has been written to do this for you. 
+Feel free to examine the code at /home/opc/HelloFunction.java.
 
-Copy this file to the source code tree of your new function.
+Copy this file to the source code tree of your new function you created.
 
 ```
 $ cp ~/HelloFunction.java ~/fnwork/imagecatalogfunction/src/main/java/com/example/fn/HelloFunction.java
@@ -415,49 +504,62 @@ $ fn --verbose deploy --app imagecatalogappNN
 
 You should see the familiar Docker and Maven build output and finally a message that the function has updated with a new image.
 
-This deploy takes a little time to complete.
+This deploy takes a little time to complete (roughly 2-3 minutes)
 
-Visit the OCI Function page where you created your application to verify the function has been deployed to it. Be sure to check the application with you student id!
+The deployment should complete with messages similar to this below:
 
-### Verify Object Storage Bucket
+```
+Updating function imagecatalogfunction using image fra.ocir.io/oractdemeabdmnative/fnworkshop99/imagecatalogfunction:0.0.2...
+Successfully created function: imagecatalogfunction with fra.ocir.io/oractdemeabdmnative/fnworkshop99/imagecatalogfunction:0.0.2
+```
 
-Open the OCI console at [https://console.eu-frankfurt-1.oraclecloud.com](https://console.eu-frankfurt-1.oraclecloud.com/) and login as your student user i.e. fnuserNN where NN is your student number. Open the hamburger menu in the top left-hand corner and navigate to "Object Storage".
+After the successful deployment, visit the OCI Function page where you created your application to verify the function has been deployed to it. 
 
-Ensure that you are working in the Frankfurt OCI data centre in the top menu bar:
+**Be sure to check the application with your student id!**
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-11_10-46-44.png](image2019-10-11_10-46-44.png)<br>
-<br>
-Ensure that you are in the fnworkshopstudent compartment in the compartment picker:
+![Deployed Function](deployedfunction.png)
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-11_10-48-23.png](image2019-10-11_10-48-23.png)<br>
-<br>
-You should see a list of buckets , one for each user. Locate your bucket, it will be named after your user id. Note that the property "Emit Object Events" has been enabled which causes changes in the object store to fire events to the events service. This was set when the bucket was created for you. 
+### Create an Event Rule
 
-By clicking on the bucket name created for you, you should see there are no objects currently uploaded.
-
-### Create Event Rule
-
-In order to link events in OCI object storage to the new function it's necessary to create an event rule.
+In order to link events occurring in OCI object storage to the new function it's necessary to create an event rule.
 
 **It makes sense to open the events service in a new browser tab.**
 
-In the OCI console open the hamburger menu in the top left-hand corner and navigate to "Application Integration" and then, right-click new browser tab, "Events Service".
+In the OCI console open the hamburger menu in the top left-hand corner and navigate to "Application Integration" and then, **right-click** new browser tab, "Events Service".
+
+**Ensure that you are in the fnworkshopstudent compartment**
+
+![Deployed Function](fnstudentworkshop.png)
 
 Click the blue "Create Rule" button and complete the details for your new rule.
 
-Display Name: fnuserNNrule (replace NN for your student number)
+Display Name: fnuser_NN_rule (replace _NN_ for your student number)
 
 Description: Detects new objects in bucket and triggers imagecatalogfunction
 
-In the Event Matching section leave the first drop down set the "Event Type". In the Service Name drop down select "Object Storage". In the Event Type drop down enter "Object - Create". The Rule Condition should look like:
+In the Rule Conditions section, leave the first drop down set to "Event Type". 
+
+In the Service Name drop down select "Object Storage". 
+
+In the Event Type drop down select "Object - Create". 
+
+The Rule Condition should look like:
 
 ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-11_11-17-3.png](image2019-10-11_11-17-3.png)<br>
 <br>
-Add another condition to specify exactly which bucket triggers this rule. Press the "+ Add Condition" button. Select "Attribute" as the condition type and then bucketName as the "Attribute Name". In "Attribute Values" enter the name of your bucket e.g. fnuser99.
+Add another condition to specify exactly which bucket triggers this rule. 
+
+Press the "+ Add Condition" button. 
+
+Select "Attribute" as the condition type and then bucketName as the "Attribute Name". 
+
+In "Attribute Values" enter the name of your assigned object storage bucket (see earlier section on object storage) e.g. fnuser99.
 
 ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-11_11-21-41.png](image2019-10-11_11-21-41.png)<br>
 <br>
-In the Actions section specify the Action Type as Functions. Select the fnworkshopstudent compartment, your function application (based on your student number) and your function itself.
+In the Actions section specify the Action Type as Functions. 
+
+Select the fnworkshopstudent compartment, **your** function application (based on your student number) and your deployed function.
 
 ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-11_11-24-16.png](image2019-10-11_11-24-16.png)<br>
 <br>
@@ -465,24 +567,39 @@ Press "Create Rule" to create your rule - this button is right at the bottom lef
 
 ### Trigger the function
 
-Navigate back to the Object Storage page in the OCI Console, locate the bucket named after your user and click it to open the details. We will trigger the function by uploading an image to the bucket, this will trigger an event which our rule will channel to the new function.
+Navigate back to the Object Storage page in the OCI Console.
+
+Locate the bucket assigned to you again and click on its name to open the details. We will trigger the function by uploading an image to the bucket, this will trigger an event which your rule will channel to the new function.
 
 In the console click the blue Upload Objects button, in the dialog box click "select files" and pick an image file from your laptop (it doesn't matter which).
 
 ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-14_16-15-28.png](image2019-10-14_16-15-28.png)<br>
 <br>
-Press the "Upload Objects" button to upload the object. The function will be triggered in a few seconds.
+Press the "Upload Objects" button to upload the object. 
 
-To check execution, navigate to the Functions page in the console, select your application (imagecatalogappNN) and then the function (imagecatalogfunction).
+The function will be invoked in a few seconds but bear in mind that the function serverless environment needs to be started prior to the first invocation.
+This means there will be a delay in seeing anything. 
 
-In the metrics graphs you should see a point appear for the first function invocation.
+It is advisable to wait a minute or so before continuing.
+
+To check execution, navigate to the Functions page in the console, select your application (imagecatalogapp_NN_) and then the function (imagecatalogfunction).
+
+In the metrics graphs you should see a point appear for the first function invocation (you might need to refresh your browser a few times).
+
+![Function Invoke Metrics](functionmetricinvoke.png)
+
+You can further check to see how the function was invoked by going to the Events Service console and finding the event rule that you wrote.
+
+When you have found it, click on it's name and you will see metric graphs. One will show Events Delivered and you will see an event delivered to Functions as a Service (FAAS).
+
+![Events Sent Metrics](eventssent.png)
 
 The backend ATP database can be checked by the REST API.
 
 Issue the following curl command as you did earlier to query all the rows in the CATALOG table <i>**replacing fnuser99 with the name of your bucket**</i>:
 
 ```
-$ curl -X GET -G https://vx7tqpyaop2tflx-fnworkshopdb.adb.eu-frankfurt-1.oraclecloudapps.com/ords/fnworkshop/catalog/ --data-urlencode 'q={"bucketname":"fnuser99"}' | jq .
+$ curl -X GET -G $ATP_ORDS_URL --data-urlencode 'q={"bucketname":"fnuser99"}' | jq .
 ```
 
 The response will be in JSON format and you should see an entry for the file you just uploaded e.g.
@@ -498,13 +615,12 @@ The response will be in JSON format and you should see an entry for the file you
  "links": [
  {
  "rel": "self",
- "href": "https://vx7tqpyaop2tflx-fnworkshopdb.adb.eu-frankfurt-1.oraclecloudapps.com/ords/fnworkshop/catalog/11"
  }
  ]
  }
 ```
 
-There will be other entries from other students but you should recognise the file you uploaded, the timestamp and your object store bucket. The url attribute should link to the file you uploaded, try it in a browser.
+You should recognise the file you uploaded, the timestamp and your object store bucket. The url attribute should link to the file you uploaded, try it in a browser.
 
 Again you might find it easier to use the online JSON editor [https://jsoneditoronline.org/](https://jsoneditoronline.org/#/) to view the output and then search the items details to find the image you uploaded.
 
