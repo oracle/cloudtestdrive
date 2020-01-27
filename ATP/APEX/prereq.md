@@ -2,10 +2,10 @@
 
 # Prerequisites for the workshop
 
-## Step 1: Request an Oracle Trial account
-Your lab instructor can help you with obtaining a Trial account during the event.
+## Step 1: Request an Oracle Cloud Free Tier account
+Your lab instructor will assist you to obtaining the account during the event.
 
-To sign up for a trial: [http://bit.ly/registeroraclecloud](http://bit.ly/registeroraclecloud). 
+To sign up for the Free Tier: [http://bit.ly/registeroraclecloud](http://bit.ly/registeroraclecloud). 
 
 
 ![](./images/prereq/create_cloud_trial.png)
