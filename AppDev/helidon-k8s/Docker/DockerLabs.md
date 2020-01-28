@@ -9,6 +9,20 @@
 ### Prerequisites
 To run this part of the lab you need the working storefront and stockmanager microservices (as per the Helidon labs) connected to the database.
 
+<details><summary><b>Using the "completed" image</b></summary>
+<p>
+If you are using a the "completed" VM image (i.e. only doing the docker and subsequent parts of the workshop) then in the helidon-labs-stockmanager project you will need to edit the in the conf/stockmanager-conf.yaml file and add a line of the form department: "Your_department_name" (change the name to be a name unique to you)
+
+```
+app:
+  persistenceUnit: "HelidonATPJTA"
+  department: "Tims"
+```
+
+Changing "Tims" to match your name of course
+
+</p></details>
+
 We will be using **jib** to build the docker images. The pom.xml file contains the details of the jib tooling and it's settings. 
 
 - Open the **storefront** project, and on the top level, open the **pom.xml** file
