@@ -80,7 +80,7 @@ The workshop is intended to work with the Oracle Cloud account information hande
 + Oracle Cloud **identity domain**
 + **Data center/region**
 
-Alternatively you can request an Oracle PaaS trial account. To get an account look into [here](common/request.for.trial.md).
+Alternatively you can request an Oracle Cloud Free Tier account. To get an account look into [here](common/request.for.trial.md).
 
 
 
