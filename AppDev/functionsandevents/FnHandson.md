@@ -196,7 +196,9 @@ A user named *apiuser* will be used to login to OCIR. The apiuser password is st
 
 Display the password:
 
-`$ echo $API_AUTH_TOKEN`
+```
+$ echo $API_AUTH_TOKEN
+```
 
 Copy the password to the clipboard. 
 
