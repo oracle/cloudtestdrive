@@ -37,7 +37,7 @@ Changing "Tims" to match your name of course
   - If the entry is **missing**, relaunch it:  `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin`
 
 
-####Docker image build tool
+#### Docker image build tool
 
 We will be using **jib** to build the docker images. The pom.xml file contains the details of the jib tooling and it's settings. 
 
@@ -53,7 +53,7 @@ Though not covered in this lab if you want more details on the free to use commu
 The [Graal web site](https://www.graalvm.org/) provides more details om Graal.
 </p></details>
 
-####Size of the base image
+#### Size of the base image
 Our base image includes a full command line environment, using a base image with command lines and so on makes the docker image larger than it strictly speaking needs to be. If you wanted to of course you could of course use a different Java base image. There are lots of possible docker base images we could use (some of these are listed in the JIB section of the pom.xml file) but the command line tools in this image allows us to connect to the image and see what's going on internally as well as performing commands.
 
 Later in the Kubernetes labs we will use the capability to run commands to simulate the failure of our microservice and see how Kubernetes handles that.
