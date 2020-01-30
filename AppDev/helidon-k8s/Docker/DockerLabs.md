@@ -23,15 +23,6 @@ Changing "Tims" to match your name of course
 
 </p></details>
 
-We will be using **jib** to build the docker images. The pom.xml file contains the details of the jib tooling and it's settings. 
-
-- Open the **storefront** project, and on the top level, open the **pom.xml** file
-- Locate the **jib-maven-plugin** dependency near line 162
-
-This defined what's required for jib, including the base image to use.  We will be using the Java 11 openjdk (As this is build using JDK11 Long Term Support.) Of course there are lots of possible docker base images we could use, but this one allows us to connect to the image and see what's going on internally (I.e. it has a full shell environment).
-
-This makes the docker image larger than it needs to be, but it helps with debugging if it's needed.  In a production environment a cut down version of a Java 11 base image would be used.
-
 - Make sure the zipkin container is running. You may have done this in the previous lab chapter and left it running. 
   - To check if it is already running type :
 
@@ -45,6 +36,29 @@ This makes the docker image larger than it needs to be, but it helps with debugg
   ```
   - If the entry is **missing**, relaunch it:  `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin`
 
+
+####Docker image build tool
+
+We will be using **jib** to build the docker images. The pom.xml file contains the details of the jib tooling and it's settings. 
+
+- Open the **storefront** project, and on the top level, open the **pom.xml** file
+- Locate the **jib-maven-plugin** dependency near line 162
+
+This defines what's required for jib, including the base image to use.  We will be using the Java 11 Oracle GraalVM Community Edition Docker image as a base image for our containers. We've chosen to use Graal rather than OpenJDK as it provides better Just In Time compilation performance and also the garbage collection. When running in a server environment both of those are important as they reduce startup overheads and make for more predictable responses to the callers. The Graal JVM also allows support for other languages, though we're not making use of that capability in these labs. As it's Java 11 it also means that it's a Long Term Support version of Java. There are of course other options if you want instead of the Graal JVM.
+
+<details><summary><b>More details on Graal</b></summary>
+<p>
+Though not covered in this lab if you want more details on the free to use community edition of the Graal JVM or the fully supported enterprise version which includes the Ahead-of-Time compilation capabilities for Java applications that compiles the Java bytecode into native programs (and thus makes for a much faster startup and more efficient operations) or info on it's support for polyglot applications (which are becoming increasingly important.) there are other labs available.
+
+The [Graal web site](https://www.graalvm.org/) provides more details om Graal.
+</p></details>
+
+####Size of the base image
+Our base image includes a full command line environment, using a base image with command lines and so on makes the docker image larger than it strictly speaking needs to be. If you wanted to of course you could of course use a different Java base image. There are lots of possible docker base images we could use (some of these are listed in the JIB section of the pom.xml file) but the command line tools in this image allows us to connect to the image and see what's going on internally as well as performing commands.
+
+Later in the Kubernetes labs we will use the capability to run commands to simulate the failure of our microservice and see how Kubernetes handles that.
+
+In a production environment a cut down version of a Java 11 base image would be used, as there wouldn't be the need to work inside the container. Also we'd suggest using the Graal enterprise versions which has native compilation capabilities to produce a single executable with a smaller footprint.
 
 
 ### Self contained images
@@ -97,7 +111,6 @@ Now repeat this step for the stockmanager:
 This operation will create two docker images. The mvn package triggers jib to run which will build the docker image based on the properties in the jib section of the pom.xml file.
 
 The jib tool has many advantages over creating a docker image by hand, because it uses the pom.xml file to know what dependencies to copy over, so any changes to the dependencies will automatically be handled when jib is run.
-
 
 Note that jib does not copy every file into the right locations as needed by Helidon so there is a second stage to be done to get a functioning docker image for helidon. This runs a docker build against the image created by jib, the Dockerfile copies files in the container image from the resource to the classes directories and then removed the originals, resulting in a docker container that has everything in the places expected.
 
