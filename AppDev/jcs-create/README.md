@@ -13,14 +13,14 @@ By using Oracle Java Cloud Service, you can quickly create and configure an Orac
 
 This exercise assumes you already executed the creation of a Database Cloud Service as [described in this page](../dbcs-create/README.md).  
 
-To run these labs you will need access to an Oracle Cloud Account.  If you are participating in a live event, your instructor will provide you the required credentials.
+To run these labs you will need access to an Oracle Cloud tenancy.  If you are participating in a live event, your instructor will provide you the required credentials.
 
 In this lab we will use the option to deploy to "OCI" infrastructure (as opposed to the older OCI-C or Classic).  In order to be able to use OCI, you first need to create a few OCI artefacts: a valid Virtual Network Configuration (VCN) and a Storage Bucket.  See [this page](https://docs.cloud.oracle.com/iaas/Content/General/Reference/PaaSprereqs.htm) for all details.
 
 
 ### Steps ###
 
-Go to the Console (see Access information that was delivered to you in the workshop, or login to your [trial environment](https://cloud.oracle.com/sign-in) ).
+Go to the Console (see Access information that was delivered to you in the workshop, or login to your [Oracle Cloud Free Tier environment](https://cloud.oracle.com/sign-in) ).
 
 Make sure you have the tile "Java" displayed.  If this is not the case, use the button "Customize Dashboard", scroll down to the "Java" service in the list, and select "Show".
 

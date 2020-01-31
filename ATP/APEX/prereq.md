@@ -2,16 +2,11 @@
 
 # Prerequisites for the workshop
 
-## Step 1: Request an Oracle Trial account
-By registering for the workshop, your email address has been *whitelisted* for an Oracle Cloud Trial.
+## Step 1: Request an Oracle Cloud Free Tier account
+Your lab instructor will assist you to obtaining the account during the event.
 
-This means you will have __500$ in credit__ for experimenting with a large variety of Oracle Cloud services, and you won't need a credit card to sign up.
+To sign up for the Free Tier: [http://bit.ly/registeroraclecloud](http://bit.ly/registeroraclecloud). 
 
-For this to work, it's important that you:
-- Use this __exact URL__ to sign up for your trial: [http://bit.ly/registeroraclecloud](http://bit.ly/registeroraclecloud). 
-- And use the __same email address__ that you used to register for the workshop.
-
-<!--Your whitelisting expires at the end of the day of the workshop, it's important to sign up before that to make use of it. -->
 
 ![](./images/prereq/create_cloud_trial.png)
 

@@ -19,7 +19,6 @@ During this day you will be able to experience the various cloud services hands-
 + Run your first **serverless Functions** [using the Opensource FnProject](AppDev/functions/function2_lab.md) or by using the Oracle Managed service called [Oracle Functions](https://www.oracle.com/webfolder/technetwork/tutorials/infographics/oci_faas_gettingstarted_quickview/functions_quickview_top/functions_quickview/index.html#).  Or optionally [create a function from an exiting Docker](https://github.com/shaunsmith/functionslab-codeone19/blob/master/6-Container-as-Function.md) container.
 + [Functions and Events](AppDev/functionsandevents/FnHandson.md): showcasing event-driven serverless functions and an Autonomous database. 
 + Discover the **Helidon Microservices framework for Java** by running through the 2 Getting Started [Quickstarts](https://helidon.io/docs/latest/#/guides/01_overview) for the SE and MP flavour, and then continue with more advanced features like Metrics and Healthchecks in [this tutorial](https://github.com/tomas-langer/helidon-conference/blob/master/README.md)
-+ ***NEW*** !!   [Migrate the Java "Monolith" to Microservices using Helidon](AppDev/helidon-k8s/README.md)
 
 
 
@@ -33,8 +32,12 @@ During this day you will be able to experience the various cloud services hands-
 
 + [Running WebLogic on Kubernetes](AppDev/wls/WLS_on_OKE.md)
   Launch WebLogic on a Kubernetes cluster, using the WebLogic Operator to control your WebLogic environment
+  
++ [Migrate a library of the Java EE "Monolith" to Microservices using Helidon](AppDev/helidon-k8s/README.md)
 
   
+
+
 
 
 ## Autonomous Databases
@@ -80,7 +83,7 @@ The workshop is intended to work with the Oracle Cloud account information hande
 + Oracle Cloud **identity domain**
 + **Data center/region**
 
-Alternatively you can request an Oracle PaaS trial account. To get an account look into [here](common/request.for.trial.md).
+Alternatively you can request an Oracle Cloud Free Tier account. To get an account look into [here](common/request.for.trial.md).
 
 
 

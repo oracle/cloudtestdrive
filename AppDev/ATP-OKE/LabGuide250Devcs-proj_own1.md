@@ -103,9 +103,9 @@ In this section, you’ll provision a complete development platform for your tea
 
 
 
-### Extra step when using a personal Trial environment ###
+### Extra step when using a personal Cloud Tenancy ###
 
-If you are using a personal trial Cloud Tenancy, you need to upload some larger files to the Developr Cloud git Repository.  The easiest way to do this consists of making a local branch of the repository on your machine.
+If you are using a personal Cloud Tenancy (Oracle Always Free Tier), you need to upload some larger files to the Developr Cloud git Repository.  The easiest way to do this consists of making a local branch of the repository on your machine.
 
 ### Cloning your repository locally
 

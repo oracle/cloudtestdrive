@@ -18,7 +18,7 @@ This tutorial demonstrates how to create a Database Cloud Service using the PaaS
 
 To run these labs you will need access to an Oracle Cloud Account.  If you are participating in a live event, your instructor will provide you the required credentials.
 
-If you are running these labs on your own, please get a [Trial account](https://myservices.us.oraclecloud.com/mycloud/signup?sourceType=:ex:tb:::RC_EMMK181016P00010:Virtual_WS_DEV&SC=:ex:tb:::RC_EMMK181016P00010:Virtual_WS_DEV&pcode=EMMK181016P00010) or set up your corporate UC subscription for this lab.
+If you are running these labs on your own, please get a [Oracle Cloud Free Tier account](https://myservices.us.oraclecloud.com/mycloud/signup?sourceType=:ex:tb:::RC_EMMK181016P00010:Virtual_WS_DEV&SC=:ex:tb:::RC_EMMK181016P00010:Virtual_WS_DEV&pcode=EMMK181016P00010) or set up your corporate UC subscription for this lab.
 
 In this lab we will use the option to deploy to "OCI" infrastructure (as opposed to the older OCI-C or Classic).  In order to be able to use OCI, you first need to create a few OCI artefacts: a valid Virtual Network Configuration (VCN) and a Storage Bucket.
 
@@ -34,7 +34,7 @@ Follow the steps 1 to 6 in [this tutorial](https://docs.cloud.oracle.com/iaas/Co
 
 ### Steps to create a Database ###
 
-Go to the Console (see Access information that was delivered to you in the workshop, or login to your [trial environment](https://cloud.oracle.com/sign-in) ). After a successful login you will see your Dashboard.
+Go to the Console (see Access information that was delivered to you in the workshop, or login to your [Oracle Cloud Free Tier environment](https://cloud.oracle.com/sign-in) ). After a successful login you will see your Dashboard.
 
 Make sure you have the tile "Database Classic" displayed.  If this is not the case, use the button "Customize Dashboard", scroll down to the "Database Classic" service in the list, and select "Show".
 
