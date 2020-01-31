@@ -14,8 +14,8 @@ This hands on lab, although standalone would benefit from a basic understanding 
 Experience of using ssh clients would be beneficial but not essential. 
 A picture image on your laptop that can be uploaded to object storage to trigger the function will be needed.
 
-### Download lab artifacts file by clicking on the link in the student handout that you will have been sent prior to the course.
-Oncde downloaded to a temporary file on your laptop, extract the contents as these will be needed in the lab.
+### Download the lab artifacts file by clicking on the link in the student handout that you will have been sent prior to the course.
+Once downloaded to a temporary file on your laptop, extract the contents as these will be needed in the lab.
 
 ### SSH to your lab VM
 
@@ -48,7 +48,7 @@ Once installed you’ll see the Fn CLI version printed out.
 You should see something similar to the following displayed (although likely with a later version number):
 
 ``` txt
-fn version 0.5.87
+fn version 0.5.92
         ______
        / ____/___
       / /_  / __ \
@@ -107,6 +107,7 @@ CURRENT	NAME	PROVIDER	API URL			REGISTRY
 We now need to add the specific compartment within OCI to where you will create a new Oracle Functions application. 
 We do this by providing the compartment OCID. 
 For this lab it will be the same compartment for every student. The following Fn command needs to be executed in order to set this up.
+
 The OCID has been pre-defined as an environment variable in you lab vm to make this simpler.
 
 ```
@@ -238,11 +239,11 @@ In the OCI Console if not already done, change the region to the Frankfurt regio
 
 In the browser session where you logged into the OCI Console look for the ![image2019-8-28_11-40-56](image2019-8-28_11-40-56.png) menu in the top left hand of the screen and press it.
 
-![Select Object Storage](chooseobjectstorage.png)
-
 From the list presented hover your mouse over 'Object Storage' and more options appear.
 
 Press your mouse on 'Object Storage'
+
+![Select Object Storage](chooseobjectstorage.png)
 
 Ensure that you are in the fnworkshopstudent compartment in the compartment picker.
 
@@ -267,43 +268,39 @@ By clicking on the bucket name created for you, you should see there are no obje
 
 Now that we have completed the Fn based configuration we can turn our attention to the OCI console and start to build our function based application.
 
-In the OCI Console change the region to the Frankfurt region in the grey bar across the top of the console. Select the region drop down and pick "Germany Central (Frankfurt)".
-
-![image2019-10-1_16-4-41](image2019-10-1_16-4-41.png)
-
 In the browser session where you logged into the OCI Console look for the ![image2019-8-28_11-40-56](image2019-8-28_11-40-56.png) menu in the top left hand of the screen and press it.
 
-![image2019-8-28_11-52-25](image2019-8-28_11-52-25.png)
-
 From the list presented hover your mouse over 'Developer Services and more options appear.
+
+![image2019-8-28_11-52-25](image2019-8-28_11-52-25.png)
 
 Press your mouse on 'Functions'
 
 Before we can use Functions we need to select a compartment to utilise and you will be presented with a screen similar to this:
 
 ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-1_16-6-12.png](image2019-10-1_16-6-12.png)
-<br>
+
 
 This lab is run for students in a number of OCI tenancies where the compartments used can vary. 
 Please refer to the student handout you received at the beginning of this lab for the specific compartment to use and how to find it.
 
 You will now be presented with the Functions User Interface where we will create a new application. As you are sharing this compartment with other delegates you may well already see applications listed.
 
-Create a new application by pressing on the button ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-8-28_12-23-5.png](image2019-8-28_12-23-5.png)<br>
-<br>
+Create a new application by pressing on the button ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-8-28_12-23-5.png](image2019-8-28_12-23-5.png)
+
 The 'New Application' window will appear and you need to give a name, a description, the VCN and subnet you will use to access it over.
 
 Give the name as imagecatalogapp_NN_ where the _NN_ is replaced with your delegate number (Given at the start of the hands on lab). eg imagecatalogapp01
 
 The **VCN** and subnet to be used are within the same compartment as the one you are creating the application in. So in the VCN field ensure that the VCN selected is *fnvcn*.
 
-![Function App VCN choice](fnvcnchoice.png)<br>
+![Function App VCN choice](fnvcnchoice.png)
 
 For the subnet ensure 'fnworkshopstudent' is selected as the compartment.
 
 The **subnet** Fn Public Subnet (Regional) can then be selected.
 
-![Function App Subnet choice](fnsubnetchoice.png)<br>
+![Function App Subnet choice](fnsubnetchoice.png)
 
 Under logging policy select "LOG TO OBJECT STORAGE", this will facilitate debugging if needed. 
 
@@ -323,7 +320,7 @@ Issue the following command and you should see your new application listed:
  $ fn list apps
 ```
 
-###Create a new function
+### Create a new function
 
 The new function will be written in Java. This is just one of the many languages supported by the Fn SDK. 
 From your your lab VM ssh session, create a working directory and change into it by issuing these commands:
@@ -547,24 +544,24 @@ In the Event Type drop down select "Object - Create".
 
 The Rule Condition should look like:
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-11_11-17-3.png](image2019-10-11_11-17-3.png)<br>
-<br>
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-11_11-17-3.png](image2019-10-11_11-17-3.png)
+
 Add another condition to specify exactly which bucket triggers this rule. 
 
 Press the "+ Add Condition" button. 
 
-Select "Attribute" as the condition type and then bucketName as the "Attribute Name". 
+Select "Attribute" as the condition type and then "bucketName" as the "Attribute Name". 
 
 In "Attribute Values" enter the name of your assigned object storage bucket (see earlier section on object storage) e.g. fnuser99.
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-11_11-21-41.png](image2019-10-11_11-21-41.png)<br>
-<br>
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-11_11-21-41.png](image2019-10-11_11-21-41.png)
+
 In the Actions section specify the Action Type as Functions. 
 
 Select the fnworkshopstudent compartment, **your** function application (based on your student number) and your deployed function.
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-11_11-24-16.png](image2019-10-11_11-24-16.png)<br>
-<br>
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-11_11-24-16.png](image2019-10-11_11-24-16.png)
+
 Press "Create Rule" to create your rule - this button is right at the bottom left of the screen and sometimes hard to spot.
 
 ### Trigger the function
@@ -575,8 +572,8 @@ Locate the bucket assigned to you again and click on its name to open the detail
 
 In the console click the blue Upload Objects button, in the dialog box click "select files" and pick an image file from your laptop (it doesn't matter which).
 
-![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-14_16-15-28.png](image2019-10-14_16-15-28.png)<br>
-<br>
+![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-14_16-15-28.png](image2019-10-14_16-15-28.png)
+
 Press the "Upload Objects" button to upload the object. 
 
 The function will be invoked in a few seconds but bear in mind that the function serverless environment needs to be started prior to the first invocation.
@@ -625,6 +622,8 @@ The response will be in JSON format and you should see an entry for the file you
 You should recognise the file you uploaded, the timestamp and your object store bucket. The url attribute should link to the file you uploaded, try it in a browser.
 
 Again you might find it easier to use the online JSON editor [https://jsoneditoronline.org/](https://jsoneditoronline.org/#/) to view the output and then search the items details to find the image you uploaded.
+
+Congratulations! You have successfully completed this lab session!
 
 ## Links to more information
 
