@@ -67,13 +67,13 @@ Enter the tenancy name provided in the lab details and then log in with your ass
 
 **If you do not have these details please let the organisers know.**
 
-![](image2019-9-23_14-13-50.png)
+![Tenant Name](image2019-9-23_14-13-50.png)
 
-![](image2019-9-23_14-15-12.png)
+![Logging In](image2019-9-23_14-15-12.png)
 
 You will need to reset the password on first login so go ahead and do that. The password and user will be removed at the end of the workshop so to keep things simple go ahead and create your own password or use Welcome#### if you cant think of anything.
 
-![image2019-9-23_14-17-44](image2019-9-23_14-17-44.png)
+![Reset Password](image2019-9-23_14-17-44.png)
 
 Once logged in, in the top right hand corner click the user avatar ![image2019-8-28_6-10-53](image2019-8-28_6-10-53.png) and then in the menu that is displayed, select your username which will appear under the heading titled 'Profile'.
 
@@ -132,15 +132,11 @@ You will need to replace the _NN_ with **your** student number (01 - 10)
 
 You will need to replace _tenancyname_ with the tenancy name given at the start of the lab in the student handout
 
-```
-$ fn update context registry fra.ocir.io/_tenancyname_/fnworkshop_NN_
-```
+> $ fn update context registry fra.ocir.io/*tenancyname*/fnworkshop*NN*
 
 Finally we need to allow the Fn context for oci to utilise the oci configuration you edited earlier. To do this issue the following command:
 
-```
-$ fn update context oracle.profile fnworkshop_profile
-```
+``` $ fn update context oracle.profile fnworkshop_profile ```
 
 With the configuration of the Fn context complete you can examine this in the .yaml file for the context.
 
@@ -208,9 +204,8 @@ Then perform the following command:
 **NOTE** 
 
 You will need to replace _tenancyname_ with the tenancy name given at the start of the lab in the student handout
-```
-$ docker login fra.ocir.io/_tenancyname_
-```
+
+> $ docker login fra.ocir.io/**_tenancyname_**
 
 When prompted enter your _tenancyname_/apiuser 
 
@@ -290,7 +285,7 @@ Create a new application by pressing on the button ![Oracle Solution Center EMEA
 
 The 'New Application' window will appear and you need to give a name, a description, the VCN and subnet you will use to access it over.
 
-Give the name as imagecatalogapp_NN_ where the _NN_ is replaced with your delegate number (Given at the start of the hands on lab). eg imagecatalogapp01
+Give the name as imagecatalogapp*NN* where the *NN* is replaced with your delegate number (Given at the start of the hands on lab). eg imagecatalogapp01
 
 The **VCN** and subnet to be used are within the same compartment as the one you are creating the application in. So in the VCN field ensure that the VCN selected is *fnvcn*.
 
@@ -443,17 +438,17 @@ In the right hand pane expand items to see the current number of items in the da
 
 ### Set Function Application Configuration Variables
 
-The Database REST endpoint will be configured as a configuration variable in the Function application. This is done with the Fn CLI (**substitute your student number for NN**):
+The Database REST endpoint will be configured as a configuration variable in the Function application. This is done with the Fn CLI (**substitute your student number for *NN***):
 
-```
-fn config app imagecatalogappNN ordsBaseURL $ATP_ORDS_URL
-```
 
-We will also add another configuration variable. Issue the following command **again replacing NN with your student number**:
+> fn config app imagecatalogapp***NN*** ordsBaseURL $ATP_ORDS_URL
 
-```
-fn config app imagecatalogappNN imageUrl https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/
-```
+
+We will also add another configuration variable. Issue the following command **again replacing *NN* with your student number**:
+
+
+> fn config app imagecatalogapp***NN*** imageUrl https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/
+
 
 These configuration variables will be read as environment variables within the function and can be read in whatever code the function is implemented in. 
 It's also possible to set configurations at the individual function level.
@@ -495,11 +490,11 @@ Ensure you are in the imagecatalogfunction directory
 $ cd ~/fnwork/imagecatalogfunction
 ```
 
-Deploy the function to OCI. Issue the following command **again replacing NN with your student number**:
+Deploy the function to OCI. Issue the following command **again replacing *NN* with your student number**:
 
-```
-$ fn --verbose deploy --app imagecatalogappNN
-```
+
+> $ fn --verbose deploy --app imagecatalogapp***NN***
+
 
 You should see the familiar Docker and Maven build output and finally a message that the function has updated with a new image.
 
@@ -532,7 +527,7 @@ In the OCI console open the hamburger menu in the top left-hand corner and navig
 
 Click the blue "Create Rule" button and complete the details for your new rule.
 
-Display Name: fnuser_NN_rule (replace _NN_ for your student number)
+Display Name: fnuser*NN*rule (replace *NN* for your student number)
 
 Description: Detects new objects in bucket and triggers imagecatalogfunction
 
@@ -581,7 +576,7 @@ This means there will be a delay in seeing anything.
 
 It is advisable to wait a minute or so before continuing.
 
-To check execution, navigate to the Functions page in the console, select your application (imagecatalogapp_NN_) and then the function (imagecatalogfunction).
+To check execution, navigate to the Functions page in the console, select your application (imagecatalogapp*NN*) and then the function (imagecatalogfunction).
 
 In the metrics graphs you should see a point appear for the first function invocation (you might need to refresh your browser a few times).
 
