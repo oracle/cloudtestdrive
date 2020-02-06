@@ -22,19 +22,35 @@ Once you have signed in the the OCI infrastructure click on the hamburger menu (
 
 In the List Scope section use the dropdown to select CTDOKE as the compartment (you may have to expand the tree nodes to locate this) Click the "Create Cluster" button at the top of the clusters list
 
-Take the option for the "Quick Create" (this provides automatic versions of most of the key elements for you)
+Take the option for the " Create" (this provides automatic versions of most of the key elements for you)
 
 In the next form name the cluster something like LAB-<your initials>-Helidon-Cluster (you can of course use anything you like instead of <your initials> as long as it's unique)
 
 Make sure the compartment is CTKOKE
 
-Make sure the Kubernetesd version is the highest on the list (currently 1.14.8)
+Make sure the Kubernetes version is the highest on the list (currently 1.14.8)
 
-Set the visibility type to be **public**
+Click Next at the bottom to go to the next page of the process which covers networking
 
-Leave the shape as VM.Standard1.1
+in the VCN page chose OKE\_Lab\_Network\_Helidon\_Lab
+
+In the service LB subnet chose LoadBalancerSubnet
+
+Click next at the bottom of the page to go to the node pool configuration
+
+Name the pool LAB-<your initials>-Node-Pool
+
+In the Version chose the most recent (currently 1.14.8)
+
+In the image select the latest version of Oracle Linux
+
+In the shape select VMStandard1.1
 
 Set the number of nodes to be 1
+
+Set the availability domein to be "ezas:EU-FRANKFURT-1-AD-1"
+
+Set the subnet to be workerSubnet
 
 **TURN OFF** the Add Ons, make sure that the sliders for both Kubernetes Dashboard Enabled and Tiller (Helm) Enabled are grey ("switch" to the left")
 
