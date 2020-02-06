@@ -451,7 +451,7 @@ You now have the basic environment to deploy services, and we've looked at how t
 
 - Create a namespace and set the environment, using **your initials** as a parameter (here the example uses tg as initials)
   -  `cd helidon-kubernetes/base-kubernetes`
-  -  `create-namespace.sh tg-helidon`
+  -  `./create-namespace.sh tg-helidon`
 
 ```
 Deleting old tg-helidon namespace
