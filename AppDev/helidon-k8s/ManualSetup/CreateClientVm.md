@@ -73,7 +73,7 @@ Once the create button has been clicked you will see the Vm details page.  Initi
 
 
 
-###Installing a VNC viewer
+### Installing a VNC viewer
 
 - For **macOS** we advise realVNC which can be obtained from 
 
@@ -93,7 +93,7 @@ Once the create button has been clicked you will see the Vm details page.  Initi
 
 
 
-###Connecting to the VM
+### Connecting to the VM
 
 Use your VNC client to connect to the VM desktop on display 1. The precise format of the VNC connect string will vary depending on your VNC client, but it will be something like:
 
