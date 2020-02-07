@@ -15,7 +15,7 @@ Your instructor will inform you if the VM's have already been created for you or
 
 
 
-###Self-Registration on the Cloud
+### Self-Registration on the Cloud
 
 - Use the **Self-registration** URL provided by your instructor to obtain an account on the Oracle Cloud tenancy we will be using for this lab.
   - You will be asked to provide a username, password and email.  Your instructor will detail the rules that apply for these elements.
@@ -39,20 +39,23 @@ You will now see the list of instances already running in this compartment.
 
 - Click the **Create Instance** button to start the creation of a new instance.
 
+![Screenshot 2020-02-07 at 10.28.16](SelectCompartment.png)
+
+
+
 This will open the **Create Compute Instance** wizard.  Fill in the following elements:
 
 - Enter a meaningfull **name** for your instance: `helidonlabVm-yourInitials`, using your initials to distinguish from other participants.
-
 - Click the **Change Image Source** button.
   - In the resulting page click the **Custom Images** tab
   - Select the image called H-K8S-Initial-State-\<YYYY-MM-DD\> where the YYYY-MM-DD is a date
     - If there are more than one image chose the one with the most recent date. 
     - DO NOT chose any image containing the work Export.
   - Click the **Select Image** button to return to the initial screen.
-
 - Use the **defauld values** provided for following elements: 
   - **Availability domain** (AD1), **Instance type** (Virtual Machine) and **Instance shape** (VM.Standard.2.1)
-  - The *Virtual Cloud Network Compartment* should already be set to **CTDOKE**.
+- ![Screenshot 2020-02-07 at 10.32.08](createvm.png)
+- The *Virtual Cloud Network Compartment* should already be set to **CTDOKE**.
 - In the **Virtual cloud Network** dropdown,  select the **CTDVMVCN** network. 
 - Leave all the other setings in the section as they are in the boot volume section
   - Check the **Assign a public IP address** option is selected
@@ -66,7 +69,7 @@ You have finished the wizard!
 
 Once the create button has been clicked you will see the Vm details page.  Initially the state will be provisioning but after a few minutes it will switch to **Running**, and you will see that a **public IP address** has been assigned.  Make a note of that IP address.
 
-- Give the VM a few mins to start up it's internal services.
+- Give the VM a few minutes to start up it's internal services.
 
 
 

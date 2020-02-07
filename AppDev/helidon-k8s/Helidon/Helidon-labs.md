@@ -30,9 +30,6 @@ We are using Helidon MP, this is an annotation based framework, where to utilize
 <details><summary><b>Requirements for this Lab</b></summary>
 <p>
 
-- **
-
-
 We have assumed you understand the basic concepts of what a REST service is.
 
 The labs **do require basic programming knowledge**. As Helidon is a Java set of libraries then of course you need to have an understanding of simple Java programming. The labs are deliberately designed not to require detailed understanding of complex Java technologies, though if you do happen to be a Java expert you may be able to apply that knowledge to gain deeper understanding of how Helidon operates.
@@ -51,7 +48,7 @@ Your instructor will inform you of the steps that still need to be executed to s
 
 You will have to install a VNC viewer on your laptop to access this environment.
 
-- Follow these [detailed instructions for accessing the Linux Desktop](../ManualSetup/CreateClientVM.md)
+- Follow these [detailed instructions for accessing the Linux Desktop](../ManualSetup/CreateClientVm.md)
 
 ---
 
