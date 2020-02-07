@@ -1,0 +1,27 @@
+{
+    "workshop": {
+        "title": "Digital Workshop",
+        "description": "Hands-on Digital Modernization",
+        "theme": "default",
+        "labs": [
+	              {
+                "number": "00",
+                "filename": "home.md",
+                "title": "Welcome",
+                "description": "Read me first"
+            },
+		{
+                "number": "01",
+                "filename": "Lab1.md",
+                "title": "OIC Process Lab 1",
+                "description": "OIC Process – Building a Workflow Application"
+            },
+             {
+                "number": "02",
+                "filename": "Lab2.md",
+                "title": "OIC Process Lab 2",
+                "description": "OIC Process – Leveraging a DMN Rule"
+            }
+        ]
+    }
+}

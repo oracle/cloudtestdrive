@@ -30,10 +30,6 @@ We are using Helidon MP, this is an annotation based framework, where to utilize
 <details><summary><b>Requirements for this Lab</b></summary>
 <p>
 
-- **Access to the Linux Desktop set up by your instructor**.   This environment will contain Eclipse and Firefox applications, as well as a set of command-line tools you will need : maven, docker, kubectl.  In a next iteration of this lab we will provide instructions to set this up on your own laptop.
-  - You will have to install a VNC viewer on your laptop to access this environment.
-
-
 We have assumed you understand the basic concepts of what a REST service is.
 
 The labs **do require basic programming knowledge**. As Helidon is a Java set of libraries then of course you need to have an understanding of simple Java programming. The labs are deliberately designed not to require detailed understanding of complex Java technologies, though if you do happen to be a Java expert you may be able to apply that knowledge to gain deeper understanding of how Helidon operates.
@@ -44,9 +40,18 @@ We do not expect you to know the details of the Maven build / packaging tool. In
 
 </p></details>
 
+#### Access to the Linux Desktop
 
+This environment will contain Eclipse and Firefox applications, as well as a set of command-line tools you will need : maven, docker, kubectl. 
+
+Your instructor will inform you of the steps that still need to be executed to spin up the Desktop.
+
+You will have to install a VNC viewer on your laptop to access this environment.
+
+- Follow these [detailed instructions for accessing the Linux Desktop](../ManualSetup/CreateClientVm.md)
 
 ---
+
 
 <details><summary><b>How to do the coding in the labs</b></summary>
 <p>

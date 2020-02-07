@@ -1,0 +1,37 @@
+
+.oj-panel {
+	background-color: #a64dff!important; /* Will set the background to light purple. Note that "!important" means that it will take precedence over the already existing definitions */
+}
+
+.oj-label {
+	font-weight: 400;
+    padding: 5px;
+    box-sizing: border-box;
+    background: orange;
+    color: white;
+    border: 1px;
+} /* this will set every label on the form to Orange, with border-box, etc.. NOTE: the "." in the front means that it will affect the whole CSS class, in this case every labels on the form */
+
+input[name=firstName]{
+color: green;
+} /* Will set the input field named "firstName" to green */
+
+input {
+color: rgb(255, 0, 0); 
+} /* Will set any other input field to red*/
+
+
+.oj-inputnumber-input{
+color: orange; /* Will set the input field of type "number" to orange */
+
+}
+
+button:not(.definition-action) {
+	background: blue!important;
+    color: white!important;
+} /* Will set the buttons that are not of class "action" to blue and white (this means the scroll buttons, for example*/
+
+button:not(.definition-action) span {
+	color: white!important;
+}
+
