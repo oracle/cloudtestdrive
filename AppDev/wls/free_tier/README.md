@@ -83,27 +83,20 @@ Follow this [video](https://learn.hashicorp.com/terraform/getting-started/instal
 
 
 
-# 5. Clone this github repository on your laptop
+# 5. Copy the terraform config files on your laptop
 
-Clone the WebLogic Cloud Workshop git repository to your desktop.
+
 ```
-git clone https://github.com/StephaneMoriceau/WebLogic-Cloud-Workshop.git
+svn export https://github.com/Oracle/cloudtestdrive/trunk/AppDev/wls/free_tier/terraform
 ```
 
----
-
-**Note:**
-
-If git is not already install on your desktop, you may want to simply create a directory named **terraform** and manually copy all the files from https://github.com/StephaneMoriceau/WebLogic-Cloud-Workshop.git/tree/master/terraform in newly created files under your terraform directory.
-
----
 
 # 6. Update the terraform configuration file with the specifics of your environment
 
 1. Copy the terraform configuration variables example file
 
 ```
-$ cd ~/WebLogic-Cloud-Workshop/terraform
+$ cd ~/terraform
 
 $ cp terraform.tfvars.example terraform.tfvars
 ```
