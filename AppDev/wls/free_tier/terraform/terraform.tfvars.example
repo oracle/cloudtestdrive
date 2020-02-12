@@ -1,0 +1,32 @@
+# Identity and access parameters
+
+oci_base_identity = {
+  api_fingerprint      = "64:8c:3b:..."
+  api_private_key_path = "/Your_directory/.oci/oci_api_key.pem"
+  api_private_key_password = "private_key_passphrase"
+  compartment_id       = "ocid1.compartment.oc1..aaaaaaaa3l..."
+  tenancy_id           = "ocid1.tenancy.oc1..aaaaaaaaznlqfv..."
+  user_id              = "ocid1.user.oc1..aaaaaaaajbvljcmjw..."
+}
+
+oci_base_general = {
+  label_prefix = "base"
+  region       = "XX-MYREGION-Y"
+}
+
+
+# Base 64 password
+
+Base64_Password = "bWlu..."
+
+
+# Infrastructure parameters (if you change either Compartment_name or Dynamic_Group_name update the statement accordingly in the 'Create Policy for the Dynamic group' section in main.tf)
+
+Compartment_name = "WLS_Compartment"
+Dynamic_Group_name = "WLS_Dynamic_Group"
+Policy_name = "WLS_Policy"
+Vault_name = "WLS_Vault"
+Key_name = "WLS_Key"
+
+
+
