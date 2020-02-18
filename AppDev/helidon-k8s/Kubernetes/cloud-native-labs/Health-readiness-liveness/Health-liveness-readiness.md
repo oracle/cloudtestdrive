@@ -1,6 +1,6 @@
 [Go to Overview Page](../Kubernetes-labs.md)
 
-![](../../../../common/images/customer.logo2.png)
+![](../../../../../common/images/customer.logo2.png)
 
 # Migration of Monolith to Cloud Native
 
@@ -19,14 +19,10 @@ These labs look at how that is achieved.
 
 As we've seen a service in Kubernetes is delivered by programs running in containers. The way a container operates is that it runs a single program, once that program exists then the container exits, and the pod is no longer providing the service. 
 
-So the first thing we need to protect against is the program providing our service existing, there are always bugs in code (with the possible exception of "Hello World" bug free programs just don't exist) and quite often the bugs can cause programs to completely crash.
-
-Before we can see this in action, we need to get a bit of data on the current state of the system.
-
-First let's make sure that the service is running. In a terminal type
+- Make sure that the service is running. 
+  - In a terminal type : `curl -i -X GET -u jack:password http://localhost:80/store/stocklevel`
 
 ```
-$ curl -i -X GET -u jack:password http://localhost:80/store/stocklevel
 HTTP/1.1 200 OK
 Server: openresty/1.15.8.2
 Date: Thu, 02 Jan 2020 14:01:18 GMT
@@ -37,10 +33,11 @@ Connection: keep-alive
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
 
-OK, all is running fine, in a terminal type 
+Lets look at the pods to check all is running fine:
+
+-  `kubectl get pods` 
 
 ```
-$ kubectl get pods
 NAME                            READY   STATUS    RESTARTS   AGE
 stockmanager-6456cfd8b6-rl8wg   1/1     Running   0          92m
 storefront-65bd698bb4-cq26l     1/1     Running   0          92m
@@ -51,11 +48,12 @@ We can see the state of our pods, look at the RESTARTS column, all of the values
 
 We're going to simulate a crash in our program, this will cause the container to exit, and Kubernetes will idntify this and start a replacement container for us.
 
-Using the name of the storefront pod above let's connect to the container in the pod using kubectl, and then use ps to see what processes are running in it
+Using the name of the storefront pod above let's connect to the container in the pod using kubectl, and then use ps to see what processes are running in it:
+
+-  `kubectl exec storefront-65bd698bb4-cq26l -ti -- /bin/bash` 
+  - In the container, type : `ps -ef`
 
 ```
-$ kubectl exec storefront-65bd698bb4-cq26l -ti -- /bin/bash
-root@storefront-65bd698bb4-cq26l:/# ps -ef
 UID        PID  PPID  C STIME TTY          TIME CMD
 root         1     0  0 12:23 ?        00:00:29 java -server -Djava.awt.headless=true -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -cp /app/resources:/app/classes:/app/libs/* com.oracle.labs.helidon.storefront.Main
 root        47     0  0 14:04 pts/0    00:00:00 /bin/bash
@@ -64,19 +62,20 @@ root        53    47  0 14:04 pts/0    00:00:00 ps -ef
 
 We can see the bash and ps process we just kicked off, but also the primary process which is running out service, the java process.
 
-We're going to simulate the process having a major fault and exiting by just killing it. In the container type
+- Simulate a major fault by killing the process:
+  - `pkill java`
 
 ```
-root@storefront-65bd698bb4-cq26l:/# pkill java
 root@storefront-65bd698bb4-cq26l:/# command terminated with exit code 137
 ```
 
-Within a second or two of the process being killed the connection to the container in the pod is terminated as the container exits
+Within a second or two of the process being killed the connection to the container in the pod is terminated as the container exits.
 
-If we now try getting the data again it still responds, admittedly with a short delay, how come ?
+If we now try getting the data again it still responds:
+
+- `curl -i -X GET -u jack:password http://localhost:80/store/stocklevel`
 
 ```
- curl -i -X GET -u jack:password http://localhost:80/store/stocklevel
 HTTP/1.1 200 OK
 Server: openresty/1.15.8.2
 Date: Thu, 02 Jan 2020 14:10:04 GMT
@@ -87,10 +86,10 @@ Connection: keep-alive
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
 
-To find out let's look at the pod details again
+- Let's look at the pod details again:
+  -  `kubectl get pods`
 
 ```
-$ kubectl get pods
 NAME                            READY   STATUS    RESTARTS   AGE
 stockmanager-6456cfd8b6-rl8wg   1/1     Running   0          107m
 storefront-65bd698bb4-cq26l     1/1     Running   1          107m
@@ -99,27 +98,14 @@ zipkin-88c48d8b9-jkcvq          1/1     Running   0          107m
 
 Now we can see that the pod names are still the same, but the storefront pod has had a restart.
 
-Kubernetes has identified that the container exited and within the pod restarted a new container. Another indication of this is if we look at the logs we can see that previous activity is no longer displaying a the timestamps for starting the process are all recent.
+Kubernetes has identified that the container exited and within the pod restarted a new container. Another indication of this is if we look at the logs we can see that previous activity is no longer displaying:
+
+-  `kubectl logs storefront-65bd698bb4-cq26l `
 
 ```
-$ kubectl logs storefront-65bd698bb4-cq26l 
 2020.01.02 14:06:30 INFO com.oracle.labs.helidon.storefront.Main Thread[main,5,main]: Starting server
 2020.01.02 14:06:32 INFO org.jboss.weld.Version Thread[main,5,main]: WELD-000900: 3.1.1 (Final)
-2020.01.02 14:06:32 INFO org.jboss.weld.Bootstrap Thread[main,5,main]: WELD-ENV-000020: Using jandex for bean discovery
-2020.01.02 14:06:33 INFO org.jboss.weld.Event Thread[main,5,main]: WELD-000411: Observer method [BackedAnnotatedMethod] public org.glassfish.jersey.ext.cdi1x.internal.ProcessAllAnnotatedTypes.processAnnotatedType(@Observes ProcessAnnotatedType<?>, BeanManager) receives events for all annotated types. Consider restricting events using @WithAnnotations or a generic type with bounds.
-2020.01.02 14:06:33 INFO org.jboss.weld.Event Thread[main,5,main]: WELD-000411: Observer method [BackedAnnotatedMethod] private io.helidon.microprofile.openapi.IndexBuilder.processAnnotatedType(@Observes ProcessAnnotatedType<X>) receives events for all annotated types. Consider restricting events using @WithAnnotations or a generic type with bounds.
-2020.01.02 14:06:35 INFO org.jboss.weld.Bootstrap Thread[main,5,main]: WELD-ENV-002003: Weld SE container 0228d5bd-f6ed-4c4e-9b09-492d44fad6cc initialized
-2020.01.02 14:06:35 INFO io.helidon.tracing.zipkin.ZipkinTracerBuilder Thread[main,5,main]: Creating Zipkin Tracer for 'sf' configured with: http://zipkin:9411/api/v2/spans
-2020.01.02 14:06:36 INFO io.smallrye.openapi.api.OpenApiDocument Thread[main,5,main]: OpenAPI document initialized: io.smallrye.openapi.api.models.OpenAPIImpl@4db77402
-2020.01.02 14:06:38 INFO io.helidon.webserver.NettyWebServer Thread[main,5,main]: Version: 1.3.1
-2020.01.02 14:06:38 INFO io.helidon.webserver.NettyWebServer Thread[nioEventLoopGroup-2-1,10,main]: Channel 'admin' started: [id: 0x1e472e66, L:/0.0.0.0:9080]
-2020.01.02 14:06:38 INFO io.helidon.webserver.NettyWebServer Thread[nioEventLoopGroup-2-2,10,main]: Channel '@default' started: [id: 0x8f683428, L:/0.0.0.0:8080]
-2020.01.02 14:06:38 INFO io.helidon.microprofile.server.ServerImpl Thread[nioEventLoopGroup-2-1,10,main]: Server started on http://localhost:8080 (and all other host addresses) in 219 milliseconds.
-2020.01.02 14:06:38 INFO com.oracle.labs.helidon.storefront.Main Thread[main,5,main]: Running on http://localhost:8080/store
-2020.01.02 14:10:02 WARNING com.netflix.config.sources.URLConfigurationSource Thread[helidon-1,5,server]: No URLs will be polled as dynamic configuration sources.
-2020.01.02 14:10:02 INFO com.netflix.config.sources.URLConfigurationSource Thread[helidon-1,5,server]: To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
-2020.01.02 14:10:02 INFO com.netflix.config.DynamicPropertyFactory Thread[helidon-1,5,server]: DynamicPropertyFactory is initialized with configuration sources: com.netflix.config.ConcurrentCompositeConfiguration@7f2faedd
-2020.01.02 14:10:02 INFO io.helidon.microprofile.faulttolerance.CommandRetrier Thread[helidon-1,5,server]: About to execute command with key listAllStock-1066291322 on thread helidon-1
+...
 2020.01.02 14:10:02 INFO com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[hystrix-io.helidon.microprofile.faulttolerance-1,5,server]: Requesting listing of all stock
 2020.01.02 14:10:04 INFO com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[hystrix-io.helidon.microprofile.faulttolerance-1,5,server]: Found 5 items
 ```
@@ -129,11 +115,13 @@ The reason it took a bit longer than usual when starting the service is that the
 ### Liveness
 We now have mechanisms in place to restart a container if it fails, but it may be that the container does not actually fail, just that the program running in it ceases to behave properly, for example there is some kind of non fatal resource starvation such as a deadlock. In this case the pod cannot recognize the problem as the container is still running.
 
-Fortunately Kubernetes provides a mechanism to handle this as well. This mechanism is called Liveness probes, if a pod fails a liveness probe then it will be automatically restarted.
+Fortunately Kubernetes provides a mechanism to handle this as well. This mechanism is called **Liveness probes**, if a pod fails a liveness probe then it will be automatically restarted.
 
 You may recall in the Helidon labs (if you did them) we created a liveness probe, this is an example of Helidon is designed to work in cloud native environments.
 
-In the helidon-kubernetes folder there is the storefront-deployment.yaml file. Let's open that file and search for the Liveness probes section. This is under the spec.template.spec.containers section. (the 
+- Navigate to the **helidon-kubernetes** folder
+- Open the file **storefront-deployment.yaml**
+- Search for the Liveness probes section. This is under the spec.template.spec.containers section
 
 ```
         resources:
@@ -159,7 +147,12 @@ In the helidon-kubernetes folder there is the storefront-deployment.yaml file. L
 #        readinessProbe:
 ```
 
-The first thing to note here is the # at the beginning, it's been commented out. on each line remove the # (only the first one, and only the # character, be sure not to remove any whitespace.) The resulting section should look like this, assuming it does save the file. The stockmanager has similar entries in it, it's not required in the lab, but you can also update those if you like.
+As you can see this section has been commented out. 
+
+- On each line remove the # (only the first one, and only the # character, be sure not to remove any whitespace.) 
+- Save the file
+
+The resulting section should look like this:
 
 ```
         resources:
@@ -191,20 +184,23 @@ The first thing to say is that whatever steps your actual liveness test does it 
 
 Let's look at some of these values.
 
-As it may take a while to start up the container, we specify and initialDelaySeconds of 60, Kubernetes won't start checking if the pod is live until that period is elapsed. If we made that to short then we may never start the container as Kuberneties would always determine it was not alive before the container had a chance to start up properly. Setting it to be to long however could mean non responding service at start up would not be detected in time.
+As it may take a while to start up the container, we specify and initialDelaySeconds of 60, Kubernetes won't start checking if the pod is live until that period is elapsed. If we made that to short then we may never start the container as Kubernetes would always determine it was not alive before the container had a chance to start up properly. 
 
-The timeoutSeconds specifies that for the http request  to have failed it could not have responded in 5 seconds. As many http service implementations are initialized on first access we need to chose a value here that it long enough for the framework to do it's lazy initialization.
+The parameter **timeoutSeconds** specifies that for the http request  to have failed it could not have responded in 5 seconds. As many http service implementations are initialized on first access we need to chose a value that is long enough for the framework to do it's lazy initialization.
 
-The periodSeconds is how often Kuberneties will check the container to see if it's alive and responding. This is a balance, especially if the liveness check involved significant resources (e.g. making a RDBMS call) You need to check often enough that a non responding container will be detected quickly, but not check so often that the checking process itself uses to many resources.
+The parameter **periodSeconds** defines how often Kubernetes will check the container to see if it's alive and responding. This is a balance, especially if the liveness check involved significant resources (e.g. making a RDBMS call) You need to check often enough that a non responding container will be detected quickly, but not check so often that the checking process itself uses to many resources.
 
-Finally the failureThreshold specifies how many consecutive failures are needed before it's deemed to have failed, in this case we need 3 failures to respond
+Finally **failureThreshold** specifies how many consecutive failures are needed before it's deemed to have failed, in this case we need 3 failures to respond
 
 Whatever your actual implementation you need to carefully consider the values above. Get them wrong and your service may never be allowed to start, or problems may not be detected.
 
-Let's remove the deployment and start them again. In the helidon-kuberneties folder run the undeploy.sh script to stop the deployments
+Let's apply the changes we made in the deployment :
+
+- Make sure you are in the folder **helidon-kubernetes**
+
+-  `./undeploy.sh`
 
 ```
-$ ./undeploy.sh 
 Deleting storefront deployment
 deployment.extensions "storefront" deleted
 Deleting stockmanager deployment
@@ -229,12 +225,9 @@ replicaset.apps/zipkin-88c48d8b9          1         1         1       66m
 
 ```
 
-(you may see some pods and services still showing as running if they haven't shutdown yet)
-
-And now lts's deploy the updated versions. Again in the helidon-kubenetes folder
+- Deploy the updated version : `./deploy.sh`
 
 ```
-$ ./deploy.sh
 Creating zipkin deployment
 deployment.extensions/zipkin created
 Creating stockmanager deployment
@@ -264,13 +257,10 @@ replicaset.apps/zipkin-88c48d8b9          1         1         0       0s
 
 ```
 
-
-Let's see how our pod is doing.
-
-Firstly if we use kubectl to get the pods status we will see that they are all running and ready. A liveness probe does not stop the pod from coming up, even if the probe has not yet started being called.
+- Let's see how our pod is doing.
+  -  `kubectl get pods`
 
 ```
-$ kubectl get pods
 NAME                            READY   STATUS    RESTARTS   AGE
 stockmanager-6456cfd8b6-29lmk   1/1     Running   0          24s
 storefront-b44457b4d-29jr7      1/1     Running   0          24s
@@ -279,65 +269,31 @@ zipkin-88c48d8b9-bftvx          1/1     Running   0          24s
 
 Note that as we have undeployed and then deployed again there are new pods and so the RESTSRTS has been reset.
 
-If we look at the logs for the storefront **before** the liveness probe has started (so before the 60 seconds from container creation) we see that it starts as we expect it to. Run the kubectl command against *my* storefront pod
+If we look at the logs for the storefront **before** the liveness probe has started (so before the 60 seconds from container creation) we see that it starts as we expect it to. 
+
+- Visualize the logs :  `kubectl logs storefront-b44457b4d-29jr7`
 
 ```
-$ kubectl logs storefront-b44457b4d-29jr7 
 2020.01.02 16:18:58 INFO com.oracle.labs.helidon.storefront.Main Thread[main,5,main]: Starting server
-2020.01.02 16:19:00 INFO org.jboss.weld.Version Thread[main,5,main]: WELD-000900: 3.1.1 (Final)
-2020.01.02 16:19:01 INFO org.jboss.weld.Bootstrap Thread[main,5,main]: WELD-ENV-000020: Using jandex for bean discovery
-2020.01.02 16:19:02 INFO org.jboss.weld.Event Thread[main,5,main]: WELD-000411: Observer method [BackedAnnotatedMethod] public org.glassfish.jersey.ext.cdi1x.internal.ProcessAllAnnotatedTypes.processAnnotatedType(@Observes ProcessAnnotatedType<?>, BeanManager) receives events for all annotated types. Consider restricting events using @WithAnnotations or a generic type with bounds.
-2020.01.02 16:19:02 INFO org.jboss.weld.Event Thread[main,5,main]: WELD-000411: Observer method [BackedAnnotatedMethod] private io.helidon.microprofile.openapi.IndexBuilder.processAnnotatedType(@Observes ProcessAnnotatedType<X>) receives events for all annotated types. Consider restricting events using @WithAnnotations or a generic type with bounds.
-2020.01.02 16:19:04 INFO org.jboss.weld.Bootstrap Thread[main,5,main]: WELD-ENV-002003: Weld SE container 53fe34a2-0291-4b72-a00e-966bab7ab2ad initialized
-2020.01.02 16:19:04 INFO io.helidon.tracing.zipkin.ZipkinTracerBuilder Thread[main,5,main]: Creating Zipkin Tracer for 'sf' configured with: http://zipkin:9411/api/v2/spans
-2020.01.02 16:19:05 INFO io.smallrye.openapi.api.OpenApiDocument Thread[main,5,main]: OpenAPI document initialized: io.smallrye.openapi.api.models.OpenAPIImpl@2282400e
-2020.01.02 16:19:07 INFO io.helidon.webserver.NettyWebServer Thread[main,5,main]: Version: 1.3.1
-2020.01.02 16:19:07 INFO io.helidon.webserver.NettyWebServer Thread[nioEventLoopGroup-2-1,10,main]: Channel 'admin' started: [id: 0x2d51c995, L:/0.0.0.0:9080]
-2020.01.02 16:19:07 INFO io.helidon.webserver.NettyWebServer Thread[nioEventLoopGroup-2-2,10,main]: Channel '@default' started: [id: 0x7331b80e, L:/0.0.0.0:8080]
-2020.01.02 16:19:07 INFO io.helidon.microprofile.server.ServerImpl Thread[nioEventLoopGroup-2-2,10,main]: Server started on http://localhost:8080 (and all other host addresses) in 261 milliseconds.
+...
 2020.01.02 16:19:07 INFO com.oracle.labs.helidon.storefront.Main Thread[main,5,main]: Running on http://localhost:8080/store
 ```
 
-If however the 60 seconds has passed and the liveness call has started we will see calls being made to the status resource, in this case I gathered the log data about 2 mins **after** the pods were started, so about 60 seconds **after** the liveness probe had started running. Run the kubectl command against *my* storefront pod
+If however the 60 seconds has passed and the liveness call has started we will see calls being made to the status resource,
+
+- Run the kubectl command again: `kubectl logs storefront-b44457b4d-29jr7 `
+
+You will see multiple entries like the one below:
 
 ```
-$$ kubectl logs storefront-b44457b4d-29jr7 
-2020.01.02 16:18:58 INFO com.oracle.labs.helidon.storefront.Main Thread[main,5,main]: Starting server
-2020.01.02 16:19:00 INFO org.jboss.weld.Version Thread[main,5,main]: WELD-000900: 3.1.1 (Final)
-2020.01.02 16:19:01 INFO org.jboss.weld.Bootstrap Thread[main,5,main]: WELD-ENV-000020: Using jandex for bean discovery
-2020.01.02 16:19:02 INFO org.jboss.weld.Event Thread[main,5,main]: WELD-000411: Observer method [BackedAnnotatedMethod] public org.glassfish.jersey.ext.cdi1x.internal.ProcessAllAnnotatedTypes.processAnnotatedType(@Observes ProcessAnnotatedType<?>, BeanManager) receives events for all annotated types. Consider restricting events using @WithAnnotations or a generic type with bounds.
-2020.01.02 16:19:02 INFO org.jboss.weld.Event Thread[main,5,main]: WELD-000411: Observer method [BackedAnnotatedMethod] private io.helidon.microprofile.openapi.IndexBuilder.processAnnotatedType(@Observes ProcessAnnotatedType<X>) receives events for all annotated types. Consider restricting events using @WithAnnotations or a generic type with bounds.
-2020.01.02 16:19:04 INFO org.jboss.weld.Bootstrap Thread[main,5,main]: WELD-ENV-002003: Weld SE container 53fe34a2-0291-4b72-a00e-966bab7ab2ad initialized
-2020.01.02 16:19:04 INFO io.helidon.tracing.zipkin.ZipkinTracerBuilder Thread[main,5,main]: Creating Zipkin Tracer for 'sf' configured with: http://zipkin:9411/api/v2/spans
-2020.01.02 16:19:05 INFO io.smallrye.openapi.api.OpenApiDocument Thread[main,5,main]: OpenAPI document initialized: io.smallrye.openapi.api.models.OpenAPIImpl@2282400e
-2020.01.02 16:19:07 INFO io.helidon.webserver.NettyWebServer Thread[main,5,main]: Version: 1.3.1
-2020.01.02 16:19:07 INFO io.helidon.webserver.NettyWebServer Thread[nioEventLoopGroup-2-1,10,main]: Channel 'admin' started: [id: 0x2d51c995, L:/0.0.0.0:9080]
-2020.01.02 16:19:07 INFO io.helidon.webserver.NettyWebServer Thread[nioEventLoopGroup-2-2,10,main]: Channel '@default' started: [id: 0x7331b80e, L:/0.0.0.0:8080]
-2020.01.02 16:19:07 INFO io.helidon.microprofile.server.ServerImpl Thread[nioEventLoopGroup-2-2,10,main]: Server started on http://localhost:8080 (and all other host addresses) in 261 milliseconds.
-2020.01.02 16:19:07 INFO com.oracle.labs.helidon.storefront.Main Thread[main,5,main]: Running on http://localhost:8080/store
-2020.01.02 16:20:02 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
-2020.01.02 16:20:06 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
-2020.01.02 16:20:11 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
-2020.01.02 16:20:16 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
-2020.01.02 16:20:21 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
-2020.01.02 16:20:26 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
-2020.01.02 16:20:31 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
-2020.01.02 16:20:36 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
-2020.01.02 16:20:41 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
-2020.01.02 16:20:46 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
-2020.01.02 16:20:51 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
-2020.01.02 16:20:56 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
-2020.01.02 16:21:01 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
-2020.01.02 16:21:06 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
 2020.01.02 16:21:11 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
-2020.01.02 16:21:16 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
 ```
 
-If we look at *my* pods detailed info we can see it's state is fine
+- Look at the pods detailed info to check the state is fine :
+  -  `kubectl describe pod storefront-b44457b4d-29jr7 `
 
 ```
-$  kubectl describe pod storefront-b44457b4d-29jr7 
-<lots of removed text>
+...
 Events:
   Type    Reason     Age    From                     Message
   ----    ------     ----   ----                     -------
@@ -350,7 +306,7 @@ Events:
 
 It's started and no unexpected events !
 
-Now is the time to explain that "Not frozen ..." text in the status. To enable us to actually simulate the service having a deadlock or resource starvation problem there's a bit of a cheat in the storefront LivenessChecker code.
+Now is the time to explain that "Not frozen ..." text in the status. To enable us to actually simulate the service having a deadlock or resource starvation problem there's a bit of a cheat in the storefront LivenessChecker code :
 
 ```
 	@Override
@@ -383,26 +339,22 @@ Every time it's called it checks to see it a file names /frozen exists in the ro
 
 Let's see what happens in this case.
 
-First let's start following the logs of *my* pod. In a new window type
+First let's start following the logs of your pod
+
+- Open new window
+-  `kubectl logs -f --tail=10 storefront-b44457b4d-29jr7 `
 
 ```
-$ kubectl logs -f --tail=10 storefront-b44457b4d-29jr7 
-2020.01.02 16:24:16 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
-2020.01.02 16:24:21 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
-2020.01.02 16:24:26 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
-2020.01.02 16:24:31 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
+...
 2020.01.02 16:24:36 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
 2020.01.02 16:24:41 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
 ```
 
-In a different terminal we'll log in to the *my* container and create the /frozen file, then wait and see what happened
-
-```
-$ kubectl exec -ti storefront-b44457b4d-29jr7 -- /bin/bash
-root@storefront-dcc76cccb-6ztsf:/# touch /frozen
-root@storefront-dcc76cccb-6ztsf:/# rm /frozen
-root@storefront-dcc76cccb-6ztsf:/# command terminated with exit code 137
-```
+- Open a new terminal window
+- Log in to the your container and create the /frozen file:
+  -  `kubectl exec -ti storefront-b44457b4d-29jr7 -- /bin/bash`
+  -  `touch /frozen`
+- Wait and see what happened in your log window
 
 Kubernetes detected that the liveness probes were not responding in time, and after 3 failures it restarted the pod.
 
@@ -416,21 +368,22 @@ In the logs we see the following
 Weld SE container 53fe34a2-0291-4b72-a00e-966bab7ab2ad shut down by shutdown hook
 ```
 
-Kubectl tells us there's been a problem and a pot has done a restart for us
+Kubectl tells us there's been a problem and a pod has done a restart for us
+
+- Check the pod status: `kubectl get pods`
 
 ```
-$  kubectl get pods
 NAME                            READY   STATUS    RESTARTS   AGE
 stockmanager-6456cfd8b6-29lmk   1/1     Running   0          7m50s
 storefront-b44457b4d-29jr7      1/1     Running   1          7m50s
 zipkin-88c48d8b9-bftvx          1/1     Running   0          7m50s
 ```
 
-If we look at the deployment events for *my* pod we'll see this
+- Look at the deployment events for the pod
+  -  `kubectl describe pod storefront-b44457b4d-29jr7`
 
 ```
-$ kubectl describe pod storefront-b44457b4d-29jr7
-<lots of removed text>
+...
 Events:
   Type     Reason     Age                  From                     Message
   ----     ------     ----                 ----                     -------
@@ -452,11 +405,12 @@ In this situation restarting the pod / container won't do anything useful, it's 
 
 Kubernetes supports a readiness probe that we can call to see is the container is ready. If the container is not ready then it's removed from the set of available containers that can provide the service, and any requests are routed to other containers that can provide the service. 
 
-Unlike a liveness probe is a container fails it's not killed off, and calls to the readiness probe continue to be made, if the probe startes reporting the service in the container is ready then it's added back to the list of containers that can deliver the servcie and requests will be routed to it once more.
+Unlike a liveness probe, if a container fails it's not killed off, and calls to the readiness probe continue to be made, if the probe starts reporting the service in the container is ready then it's added back to the list of containers that can deliver the servcie and requests will be routed to it once more.
 
-In the helidon-kuberneties folder edit the storefront-deployment.yaml file again
+- Make sure you are in the folder **helidon-kubernetes**
+- Edit the file **storefront-deployment.yaml**
 
-Look for the section (just after the Liveness probe) where we define the readiness probe. It should have text like this
+- Look for the section (just after the Liveness probe) where we define the **readiness probe**. 
 
 ```
 #        readinessProbe:
@@ -474,7 +428,9 @@ Look for the section (just after the Liveness probe) where we define the readine
 #          # Need at least only one fail for this to be a problem
 #          failureThreshold: 1
 ```
-Remove the # (and only the #, not spaces or anything else) and save the file. The ReadinessProbe section should look like this
+- Remove the # (and only the #, not spaces or anything else) and save the file. 
+
+The ReadinessProbe section should now look like this :
 
 ```
        # This checks if the pod is ready to process requests
@@ -494,18 +450,13 @@ Remove the # (and only the #, not spaces or anything else) and save the file. Th
           failureThreshold: 1
 ```
 
-The various options for readiness are similar to those for readiness, except you see here we've got an exec instead of httpGet.
+The various options for readiness are similar to those for Liveliness, except you see here we've got an exec instead of httpGet.
 
-The exec means that we are going to run code **inside** the pod to determine if the pod is ready to serve requests. The command section defined the command that will be run ant the arguments. In this case we run the /bin/bash shell, -c means to extuse the arguments as a command (so it won't try and be interactive) and the 'curl -s http://localhost:9080/health/ready | json_pp | grep "\"outcome\" : \"UP\""' is the command.
+The exec means that we are going to run code **inside** the pod to determine if the pod is ready to serve requests. The command section defined the command that will be run and the arguments. In this case we run the /bin/bash shell, -c means to use the arguments as a command (so it won't try and be interactive) and the 'curl -s http://localhost:9080/health/ready | json_pp | grep "\"outcome\" : \"UP\""' is the command.
 
 Some points about 'curl -s http://localhost:9080/health/ready | json_pp | grep "\"outcome\" : \"UP\""'
 
 Firstly this is a command string that actually runs 3 commands connecting the output of one to the input of the other. If you exec to the pod you can actually run these by hand if you like
-
-```
-$ kubectl exec -ti storefront-b44457b4d-29jr7  -- /bin/bash
-root@storefront-b44457b4d-29jr7:/#
-```
 
 The first (the curl) gets the readiness data from the service (you may remember this in the Helidon labs) 
 
@@ -536,19 +487,21 @@ root@storefront-b44457b4d-29jr7:/# curl -s http://localhost:9080/health/ready | 
 
 Now each element is on a line of it's own, and we can just use the final command the grep to look for a line containing `"outcome" : "UP"` We do however have to be careful because " is actually part of what we want to look for, as are the space characters, so to define these as a constant we need to ensure it's a single string, we do this by enclosing the entire thing in quotes `"` and to prevent the `"` within the string being interpresed as end of string (and thuis new argument) characters we need to escape them, hence we end up with `"\"outcome\" : \"UP\""`
 
-The final command becomes the following
+Now try it out:
+
+- Connect to the pod : `kubectl exec -ti storefront-b44457b4d-29jr7  -- /bin/bash`
+- Run the command in the pod:
+  -  `curl -s http://localhost:9080/health/ready | json_pp | grep "\"outcome\" : \"UP\""`
 
 ```
-root@storefront-b44457b4d-29jr7:/# curl -s http://localhost:9080/health/ready | json_pp | grep "\"outcome\" : \"UP\""
    "outcome" : "UP",
 ```
 
-In this case the pod is ready, so the grep command returns what it's found. We are not actually concerned with what the pod returns in terms of string output, we are looking for the exit code, interactivly we can find that by looking in the $? variable
+In this case the pod is ready, so the grep command returns what it's found. We are not actually concerned with what the pod returns in terms of string output, we are looking for the exit code, interactivly we can find that by looking in the $? variable:
+
+-  `echo $?`
 
 ```
-root@storefront-b44457b4d-29jr7:/# curl -s http://localhost:9080/health/ready | json_pp | grep "\"outcome\" : \"UP\""
-   "outcome" : "UP",
-root@storefront-b44457b4d-29jr7:/# echo $?
 0
 ```
 
@@ -570,10 +523,12 @@ That's all we're going to do with bash shell programming for now !
 
 Having made the changes let's undeploy the existing configuration and then deploy the new one
 
-In a terminal in the helidon-kubernties folder run the undeploy.sh script
+- Open a terminal window
+- Navigate to the **helidon-kubernetes** folder
+- Run the undeploy.sh script
+  -  `./undeploy.sh `
 
 ```
-$ ./undeploy.sh 
 Deleting storefront deployment
 deployment.extensions "storefront" deleted
 Deleting stockmanager deployment
@@ -599,8 +554,10 @@ replicaset.apps/zipkin-88c48d8b9          1         1         1       46m
 
 As usual it takes a few seconds for the deployments to stop, this was about 30 seonds later
 
+- Check only the services remain running : 
+  -  `kubectl get all`
+
 ```
-$ kubectl get all
 NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
 service/stockmanager   ClusterIP   10.100.65.58    <none>        8081/TCP,9081/TCP   4h42m
 service/storefront     ClusterIP   10.96.237.252   <none>        8080/TCP,9080/TCP   4h42m
@@ -609,8 +566,9 @@ service/zipkin         ClusterIP   10.104.81.126   <none>        9411/TCP       
 
 Now let's deploy them again, run the deploy.sh script, be prepared to run kubectl get all within a few seconds of the deploy finishing.
 
+- Run the deploy script :  `./deploy.sh`
+
 ```
-$ ./deploy.sh
 Creating zipkin deployment
 deployment.extensions/zipkin created
 Creating stockmanager deployment
@@ -639,10 +597,9 @@ replicaset.apps/storefront-74cd999d8      1         1         0       0s
 replicaset.apps/zipkin-88c48d8b9          1         1         0       0s
 ```
 
-**Within a few seconds** run kubectl get all to see the status of the system
+- Immediately run the command `kubectl get all`
 
 ```
-$ kubectl get all
 NAME                                READY   STATUS    RESTARTS   AGE
 pod/stockmanager-6456cfd8b6-vqq7c   1/1     Running   0          12s
 pod/storefront-74cd999d8-dzl2n      0/1     Running   0          12s
@@ -701,10 +658,10 @@ What happens if a request is made to the service while before the pod is ready ?
 
 To see what happens if the readiness probe does not work we can simply undeploy the stock manager service.
 
-First let's check it's running fine (remembering to substitute localhost for the IP address of the ingres load balancer.)
+- First let's check it's running fine 
+  -  `curl -i -X GET -u jack:password http://your-ip:80/store/stocklevel
 
 ```
-$ curl -i -X GET -u jack:password http://localhost:80/store/stocklevel
 HTTP/1.1 200 OK
 Server: openresty/1.15.8.2
 Date: Thu, 02 Jan 2020 17:30:32 GMT
@@ -715,16 +672,16 @@ Connection: keep-alive
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
 
-Now let's use kubectl to undeploy just the stockmanager service. You need to run this command in the helidon-labs folder.
+- Now let's use kubectl to undeploy just the stockmanager service
+  -  `kubectl delete -f stockmanager-deployment.yaml`
 
 ```
-$ kubectl delete -f stockmanager-deployment.yaml
 deployment.extensions "stockmanager" deleted
 ```
-Let's check the pods status
+- Let's check the pods status
+  -  `kubectl get pods`
 
 ```
-macbook-pro:helidon-kubernetes tg13456$ kubectl get pods
 NAME                            READY   STATUS        RESTARTS   AGE
 stockmanager-6456cfd8b6-vqq7c   0/1     Terminating   0          26m
 storefront-74cd999d8-dzl2n      1/1     Running       0          26m
@@ -732,8 +689,9 @@ zipkin-88c48d8b9-vdn47          1/1     Running       0          26m
 ```
 The stock manager service is being stopped, after a short while if we run kubectl again to get everything we see it's gone
 
+-  `kubectl get all`
+
 ```
-$ kubectl get all
 NAME                             READY   STATUS    RESTARTS   AGE
 pod/storefront-74cd999d8-dzl2n   0/1     Running   0          28m
 pod/zipkin-88c48d8b9-vdn47       1/1     Running   0          28m
@@ -754,10 +712,10 @@ replicaset.apps/zipkin-88c48d8b9       1         1         1       28m
 ```
 Something else has also happened though, the storefront service has no pods in the ready state, neither does the storefront deployment and replica set. The readiness probe has run against the storefront pod and when the probe checked the results it found that the storefront pod was not in a position to operate, because the service it depended on (the stock manager) was no longer available. 
 
-Let's try accessing the service
+- Let's try accessing the service
+  -  `curl -i -X GET -u jack:password http://your-ip:80/store/stocklevel`
 
 ```
-$ curl -i -X GET -u jack:password http://localhost:80/store/stocklevel
 HTTP/1.1 503 Service Temporarily Unavailable
 Server: openresty/1.15.8.2
 Date: Thu, 02 Jan 2020 17:37:29 GMT
@@ -775,17 +733,17 @@ Connection: keep-alive
 ```
 The service is giving us a 503 Service Temporarily Unavailable message. Well to be precise this is coming from the Kubernetes as it can't find a storefront service that is in the ready state.
 
-Let's start the stockmager service using kubectl again
+- Let's start the stockmager service using kubectl again
+  -  `kubectl apply -f stockmanager-deployment.yaml`
 
 ```
-$ kubectl apply -f stockmanager-deployment.yaml
 deployment.extensions/stockmanager created
 ```
 
-Now let's see what's happening with our deployments 
+- Now let's see what's happening with our deployments 
+  -  `kubectl get all`
 
 ```
-macbook-pro:helidon-kubernetes tg13456$ kubectl get all
 NAME                                READY   STATUS    RESTARTS   AGE
 pod/stockmanager-6456cfd8b6-4mpl2   1/1     Running   0          7s
 pod/storefront-74cd999d8-dzl2n      0/1     Running   0          33m
@@ -809,10 +767,10 @@ replicaset.apps/zipkin-88c48d8b9          1         1         1       33m
 
 The stockmanager is running, but the storefront is still not ready, and it won't be until the readiness check is called again and determines that it's ready to work.
 
-Looking at the kubectl output abut 90 seconds later
+- Looking at the kubectl output abut 90 seconds later:
+  -  `kubectl get all`
 
 ```
-$ kubectl get all
 NAME                                READY   STATUS    RESTARTS   AGE
 pod/stockmanager-6456cfd8b6-4mpl2   1/1     Running   0          96s
 pod/storefront-74cd999d8-dzl2n      1/1     Running   0          35m
@@ -836,8 +794,9 @@ replicaset.apps/zipkin-88c48d8b9          1         1         1       35m
 
 The storefront readiness probe has kicked in and the services are all back in the ready state once again
 
+- Check the service : `curl -i -X GET -u jack:password http://your-ip:80/store/stocklevel`
+
 ```
-$ curl -i -X GET -u jack:password http://localhost:80/store/stocklevel
 HTTP/1.1 200 OK
 Server: openresty/1.15.8.2
 Date: Thu, 02 Jan 2020 17:42:40 GMT
