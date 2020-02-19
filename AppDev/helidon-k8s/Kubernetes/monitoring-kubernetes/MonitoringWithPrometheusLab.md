@@ -9,7 +9,7 @@
 
 ### **Introduction**
 
-Monitoring a service in Kuberneties involves three components
+Monitoring a service in Kubernetes involves three components
 
 **1. Generating the monitoring data**
 This is mostly done by the service itself, the metrics capability we created when building the Helidon labs are an example of this.

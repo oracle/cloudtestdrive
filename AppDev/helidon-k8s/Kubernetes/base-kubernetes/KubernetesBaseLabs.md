@@ -50,7 +50,7 @@ For these labs we are using a common client virtual machine and we use both helm
 
 Helm is installed in the virtual machine, and configured to use the master chart repository
 
-Once you have Helm then we will use it to install kuberneties-dashboard (if it wasn't installed for you when you setup the cluster) In this case we didn't do that as we want to show you how to use Helm.
+Once you have Helm then we will use it to install kubernetes-dashboard (if it wasn't installed for you when you setup the cluster) In this case we didn't do that as we want to show you how to use Helm.
 
 Setting up the kubernetes dashboard (or any) service using helm is pretty easy. it's basically a simple command. 
 
@@ -384,7 +384,7 @@ There is also the ability to use the dashboard to connect to a running container
 
 
 ***Warning***
-For security and resource management reasons the port forwarding will not run forever. After a period of time of not being used (depending on the Kuberneties providers configuration, this can be anything from a small number of seconds e.g. 30 to many hours, and may be based on total time, or time since last operation) the port forwarding will time out. In this case the kubectl command will exit and return to the prompt.
+For security and resource management reasons the port forwarding will not run forever. After a period of time of not being used (depending on the Kubernetes providers configuration, this can be anything from a small number of seconds e.g. 30 to many hours, and may be based on total time, or time since last operation) the port forwarding will time out. In this case the kubectl command will exit and return to the prompt.
 
 If you find that are unable to access the dashboard, or it does not reflect changes you've made check to see that the port forwarding is still running, and if it has exited just restart it.
 
@@ -399,9 +399,9 @@ An Ingress in Kubernetes is one mechanism for external / public internet clients
 
 Ingresses themselves are a Kubernetes service, they do however rely on the Kubernetes environment to support a load balancer to provide the external access. As a service they can have multiple instances with load balancing across them etc. as per any other Kubernetes service. 
 
-The advantage of using an ingress compared to a load balancer is that as the ingress understands the payload a single ingress service can support connections to multiple microservices (we'll see more on this later) whereas a load balancer just forwards data on a single port to a specific destination. As commercially offered Kuberneties environments usually charge per load balancer this can be a significant cost saving. However, because it is a layer 7 (http/https) proxy it can't handle raw TCP/UCP connections (for those you need a load balancer)
+The advantage of using an ingress compared to a load balancer is that as the ingress understands the payload a single ingress service can support connections to multiple microservices (we'll see more on this later) whereas a load balancer just forwards data on a single port to a specific destination. As commercially offered Kubernetes environments usually charge per load balancer this can be a significant cost saving. However, because it is a layer 7 (http/https) proxy it can't handle raw TCP/UCP connections (for those you need a load balancer)
 
-Though an Ingress itself is a Kubernetes concept Kuberneties does not itself provide a specific Ingress service, it provides a framework in which different Ingress services can be deployed, with the user chosing the service to use. Though it uses the Kubernetes configuration mechanism the actual configuration specifics of an Ingress controller unfortunately very between the different controllers. 
+Though an Ingress itself is a Kubernetes concept Kubernetes does not itself provide a specific Ingress service, it provides a framework in which different Ingress services can be deployed, with the user chosing the service to use. Though it uses the Kubernetes configuration mechanism the actual configuration specifics of an Ingress controller unfortunately very between the different controllers. 
 
 </p></details>
 
@@ -539,7 +539,7 @@ Services determine what pods they will talk to using selectors. Each pod had met
 
 Services can be exposed externally via load balancer on a specific port (the type field is LoadBalancer) or can be mapped on to an external to the cluster port (basically it's randomly assigned when the type is NodePort) but by default are only visible inside the cluster (or if the type is ClusterIP.) In this case we're going to be using ingress to provide the access to the services from the outside world so we'll not use a load balancer.
 
-The helidon-kubernetes/base-kuberneties/servicesClusterIP.yaml file defined the services for us. Below is the definition of the storefront service (the file also defines the stock manager and zipkin servcies as well)
+The helidon-kubernetes/base-kubernetes/servicesClusterIP.yaml file defined the services for us. Below is the definition of the storefront service (the file also defines the stock manager and zipkin servcies as well)
 
 ```
 apiVersion: v1
@@ -1007,7 +1007,7 @@ For example (**don't type this**) `$ kubectl create configmap sf-config-map --fr
 
 
 
-In the helidon-kubernetes/base-kuberneties folder there is a script create-configmaps.sh. If you run this script it will delete existing config maps and create an up to date config for us :
+In the helidon-kubernetes/base-kubernetes folder there is a script create-configmaps.sh. If you run this script it will delete existing config maps and create an up to date config for us :
 
 -  `./create-configmaps.sh `
 
@@ -1082,7 +1082,7 @@ It's been quite a few steps (many of which are one off and don't have to be repe
 
 A deployment is the microservice itself, this is a replica set containing one or more pods. The deployment itself handles things like rolling upgrades by manipulating the replica sets. A replica set is a group of pods, it will ensure that if a pod fails (the program stops working) that another will be started. It's possible to add and remove replicas form a pod, but the key thing to note is that all pods within a replica set are the same. Finally we have the pods. In most cases a pod will contain a single user container (based on the image you supply) and if the container exits then a new one will be started. Pods may also contain kubernetes internal containers (for example to handle network redirections) and also pods can contain more than one user container, for example in the case of a web app a pod may have one container to operate the web app and another for a web server delivering the static content.
 
-Pods are monitored by services so that a service will direct traffic to pod(s_ that have labels (names / values) which match those specified in the services selector. If there are multiple pods matching then the Kuberneties netowrking layer switched between them, usually with a round robin approach (at least until we look at health and readiness !)
+Pods are monitored by services so that a service will direct traffic to pod(s_ that have labels (names / values) which match those specified in the services selector. If there are multiple pods matching then the Kubernetes netowrking layer switched between them, usually with a round robin approach (at least until we look at health and readiness !)
 
 The stockmanager-deployment.yaml, storefront-deployment.yaml and zipkin-deployment.yaml files contain the deployments. These files are in the helidon-kubernetes folder (***not*** the base-kubernetes folder) The following is the core contents of storefront-deployment.yaml file (actually the file has substantial amounts of additional content that is commented out, but we'll get to that when we look at other parts of the lab later on, If you do look at the file itself for now ignore everything that's commented out with #)
 
@@ -1135,7 +1135,7 @@ These files refer to the location in the docker repo that *I* used when setting 
             # Set this to me a quarter CPU for now
             cpu: "250m"
 ```
-The resources provides a limit for how much CPU each instance of a pod can utilize, in this case 1000 mili CPU's or 1 whole CPU (the exact definition of what comprises a CPU will vary between kuberneties deployments and by provider.
+The resources provides a limit for how much CPU each instance of a pod can utilize, in this case 1000 mili CPU's or 1 whole CPU (the exact definition of what comprises a CPU will vary between kubernetes deployments and by provider.
 
 ```         
         volumeMounts:
@@ -1257,7 +1257,7 @@ replicaset.apps/stockmanager-5b844757df   1         1         0       0s
 replicaset.apps/storefront-7cb7c6659d     1         1         0       0s
 replicaset.apps/zipkin-88c48d8b9          1         1         0       0s
 ```
-Lists the replica sets that were created for us as part of the deployment. You can see that kuberneties knows we want 1 pod in each replicaset and has done that, though the pods themselves are currently not in a READY state (the containers are being created)
+Lists the replica sets that were created for us as part of the deployment. You can see that kubernetes knows we want 1 pod in each replicaset and has done that, though the pods themselves are currently not in a READY state (the containers are being created)
 
 Finally let's look at the deployments
 
