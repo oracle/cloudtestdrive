@@ -18,7 +18,13 @@ We will not use secrets to access the docker repository, so make sure the reposi
 
 ### Kubernetes
 Docker is great, but it only runs on a local machine, and doesn't have all of the nice cloud native features of kubernetes.
-It is assumed you have access to a Kubernetes cluster via the **kubectl** command line utility of Kubernetes.  If you are using the Client VM we provide this will have been setup for you.
+
+You will need access to a running Kubernetes cluster:
+
+- Your instructor might have provided you with an environment.  In that case, just follow the instructions on this page
+- You might need to spin up a Kubernetes cluster yourself.  Follow [these instructions](../../ManualSetup/CreateKubernetesCluster.md), then return to this page to start this part of the lab.
+
+
 
 Access to the cluster is managed via a config file that by default is located in the $HOME/.kube folder, and is called `config`.  To check the setup, make sure to have copied your personal kubeconfig file at this location : 
 
