@@ -47,7 +47,7 @@ For this project all attendees will be operating on a shared database, updating 
 
 - In Eclipse, switch to the **helidon-labs-stockmanager** project.
 - Navigate into the folder **conf**
-- Open the file **stockmanager-config.xml**
+- Open the file **stockmanager-config.yaml**
 - In the `app:` section, add a property **department** with **your** your name, initials or something that's going to be **unique**:
   -  `department: "your_name"`
 
