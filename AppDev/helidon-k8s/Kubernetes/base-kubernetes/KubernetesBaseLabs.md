@@ -1011,7 +1011,27 @@ For example (**don't type this**) `$ kubectl create configmap sf-config-map --fr
 
 \---
 
+<details><summary><b>If you haven't done the Helidon or Docker sections of the labs configure the stockmanager-config.yaml file</b></summary>
+<p>
+If you are running only the Kubernetes section of these labs, and not the Helidon or Docker sections then you will not have configured the stockmanager-config.yaml file. 
 
+- Navigate into the folder helidon-labs-stockmanager/**conf**
+- Open the file **stockmanager-config.yaml**
+- In the `app:` section, add a property **department** with **your** your name, initials or something that's going to be **unique**:
+  -  `department: "your_name"`
+
+Example :
+
+```
+app:
+  persistenceUnit: "HelidonATPJTA"
+  department: "just_a_name"
+```
+
+The way this operates is that the StockManager will automatically and transparently add the department to the primary key in all requests keeping your actions separate from those of other attendees.
+</p></details>
+
+\---
 
 In the helidon-kubernetes/base-kubernetes folder there is a script create-configmaps.sh. If you run this script it will delete existing config maps and create an up to date config for us :
 
