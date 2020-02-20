@@ -8,13 +8,7 @@
 ## 1. Basic Kubernetes
 
 ### **Introduction**
-It is assumed that you have done a docker login to the appropriate registry and have pushed the storefront and stockmanager to the repository.
-
-We will not use secrets to access the docker repository, so make sure the repository containing your docker image on the OCI Repository is set to public.
-
-- Check your repository is indeed public.  If you don't have access to the Repository console screen,  ask your instructor to set your personal repository images to **Public** 
-
-
+It is assumed that you have done a docker login to the appropriate registry and have pushed the storefront and stockmanager docker images to the repository.
 
 ### Kubernetes
 Docker is great, but it only runs on a local machine, and doesn't have all of the nice cloud native features of kubernetes.
@@ -766,7 +760,7 @@ storefront-management     *                 80      47s
 storefront-status         *                 80      47s
 zipkin                    *                 80      47s
 ```
-One thing that you may have notices is that the ingress controller is running in the default namespae, but when we create the rules we are using the namespace we specified (in this case tg_helidon) This is because the rule needs to be in the same namespace as the service it's defining the connection two, but the ingress controller service exists once for the cluster (we could have more if we wanted, but as it's perfectly capable of running cluster wide why would we ?) We could put the ingress controler into any namespace we chose, kube-system might be a good choice in a production environment . If we wanted different ingress controllers then for nginx at any rate the --watch-namespace 
+One thing that you may have noticed is that the ingress controller is running in the default namespae, but when we create the rules we are using the namespace we specified (in this case tg_helidon) This is because the rule needs to be in the same namespace as the service it's defining the connection two, but the ingress controller service exists once for the cluster (we could have more pods if we wanted, but for this lab it's perfectly capable of running all we need) We could put the ingress controller into any namespace we chose, kube-system might be a good choice in a production environment. If we wanted different ingress controllers then for nginx at any rate the --watch-namespace option restricts the controller to only look for ingress rules in specific namespaces.
 
 If you look at the rules in the ingressConfig.yaml file you'll see they setup the following mappings
 
@@ -874,7 +868,11 @@ secret/sm-wallet-atp created
 
 The stock manager and storefront both require configuration data and the stock manager also requires the database wallet directory. As the configuration data also includes the authentication data I've decided to store some of this into secrets, though in a real situation the configuration information (except for the authentication server details) would probably be stored in a config map rather than a secret. We'll look at config maps later
 
-There are also more specific secrets used for TLS certificates and pulling docker images from private registries, these have additional arguments to the create command.
+There are also more specific secrets used for TLS certificates and pulling docker images from private registries, these have additional arguments to the create command. For  example in the labs we are pulling the docker images from a private registry running in the Oracle Cloud, we define a secret called my-docker-reg. This is a special type of secret in that it specifically has attributes for docker images
+
+The following (don't enter it as the details will have changed) sets up the image pull secret my-docker-reg that we use when we define the pods later
+
+-  `kubectl create secret docker-registry my-docker-reg --docker-server=fra.ocir.io --docker-username="oractdemeabdmnative/api.user" --docker-password="abcdefrghijklmnopqrstuvwxyz" --docker-email="user@oracle.com"`
 
 </p></details>
 
@@ -882,7 +880,7 @@ There are also more specific secrets used for TLS certificates and pulling docke
 
 
 
-The create-secrets.sh script deleted any existing secrets and sets up the secrets (in your chosen namespace.) 
+The create-secrets.sh script deletes any existing secrets and sets up the secrets (in your chosen namespace.) 
 
 - Make sure you are in the **helidon-kubernetes/base-kubernetes** directory
 - Run the following command to create the secrets:
@@ -1153,7 +1151,7 @@ The template section defines what the pods will look like, it starts by specifyi
 The spec section in the template is the specification of the pods, it starts out by specifying the details of the pods and the details of the containers that comprise them, in this case the pod names, the location of the image and how to retrieve it. It also defines the ports that will be used giving them names (naming is not required, but it helps to make it clear what's what.)
 
 *** IMPORTANT ***
-These files refer to the location in the docker repo that *I* used when setting up the labs. You are probably pushing to a different docker repo, so you'll need to edit the deployment files to reflect this !
+These files refer to the location in the docker repo that *I* used when setting up the labs. You are probably pushing to a different docker repo, so you'll need to edit the deployment files to reflect this diffrent image location !
 
 ```       
         resources:
@@ -1161,7 +1159,7 @@ These files refer to the location in the docker repo that *I* used when setting 
             # Set this to me a quarter CPU for now
             cpu: "250m"
 ```
-The resources provides a limit for how much CPU each instance of a pod can utilize, in this case 1000 mili CPU's or 1 whole CPU (the exact definition of what comprises a CPU will vary between kubernetes deployments and by provider.
+The resources provides a limit for how much CPU each instance of a pod can utilize, in this case 250 mili CPU's or 1/4 whole CPU (the exact definition of what comprises a CPU will vary between kubernetes deployments and by provider.)
 
 ```         
         volumeMounts:
@@ -1174,7 +1172,15 @@ The resources provides a limit for how much CPU each instance of a pod can utili
 ```
 We now specify what volumes will be imported into the pods. Note that this defines what volume is connected the pod, the volume definitions themselves are later, in this case the contents of the sf-config-map-vol volume will be mounded on /conf and sf-config-secure-vol on /confsecure
 
-Both are mounted read only as there's no need for the programs to modify them, so it's good practive to make sure that can't happen accidensally (or deliberately if someone hacks into your application and tries to use that as a way to change the config.)
+Both are mounted read only as there's no need for the programs to modify them, so it's good practice to make sure that can't happen accidensally (or deliberately if someone hacks into your application and tries to use that as a way to change the config.)
+
+```
+      imagePullSecrets:
+      - name: my-docker-reg
+```
+
+We need to tell Kubernetes what secret to use when retrieving the docker images from the repository, the imagePullSecrets key allows us to pass this information on. 
+
 
 ```
       volumes:
@@ -1194,9 +1200,6 @@ To deploy the config file we would just use kubectl to apply it with a command t
 </p></details>
 
 \---
-
-
-
 
 
 The script deploy.sh will apply all three deployment configuration files (storefront, stockmanager, zipkin) for us. 
