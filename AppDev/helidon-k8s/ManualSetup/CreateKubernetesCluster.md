@@ -37,7 +37,7 @@ Your instructor will inform you if the Kubernetes clusters have already been cre
 
   - In the next form name the cluster something like Helidon-Lab-YOUR-INITIALS
   - Make sure the compartment is **CTDOKE**
-  - Make sure the Kubernetes version is the highest on the list (currently 1.14.8)
+  - Make sure the Kubernetes version is the highest on the list (at the time of writing that was 1.15.7)
   - Leave the visibility type as **private**
   - Set the shape to VM.Standard2.1
   - Set the number of nodes to be 2

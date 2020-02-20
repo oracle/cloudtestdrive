@@ -43,11 +43,21 @@ namespace/monitoring created
 
 ### Prometheus
 
-Installing Prometheus is simple, we just use helm. 
+<details><summary><b>Older versions of Kubernetes than 1.15.7</b></summary>
+<p>
+We assume you are using Kubernetes 1.15, in which case the latest version of the helm charts ( 9.7.4 at the time of writing) are supported. If you were using an older version of Kubernetes you may need to specify a particular version of the helm chart as follows :
 
-We assume you are using Kubernetes 1.14, in which case the latest version of the helm charts ( 9.7.1 at the time of writing) are supported.
+Kubernetes 1.14 Prometheus helm chart 9.7.1 worked for us
 
-In case you are using Kubernetes 1.13, you need to specify a specific older version using  `--version 9.1.0`
+Kubernetes 1.13 Prometheus helm chart 9.1.0 worked for us
+
+To specify a specific older version use the version keyword in your help command, e.g. `--version 9.1.0`
+
+</p></details>
+
+\---
+
+Installing Prometheus is simple, we just use helm.
 
 - Install prometheus :
   -  `helm3 install prometheus stable/prometheus --namespace monitoring`
