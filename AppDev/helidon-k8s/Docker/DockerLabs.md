@@ -423,7 +423,7 @@ Notice that the layers all already exist, so nothing needs to be uploaded at all
 
 To push images to a private docker repository you will usually need to have done some form of docker login to that repository, this has already been done for you in the virtual machine you are using.
 
-<details><summary><b>Docker logins</b></summary>
+<details><summary><b>Docker logins to other repos</b></summary>
 <p>
 If you were doing this yourself and needed to log in to a docker repository other than dockerhub then the command will look something like the following
 
