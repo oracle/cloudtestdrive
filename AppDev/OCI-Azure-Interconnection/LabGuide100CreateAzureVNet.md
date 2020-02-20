@@ -129,13 +129,11 @@ In the meantime, lets setup a virtual machine in your virtual network, where you
   
 - Specify the username and password for the **Administrator Account** as the below example: 
   
-    
-  
-  ```
+```
 Username: myadmin
-  Password: WElcome_123#
-  ```
-  
+Password: WElcome_123#
+```
+
   - Select **RDP (3389)** as the only allowed inbound port at the moment.
   - Click **Next : Disks >** at the bottom of the screen.
 

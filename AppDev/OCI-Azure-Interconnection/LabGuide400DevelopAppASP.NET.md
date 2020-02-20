@@ -154,7 +154,7 @@ Additionally, add the wallet file, *cwallet.sso*, from the credentials zip file 
 
 -  You should get an error, which is expected as you haven't established yet interconnection link to the Autonomous Database. The connection will be allowed only through the private connection based on restriction you setup in Access Control List in the previous lab.
 
-![](.\images\400\AppError.PNG)
+![](./images/400/AppError.PNG)
 
 Congratulations, you are now ready to move to the next lab.
 
