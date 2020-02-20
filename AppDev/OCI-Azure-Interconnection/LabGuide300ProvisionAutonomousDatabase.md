@@ -77,7 +77,7 @@ You now have created your first Autonomous Transaction Processing Cloud instance
 
 ### **STEP 2: Download the secure connection wallet for your ATP instance**
 
-- Once you are on **Autonomous Database Details **page, please click on **DB Connection** button.
+- Once you are on **Autonomous Database Details** page, please click on **DB Connection** button.
 
 ![](./images/300/AccessingWallet.PNG)
 

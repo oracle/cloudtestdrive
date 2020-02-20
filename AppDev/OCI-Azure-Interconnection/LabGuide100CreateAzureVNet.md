@@ -107,7 +107,7 @@ In the meantime, lets setup a virtual machine in your virtual network, where you
 
 - On the upper-left side of the screen click on hamburger menu, select **Create a resource** (you can see also Create a resource button under Azure services in the middle of the screen if you are in Azure Home screen).
 
-![](.\images\100\VMCreation1.PNG)
+![](./images/100/VMCreation1.PNG)
 
 - On the next screen, please select **Compute** and then **Virtual Machine**.
 
@@ -126,13 +126,16 @@ In the meantime, lets setup a virtual machine in your virtual network, where you
 - Scroll down and provide the rest of the details:
 
   - Change the **Size** to **Standard B2s**.
-  - Specify the username and password for the **Administrator Account** as the below example: 
-
+  
+- Specify the username and password for the **Administrator Account** as the below example: 
+  
+    
+  
   ```
-  Username: myadmin
+Username: myadmin
   Password: WElcome_123#
   ```
-
+  
   - Select **RDP (3389)** as the only allowed inbound port at the moment.
   - Click **Next : Disks >** at the bottom of the screen.
 

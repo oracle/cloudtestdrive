@@ -64,7 +64,7 @@ These files constitute a web page that connects to ADB and returns the database 
 
 ![](./images/400/AddExistingItem.PNG)
 
-- Add **managed ODP.NET assemply driver** (Oracle.ManagedDataAccess) to your project.
+- Add **managed ODP.NET assembly driver** (Oracle.ManagedDataAccess) to your project.
 
   - Right click on the **References** in the Solution Explorer and select **Manage NuGet Packages**.
 
@@ -98,14 +98,14 @@ Example: string conString = "User Id=ADMIN;Password=WElcome_123#;";
 - On the next connection string line, modify the following settings for your ADB instance:
 
 
-  ```
+```
 //Enter port, host name or IP, service name, and wallet directory for your Oracle Autonomous DB.
 
 conString += "Data Source=(description=(address=(protocol=tcps)(port=<PORT>)(host=<HOSTNAME OR IP>))(connect_data=(service_name=<SERVICE NAME>))(SECURITY = (MY_WALLET_DIRECTORY = <DIRECTORY LOCATION>)));";
 
 Example: 
 conString += "Data Source=(description=(address=(protocol=tcps)(port=1522)(host=adb.uk-london-1.oraclecloud.com))(connect_data=(service_name=d4qvm7rtgjikgr5_myautonomousdb_high.atp.oraclecloud.com))(SECURITY = (MY_WALLET_DIRECTORY = C:\\Users\\myadmin\\source\\repos\\MyWebApp)));";
-  ```
+```
 
 You will find these entries in the **tnsnames.ora** file from **Wallet_MyAutonomousDB.zip** downloaded 		in the previous lab. The wallet directory must be set to the local machine directory where your ADB   		wallet file will reside. For this tutorial, you will copy the wallet zip file to the web project’s root directory. 
 
