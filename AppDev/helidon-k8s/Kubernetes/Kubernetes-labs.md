@@ -69,15 +69,15 @@ The following sections have not yet been written, they will be added in time.
 
 #### Horizontal Autoscaling
 
-Sadly the automatic horizontal scaling capability which would automatically adjust the number of instances of a pod based on it's load seems to currently be unavailable as one of the services it depended on (Heapster) is no longer available in Kubernetes. Once a solution for that is available it will be documented here.
+Automatic horizontal scaling (HPA) which would automatically adjust the number of instances of a pod based on it's load.
 
 #### Automatic CI/CD and Kubenetes
 
-To be completed.
+Integration of DevCS pipelines into the lab using DevCS as the build engine.
 
 #### Automatic A/B testing
 
-To be completed.
+Automated testing of different versions of software to see which is most efective.
 
 #### Services Meshes.
 
