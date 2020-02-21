@@ -101,7 +101,7 @@ WElcome_123#
 
   
 
-Congratulations, you are now ready to move to the next lab.
+Congratulations, you are now ready to move to the [next lab](LabGuide400DevelopAppASP.NET.md).
 
 ------
 

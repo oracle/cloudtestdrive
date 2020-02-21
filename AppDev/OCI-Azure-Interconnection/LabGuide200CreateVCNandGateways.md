@@ -181,7 +181,7 @@ You will see also Default Route Table for VCN, but we will not use it here.
 
 Now that the initial configuration on Oracle Cloud is completed.
 
-Congratulations, you are now ready to move to the next lab and provision the Autonomous Transaction Processing Database on OCI.
+Congratulations, you are now ready to move to the [next lab](LabGuide300ProvisionAutonomousDatabase.md) and provision the Autonomous Transaction Processing Database on OCI.
 
 ------
 

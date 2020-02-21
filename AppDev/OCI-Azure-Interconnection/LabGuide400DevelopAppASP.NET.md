@@ -156,7 +156,7 @@ Additionally, add the wallet file, *cwallet.sso*, from the credentials zip file 
 
 ![](./images/400/AppError.PNG)
 
-Congratulations, you are now ready to move to the next lab.
+Congratulations, you are now ready to move to the [next lab](LabGuide500CreateInterConnection.md).
 
 ------
 

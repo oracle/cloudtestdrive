@@ -176,7 +176,7 @@ Password: WElcome_123#
 
 - Now you should be connected to your VM and this completes the initial configuration for Microsoft Azure.
 
-Congratulations, you are now ready to move to the next lab.
+Congratulations, you are now ready to move to the [next lab](LabGuide200CreateVCNandGateways.md).
 
 ------
 

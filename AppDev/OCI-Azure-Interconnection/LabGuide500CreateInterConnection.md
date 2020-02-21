@@ -276,7 +276,7 @@ Congratulations! You are connected to Oracle Autonomous Database and have comple
 
 ------
 
-#### **ATTENTION: If you are not going to use Cross-Cloud Interconnection, we recommend you to terminate it as soon as you finish the labs in order to avoid unnecessary costs**. You will find the steps in the last/optional lab.
+#### **ATTENTION: If you are not going to use Cross-Cloud Interconnection, we recommend you to terminate it as soon as you finish the labs in order to avoid unnecessary costs**. You will find the steps in the [optional lab](LabGuide600TerminateInterConnection.md).
 
 ------
 
