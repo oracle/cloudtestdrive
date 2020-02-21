@@ -439,14 +439,14 @@ If you omit the --username and --password option flags then docker login will pr
 
 - Rebuild the images
 
-Run the ./buildPushToRepo.sh script in one of the project directories, then once it's finished in the other. 
+Run the buildPushToRepo.sh script in one of the project directories, then once it's finished in the other. 
 
 - In the Storefront directory:
-  - Run `./buildPushToRepo.sh`
+  - Run `bash buildPushToRepo.sh`
 - In the Sockmanager directory:
-  - Run `./buildPushToRepo.sh`
+  - Run `bash buildPushToRepo.sh`
 
-```$ ./buildPushToRepo.sh 
+```$ bash buildPushToRepo.sh 
 Using repository fra.ocir.io/oractdemeabdmnative/tg_repo
 [MVNVM] Using maven: 3.5.2
 [INFO] Scanning for projects...
