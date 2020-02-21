@@ -48,8 +48,8 @@ This will open the **Create Compute Instance** wizard.  Fill in the following el
 - Enter a meaningfull **name** for your instance: `helidonlabVm-yourInitials`, using your initials to distinguish from other participants.
 - Click the **Change Image Source** button.
   - In the resulting page click the **Custom Images** tab
-  - Select the image called H-K8S-Initial-State-\<YYYY-MM-DD\> where the YYYY-MM-DD is a date
-    - If there is more than one image starting H-K8S-Initial-State- chose the one with the most recent date. 
+  - Select the image called H-K8S-Lab-A-Heldon-\<YYYY-MM-DD\> where the YYYY-MM-DD is a date
+    - If there is more than one image starting H-K8S-Lab-A-Helidon chose the one with the most recent date. 
     - DO NOT chose any image containing the word Export.
   - Click the **Select Image** button to return to the initial screen.
 - Use the **default values** provided for following elements: 
