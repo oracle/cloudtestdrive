@@ -449,9 +449,9 @@ In this case we can see that the load balancer has been created and the external
 
 You now have the basic environment to deploy services, and we've looked at how to use the Kubernetes dashboard and the kubectl command line.
 
-- Create a namespace and set the environment, using **your initials** as a parameter (here the example uses tg as initials)
+- Create a namespace and set the environment, to make it easier we have created a script called create-namespce.sh that does this for you. You must use **your initials** as a parameter (here the example uses tg as initials)
   -  `cd helidon-kubernetes/base-kubernetes`
-  -  `./create-namespace.sh tg-helidon`
+  -  `bash create-namespace.sh tg-helidon`
 
 ```
 Deleting old tg-helidon namespace
@@ -559,7 +559,7 @@ spec:
       port: 9080
 ```
 
-We are using the core api to create ab ocject of type Service. The meta data tells us we're naming it storefront. The spec section defines what we want the service to look like, in this case it's a ClusterIP, so it's not externally visible. The selector tells us that any pods with a label app and a value storefront will be considered to be part of the service (in the namespace we're using of course.) Lastly the network ports offered by the service are defin, each has a name and also a protocol and port. By default the port applies to the port the pods actually provide the service on as well as the port the service itself will be provided on. It's possible to have these on differing values if desired (specify the targetPort label for the port definition) 
+We are using the core api to create an object of type Service. The meta data tells us we're naming it storefront. The spec section defines what we want the service to look like, in this case it's a ClusterIP, so it's not externally visible. The selector tells us that any pods with a label app and a value storefront will be considered to be part of the service (in the namespace we're using of course.) Lastly the network ports offered by the service are defin, each has a name and also a protocol and port. By default the port applies to the port the pods actually provide the service on as well as the port the service itself will be provided on. It's possible to have these on differing values if desired (specify the targetPort label for the port definition) 
 
 These could of course be manually specified using a kubectl command line.
 
@@ -573,29 +573,21 @@ You need to define the services before defining anything else (e.g. deployments,
 ---
 
 
+The servicesClusterIP.yaml file in the defines the cluster services for us. We can apply it to make the changes
 
-The script setupClusterIPServices.sh will apply the servicesClusterIP.yaml file for us file creating the services. 
-
-- Run the script: `./setupClusterIPServices.sh`
+- `kubectl apply -f servicesClusterIP.yaml`
 
 ```
-Creating services
 service/storefront created
 service/stockmanager created
 service/zipkin created
-Services are
-NAME           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
-stockmanager   ClusterIP   10.110.57.74    <none>        8081/TCP,9081/TCP   0s
-storefront     ClusterIP   10.96.208.163   <none>        8080/TCP,9080/TCP   1s
-zipkin         ClusterIP   10.106.227.57   <none>        9411/TCP            0s
 ```
-
 
 Note that the service defines the endpoint, it's not actually running any code for your service yet.
 
 To see the services we can use kubectl :
 
-- kubectl get services
+- `kubectl get services`
 
 ```
 NAME           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
@@ -724,8 +716,6 @@ Thus **/smmgt** will result in a call to `/`, because `$1` matches no characters
 On the other hand,  **/smmgt/health/ready** will be mapped to **/health/ready** :  the `$1` is `/` and `$2` is `health/ready`, but the rewrite rule puts a / in front of `$2` thus becoming `/health/ready`) 
 
 Note that it is possible to match multiple paths in the same ingress, and they can forward to different ports, however the re-write target (the updated URL) will be the same structure in both cases.
-
-The file ingressConfig.yaml defines the ingress rules, the script setupIngress.sh will apply the config for us. This will configure the ingress controller with the URL and service processing details.
 
 </p></details>
 
@@ -880,11 +870,11 @@ The following (don't enter it as the details will have changed) sets up the imag
 
 
 
-The create-secrets.sh script deletes any existing secrets and sets up the secrets (in your chosen namespace.) 
+To help you we have created a script called create-secrets.sh which deletes any existing secrets and sets up the secrets (in your chosen namespace.) This is just a convenience script, you could of course create them by hand (look in the script to see what we've done if you like.)
 
 - Make sure you are in the **helidon-kubernetes/base-kubernetes** directory
 - Run the following command to create the secrets:
-  -  `./create-secrets.sh`
+  -  `bash create-secrets.sh`
 
 
 ```
@@ -1031,9 +1021,9 @@ The way this operates is that the StockManager will automatically and transparen
 
 \---
 
-In the helidon-kubernetes/base-kubernetes folder there is a script create-configmaps.sh. If you run this script it will delete existing config maps and create an up to date config for us :
+In the helidon-kubernetes/base-kubernetes folder there is a script create-configmaps.sh. We have created this to help you setup thesetup configuration maps (though you can of course do this by hand instead of creating a script.) If you run this script it will delete existing config maps and create an up to date config for us :
 
--  `./create-configmaps.sh `
+-  `bash create-configmaps.sh `
 
 ```
 Deleting existing config maps
