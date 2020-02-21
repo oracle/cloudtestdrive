@@ -14,7 +14,7 @@ Before you start building the application, let’s take a quick glance at the ar
 
 The application tier writes and queries data to and from the database tier over a secure private connection by using [VCN transit routing](https://docs.cloud.oracle.com/iaas/Content/Network/Tasks/transitroutingoracleservices.htm?). Transit routing refers to a network setup in which your Azure VNet network uses a connected virtual cloud network (VCN) to reach Oracle resources or services beyond that VCN. You will connect the Azure VNet network through [ExpressRoute](https://docs.microsoft.com/en-us/azure/expressroute/expressroute-introduction) to the VCN with [FastConnect](https://docs.cloud.oracle.com/en-us/iaas/Content/Network/Concepts/fastconnect.htm) and then configure the VCN routing so that traffic transits through the VCN to its destination beyond the VCN (Autonomous Database in this case).
 
-![](./images/ReferenceArchitecture.PNG)
+  ![](./images/ReferenceArchitecture.PNG)
 
 ​                                                                             Reference architecture
 
