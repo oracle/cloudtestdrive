@@ -12,21 +12,19 @@ This lab will walk you through the process of developing and deploying a web app
 
 Before you start building the application, let’s take a quick glance at the architecture diagram. 
 
-The application tier writes and queries data to and from the database tier over a secure private connection by using [VCN transit routing](https://docs.cloud.oracle.com/iaas/Content/Network/Tasks/transitroutingoracleservices.htm?). Transit routing refers to a network setup in which your Azure VNet network uses a connected virtual cloud network (VCN) to reach Oracle resources or services beyond that VCN. You will connect the Azure VNet network through [ExpressRoute](https://docs.microsoft.com/en-us/azure/expressroute/expressroute-introduction) to the VCN with [FastConnect](https://docs.cloud.oracle.com/en-us/iaas/Content/Network/Concepts/fastconnect.htm) and then configure the VCN routing so that traffic transits through the VCN to its destination beyond the VCN (Autonomous Database in this case).
+The application tier writes and queries data to and from the database tier over a secure private connection by using [VCN Transit Routing](https://docs.cloud.oracle.com/iaas/Content/Network/Tasks/transitroutingoracleservices.htm?). Transit routing refers to a network setup in which your Azure VNet network uses a connected virtual cloud network (VCN) to reach Oracle resources or services beyond that VCN. You will connect the Azure VNet network through [ExpressRoute](https://docs.microsoft.com/en-us/azure/expressroute/expressroute-introduction) to the VCN with [FastConnect](https://docs.cloud.oracle.com/en-us/iaas/Content/Network/Concepts/fastconnect.htm) and then configure the VCN routing so that traffic transits through the VCN to its destination beyond the VCN (Autonomous Database in this case).
 
   ![](./images/ReferenceArchitecture.PNG)
 
-​                                                                             Reference architecture
-
-
+​                                                                             
 
 ## Prerequisites
 
 Before you start running these labs, please check the prerequisites below: 
 
-- You must have an active Azure subscription and OCI tenancy.  If you do not have the accounts yet, you can obtain an Oracle Free Tier account by [clicking here](https://myservices.us.oraclecloud.com/mycloud/signup?sourceType=:eng:eo:ie::RC_EMMK190926P00040:Vlab_microATPnov) and Azure Free Account by [clicking here](https://azure.microsoft.com/en-us/free/?utm_source=channel9&utm_medium=descriptionlinks&utm_campaign=freeaccount&ocid=AID754288&wt.mc_id=azfr-c9-niner%2CCFID0519). Please use your e-mail address used during registration to that event.
+- You must have an active Azure subscription and OCI tenancy.  If you do not have the accounts yet, you can obtain an Oracle Free Tier account [here](https://myservices.us.oraclecloud.com/mycloud/signup?sourceType=:eng:eo:ie::RC_EMMK190926P00040:Vlab_microATPnov) and Azure Free account [here](https://azure.microsoft.com/en-us/free/?utm_source=channel9&utm_medium=descriptionlinks&utm_campaign=freeaccount&ocid=AID754288&wt.mc_id=azfr-c9-niner%2CCFID0519). Please use your e-mail address used during registration to that event.
 
-  **NOTE: If you are going to use your own existing Azure and OCI accounts, please check first the costs of provisioning FastConnect ([pricing](https://www.oracle.com/cloud/networking/fastconnect.html)) and ExpressRoute circuit ([pricing](https://azure.microsoft.com/en-us/pricing/details/expressroute/)).**
+  **NOTE: If you are going to use your own existing Azure and OCI accounts, please check first the costs of provisioning [FastConnect](https://www.oracle.com/cloud/networking/fastconnect.html) and [ExpressRoute](https://azure.microsoft.com/en-us/pricing/details/expressroute/) circuit.**
 
 - If you are using your own Azure subscription, you must first be enabled for OCI interconnectivity.      You must enroll in the preview by completing this short [survey form](https://forms.office.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbRyzVVsi364tClw522rL9tkpUMVFGVVFWRlhMNUlRQTVWSTEzT0dXMlRUTyQlQCN0PWcu). You will receive an email back once your subscription has been enrolled. 
 
