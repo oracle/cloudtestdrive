@@ -162,7 +162,7 @@ We will change the version text of the data returned by the isAlive method to se
 
   -  Change to folder **helidon-labs-storefront**
   - Run the v2 script:
-    -  `./buildV0.0.2PushToRepo.sh `
+    -  `bash buildV0.0.2PushToRepo.sh `
 
 ```
 Using repository fra.ocir.io/oractdemeabdmnative/tg_repo
