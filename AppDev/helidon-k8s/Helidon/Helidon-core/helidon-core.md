@@ -881,7 +881,7 @@ As expected this generates a server error which we can also see in the console t
 
 ```
 2020.01.05 14:42:19 INFO com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[helidon-1,5,server]: Requesting the reservation of 2 items of Pencil
-2020.01.05 14:42:19 WARNING com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[helidon-1,5,server]: The reservation of 2 items of Pencil fails because it's less than the minimum delta of 3
+2020.01.05 14:42:19 WARNING com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[helidon-1,5,server]: The reservation of 2 items of Pencil fails because it's <= than the minimum delta of 2
 2020.01.05 14:42:19 WARNING io.helidon.microprofile.server.ServerImpl.jersey Thread[helidon-1,5,server]: Internal server error
 com.oracle.labs.helidon.storefront.exceptions.MinimumChangeException: The reservation of 2 items of Pencil fails because it's less than the minimum delta of 2
 	at com.oracle.labs.helidon.storefront.resources.StorefrontResource.reserveStockItem(StorefrontResource.java:154)
