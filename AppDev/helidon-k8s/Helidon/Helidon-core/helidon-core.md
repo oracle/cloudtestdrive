@@ -12,7 +12,6 @@
 
 - Open the Eclipse IDE. There is an Eclipse icon on the desktop, double click it, and wait for Eclipse to start.
 
-For all of the steps in this section of the lab we will be using the **helidon-labs-storefront** project in Eclipse. We will not be updating the Maven pom.xml file with the specific imports needed as we are focusing on the code side of things here, if you are going to be coding your own services we encourage you to look at the pom.xml file to see what dependencies we are making available to put project.
 
 The main class we will be using is **StorefrontResource.java**.   Locate it in the Eclipse project explorer (Hierarchical browser on the left of the Eclipse window) and open it.
 
@@ -1128,7 +1127,6 @@ content-length: 1
 <details><summary><b>How it works</b></summary>
 <p>
 
-By default configuration files are read at startup, but it's also possible to define a configuration source that periodically checks for changes, enabling modifications tot he configuration to be dynamically reflected in the properties used by the Injection system.
 
 This is obtained by using the *pollingStrategy* method.
 
