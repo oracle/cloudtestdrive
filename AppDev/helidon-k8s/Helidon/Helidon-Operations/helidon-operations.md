@@ -21,13 +21,13 @@ We now managed to achieve the situation where we have a set of microservices tha
 
 Tracing in a microservices environment allows us to see the flow of a request across all of the microservices involved, not just the sequence of method calls in a particular service. 
 
-Helidon has built-in support for tracing. There are a few actions that we need to take to activate this.
+Helidon has built-in support for tracing. There are a few steps that we need to take to activate this.
 
 Firstly we need to deploy a tracing engine, Helidon supports several tracing engines, but for this lab we will use the Zipkin engine. For now we will use docker to run Zipkin. In the Kubeneres labs we will see how we can run Zipkin in Kubernetes.
 
 In the VM you have docker installed and running, so to start zipkin:
 
--  Open a terminal on your Linux desktop
+- Open a terminal on your Linux desktop
 - Run the following command to start Zipkin in a container:
   - `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin`
 
@@ -41,7 +41,35 @@ d12b253c50b7793ca8e3eb64658efead336fa3880d3df040f12152b57347f067
 
 ![zipkin-initial](images/zipkin-initial.png)
 
-You normally would need to add the zipkin packages into the pom.xml file, but that's already been done for you. Helidon automatically recognizes the presence of the zipkin files in it's runtime environment.
+Now you need to add the zipkin packages to the pom.xml file for **both** the storefront and stockmanager projects. This will trigger Helidon to automatically setup the tracing, no code changes are needed by you at all to use the tracing.
+
+For **both** the storefront and stockmanager projects open the pom.xml file, this is in the top level of the project, towards the end of the files for the project.
+
+Look for the dependency `helidon-tracing-zipkin` in **each** pom.xml file, you may want to use the search facility to look for zipkin. You will find a section that has been commented out and looks like the following
+
+```
+		<!-- tracing calls -->
+		<!-- 
+		<dependency>
+			<groupId>io.helidon.tracing</groupId>
+			<artifactId>helidon-tracing-zipkin</artifactId>
+		</dependency>
+		-->
+```
+
+- Remove the `<!--` and `-->` around the dependency ONLY
+
+The result will look like 
+
+```
+		<!-- tracing calls -->
+		<dependency>
+			<groupId>io.helidon.tracing</groupId>
+			<artifactId>helidon-tracing-zipkin</artifactId>
+		</dependency>
+```
+
+You now need to tell Helidon what to call the tracing requests and where traces should be sent.
 
 - In the **storefront** project, navigate to the toplevel folder **conf** and open file **storefront-config.yaml**
 
