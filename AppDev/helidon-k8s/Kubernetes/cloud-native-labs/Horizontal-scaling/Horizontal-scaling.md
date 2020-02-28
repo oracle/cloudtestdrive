@@ -90,9 +90,7 @@ If on the deployments page we scroll down we'll see the list of events for that 
 
 If you are on a Kubernetes cluster with multiple physical nodes the scaling operation will try and place the pods on different nodes, protecting the service so if one node fails for any reason the other nodes can still be used to provide the service.
 
-
-
-
+- To prepare for the following lab sections please go back to the storefront deployment and follow the approach described above to scale it back down to a single pod.
 
 ---
 

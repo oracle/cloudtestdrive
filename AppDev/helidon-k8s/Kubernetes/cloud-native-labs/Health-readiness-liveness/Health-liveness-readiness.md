@@ -60,9 +60,9 @@ root        47     0  0 14:04 pts/0    00:00:00 /bin/bash
 root        53    47  0 14:04 pts/0    00:00:00 ps -ef
 ```
 
-We can see the bash and ps process we just kicked off, but also the primary process which is running out service, the java process.
+We can see the bash and ps process we just kicked off, but also the primary process which is running our service, the java process.
 
-- Simulate a major fault by killing the process:
+- Simulate a major fault that causes a service failure by killing the process:
   - `pkill java`
 
 ```
@@ -267,7 +267,7 @@ storefront-b44457b4d-29jr7      1/1     Running   0          24s
 zipkin-88c48d8b9-bftvx          1/1     Running   0          24s
 ```
 
-Note that as we have undeployed and then deployed again there are new pods and so the RESTSRTS has been reset.
+Note that as we have undeployed and then deployed again there are new pods and so the RESTART count is back to zero.
 
 If we look at the logs for the storefront **before** the liveness probe has started (so before the 60 seconds from container creation) we see that it starts as we expect it to. 
 

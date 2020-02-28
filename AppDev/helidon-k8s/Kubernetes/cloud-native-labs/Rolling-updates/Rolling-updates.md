@@ -25,7 +25,7 @@ As a general observation though it may be tempting to just go in and modify the 
 
 So far we've been stopping our services (the undeploy.sh script deletes the deployments) and then creating new ones (the deploy.sh script applies the deployment configurations for us) This results in service down time, and we don't want that. But before we can switch to properly using rolling upgrades there are a few bits of configuration we should do
 
-####Pod counts
+#### Pod counts
 Kubernetes aims to keep a service running during the rolling upgrade, it does this by starting new pods to run the service, then stopping old ones once the new ones are ready. Through the magic of services and using labels as selectors the Kubernetes run time adds and removed pods from the service. This will work with a deployment whose replica sets only contain a single pod (the new pod will be started before the old one is stopped) but if your service contains multiple pods it will use some configuration rules to try and manage the process in a more balanced manner.
 
 We are going to once again edit the storefront-deployment.yaml file to give Kubernetes some rules to follow when doing a rolling upgrade. Importantly however we're going to edit a *Copy* of the file so we have a history.
@@ -57,7 +57,7 @@ spec:
 - Set the number of replicas to 4:
   -  `replicas: 4`
 
-We're now going to force any upgrades to be rolling upgrades 
+We're now going to tell Kubernetes to use a rolling upgrade strategy for any upgrades. 
 
 - After the replicas:4 line,  add
 

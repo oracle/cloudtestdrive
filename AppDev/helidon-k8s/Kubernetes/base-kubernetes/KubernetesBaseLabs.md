@@ -251,11 +251,11 @@ In practice this means that when the kubernetes-dashboard asks the RBAC service 
 
 
 
-**A Note on Yaml**
+**A Note on YAML**
 
-kubectl can also take json input as well as yaml. Personally I think that using any data format (including yaml) where whitespace is sensitive and defines the structure is just asking for trouble (get an extra space to many or too few and you'de completely changed what you're trying to do) so my preference would be to use JSON. However (to be fair) json is a lot more verbose compared to yaml and the syntax can also lead to problems (though I think that a reasonable json editor will be a lot better than a yaml editor at finding problems and helping you fix them)
+kubectl can also take JSON input as well as YAML. Personally I think that using any data format (including YAML) where whitespace is sensitive and defines the structure is just asking for trouble (get an extra space to many or too few and you'de completely changed what you're trying to do) so my preference would be to use JSON. However (to be fair) JSON is a lot more verbose compared to YAML and the syntax can also lead to problems (though I think that a reasonable JSON editor will be a lot better than a YAML editor at finding problems and helping you fix them)
 
-Sadly (for me at least) yaml has been pretty widely adopted for use with kubernetes, so for the configuration files we're using here I've put them all onto yaml, if you'd like to convert them to json however please feel free :-)
+Sadly (for me at least) YAML has been pretty widely adopted for use with kubernetes, so for the configuration files we're using here I've used YAML, if you'd like to convert them to JSON however please feel free :-)
 
 </p></details>
 
@@ -843,7 +843,7 @@ As when running the docker images we need to specify the external configuration 
 
 Kubernetes has a concept of volumes similar to that of docker in that a volume is something ouside a container that can be made visible inside the container. This might be for persistent storage (for example the tablespace files of a production database should continue existing, even after the pod holding the database has been shutdown) and kubernetes supports many types of sources for the volumes (e.g. nfs, iSCSI and most cloud providers offer storage services particular to their cloud such as the oracle storage service)
 
-There are also configmaps (we'll look at these in a bit) which are basically a JSON or YAML configuration, a map can be created like any other kubernetes object (and it can also be dynamically modified) then made available. For a lot of configuration data held in yaml or json this is a very effective approach as it allows for easy modification and updates (though that can itself of course trigger change management issues)
+There are also configmaps (we'll look at these in a bit) which are basically a JSON or YAML configuration, a map can be created like any other kubernetes object (and it can also be dynamically modified) then made available. For a lot of configuration data held in YAML or json this is a very effective approach as it allows for easy modification and updates (though that can itself of course trigger change management issues)
 
 Some data however probably should not be stored in a visible storage mechanism, or at the very least should not be easy to see (e.g. usernames / password for access controls, database login details etc.) To support this type of configuration data kubernetes supports a special volume type called secrets.  This information is never written to inside kubernetes and is maintained on the kubernetes management nodes as in-memory data. So if your entire management cluster fails for some reason then the secrets will have to be re-created. 
 
@@ -1055,7 +1055,7 @@ sf-config-map   2      37s
 sm-config-map   2      37s
 ```
 
-We can get more details by getting the data in JSON or yaml, in this case I'm extracting it using yaml as that's the origional data format:
+We can get more details by getting the data in JSON or YAML, in this case I'm extracting it using YAML as that's the origional data format:
 
 -  `kubectl get configmap sf-config-map -o=yaml`
 
@@ -1083,7 +1083,7 @@ metadata:
   uid: 84cdf8f5-2c09-11ea-bd2b-025000000001
 ```
 
-As we'll see later we can also update the text by modifying the file and re-creating the config map, or using the dashboard to edit the yaml representing the config map.
+As we'll see later we can also update the text by modifying the file and re-creating the config map, or using the dashboard to edit the YAML representing the config map.
 
 
 
@@ -1203,7 +1203,7 @@ The config files of the storefront and stockmanager refer to the location in the
 
 - Open the file **stockmanager-deployment.yaml** 
 
-  - Edit the line specifying the image to reflect *your* docker image location.  An example below shows the config if you chose *tg_repo* as the name:
+  - Edit the line specifying the image to reflect *your* docker image location.  The example below shows the config if you chose *tg_repo* as the name, but of course you will have chosen something different !
 
     ```
     spec:
@@ -1212,7 +1212,7 @@ The config files of the storefront and stockmanager refer to the location in the
             image: fra.ocir.io/oractdemeabdmnative/tg_repo/stockmanager:0.0.1
     ```
 
-- Repeat this operation fort the file **storefront-deployment.yaml**
+- Repeat this operation for the file **storefront-deployment.yaml**
   
   - Edit the line specifying the image to reflect *your* docker image location.
 
