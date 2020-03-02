@@ -10,7 +10,7 @@
 
 The RestClient model in Helidon makes it really simple to program access to another micro-service, but sometimes you will be using something that isn't itself a micro-service to talk to a REST endpoint. In that case you probably do not want to bring in the entire Helidon MP stack and change the client to being Helidon based !
 
-There are of course many client side frameworks in place to allow you to make a call to a REST end point, for example you could use the basic [Java HTTP client service](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html) which allows you to build every stage of the client connection, defining proxies and so on. There are also clients built on the Reactive Framework. The following is an example using the Http client taken form the Java docs page
+There are of course many client side frameworks in place to allow you to make a call to a REST end point, for example you could use the basic [Java HTTP client service](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html) which allows you to build every stage of the client connection, defining proxies and so on. There are also clients built on the Reactive Framework. The following is an example using the Http client taken from the Java docs page
 
 ```
    HttpClient client = HttpClient.newBuilder()
@@ -63,18 +63,18 @@ public interface StockManager {
 
 #### Create the client
 
-The Helidon SE rest client library let's us create a proxy based in the interface programmatically . Ultimately this is what the Helidon MP annotations do under the covers. For example
+The Helidon SE rest client library let's us create a proxy based in the interface programmatically. Ultimately this is what the Helidon MP annotations do under the covers. For example
 
 ```
 		StockManager sm = RestClientBuilder.newBuilder().baseUri(URI.create("http://localhost:8080")).build(StockManager.class);
 		System.out.println("All stock levels are " + sm.getAllStockLevels());
 ```
 
-Note that you have to provide the URL for the service end point, there is no Helidon config system available for you if you just import the rest client so you can't use the annotations for this. It is highly likely however that your client will have a properties file or other configuration mechanisms that can provide you with a way to store and etrieve external config information for you.
+Note that you have to provide the URL for the service end point, there is no Helidon config system available for you if you just import the rest client so you can't use the annotations for this. It is highly likely however that your client will have a properties file or other configuration mechanisms that can provide you with a way to store and retrieve external config information for you.
 
-The above is a very simple client, it doesn't for example handle setting authentication details. Fortunately for us there is a simple way to extend the behavior of the proxies created by the RestClientBuilder.This is done by registering additional code that the proxy will call based on the stare of the request process.
+The above is a very simple client, it doesn't for example handle setting authentication details. Fortunately for us there is a simple way to extend the behavior of the proxies created by the RestClientBuilder. This is done by registering additional code that the proxy will call as it goes through the request process.
 
- To do thie first we have to create a proxy that will modify the headers in the request to add the authentication you want. The following is a very simple class to do this using basic authentication, but you could of course implement an OAUTH2 client or something else to provide the authentication details if desired. 
+To do this first we have to create a proxy that will modify the headers in the request to add the authentication you want. The following is a very simple class to do this using basic authentication, but you could of course implement an OAUTH2 client or something else to provide the authentication details if desired. 
  
  ```
  public class AuthBuilder implements ClientRequestFilter {
@@ -100,7 +100,7 @@ The above is a very simple client, it doesn't for example handle setting authent
 }
  ```
  
- Looking at the code you'll see that the filter method is the key functionality, when called by the proxy it will remove any existing authentication form the request and create a new one.
+Looking at the code you'll see that the filter method is the key functionality, when called by the proxy it will remove any existing authentication from the request and create a new one.
  
  All we need to do now is to register it when the RestClientBuilder is creating the proxy for us
  
@@ -118,7 +118,7 @@ The full specification of the [RestClient for Microprofile implementations](http
 The ResponseExceptionMappers take the response returned and if it's not what's expected convert it into the appropriate exception, for example if your client is trying to retrieve some data and expects a `ItemNotFoundException` to be thrown if the data is not found just define and register a ResponseExceptionMapper so if the micro-service returns a http 404 (not found) code the mapper identifies it and throws a `ItemNotFoundException`
 
 ### Required libraries
-You will of course need to bring in the required libraries for the rest client builder. The Maven dependencies are as follows (the version numbers are correct as of Mid Feb 2020, but you may want to check for later versions..)
+You will of course need to bring in the required libraries for the rest client builder. The Maven dependencies are as follows (the version numbers are correct as of Mid Feb 2020, but you may want to check for later versions.)
 
 ```
 
