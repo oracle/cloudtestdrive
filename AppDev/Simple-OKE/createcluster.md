@@ -29,9 +29,9 @@ In this tutorial, you use default settings to define a new cluster. When you cre
 
 1. In a browser, go to the url you've been given to log in to Oracle Cloud Infrastructure.
 
-2. ![Sign In page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-login-page.png)
+   ![Sign In page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-login-page.png)
 
-   
+    
 
 3. Enter your username and password.
 
@@ -43,45 +43,46 @@ In this tutorial, you use default settings to define a new cluster. When you cre
 
 2. Choose a **Compartment** that you have permission to work in, and in which you want to create both the new cluster and the associated network resources.
 
-3. ![Clusters page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-console-create-cluster.png)
+   ![Clusters page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-console-create-cluster.png)
 
 4. On the **Clusters** page, click **Create Cluster**.
 
-5. In the **Create Cluster Solution** dialog, click **Quick Create** and click **Launch Workflow**.
+4. In the **Create Cluster Solution** dialog, click **Quick Create** and click **Launch Workflow**.
 
-6. ![Create Cluster Solution dialog](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-create-cluster-solution-v2.png)
+   ![Create Cluster Solution dialog](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-create-cluster-solution-v2.png)
 
-7. On the **Create Cluster** page, change the placeholder value in the **Name** field and enter `Tutorial Cluster<your-initials>` instead, replacing <your-initials by your initials.
+5. On the **Create Cluster** page, change the placeholder value in the **Name** field and enter `Tutorial Cluster<your-initials>` instead, replacing <your-initials by your initials.
 
-8. ![Cluster Creation - Create Cluster page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-create-cluster-complete-top-v2.png)
+   ![Cluster Creation - Create Cluster page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-create-cluster-complete-top-v2.png)
 
-9. Click **Next** to review the details you entered for the new cluster.
+6. Click **Next** to review the details you entered for the new cluster.
 
-10. ![Cluster Creation - Review page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-create-cluster-review-top-v2.png)
+   ![Cluster Creation - Review page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-create-cluster-review-top-v2.png)
 
-    
+     
 
 11. On the **Review** page, click **Submit** to create the new network resources and the new cluster.
 
-12. You see the different network resources being created for you.
+8. You see the different network resources being created for you.
 
-13. ![Cluster Creation Status dialog](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-create-cluster-creation-status-top-v1.png)
+   ![Cluster Creation Status dialog](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-create-cluster-creation-status-top-v1.png)
 
-    
+     
 
-14. Click **Close** to return to the Console.
+9. Click **Close** to return to the Console.
 
-15. ![Cluster Creation Status dialog](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-create-cluster-creation-status-bottom-v2.png)
+   ![Cluster Creation Status dialog](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-create-cluster-creation-status-bottom-v2.png)
 
-    
+     
 
-16. The new cluster is shown on the Cluster Details page. When it has been created, the new cluster has a status of Active.
+10. The new cluster is shown on the Cluster Details page. When it has been created, the new cluster has a status of Active.
 
-17. ![Cluster Details page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-clusters-page-active.png)
+    ![Cluster Details page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-clusters-page-active.png)
 
-18. Scroll down to see details of the new node pool that has been created, along with details of the new worker nodes (compute instances).
+11. Scroll down to see details of the new node pool that has been created, along with details of the new worker nodes (compute instances).
 
-19. ![Cluster Details page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-clusters-page-nodepool.png)
+    ![Cluster Details page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-clusters-page-nodepool.png)
+
 
 ------
 

@@ -202,13 +202,17 @@ Having updated the helloworld application's manifest file, you can now deploy th
 
 7. `Is it me you're looking for?`
 
-8. ![Browser window](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-and-registry/img/oci-hello-world-visit1.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-and-registry/files/oci-hello-world-visit1.txt)
+8. ![Browser window](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-and-registry/img/oci-hello-world-visit1.png)
 
-9. At the bottom of the page, a page view counter shows the number of times the page has been visited, and initially displays '1'.
+9. 
 
-10. Reload the page in the browser window (for example, by clicking **Refresh** or **Reload**).
+10. At the bottom of the page, a page view counter shows the number of times the page has been visited, and initially displays '1'.
 
-    ![Browser window](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-and-registry/img/oci-hello-world-visit2.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-and-registry/files/oci-hello-world-visit2.txt)
+11. Reload the page in the browser window (for example, by clicking **Refresh** or **Reload**).
+
+    ![Browser window](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-and-registry/img/oci-hello-world-visit2.png)
+
+    
 
     The counter at the bottom of the page now displays '2'.
 

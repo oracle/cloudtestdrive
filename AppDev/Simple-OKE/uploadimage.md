@@ -32,9 +32,11 @@ Having given the image the tag, you then push it to Oracle Cloud Infrastructure 
 ## ![section 1](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/32_1.png)Start Oracle Cloud Infrastructure
 
 1. In a browser, go to the url you've been given to log in to Oracle Cloud Infrastructure.
-2. ![Sign In page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-login-page.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/files/oci-login-page.txt)
+2. ![Sign In page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-login-page.png)
 
-3. Enter your username and password, and click **Sign In**. This tutorial assumes the username is jdoe@acme.com.
+3. 
+
+4. Enter your username and password, and click **Sign In**. This tutorial assumes the username is jdoe@acme.com.
 
 ------
 
@@ -48,7 +50,9 @@ Having given the image the tag, you then push it to Oracle Cloud Infrastructure 
 
    3. Review the repositories that already exist. This tutorial assumes that no repositories have been created yet.
 
-      ![Registry page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-registry-no-images.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/files/oci-registry-no-images.txt)
+      ![Registry page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-registry-no-images.png)
+
+      
 
 ## ![section 3](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/32_3.png)Login to Oracle Cloud Infrastructure Registry from the Docker CLI
 
@@ -62,7 +66,9 @@ Having given the image the tag, you then push it to Oracle Cloud Infrastructure 
 
 2. When prompted, enter the **auth token** as the password.
 
-1. ![Terminal window](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-docker-login.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/files/oci-docker-login.txt)
+1. ![Terminal window](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-docker-login.png)
+
+2. 
 
 ------
 
@@ -76,7 +82,9 @@ Having given the image the tag, you then push it to Oracle Cloud Infrastructure 
 
    to retrieve the latest version of the hello-world image from DockerHub.
 
-   ![Terminal window](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-docker-pull.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/files/oci-docker-pull.txt)
+   ![Terminal window](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-docker-pull.png)
+
+   
 
    The different layers of the helloworld image are each pulled in turn.
 
@@ -103,15 +111,19 @@ Having given the image the tag, you then push it to Oracle Cloud Infrastructure 
    docker tag karthequian/helloworld:latest fra.ocir.io/oractdemeabdmnative/myrepo/helloworld:latest
    ```
 
-2. ![Terminal window](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-docker-tag.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/files/oci-docker-tag.txt)
+2. ![Terminal window](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-docker-tag.png)
 
-3. Review the list of available images by entering:
+3. 
+
+4. Review the list of available images by entering:
 
    ```
    docker images
    ```
 
-   ![Terminal window](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-docker-images.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/files/oci-docker-images.txt)
+   ![Terminal window](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-docker-images.png)
+
+   
 
    Note that although two tagged images are shown, both are based on the same image (with the same image id).
 
@@ -131,7 +143,9 @@ Having given the image the tag, you then push it to Oracle Cloud Infrastructure 
    docker push fra.ocir.io/oractdemeabdmnative/myrepo/helloworld:latest
    ```
 
-   ![Terminal window](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-docker-push.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/files/oci-docker-push.txt)
+   ![Terminal window](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-docker-push.png)
+
+   
 
    The different layers of the helloworld image are each pushed in turn.
 
@@ -141,19 +155,23 @@ Having given the image the tag, you then push it to Oracle Cloud Infrastructure 
 
 1. In the browser window showing the Console with the **Registry** page displayed, click **Reload**. You see all the repositories in the registry to which you have access, including the private helloworld repository that was created when you pushed the helloworld image.
 
-2. ![Registry page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-registry-repositories.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/files/oci-registry-repositories.txt)
+2. ![Registry page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-registry-repositories.png)
 
-3. Click the name of the helloworld repository that contains the image you just pushed. You see:
+3. 
 
-4. - The different images in the repository. In this case, there is only one image, with the tag latest.
+4. Click the name of the helloworld repository that contains the image you just pushed. You see:
+
+5. - The different images in the repository. In this case, there is only one image, with the tag latest.
    - Details about the repository, including who created it and when, its size, and whether it's a public or a private repository
    - The readme associated with the repository. In this case, there is no readme yet.
 
-5. ![Registry page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-repository-images.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/files/oci-repository-images.txt)
+6. ![Registry page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-repository-images.png)
 
-6. Provide a readme for the helloworld repository as follows:
+7. 
 
-7. 1. Click the **Edit** button in the **Readme** section.
+8. Provide a readme for the helloworld repository as follows:
+
+9. 1. Click the **Edit** button in the **Readme** section.
 
    2. On the **Edit** tab of the Edit Readme dialog, select the **Markdown**
 
@@ -165,15 +183,21 @@ Having given the image the tag, you then push it to Oracle Cloud Infrastructure 
       ![Helloworld by Karthquian](https://raw.githubusercontent.com/oracle/cloud-native-devops-workshop/master/containers/docker001/images/004-hello-world.png )
       ```
 
-      ![Edit Readme window, Edit tab](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-image-readme-complete.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/files/oci-image-readme-complete.txt)
+      ![Edit Readme window, Edit tab](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-image-readme-complete.png)
+
+      
 
    3. Click the **Preview** tab to see how the readme will appear.
 
-      ![Edit Readme window, Preview tab](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-image-readme-preview.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/files/oci-image-readme-preview.txt)
+      ![Edit Readme window, Preview tab](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-image-readme-preview.png)
+
+      
 
    4. Click **Save** to close the Edit Readme dialog.
 
-8. Click the latest image tag. The Details section shows you the size of the image, when it was pushed and by which user, and the number of times the image has been pulled.
+10. Click the latest image tag. The Details section shows you the size of the image, when it was pushed and by which user, and the number of times the image has been pulled.
 
-9. ![Registry page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-image-summary.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/files/oci-image-summary.txt)
+11. ![Registry page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-image-summary.png)
+
+12. 
 
