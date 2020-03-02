@@ -6,10 +6,10 @@
 
 - **Introduction part 1: Introduction to Data Science** [Video](https://otube.oracle.com/media/1+-+Data+Science+Workshop+-+Introduction+to+Data+Science/1_pkinbt1m)
 - **Introduction part 2: Product Overview** [Video](https://otube.oracle.com/media/2+-+Data+Science+Workshop+-+Product+Overview/1_fb7db7zl)
-- **Lab 100: Linear Regression to Predict House Prices with Data Science service** [Video](https://otube.oracle.com/media/3+-+Data+Science+Workshop+-+Lab+100+Linear+Regression+-+Data+Science+service/1_z7v96nsn) [Exercise](./lab100/lab.md)
-- **Lab 200: Neural Networks with Data Science service** [Video](https://otube.oracle.com/media/2+-+Data+Science+Workshop+-+Product+Overview/1_fb7db7zl) [Exercise](./lab200/lab.md)
-- **Lab 300: ML for Business Users with Oracle Analytics Cloud** [Video] [Exercise]
-- **Lab 400: In-database ML with Oracle Machine Learning** [Video] [Exercise](./lab400/lab.md)
+- **Lab 100: Linear Regression to Predict House Prices with Data Science service** [Video](https://otube.oracle.com/media/3+-+Data+Science+Workshop+-+Lab+100+Linear+Regression+-+Data+Science+service/1_z7v96nsn), [Exercise](./lab100/lab.md)
+- **Lab 200: Neural Networks with Data Science service** [Video](https://otube.oracle.com/media/2+-+Data+Science+Workshop+-+Product+Overview/1_fb7db7zl), [Exercise](./lab200/lab.md)
+- **Lab 300: ML for Business Users with Oracle Analytics Cloud** [Video], [Exercise](./lab300/lab.md)
+- **Lab 400: In-database ML with Oracle Machine Learning** [Video], [Exercise](./lab400/lab.md)
 - **Lab 500: Graph and ML** [Video]
 
 ---
