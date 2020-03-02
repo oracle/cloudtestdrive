@@ -12,6 +12,8 @@ During this day you will be able to experience the various cloud services hands-
 
 
 ## Application Development ##
+- [Getting started with Kubernetes Clusters on OCI](AppDev/Simple-OKE/README.md)
+  A simple lab spinning up a Kubernetes container and deploying a hello-world application 
 - [Microservices using Autonomous ATP and Managed Containers](AppDev/ATP-OKE/README.md)
   This lab will cover the complete setup of Developer Cloud, a Kubernetes Cluster and an Autonomous Database, and then build the CI/CD flow to deploy a Node-based microservice onto this infrastructure.
 - Using **Wercker** CI/CD pipelines to [deploy an Angular Node application](AppDev/K8S/readme.md)
