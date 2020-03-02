@@ -63,7 +63,6 @@ Note there's a bug in the documentation: "datascience-family" must be "data-scie
 
 - Choose a name. 
   For this exercise the default shape of VM.Standard.E2.2 is sufficient.
-  For this exercise the default shape of VM.Standard.E2.2 is sufficient.
   Choose an existing VCN and subnet. If you don't have these yet, go back and create them using defaults.
   Then choose "Create".
 
