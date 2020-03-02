@@ -97,283 +97,54 @@ It shows the bulk of credit_amounts for good and bad credit, the amount which ar
 
 At the is point you are doing with the investigation of the dataset and move on the next task
 
-# OAC Machine learning: Credit risk
+# Train the model
 
-In this section, you will carry out the following tasks using the point and click interface of Oracle Analytics Cloud for machine learning capability:
+Our goal is to build a model that can correctly assess the credit of an application for a loan with either "Good" or "Bad".
+In Oracle Analytics, this is done by creating a so-called "Data Flow". A "Data Flow" specifies the source of the data for the training, any data transformations, and a step for the actual model training.
 
-1.	Build a predictive model
-2.	Evaluate the model
-3.	Score the customer base using the model
-4.	Predictions visualization
-
-## 1.
-
+- Create a new Data Flow by going to the "Data" menu, then select "Create" and "Data Flow".
 ![](./images/img26.jpg)
-
-1.	Click on the burger menu  
-2.	Click on ‘data’ in the menu
-
-## 2.
-
-![](./images/img27.jpg)
-
-To define your data-flow to build a model using the ‘MLTD2_german_credit_applicants’  dataset:
-1.	Click ‘Data-Flows’ tab
-
-## 3.
-
 ![](./images/img28.jpg)
 
-You have now to create a learning data-flow:
-
-1.	Click on  ‘Create’
-2.	Click on ‘Data-Flow’
-
-## 4.
-
+- Every Data Flow starts with a dataset. Select the dataset that we uploaded earlier (‘MLTD2_german_credit_applicants’) and select "Add".
 ![](./images/img29.jpg)
 
-To select the dataset to build the model:
-
-1.	Select ‘MLTD2_german_credit_applicants’ dataset
-2.	Click on ‘Add’
-
-## 5.
-
+- During Data Exploration we found that we want to keep all attributes for training. However, the identifier "recid" does not have any values, so let's remove it.  Use "remove selected" next to this column to remove it.
 ![](./images/img30.jpg)
-
-To select the attributes that will be considered by the machine learning algorithm:
-
-1.	Click on ‘+’ next to the blue node
-2.	Click on ‘Select Columns’
-
-## 6.
-
 ![](./images/img31.jpg)
 
-To remove unwanted attributes, either:
-1.	Method 1:
-A)	Click on ‘recid’
-B)	Click on ‘Remove Selected’ to move it to left
-
-Or 
-
-2.	Method 2:
- Double-Click on ‘recid’ to move it to the left side
- 
-## 7.
-
+- In this case we need a Binary Classifier algorithm. The reason is that our output are two possible classes: "Good" and "Bad". Add a "Train Binary Classifier" step at the end of the process (see "+" symbol").
 ![](./images/img32.jpg)
 
-To select the machine learning technique to be used:
-
-1.	Click on ‘+’ next to the last blue node
-2.	Select ‘Train Binary Classifier’ group of algorithms since the class  only 2 values ‘good’ or ‘bad’ for credits
-
-## 8.
-
+- There are different algorithms available to do binary classification. In this case we will select "Logistic Regression for model training".
 ![](./images/img33.jpg)
 
-To specify the machine algorithm to be used:
-
-1.	Select ‘Logistic Regression for model training’
-2.	Click on ‘OK’
-
-## 9.
-
-![](./images/img34.jpg)
-
-To define the target/class 
-
-1.	Click on ‘select a column’
-2.	Then ‘class’  column of your dataset as the target
-
-## 10.
-
-![](./images/img35.jpg)
-
-1.	Make class  value is ‘bad’ corresponding to good credit applications
-2.	Also notice the ‘Predict Value Threshold Value= 50 (0.5)’ 
-
-## 11.
-
-![](./images/img35.jpg)
-
-To give the model a name:
-
-1.	Click on ‘Save Model’ node
-2.	Enter ‘MLTD2_trained_german_credit_LR50’ as the model name
-
-## 12.
-
-![](./images/img36.jpg)
-
-To save the data-flow:
-
-1.	Click on ‘Save’
-2.	Enter ‘MLTD2_train_german_credit_DF’ as the name of the data-flow
-3.	Click on ‘OK’
-
-A message should appear saying that the data-flow is saved successfully
-
-## 13.
-
-![](./images/img37.jpg)
-
-Once the data-flow was saved you can execute the data-flow:
-
-1.	Click on ‘Run Data Flow’
-
-## 14.
-
-![](./images/img38.jpg)
-
-A message will appear saying that the data flow was run successfully
-
-## 15.
-
-![](./images/img39.jpg)
-
-To leave the data-flow:
-
-1.	Click on the white back arrow
-
-
-Now that you have built the model, you need to assess how good it is and decide if you are happy with it
-
-# Model evaluation and refinement
-
-## Oracle Analytics Cloud machine learning provides quality metrics to allow you to evaluate how god the trained models are.
-
-## 1. 
-
-![](./images/img40.jpg)
-
-To go to your list of already trained models
-
-1.	Click on the burger menu  
-2.	Click on ‘Machine Learning’ in the menu
-
-## 2. 
-
-![](./images/img41.jpg)
-
-To view the quality metrics associated with your model:
-
-1.	Click on the model row to select it: ‘MLTD_trained_german_credit_LR50’
-2.	Go to the end and click on the burger menu  
-3.	Select ‘Inspect’
-
-## 3. 
-
-![](./images/img42.jpg)
-
-To see the quality model metrics associated with your model:
-
-1.	Click on ‘Quality’ to get to the model metrics
-
-Now, you see the model quality metrics associated with your trained model.  Several model metrics Now the question is can we improve the model to reduce the number of bad credits to avoid complications and money.
-
-This is exactly what you will do next.
-When finished then 
-
-1.	Click on ‘Close’
-
-## 4. 
-
-![](./images/img43.jpg)
-
-Now the model metrics analysis is done of logistic regression model with threshold=50 (0.5)
-Let’s see if changing the threshold has some effect on the model results
-
-## 5. 
-
-![](./images/img44.jpg)
-
-1.	Click on the burger menu  
-1.	Click on ‘Data’ in the main menu
-
-## 6. 
-
-![](./images/img45.jpg)
-
-1.	Select ‘Data-flow’ Tab
-2.	Click on your model data-flow to open it: ‘MLTD2_train_german_credit_DF’
-
-## 7. 
-
+- There are a few hyperparameters for this algorithm. Most importantly, we have to select what the target column is. In this case, select "class". The other hyperparameters are "Positive Class in Target", set this to "Bad". Set the value for "Predict Value Threshold Value" to 30%. Set "Standardization" to True.
 ![](./images/img46.jpg)
-
-1.	Set ‘Predict Value Threshold % = 30
-
-2.	Click on ‘Save’ and wait the green message to appear saying that it has been saved successfully
-
-3.	Click on ‘Run data Flow’ and wait until you see the green message saying the it has been run successfully
-
-## 8. 
-
 ![](./images/img47.jpg)
 
-With certain machine learning techniques, It is often recommended to standardize the numerical columns:
-
-1.	Make sure to set ‘Standardization = True’
-
-This is avoid the domination of attributes with large spread over attributes with much smaller spread
-
-## 9. 
-
-![](./images/img48.jpg)
-
-2.	Type in ‘MLTD2_trained_german_credit_LR30’
-
-3.	Click on ‘Save’ and wait the green message to appear saying that it has been saved successfully
-
-4.	Click on ‘Run data Flow’ and wait until you see the green message saying the it has been run successfully
-
-## 10. 
-
-![](./images/img49.jpg)
-
-To go back and check the model quality metrics for the logistic regression  with threshold 30 % :
-
-1.	Click on the burger menu
-
-2.	Click on ‘Machine Learning’ in the menu
-
-## 11. 
-
+- You see that a "Save Model" node was automatically created. Click it and set ""MLTD2_trained_german_credit_LR30" as the model name.
 ![](./images/img50.jpg)
 
-Select the model to inspect:
+- Now, save the Data Flow. Click on ‘Save’ and choose "MLTD2_train_german_credit_DF".
+![](./images/img36.jpg)
 
-1.	Click on the raw for ‘MLTD2_trained_german_credit_LR30’
+- Next, we can finally execute the Data Flow. Effectively this will train the model. Click on "Run Data Flow" (top right). A message will appear saying that the data flow was run successfully.
+![](./images/img38.jpg)
 
-2.	Click on the burger menu 
+# Evaluate the model
 
-3.	Click on ‘Inspect’
+Now that you have built the model, you need to assess how good it is and decide if you are happy with it. Oracle Analytics Cloud machine learning provides quality metrics to allow you to evaluate how good the trained models are. 
 
-## 12. 
+- First, locate the trained machine model by going to the "Machine Learning" menu and selecting our model. Then select "Inspect".
+![](./images/img40.jpg)
+![](./images/img50.jpg)
 
+- Go to "Quality" tab to see the quality metrics associated with your model. You can see that the model doesn't predict all cases correctly. You can play with the hyperparameters to improve these results and find the best trade off for your case.
 ![](./images/img51.jpg)
 
-To access the model quality metrics:
-
-1.	Click on ‘Quality’ 
-
-Now you can see that for logistic regression threshold value= 0.3 then more bad credit have been captured but that also increased the number good credit being classified as bad= > it is compromise
-
-Domain experts need to make the decision for a good compromise between what is acceptable or not.
-
-2.	Click on ‘Close’ to leave this window.
-
-## 13. 
-
-![](./images/img52.jpg)
-
-You are now done with the model assessment! :) 
-
-
-Now that you have built the model for the mltd2_german_credits_applicants and refined it based the evaluation of the model quality metrics then the next step is to score the customer credit applications. 
+# Make Predictions (Apply the model)
+Now that you have built the model for the mltd2_german_credits_applicants, the next step is to score the customer credit applications.
 
 # Apply model data-flow '
 ## In this section, you create s second Data Flow where the model created in the first step gets is applied to score the customer credit applications.
@@ -805,3 +576,11 @@ Now that you are done and exit the project:
 
 
 Congratulations, you are now finished with the lab. 
+
+
+In this section, you will carry out the following tasks using the point and click interface of Oracle Analytics Cloud for machine learning capability:
+
+1.	Build a predictive model
+2.	Evaluate the model
+3.	Score the customer base using the model
+4.	Predictions visualization
