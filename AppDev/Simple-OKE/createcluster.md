@@ -28,7 +28,10 @@ In this tutorial, you use default settings to define a new cluster. When you cre
 ## ![section 1](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/32_1.png)Starting OCI
 
 1. In a browser, go to the url you've been given to log in to Oracle Cloud Infrastructure.
-2. ![Sign In page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-login-page.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/files/oci-login-page.txt)
+
+2. ![Sign In page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-login-page.png)
+
+   
 
 3. Enter your username and password.
 
@@ -37,33 +40,48 @@ In this tutorial, you use default settings to define a new cluster. When you cre
 ## ![section 2](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/32_2.png)Define Cluster Details
 
 1. In the Console, open the navigation menu. Under **Solutions and Platform**, go to **Developer Services** and click **Container Clusters**.
+
 2. Choose a **Compartment** that you have permission to work in, and in which you want to create both the new cluster and the associated network resources.
-3. ![Clusters page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-console-create-cluster.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/files/oci-console-create-cluster.txt)
+
+3. ![Clusters page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-console-create-cluster.png)
 
 4. On the **Clusters** page, click **Create Cluster**.
+
 5. In the **Create Cluster Solution** dialog, click **Quick Create** and click **Launch Workflow**.
-6. ![Create Cluster Solution dialog](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-create-cluster-solution-v2.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/files/oci-create-cluster-solution-v2.txt)
+
+6. ![Create Cluster Solution dialog](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-create-cluster-solution-v2.png)
 
 7. On the **Create Cluster** page, change the placeholder value in the **Name** field and enter `Tutorial Cluster<your-initials>` instead, replacing <your-initials by your initials.
-8. ![Cluster Creation - Create Cluster page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-create-cluster-complete-top-v2.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/files/oci-create-cluster-complete-top-v2.txt)
+
+8. ![Cluster Creation - Create Cluster page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-create-cluster-complete-top-v2.png)
 
 9. Click **Next** to review the details you entered for the new cluster.
-10. ![Cluster Creation - Review page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-create-cluster-review-top-v2.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/files/oci-create-cluster-review-top-v2.txt)
+
+10. ![Cluster Creation - Review page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-create-cluster-review-top-v2.png)
+
+    
 
 11. On the **Review** page, click **Submit** to create the new network resources and the new cluster.
+
 12. You see the different network resources being created for you.
 
-13. ![Cluster Creation Status dialog](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-create-cluster-creation-status-top-v1.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/files/oci-create-cluster-creation-status-top-v1.txt)
+13. ![Cluster Creation Status dialog](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-create-cluster-creation-status-top-v1.png)
+
+    
 
 14. Click **Close** to return to the Console.
-15. ![Cluster Creation Status dialog](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-create-cluster-creation-status-bottom-v2.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/files/oci-create-cluster-creation-status-bottom-v2.txt)
+
+15. ![Cluster Creation Status dialog](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-create-cluster-creation-status-bottom-v2.png)
+
+    
 
 16. The new cluster is shown on the Cluster Details page. When it has been created, the new cluster has a status of Active.
 
-17. ![Cluster Details page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-clusters-page-active.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/files/oci-clusters-page-active.txt)
+17. ![Cluster Details page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-clusters-page-active.png)
 
 18. Scroll down to see details of the new node pool that has been created, along with details of the new worker nodes (compute instances).
-19. ![Cluster Details page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-clusters-page-nodepool.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/files/oci-clusters-page-nodepool.txt)
+
+19. ![Cluster Details page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-clusters-page-nodepool.png)
 
 ------
 
@@ -73,7 +91,7 @@ In this tutorial, you use default settings to define a new cluster. When you cre
 
    to display the **How to Access Kubeconfig** dialog box.
 
-   ![How to Access Kubeconfig dialog](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-how-to-access-kubeconfig.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/files/oci-how-to-access-kubeconfig.txt)
+   ![How to Access Kubeconfig dialog](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-how-to-access-kubeconfig.png)
 
 2. In a terminal window, create a directory to contain the kubeconfig file, giving the directory the expected default name and location of `$HOME/.kube`. For example, on Linux, enter the following command (or copy and paste it from the **How to Access Kubeconfig** dialog box): 
 
@@ -91,18 +109,15 @@ In this tutorial, you use default settings to define a new cluster. When you cre
 
 5. Click **Close** to close the **How to Access Kubeconfig** dialog.
 
-
 ------
 
 ## ![section 4](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/32_4.png)Verify kubectl and Kubernetes Dashboard Access to the Cluster
 
 1. Confirm that you've already installed kubectl. If you haven't done so already, see the [kubectl documentation](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
 
-2. Verify that you can use kubectl to connect to the new cluster you've created. In a terminal window, enter the following command:
+2. Verify that you can use kubectl to connect to the new cluster you have created. In a terminal window, enter the following command:
 
-   ```
-   $ kubectl get nodes
-   ```
+   `kubectl get nodes`
 
    You see details of the nodes running in the cluster. For example:
 
@@ -161,6 +176,7 @@ In this tutorial, you use default settings to define a new cluster. When you cre
       $ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep oke-admin | awk '{print $1}')
       ```
       
+
 The output from the above command includes an authentication token (a long alphanumeric string) as the value of the **token** element, as shown below:
       
 ```
@@ -171,41 +187,35 @@ Namespace: kube-system
       kubernetes.io/service-account.uid: 3a7fcd8e-e123-11e9-81ca-0a580aed8570
 Type: kubernetes.io/service-account-token
       Data
-====
+===
       ca.crt: 1289 bytes
 namespace: 11 bytes
       token: eyJh______px1Q
-      ```
-      
-      In the example above,
-      
-      ```
-      eyJh______px1Q
-      ```
-      
-      (abbreviated for readability) is the authentication token.
-      
+```
+
+    In the example above, **eyJh______px1Q** is the authentication token.
+
+
    4. Copy the value of the `token:` element from the output. You will use this token to
       connect to the dashboard.
 
    5. In a terminal window, enter the following command:
 
       ```
-   $ kubectl proxy
+      $ kubectl proxy
       ```
    
    6. Open a new browser window and go to http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/login to display the Kubernetes Dashboard.
 
-      ![Kubernetes Dashboard Sign In page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-k8s-dashboard-sign-in.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/files/oci-k8s-dashboard-sign-in.txt)
+      ![Kubernetes Dashboard Sign In page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-k8s-dashboard-sign-in.png)
 
    7. Select the **Token** option, and paste the value of the `token:` element you copied earlier into the **Token** field.
 
    8. Click **Sign In**.
    
 9. Click **Overview** to see that Kubernetes is the only service running in the cluster.
-   
-  ![Kubernetes Dashboard Overview page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-k8s-dashboard-overview.png)[Description of the illustration](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/files/oci-k8s-dashboard-overview.txt)
-   
+  
+  ![Kubernetes Dashboard Overview page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/img/oci-k8s-dashboard-overview.png)
+  
    10. Congratulations! You've successfully created a new cluster, and confirmed that the new cluster is up and running as expected.
 
-## 
