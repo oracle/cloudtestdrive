@@ -32,7 +32,7 @@ The first task to do is to upload the MLTD2_german_credit_applicants.csv dataset
 
 NOTE: If you are using DVD or your own instance, proceed to step 2. 
 
-If Oracle ‘OAC’ interface is closed then using information provided in document “MLTD Environment Access Info’  and section in section ‘Interface URL’s and Credentials’:
+If Oracle "OAC" interface is closed then using information provided in document "MLTD Environment Access Info" and section in section "Interface URL’s and Credentials":
 
 1.	Open the browser and enter the provided ‘OAC URL’. It would be of the format: http://host/dv/ui 
 2.	Enter the login credentials provided

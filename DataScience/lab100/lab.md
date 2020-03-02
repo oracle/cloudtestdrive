@@ -26,10 +26,10 @@ Please follow the [prerequisites](../prereq/lab.md) first in case you don't have
 
 # Download the required dataset
 
-Download the dataset with the house prices and characteristics.
+Download the dataset with the house prices and characteristics. 
 - Download [The training dataset](./data/housesales.csv) (the dataset is public)
 
-Make sure to save these with extension CSV. Some browsers try to convert this to Excel format, which is incorrect.
+Click on the link, then use the "Raw" button and then right click "Save As". Make sure to save these with extension CSV. Some browsers try to convert this to Excel format, which is incorrect.
 
 Review the datasets. The column names are explained [here](./data/data_description.txt). This document also explains the possible list-of-values for categorical attributes.
 
@@ -94,7 +94,7 @@ warnings.filterwarnings('ignore')
   All these type of data operations are handled by the Pandas library (named "pd" here)
   
 ```
-alldata = pd.read_csv('./houseprices.csv')
+alldata = pd.read_csv('./housesales.csv')
 ```
 
 .
