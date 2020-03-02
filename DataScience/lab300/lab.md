@@ -1,273 +1,99 @@
-# Lab: Machine Learning OAC: credit modelling example
-In this section, you will be using Oracle Analytics Cloud falling in the category of augmented analytics, which automates insights using Machine Learning, a platform to leverage Machine Learning algorithms and powerful visualizations.
-Oracle Analytics provides algorithms in all four major Machine Learning categories from Regression, Classification, Clustering and Association Rule Mining.
+![](../commonimages/workshop_logo.png)
+
+# Lab: Assessing Credit Risk using Oracle Analytics
+
+In this lab we will take the perspective of a **business user** (as opposed to the expert data scientist). 
+Oracle Analytics lets business users build and apply ML models in a very visual and intuitive way. Oracle Analytics provides algorithms in all major ML categories, e.g. Regression, Classification, Clustering and Association Rule Mining.
+In addition, there's a set of featured called "Augmented analytics" in this platform that uses ML "under the hood" to automate a lot of the common tasks in the analytics process, think about Data Preparation and Data Exploration.
+
+## Objectives
+- Become familiar with Oracle Analytics and self service analysis. 
+- See how Oracle Analytics can be used to do Data Preparation and Exploration in a -visual- way, as an alternative to coding.
+- Understand the impact of ML in the hands of business users.
+
+# Prerequisites
+
+You require the following: 
+- An Oracle Cloud tenancy
+- Either an Oracle Analytics Cloud instance **or** a local installation of Oracle Data Visualization Desktop. 
+
+Please follow the [prerequisites](../prereq3/lab.md) first in case you don't have these yet.
+
+# Data Preparation
+
+First we have to upload the data that's required for our model. In this case, the dataset with historical Credit Risk information is mostly ready to go, without requiring any changes.
+
+Download the dataset with the house prices and characteristics.
+- Download [The training dataset](./data/MLTD2_german_credit_applications.csv)
+
+Click on the link, then use the "Raw" button and then right click "Save As". Make sure to save these with extension CSV. Some browsers try to convert this to Excel format, which is incorrect.
+
 The original dataset contains 1000 entries with 20 categorical and numerical attributes prepared by Professor Hofmann and each entry in the dataset represents a person who took a credit and classified as good or bad credit risk.
 The dataset provided to you as part of the material was obtained from the following location: https://archive.ics.uci.edu/ml/datasets/Statlog+(German+Credit+Data)
 
-
- 
-# If you are using an OAC instance, proceed to the Lab step 1. If not, follow the below steps top obtain Data Vizualization Desktop(DVD): 
-
-#### 1. Download DVD by clicking [here](https://www.oracle.com/middleware/technologies/oracle-data-visualization-desktop.html#) and follow the instructions. 
-
-#### 2. Install DVD locally on your computer. 
-
-#### 3. Go to the Windows Start menu, browse to Oracle (or type "install DVML") and click Install DVML. (This will install the advanced analytics option needed for this lab) 
-
-#### 4. The installer starts on completion of the download. Follow the displayed instructions to install machine learning to the selected install path.
-
-#### 5. Click Finish to close the installer. When prompted, press any key to close the terminal window. If Oracle Analytics Desktop was running during the installation, then restart it.  
-
-## Uploading dataset to OAC
 The first task to do is to upload the MLTD2_german_credit_applicants.csv dataset provided to you into Oracle Analytics Cloud. You can find it [here](./data/MLTD2_german_credit_applicants.csv). 
 
-
-
-# Lab
-
-## 1.
-
-
-![](./images/img1.jpg)
-
-NOTE: If you are using DVD or your own instance, proceed to step 2. 
-
-If Oracle "OAC" interface is closed then using information provided in document "MLTD Environment Access Info" and section in section "Interface URL’s and Credentials":
-
-1.	Open the browser and enter the provided ‘OAC URL’. It would be of the format: http://host/dv/ui 
-2.	Enter the login credentials provided
-
-  
-## 2.
+- Open Data Visualization Desktop (or Oracle Analytics Cloud, if you prefer). On the top left corner click on the menu icon and Click on "Data".
 
 ![](./images/img2.jpg)
 
-The first task is to import the datasets into Oracle Analytics cloud (OAC) for the machine learning tasks
-
-1.	On the top left corner click on the   menu icon.
-2.	Click on ‘Data’.
-
-
-## 3.
+- To import the dataset click on "Create", "Data Set", and select the file that you downloaded earlier.
 
 ![](./images/img3.jpg)
-
-To import the second dataset in Oracle Analytics Cloud (OAC)
-
-1.	Click on ‘Create’
-2.	Click on ‘Data Set’
-
-## 4.
-
 ![](./images/img4.jpg)
 
-1.	Select the following file: ‘MLTD2_german_credit_applicants.csv’
-2.	Click on ‘Open’
-
-## 5.
-
+- You see a preview of the dataset. Complete the process by clicking "Add"
 ![](./images/img5.jpg)
 
-To add the dataset to OAC repository
-
-1.	Click on ‘Add’ 
-
-You will see a message saying the dataset was successfully added
-
-## 6.
-
+- By default Oracle Analytics incorrectly treats the "recid" column as a measure. Change it to "Attribute" by clicking on "recid", then "treated as", then "attribute".
 ![](./images/img6.jpg)
 
-You have to change the datatype for the column ‘recid’:
 
-1.	Click on the column ‘recid’
-2.	Change the value of treated As:
-A)	 Click on ‘measure’
-B)	Select the option ‘Attribute’
-
-## 7.
-
+- Oracle Analytics records all changes you make in a script. This allows it to easily repeat the process in case data is reloaded. For now, apply the script that has been created by clicking "Apply Script". This makes the change to recid effective.
 ![](./images/img7.jpg)
 
-You need to apply the changes to the whole dataset then:
 
-1.	Click on ‘Apply Script’ for the changes to effect
+# Data Exploration
 
-## 8.
+As you know, this phase in the Data Science process is for us to get to know our data, identify which columns are useful, detect any problems with the data, et cetera.
 
-![](./images/img8.jpg)
+First of all, let's imagine you want to know how many credit applications have been Accepted vs Denied in the past. We can use Oracle Analytics' visualization capabilities for this.
 
-In order to go the list of available datasets:
-
-1.	Click on the little arrow back arrow in the top left corner. 
-
-## 9.
-
-![](./images/img9.jpg)
-
-Now you see the two files imported
-
-
-At this stage, you are done with the importing of the dataset. 
-
-# Data exploration of the German credit dataset
-
-## In this section, you investigate the German credit dataset using Oracle Analytics Cloud visualization capabilities
-
-## 1.
-
+- Create a project in order to investigate the dataset using visualizations by clicking on the burger menu associated with our dataset and "Select Project".
 ![](./images/img10.jpg)
 
-You have to create a project in order to investigate the dataset using visualizations:
-
-1.	Click on the burger menu associated with the dataset  MLTD_german_credit_applicants 
-2.	Select ‘Create Project’
-
-## 2.
-
+- First we need a way to count the credit card applications. We do this as follows: Right-click on ‘My calculation’ folder of the dataset and select "Add Calculation".
 ![](./images/img11.jpg)
 
-You need to add count:
-
-1.	Right-click on ‘My calculation’ folder of the dataset
-2.	Select ‘Add Calculation’
-
-## 3.
-
+- The name of the field can be anything, e.g. "# Count". Then add a counter by Double-clicking on ‘Count’ in the ‘Aggregation’ list of options. 
 ![](./images/img12.jpg)
 
-1.	Type in ‘# Count’ as le name
-2.	Double-click on ‘Count’ in the ‘Aggregation’ list of options 
-
-## 4.
-
+- Define the counter by selecting the column "recid", then click "Save".
 ![](./images/img13.jpg)
 
-To define the ‘count’ calculation:
-
-1.	Click on ‘column’
-2.	Select ‘recid’
-3.	Click on ‘Save’
-
-## 5.
-
+- Now we can find an answer to our questions. Select both the "class" and the "# Count" fields (use Control to select multiple fields). Then ‘Right-Click’ on the blue part and select "Pick Visualization". 
 ![](./images/img14.jpg)
 
-To view the % of accepted and rejected credit applications in the past you will create a donut visualization:
-
-1.	Using ‘Crtl + Left’ 
-A)	Click on the ‘# count’ from ‘my calculations’
-B)	Click on ‘class’
-
-2.	‘Right-Click’ on the blue part
-3.	Select ‘Pick Visualization’
-
-## 6.
-
+- Select the ‘donut’ visualization
 ![](./images/img15.jpg)
 
-1.	Select the ‘donut’ visualization
-
-## 7.
-
+- You see that 70% out of 1000 credit applications were good and 30% were bad for the target called ‘class’
 ![](./images/img16.jpg)
 
-You see that 70% out of 1000 credit applications were good and 30% were bad for the target called ‘class’
-
-## 8.
-
+- Now let's say we have a NEW question. We'd like to know how the Credit Amount that's requested is related to to a Good or Bad credit scoring. Again, we can create a visualization to answer that question. This time, select the field "Recid", "Credit_amount" and "Class" and choose the "Boxplot" Visualization.
 ![](./images/img17.jpg)
 
-Now to get a ‘Boxplot visualization’ for the class:
-
-1.	To select the attributes then ‘Crtl-click’ on 
--	Recid
--	Credit_amount
--	Class
-2.	Right-click and select ‘Pick Visualization’
-
-## 9.
-
-![](./images/img18.jpg)
-
-From the palette of visualization options:
-
-1.	Select the green icon representing the ‘Boxplot Visualization’ 
-ck and select ‘Pick Visualization’
-
-## 10.
-
+- Now, you see ‘Boxplot Visualization’. You can the bulk of applications in terms Credit_amount for class=good and class=bad
+It shows the bulk of credit_amounts for good and bad credit, the amount which are not in the bulk. My conclusion is that the range of credit_amount for bad credit is bigger than for good credit, although the average value seems the same.
 ![](./images/img19.jpg)
 
-Now, you see ‘Boxplot Visualization’.
-
-You can the bulk of applications in terms Credit_amount for class=good and class=bad
-
-It shows:
--	the bulk of credit_amounts for good and bad credit 
--	the mount which are not in the bulk
--	The range credit _amount for bad credit is bigger than for good although the average value seems the same
-
-## 11.
-
+- Remember the colinearity issue from the previous labs? Colinearity is the effect of multiple attributes that supply similar information. When we train our model, we should try to only supply attributes that provide unique pieces of information. To investigate this issue, we will create a correlation diagram between the input features. Do this by selecting all the fields from "duration" until "num_dependants". Choose "Pick Visualization" and select "Correlation Matrix".
 ![](./images/img20.jpg)
 
-Now to look at the correlation between the numerical predictors 
-
-1.	Selecting attributes using ‘Shift-click’: 
-A)	Click on attribute ‘duration’ 
-B)	Click on attribute ‘num_dependants’ 
-
-2.	Release ‘Shift-click’
-3.	‘Right-Click’ somewhere in the blue and select ‘Pick Visualization’ option
-
-## 12.
-
-![](./images/img21.jpg)
-
-1.	Select the ‘Correlation Matrix’ icon
-
-## 13.
-
-![](./images/img22.jpg)
-
-Now you see the correlation matrix visualization showing the predictors are:
-
-1.	Positively correlated  
-2.	The correlation is not too high between them therefore no indication of multi-collinearity issue => no action to be taken
-
-## 14.
-
+- Now you see the correlation matrix visualization. Although there is some correlation between the fields, the correlation does not appear to be too high in any place. Therefore there's no colinearity and no action to be taken. 
 ![](./images/img23.jpg)
-
-You can now rename the canvas to something more meaningful:
-
-1.	Click on  the blue down arrow
-2.	Select ‘Rename’
-
-## 15.
-
-![](./images/img24.jpg)
-
-1.	Type in ‘Credit exploration’ as the new name for the canvas
-2.	Click on the tick symbol next to the name or carriage return
-
-## 16.
-
+- Save the results of the Data Exploration. Give it a logical name.
 ![](./images/img25.jpg)
-
-Now you save the work done so far in the current project: 
-1.	Click on ‘Save’
-
-## 17.
-
-![](./images/img25.jpg)
-
-1.	Enter ‘MLTD2_ML_Project as the name of the project
-2.	Click on ‘Save’
-
-When saved then a successful message in green appears
-
 
 At the is point you are doing with the investigation of the dataset and move on the next task
 

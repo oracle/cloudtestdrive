@@ -24,7 +24,7 @@ You require the following:
 
 Please follow the [prerequisites](../prereq/lab.md) first in case you don't have these yet.
 
-# Download the required dataset
+# Upload House Sales Data
 
 Download the dataset with the house prices and characteristics. 
 - Download [The training dataset](./data/housesales.csv) (the dataset is public)
