@@ -111,11 +111,9 @@ Having given the image the tag, you then push it to Oracle Cloud Infrastructure 
    docker tag karthequian/helloworld:latest fra.ocir.io/oractdemeabdmnative/myrepo/helloworld:latest
    ```
 
-2. ![Terminal window](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-docker-tag.png)
+2.   ![Terminal window](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-docker-tag.png)
 
-3. 
-
-4. Review the list of available images by entering:
+3. Review the list of available images by entering:
 
    ```
    docker images
@@ -155,23 +153,21 @@ Having given the image the tag, you then push it to Oracle Cloud Infrastructure 
 
 1. In the browser window showing the Console with the **Registry** page displayed, click **Reload**. You see all the repositories in the registry to which you have access, including the private helloworld repository that was created when you pushed the helloworld image.
 
-2. ![Registry page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-registry-repositories.png)
+  ![Registry page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-registry-repositories.png)
 
-3. 
+2. Click the name of the helloworld repository that contains the image you just pushed. You see:
 
-4. Click the name of the helloworld repository that contains the image you just pushed. You see:
-
-5. - The different images in the repository. In this case, there is only one image, with the tag latest.
+   - The different images in the repository. In this case, there is only one image, with the tag latest.
    - Details about the repository, including who created it and when, its size, and whether it's a public or a private repository
    - The readme associated with the repository. In this case, there is no readme yet.
 
-6. ![Registry page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-repository-images.png)
+![Registry page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-repository-images.png)
 
-7. 
+ 
 
-8. Provide a readme for the helloworld repository as follows:
+3. Provide a readme for the helloworld repository as follows:
 
-9. 1. Click the **Edit** button in the **Readme** section.
+   1. Click the **Edit** button in the **Readme** section.
 
    2. On the **Edit** tab of the Edit Readme dialog, select the **Markdown**
 
@@ -195,9 +191,7 @@ Having given the image the tag, you then push it to Oracle Cloud Infrastructure 
 
    4. Click **Save** to close the Edit Readme dialog.
 
-10. Click the latest image tag. The Details section shows you the size of the image, when it was pushed and by which user, and the number of times the image has been pulled.
+4. Click the latest image tag. The Details section shows you the size of the image, when it was pushed and by which user, and the number of times the image has been pulled.
 
-11. ![Registry page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-image-summary.png)
-
-12. 
+  ![Registry page](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-image-summary.png)
 

@@ -190,25 +190,23 @@ Having updated the helloworld application's manifest file, you can now deploy th
 
    You see details of the services running on the nodes in the cluster. For the helloworld-service load balancer that you just deployed, you see:
 
-2. - the external IP address of the load balancer (for example, 129.146.147.91)
+   - the external IP address of the load balancer (for example, 129.146.147.91)
    - the port number
 
-3. Open a new browser window and enter the url to access the helloworld application in the browser's **URL** field. For example, http://129.146.147.91
+2. Open a new browser window and enter the url to access the helloworld application in the browser's **URL** field. For example, http://129.146.147.91
 
-4. 
-5. When the load balancer receives the request to access the helloworld application, the load balancer routes the request to one of the available nodes in the cluster. The results of the request are returned to the browser, which displays a page with a message like:
 
-6. **`Hello`**
+3. When the load balancer receives the request to access the helloworld application, the load balancer routes the request to one of the available nodes in the cluster. The results of the request are returned to the browser, which displays a page with a message like:
 
-7. `Is it me you're looking for?`
+   **`Hello`**
 
-8. ![Browser window](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-and-registry/img/oci-hello-world-visit1.png)
+   `Is it me you're looking for?`
 
-9. 
+   ![Browser window](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-and-registry/img/oci-hello-world-visit1.png)
 
-10. At the bottom of the page, a page view counter shows the number of times the page has been visited, and initially displays '1'.
+   At the bottom of the page, a page view counter shows the number of times the page has been visited, and initially displays '1'.
 
-11. Reload the page in the browser window (for example, by clicking **Refresh** or **Reload**).
+4. Reload the page in the browser window (for example, by clicking **Refresh** or **Reload**).
 
     ![Browser window](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-and-registry/img/oci-hello-world-visit2.png)
 
