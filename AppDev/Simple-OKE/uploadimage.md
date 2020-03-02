@@ -66,9 +66,8 @@ Having given the image the tag, you then push it to Oracle Cloud Infrastructure 
 
 2. When prompted, enter the **auth token** as the password.
 
-1. ![Terminal window](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-docker-login.png)
+   ![Terminal window](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-docker-login.png)
 
-2. 
 
 ------
 
@@ -111,7 +110,7 @@ Having given the image the tag, you then push it to Oracle Cloud Infrastructure 
    docker tag karthequian/helloworld:latest fra.ocir.io/oractdemeabdmnative/myrepo/helloworld:latest
    ```
 
-2.   ![Terminal window](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-docker-tag.png)
+   ![Terminal window](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/img/oci-docker-tag.png)
 
 3. Review the list of available images by entering:
 
