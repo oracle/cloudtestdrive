@@ -12,15 +12,11 @@ We will use [Apache Zeppelin](http://www.oracle.com/technetwork/database/options
 - Understand how APEX can be used to operationalize ML models.
 - Get familiar with the business value of identifying customers that are likely to buy a certain product.
 
-Follow these [prerequisites](../prereq/lab.md) to set up the required Autonomous Transaction Processing instance.
+Follow these [prerequisites](../prereq2/lab.md) to set up the required Autonomous Transaction Processing instance.
 
 # Steps
 
-## Import the APEX application
-
-# Prepare the APEX workspace
-
-Our starting point is an existing CRM application used by a fictional company. This contains basic information about our company's customers. The application is used by the sales/service employees of our company to look up details whenever a customer calls them.
+## Prepare the APEX workspace
 
   - Go to the details of the autonomous database and open the Service Console.
 
@@ -28,7 +24,7 @@ Our starting point is an existing CRM application used by a fictional company. T
   
   - Go to Development and open APEX.
   
-  ![](./images/open_apex.png)
+  ![](./images/open_APEX.png)
   
   -  You will see the login page fof APEX Administration Services. Use the ADMIN password that you entered when you provisioned ATP.
 
@@ -38,12 +34,13 @@ Our starting point is an existing CRM application used by a fictional company. T
   
   ![](./images/create_workspace_01.png)
 
-  - In this case let's call the workspace and database user "WORKSHOPATP".
+  - The workspace (and database user) -must be- named "WORKSHOPATP".
+    (there is some hardcoding in the installation scripts to use this schema name).
     Keep a note of the password as you will need it later.
 
   ![](./images/create_workspace_02.png)
-  
-# Import the prebuilt APEX application
+
+## Import the APEX application
 
   - Log out.
 
