@@ -21,7 +21,7 @@ Please follow the [prerequisites](../prereq3/lab.md) first in case you don't hav
 
 # Data Preparation
 
-First we have to upload the data that's required for our model. In this case, the dataset with historical Credit Risk information is mostly ready to go, without requiring any changes.
+First we have to upload the data that's required for our model. In this case, the dataset with historical credit assessments is mostly ready to go, without requiring any changes.
 
 - Download the [training dataset](./data/MLTD2_german_credit_applications.csv) with historical credit information.
 
