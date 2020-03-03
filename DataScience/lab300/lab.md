@@ -23,8 +23,7 @@ Please follow the [prerequisites](../prereq3/lab.md) first in case you don't hav
 
 First we have to upload the data that's required for our model. In this case, the dataset with historical Credit Risk information is mostly ready to go, without requiring any changes.
 
-Download the dataset with the house prices and characteristics.
-- Download [The training dataset](./data/MLTD2_german_credit_applications.csv)
+- Download the [The training dataset](./data/MLTD2_german_credit_historical_applications.csv)
 
 Click on the link, then use the "Raw" button and then right click "Save As". Make sure to save these with extension CSV. Some browsers try to convert this to Excel format, which is incorrect.
 
@@ -144,9 +143,17 @@ Now that you have built the model, you need to assess how good it is and decide 
 ![](./images/img51.jpg)
 
 # Make Predictions (Apply the model)
-Now that you have built the model for the mltd2_german_credits_applicants, the next step is to score the customer credit applications.
 
-# Apply model data-flow '
+We have a file with new applications that we wish to score.
+
+Download it [here](./data/MLTD2_german_credit_new_applications.csv)
+
+Click on the link, then use the "Raw" button and then right click "Save As". Make sure to save these with extension CSV. Some browsers try to convert this to Excel format, which is incorrect.
+
+
+
+
+# Apply model data-flow
 ## In this section, you create s second Data Flow where the model created in the first step gets is applied to score the customer credit applications.
 
 ## 1. 
