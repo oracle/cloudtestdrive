@@ -1,9 +1,9 @@
 ![](../commonimages/workshop_logo.png)
 
-Below you find the instructions for installing Data Visualization Desktop.
-Note that the lab can be executed using either Oracle Analytics Cloud or Data Visualization Desktop. So if you already have an OAC instance, feel free to use that instead.
+Below you find the instructions for installing Oracle Analytics Desktop.
+Note that the lab can be executed using either Oracle Analytics Cloud or Oracle Analytics Desktop. So if you already have an OAC instance, feel free to use that instead.
 
-# Install Data Visualization Desktop
+# Install Oracle Analytics Desktop
 
 1. Download DVD by clicking [here](https://www.oracle.com/middleware/technologies/oracle-data-visualization-desktop.html#) and follow the instructions. 
 2. Install DVD locally on your computer. 

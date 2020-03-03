@@ -15,7 +15,7 @@ In addition, there's a set of featured called "Augmented analytics" in this plat
 
 You require the following: 
 - An Oracle Cloud tenancy
-- Either an Oracle Analytics Cloud instance **or** a local installation of Oracle Data Visualization Desktop. 
+- Either an Oracle Analytics Cloud instance **or** a local installation of Oracle Analytics Desktop. 
 
 Please follow the [prerequisites](../prereq3/lab.md) first in case you don't have these yet.
 
@@ -23,16 +23,17 @@ Please follow the [prerequisites](../prereq3/lab.md) first in case you don't hav
 
 First we have to upload the data that's required for our model. In this case, the dataset with historical Credit Risk information is mostly ready to go, without requiring any changes.
 
-- Download the [The training dataset](./data/MLTD2_german_credit_historical_applications.csv)
+- Download the [training dataset](./data/MLTD2_german_credit_applications.csv) with historical credit information.
 
 Click on the link, then use the "Raw" button and then right click "Save As". Make sure to save these with extension CSV. Some browsers try to convert this to Excel format, which is incorrect.
 
-The original dataset contains 1000 entries with 20 categorical and numerical attributes prepared by Professor Hofmann and each entry in the dataset represents a person who took a credit and classified as good or bad credit risk.
+The original dataset contains 1000 entries with 20 categorical and numerical attributes prepared by Professor Hofmann and each entry in the dataset represents a PERSON who took a credit and classified as good or bad credit risk.
 The dataset provided to you as part of the material was obtained from the following location: https://archive.ics.uci.edu/ml/datasets/Statlog+(German+Credit+Data)
+We will try to capture the knowledge that this person applies to assessing credits in a ML model.
 
 The first task to do is to upload the MLTD2_german_credit_applicants.csv dataset provided to you into Oracle Analytics Cloud. You can find it [here](./data/MLTD2_german_credit_applicants.csv). 
 
-- Open Data Visualization Desktop (or Oracle Analytics Cloud, if you prefer). On the top left corner click on the menu icon and Click on "Data".
+- Open Oracle Analytics Desktop (or Oracle Analytics Cloud, if you prefer). On the top left corner click on the menu icon and Click on "Data".
 
 ![](./images/img2.jpg)
 
@@ -118,7 +119,7 @@ In Oracle Analytics, this is done by creating a so-called "Data Flow". A "Data F
 - There are different algorithms available to do binary classification. In this case we will select "Logistic Regression for model training".
 ![](./images/img33.jpg)
 
-- There are a few hyperparameters for this algorithm. Most importantly, we have to select what the target column is. In this case, select "class". The other hyperparameters are "Positive Class in Target", set this to "Bad". Set the value for "Predict Value Threshold Value" to 30%. Set "Standardization" to True.
+- There are a few hyperparameters for this algorithm. Most importantly, we have to select what the target column is. In this case, select "class". "class" is the column that was set by the credit assessment expert historically. The other hyperparameters are "Positive Class in Target", set this to "Bad", this means that for us it's important to predict "bad" credit. Set the value for "Predict Value Threshold Value" to 30%. Set "Standardization" to True.
 ![](./images/img46.jpg)
 ![](./images/img47.jpg)
 
@@ -128,7 +129,7 @@ In Oracle Analytics, this is done by creating a so-called "Data Flow". A "Data F
 - Now, save the Data Flow. Click on ‘Save’ and choose "MLTD2_train_german_credit_DF".
 ![](./images/img36.jpg)
 
-- Next, we can finally execute the Data Flow. Effectively this will train the model. Click on "Run Data Flow" (top right). A message will appear saying that the data flow was run successfully.
+- Next, we can finally execute the Data Flow. Effectively this will train the model. Click on "Run Data Flow" (top right). This could take up to 10 minutes, depending on the speed of your PC. A message will appear saying that the data flow was run successfully.
 ![](./images/img38.jpg)
 
 # Evaluate the model
@@ -144,450 +145,70 @@ Now that you have built the model, you need to assess how good it is and decide 
 
 # Make Predictions (Apply the model)
 
-We have a file with new applications that we wish to score.
+We have a file with new credit applications that we would like to assess. Instead of doing this the manual (HUMAN) way, we'll use our freshly trained model.
 
-Download it [here](./data/MLTD2_german_credit_new_applications.csv)
+- Download the new applications [here](./data/MLTD2_german_credit_NEW_applications.csv). Click on the link, then use the "Raw" button and then right click "Save As". Make sure to save these with extension CSV. Some browsers try to convert this to Excel format, which is incorrect.
 
-Click on the link, then use the "Raw" button and then right click "Save As". Make sure to save these with extension CSV. Some browsers try to convert this to Excel format, which is incorrect.
+- Again, create a new dataset, and set the "Treat As" for attribute "recid" to "attribute". The dataset should be named "MLTD2_german_credit_NEW_applications".
+![](./images/newupload.png)
 
+- You'll notice that this dataset does -not- have the class column yet. In fact, that is what we will predict now. Create a new Data Flow to score the new dataset.
+![](./images/createdataflow.png)
 
+- Select the new dataset. Deselect the "recid" column, as this does not have any predicted value.
+![](./images/selectdatasetnew.png)
 
+- Add a "Apply Model" step in the dataflow and select the model that we trained earlier.
+![](./images/addapplymodel.png)
+![](./images/selectmodel.png)
 
-# Apply model data-flow
-## In this section, you create s second Data Flow where the model created in the first step gets is applied to score the customer credit applications.
+- Verify the next dialog. You see that the Apply Model step will create two new columns: PredictedValue and PredictionConfidence. You also see that the columns of our NEW dataset are automatically aligned with the input features of the model.
+![](./images/applymodelcolumns.png)
 
-## 1. 
+- Add a "Save Data" step. Name the new dataset "Scored New Applications"
+![](./images/savedatastep.png)
 
-![](./images/img53.jpg)
+- Save the Data Flow. Name it "Apply Credit Assessment DF".
+![](./images/saveapplyflow.png)
 
-To define your data-flow to score current credit applications using the model you have built recently:
+- Run the new Data Flow. This typically takes a few minutes depending on the speed of your PC.
+![](./images/runapply.png)
 
-1.	Click on the burger menu  
+# View the Predictions
 
-2.	Click on ‘Data’ in the main menu
+- Our goal is to visualize the results of the prediction. The prediction Data Flow will have created a new dataset called "Scored New Applications", as we specified. Let's create a new project on that dataset by going back to the "Data" menu, and selecting "Create Project" on this new dataset.
+![](./images/scoredcreateproject.png)
+  
+- Imagine we want to see all applications that the model has assessed with a "bad" credit scoring. We want to simply display all the results in a table. Select all columns (use Shift), then right click "Pick Visualization", and choose the Table visualization.
+![](./images/selectallcolumns.png)
 
-## 2. 
+- Now apply a filter to only show the bad credit ratings, by dragging "Predicted Value" to the filter area and choosing "bad".
+![](./images/dragfilter1.png)
+![](./images/dragfilter2.png)
 
-![](./images/img54.jpg)
+- We see that there are four applications (of the 20+ that we provided) that have been assessed as "bad".
+![](./images/result.png)
 
-1.	Click ‘Data-Flows’ tab
+# Conclusion
 
-## 3. 
+  You've seen how we can apply machine learning to perform tasks that only humans were able to do before.
+  
+  In addition:
+  - You've become familiar with Oracle Analytics and self service analysis. 
+  - You now know how Oracle Analytics can be used to do Data Preparation and Exploration in a -visual- way, as an alternative to coding.
 
-![](./images/img55.jpg)
+  - And, hopefully you can see the potential impact that ML can have in the hands of business users!
 
-You now have to create a model scoring data-flow:
+# Follow-up questions
 
-1.	Click on  ‘Create’
+![](../commonimages/said.png)
 
-2.	Click on ‘Data-Flow’
+[said.nechab@oracle.com](mailto:said.nechab@oracle.com)
 
-## 4. 
+![](../commonimages/fredrick.png)
 
-![](./images/img56.jpg)
+[fredrick.bergstrand@oracle.com](mailto:fredrick.bergstrand@oracle.com)
 
-To select the dataset to apply the model:
+![](../commonimages/jeroen.png)
 
-1	Select ‘MLTD2_german_credit_applicants’ dataset
-
-2	Click on ‘Add’
-
-## 5. 
-
-![](./images/img57.jpg)
-
-1.	Click on the ‘+’ sign next to the last blue node.
-
-2.	Select ‘Select Columns’ as the node to add to data-flow
-
-## 6. 
-
-![](./images/img58.jpg)
-
-To remove unwanted attributes:
-
-A)	Click on ‘class’
-
-B) 	Click on ‘Remove Selected’ to move it to left
-
-Or 
-
-1.	Double-Click on ‘recid’ to move it to the left side
-
-## 7. 
-
-![](./images/img59.jpg)
-
-You now have to specify which model to use: 
-
-1.	Click on the ‘+’ of last node in the data-flow
-
-2.	Select ‘Apply Model’ node
-
-## 8. 
-
-![](./images/img60.jpg)
-
-Select the trained model you did earlier:
-
-1.	Select ‘MLTD2_trained-german_credit_LR30’ that provided  better results
-
-2.	Click on ‘OK’
-
-## 9. 
-
-![](./images/img61.jpg)
-
-You have to add a node to specify which columns to include the final dataset:
-
-1.	Click on the ‘+’ of the last node in the data-flow
-
-2.	Select  ‘Select Columns’ node
-
-## 10. 
-
-![](./images/img62.jpg)
-
-You need to remove unwanted to keep. You will remove all attributes except:
- 
-•	Recid
-
-•	PredicteValue
-
-•	PredictionConfidence 
-
-Either by
-
-1.	Double clicking on each attribute not listed above
-
-Or
-
-2.	First you have to select the columns:
-
-A)	Using ‘Shift + Click’ on attribute ‘checking_status’
-
-B)	Using ‘Shift + Click’ on attribute ‘foreign_worker’
-
-C)	To move the selected attributes to the left side then either:
- 
-- 	Click on ‘Remove selected’
-- 	Or Double click on the green
-
-## 11. 
-
-![](./images/img63.jpg)
-
-You should end-up with only 3 columns kept on the left hand side:
-
-•	Recid
-
-•	PredicteValue
-
-•	PredictionConfidence
-
-## 12. 
-
-![](./images/img64.jpg)
-
-Now to specify the table to be saved:
-
-1.	Click on the ‘+’ of the last node in the data-flow
-
-2.	Select ‘Save Data’ node
-
-## 13. 
-
-![](./images/img65.jpg)
-
-Set the name of the output dataset to be saved:
-
-1.	Click on ‘Save Data’ node
-
-2.	Set name to ‘MLTD2_Greman_credit_scored’
-
-## 14. 
-
-![](./images/img66.jpg)
-
-You have to save the data-flow:
-
-1.	Set the name of the data flow to ‘MLTD2_scoring_germany_credits_DF’
-
-2.	Click on ‘OK’
-
-3.	Click on ‘save’. You will get a successful message in green
-
-## 15. 
-
-![](./images/img67.jpg)
-
-Now you can run the data-flow:
-
-1.	Click on ‘Run Data Flow’
-
-2.	Once the execution is finished you will see a successful message in green
-
-## 16. 
-
-![](./images/img68.jpg)
-
-To exit the data-flow:
-
-1.	Click on the white back arrow
-
-## 17. 
-
-![](./images/img69.jpg)
-
-You now see your newly created data-flow listed in the repository
-
-## 18. 
-
-![](./images/img70.jpg)
-
-You now see the newly created dataset in the repository list of available datasets
-
-## 19. 
-
-![](./images/img71.jpg)
-
-Now, in order to go back to your current project and create visualization based on the scored data set then 
-
-1.	Click on the burger menu
-
-2.	Click on ‘Catalog’
-
-
-Now, you are finished with apply model data-flow that creates a scored table for the current credit application. In the next section, you will explore the results visually.
-
-# Credit Prediction Visualization 
-## In this section, using the scored table of the previous exercize, you create 3 visuals to understand the predicted values according to some applicants attributes.
-
-## 1. 
-
-![](./images/img72.jpg)
-
-Now, in order to go back to your current project and create visualization based on the cored data set then 
-
-1.	Click on the burger menu
-
-2.	Click on ‘Catalog’
-
-## 2. 
-
-![](./images/img73.jpg)
-
-To open your current project:
-
-1.	Click on the burger menu for the project in left right corner
-
-2.	Click on ‘Open’
-
-## 3. 
-
-![](./images/img74.jpg)
-
-To add a new canvas
-
-1.	Click on the ‘+’ of the credit exploration canvas
-
-## 4. 
-
-![](./images/img75.jpg)
-
-To name the new canvas:
-
-1.	Click on the down arrow associated with the ‘Canvas 2’ name.
-
-2.	Click on ‘Rename’
-
-## 5. 
-
-![](./images/img76.jpg)
-
-1.	Type in ‘Prediction analysis’ as the new name
-
-2.	Click on the check mark sign next to the new name, bottom of the canvas. 
-
-## 6. 
-
-![](./images/img77.jpg)
-
-Now to create visualizations, you have to add the data set:
-
-1.	Click on the ‘+’
-
-2.	Select ‘Add Data Set…’
-
-## 7. 
-
-![](./images/img78.jpg)
-
-To add the correct dataset to the project, the dataset containing the scored credit applications:
-
-1.	Click on ‘MLTD2_german_credit_scored’
-
-2.	Click on ‘Add to Project’
-
-## 8. 
-
-![](./images/img79.jpg)
-
-1.	Click ‘measure’ to change ít to ‘Attribute’ so that it corresponds to the one in the other dataset
-
-## 9. 
-
-![](./images/img80.jpg)
-
-You have to link the 2 dataset to create visualization on attributes from both:
-
-1.	Click on ‘Prepare’ tab
-
-## 10. 
-
-![](./images/img81.jpg)
-
-1.	Click on ‘Data diagram’ canvas
-
-## 11. 
-
-![](./images/img82.jpg)
-
-2.	Click on the first dataset to select it
-
-3.	Click on the "0" between the 2 datasets to define the link between the two
-
-## 12. 
-
-![](./images/img83.jpg)
-
-1.	Click on ‘Add Another Match’
-
-## 13. 
-
-![](./images/img84.jpg)
-
-1.	Select ‘recid’ for both
-
-2.	Click on ‘OK’
-
-## 14. 
-
-![](./images/img85.jpg)
-
-To go back to visualization tab:
-
-1.	Click ‘Visualize’
-
-## 15. 
-
-![](./images/img86.jpg)
-
-To create a visualization for the predicted value distribution:
-
-1.	‘Ctrl + left click’ to select
-
-A)	‘Predcitedvalue’ and
-
-B)	 ‘# Count’
-
-## 16. 
-
-![](./images/img87.jpg)
-
-1.	Select the ‘Donut’ visualization
-
-## 17. 
-
-![](./images/img88.jpg)
-
-Now, you see the % of good and bad predicted values
-
-## 18. 
-
-![](./images/img89.jpg)
-
-To create a second visual to see the predicted value according to employment length of time:
-
-1.	‘Crtl + left click’ to select:
-
-A)	‘Employment’
-
-B)	‘Predictedvalue’
-
-C)	‘# Count’
-
-2.	Select ‘Pick visualization’
-
-## 19. 
-
-![](./images/img90.jpg)
-
-As for selecting the visual:
-
-1.	Select the ‘Bar’ visual option
-
-## 20. 
-
-![](./images/img91.jpg)
-
-Now, you the predicted value according to employment duration.
-
-It seems that people with employment duration of 1 year or less are high risk people
-
-## 21. 
-
-![](./images/img92.jpg)
-
-To create a visual to look at predicted value according personal status:
-
-1.	‘Crtl + left click’ to select 
-
-A)	‘# Count’
-
-B)	PredictedValue
-
-C)	Persona_status
-
-2.	Select ‘Pick Visualization’
-
-## 22. 
-
-![](./images/img93.jpg)
-
-This time for visualization:
-
-1.	Select ‘Stacked Bar’ visual option
-
-## 23. 
-
-![](./images/img94.jpg)
-
-This is what you should see.
-
-## 24. 
-
-![](./images/img95.jpg)
-
-To save the work so far:
-
-1.	Click on ‘save’ and wait until the a successful green message appears
-
-## 25. 
-
-![](./images/img96.jpg)
-
-Now that you are done and exit the project:
-
-1.	Click the white back arrow 
-
-
-Congratulations, you are now finished with the lab. 
-
-
-In this section, you will carry out the following tasks using the point and click interface of Oracle Analytics Cloud for machine learning capability:
-
-1.	Build a predictive model
-2.	Evaluate the model
-3.	Score the customer base using the model
-4.	Predictions visualization
+[jeroen.kloosterman@oracle.com](mailto:jeroen.kloosterman@oracle.com)
