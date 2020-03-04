@@ -512,9 +512,7 @@ Conclusion: The newly engineered feature delivers a higher correlation than Gara
 
 .
 ### Remove the original garage attributes, rebuild the model and compare
-Let's go ahead and drop the original garage attributes.
-We have removed the Colinearity issue.
-After that, let's train the model again, and compare its performance with the original model.
+With the new attribute in place, let's train the model again, and compare its performance with the original model.
 <!--alldata.drop("GarageArea", axis = 1, inplace = True)
 alldata.drop("GarageCars", axis = 1, inplace = True)-->
 
