@@ -515,10 +515,10 @@ Conclusion: The newly engineered feature delivers a higher correlation than Gara
 Let's go ahead and drop the original garage attributes.
 We have removed the Colinearity issue.
 After that, let's train the model again, and compare its performance with the original model.
+<!--alldata.drop("GarageArea", axis = 1, inplace = True)
+alldata.drop("GarageCars", axis = 1, inplace = True)-->
 
 ```
-alldata.drop("GarageArea", axis = 1, inplace = True)
-alldata.drop("GarageCars", axis = 1, inplace = True)
 y = np.log(alldata.SalePrice)
 X = alldata.drop(['SalePrice'], axis=1)
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=63, test_size=.20)
@@ -527,7 +527,7 @@ model = lr.fit(X_train, y_train)
 y_predicted = model.predict(X_test)
 print('RMSE: ', mean_squared_error(y_test, y_predicted))
 ```
-**We have managed to lower the RMSE, this means our model is performing better with our new garage feature.**
+**We have managed to improve the RMSE. Our model is performing better with our new garage feature.**
 
 # Bonus Exercise (optional)
 Pick another algorithm to train on this data, and compare its performance with the LinearRegression algorithm.
