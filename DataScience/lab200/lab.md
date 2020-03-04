@@ -12,18 +12,18 @@ In this lab we will build a Neural Network to recognize handwritten digits. In a
 
 You require the following:
 - An Oracle Cloud tenancy
-- A Data Science project + notebook. Please follow these [instructions](../prereq/lab.md) first in case you don't have this yet.
+- A Data Science project + notebook. Please follow these [instructions](../prereq1/lab.md) first in case you don't have this yet.
 - We assume that you're familiar with basic ML concepts of data exploration, preparation, training/evaluating, et cetera. If not, you may want to do the [previous lab on Linear Regression](../lab100/lab.md) first.
 
 ### The dataset
 
-We will use the MNIST ((Modified National Institute of Standards and Technology database)) dataset for this, a real classic in Machine Learning. This dataset consists thousands of images, each image representing a handwritten digit. All images have been labelled with the corresponding digit.
+We will use the MNIST (Modified National Institute of Standards and Technology database) dataset for this, a real classic in Machine Learning. This dataset consists of thousands of images, each image representing a handwritten digit. All images have been labelled with the corresponding digit.
 ![](./images/labeled.png)
 
 ### Neural network architecture
 
 Have a look at the architecture that we will build. 
-- Input layer: Our NN must be able to process one image in its input layer at a time. As you know, an image is 2D, but a basic NN input layer is flat (1D). Therefore, we will convert the 2D image into a long 1D array (16*16=784 input neurons).
+- Input layer: Our NN must be able to process one image in its input layer at a time. As you know, an image is 2D (in our case 28x28 pixels), but a basic NN input layer is flat (1D). Therefore, we will convert the 2D image into a long 1D array (28*28=784 input neurons).
 - We will have 2 hidden layers of 16 neurons each. The number of hidden layers and the number of neurons are somewhat arbitrary, and you may want to experiment with these.
 - Output layer: This will have 10 neurons. Each neuron will represent the output for one of the digits (0 to 9).
 ![](./images/nnarchitecture.png)
@@ -51,7 +51,7 @@ pip install idx2numpy
    
   ![](./images/createjupyternotebook.png)
 
-The MNIST dataset is a classic in Machine Learning. Download the data as follows:
+Download the MNIST data as follows:
 ```
 !wget http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz
 !wget http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz
@@ -72,7 +72,7 @@ The MNIST dataset is a classic in Machine Learning. Download the data as follows
 !gunzip t10k-labels-idx1-ubyte.gz
 ```
 
-  Note that all the files should be avaiable in your root folder in the Data Science notebook.
+  Note that all the files should be available in your root folder in the Data Science notebook.
 
 - Now, let's load the data into memory
 ```
@@ -87,7 +87,7 @@ y_train = idx2numpy.convert_from_file(trainfilelabels)
 x_test = idx2numpy.convert_from_file(testfile)
 y_test = idx2numpy.convert_from_file(testfilelabels)
 ```
-  In the previous lab we had to split the data into train and test ourselves. Notice that this has already been done for us here.
+  In the previous lab we had to split the data into train and test ourselves. Notice that in this lab the split has already been done for us.
   x_train are the images. You could see every pixel as an input feature.
   y_train are the labels of the image. This is a one-dimensional array with the digits as assigned by a person (0 to 9).
   Equally, x_train and y_train are the images and corresponding labels for the test set.  
@@ -209,9 +209,8 @@ model.add(Dense(10, activation=tf.nn.softmax))
 ```
 
   Notice how in the first model.add we have to specify both the input shape (784 neurons) and the first hidden layer (16 neurons). 
-  The "template" of our Neural Network is ready. It has random weights to start with.
 
-- Next, train the model.
+- At this point the "template" of our Neural Network is ready. It has random weights to start with. Next, we will train the model to optimize the weights.
 
 ```
 model.compile(optimizer='adam', 
@@ -222,9 +221,9 @@ model.fit(x=x_train, y=y_train, epochs=10)
 
   Notice that the input for the model training are the training images (x_train) and the training labels (y_train).
   We have chosen 10 epochs. This means that all images will be fed and backpropagated 10 times.
-  There are a number of specific parameters that we will not go into here. 
+  In addition there are a number of other parameters that we will not go into here. 
 
-  With the shape of VM.Standard.E2.2, the training process will take about 2 minutes.
+  If you installed your Notebook on shape VM.Standard.E2.2, the training process will take about 2 minutes.
   
 # Model evaluation
 
@@ -235,7 +234,7 @@ model.fit(x=x_train, y=y_train, epochs=10)
 
 ## Visual verification on the test set
 
-- Let's take an example image from the testset and check if the model is able to classify it correctly. We'll take a random index of 99.
+- First of all, let's check the performance intuitively through a visualization. Let's take an example image from the testset and check if the model is able to classify it correctly. We'll take a random index of 99.
 
 ```
 plt.imshow(x_test[99].reshape(28, 28),cmap='Greys')
