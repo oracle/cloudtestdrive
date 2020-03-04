@@ -532,10 +532,6 @@ print('RMSE: ', mean_squared_error(y_test, y_predicted))
 Pick another algorithm to train on this data, and compare its performance with the LinearRegression algorithm.
 
 # Conclusion
-
-  One added column in an application might not look like much, but the value to the business can be significant.
-  In this case an employee receives very valuable advise on which customer to try to upsell a product to and he/she can use that to be more effective.
-
   - You have made your first steps with Data Exploration, Data Preparation, Model training and Evaluation.
   - You have learned the basics of Python and Scikit Learn.
   - You have learned how to provision and work with the Oracle Data Science cloud service.
