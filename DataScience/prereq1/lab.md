@@ -28,9 +28,10 @@ To sign up for the Free Tier: [http://bit.ly/registeroraclecloud](http://bit.ly/
 ## Check/Set Privileges for Data Science service
 
 The following privileges must be granted before you will be able to provision Data Science notebooks.
-- The group of the user must have access to manage data-science-family
-- The group of the user must have access to use virtual-network-family
-- The service datascience must have access to use virtual-network-family
+- The group of the user must have access to manage data-science-family.
+- The group of the user must have access to virtual-network-family.
+- The service datascience must have access to virtual-network-family.
+
 If you need help with setting this up, please refer to https://docs.cloud.oracle.com/en-us/iaas/data-science/ds-using/configure-tenancy.htm#service-access. 
 Note there's a bug in the documentation: "datascience-family" must be "data-science-family", as below:
 

@@ -6,6 +6,7 @@
 
 - **Prerequisites part 1:** [Provision Data Science service](./prereq1/lab.md)
 - **Prerequisites part 2:** [Provision Autonomous Transaction Processing](./prereq2/lab.md)
+- **Prerequisites part 3:** [Install Oracle Analytics Desktop](./prereq3/lab.md)
 - **Lab 100:** [Linear Regression to predict House Prices with Data Science service](./lab100/lab.md)
 - **Lab 200:** [Neural networks with Data Science Service](./lab200/lab.md)
 - **Lab 300:** [ML for Business Users with Oracle Analytics Cloud](./lab300/lab.md)
