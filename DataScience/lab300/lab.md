@@ -201,14 +201,12 @@ We have a file with new credit applications that we would like to assess. Instea
 
 # Follow-up questions
 
-![](../commonimages/said.png)
-
 [said.nechab@oracle.com](mailto:said.nechab@oracle.com)
 
-![](../commonimages/fredrick.png)
+<!--![](../commonimages/fredrick.png)-->
 
 [fredrick.bergstrand@oracle.com](mailto:fredrick.bergstrand@oracle.com)
 
-![](../commonimages/jeroen.png)
+<!--![](../commonimages/jeroen.png)-->
 
 [jeroen.kloosterman@oracle.com](mailto:jeroen.kloosterman@oracle.com)
