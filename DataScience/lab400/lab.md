@@ -42,7 +42,13 @@ Follow these [prerequisites](../prereq2/lab.md) to set up the required Autonomou
 
 ## Import the APEX application
 
-  - Log out.
+  - First download the application that we will install. You can find it [here](./install/f100.sql). 
+  
+  To download it first click the link, then click the Download button of GIT and then Right Click "Save As" as f100.sql in your browser.
+  ![](./images/download_button.png)
+  ![](./images/save_as.png)
+
+  - If you're in APEX, then first Log out.
 
   - Now login to the workspace that we created earlier.
   
