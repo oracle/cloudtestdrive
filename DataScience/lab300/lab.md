@@ -29,7 +29,7 @@ The original dataset contains 1000 entries with 20 categorical and numerical att
 The dataset provided to you as part of the material was obtained from the following location: https://archive.ics.uci.edu/ml/datasets/Statlog+(German+Credit+Data)
 We will try to capture the knowledge that this person applies to assessing credits in a ML model.
 
-The first task to do is to upload the MLTD2_german_credit_applicants.csv dataset provided to you into Oracle Analytics Cloud. You can find it [here](./data/MLTD2_german_credit_applicants.csv). 
+The first task to do is to upload the MLTD2_german_credit_applicants.csv dataset provided to you into Oracle Analytics Cloud. You can find it [here](./data/MLTD2_german_credit_applications.csv). 
 
 - Open Oracle Analytics Desktop (or Oracle Analytics Cloud, if you prefer). On the top left corner click on the menu icon and Click on "Data".
 
