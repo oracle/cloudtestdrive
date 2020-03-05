@@ -23,7 +23,7 @@ First we have to upload the data that's required for our model. In this case, th
 
 - Download the [training dataset](./data/MLTD2_german_credit_applications.csv) with historical credit information.
 
-Click on the link, then use the "Raw" button and then right click "Save As". Make sure to save these with extension CSV. Some browsers try to convert this to Excel format, which is incorrect.
+Click on the link, then use the "Raw" button and then right click "Save As". **Make sure to save these with extension CSV.** Some browsers try to convert this to Excel format, which is incorrect.
 
 The original dataset contains 1000 entries with 20 categorical and numerical attributes prepared by Professor Hofmann and each entry in the dataset represents a PERSON who took a credit and classified as good or bad credit risk.
 The dataset provided to you as part of the material was obtained from the following location: https://archive.ics.uci.edu/ml/datasets/Statlog+(German+Credit+Data)
@@ -147,7 +147,7 @@ Now that you have built the model, you need to assess how good it is and decide 
 
 We have a file with new credit applications that we would like to assess. Instead of doing this the manual (HUMAN) way, we'll use our freshly trained model.
 
-- Download the new applications [here](./data/MLTD2_german_credit_new_applications.csv). Click on the link, then use the "Raw" button and then right click "Save As". Make sure to save these with extension CSV. Some browsers try to convert this to Excel format, which is incorrect.
+- Download the new applications [here](./data/MLTD2_german_credit_new_applications.csv). Click on the link, then use the "Raw" button and then right click "Save As". **Make sure to save these with extension CSV.** Some browsers try to convert this to Excel format, which is incorrect.
 
 - Again, create a new dataset, and set the "Treat As" for attribute "recid" to "attribute". The dataset should be named "MLTD2_german_credit_NEW_applications".
 ![](./images/newupload.png)
