@@ -469,7 +469,8 @@ Scikit-Learn has a function to calculate RMSE.
 print('RMSE: ', mean_squared_error(y_test, y_predicted))
 ```
 
-# Try to Improve our Model: Feature Engineering
+
+# Bonus exercise (optional): Try to improve the model by engineering a new input feature
 
 Feature Engineering is the process of creating/updating input features using Domain Knowledge. The goal is to calculate / derive new features that have a higher predictive significance.
 
@@ -527,8 +528,10 @@ print('RMSE: ', mean_squared_error(y_test, y_predicted))
 ```
 **We have managed to improve the RMSE. Our model is performing better with our new garage feature.**
 
+<!--
 # Bonus Exercise (optional)
 Pick another algorithm to train on this data, and compare its performance with the LinearRegression algorithm.
+-->
 
 # Conclusion
   - You have made your first steps with Data Exploration, Data Preparation, Model training and Evaluation.
