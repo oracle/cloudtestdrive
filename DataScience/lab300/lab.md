@@ -119,7 +119,7 @@ In Oracle Analytics, this is done by creating a so-called "Data Flow". A "Data F
 - There are different algorithms available to do binary classification. In this case we will select "Logistic Regression for model training".
 ![](./images/img33.jpg)
 
-- There are a few hyperparameters for this algorithm. Most importantly, we have to select what the target column is. In this case, select "class". "class" is the column that was set by the credit assessment expert historically. The other hyperparameters are "Positive Class in Target", set this to "Bad", this means that for us it's important to predict "bad" credit. Set the value for "Predict Value Threshold Value" to 30%. Set "Standardization" to True.
+- There are a few hyperparameters for this algorithm. Most importantly, we have to select what the target column is. In this case, select "class". "class" is the column that was set by the credit assessment expert historically. The other hyperparameters are "Positive Class in Target", set this to "bad" (all lowercase), this means that for us it's important to predict "bad" credit. Set the value for "Predict Value Threshold Value" to 30%. Set "Standardization" to True.
 ![](./images/img46.jpg)
 ![](./images/img47.jpg)
 
@@ -147,7 +147,7 @@ Now that you have built the model, you need to assess how good it is and decide 
 
 We have a file with new credit applications that we would like to assess. Instead of doing this the manual (HUMAN) way, we'll use our freshly trained model.
 
-- Download the new applications [here](./data/MLTD2_german_credit_NEW_applications.csv). Click on the link, then use the "Raw" button and then right click "Save As". Make sure to save these with extension CSV. Some browsers try to convert this to Excel format, which is incorrect.
+- Download the new applications [here](./data/MLTD2_german_credit_new_applications.csv). Click on the link, then use the "Raw" button and then right click "Save As". Make sure to save these with extension CSV. Some browsers try to convert this to Excel format, which is incorrect.
 
 - Again, create a new dataset, and set the "Treat As" for attribute "recid" to "attribute". The dataset should be named "MLTD2_german_credit_NEW_applications".
 ![](./images/newupload.png)
@@ -186,7 +186,7 @@ We have a file with new credit applications that we would like to assess. Instea
 ![](./images/dragfilter1.png)
 ![](./images/dragfilter2.png)
 
-- We see that there are four applications (of the 20+ that we provided) that have been assessed as "bad".
+- We see that there are a handful of applications (of the 20+ that we provided) that have been assessed as "bad".
 ![](./images/result.png)
 
 # Conclusion
