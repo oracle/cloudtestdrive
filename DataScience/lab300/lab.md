@@ -78,12 +78,14 @@ First of all, let's imagine you want to know how many credit applications have b
 - You see that 70% out of 1000 credit applications were good and 30% were bad for the target called ‘class’
 ![](./images/img16.jpg)
 
+<!--
 - Now let's say we have a NEW question. We'd like to know how the Credit Amount that's requested is related to to a Good or Bad credit scoring. Again, we can create a visualization to answer that question. This time, select the field "Recid", "Credit_amount" and "Class" and choose the "Boxplot" Visualization.
 ![](./images/img17.jpg)
 
 - Now, you see ‘Boxplot Visualization’. You can the bulk of applications in terms Credit_amount for class=good and class=bad
 It shows the bulk of credit_amounts for good and bad credit, the amount which are not in the bulk. My conclusion is that the range of credit_amount for bad credit is bigger than for good credit, although the average value seems the same.
 ![](./images/img19.jpg)
+-->
 
 - Remember the colinearity issue from the previous labs? Colinearity is the effect of multiple attributes that supply similar information. When we train our model, we should try to only supply attributes that provide unique pieces of information. To investigate this issue, we will create a correlation diagram between the input features. Do this by selecting all the fields from "duration" until "num_dependants". Choose "Pick Visualization" and select "Correlation Matrix".
 ![](./images/img20.jpg)
