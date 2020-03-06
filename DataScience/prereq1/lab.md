@@ -33,10 +33,10 @@ The following privileges must be granted before you will be able to provision Da
 - The service datascience must have access to virtual-network-family.
 
 If you need help with setting this up, please refer to https://docs.cloud.oracle.com/en-us/iaas/data-science/ds-using/configure-tenancy.htm#service-access. 
-Note there's a bug in the documentation: "datascience-family" must be "data-science-family", as below:
+Note there's a bug in the documentation: "datascience-family" is wrong, the correct "data-science-family", as below:
 
   ```
-  allow group acme-datascientists to manage datascience-family in compartment acme-datascience-compartment
+  allow group acme-datascientists to manage data-science-family in compartment acme-datascience-compartment
   ```
 (the group and compartment names are arbitrary, and depend on your own configuration)
 
