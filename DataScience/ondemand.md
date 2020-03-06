@@ -10,7 +10,7 @@
 - **Lab 200: Neural Networks with Data Science service** [Video coming soon], [Exercise](./lab200/lab.md)
 - **Lab 300: ML for Business Users with Oracle Analytics Cloud** [Video](https://otube.oracle.com/media/5+-+Data+Science+Workshop+-+Lab+300+ML+for+Business+Users+with+Oracle+Analytics+Cloud/1_2ad0bd2t), [Exercise](./lab300/lab.md)
 - **Lab 400: In-database ML with Oracle Machine Learning** [Video](https://otube.oracle.com/media/6+-+Data+Science+Workshop+-+Lab+400+In-database+ML+with+OML/1_0vdjbad4), [Exercise](./lab400/lab.md)
-- **Lab 500: Graph and ML** [Video coming soon]
+- **Lab 500: Graph and ML** [Video](https://otube.oracle.com/media/7+-+Data+Science+Workshop+-+Lab+500+Graph+and+Machine+Learning/1_40u1t5um)
 
 ---
 
