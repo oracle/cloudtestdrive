@@ -25,20 +25,25 @@ To sign up for the Free Tier: [http://bit.ly/registeroraclecloud](http://bit.ly/
 ![](./images/create_cloud_trial3.png)
 -->
 
-## Check/Set Privileges for Data Science service
+## Preparing to provision Data Science
 
-The following privileges must be granted before you will be able to provision Data Science notebooks.
+Please follow the following document before provisioning Data Science: [Configuring your tenancy for Data Science](https://docs.cloud.oracle.com/en-us/iaas/data-science/using/configure-tenancy.htm#service-access)
+
+In summary, what the above document explains is the following:
 - The group of the user must have access to manage data-science-family.
 - The group of the user must have access to virtual-network-family.
 - The service datascience must have access to virtual-network-family.
+- The data science service must have egress access to internet (this is required for Lab 200).
 
-If you need help with setting this up, please refer to https://docs.cloud.oracle.com/en-us/iaas/data-science/ds-using/configure-tenancy.htm#service-access. 
-Note there's a bug in the documentation: "datascience-family" is wrong, the correct "data-science-family", as below:
+**If you have any issues with these steps, please post them in Slack group #dsworkshop**.
+
+<!--Note there's a bug in the documentation: "datascience-family" is wrong, the correct "data-science-family", as below:
 
   ```
   allow group acme-datascientists to manage data-science-family in compartment acme-datascience-compartment
   ```
 (the group and compartment names are arbitrary, and depend on your own configuration)
+-->
 
 ## Provisioning
 
