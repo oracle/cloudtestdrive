@@ -76,6 +76,7 @@ Download the MNIST data as follows:
 
 - Now, let's load the data into memory
 ```
+%matplotlib inline
 import idx2numpy
 import numpy as np
 trainfile = 'train-images-idx3-ubyte'
