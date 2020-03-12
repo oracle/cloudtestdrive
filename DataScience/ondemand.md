@@ -12,6 +12,8 @@
 - **Lab 400: In-database ML with Oracle Machine Learning** [Video](https://otube.oracle.com/media/6+-+Data+Science+Workshop+-+Lab+400+In-database+ML+with+OML/1_0vdjbad4), [Exercise](./lab400/lab.md)
 - **Lab 500: Graph and ML** [Video](https://otube.oracle.com/media/7+-+Data+Science+Workshop+-+Lab+500+Graph+and+Machine+Learning/1_40u1t5um)
 
+[Powerpoint presentations](https://oradocs-corp.documents.us2.oraclecloud.com/documents/link/LFA20594531CCE5E0DC2E334F6C3FF17C1177A968060/folder/F0944370E4254BE994D6A8CFF6C3FF17C1177A968060/_Data_Science_workshop) (as presented in the videos). 
+
 ---
 
 [Go to the Cloud Test Drive Overview](../../readme.md)
