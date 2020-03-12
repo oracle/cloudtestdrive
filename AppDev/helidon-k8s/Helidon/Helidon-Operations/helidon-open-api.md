@@ -52,7 +52,7 @@ You may of course chose to document other services, for example the stockmanager
 The generated OpenAPI documentation can be accessed using curl
  - `curl http://localhost:8080/openapi`
 
-```
+```yaml
 info: 
   title: Generated API
   version: '1.0'
@@ -82,7 +82,8 @@ public class StorefrontApplication extends Application {
 
 <details><summary><b>Explanation of the annotations</b></summary>
 <p>
-The `@OpenAPIDefinition` indicates that this is defining the API top level details for this project. The @Info is an annotation that defines what that information actually is.
+
+The `@OpenAPIDefinition` indicates that this is defining the API top level details for this project. The `@Info` is an annotation that defines what that information actually is.
 
 The title, description and version fields are I hope self explanatory 
 </p>
@@ -236,8 +237,8 @@ paths:
 <details><summary><b>If you didn't see similar to the output above</b></summary>
 
 If you just saw the basic info that was returned when you initially did a curl to this URN the probability is that you hadn't completed the maven build on the process-class task before you re-started the storefront service. Stop the storefront service, make sure you've correctly run and finished the maven build and the console reports that the jandex has run and the build has been a success, then re-start the storefront application.
-</p>
-</details>
+
+</p></details>
 ---
 
 #### What does this output mean ?
@@ -245,7 +246,7 @@ In summary it means that adding the @OpenAPIDefinition triggered Helidon to scan
 
 First locate the `info:` section. 
 
-```
+```yaml
 info: 
   description: Acts as a simple stock level tool for a post room or similar
   title: StorefrontApplication
@@ -256,7 +257,7 @@ This contains the information you supplied to the `@OpenAPIDefinition` annotatio
 
 Now let's look at the `components:` section.
 
-```
+```yaml
 components: 
   schemas:
     ItemDetails: 
@@ -299,7 +300,7 @@ The `openapi: 3.0.1` simply defines what version of the OpenAPI document specifi
 
 Lastly let's look at the `paths` section
 
-```
+```yaml
 paths:
   /minimumChange: 
     post: 
@@ -506,6 +507,7 @@ content-length: 2964
 
 For the rest of the lab documentation I'm going to stick with yaml as it's a bit shorter, but feel free to use JSON if you prefer.
 </b></details>
+---
 
 
 ### To many paths, how do we hide private ones ?
@@ -533,7 +535,7 @@ Let's see how this looks, there is no need to re-build the index this time.
 
   - ` curl -i http://localhost:8080/openapi`
   
-```
+```yaml
 HTTP/1.1 200 OK
 Content-Type: application/vnd.oai.openapi;charset=UTF-8
 Date: Wed, 11 Mar 2020 18:16:56 GMT
@@ -602,7 +604,7 @@ paths:
 
 This looks much better, we can see the details of the core REST API we want to expose, and we're not polluting it with end-points that in a production system would not be exposed.
   
-Strictly speaking this is all that you need to be able to use the API from a caller perspective, you know what to send and what to expect in return, but it's not very detailed information, and it doesn't actually tell you much about what those end-points do (of course this is not actually true in this case because as a good programmer I've tried to use meaningful names.)
+Strictly speaking this is all that you need to be able to use the API from a caller perspective, you know what to send and what to expect in return, but it's not very detailed information, and it doesn't actually tell you much about what those end-points do (of course this is not completely true here because as a good programmer I've tried to use meaningful names.)
 
 ### Defining the inputs and outputs
 
@@ -625,7 +627,7 @@ We've got basic information on the ItemRequest (and of course full info on ItemD
 
 The resulting class looks like :
 
-```
+```java
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -639,13 +641,15 @@ public class ItemRequest {
 ```
 
 <details><summary><b>Explaining the annotations</b></summary>
+
 `@Schema` is a commonly used annotation with OpenAPI, it basically is used to identify data objects and their fields. 
 
 There are a *very* large number of attributes that can be added to a `@Schema` annotation, and you can see common (and I hope self explanatory) ones here. There are also attributes that define minimum and maximum values of an attribute, or define the allowable fields of an enum. These could be used to enable client code to apply data validation checks itself before they get to the service itself. 
 
 Some annotations like `required` might seem a bit strange, after all in Java there is no concept of optional attributes on a class or method, however it's important to remember that this relates to data being **transfered**, not to data at rest. The Helidon framework will create the **instance** of the class and it's quite reasonable that a class may have a default value for a field. In that case it's not going to be *required* that the REST API request defines a value for that field unless the request want's to override the default.
 
-Full details of the `@Schema` annotation are in the Microprofile OpenAPI documentation linked to at the end of this module
+Full details of the `@Schema` annotation are in the Microprofile OpenAPI documentation linked to at the end of this module.
+
 </b></details>
 ---
 
@@ -661,7 +665,7 @@ Let's look at the updated REST APi description
 
   - `curl -i http://localhost:8080/openapi`
 
-```
+```yaml
 HTTP/1.1 200 OK
 Content-Type: application/vnd.oai.openapi;charset=UTF-8
 Date: Wed, 11 Mar 2020 19:04:05 GMT
@@ -757,15 +761,16 @@ As we've excluded the StartResource and ConfigurationResource on the basis that 
 
 `@Operation` is basically a description of the REST end point itself, most of the attributes should be self explanatory.
 
-There is one useful attribute for the `@Operation` annotation which is the hidden attribute. If hidden is set to true, for example  `@Operation(hidden = true)` then this REST end point will not be included in the generated OpenAPI documentation. This means that you can hide some REST end points in a class without hiding all of them, so in effect a per method version of the `mp.openapi.scan.exclude.classes` property.
+There is one useful attribute for the `@Operation` annotation which is the `hidden` attribute. If `hidden` is set to true, for example  `@Operation(hidden = true)` then this REST end point will not be included in the generated OpenAPI documentation. This means that you can hide some REST end points in a class without hiding all of them, so in effect a per method version of the `mp.openapi.scan.exclude.classes` property.
 
 `@APIResponse` defines what the results of the operation are, hopefully the responseCode indicates the HTTP status code this defines (more on different codes later) For reasons that are unclear this is defined as a String rather than a numeric code, or a StatusType value, I suspect this means you could use the response name rather than just the numeric code, but as most code generators would use the numeric value this seems a bit odd.
 
 The content attribute of the `@APIResponse` defines what the method returns, in this case an array of instances of ItemDetails.
+
 </b></details>
 ---
 
-Let's look at the updated REST APi description 
+Let's look at the updated REST API description 
 
 - Stop the existing instance of storefront
 
@@ -892,8 +897,8 @@ paths:
 
 We can see that there is a lot more into on the `/store/reserveStock` REST endpoint, and also on the argument, we can see that it's required and also a description. If looked at the $ref you'll see it points you to the `/components/schamas/ItemRequest` (this is a yaml hierarchy, not a rest endpoint) and that section of the document has the detailed description of the method parameter.
 
-### But what about documenting error status codes 
-Of course not every REST API call returns successfully, there may be problems, for example in the case of the `reserveStock` method it might throw a `UnknownItemException` We've put an `@Fallback` annotation directing Helidon to process exceptions and convert them into relevant http status codes, in this case an `UnknownItemException` is converted into a 404 / Not Found status. But we need a way to document this and the other returns a client may reasonably be expected to handle.
+### Documenting the error status codes 
+Of course not every REST API call returns successfully, there may be problems, for example in the case of the `reserveStock` method it might throw a `UnknownItemException` In an earlier module we put an `@Fallback` annotation on the method directing Helidon to pass exceptions a handler class which convertc them into relevant http status codes, in this case an `UnknownItemException` is converted into a 404 / Not Found status. But we need a way to document this and the other returns a client may reasonably be expected to handle.
 
 - Add the following additional `@APIResponse` annotations to the reserveStock method
   - ```java
@@ -905,7 +910,7 @@ Of course not every REST API call returns successfully, there may be problems, f
 The updated method declaration should now look like this (comments omitted for clarity)
 
 ```java
-@POST
+	@POST
 	@Path("/reserveStock")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -977,13 +982,14 @@ paths:
 
 We now have OpenAPI documentation that defines the reasonable error conditions that may be generated.
 
-<details><summary><b>What API Responses to document ?/b></summary>
+<details><summary><b>What API Responses to document ?</b></summary>
+<p>
 
 As a general rule of thumb you should only document the http status responses your end point might reasonably throw, in the case above that's 200 (OK), 404 / Not Found (when a request is made to reserve an item not in the database) 409 / CONFLICT (when there are not enough items available to reserve) and 406 / Not Acceptable (when the number of items to be reserved is not acceptable due to minimum change restrictions.)
 
 We have added `@APIResponse` annotations to deal with those as any client could reasonably expect to encounter them, but for codes that may be generated due to internal problems, for example the catch all 500 / Internal Server error and it's related 5xx series of codes we have not documented as a client woudl not under normal circumstances encounter them.
 
-We have documented a fairly typical set of http status codes, though of course exactly which ones are included in the documentation will vary by end point and your development standards.
+Here we have documented a the typical set of http status codes that the method can reasonably return, though of course exactly which ones are included in the documentation will vary by end point and your development standards.
 </p></details>
 
 ## More information
