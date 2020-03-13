@@ -11,7 +11,7 @@ To run this part of the lab you need the working storefront and stockmanager mic
 
 <details><summary><b>Not done the Helidon lab ?</b></summary>
 <p>
-If you are using a the "completed" VM image (i.e. only doing the docker and subsequent parts of the workshop) then in the helidon-labs-stockmanager project you will need to edit the in the conf/stockmanager-conf.yaml file and add a line of the form department: "Your_department_name" (change the name to be a name unique to you)
+If you are using a the "completed" VM image (i.e. only doing the docker and subsequent parts of the workshop) then in the helidon-labs-stockmanager project you will need to edit the in the conf/stockmanager-conf.yaml file and add a line of the form `department: "Your_department_name"` (change the name to be a name unique to you)
 
 For example
 
