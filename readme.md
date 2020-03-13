@@ -53,7 +53,14 @@ During this day you will be able to experience the various cloud services hands-
 
 
 ## BlockChain ##
+
 + [Set up a Blockchain network, and experiment with some transactions and Smart Contracts](BlockChain/readme.md)
+
+  
+
+## Data Science ##
+
++ [Follow a series of Data Science labs](BDataScience/README.md)
 
   
 
