@@ -9,9 +9,11 @@
 ### Prerequisites
 To run this part of the lab you need the working storefront and stockmanager microservices (as per the Helidon labs) connected to the database.
 
-<details><summary><b>Using the "completed" image</b></summary>
+<details><summary><b>Not done the Helidon lab ?</b></summary>
 <p>
 If you are using a the "completed" VM image (i.e. only doing the docker and subsequent parts of the workshop) then in the helidon-labs-stockmanager project you will need to edit the in the conf/stockmanager-conf.yaml file and add a line of the form department: "Your_department_name" (change the name to be a name unique to you)
+
+For example
 
 ```
 app:
@@ -22,6 +24,8 @@ app:
 Changing "Tims" to match your name of course
 
 </p></details>
+
+---
 
 - Make sure the zipkin container is running. You may have done this in the previous lab chapter and left it running. 
   - To check if it is already running type :
@@ -259,6 +263,22 @@ As the storefront depends on the stockmanager (and both depend on zipkin) it's i
   - Go to the Storefront project: `cd workspace/helidon-labs-storefront`
   - Run the **Storefront** container via script: `./runLocalExternalConfig.sh`
 
+---
+
+<details><summary><b>Not done the Helidon lab ?</b></summary>
+<p>
+If you've not done the helidon lab then you won't have any stock items in the database under the department name you chose
+
+- Use curl to create some stock items :
+  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pin/5000`
+  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pencil/200`
+  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Eraser/50`
+  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Book/100`
+  
+</p></details>
+
+---
+
 - Open **another** new terminal window
 - Call the stocklevel method of the application:
   -  `curl -i -X GET -u jack:password http://localhost:8080/store/stocklevel`
@@ -275,6 +295,15 @@ This call should return the entries you added earlier.
 
 - You probably will get a *424 Failed dependency* message:  it's because the lazy initialization has taken a while as the back end request has times out (remember the @Timeout annotation!) 
   - Just re-run the request a few times till you get the expected response
+
+---
+
+<details><summary><b>No stock items returned ?</b></summary>
+<p>
+If the returned  data is an empty array `[]` then you've not added any stock items for your department name. Expand the `Not done the Helidon lab ?` section above and follow the instructions there.
+</p></details>
+
+---
 
 The outputs for the storefront and stockmanager containers will display the log data generated as the operation was performed.
 
