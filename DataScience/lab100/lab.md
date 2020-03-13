@@ -24,12 +24,12 @@ You require the following:
 
 Please follow the [prerequisites](../prereq/lab.md) first in case you don't have these yet.
 
-# Download the required dataset
+# Upload House Sales Data
 
-Download the dataset with the house prices and characteristics.
+Download the dataset with the house prices and characteristics. 
 - Download [The training dataset](./data/housesales.csv) (the dataset is public)
 
-Make sure to save these with extension CSV. Some browsers try to convert this to Excel format, which is incorrect.
+Click on the link, then use the "Raw" button and then right click "Save As". Make sure to save these with extension CSV. Some browsers try to convert this to Excel format, which is incorrect.
 
 Review the datasets. The column names are explained [here](./data/data_description.txt). This document also explains the possible list-of-values for categorical attributes.
 
@@ -94,7 +94,7 @@ warnings.filterwarnings('ignore')
   All these type of data operations are handled by the Pandas library (named "pd" here)
   
 ```
-alldata = pd.read_csv('./houseprices.csv')
+alldata = pd.read_csv('./housesales.csv')
 ```
 
 .
@@ -128,7 +128,7 @@ alldata.columns
 ```
 
 Conclusion: There are many input features that we can potentially use.
-Some of these columns are self explanatory, others not so much. Have a look at data_description.txt for background.
+Some of these columns are self explanatory, others not so much. Have a look at [data_scription.txt](./data/data_description.txt) for background.
 
 .
 ### Which columns would we select intuitively? 
@@ -184,7 +184,7 @@ Correlation between a categorical and a continuous attribute (SalePrice) can be 
 ```
 var = 'MSZoning'
 data = pd.concat([alldata['SalePrice'], alldata[var]], axis=1)
-f, ax = plt.subplots(figsize=(8, 6))
+f, ax = plot.subplots(figsize=(8, 6))
 fig = sns.boxplot(x=var, y="SalePrice", data=data)
 fig.axis(ymin=0, ymax=800000);
 ```
@@ -225,7 +225,7 @@ Let's test if GarageArea and GarageCars are correlated.
 ```
 var = 'GarageCars'
 data = pd.concat([alldata['GarageArea'], alldata[var]], axis=1)
-f, ax = plt.subplots(figsize=(8, 6))
+f, ax = plot.subplots(figsize=(8, 6))
 fig = sns.boxplot(x=var, y="GarageArea", data=data)
 fig.axis(ymin=0, ymax=1500);
 ```
@@ -239,7 +239,7 @@ To do this well, we really would have the check the correlation between all attr
 Lucky for us, there's a visualization that can help us do this: The Correlation Matrix Heatmap
 ```
 corrmat = alldata.corr()
-f, ax = plt.subplots(figsize=(12, 9))
+f, ax = plot.subplots(figsize=(12, 9))
 sns.heatmap(corrmat, vmax=.8, square=True);
 ```
 
@@ -305,14 +305,14 @@ In the previous topic (identifying Missing Values) we made the decision that:
 - We will replace missing values of LotFrontage with the mean of the existing values.
 Let's do this:
 ```
-train = alldata.fillna({"PoolQC": "NA"})
-train = alldata.fillna({"MiscFeature": "NA"})
-train = alldata.fillna({"Alley": "NA"})
-train = alldata.fillna({"Fence": "NA"})
-train = alldata.fillna({"FireplaceQu": "NA"})
+alldata = alldata.fillna({"PoolQC": "NA"})
+alldata = alldata.fillna({"MiscFeature": "NA"})
+alldata = alldata.fillna({"Alley": "NA"})
+alldata = alldata.fillna({"Fence": "NA"})
+alldata = alldata.fillna({"FireplaceQu": "NA"})
 meanlot = alldata['LotFrontage'].mean()
-train = alldata.fillna({"LotFrontage": meanlot})
-train = alldata.dropna()
+alldata = alldata.fillna({"LotFrontage": meanlot})
+alldata = alldata.dropna()
 ```
 
 .
@@ -325,12 +325,14 @@ Show the IDs of the houses with the highest GrLivArea.
 alldata.sort_values(by = 'GrLivArea', ascending = False)[:2]
 ```
 Now remove them and plot the chart again to check that the outliers have disappeared.
-train = alldata.drop(alldata[alldata['Id'] == 1299].index)
-train = alldata.drop(alldata[alldata['Id'] == 524].index)
+```
+alldata = alldata.drop(alldata[alldata['Id'] == 1299].index)
+alldata = alldata.drop(alldata[alldata['Id'] == 524].index)
 plot.scatter(alldata.GrLivArea, alldata.SalePrice)
 plot.xlabel("GrLivArea")
 plot.ylabel("SalePrice")
 plot.show()
+```
 
 We could check for outliers in other attributes, but this is sufficient for our exercise.
 
@@ -375,7 +377,7 @@ Therefore we should convert categories to numbers first.
 For all attributes we will assume that they are Nominal (as opposed to Ordinal), meaning that there's no order/sequence in the values that it can take.
 The go-to method to encode Nominal categorical values is Onehot Encoding. This will convert each separate value of a category into its own column that can take a value of 1 or 0. The Pandas get_dummies function does OneHot encoding.
 ```
-train = pd.get_dummies(train)
+alldata = pd.get_dummies(alldata)
 alldata.head()
 ```
 
@@ -442,11 +444,11 @@ For this we will display in one graph:
 We're plotting this as a scatter.
 ```
 actual_values = y_test
-plt.scatter(y_predicted, y_test)
-plt.xlabel('Predicted Sale Price')
-plt.ylabel('Actual Sale Price')
-plt.title('Comparing Predicted and Actual Sale Prices')
-plt.show()
+plot.scatter(y_predicted, y_test)
+plot.xlabel('Predicted Sale Price')
+plot.ylabel('Actual Sale Price')
+plot.title('Comparing Predicted and Actual Sale Prices')
+plot.show()
 ```
 
 Conclusion: In ideal circumstances we'd like to see a perfectly straight line.
@@ -465,10 +467,10 @@ RMSE by itself is not easy to interpret, but it can be used to compare different
 Scikit-Learn has a function to calculate RMSE.
 ```
 print('RMSE: ', mean_squared_error(y_test, y_predicted))
-RMSE:  0.04043134173921961
 ```
 
-# Try to Improve our Model: Feature Engineering
+
+# Bonus exercise (optional): Try to improve the model by engineering a new input feature
 
 Feature Engineering is the process of creating/updating input features using Domain Knowledge. The goal is to calculate / derive new features that have a higher predictive significance.
 
@@ -511,13 +513,11 @@ Conclusion: The newly engineered feature delivers a higher correlation than Gara
 
 .
 ### Remove the original garage attributes, rebuild the model and compare
-Let's go ahead and drop the original garage attributes.
-We have removed the Colinearity issue.
-After that, let's train the model again, and compare its performance with the original model.
+With the new attribute in place, let's train the model again, and compare its performance with the original model.
+<!--alldata.drop("GarageArea", axis = 1, inplace = True)
+alldata.drop("GarageCars", axis = 1, inplace = True)-->
 
 ```
-alldata.drop("GarageArea", axis = 1, inplace = True)
-alldata.drop("GarageCars", axis = 1, inplace = True)
 y = np.log(alldata.SalePrice)
 X = alldata.drop(['SalePrice'], axis=1)
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=63, test_size=.20)
@@ -526,16 +526,14 @@ model = lr.fit(X_train, y_train)
 y_predicted = model.predict(X_test)
 print('RMSE: ', mean_squared_error(y_test, y_predicted))
 ```
-**We have managed to lower the RMSE, this means our model is performing better with our new garage feature.**
+**We have managed to improve the RMSE. Our model is performing better with our new garage feature.**
 
+<!--
 # Bonus Exercise (optional)
 Pick another algorithm to train on this data, and compare its performance with the LinearRegression algorithm.
+-->
 
 # Conclusion
-
-  One added column in an application might not look like much, but the value to the business can be significant.
-  In this case an employee receives very valuable advise on which customer to try to upsell a product to and he/she can use that to be more effective.
-
   - You have made your first steps with Data Exploration, Data Preparation, Model training and Evaluation.
   - You have learned the basics of Python and Scikit Learn.
   - You have learned how to provision and work with the Oracle Data Science cloud service.

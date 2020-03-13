@@ -1,549 +1,290 @@
 ![](../commonimages/workshop_logo.png)
 
-# Lab: Apply a deep learning model + Call a deep learning model from an application
+# Lab: Recognize handwritten digits using Neural Networks
 
-......
-......
-......
-This lab will guide you through a practical example of how to train and apply a regression model. You have access to a dataset with house sale data. 
-The dataset includes the Sale Price and many attributes that describe some aspect of the house, including size, area, features, et cetera. 
-You will use this dataset to build a regression model that can be used to estimate what a house with certain characteristics might sell for.
-
-There are many applications of regression in business. The main use cases are around forecasting and optimization. 
-For example, predicting future demand for products, estimating the optimal price for a product and fine-tuning 
-manufacturing and delivery processes. In other words, the principles that you learn with this exercise are applicable to those business scenarios as well.
+In this lab we will build a Neural Network to recognize handwritten digits. In a second step we'll try to improve its accuracy by upgrading it to a Convolutional Neural Network.
 
 ## Objectives
-- Become familiar with Data Exploration, Data Preparation, Model training and Evaluation techniques.
-- Become familiar with Python and its popular ML libraries, in particular Scikit Learn.
-- Become familiar with the Oracle Data Science service.
-
+- Become familiar with Neural Networks.
+- Become familiar with Convolutional Neural Networks.
 
 # Prerequisites
 
-You require the following: 
+You require the following:
 - An Oracle Cloud tenancy
-- A Data Science project + notebook
+- A Data Science project + notebook. Please follow these [instructions](../prereq1/lab.md) first in case you don't have this yet.
+- We assume that you're familiar with basic ML concepts of data exploration, preparation, training/evaluating, et cetera. If not, you may want to do the [previous lab on Linear Regression](../lab100/lab.md) first.
 
-Please follow the [prerequisites](../prereq/lab.md) first in case you don't have these yet.
+### The dataset
 
-# Download the required dataset
+We will use the MNIST (Modified National Institute of Standards and Technology database) dataset for this, a real classic in Machine Learning. This dataset consists of thousands of images, each image representing a handwritten digit. All images have been labelled with the corresponding digit.
+![](./images/labeled.png)
 
-Download the dataset with the house prices and characteristics.
-- Download [The training dataset](./data/housesales.csv) (the dataset is public)
+### Neural network architecture
 
-Make sure to save these with extension CSV. Some browsers try to convert this to Excel format, which is incorrect.
+Have a look at the architecture that we will build. 
+- Input layer: Our NN must be able to process one image in its input layer at a time. As you know, an image is 2D (in our case 28x28 pixels), but a basic NN input layer is flat (1D). Therefore, we will convert the 2D image into a long 1D array (28*28=784 input neurons).
+- We will have 2 hidden layers of 16 neurons each. The number of hidden layers and the number of neurons are somewhat arbitrary, and you may want to experiment with these.
+- Output layer: This will have 10 neurons. Each neuron will represent the output for one of the digits (0 to 9).
+![](./images/nnarchitecture.png)
 
-Review the datasets. The column names are explained [here](./data/data_description.txt). This document also explains the possible list-of-values for categorical attributes.
+### Install additional Python library idx2numpy
 
-# Prepare your notebook
-
-  - Open the notebook (in OCI) that you created in the prerequisites
-
-  ![](./images/opennotebook2.png)
-  
-  - Upload the dataset by dragging it to the left panel
-
-  ![](./images/uploaddataset.png)
-
-  - Jupyter is a notebook environment that allows on-the-fly Python execution.
-    It allows you to mix Python code with text for documentation.
-    Create a new Jupyter notebook by clicking on the button that shows "Python 3".
+  - In this lab we will require a Python library that by default is not installed in Data Science, called "idx2numpy". 
+    The source images are in IDX format, but we need a native array format for our Neural Network.
+    This library takes care of the conversion from IDX to native array format.
     
+  - Create a terminal. This is basically your OS access. 
+  ![](./images/newterminal.png)        
+  
+  - Install the new library. PIP is a command line tool to install Python packages. Copy the following command into the terminal.
+  
+```
+pip install idx2numpy
+```
+
+  ![](./images/installidx2numpy.png)        
+
+# Data Access and Exploration
+
+  - Create a new Jupyter notebook.
+   
   ![](./images/createjupyternotebook.png)
 
-# Data Exploration
-
-The goals of this are to: 
-- Identify what data you have and what is usable
-- Identify issues such as missing values, skewed distributions, colinearity and outliers
-- Form ideas of new features that could be calculated (Feature Engineering)
-Later on we'll use the knowledge that we gain during Data Exploration to decide which data transformations to perform.
-
-.
-### Import the required Python libraries
-Pandas is a library that's used for working with data, e.g. displaying it and doing data transformations.
-- Numpy is a library to work with arrays and for calculations.
-- Sklearn is the standard Python library for machine learning. It provides many unsupervised and supervised learning algorithms. 
-- Seaborn is a Python data visualization library based on matplotlib.
-
+Download the MNIST data as follows:
 ```
-import pandas as pd
-import matplotlib.pyplot as plot
-import seaborn as sns
-import numpy as np
-from scipy.stats import norm
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
-from sklearn import linear_model
-from sklearn.metrics import mean_squared_error
-from scipy import stats
-import warnings
-warnings.filterwarnings('ignore')
-%matplotlib inline
+!wget http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz
+!wget http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz
+!wget http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz
+!wget http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz
 ```
 
 - **Everytime you see a piece of code as above, please paste it into the notebook and click the run icon.**
-
+  
   ![](./images/runscript.png)
   
   This should execute without errors.
-
-.
-### Load the training data
-  
-- We'll split this into train and test later.
-
-  All these type of data operations are handled by the Pandas library (named "pd" here)
   
 ```
-alldata = pd.read_csv('./houseprices.csv')
+!gunzip train-images-idx3-ubyte.gz
+!gunzip train-labels-idx1-ubyte.gz
+!gunzip t10k-images-idx3-ubyte.gz
+!gunzip t10k-labels-idx1-ubyte.gz
 ```
 
-.
-### Check how much data we have
+  Note that all the files should be available in your root folder in the Data Science notebook.
 
-Is the dataset large enough to train a model?
+- Now, let's load the data into memory
 ```
-alldata.shape
+%matplotlib inline
+import idx2numpy
+import numpy as np
+trainfile = 'train-images-idx3-ubyte'
+trainfilelabels = 'train-labels-idx1-ubyte'
+testfile = 't10k-images-idx3-ubyte'
+testfilelabels = 't10k-labels-idx1-ubyte'
+x_train = idx2numpy.convert_from_file(trainfile)
+y_train = idx2numpy.convert_from_file(trainfilelabels)
+x_test = idx2numpy.convert_from_file(testfile)
+y_test = idx2numpy.convert_from_file(testfilelabels)
 ```
+  In the previous lab we had to split the data into train and test ourselves. Notice that in this lab the split has already been done for us.
+  x_train are the images. You could see every pixel as an input feature.
+  y_train are the labels of the image. This is a one-dimensional array with the digits as assigned by a person (0 to 9).
+  Equally, x_train and y_train are the images and corresponding labels for the test set.  
 
-Conclusion: There are 1460 rows, which at first sight looks like a significant enough amount to train a model. We also see that there are 80 input features that we can potentially use to predict our target variable.
- 
-.
-### Review the target attribute: SalePrice
 
-Before we look at the input features, let's have a close look at our Target attribute: SalePrice.
-First, let's display some values. The [:10] selects only the first 10 rows.
-
+- How many images do we have for training, and what is the size of each image?
 ```
-alldata['SalePrice'][:10]
+x_train.shape
 ```
+  The training data set has 60000 images. The other values indicate the dimensions of the image: 28x28 pixels.
 
-Conclusion: SalePrice is an integer and has numbers in the range that we would expect from house prices.
 
-.
-### Which columns will we select as input features for our model?
-
-Let's start by listing all the columns.
+- And what is the shape of the labels for training? 
 ```
-alldata.columns
+y_train.shape
 ```
-
-Conclusion: There are many input features that we can potentially use.
-Some of these columns are self explanatory, others not so much. Have a look at data_description.txt for background.
-
-.
-### Which columns would we select intuitively? 
-
-To start with, let's first take an intuitive approach. 
-Ask yourself: "Which of these columns is likely of value to predict Sale Price?", or
-"Which factors of a house would I look at yourself when making a buying decision?".
-
-Imagine that we've decide that we believe the following features are relevant:
-- GrLivArea: size of living area
-- TotalBsmtSF: size of basement
-- OverallQual: overall quality category
-- YearBuilt: year house was built
-- MSZoning: A=Agriculture, C=Commercial, RH=Residential High Density, et cetera
-
-
-.
-### Are the columns we selected intuitively also correlated with Sale Price?
-Let's test our theories that these input features are correlated with Sale Price. We'll start with the numerical variables first: GrLivArea, TotalBsmtSF, OverallQual and YearBuilt.
-Because all of these are numerical continuous attributes, we can use scatter plots here.
+  This is simply a list of 60000 entries. Each entry indicates the digit for the image (a value from 0 to 9).
+  
+  
+- Let's do the same for the test images.
 ```
-plot.scatter(alldata.GrLivArea, alldata.SalePrice)
-plot.xlabel("GrLivArea")
-plot.ylabel("SalePrice")
-plot.show()
-plot.scatter(alldata.TotalBsmtSF, alldata.SalePrice)
-plot.xlabel("TotalBsmtSF")
-plot.ylabel("SalePrice")
-plot.show()
-plot.scatter(alldata.OverallQual, alldata.SalePrice)
-plot.xlabel("OverallQual")
-plot.ylabel("SalePrice")
-plot.show()
-plot.scatter(alldata.YearBuilt, alldata.SalePrice)
-plot.xlabel("YearBuilt")
-plot.ylabel("SalePrice")
-plot.show()
+x_test.shape
 ```
-Conclusion: 
-- GrLivArea: There is a linear correlation with SalePrice; We can draw a straight line from the bottom-left to the top-right.
-- TotalBsmtSF: There appears to be an exponential relationship between TotalBsmtSF and SalePrice. In other words, higher basement sizes lead to exponentially higher prices.
-- OveralQual: As expected, we see higher sales prices when overal quality perception is higher.
-- YearBuilt: This relationship is a little less obvious, but there's a trend for higher prices for more recent construction.
-
-Therefore all of these attributes appear to be of predictive value and we want to keep them in our training set.
-
-On another note: We see several **outliers**. In particular, the attribute GrLivArea shows that there are some houses with exceptionally large living areas given their price.
-
-
-### Is the categorical attribute MSZoning also correlated with Sale Price?
-This attribute contains the type of property (A=Agriculture, C=Commercial, RH=Residential High Density, et cetera).
-Correlation between a categorical and a continuous attribute (SalePrice) can be visualized as a boxplot.
+  There are 10000 images for validation.
+  
+  
+- And let's doublecheck the labels of the test images.
 ```
-var = 'MSZoning'
-data = pd.concat([alldata['SalePrice'], alldata[var]], axis=1)
-f, ax = plt.subplots(figsize=(8, 6))
-fig = sns.boxplot(x=var, y="SalePrice", data=data)
-fig.axis(ymin=0, ymax=800000);
+y_test.shape
 ```
-Conclusion
-The boxplots for the various types of properties look very different. 
-Therefore we can conclude that also this attribute appears to be of significance to predict Sale Price, and we will want to include it in our training set.
+  And indeed, these are also labeled with the corresponding digit.
 
-.
-### A different approach: Systematically checking for correlation between input features and our target
-It becomes clear that manually investigating all of the attributes this way is very time consuming. 
-Therefore, let's take a more systematic approach. Ideally, we would like to see the correlation between all input attributes and the target Sale Price. 
-```
-corr = alldata.corr(method='spearman')
-corr.sort_values(["SalePrice"], ascending = False, inplace = True)
-corr.SalePrice
-```
-Conclusion: Our initial intuition of thinking that TotalBsmtSF, OverallQual, GrLivArea and YearBuilt are of importance, was correct. 
-owever, there are other features listed as high correlation, such as GarageCars, GarageArea and Fullbath.
 
-Here's an explanation of the features that are most correlated with our target:
-- OverallQual: Rates the overall material and finish of the house (1 = Very Poor, 10 = Very Excellent)
-- GrLivArea: Above grade (ground) living area square feet
-- GarageCars: Size of garage in car capacity
-- GarageArea: Size of garage in square feet
-- TotalBsmtSF: Total square feet of basement area
-- 1stFlrSF: First Floor square feet
-- FullBath: Full bathrooms above grade
-- TotRmsAbvGrd: Total rooms above grade (does not include bathrooms)
-- YearBuilt: Original construction date
-
-.
-### What is the relationship between GarageCars and GarageArea?
-Of the top correlated attributes, two are related to the garage(s) of the house.
-It appears that GarageArea and GarageCars are very similar types of information.
-We have to be careful not to supply similar information in different attributes. 
-This phenomenon is called Colinearity, and it means trouble for the ML algorithm!
-Let's test if GarageArea and GarageCars are correlated.
+- How does one particular image actually look like? Let's display one of the training images at random, in this case the one with index 5 (of 60000).
 ```
-var = 'GarageCars'
-data = pd.concat([alldata['GarageArea'], alldata[var]], axis=1)
-f, ax = plt.subplots(figsize=(8, 6))
-fig = sns.boxplot(x=var, y="GarageArea", data=data)
-fig.axis(ymin=0, ymax=1500);
+x_train[5]
 ```
 
-Indeed, there's a clear pattern here. It's logical that a bigger size of garage (GarageArea) will allows for more cars to park (GarageCars).
-We will look at how to solve this Colinearity problem later on.
+  You can more or less see a shape of a digit show up. We'll show it as an actual image a bit later on.
+  **Notice also how the values of each pixel are between 0 and 255, this indicates the grayscale of each pixel.**
 
-.
-### How can we deal with Colinearity in a systematic way? 
-To do this well, we really would have the check the correlation between all attributes (!)
-Lucky for us, there's a visualization that can help us do this: The Correlation Matrix Heatmap
+
+- What is the label for this particular image? Let's show the label by accessing the y_train with the same index (5).
 ```
-corrmat = alldata.corr()
-f, ax = plt.subplots(figsize=(12, 9))
-sns.heatmap(corrmat, vmax=.8, square=True);
+y_train[5]
 ```
 
-How do we interpret this chart?
-We see that all attributes are listed on the vertical and the horizontal axis.
-Bright colors (white) mean high correlation.
-The diagonal line shows the correlation of each attribute with itself, and hence is correlated.
-If you check the very bottom "line", you see the correlation of all input features with Sale Price.
-The other bright spots indicate attributes that might contain similar information. For example, we see the correlation between GarageArea and GarageCars.
+  According to the labels, this is an image of the digit 2.
 
-**Which other correlations do you see? Can you explain them?**
+  
+- Let's verify this by displaying the data as an image. We will use the matplotlib library to do so.
 
-.
-### Do we have Missing Data?
-Many machine learning models are unable to handle missing data. 
-We have to find out how much data is missing.
-At the moment of replacing missing data, we should first find out whether that would cause some kind of distortion in the data and have a negative effect on model quality.
-Therefore, we have to see if the missing data follows certain patterns.
-
-Check how many Empty values each column has, and compute the percentage of the total number of rows.
 ```
-total = alldata.isnull().sum().sort_values(ascending=False)
-percent = (alldata.isnull().sum()/alldata.isnull().count()).sort_values(ascending=False)
-missing_data = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
-missing_data.head(20)
+import matplotlib.pyplot as plt
+plt.imshow(x_train[5], cmap='Greys')
 ```
-Conclusion: There are a lot of attributes with missing values. This is especially the case for attributes PoolQC, MiscFeature, Alley, Fence and FireplaceQu.
-
-.
-### Let's investigate the attributes with most missing values in detail
-The description of the attribute PoolQC (pool quality) is as follows:
-PoolQC: Pool quality
-- Ex  Excellent
-- Gd  Good
-- TA  Average/Typical
-- Fa  Fair
-- NA  No Pool
-
-It seems sensible to assume that most houses don't have pools and therefore missing values simply mean "No Pool". Therefore we make a note to replace those missing values with "NA".
-Similarly, we make a note to replace the missing values for MiscFeature, Alley, Fence and FireplaceQu with "NA".
-
-The next attribute with many hidden values is LotFrontage, which means " Linear feet of street connected to property". 
-This is a continuous measure, and we choose that we will replace missing values by with the mean of the existing values.
-
-.
-### Check the distribution of the Target variable
-It's important that the target variable follows Normal Probability distribution. If it does not, this will negatively impact the model's performance.
-We can check for this using a histogram, and including a normal probability plot. The Seaborn library does this for us.
-```
-sns.distplot(alldata['SalePrice'], fit=norm);
-fig = plot.figure()
-```
-Conclusion: This deviates from the Normal Distribution. You see that it is positively skewed. 
-The regression algorithms that we will use later on has problems with such a distribution. We will have to address this problem.
-
+  
+  Indeed, we can see that this is a two.
+  
 # Data Preparation
-During Data Exploration, we have realized that several changes must be made to he dataset. Data Preparation is a logical result of Data Exploration; we will now take action based on the insights that we gained earlier.
 
-.
-### Update missing values
-In the previous topic (identifying Missing Values) we made the decision that:
-- We want to replace the missing values of PoolQC, MiscFeature, Alley, Fence and FireplaceQu with "NA".
-- We will replace missing values of LotFrontage with the mean of the existing values.
-Let's do this:
-```
-train = alldata.fillna({"PoolQC": "NA"})
-train = alldata.fillna({"MiscFeature": "NA"})
-train = alldata.fillna({"Alley": "NA"})
-train = alldata.fillna({"Fence": "NA"})
-train = alldata.fillna({"FireplaceQu": "NA"})
-meanlot = alldata['LotFrontage'].mean()
-train = alldata.fillna({"LotFrontage": meanlot})
-train = alldata.dropna()
-```
+The Neural Network that we want to build will have an input layer of 784 neurons. See also the architecture picture above. Each of the neurons will represent one pixel in the input image.
+There are two issues that we have to address:
+1) The shape: We must convert the 2D shape of 28x28 pixels into a 1D array of 784 elements. 
+2) The values: Our input neurons expect values between 0.0 and 1.0, however our actual input values are currently 0 to 255. We must convert these values as well.
 
-.
-### Handling Outliers
-Do you remember that the scatter chart for GrLivArea showed several outliers?
-Let's remove these two outliers, by identifying the houses with the highest GrLivArea.
-
-Show the IDs of the houses with the highest GrLivArea.
-```
-alldata.sort_values(by = 'GrLivArea', ascending = False)[:2]
-```
-Now remove them and plot the chart again to check that the outliers have disappeared.
-train = alldata.drop(alldata[alldata['Id'] == 1299].index)
-train = alldata.drop(alldata[alldata['Id'] == 524].index)
-plot.scatter(alldata.GrLivArea, alldata.SalePrice)
-plot.xlabel("GrLivArea")
-plot.ylabel("SalePrice")
-plot.show()
-
-We could check for outliers in other attributes, but this is sufficient for our exercise.
-
-### Handling the skewed distribution of the Target variable
-Do you remember that the histogram of SalePrice showed a positive skew?
-We can solve this problem by converting the target variable. In case of positive skewness, use a -log- transformation to make the variable fit normal distribution.
-Let's make the log transformation and show the histogram again to check the result:
-```
-alldata['SalePrice'] = np.log(alldata['SalePrice'])
-sns.distplot(alldata['SalePrice'], fit=norm);
-fig = plot.figure()
-```
-Conclusion: That looks much better!
-
-.
-### Removing irrelevant features
-In any case we will remove the ID column, which does not carry any predictive value.
-We will also remove the attributes that showed very low correlation with SalePrice during Data Exploration.
-Note that this is a fairly brute approach, but it is again sufficient for our exercise.
-```
-alldata.drop("Id", axis = 1, inplace = True)
-alldata.drop("BsmtFullBath", axis = 1, inplace = True)
-alldata.drop("BsmtUnfSF", axis = 1, inplace = True)
-alldata.drop("ScreenPorch", axis = 1, inplace = True)
-alldata.drop("MoSold", axis = 1, inplace = True)
-alldata.drop("3SsnPorch", axis = 1, inplace = True)
-alldata.drop("PoolArea", axis = 1, inplace = True)
-alldata.drop("MSSubClass", axis = 1, inplace = True)
-alldata.drop("YrSold", axis = 1, inplace = True)
-alldata.drop("BsmtFinSF2", axis = 1, inplace = True)
-alldata.drop("MiscVal", axis = 1, inplace = True)
-alldata.drop("LowQualFinSF", axis = 1, inplace = True)
-alldata.drop("OverallCond", axis = 1, inplace = True)
-alldata.drop("KitchenAbvGr", axis = 1, inplace = True)
-alldata.drop("EnclosedPorch", axis = 1, inplace = True)
-```
-
-### Convert categorical values to numbers
-Most ML algorithms can only work with numbers.
-Therefore we should convert categories to numbers first.
-
-For all attributes we will assume that they are Nominal (as opposed to Ordinal), meaning that there's no order/sequence in the values that it can take.
-The go-to method to encode Nominal categorical values is Onehot Encoding. This will convert each separate value of a category into its own column that can take a value of 1 or 0. The Pandas get_dummies function does OneHot encoding.
-```
-train = pd.get_dummies(train)
-alldata.head()
-```
-
-Conclusion: For example, see the SaleType column that has been converted into SaleType_ConLw, SaleType_New, et cetera. 
-The dataset now only has numerical values.
-
-# Building the model
-We will build a simple Linear Regression model
-We will use the Scikit-Learn library for this. 
-
-.
-#### Separating Target and Input Features
-Scikit Learn expects that we deliver the data for training in two parts:
-1. A dataset with a single column, the target, in this case Sale Price. We will place this in variable "y".
-2. A dataset with all the input columns, in this case all columns apart from Sale Price. We will place this in variable "X".
-
-Prepare the data:
-```
-y = np.log(alldata.SalePrice)
-X = alldata.drop(['SalePrice'], axis=1)
-```
-
-.
-### Separating Train and Test data so we can validate the model later
-After building the model, we will want to test its performance against new data. It's important that this data has not been seen before during the model training.
-To achieve this we have to reserve part of our dataset for testing, which will be removed from the training phase.
-
-We'll reserve 20% of the total dataset for testing.
-The random_state variable is for initializng the randomizer. By hardcoding it here we make sure that we select the same records everytime that we run the script.
-```
-X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=63, test_size=.20)
-```
-Now we have 4 variables:
-- X_train: The input features of the training dataset.
-- X_test: The input features of the test dataset.
-- y_train: The target of the training dataset.
-- y_train: The target of the test dataset.
-
-.
-### Build the model
-Now we're ready to build the model (on the training data only). Building the model is also called "fitting".
-```
-lr = linear_model.LinearRegression()
-model = lr.fit(X_train, y_train)
-```
-
-# Verifying the performance of the model
-How accurate is our model?
-
-We will use the Test dataset for this.
-First, apply the predictions on the Test dataset
-```
-y_predicted = model.predict(X_test)
-```
-
-.
-### An intuitive, visual approach to verification
-To verify the quality of the predictions, let's first use an intuitive visual approach.
-
-For this we will display in one graph:
-- The actual Sale Price (according to the original data in the Test dataset)
-- The predicted Sale Price (the value according to our model)
-
-We're plotting this as a scatter.
-```
-actual_values = y_test
-plt.scatter(y_predicted, y_test)
-plt.xlabel('Predicted Sale Price')
-plt.ylabel('Actual Sale Price')
-plt.title('Comparing Predicted and Actual Sale Prices')
-plt.show()
-```
-
-Conclusion: In ideal circumstances we'd like to see a perfectly straight line.
-A straight line would mean that Predicted and Actual Sale Prices are the same.
-In our case we do see an approximation of a straight line, with the exception of a few outliers.
-
-.
-### A measurable, mathematical approach to verification
-How can we express the accuracy of the model in a more mathematical way?
-For that we use a quality metric, in this case we use [RMSE](https://en.wikipedia.org/wiki/Root-mean-square_deviation).
-
-In essence RMSE measures the distance between the predictions and the actual values.
-A lower value for RMSE means a higher accuracy.
-
-RMSE by itself is not easy to interpret, but it can be used to compare different versions of a model, to see whether a change you've made has resulted in an improvement.
-Scikit-Learn has a function to calculate RMSE.
-```
-print('RMSE: ', mean_squared_error(y_test, y_predicted))
-RMSE:  0.04043134173921961
-```
-
-# Try to Improve our Model: Feature Engineering
-
-Feature Engineering is the process of creating/updating input features using Domain Knowledge. The goal is to calculate / derive new features that have a higher predictive significance.
-
-.
-### Investigate the garage attributes
-Remember how we saw that there are a few very similar attributes for garage, namely GarageArea and GarageCars?
-We will try to remove the Colinearity of these by combining them into one attribute.
-After this, we will check to see if the model accuracy has improved.
-Let's check the correlation of the two attributes with Sale Price.
-```
-plot.scatter(alldata.GarageArea, alldata.SalePrice)
-plot.xlabel("GarageArea")
-plot.ylabel("SalePrice")
-plot.show()
-print ('Correlation of GarageArea with SalePrice: ', alldata['GarageArea'].corr(alldata['SalePrice']))
-plot.scatter(alldata.GarageCars, alldata.SalePrice)
-plot.xlabel("GarageCars")
-plot.ylabel("SalePrice")
-plot.show()
-print ('Correlation of GarageCars with SalePrice: ', alldata['GarageCars'].corr(alldata['SalePrice']))
-```
-These correlations give us a baseline for a new metric that we could create.
-
-Ask yourself, how can you best express the quality/availability of parking? 
-- Is it the number of parking places
-- Is it the total parking space
-- Is it the space per parking place
-
-We'll try to come up with a single metric for parking by -multiplying- GarageArea and GarageCars.
-```
-alldata['GarageArea_x_Car'] = alldata.GarageArea*alldata.GarageCars
-plot.scatter(alldata.GarageArea_x_Car, alldata.SalePrice)
-plot.xlabel("GarageArea_x_Car")
-plot.ylabel("SalePrice")
-plot.show()
-print ('Correlation of GarageArea_x_Car with SalePrice: ', alldata['GarageArea_x_Car'].corr(alldata['SalePrice']))
-```
-
-Conclusion: The newly engineered feature delivers a higher correlation than GarageArea or GarageCars alone.
-
-.
-### Remove the original garage attributes, rebuild the model and compare
-Let's go ahead and drop the original garage attributes.
-We have removed the Colinearity issue.
-After that, let's train the model again, and compare its performance with the original model.
+- Flatten the 28x28 array of each image into a 784 array. Do this for train and test.
 
 ```
-alldata.drop("GarageArea", axis = 1, inplace = True)
-alldata.drop("GarageCars", axis = 1, inplace = True)
-y = np.log(alldata.SalePrice)
-X = alldata.drop(['SalePrice'], axis=1)
-X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=63, test_size=.20)
-lr = linear_model.LinearRegression()
-model = lr.fit(X_train, y_train)
-y_predicted = model.predict(X_test)
-print('RMSE: ', mean_squared_error(y_test, y_predicted))
+x_train = x_train.reshape(x_train.shape[0], 784)
+x_test = x_test.reshape(x_test.shape[0], 784)
 ```
-**We have managed to lower the RMSE, this means our model is performing better with our new garage feature.**
 
-# Bonus Exercise (optional)
-Pick another algorithm to train on this data, and compare its performance with the LinearRegression algorithm.
+- Let's check that this conversion was successful by checking the new shape of the training set.
+```
+x_train.shape
+```
+
+
+- Now, convert the values of the pixels from 0-255 to 0.0-1.0.
+```
+x_train = x_train.astype('float32')
+x_test = x_test.astype('float32')
+x_train /= 255
+x_test /= 255
+```
+
+- Let's check the result by again displaying our example digit at index 5.
+```
+x_train[5]
+```
+
+  You now see that there are no rows anymore in the array (it's 1D now), and that the values are between 0.0 and 1.0.
+
+
+# Model training
+
+Let's doublecheck the shapes of the input data before we start the training process.
+```
+print('x_train shape:', x_train.shape)
+print('Number of images in x_train', x_train.shape[0])
+print('Number of images in x_test', x_test.shape[0])
+```
+
+  You should see x_train shape: (60000, 784), Number of images in x_train 60000, Number of images in x_test 10000.
+  
+
+- Our data is ready to go. Now it's time to build the neural network. Remember, we will build an input layer of 784 neurons, then two hidden layers of 16 neurons each, and finally an output layer of 10 neurons (one for each digit). If this is unclear, please review the architecture at the start of the lab.
+  We are using the Tensorflow and Keras open source libraries for this.
+
+```
+import tensorflow as tf
+from keras.models import Sequential
+from keras.layers import Dense
+model = Sequential()
+model.add(Dense(16, input_shape=(784, ), activation=tf.nn.relu))
+model.add(Dense(16, activation=tf.nn.relu))
+model.add(Dense(10, activation=tf.nn.softmax))
+```
+
+  Notice how in the first model.add we have to specify both the input shape (784 neurons) and the first hidden layer (16 neurons). 
+
+- At this point the "template" of our Neural Network is ready. It has random weights to start with. Next, we will train the model to optimize the weights.
+
+```
+model.compile(optimizer='adam', 
+              loss='sparse_categorical_crossentropy', 
+              metrics=['accuracy'])
+model.fit(x=x_train, y=y_train, epochs=10)
+```
+
+  Notice that the input for the model training are the training images (x_train) and the training labels (y_train).
+  We have chosen 10 epochs. This means that all images will be fed and backpropagated 10 times.
+  In addition there are a number of other parameters that we will not go into here. 
+
+  If you installed your Notebook on shape VM.Standard.E2.2, the training process will take about 2 minutes.
+  
+# Model evaluation
+
+- Check the accuracy of the last epoch.
+  ![](./images/nnaccuracy.png)        
+
+  You should see an accuracy of around 96%. This is the accuracy on the data in the **training** set. However, as you know by now, it's important to verify the accuracy of the model on -unseen- data.
+
+## Visual verification on the test set
+
+- First of all, let's check the performance intuitively through a visualization. Let's take an example image from the testset and check if the model is able to classify it correctly. We'll take a random index of 99.
+
+```
+plt.imshow(x_test[99].reshape(28, 28),cmap='Greys')
+```
+
+  As you can see, this is a 9.
+  
+- What is the official label for this digit?
+
+```
+y_test[99]
+```
+    
+  As you can see, it's been labelled as a 9 as well.
+  
+- Is our model able to correctly classify it as a 9?
+
+```
+predict = model.predict(x_test[99].reshape(1,784))
+print(predict.argmax())
+```
+
+  The argmax function returns the output neuron that has the highest value. In this case this correctly predicts a 9.
+  
+## Numerical verification of the model
+
+- We can use model.evaluate to calculate the accuracy of prediction on the entire testset.
+  This will do two things: 1) Run the prediction on the 10000 images in the testset 2) Compare the predicted digits with the actual labels, and calculate an accuracy.
+  
+```
+model.evaluate(x_test, y_test)
+```
+  You should see an accuracy on unseen data of about 95%. 
+  ![](./images/nnactualaccuracy.png)        
+  
+  This is the actual accuracy of the model. In other words, the model is able to interpret an image of a digit and correctly classify it in 95% of the cases.
+
+
+<!--# Bonus Exercise (optional)
+.......-->
+
 
 # Conclusion
-
-  One added column in an application might not look like much, but the value to the business can be significant.
-  In this case an employee receives very valuable advise on which customer to try to upsell a product to and he/she can use that to be more effective.
-
-  - You have made your first steps with Data Exploration, Data Preparation, Model training and Evaluation.
-  - You have learned the basics of Python and Scikit Learn.
-  - You have learned how to provision and work with the Oracle Data Science cloud service.
+  - You have made your first steps with Neural Networks.
+  - You have learned how to typically prepare data for a NN.
+  - You have learned the basics of constructing a Neural Network with Keras and Tensorflow.
+  - You have learned how to visualize images with the matlib library.
   
-  - And, hopefully, you have been inspired to apply Machine Learning to many more situations!
+  - And, hopefully, you have been inspired to apply Neural Networks to many more situations!
 
 # Follow-up questions
 
