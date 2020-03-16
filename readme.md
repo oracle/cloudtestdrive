@@ -60,7 +60,7 @@ During this day you will be able to experience the various cloud services hands-
 
 ## Data Science ##
 
-+ [Follow a series of Data Science labs](BDataScience/README.md)
++ [Follow a series of Data Science labs](DataScience/README.md)
 
   
 
