@@ -19,7 +19,6 @@ During this day you will be able to experience the various cloud services hands-
 + Run your first **serverless Functions** [using the Opensource FnProject](AppDev/functions/function2_lab.md) or by using the Oracle Managed service called [Oracle Functions](https://www.oracle.com/webfolder/technetwork/tutorials/infographics/oci_faas_gettingstarted_quickview/functions_quickview_top/functions_quickview/index.html#).  Or optionally [create a function from an exiting Docker](https://github.com/shaunsmith/functionslab-codeone19/blob/master/6-Container-as-Function.md) container.
 + [Functions and Events](AppDev/functionsandevents/FnHandson.md): showcasing event-driven serverless functions and an Autonomous database. 
 + Discover the **Helidon Microservices framework for Java** by running through the 2 Getting Started [Quickstarts](https://helidon.io/docs/latest/#/guides/01_overview) for the SE and MP flavour, and then continue with more advanced features like Metrics and Healthchecks in [this tutorial](https://github.com/tomas-langer/helidon-conference/blob/master/README.md)
-+ ***NEW*** !!   [Migrate the Java "Monolith" to Microservices using Helidon](AppDev/helidon-k8s/README.md)
 + ***NEW*** !!   [Building Multi-Cloud Apps on Microsoft Azure and Oracle Cloud Infrastructure](AppDev/OCI-Azure-Interconnection/README.md)
   Develop .NET web application hosted on Azure and connect it to Oracle Autonomous Database on OCI through a private cross-cloud interconnection link
 
