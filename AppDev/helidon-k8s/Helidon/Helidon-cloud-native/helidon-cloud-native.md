@@ -13,7 +13,7 @@ Most cloud native platforms (and Kubernetes in particular) need to know is a mic
 The exercises in this section show how you can use Helidon to directly support the cloud native capabilities that Kubernetes uses. It does not directly cover using them in Kubernetes however, but if you're doing the microservices in kubernetes sections of the workshop then this will make sense when you do it.
 
 **Monitoring and metrics**
-Kuberneties does not itself have built in monitoring tools, however many users of Kuberneties use Prometheus which can use the /metrics API Helidon provides and we saw in the operations section of these labs to extract data on the operation and performance of a microservice.
+Kubernetes does not itself have built in monitoring tools, however many users of Kubernetes use Prometheus which can use the /metrics API Helidon provides and we saw in the operations section of these labs to extract data on the operation and performance of a microservice.
 
 ### Health
 Helidon has built in health info as standard. By default this is available on the same port as the service, but our runtime config (conf/storefront-network.yaml) separates these  onto different ports (8080 for the service, 9080 for the non service) 
@@ -108,7 +108,7 @@ There is however a different situation where a microservice itself can be behavi
 
 In this situation restarting the higher level microservice won;t solve the problem, if the downstream service is unavailable doing a restart of the upstream service won't solve that problem, and the restart will place unneeded load on the environment.
 
-Readiness is a way to let the microservices runtime determine if a service has everything it needs to respond to requests. Helidon has a build in configuration to offer a readiness response to platforms like Kuberneties, but like Liveness you need to look at the actual implementation carefully, you don't want to be making expensive calls to the downstream service, but equally you want to make sure that it is responding. In particular if the downstream service does become ready again your readiness checker needs to return to reflecting that in the readiness response it generates.
+Readiness is a way to let the microservices runtime determine if a service has everything it needs to respond to requests. Helidon has a build in configuration to offer a readiness response to platforms like Kubernetes, but like Liveness you need to look at the actual implementation carefully, you don't want to be making expensive calls to the downstream service, but equally you want to make sure that it is responding. In particular if the downstream service does become ready again your readiness checker needs to return to reflecting that in the readiness response it generates.
 
 </p></details>
 

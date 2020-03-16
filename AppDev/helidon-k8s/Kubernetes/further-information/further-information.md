@@ -2,7 +2,7 @@
 While writing these labs I came across many web pages. Ones that I think are especially useful are detailed in the sections below
 
 ## Helm
-Helm has been used here to install a number of Kuberneties servcies. See [Helm website](https://helm.sh) for details and if you need to download it there are details in the [Helm web page](https://helm.sh/docs/intro/install/)
+Helm has been used here to install a number of Kubernetes servcies. See [Helm website](https://helm.sh) for details and if you need to download it there are details in the [Helm web page](https://helm.sh/docs/intro/install/)
 
 If you download Helm version 3 it does not come with a pre-configured chart repository, but the master repo maintained by the helm team (and the one used to download the charts used in the labs) can be added using the following command
 
@@ -18,7 +18,7 @@ If you don't want to use the nginx there is a [list of other controllers.](https
 
 
 ## Kubernetes
-We have been using Kuberneties a lot, here is a link to the [Kubernetes website](https://kubernetes.io)
+We have been using Kubernetes a lot, here is a link to the [Kubernetes website](https://kubernetes.io)
 
 For more info on the structure of the components in Kubernetes see the Kubernetes documentation ["What is Kubernetes"](https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/) page
 

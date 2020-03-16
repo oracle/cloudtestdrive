@@ -9,14 +9,23 @@
 ### Prerequisites
 To run this part of the lab you need the working storefront and stockmanager microservices (as per the Helidon labs) connected to the database.
 
-We will be using **jib** to build the docker images. The pom.xml file contains the details of the jib tooling and it's settings. 
+<details><summary><b>Not done the Helidon lab ?</b></summary>
+<p>
+If you are using a the "completed" VM image (i.e. only doing the docker and subsequent parts of the workshop) then in the helidon-labs-stockmanager project you will need to edit the in the conf/stockmanager-conf.yaml file and add a line of the form `department: "Your_department_name"` (change the name to be a name unique to you)
 
-- Open the **storefront** project, and on the top level, open the **pom.xml** file
-- Locate the **jib-maven-plugin** dependency near line 162
+For example
 
-This defined what's required for jib, including the base image to use.  We will be using the Java 11 openjdk (As this is build using JDK11 Long Term Support.) Of course there are lots of possible docker base images we could use, but this one allows us to connect to the image and see what's going on internally (I.e. it has a full shell environment).
+```
+app:
+  persistenceUnit: "HelidonATPJTA"
+  department: "Tims"
+```
 
-This makes the docker image larger than it needs to be, but it helps with debugging if it's needed.  In a production environment a cut down version of a Java 11 base image would be used.
+Changing "Tims" to match your name of course
+
+</p></details>
+
+---
 
 - Make sure the zipkin container is running. You may have done this in the previous lab chapter and left it running. 
   - To check if it is already running type :
@@ -31,6 +40,29 @@ This makes the docker image larger than it needs to be, but it helps with debugg
   ```
   - If the entry is **missing**, relaunch it:  `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin`
 
+
+#### Docker image build tool
+
+We will be using **jib** to build the docker images. The pom.xml file contains the details of the jib tooling and it's settings. 
+
+- Open the **storefront** project, and on the top level, open the **pom.xml** file
+- Locate the **jib-maven-plugin** dependency near line 162
+
+This defines what's required for jib, including the base image to use.  We will be using the Java 11 Oracle GraalVM Community Edition Docker image as a base image for our containers. We've chosen to use Graal rather than OpenJDK as it provides better Just In Time compilation performance and also the garbage collection. When running in a server environment both of those are important as they reduce startup overheads and make for more predictable responses to the callers. The Graal JVM also allows support for other languages, though we're not making use of that capability in these labs. As it's Java 11 it also means that it's a Long Term Support version of Java. There are of course other options if you want instead of the Graal JVM.
+
+<details><summary><b>More details on Graal</b></summary>
+<p>
+Though not covered in this lab if you want more details on the free to use community edition of the Graal JVM or the fully supported enterprise version which includes the Ahead-of-Time compilation capabilities for Java applications that compiles the Java bytecode into native programs (and thus makes for a much faster startup and more efficient operations) or info on it's support for polyglot applications (which are becoming increasingly important.) there are other labs available.
+
+The [Graal web site](https://www.graalvm.org/) provides more details om Graal.
+</p></details>
+
+#### Size of the base image
+Our base image includes a full command line environment, using a base image with command lines and so on makes the docker image larger than it strictly speaking needs to be. If you wanted to of course you could of course use a different Java base image. There are lots of possible docker base images we could use (some of these are listed in the JIB section of the pom.xml file) but the command line tools in this image allows us to connect to the image and see what's going on internally as well as performing commands.
+
+Later in the Kubernetes labs we will use the capability to run commands to simulate the failure of our microservice and see how Kubernetes handles that.
+
+In a production environment a cut down version of a Java 11 base image would be used, as there wouldn't be the need to work inside the container. Also we'd suggest using the Graal enterprise versions which has native compilation capabilities to produce a single executable with a smaller footprint.
 
 
 ### Self contained images
@@ -83,7 +115,6 @@ Now repeat this step for the stockmanager:
 This operation will create two docker images. The mvn package triggers jib to run which will build the docker image based on the properties in the jib section of the pom.xml file.
 
 The jib tool has many advantages over creating a docker image by hand, because it uses the pom.xml file to know what dependencies to copy over, so any changes to the dependencies will automatically be handled when jib is run.
-
 
 Note that jib does not copy every file into the right locations as needed by Helidon so there is a second stage to be done to get a functioning docker image for helidon. This runs a docker build against the image created by jib, the Dockerfile copies files in the container image from the resource to the classes directories and then removed the originals, resulting in a docker container that has everything in the places expected.
 
@@ -232,6 +263,22 @@ As the storefront depends on the stockmanager (and both depend on zipkin) it's i
   - Go to the Storefront project: `cd workspace/helidon-labs-storefront`
   - Run the **Storefront** container via script: `./runLocalExternalConfig.sh`
 
+---
+
+<details><summary><b>Not done the Helidon lab ?</b></summary>
+<p>
+If you've not done the helidon lab then you won't have any stock items in the database under the department name you chose
+
+- Use curl to create some stock items :
+  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pin/5000`
+  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pencil/200`
+  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Eraser/50`
+  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Book/100`
+  
+</p></details>
+
+---
+
 - Open **another** new terminal window
 - Call the stocklevel method of the application:
   -  `curl -i -X GET -u jack:password http://localhost:8080/store/stocklevel`
@@ -248,6 +295,15 @@ This call should return the entries you added earlier.
 
 - You probably will get a *424 Failed dependency* message:  it's because the lazy initialization has taken a while as the back end request has times out (remember the @Timeout annotation!) 
   - Just re-run the request a few times till you get the expected response
+
+---
+
+<details><summary><b>No stock items returned ?</b></summary>
+<p>
+If the returned  data is an empty array `[]` then you've not added any stock items for your department name. Expand the `Not done the Helidon lab ?` section above and follow the instructions there.
+</p></details>
+
+---
 
 The outputs for the storefront and stockmanager containers will display the log data generated as the operation was performed.
 
@@ -394,18 +450,32 @@ Notice that the layers all already exist, so nothing needs to be uploaded at all
 
 ---
 
+To push images to a private docker repository you will usually need to have done some form of docker login to that repository, this has already been done for you in the virtual machine you are using.
 
+<details><summary><b>Docker logins to other repos</b></summary>
+<p>
+If you were doing this yourself and needed to log in to a docker repository other than dockerhub then the command will look something like the following
+
+```
+docker login <repo dns name>/<repo account> --username <username> --password <password>
+```
+
+If you omit the --username and --password option flags then docker login will prompt you for the details
+
+</p></details>
+
+---
 
 - Rebuild the images
 
-Run the ./buildPushToRepo.sh script in one of the project directories, then once it's finished in the other. 
+Run the buildPushToRepo.sh script in one of the project directories, then once it's finished in the other. 
 
 - In the Storefront directory:
-  - Run `./buildPushToRepo.sh`
+  - Run `bash buildPushToRepo.sh`
 - In the Sockmanager directory:
-  - Run `./buildPushToRepo.sh`
+  - Run `bash buildPushToRepo.sh`
 
-```$ ./buildPushToRepo.sh 
+```$ bash buildPushToRepo.sh 
 Using repository fra.ocir.io/oractdemeabdmnative/tg_repo
 [MVNVM] Using maven: 3.5.2
 [INFO] Scanning for projects...

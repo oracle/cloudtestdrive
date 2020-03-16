@@ -1,6 +1,6 @@
 [Go to Overview Page](../Kubernetes-labs.md)
 
-![](../../../../common/images/customer.logo2.png)
+![](../../../../../common/images/customer.logo2.png)
 
 # Migration of Monolith to Cloud Native
 
@@ -19,25 +19,22 @@ The update process for configuration changes is to modify the yaml file that def
 
 For *both* cases Kubernetes will keep track of the changes and will undetake a rolling upgrade strategy.
 
-As a general observation though it may be tempting to just go in and modify the configuration directly with kubectl this is a **bad** thing to do, it's likely to lead to unrecorded cchanges in your configuration management system so in the event that you had to do a complete restart of the system (say replicating to a different cluster) changes manually done with kubectl are likely to be forgotten. It is **strongly** recommended that you make changes by modifying your yaml file, and that the yaml file itself has a versioning scheme so you can identify exactly what versions of the service a given yaml vfile version provides. If you must make changes using kubectl (say you need to make a minor change in a test environment) then as soon as you decide it should be permanent then make the corresponding change in the yaml file *and do a rolling upgrade using the yaml file to ensure you are using the correct configuration* (after all, you may have made a typo in either the kubectl or yaml file.)
+As a general observation though it may be tempting to just go in and modify the configuration directly with kubectl ... this is a **bad** thing to do, it's likely to lead to unrecorded changes in your configuration management system so in the event that you had to do a complete restart of the system changes manually done with kubectl are likely to be forgotten. It is **strongly** recommended that you make changes by modifying your yaml file, and that the yaml file itself has a versioning scheme so you can identify exactly what versions of the service a given yaml file version provides. If you must make changes using kubectl (say you need to make a minor change in a test environment) then as soon as you decide it should be permanent then make the corresponding change in the yaml file *and do a rolling upgrade using the yaml file to ensure you are using the correct configuration* (after all, you may have made a typo in either the kubectl or yaml file.)
 
 ### How to do a rolling upgrade in our setup
 
 So far we've been stopping our services (the undeploy.sh script deletes the deployments) and then creating new ones (the deploy.sh script applies the deployment configurations for us) This results in service down time, and we don't want that. But before we can switch to properly using rolling upgrades there are a few bits of configuration we should do
 
-####Pod counts
-Kubernetes aims to keep a service running during the rolling upgrade, it does this by starting new pods to run the service, then stopping old ones once the new ones are ready. Through the magic of services and using labels as selectors the Kubernetes run time adds and removed pods from the service. This will work with a deployment whose replica sets only contain a single pod (he new pod will be started before the old one is stopped) but if your service contains multiple pods it will use some configuration rules to try and manage the process in a more balanced manner.
+#### Pod counts
+Kubernetes aims to keep a service running during the rolling upgrade, it does this by starting new pods to run the service, then stopping old ones once the new ones are ready. Through the magic of services and using labels as selectors the Kubernetes run time adds and removed pods from the service. This will work with a deployment whose replica sets only contain a single pod (the new pod will be started before the old one is stopped) but if your service contains multiple pods it will use some configuration rules to try and manage the process in a more balanced manner.
 
 We are going to once again edit the storefront-deployment.yaml file to give Kubernetes some rules to follow when doing a rolling upgrade. Importantly however we're going to edit a *Copy* of the file so we have a history.
 
-in the helidon-kubernetes folder
+- In a terminal window navigate to the folder **helidon-kubernetes**
+- Copy the storefront-deployment yaml file:
+  -  `cp storefront-deployment.yaml storefront-deployment-v0.0.1.yaml`
 
-```
-$ cp storefront-deployment.yaml storefront-deployment-v0.0.1.yaml
-```
-
-
-Now open the new file (storefront-deployment-v0.0.1.yaml) for editing
+- Edit the new file **storefront-deployment-v0.0.1.yaml** for editing
 
 The current contents of the section of the file looks like this:
 
@@ -57,25 +54,29 @@ spec:
         app: storefront
 ```
 
-In the previous lab we used the dashboord to increase the number of pods, firstly edit the configuration file to reflect that we want 4 pods, set `replicas: 4`
+- Set the number of replicas to 4:
+  -  `replicas: 4`
 
-We're now going to force any upgrades to be rolling upgrades (this is the default, but let's set it just in case that changes in the future) after the replicas add
+We're now going to tell Kubernetes to use a rolling upgrade strategy for any upgrades. 
 
-```
-  strategy:
-    type: RollingUpdate
-```
-Note that there are some cases where you may want to have a deployment be a shutdown and restart, for example if you were making an incompatible database change and this can't have the old and new versions trying to interact with the database at the same time. That's not the case this time.
+- After the replicas:4 line,  add
 
-Finally we're going to tell kubernetes what limits we want to place on the rolling upgrade. under the type line above (and at the same indent) add the following
+  ```
+    strategy:
+      type: RollingUpdate
+  ```
 
-```
-    rollingUdate:
-      maxSurge: 1
-      maxUnavailable: 1
-```
+Finally we're going to tell kubernetes what limits we want to place on the rolling upgrade. 
 
-These limit the rollout process to having no more than 1 additional pods online above the normal replicas set, and only one pod below that specified in the replica set unavailable. So the roll out (in this case) allows us to have up to 5 pods running during the rollout and requires that at least 3 are running.
+- Under the type line above, and **at the same indent** add the following
+
+  ```
+      rollingUdate:
+        maxSurge: 1
+        maxUnavailable: 1
+  ```
+
+This limits the rollout process to having no more than 1 additional pods online above the normal replicas set, and only one pod below that specified in the replica set unavailable. So the roll out (in this case) allows us to have up to 5 pods running during the rollout and requires that at least 3 are running.
 
 Note that unless you have very specific needs the default settings for strategy type and maxSurge / minUnavailable. We are setting these for two reasons. First to show that the settings are available, and secondly for the purposes of this lab to show the roll out process in a way that let's us actually see what's happening by slowing things down (of course in a production you'd want it to run as fast as possible, so think about the settings used if you do override the defaults)
 
@@ -102,32 +103,32 @@ spec:
         app: storefront
 ```
 
-Save the changes (making sure you save to storefront-deployment-v0.0.1.yaml)
+- Save the changes
 
-**Readiness probes**
-Unless your service comes on line almost instantly then you don't want requests being passed to it before it's ready to service them, Equally you don't want currently running pods being stopped before a replacement service is available. 
 
-The readiness probes we discussed earlier help ensure that we actually have operational pods, not just pods that are running. Though not required defining a suitable readiness probe is recommended to ensure service continuity.
 
 ### Actually doing the rollout
-To do the roll out we're just going to apply the new file. Kuberneties will compare that to the old config and update appropriately.
+To do the roll out we're just going to apply the new file. Kubernetes will compare that to the old config and update appropriately.
+
+- Apply the new config
+  -  `kubectl apply -f storefront-deployment-v0.0.1.yaml`
 
 ```
-$ kubectl apply -f storefront-deployment-v0.0.1.yaml
 deployment.extensions/storefront configured
 ```
 
-We can have a look at the status of the rollout
+-  We can have a look at the status of the rollout
+  -  `kubectl rollout status deployment storefront`
 
 ```
-$ kubectl rollout status deployment storefront
 deployment "storefront" successfully rolled out
 ```
 
-All went well, and also at the history of this and previous roll outs
+All went well, and let's also look at the history of this and previous roll outs:
+
+-  `kubectl rollout history  deployment storefront`
 
 ```
-$ kubectl rollout history  deployment storefront
 deployment.extensions/storefront 
 REVISION  CHANGE-CAUSE
 1         kubectl apply --filename=storefront-deployment.yaml --record=true
@@ -140,20 +141,30 @@ One point to note here, these changes *only* modified the deployment roll out co
 ### Making a change that updates the pods
 
 **Preparing our new image**
-Let's do something that will trigger the pods to update, we're going to change the image. If you are doing the version of this lab combined with Helidon in the helidon-labs-storefront folder the buildV0.0.2PushToRepo.sh script will create and push a new version of the container image for version 0.0.2
+Let's do something that will trigger the pods to update : change the image.  The **buildV0.0.2PushToRepo.sh** script will create and push a new version of the container image for version 0.0.2
 
-**Before building the image**  change the com.oracle.labs.helidon.storefront.resources.StatusResource class changing the version text of the data returned by the isAlive method to see the difference
+We will change the version text of the data returned by the isAlive method to see the difference:
+
+- In Eclipse, navigate to the **helidon-labs-storefront** project
+  - Then navigate to **src/main/java**, then **com.oracle.labs.helidon.storefront**, then **resources**
+  - Open the file **StatusResource.java** 
+  - Change the version in the below part of the code to **0.0.2** 
+
+  ```
+	  public JsonObject isAlive() throws InterruptedException {
+		  return JSON.createObjectBuilder().add("name", storename).add("alive", true).add("version", "0.0.2").build();
+	  }
+  ```
+
+  - Save the changes
+
+- In a terminal window, let's build the new version of the container:
+
+  -  Change to folder **helidon-labs-storefront**
+  - Run the v2 script:
+    -  `bash buildV0.0.2PushToRepo.sh `
 
 ```
-	public JsonObject isAlive() throws InterruptedException {
-		return JSON.createObjectBuilder().add("name", storename).add("alive", true).add("version", "0.0.2").build();
-	}
-```
-
-Run change to the the helison-labs-storefront folder and run buildV0.0.2PushToRepo.sh script
-
-```
-$ ./buildV0.0.2PushToRepo.sh 
 Using repository fra.ocir.io/oractdemeabdmnative/tg_repo
 [MVNVM] Using maven: 3.5.2
 [INFO] Scanning for projects...
@@ -215,25 +226,21 @@ There is a lot of output, most of which has been removed in the example output a
 (Note the Maven output may refer to v0.0.1, don't worry this is because we haven't changes the version details in the maven pom.xml file. The later stages of the process override this.)
 
 ### Applying our new image
-To apply the new v0.0.2 image we need to upgrade the configuration again. As discussed above this we would *normally* and following best practice do this my creating a new version of the deployment yaml file (say storefront-deploymentv0.0.2.yaml to match the container and code versions)
+To apply the new v0.0.2 image we need to upgrade the configuration again. As discussed above this we would *normally* and following best practice do this by creating a new version of the deployment yaml file (say storefront-deploymentv0.0.2.yaml to match the container and code versions)
 
 However ... for the purpose of showing how this can be done using kubectl we are going to do this using the command line, not a configuration file change. This **might** be somethign you'd do in a test environment, but **don't** do it in a production environment or your change management processes may end up broken.
 
-In the kubectl command below the arguments are as following
-
-`set image deployment storefront` means set the image for deployment storefront
-
-`storefront=fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:0.0.2` means the container named storefront (this is named within the template part of the deployment) should now use the value `fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:0.0.2` Of course **you** shoudl use a **different** value as **you** are using a different repo
+- Execute the command : 
+  -  `kubectl set image deployment storefront storefront=fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:0.0.2`
 
 ```
-$ kubectl set image deployment storefront storefront=fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:0.0.2
 deployment.extensions/storefront image updated
 ```
 
-Let's look at the status of our setup during the roll out but asking kubectl to show our namespace
+- Let's look at the status of our setup during the roll out
+  -  `kubectl get all`
 
 ```
-6$ kubectl get all
 NAME                                READY   STATUS    RESTARTS   AGE
 pod/stockmanager-6759d989bf-mtn76   1/1     Running   0          28m
 pod/storefront-5f777cb4f5-7tlkb     1/1     Running   0          28m
@@ -270,10 +277,12 @@ Finally if we look at the pods themselves we see that there are five storefront 
 
 Basically what kuberntes has done is created a new replica set and started some new pods in it by adjusting the number of pod replicas in each set, maintaingi the overall count of having 3 pods available at all times, and only one additional pod over the replica count set in the deployment. Over time as those new pods come onlinein the nre replica set **and** pass their readiness test, then they can provide the service and a the **old** replica set will be reduced by one pod, allowing another new pod to be started.
 
+- Rerun the status command a few times to see the changes 
+  -  `kubectl get all`
+
 If we look at the output again we can see the progress (note that the exact results will vary depending on how long after the previous kubectl get all command you ran this one.)
 
 ```
-$ kubectl get all
 NAME                                READY   STATUS    RESTARTS   AGE
 pod/stockmanager-6759d989bf-mtn76   1/1     Running   0          29m
 pod/storefront-5f777cb4f5-7tlkb     1/1     Running   0          29m
@@ -302,8 +311,9 @@ replicaset.apps/zipkin-88c48d8b9          1         1         1       29m
 
 Kubectl provides an easier way to look at the status of our rollout
 
+- Issue the command : `kubectl rollout status deployment storefront`
+
 ```
-$ kubectl rollout status deployment storefront
 Waiting for deployment "storefront" rollout to finish: 3 out of 4 new replicas have been updated...
 Waiting for deployment "storefront" rollout to finish: 3 out of 4 new replicas have been updated...
 Waiting for deployment "storefront" rollout to finish: 1 old replicas are pending termination...
@@ -316,8 +326,9 @@ Kubectl provides us with a monitor which updates over time. Once all of the depl
 
 If we look at the setup now we can see that the storefront is running only the new pods, and that there are 4 pods providing the service.
 
+-  `kubectl get all`
+
 ```
-macbook-pro:helidon-kubernetes tg13456$ kubectl get all
 NAME                                READY   STATUS    RESTARTS   AGE
 pod/stockmanager-6759d989bf-mtn76   1/1     Running   0          30m
 pod/storefront-79d7d954d6-5g5ng     1/1     Running   0          108s
@@ -345,10 +356,10 @@ replicaset.apps/zipkin-88c48d8b9          1         1         1       30m
 
 One important point is that you'll see that the **old** replica set is still around, even though it hasn't got any pods assigned to it. This is because it still holds the configuration that was in place before if we wanted to rollback (we'll see this later)
 
-if we not look at the history we see that there have been two sets of changes
+- if we now look at the history we see that there have been two sets of changes
+  -  `kubectl rollout history deployment storefront`
 
 ```
-$ kubectl rollout history deployment storefront
 deployment.extensions/storefront 
 REVISION  CHANGE-CAUSE
 1         kubectl apply --filename=storefront-deployment.yaml --record=true
@@ -357,10 +368,10 @@ REVISION  CHANGE-CAUSE
 
 Note that the 2nd revision doesn't tell us what change, another reason we should use configuration files to do this !
 
-Let's check on our deployment to make sure that the image is the v0.0.2 we expect
+- Let's check on our deployment to make sure that the image is the v0.0.2 we expect
+  -  `kubectl describe deployment storefront`
 
 ```
-$ kubectl describe deployment storefront
 Name:                   storefront
 Namespace:              tg-helidon
 CreationTimestamp:      Fri, 03 Jan 2020 11:58:05 +0000
@@ -433,12 +444,10 @@ Connection: keep-alive
 
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
-Of course if that failed then we'd want to start a roll back pretty fast.
-
-And that we are running the updated version of the code let's check the output form the StausResource
+- Now let's check the output form the StausResource:
+  -  `curl -i -X GET http://my-ip:80/sf/status`
 
 ```
-$ curl -i -X GET http://localhost:80/sf/status
 HTTP/1.1 200 OK
 Server: openresty/1.15.8.2
 Date: Fri, 03 Jan 2020 12:56:15 GMT
@@ -451,12 +460,12 @@ Connection: keep-alive
 As expected it's reporting version 0.0.2
 
 ### Rolling back a update
-In this case the update worked, but what would happen if it had for some reason failed. Fortunately for us Kuberntes keeps the old replica set around, which includes the config for just this reason. 
+In this case the update worked, but what would happen if it had for some reason failed. Fortunately for us Kubernetes keeps the old replica set around, which includes the config for just this reason. 
 
-Let's get the replica set list
+- Let's get the replica set list:
+  -  `kubectl get replicaset`
 
 ```
-$ kubectl get replicaset
 NAME                                                     DESIRED   CURRENT   READY   AGE
 ingress-nginx-nginx-ingress-controller-57747c8999        1         1         1       4m44s
 ingress-nginx-nginx-ingress-default-backend-54b9cdbd87   1         1         1       4m44s
@@ -466,10 +475,10 @@ storefront-79d7d954d6                                    4         4         4  
 zipkin-88c48d8b9                                         1         1         1       61m
 ```
 
-And let's look at the latest storefront one (the id used is for mine, of course yours will vary)
+- And let's look at the latest storefront replica
+  -  `kubectl describe replicaset storefront-79d7d954d6`
 
 ```
-$ kubectl describe replicaset storefront-79d7d954d6
 Name:           storefront-79d7d954d6
 Namespace:      tg-helidon
 Selector:       app=storefront,pod-template-hash=79d7d954d6
@@ -517,10 +526,10 @@ Events:
 
 If we look at the Image we can see it's my v0.0.2 image. We can also see stuff like the pods being added during the update
 
-But let's look at my old replica set
+- But let's look at the old replica set:
+  -  `kubectl describe replicaset storefront-5f777cb4f5`
 
 ```
-$ kubectl describe replicaset storefront-5f777cb4f5
 Name:           storefront-5f777cb4f5
 Namespace:      tg-helidon
 Selector:       app=storefront,pod-template-hash=5f777cb4f5
@@ -571,26 +580,22 @@ In this case we see it's showing the old 0.0.1 image.
 
 So we can see how kuberntes keeps the old configurations around (the different revisions are tied to the replica sets)
 
-If we undo the rollout Kuberneties will revert to the previous version (we could also specify a particular revision to revert to if we wanted)
+If we undo the rollout Kubernetes will revert to the previous version
+
+- Undo the rollout : 
+  -  `kubectl rollout undo deployment storefront`
 
 ```
-$ kubectl rollout undo deployment storefront
 deployment.extensions/storefront rolled back
 ```
 
 The rollback process follows the same process as the update process, gradually moving resources between the replica sets by creating pods in one and once they are ready deleting in the other.
 
-Let's monitor the status
+- Let's monitor the status
+  -  `kubectl rollout status deployment storefront`
 
 ```
-$ kubectl rollout status deployment storefront
-Waiting for deployment "storefront" rollout to finish: 2 out of 4 new replicas have been updated...
-Waiting for deployment "storefront" rollout to finish: 2 out of 4 new replicas have been updated...
-Waiting for deployment "storefront" rollout to finish: 2 out of 4 new replicas have been updated...
-Waiting for deployment "storefront" rollout to finish: 3 out of 4 new replicas have been updated...
-Waiting for deployment "storefront" rollout to finish: 3 out of 4 new replicas have been updated...
-Waiting for deployment "storefront" rollout to finish: 3 out of 4 new replicas have been updated...
-Waiting for deployment "storefront" rollout to finish: 3 out of 4 new replicas have been updated...
+... 
 Waiting for deployment "storefront" rollout to finish: 3 out of 4 new replicas have been updated...
 Waiting for deployment "storefront" rollout to finish: 1 old replicas are pending termination...
 Waiting for deployment "storefront" rollout to finish: 1 old replicas are pending termination...
@@ -599,10 +604,10 @@ Waiting for deployment "storefront" rollout to finish: 3 of 4 updated replicas a
 deployment "storefront" successfully rolled out
 ```
 
-Once it's finished if we now look at the namespace
+- Once it's finished if we now look at the namespace
+  -  `kubectl get all`
 
 ```
-$ kubectl get all
 NAME                                                               READY   STATUS    RESTARTS   AGE
 pod/ingress-nginx-nginx-ingress-controller-57747c8999-sn9nc        1/1     Running   0          12m
 pod/ingress-nginx-nginx-ingress-default-backend-54b9cdbd87-cv6zs   1/1     Running   0          12m
@@ -637,10 +642,10 @@ replicaset.apps/zipkin-88c48d8b9                                         1      
 ```
 We see that all of the pods are not the origional replica set version, and there are no pods in the new one.
 
-If we check this by going to the status we can see the rollback has worked.
+- If we check this by going to the status we can see the rollback has worked :
+  -  `curl -i -X GET http://my-ip:80/sf/status`
 
 ```
-$ curl -i -X GET http://localhost:80/sf/status
 HTTP/1.1 200 OK
 Server: openresty/1.15.8.2
 Date: Fri, 03 Jan 2020 13:08:54 GMT
@@ -667,7 +672,6 @@ The newer automated tooling integrating CI/CD with automated A/B resting means t
 The important thing is to have a strategy for combining microservice rollouts (and roll backs) with persistence (or other external to Kubernetes) changes is critical.
 
 See the further info for links on this.
-
 
 
 

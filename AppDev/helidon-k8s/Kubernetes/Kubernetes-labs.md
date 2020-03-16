@@ -6,56 +6,6 @@
 
 ## C. Deploying to Kubernetes 
 
-### **Introduction**
-
-We have tried to set the labs up so that you do not need to be an expert in Kubernetes to run them. However we do expect that you have some basic knowledge of how to use a computer, open terminals etc.
-
-The host operating system for the virtual machines we use for attendees to run the lab use Linux, we expect you to have some familiarity with Linux, and especially the terminal environment. We assume that you know enough that when you see something like the following instruction and sample text
-
-*In the helidon-labs-stockmananger folder do an ls to see what's there*
-
-```
-$ ls
-DBScripts			PutObjectStoreDirHere		Wallet_ATP			buildPushToRepo.sh		confsecure			repoConfig.sh			src
-Dockerfile			README-Lombok			app.yaml			buildV0.0.2PushToRepo.sh	etc				runLocalExternalConfig.sh	target
-ObjectStore			README.md			buildLocalExternalConfig.sh	conf				pom.xml				runRepo.sh
-```
-
-That means you will know you need to cd to the folder (if you're not already there !) type ls (not the preceding $) and that the output will be DBScripts et all (so you don't type that)
-
-Also there are a number of situations in the labs where we will be running a command to get some information and then expect you to use the returned information in the next command. **For example** (so don't run this) if the instructions say 
-
-*Run the kubectl command to get the pods list on the kubesystem namespace*
-
-```
-$ kubectl get pods -n kube-system
-NAMESPACE     NAME                                     READY   STATUS    RESTARTS   AGE
-kube-system   coredns-6dcc67dcbc-kw9qw                 1/1     Running   0          6h45m
-kube-system   coredns-6dcc67dcbc-zlww8                 1/1     Running   0          6h45m
-kube-system   etcd-docker-desktop                      1/1     Running   0          6h44m
-kube-system   kube-apiserver-docker-desktop            1/1     Running   0          6h44m
-kube-system   kube-controller-manager-docker-desktop   1/1     Running   0          6h44m
-kube-system   kube-proxy-w9njs                         1/1     Running   0          6h45m
-kube-system   kube-scheduler-docker-desktop            1/1     Running   0          6h44m
-kube-system   kubernetes-dashboard-58d96f69b8-lgk9t    1/1     Running   0          6h43m
-```
-*Then let's look at your dashbaord in more detail*
-
-```
-$ kubectl describe pod kubernetes-dashboard-58d96f69b8-lgk9t -n kube-system
-Name:           kubernetes-dashboard-58d96f69b8-lgk9t
-Namespace:      kube-system
-Priority:       0
-Node:           docker-desktop/192.168.65.3
-Start Time:     Fri, 03 Jan 2020 09:54:07 +0000
-Labels:         app=kubernetes-dashboard
-                pod-template-hash=58d96f69b8
-                release=kubernetes-dashboard
-<lots of output removed>
-```
-
-We do assume that you will recognize that the output you get from the first command would be different from the output we give, and that if you were to run the second command the `kubernetes-dashboard-58d96f69b8-lgk9t` will need to be replaced with whatever the first command returned on **your environment** when you ran it. We to try to remind folks about this occasionally, but if we did so everywhere it would get tedious for people having to read it.
-
 ## The Labs
 
 ### 1. Basic Kubernetes
@@ -119,15 +69,15 @@ The following sections have not yet been written, they will be added in time.
 
 #### Horizontal Autoscaling
 
-Sadly the automatic horizontal scaling capability which would automatically adjust the number of instances of a pod based on it's load seems to currently be unavailable as one of the services it depended on (Heapster) is no longer available in Kubernetes. Once a solution for that is available it will be documented here.
+Automatic horizontal scaling (HPA) which would automatically adjust the number of instances of a pod based on it's load.
 
 #### Automatic CI/CD and Kubenetes
 
-To be completed.
+Integration of DevCS pipelines into the lab using DevCS as the build engine.
 
 #### Automatic A/B testing
 
-To be completed.
+Automated testing of different versions of software to see which is most efective.
 
 #### Services Meshes.
 

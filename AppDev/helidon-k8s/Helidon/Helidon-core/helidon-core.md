@@ -12,7 +12,7 @@
 
 - Open the Eclipse IDE. There is an Eclipse icon on the desktop, double click it, and wait for Eclipse to start.
 
-For all of the steps in this section of the lab we will be using the **helidon-labs-storefront** project in Eclipse. We will not be updating the Maven pom.xml file with the specific imports needed as we are focusing on the code side of things here, if you are going to be coding your own services we encourage you to look at the pom.xml file to see what dependencies we are making available to put project.
+For all of the steps in this section of the lab we will be using the **helidon-labs-storefront** project in Eclipse. Generally we will not be updating the Maven pom.xml file with the specific imports needed as we are focusing on the code side of things here, if you are going to be coding your own services we encourage you to look at the pom.xml file to see what dependencies we are making available to the project.
 
 The main class we will be using is **StorefrontResource.java**.   Locate it in the Eclipse project explorer (Hierarchical browser on the left of the Eclipse window) and open it.
 
@@ -881,7 +881,7 @@ As expected this generates a server error which we can also see in the console t
 
 ```
 2020.01.05 14:42:19 INFO com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[helidon-1,5,server]: Requesting the reservation of 2 items of Pencil
-2020.01.05 14:42:19 WARNING com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[helidon-1,5,server]: The reservation of 2 items of Pencil fails because it's less than the minimum delta of 3
+2020.01.05 14:42:19 WARNING com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[helidon-1,5,server]: The reservation of 2 items of Pencil fails because it's <= than the minimum delta of 2
 2020.01.05 14:42:19 WARNING io.helidon.microprofile.server.ServerImpl.jersey Thread[helidon-1,5,server]: Internal server error
 com.oracle.labs.helidon.storefront.exceptions.MinimumChangeException: The reservation of 2 items of Pencil fails because it's less than the minimum delta of 2
 	at com.oracle.labs.helidon.storefront.resources.StorefrontResource.reserveStockItem(StorefrontResource.java:154)
@@ -1088,7 +1088,7 @@ Result should look like :
 
 Note it is optional, if the file is not there no error, it's just skipped. if the configuration file is non optional (it **must** be there) leaving the .optional() out will generate an exception at start up. That may be harsh, but it's far better to know immediately there's a problem than to only find out a while later when your program seems to be using values you didn't expect !
 
-We'll see later in the Kuberneties labs why we're using configuration files in the conf and confsecure directories, but it does demonstrate that you don't need to have all of your config in the same place
+We'll see later in the Kubernetes labs why we're using configuration files in the conf and confsecure directories, but it does demonstrate that you don't need to have all of your config in the same place
 
 Look at the conf/storefront-config.yaml file, 
 
@@ -1128,7 +1128,7 @@ content-length: 1
 <details><summary><b>How it works</b></summary>
 <p>
 
-By default configuration files are read at startup, but it's also possible to define a configuration source that periodically checks for changes, enabling modifications tot he configuration to be dynamically reflected in the properties used by the Injection system.
+By default configuration files are read at startup, but it's also possible to define a configuration source that periodically checks for changes, enabling modifications to the configuration to be dynamically reflected in the properties used by the Injection system.
 
 This is obtained by using the *pollingStrategy* method.
 
