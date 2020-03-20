@@ -450,19 +450,17 @@ Notice that the layers all already exist, so nothing needs to be uploaded at all
 
 ---
 
-To push images to a private docker repository you will usually need to have done some form of docker login to that repository, this has already been done for you in the virtual machine you are using.
+To push images to a private docker repository you will usually need to have done some form of docker login to that repository
 
-<details><summary><b>Docker logins to other repos</b></summary>
-<p>
 If you were doing this yourself and needed to log in to a docker repository other than dockerhub then the command will look something like the following
 
 ```
-docker login <repo dns name>/<repo account> --username <username> --password <password>
+docker login <repo dns name> --username <username> --password <password>
 ```
 
-If you omit the --username and --password option flags then docker login will prompt you for the details
+If you are using an Oracle provided tenancy then the tutor will have provided you with a document with these details. If you are not using an oracle provided tenancy and are using your own then [here are the instructions on how to get them.](../common/GetDockerDetailsForYourTenancy.md) 
 
-</p></details>
+If you omit the --username and --password option flags then docker login will prompt you for the details
 
 ---
 

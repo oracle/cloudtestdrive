@@ -59,6 +59,9 @@ The state will be "Creating" for **a few minutes** (usually 3-4 mins)
 
 Once the cluster has been created the "Accesss Kubeconfig" button will be enabled. 
 
+- Create a directory for the Kubernetes config
+  - `mkdir -p $HOME/.kube`
+
 - Click the **Accesss Kubeconfig** button to get the configuration for **your** cluster. 
 
 You will be presented with a page with details for downloading the Kubeconfig file. The main thing is to look for the line like shown below :
@@ -69,7 +72,7 @@ oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.a
 New config written to the Kubeconfig file /home/oracle/.kube/config
 ```
 
-- Copy *your* config download script
+- Copy *your* config download script (the above is an example and won;t work for real)
 - Open a shell window and **paste** the line to execute it.
 
 Your kubernetes config file is now downloaded into the .kube/config file

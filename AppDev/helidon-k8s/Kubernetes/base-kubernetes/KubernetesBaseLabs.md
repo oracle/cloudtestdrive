@@ -4,11 +4,148 @@
 
 # Migration of Monolith to Cloud Native
 
+# Lab instructions - please read
+There are multiple versions of this lab which use the same base document. These cover different options and in some cases require different setup. The options are as follows :
+
+- Running both the Helidon and Kubernetes sections of the lab in an Oracle provided cloud tenancy
+
+- Running only the Kubernetes sections of the lab in an Oracle provided cloud tenancy
+
+- Running both the Helidon and Kubernetes sections of the lab in your own cloud tenancy (this might be corporate or a trial tenancy)
+
+- Running only the Kubernetes sections of the lab in your own cloud tenancy (this might be corporate or a trial tenancy)
+
+Your tutor will tell you which version you are doing (though hopefully it will also be obvious !)
+
+In the lab instructions you will occasionally find sections titled **Lab Setup** which look like the following. It is critical that **you** follow the instructions for the specific lab option that you are doing. If you don't then your environment will not be setup properly, and the lab will almost certainly fail to work.
+
+Note that in many cases situations there will be combined sets of instructions, for example sometimes the instructions for the Kubernetes only versions will be the same, regardless of if it's an Oracle provided tenancy or your own (e.g. configuring the docker image name.) Equally you may find that in other cases the instructions very based on if it's an Oracle provided tenancy or your own and within that are the same if you're doing the combined Helidon / Kubernetes labs or just the Kubernetes labs (for example how to get the database details.)
+
+**Lab Setup**
+
+<details><summary><b>Running both the Helidon and Kubernetes sections of the lab in an Oracle provided cloud tenancy</b></summary>
+<p>
+In general the instructions here will tell you to execute a command and to look in a document supplied by your tutor for some arguments to the command, for example to get the database identifier.
+
+There will have been some steps you took in the Helidon labs where you will need to use the information in the Kubernetes labs, for example the naming of the docker images
+</p>
+</details>
+
+
+<details><summary><b>Running only the Kubernetes sections of the lab in an Oracle provided cloud tenancy</b></summary>
+<p>
+In general the instructions here will tell you to execute a command and to look in a document supplied by your tutor for some arguments to the command, for example to get the database identifier.
+
+There may be specific instructions you need to follow as you will not have done them as you have not done the Heildon labs. e.g. the Helidon labs sets up docker images for each user, but for this version of the lab you will be using a pre-built docker image.
+</p>
+</details>
+
+
+<details><summary><b>Running both the Helidon and Kubernetes sections of the lab in your own cloud tenancy</b></summary>
+<p>
+In general the instructions here will tell you how to do a specific function, for example how to create a database and get it's identifier (the identifiers are specific to each tenancy)
+
+There will have been some steps you took in the Helidon labs where you will need to use the information in the Kubernetes labs, for example the naming of the docker images
+</p>
+</details>
+
+
+<details><summary><b>Running only the Kubernetes sections of the lab in your own cloud tenancy</b></summary>
+<p>
+There may be specific instructions you need to follow as you will not have done them as you have not done the Heildon labs. e.g. the Helidon labs sets up docker images for each user, but for this version of the lab you will be using a pre-built docker image.
+
+</p>
+</details>
+
+---
+
+# Lab Setup (all versions)
+
+You will be using the Oracle Cloud shell to run the kubernetes parts of the labs. There are a few steps we need do to to configure it with the data that's needed.
+
+## Downloading the scripts
+
+Firstly we need to download all of the scripts and other configuration data to run the labs, these are stored in a Oracle Cloud storage bucket. Your tutor will have provided you with instructions which include the URL to use below.
+
+**Need better instructions for this bit, can we switch to using git ? How does that work in eclipse ?**
+
+- Open the cloud Shell
+
+- Make a directory to hold this, for compatibility with the Helidon part of the labs we'll call this workspace
+  - `mkdir workspace`
+  - `cd workspace`
+  
+- Use curl to download the configuration, replace the URL shown here with the one in your instruction document
+ - `curl -o helidon-k8s.tar https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/Helidon-Kubernetes/o/helidon-k8s-2020-03-18.tar`
+ 
+- Extract the information in the tar file (this used the name you gave the tar file above)
+  - `tar -xf helidon-k8s.tar`
+  
+## Downloading the database wallet file and configuring the pertistence.xml file
+
+Usually you do not hard code the database details in to the images, they are held externally. This is for security reasons, and also convenience, you may decide to switch to a different database, or just change the uer password of the database, and it's a lot easier doing that through configuration than having to rebuild the image.
+
+To keep the secrets outside the image means that you need to get the database connection details so you can add them to your kubernetes configuration (more on how to do this in the secrets section below)
+
+We will use the oci shell to download the database wallet file. 
+
+If you are running in an Oracle provided tenancy your instructor will have provided you with a document that contains the ocid of the database.
+
+If you are in your own tenancy and have done the helidon labs you will have already setup the database, and may already have got the database ocid, if not then [this document tells you how to get it](../../common/GetTheATPDatabaseDetailsForYourTenancy.md)
+
+If you are in your own tenancy and have **not** done the helidon labs (you are doing only the Kubernetes sections) then you will need to [follow these instructions](../../common/CreateATPDatabaseAndSetupUser.md) to create a database. (Remember to take a copy of the OCID when doing this)
+
+
+- Create the wallet directory
+  - `mkdir -p $HOME/workspace/helidon-labs-stockmanager/Wallet_ATP`
+- Navigate to the stock manager folder
+  - `cd $HOME/workspace/helidon-labs-stockmanager/Wallet_ATP`
+- Get the wallet file (remembering to replace the example ODIC below, note the password is in 'single quotes' to avoid shell expansion)
+  - `oci db autonomous-database generate-wallet --file Wallet.zip --password 'Pa$$w0rd' --autonomous-database-id ocid1.autonomousdatabase.oc1.eu-frankfurt-1.aa8d698erlewaiehqrfklnoiwehfoeqwfaalkdhfuieiq`
+    ```
+    Downloading file  [####################################]  100%
+    ```
+- Unzip the wallet file
+  - `unzip Wallet.zip`
+  
+- Look at the contents of the tnsnames.ora file to get the database connection name
+  - `cat tnsnames.ora`
+  ```
+  tg_high = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_high.atp.oraclecloud.com))(security=(ssl_ser
+ver_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
+
+  tg_low = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_low.atp.oraclecloud.com))(security=(ssl_serve
+r_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
+
+  tg_medium = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_medium.atp.oraclecloud.com))(security=(ssl
+_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
+
+  tg_tp = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_tp.atp.oraclecloud.com))(security=(ssl_server_
+cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
+
+  tg_tpurgent = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_tpurgent.atp.oraclecloud.com))(security=
+(ssl_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
+  ```
+  
+- Locate the "high" connection and take a note of the name, in the example above this is jleoow_high
+
+- Edit the database configuration file to specify the database name. This file is `$HOME/workspace/helidon-labs-stockmanager/confsecure/stockmanager-database.yaml`
+  - Locate the javax.sql.DataSource.stockLevelDataSourceOraATPJTA.datasource.url line. This will look something like 
+    ```
+    url: jdbc:oracle:thin:@jleoow_high?TNS_ADMIN=./Wallet_ATP
+    ```
+  - update the name of the connection (here it's shown as `jleoow_high`) and replace it with the name form the tnsnames.ora file, in this case `tg_high` In this particular case the resulting line will look like  
+    ```
+    url: jdbc:oracle:thin:@tghigh?TNS_ADMIN=./Wallet_ATP
+    ```
+- Save the changes
+
+# And now for the lab itself
+
 ## C. Deploying to Kubernetes
 ## 1. Basic Kubernetes
 
 ### **Introduction**
-It is assumed that you have done a docker login to the appropriate registry and have pushed the storefront and stockmanager docker images to the repository.
 
 ### Kubernetes
 Docker is great, but it only runs on a local machine, and doesn't have all of the nice cloud native features of kubernetes.
@@ -31,10 +168,12 @@ Access to the cluster is managed via a config file that by default is located in
   - `$ kubectl get nodes`
 
 ```
-NAME    STATUS  ROLES  AGE  VERSION
-10.0.11.3  Ready  node  17d  v1.12.7
+NAME        STATUS   ROLES   AGE     VERSION
+10.0.10.2   Ready    node    9m16s   v1.15.7
+10.0.10.3   Ready    node    9m2s    v1.15.7
 ```
 
+ (The details and number of nodes will vary depending on the settings you chose when you created the cluster)
 
 
 ### Basic cluster infrastructure services install
@@ -46,13 +185,18 @@ For most standard services in Kubernetes Helm is used to install and configure n
 **Using Helm 3**
 Helm 3 is a client side only program that is used to configure the kubernetes cluster with the services you chose. If you're familiar with Helm 2 you will know about the cluster side component "tiller". This is no longer used in Helm 3
 
-For these labs we are using a common client virtual machine and we use both helm 2 and 3 for different labs. For *these* labs we're using helm 3, and to differentiate it we've renamed the command to be helm3, if you installed helm in your own laptop the helm command (version 2 or version 3) will just be called helm, not helm3
-
-Helm is installed in the virtual machine, and configured to use the master chart repository
 
 Once you have Helm then we will use it to install kubernetes-dashboard (if it wasn't installed for you when you setup the cluster) In this case we didn't do that as we want to show you how to use Helm.
 
 Setting up the kubernetes dashboard (or any) service using helm is pretty easy. it's basically a simple command. 
+
+**Lab version differences, you must do one of these options**
+<details><summary><b>If you are using a client virtual machine for **this** section of the lab (either in an oracle provided or your own tenancy)</b></summary>
+<p>
+
+Helm is installed in the virtual machine for you, and already configured to use the master chart repository
+
+For these labs we are using a common client virtual machine and we use both helm 2 and 3 for different labs. For *these* labs we're using helm 3, and to differentiate it we've renamed the command to be helm3, if you installed helm in your own laptop the helm command (version 2 or version 3) will just be called helm, not helm3
 
 - Run the following command : 
   -  `helm3 install kubernetes-dashboard  stable/kubernetes-dashboard   --namespace kube-system`
@@ -83,8 +227,57 @@ Note that Helm does all the work needed here, it creates the service, deployment
 NAME                	NAMESPACE  	REVISION	UPDATED                             	STATUS  	CHART                      	APP VERSION
 kubernetes-dashboard	kube-system	1       	2019-12-24 16:16:48.112474 +0000 UTC	deployed	kubernetes-dashboard-1.10.1	1.10.1 
 ```
+</p></details>
+<details><summary><b>If you are using the OCI Cloud shell for **this** section of the lab (either in an oracle provided or your own tenancy)</b></summary>
 
-We can see it's been deployed by Helm, this doesn't however mean that the pods are actually running yet (they may still be downloading)
+The cloud shell has helm already installed for you, however it does not know what repositories to use for the helm charts. We need to tell help what repositories to use.
+
+- Run the following command :
+  - `helm repo add stable https://kubernetes-charts.storage.googleapis.com/`
+    ```
+    "stable" has been added to your repositories
+    ```
+You can get the current list of repositories    
+- Run the following command :
+  - `helm repo list`
+    ```
+    NAME    URL                                              
+    stable  https://kubernetes-charts.storage.googleapis.com/
+    ```
+
+- Run the following command : 
+  -  `helm install kubernetes-dashboard  stable/kubernetes-dashboard   --namespace kube-system --set service.type=LoadBalancer`
+
+```
+NAME: kubernetes-dashboard
+LAST DEPLOYED: Tue Dec 24 13:51:24 2019
+NAMESPACE: kube-system
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+*********************************************************************************
+*** PLEASE BE PATIENT: kubernetes-dashboard may take a few minutes to install ***
+*********************************************************************************
+Get the Kubernetes Dashboard URL by running:
+  export POD_NAME=$(kubectl get pods -n kube-system -l "app=kubernetes-dashboard,release=kubernetes-dashboard" -o jsonpath="{.items[0].metadata.name}")
+  echo https://127.0.0.1:8443/
+  kubectl -n kube-system port-forward $POD_NAME 8443:8443
+```
+
+Note that Helm does all the work needed here, it creates the service, deployment, replica set and pods for us and starts things running. 
+
+-  Check the staus of the Helm deployment
+  -  `helm list --namespace kube-system`
+
+```
+NAME                	NAMESPACE  	REVISION	UPDATED                             	STATUS  	CHART                      	APP VERSION
+kubernetes-dashboard	kube-system	1       	2019-12-24 16:16:48.112474 +0000 UTC	deployed	kubernetes-dashboard-1.10.1	1.10.1 
+```
+<p>
+</p></details>
+
+We've seen it's been deployed by Helm, this doesn't however mean that the pods are actually running yet (they may still be downloading)
 
 - Check the  status of the objects created:
   -  `kubectl get all --namespace kube-system`
@@ -181,11 +374,9 @@ NAME                                    READY   STATUS    RESTARTS   AGE
 kubernetes-dashboard-58d96f69b8-tlhgx   1/1     Running   0          43m
 ```
 
-
-
 ### Accessing the kubernetes dashboard
 
-First we're going to need create a user to access the dashbaord. This involves creating the user, then giving it the kubernetes-dashbaord role that helm created for us when it installed the dashbaord chart.
+First we're going to need create a user to access the dashboard. This involves creating the user, then giving it the kubernetes-dashbaord role that helm created for us when it installed the dashbaord chart.
 
 - Go to the helidon-kubernetes project folder, then the base-kubernetes directory
   -  `cd  helidon-kubernetes/base-kubernetes`
@@ -229,7 +420,7 @@ rules:
       - "*"
 ```
 
-This section is potentially dangerous, it's defining a cluster role that has all permissions to everything. In a production environment you'd want to restrict to specific capabilities, but for this lab it's easier to do the lot.
+This section is potentially dangerous, it's defining a cluster role that has all permissions to everything. In a production environment you'd want to restrict to specific capabilities, but for this lab it's easier to do the lot rather than immediately jump into the kubernetes security configuration.
 
 ```
 apiVersion: rbac.authorization.k8s.io/v1
@@ -289,7 +480,13 @@ ca.crt:     1025 bytes
 - Copy the contents of the token (in this case the `eyJh........W5iA` text, but it *will* vary in your environment.) 
 - Save it in a plain text editor on your laptop for easy use later in the lab
 
-We now need to connect to the kubernetes-dashboard service, this gives us a problem as it's running on a network that it internal to the cluster. Fortunately for us kubernetes provides several mechanisms to expose a service outside the cluster network, for now we're going to use port-forwarding to only make it available on our local machine (other mechanisms exist to make a service available to any external system that can access the public IP address)
+We now need to connect to the kubernetes-dashboard service, this gives us a problem as it's running on a network that it internal to the cluster. Fortunately for us kubernetes provides several mechanisms to expose a service outside the cluster network.
+
+
+**Lab version differences, you must do one of these options**
+<details><summary><b>If you are running in a virtual machine (in your own or an Oracle provided tenancy)</b></summary>
+<p>
+For now we're going to use port-forwarding to only make it available on our local machine (other mechanisms exist to make a service available to any external system that can access the public IP address)
 
 - Run the following commands **in a *new* terminal window**
   -  `export POD_NAME=$(kubectl get pods -n kube-system -l "app=kubernetes-dashboard,release=kubernetes-dashboard" -o jsonpath="{.items[0].metadata.name}")`
@@ -306,13 +503,40 @@ Forwarding from [::1]:8443 -> 8443
 ```
 This will create a port forwarding on the local host, connecting port 8443 locally to the 8443 port on the specified pod running in the kube-system namespace.
 
+***Warning***
+For security and resource management reasons the port forwarding will not run forever. After a period of time of not being used (depending on the Kubernetes providers configuration, this can be anything from a small number of seconds e.g. 30 to many hours, and may be based on total time, or time since last operation) the port forwarding will time out. In this case the kubectl command will exit and return to the prompt.
+
+If you find that are unable to access the dashboard, or it does not reflect changes you've made check to see that the port forwarding is still running, and if it has exited just restart it.
+</p></details>
+
+<details><summary><b>If you are running in the cloud shell (in your own or an Oracle provided tenancy)</b></summary>
+<p>
+As the cloud shell runs in a web browser and is not itself a web browser we need to setup access so that the kubernetes-dashboard is available to your web browser running on your machine. 
+
+Kubernetes supports many mechanisms for doing this (for example the use of ingress controllers which will be covered below) but for now we're just going to use a load balancer which will redirect the requests for us direct to the dashboard service.
+
+Fortunately for us helm is a very powerful mechanism for configuring services, and when we used the helm command to install the dashboard we told it that the service.type was LoadBalancer, this will automatically setup a load balancer for us, we just need the IP address to use.
+
+To get the IP address of the dashboard load balancer
+
+- Run the following command
+  - `kubectl get service kubernetes-dashboard -n kube-system`
+    ```
+    NAME                   TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)         AGE
+    kubernetes-dashboard   LoadBalancer   10.96.21.252   130.61.134.234   443:32302/TCP   4m48s
+    ```
+
+The IP address of the load balancer is in the EXTERNAL-IP column. Note that this can take a few minutes to be assigned, so it it's listed as <pending> just re-run the command after a short while
+</p></details>
 ### Looking around the dashboard.
 In several of the labs we're going to be using the dashboard, so let's look around it a bit to get familiar with it's operation.
 
-- Open a web browser and go to page `https://localhost:8443/`
+- Open a web browser and if you are using a virtual machine go to page `https://localhost:8443/` If you are using the cloud shell user the IP address you got above and go to `https://<load balancer ip address>`
 
 - In the browser, accept a self signed certificate. 
-  - In firefox once the security risk page is displayed click on the "Advanced" button, then on the "Accept Risk and Continue" button
+  - In Safari you will be presented with a page saying "This Connection Is Not Private" Click the "Show details" button, then you will see a link titled `visit this website` click that, then click the `Visit Website` button on the confirmation pop-up. To update the security settings you may need to enter a password, use Touch ID or confirm using your Apple Watch.
+  - In Firefox once the security risk page is displayed click on the "Advanced" button, then on the "Accept Risk and Continue" button
+  - In Chrome once the "Your connection is not private" page is displayed click the advanced button, then you will see a link titled `Proceed to ....(unsafe)` click that
 
 You'll now be presented with the login screen for the dashboard.
 
@@ -380,20 +604,12 @@ There is also the ability to use the dashboard to connect to a running container
 ---
 
 
-
-
-
-***Warning***
-For security and resource management reasons the port forwarding will not run forever. After a period of time of not being used (depending on the Kubernetes providers configuration, this can be anything from a small number of seconds e.g. 30 to many hours, and may be based on total time, or time since last operation) the port forwarding will time out. In this case the kubectl command will exit and return to the prompt.
-
-If you find that are unable to access the dashboard, or it does not reflect changes you've made check to see that the port forwarding is still running, and if it has exited just restart it.
-
 ### Ingress for accepting external data
 
 <details><summary><b>Ingress Intro</b></summary>
 <p>
 
-There is one other core service we need to install before we can start running out microservices, the Ingress controller. An Ingress controller provides the actual ingress capability, but it also needs to be configured (we will look at that later.)
+There is one other core service we need to install before we can start running our microservices, the Ingress controller. An Ingress controller provides the actual ingress capability, but it also needs to be configured (we will look at that later.)
 
 An Ingress in Kubernetes is one mechanism for external / public internet clients to access http / https connections (and thus REST API's) It is basically a web proxy which can process specific URL's forwarding data received to a particular microservice / URL on that microservice.
 
@@ -405,29 +621,56 @@ Though an Ingress itself is a Kubernetes concept Kubernetes does not itself prov
 
 </p></details>
 
+<details><summary><b>Why not use an Ingress for the dashboard</b></summary>
+<p>
+Normally in a production environment you would use an ingress for the dashbaord rather than setting up (and paying for) a separate load balancer. For this lab however we are using a load balancer because the dashboard uses certificates, and while it is possible to create and install the certificates that takes time (especially if using real, not self-signed certificates)
+</p></details>
+
 ---
 
 
+For this lab we're going to use an nginx based Ingress controller. We're doing a quick start here to get you access to you Kubernetes dashboard, but don't worry, we'll explain how all this works in more detail later.
 
+Note that using an ingress for access to the dashboard is not the only way to do this, you might even have seen above that you can use a proxy to get access to the dashbaord. The reason we're using an ingress controller is that it's closer to the way things should work in a production environment. (Though I'm sure in some production environments people take short cuts and use proxies !)
 
+Firstly we need to create a namespace for the ingress controller.
 
-For this lab we're going to use an nginx based Ingress controller
+- Run the following command :
+  - `kubectl create namespace ingress-nginx`
+    ```
+    namespace/ingress-nginx created
+    ```
+
+**Lab version differences, you must do one of these options**
+<details><summary><b>If you are using a client virtual machine for **this** section of the lab (either in an oracle provided or your own tenancy)</b></summary>
+<p>
+- Run the following command : 
 
 - Install **ingress-nginx** using Helm 3:
-  -  `helm3 install ingress-nginx stable/nginx-ingress  --set rbac.create=true`
+  -  `helm3 install ingress-nginx stable/nginx-ingress  -n ingress-nginx --set rbac.create=true`
+</p></details>
+
+<details><summary><b>If you are using the OCI Cloud shell for **this** section of the lab (either in an oracle provided or your own tenancy)</b></summary>
+
+- Run the following command : 
+
+- Install **ingress-nginx** using Helm 3:
+  -  `helm install ingress-nginx stable/nginx-ingress  -n ingress-nginx --set rbac.create=true`
+</p></details>
+
+Whichever option you chose the output will be similar to this :
 
 ```
 NAME: ingress-nginx
-LAST DEPLOYED: Fri Dec 27 13:05:55 2019
-NAMESPACE: default
+LAST DEPLOYED: Fri Mar 20 14:33:47 2020
+NAMESPACE: ingress-nginx
 STATUS: deployed
 REVISION: 1
 TEST SUITE: None
 NOTES:
 The nginx-ingress controller has been installed.
 It may take a few minutes for the LoadBalancer IP to be available.
-
-You can watch the status by running 'kubectl --namespace default get services -o wide ingress-nginx-nginx-ingress-controller'
+You can watch the status by running 'kubectl --namespace ingress-nginx get services -o wide -w ingress-nginx-nginx-ingress-controller'
 <Additional output>
 ```
 This will install the ingress controller in the default namespace.
@@ -435,14 +678,13 @@ This will install the ingress controller in the default namespace.
 Because the Ingress controller is a service,  to make it externally available it still needs a load balancer with an external port.  This is not provided by Kubernetes, instead Kubernetes requests that the external framework delivered by the environment provider create a load balancer. Creating such a load balancer *may* take some time for the external framework to provide. 
 
 - To see the progress in creating the Ingress service type :
-  -  `kubectl --namespace default get services -o wide ingress-nginx-nginx-ingress-controller`
+  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-nginx-ingress-controller`
 
 ```
 NAME                                     TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)                      AGE   SELECTOR
 ingress-nginx-nginx-ingress-controller   LoadBalancer   10.111.0.168   136.23.44.21 80:31934/TCP,443:31827/TCP   61s   app=nginx-ingress,component=controller,release=ingress-nginx
 ```
 In this case we can see that the load balancer has been created and the external-IP address is available.
-
 
 
 ### Running your containers in Kubernetes
@@ -533,7 +775,7 @@ The next step is to create services:  a description of a set of microservice ins
 <details><summary><b>Explaining the service concept in Kubernetes</b></summary>
 <p>
 
- A service effectively defines a logical endpoint that has a internal dns name inside the cluster and a virtual IP address bound to that name to enable communication to a service. It's also internal load balancer in that if there are multiple pods for a service it will switch between the pods, and also will remove pods from it's load balancer if they are not operating properly (We'll look at this side of a service later on.)
+A service effectively defines a logical endpoint that has a internal dns name inside the cluster and a virtual IP address bound to that name to enable communication to a service. It's also internal load balancer in that if there are multiple pods for a service it will switch between the pods, and also will remove pods from it's load balancer if they are not operating properly (We'll look at this side of a service later on.)
 
 Services determine what pods they will talk to using selectors. Each pod had meta data comprised of multiple name / value pairs that can be searched on (e.g. type=dev, type=test, type=production, app=stockmanager etc.) The service has a set of labels it will match on (within the namespace) and gets the list of pods that match from kubernetes and uses that information to setup the DNS and the virtual IP address that's behind the DNS name. The Kubernetes system uses a round robin load balancing algorithm to distribute requests if there are multiple pods with matching labels that are able to accept requests (more on that later) 
 
@@ -629,13 +871,12 @@ Saying that an ingress cannot handle TCP / UDP level requests is actually a slig
 
 We have already installed the Ingress controller which actually operates the ingress service. You can see this by looking at the services.  The ingress service is in this case cluster-wide so it's in the default namespace, so we have to specify that :
 
--  `kubectl get services -n default`
+-  `kubectl get services -n ingress-nginx`
 
 ```
 NAME                                          TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
 ingress-nginx-nginx-ingress-controller        LoadBalancer   10.111.0.168    132.18.12.23  80:31934/TCP,443:31827/TCP   4h9m
 ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <none>        80/TCP                       4h9m
-kubernetes                                    ClusterIP      10.96.0.1       <none>        443/TCP                      3d1h
 ```
 
 
@@ -662,7 +903,7 @@ The rules define URL's and service endpoints to pass those URLs to, the URL's ca
 
 An ingress rule defines a URL path that is looked for, when it's discovered the action part of the rule is triggered and that 
 
-There are ***many*** possible tupes of rules that we could define, but here we're just going to look at two types: Rules that are plain in that the recognize part of a path, and just pass the whole URL along to the actual service, and rules that re-write the URL before passing it on. Let's look at the simpler case first, that of the forwarding.
+There are ***many*** possible types of rules that we could define, but here we're just going to look at two types: Rules that are plain in that the recognize part of a path, and just pass the whole URL along to the actual service, and rules that re-write the URL before passing it on. Let's look at the simpler case first, that of the forwarding.
 
 ```
 apiVersion: extensions/v1beta1
@@ -772,9 +1013,9 @@ Direct mappings
 
 Notice the different ports in use on the target.
 
-Visualize the port the ingress controller is running on :
+Find the external IP address the ingress controller is running on :
 
--  `kubectl get service -n default`
+-  `kubectl get service -n ingress-nginx`
 
 ```
 NAME                                          TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
@@ -811,7 +1052,7 @@ Connection: keep-alive
 </html>
 ```
 
-We got a **service unavailable** error. This is because that web page is recognised as an ingress rule, but there are no pods able to deliver the service. This isn't a surprise as we haven't started them yet !
+We got a **service unavailable** error. This is because that web page is recognized as an ingress rule, but there are no pods able to deliver the service. This isn't a surprise as we haven't started them yet !
 
 If we tried to go to a URL that's not defined we will as expected get a **404 error**:
 
@@ -868,7 +1109,34 @@ The following (don't enter it as the details will have changed) sets up the imag
 
 \---
 
+**Lab Setup**
 
+<details><summary><b>If you've done the docker section of the labs</b></summary>
+<p>
+If you did the docker section of the labs (regardless of if you did it in your own or an oracle provided tenancy) then you will have done a docker login to the OCI Docker Registry, you will have used a token provided to you in the documentation (for oracle provided tenancies) or that you generated yourself (for your own tenancy.)
+
+We will create a Kubernetes secret using the docker details you used, this will let Kubernetes pull the images from the docker registry.
+
+<details><summary><b>If you can't remember your docker login details/b></summary>
+<p>
+If you are using an oracle provided tenancy then the details required will be in a document provided to you by your instructor
+
+If you are using your own tenancy then you will have followed [these instructions](../../common/GetDockerDetailsForYourTenancy.md) Hopefully you will have saved the data you gathered in a text file, if you didn;t save the user token then you'll have to generate a new one and then re-do the docker login in the helidon environment.
+</p>
+</details>
+
+- Edit the create-secrets.sh script in the **helidon-kubernetes/base-kubernetes** directory
+
+- Locate the line that looks like the following (the specifics may be different)
+  - `kubectl create secret docker-registry my-docker-reg --docker-server=fra.ocir.io --docker-username="tenancy-name/user" --docker-password="abcdefrghijklmnopqrstuvwxyz" --docker-email="you@email.com"`
+
+- Replace the `tenancy-name` with the name of the tenancy, this is either your tenancy name or is specified in the document provided to you by your instructor this will be the same as you used when doing the docker login.
+
+- Replace the `user` with the username, this is either your username (if using your own tenancy) or the one specified in the document provided to you by your instructor (if using an oracle provided tenancy) this will be the same as you used when doing the docker login
+
+- Replace the password (abcdefrghijklmnopqrstuvwxyz above) with the token you have been given in the document provided by your instructor (for an oracle provided tenancy) or the one you generated in the docker section of the labs if using your own tenancy
+</p>
+</details>
 
 To help you we have created a script called create-secrets.sh which deletes any existing secrets and sets up the secrets (in your chosen namespace.) This is just a convenience script, you could of course create them by hand (look in the script to see what we've done if you like.)
 
@@ -999,9 +1267,8 @@ For example (**don't type this**) `$ kubectl create configmap sf-config-map --fr
 
 \---
 
-<details><summary><b>If you haven't done the Helidon or Docker sections of the labs configure the stockmanager-config.yaml file</b></summary>
-<p>
-If you are running only the Kubernetes section of these labs, and not the Helidon or Docker sections then you will not have configured the stockmanager-config.yaml file. 
+
+We need to configure the stockmanager-config.yaml file. You need to do this even if you have done the Helidon labs as the set of configuration data downloaded into the Cloud shell is generic and does not include the customizations you made in the Helidon labs 
 
 - Navigate into the folder helidon-labs-stockmanager/**conf**
 - Open the file **stockmanager-config.yaml**
@@ -1016,12 +1283,10 @@ app:
   department: "just_a_name"
 ```
 
-The way this operates is that the StockManager will automatically and transparently add the department to the primary key in all requests keeping your actions separate from those of other attendees.
-</p></details>
 
 \---
 
-In the helidon-kubernetes/base-kubernetes folder there is a script create-configmaps.sh. We have created this to help you setup thesetup configuration maps (though you can of course do this by hand instead of creating a script.) If you run this script it will delete existing config maps and create an up to date config for us :
+In the helidon-kubernetes/base-kubernetes folder there is a script create-configmaps.sh. We have created this to help you setup the configuration maps (though you can of course do this by hand instead of creating a script.) If you run this script it will delete existing config maps and create an up to date config for us :
 
 -  `bash create-configmaps.sh `
 
@@ -1131,7 +1396,7 @@ The template section defines what the pods will look like, it starts by specifyi
       containers:
       - name: storefront
         image: fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:0.0.1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - name: service-port
           containerPort: 8080
@@ -1164,12 +1429,6 @@ We now specify what volumes will be imported into the pods. Note that this defin
 
 Both are mounted read only as there's no need for the programs to modify them, so it's good practice to make sure that can't happen accidensally (or deliberately if someone hacks into your application and tries to use that as a way to change the config.)
 
-```
-      imagePullSecrets:
-      - name: my-docker-reg
-```
-
-We need to tell Kubernetes what secret to use when retrieving the docker images from the repository, the imagePullSecrets key allows us to pass this information on. 
 
 
 ```
@@ -1181,7 +1440,15 @@ We need to tell Kubernetes what secret to use when retrieving the docker images 
         configMap:
           name: sf-config-map
 ```
-Lastly (in this config file) we define what each volume is based on, in this case we're saying that the volume sf-config-secure-vol (referenced earlier as being mounted on to /confsecure) has a source based on the secret called sf-conf-secure. the volume sf-config-map-vol (which is mounted onto /conf) will containe the contents of the config map sf-config-map There are many other different types of volume sources, including NFS, iSCSI, local storage to the kubernetes provider etc.
+We define what each volume is based on, in this case we're saying that the volume sf-config-secure-vol (referenced earlier as being mounted on to /confsecure) has a source based on the secret called sf-conf-secure. the volume sf-config-map-vol (which is mounted onto /conf) will containe the contents of the config map sf-config-map There are many other different types of volume sources, including NFS, iSCSI, local storage to the kubernetes provider etc.
+
+```
+      imagePullSecrets:
+      - name: my-docker-reg
+```
+
+We need to tell Kubernetes what secret to use when retrieving the docker images from the repository, the imagePullSecrets key allows us to pass this information on. 
+
 
 To deploy the config file we would just use kubectl to apply it with a command that looks like  `$ kubectl apply -f mydeployment.yaml` ' (**example, don't type it**)
 
@@ -1195,7 +1462,11 @@ To deploy the config file we would just use kubectl to apply it with a command t
 The script deploy.sh will apply all three deployment configuration files (storefront, stockmanager, zipkin) for us. 
 
 *** IMPORTANT ***
-The config files of the storefront and stockmanager refer to the location in the docker repo that you used when setting up the labs.   So you'll need to edit the deployment files to reflect this
+The config files of the storefront and stockmanager refer to the location in the docker repo and any security keys that you used when setting up the labs.   So you'll need to edit the deployment files to reflect this.
+
+**Lab setup**
+<details><summary><b>If you have done the docker section of the labs (using your own tenancy or an oracle provided one)<b></summary>
+<p>
 
 - Make sure you are in the folder **workspace/helidon-kubernetes**
 
@@ -1216,7 +1487,40 @@ The config files of the storefront and stockmanager refer to the location in the
   
   - Edit the line specifying the image to reflect *your* docker image location.
 
+</p></details>
 
+
+<details><summary><b>If did not do the docker section of the labs<b></summary>
+<p>
+- Make sure you are in the folder **workspace/helidon-kubernetes**
+
+  - You need to move up one level : `cd ..`
+
+- Open the file **stockmanager-deployment.yaml** 
+
+  - Edit the line specifying the image to reflect the following docker image location.
+
+    ```
+    spec:
+          containers:
+          - name: stockmanager
+            image: fra.ocir.io/oractdemeabdmnative/h-k8s_repo/stockmanager:0.0.1
+    ```
+
+  - Locate **and remove** the `imagePullSecrets` lines. They will look like the following and are at the end of the file
+
+    ```imagePullSecrets:
+      - name: my-docker-reg
+    ```
+We don't need an image pull secret as the files are in a public location
+
+- Repeat this both steps for the file **storefront-deployment.yaml**
+  
+  - Edit the line specifying the image to reflect fra.ocir.io/oractdemeabdmnative/h-k8s_repo as the docker image location.
+  
+  - Remove the `imagePullSecrets` lines
+  
+</p></details>
 
 - Now run the deploy.sh script
   -  `./deploy.sh`
@@ -1348,13 +1652,12 @@ In the dashboard you can click the logs button on the upper right to open a log 
 We can interact with the deployment using the public side of the ingress (it's load ballancer),  use kubectl to see the public IP address of the ingress controlers load ballancer, or the services section of the dashboard.
 
 - Show the services :
-  -  `kubectl get services -n default`
+  -  `kubectl get services -n ingress-nginx`
 
 ```
 NAME                                          TYPE           CLUSTER-IP      EXTERNAL-IP    PORT(S)                      AGE
 ingress-nginx-nginx-ingress-controller        LoadBalancer   10.111.0.168    132.145.232.69 80:31934/TCP,443:31827/TCP   2d4h
 ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <none>         80/TCP                       2d4h
-kubernetes                                    ClusterIP      10.96.0.1       <none>         443/TCP                      5d2h
 ```
 
 The External_IP column displays the external address. 
@@ -1370,11 +1673,38 @@ Content-Type: application/json
 Content-Length: 184
 Connection: keep-alive
 
-[{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
+[{"itemCount":100,"itemName":"Book"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":200,"itemName":"Pencil"},{"itemCount":5000,"itemName":"Pin"},{"itemCount":5000,"itemName":"Pins"}]
 ```
 
 - If you get **424 failed dependency** or timeouts it's because the services are doing their lazy initialization, 
-  - Retry the request
+  - Wait a minute or so and retry the request
+  
+<details><summary><b>If you have not done the Helidon labs (or only get `[]` not a list of items)</b></summary>
+<p>
+Your database does not have the information that was uploaded in the Helidon part of the labs, or if you did the Helidon labs then you probabaly are using a different department name.
+
+All is not lost, you can create the information easily
+
+- Run the following command, using the ecternal IP address you would have used above
+  - `bash create-test-data.sh external_ip_address`
+    ```
+    Service IP address is 130.61.11.184
+    HTTP/1.1 200 OK
+    Server: nginx/1.17.8
+    Date: Fri, 20 Mar 2020 16:58:24 GMT
+    Content-Type: application/json
+    Content-Length: 36
+    Connection: keep-alive
+
+    {"itemCount":5000,"itemName":"Pins"}HTTP/1.1 200 OK
+    
+    <Additional lines of output>
+    ```
+
+This will populate the database for you so you have some test data.
+
+</p>
+</details>
 
 And to see what's happening when we made the request we can look into the pods logs. Here we use --tail=5 to limit the logs output to the last 5 lines of the storefront pod
 
@@ -1489,7 +1819,7 @@ We've mounted the sf-config-map (which contains the contents of storefront-confi
   -  `kubectl exec -it storefront-588b4d69db-w244b -- /bin/bash`
   - You are now inside the container.  Type the following commands here:
     -  `ls /conf`
-    -  `more /conf/storefront-config.yaml`
+    -  `cat /conf/storefront-config.yaml`
 
     ```
     app:
@@ -1517,13 +1847,13 @@ As expected we see the contents of our config file. Let's use the dashboard to m
 
 ![Config Maps details](images/config-map-orig-details.png)
 
-As we'd expect it has out contents (You may have text that doesn't say "My Shop" by instead shows what you edited it to in the helidon labs, if so don't worry)
+As we'd expect it has our contents (You may have text that doesn't say "My Shop" by instead shows what you edited it to in the helidon labs, if so don't worry)
 
 - Click the **Edit button** (upper right) to get an on-screen editor where we can change the yaml that represents the map. 
 
 ![Config Maps in editor](images/config-map-editor-initial.png)
 
-- Locate the **storename** attribute atr the bottom of the file. 
+- Locate the **storename** attribute at the bottom of the file. 
 
 - Now edit the text and **change** the *'My Shop'* to something else. Be sure to only change the text, not the quote characters or other things (don't want to create corrupt YAML which will be rejected).
 
@@ -1540,7 +1870,7 @@ You'll see the changes reflected in the window. If you made any changes which ca
 Now let's return to the pod and see what's happened
 
 - Re-connect to the pod: `kubectl exec -it storefront-588b4d69db-w244b -- /bin/bash`
-  - In the pod, run : `more /conf/storefront-config.yaml`
+  - In the pod, run : `cat /conf/storefront-config.yaml`
 
     ```
     app:

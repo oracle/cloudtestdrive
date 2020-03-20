@@ -140,6 +140,22 @@ One point to note here, these changes *only* modified the deployment roll out co
 
 ### Making a change that updates the pods
 
+**Lab Setup**
+The different versions of the labs diverge here. Please expand and then follow the instructions for the version of the lab that you are following.
+
+<details><summary><b>Running only the Kubernetes sections of the lab (in an Oracle provided or your own cloud tenancy)</b></summary>
+<p>
+As you do not have the Helidon build environment configured we have provided you with two pre-built versions of the image, 0.0.1 and 0.0.2
+
+Because of this you do not need to make any changes to the source code, only update the image as described below.
+</p>
+</details>
+
+<details><summary><b>If you've previously done the Helidon sections of the lab (in an Oracle provided or your own cloud tenancy)</b></summary>
+<p>
+
+You need to switch back to the Helidon and docker development VM to make the changes and create updated docker images.
+
 **Preparing our new image**
 Let's do something that will trigger the pods to update : change the image.  The **buildV0.0.2PushToRepo.sh** script will create and push a new version of the container image for version 0.0.2
 
@@ -224,6 +240,9 @@ built and pushed v0.0.2
 There is a lot of output, most of which has been removed in the example output above. You can see that the 0.0.2 version has been pushed to the repo.
 
 (Note the Maven output may refer to v0.0.1, don't worry this is because we haven't changes the version details in the maven pom.xml file. The later stages of the process override this.)
+
+</p>
+</details>
 
 ### Applying our new image
 To apply the new v0.0.2 image we need to upgrade the configuration again. As discussed above this we would *normally* and following best practice do this by creating a new version of the deployment yaml file (say storefront-deploymentv0.0.2.yaml to match the container and code versions)
