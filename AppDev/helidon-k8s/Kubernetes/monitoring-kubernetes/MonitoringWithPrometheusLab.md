@@ -35,9 +35,9 @@ To separate the monitoring services from the  other services we're going to put 
 - Type the following to create the namespace:
   -  `kubectl create namespace monitoring`
 
-```
-namespace/monitoring created
-```
+      ```
+      namespace/monitoring created
+      ```
 
 
 
@@ -45,7 +45,7 @@ namespace/monitoring created
 
 <details><summary><b>Older versions of Kubernetes than 1.15.7</b></summary>
 <p>
-We assume you are using Kubernetes 1.15, in which case the latest version of the helm charts ( 9.7.4 at the time of writing) are supported. If you were using an older version of Kubernetes you may need to specify a particular version of the helm chart as follows :
+We assume you are using Kubernetes 1.15.7, in which case the latest version of the helm charts ( 9.7.4 at the time of writing) are supported. If you were using an older version of Kubernetes you may need to specify a particular version of the helm chart as follows :
 
 Kubernetes 1.14 Prometheus helm chart 9.7.1 worked for us
 
@@ -59,8 +59,21 @@ To specify a specific older version use the version keyword in your help command
 
 Installing Prometheus is simple, we just use helm.
 
+<details><summary><b>If you are using the Virtual machine</b></summary>
+<p>
 - Install prometheus :
   -  `helm3 install prometheus stable/prometheus --namespace monitoring`
+</p></details>
+
+
+
+<details><summary><b>If you are using the Oracle Cloud Shell</b></summary>
+<p>
+- Install prometheus :
+  -  `helm install prometheus stable/prometheus --namespace monitoring --set server.service.type=LoadBalancer`
+  
+</p></details>
+  
 
 ```
 NAME: prometheus
@@ -110,7 +123,10 @@ Note the name given to the Prometheus server within the cluster, in this case `p
 
 The Helm chart will automatically create a couple of small persistent volumes to hold the data it captures. If you want to see more on the volume in the dashboard (namespace monitoring) look at the Config and storage section / Persistent volume claims section, chose the prometheus-server link to get more details, then to locate the volume in the storage click on the Volume link in the details section) Alternatively in the Workloads / Pods section click on the prometheus server pod and scroll down to see the persistent volumes assigned to it.
 
-One key point is that Prometheus itself does not provide any login or authentication mechanism to access the UI. Because of this we do not want to expose it without security measures to the public internet using an Ingress or load balancer (neither of which apply authentication rules, but delegate that to the underlying services.)  
+If you are using the Oracle Cloud Shell just for the purposes of the lab we've set this up using a load balancer, but Prometheus itself does not provide any login or authentication mechanism to access the UI. Because of this in production you would not expose it without security measures to the public internet using an Ingress or load balancer (neither of which apply authentication rules, but delegate that to the underlying services.) 
+
+<details><summary><b>If you are using the  Virtual machine</b></summary>
+<p>
 
 Unless you've decided to setup a load balancer for the purposes of this lab we're just going to setup a port-forwarding using kubectl
 
@@ -126,7 +142,34 @@ Forwarding from [::1]:9090 -> 9090
 
 - Now check it's all working :
   - Navigate with your browser to `http://localhost:9090/graph`
-  - You should see the Prometheus graphs page :
+  - You should see the Prometheus graphs page below
+</p></details>
+
+<details><summary><b>If you are using the Oracle Cloud Shell</b></summary>
+<p>
+
+When we used Helm we asked it to setup a load balancer for us on the service, we just need to get the IP address
+
+- Run this command
+  - `kubectl get services -n monitoring`
+
+```
+NAME                            TYPE           CLUSTER-IP      EXTERNAL-IP       PORT(S)        AGE
+prometheus-alertmanager         ClusterIP      10.96.92.158    <none>            80/TCP         2m43s
+prometheus-kube-state-metrics   ClusterIP      10.96.43.62     <none>            8080/TCP       2m43s
+prometheus-node-exporter        ClusterIP      None            <none>            9100/TCP       2m43s
+prometheus-pushgateway          ClusterIP      10.96.16.206    <none>            9091/TCP       2m42s
+prometheus-server               LoadBalancer   10.96.216.217   132.145.227.187   80:30280/TCP   2m43s
+```
+
+On the `prometheus-server` line you can see the external IP address the load balancer has allocated. In this case it's 132.145.227.187, but of course that will differ in your environment.
+
+Let's go to the service web page
+  - In your web browser open up (replace <Ip address> with the service one you got)
+    - `http://<ip address>/graph`
+ 
+You'll se the Initial prometheus graph page as below.
+</p></details>
 
 ![Prometheus empty graphs page](images/prometheus-empty-graphs.png)
 
@@ -167,7 +210,7 @@ We can see what services Prometheus is currently scraping :
 
 ![The initial service discovery screen](images/prometheus-service-discovery-initial.png)
 
-- Click on the "Show Me" button next to the Kubernetes-pods line (this is the 2nd reference to kubernetes pods, the 1st is just a link that takes you to the 2nd one it it's not on the screen)
+- Click on the "Show More" button next to the Kubernetes-pods line (this is the 2nd reference to kubernetes pods, the 1st is just a link that takes you to the 2nd one it it's not on the screen)
 
 You will be presented with a list of all of the pods in the system and the information that Prometheus has gathered about them (it does this by making api calls to the api server in the same way kubectl does)
 
@@ -181,7 +224,7 @@ If the pod is exposing multiple ports there may be multiple entries for the same
 
 We know that Prometheus can see our pods, the question is how do we get it to scrape data from them ?
 
-The answer is actually very simple. In the same way that we used annotations on th Ingress rules to let the Ingress controller know to scan them we use annotations on the pod descriptions to let Prometheus know to to scrape them (and how to do so)
+The answer is actually very simple. In the same way that we used annotations on the Ingress rules to let the Ingress controller know to scan them we use annotations on the pod descriptions to let Prometheus know to to scrape them (and how to do so)
 
 We can use kubectl to get the pod id, using a label selector to get pods with a label **app** and a value **storefront**, then we're using jsonpath to get the specific details from the JSON output here
 don't actually do this, this is just to show how you could modify a live pod with kubectl
@@ -249,7 +292,7 @@ In most cases we don't want these to be a temporary change, we want the Promethe
       containers:
       - name: storefront
 ```
-Be ***very*** careful to only remove the # character and **no other whitespace**.
+Be **very** careful to only remove the # character and **no other whitespace**.
 
 - Save the changes in this file
 - Edit the file **stockmanager-deployment.yaml** so it now has a pod annotations section that looks like 
@@ -269,7 +312,7 @@ Be ***very*** careful to only remove the # character and **no other whitespace**
 ```
 
 - Now run the script **undeploy.sh** to remove the deployments
-  -  `./undeploy.sh`
+  -  `bash undeploy.sh`
 
 ``` 
 Deleting storefront deployment
@@ -297,7 +340,7 @@ replicaset.apps/zipkin-88c48d8b9         1         1         1       8h
 This script just does a kubectl delete -f on each of the deployments. 
 
 - Now recreate the deployments: 
-  -  `./deploy.sh `
+  -  `bash deploy.sh `
 
 ```
 Creating zipkin deployment
@@ -419,7 +462,7 @@ And in the Graph we can see the data history
 
 ![prometheus-list-stock-requested-graph](images/prometheus-list-stock-requested-graph.png)
 
-In this caseyou can see a set of 10 requests, then waiting a couple of mins before making another 5 requests.
+In this case you can see a set of 10 requests, then waiting a couple of mins before making another 5 requests.
 
 When we did the Helidon labs we actually setup the metrics on the call to list stock to not just generate an absolute count of calls, but to also calculate how man calls were begin made over a time interval. 
 
@@ -441,7 +484,7 @@ The graph is also a lot more interesting (you may have to scroll your Prometheus
 
 It's not possible to show in a static window but as you move your mouse over the legend the selected data is highlighted, and if you click on a line in the legend only that data is displayed.
 
-Prometheus has a number of mathematical functions we can apply to the graphs it produces, these are perhaps not so much use if there's only a single pod servicing requests, but if there are multiple pods all generating the same statistics (perhaps because of a replica set providing multiple pods to a service for horizontal scaling) then when you gather information such as call rates (the  `application:list_all_stock_meter_one_min_rate_per_second` metric) instead of just generating and displaying the data per pod you could also generate data such as `msum(application:list_all_stock_meter_one_min_rate_per_second)` which would tell you the total number of requests across ***all*** the pods providing the service.
+Prometheus has a number of mathematical functions we can apply to the graphs it produces, these are perhaps not so much use if there's only a single pod servicing requests, but if there are multiple pods all generating the same statistics (perhaps because of a replica set providing multiple pods to a service for horizontal scaling) then when you gather information such as call rates (the  `application:list_all_stock_meter_one_min_rate_per_second` metric) instead of just generating and displaying the data per pod you could also generate data such as `sum(application:list_all_stock_meter_one_min_rate_per_second)` which would tell you the total number of requests across ***all*** the pods providing the service.
 
 It's also possible to do things like separate out pods that are being used for testing (say they have a deployment type of test rather than production) or many other parameters. If you want more details there is a link to the Prometheus Query language description in the further-information document
 
