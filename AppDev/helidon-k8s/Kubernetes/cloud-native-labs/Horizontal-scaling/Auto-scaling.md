@@ -12,11 +12,28 @@ This is great, but it required manual intervention to change the number of pods,
 
 This is the simplest form of auto scaling, though it is also the least flexible as CPU and memory usage may not always be the most effective indicator of when scaling is required. 
 
-To gather the data we need to have installed the metrics server. This is a replacement for an older Kubernetes service called heapster.
+To gather the data we need to have installed the metrics server. This is a replacement for an older Kubernetes service called heapster. 
 
+Note that it's also possible to use Prometheus as a data source which will allow you to auto-scale on custom metrics, for example the number of requests to your service. 
+
+For now we are going to use the simplest approach of the metrics server.
+
+### Installing the metrics server
+
+<details><summary><b>If you are using a virtual machine</b></summary>
+<p>
 
 - In a terminal window type
   - `helm3 install metrics-server stable/metrics-server --namespace kube-system`
+
+</p></details>
+<details><summary><b>If you are using the Oracle Cloud shell</b></summary>
+<p>
+
+- In a terminal window type
+  - `helm install metrics-server stable/metrics-server --namespace kube-system`
+
+</p></details>
 
 ```
 NAME: metrics-server
@@ -45,6 +62,8 @@ deployment.apps/kube-dns-autoscaler    1/1     1            1           17m
 deployment.apps/kubernetes-dashboard   1/1     1            1           15m
 deployment.apps/metrics-server         0/1     1            0           18s
 ```
+
+### Using the captured metrics
 
 Once the metrics server is running (it will have an AVAILABLE count of 1) you can get information on the state of the system
 
@@ -107,19 +126,19 @@ The metrics server provides information on the current use of the cluster, the k
 
 You can see in the output above that all of the pods are using very small amounts of CPU here, this is because we're not really putting any load on them. Let's run a script that will put load on the services to see what's happening.
 
-<details><summary><b>Getting the service IP address</b></summary>
+<details><summary><b>Getting the service IP address if you don't have it</b></summary>
 <p>
 If you haven't written it down, or have forgotten how to get the IP address of the ingress controller service you can do the following
 
 - In a terminal window type the following
-  - `kubectl get services -n default`
+  - `kubectl get services -n ingress-nginx`
   
 ```
 NAME                                          TYPE           CLUSTER-IP      EXTERNAL-IP       PORT(S)                      AGE
 ingress-nginx-nginx-ingress-controller        LoadBalancer   10.96.210.131   132.145.253.186   80:31021/TCP,443:32009/TCP   19m
 ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.67.181    <none>            80/TCP                       19m
-kubernetes                                    ClusterIP      10.96.0.1       <none>            443/TCP                      84m
 ```
+
 The Column EXTERNAL-IP gives you the IP address, in thie case the IP address for the ingress-controller load balancer is `132.145.253.186` ** but this of course will be different in your environment !**
 </p></details>
 ---
@@ -127,19 +146,21 @@ The Column EXTERNAL-IP gives you the IP address, in thie case the IP address for
 In the helidon-kubernetes project in the cloud-native-kubernetes/auto-scaling folder run the following. You must to replace the IP address here with the one for your ingress controller (see the expansion section above for details of how to get this if you've forgotten)
 
 - In a terminal window
-  -  `bash generate-load.sh 132.145.253.186`
+  -  `bash generate-load.sh 132.145.253.186 0.1`
 
 ```
 Itertation 1
-[]Itertation 2
-[]Itertation 3
-[]Itertation 4
+[...]Itertation 2
+[...]Itertation 3
+[...]Itertation 4
 .
 .
 .
 ```
 
-The script will just get the stock level data, attempting to do so about 6 times a second.
+The script will just get the stock level data, attempting to do so about 10 times a second (the 0.1 above is the time in seconds to wait after the request returns.) The returned data will be displayed in the [...] (for clarity here it's been removed
+
+- Let the script run for about 75 seconds (the iteration counter reaches over 750) This will let the load statistics level out.
 
 - Type Control-C to stop the script
 
@@ -154,9 +175,9 @@ storefront-79c465dc6b-x8fbl    17m          333Mi
 zipkin-7db7558998-cnbjf        1m           218Mi   
 ```
 
-You'll see the CPU load has increased, as the data is averaged over a short period of time you may have to wait a short while (say 60 seconds) for it to update.
+You'll see the CPU load has increased, as the data is averaged over a short period of time you may have to wait a short while (say 30 seconds) for it to update.
 
-- In a terminal window (a min later) type
+- In a terminal window (a bit later) type
   - `kubectl top pods`
   
 ```
@@ -166,7 +187,7 @@ storefront-79c465dc6b-x8fbl    251m         958Mi
 zipkin-7db7558998-cnbjf        33m          265Mi  
 ```
 
-Notice that the CPU here for the storefront is at 251m, this is actually the limit allowed in the storefront deployment.yaml file, which has a resource restriction of 250 milli CPU specified
+Notice that in this particular example the CPU here for the storefront is at 251m (your number may be different.) This is actually the limit allowed in the storefront deployment.yaml file, which has a resource restriction of 250 milli CPU specified
 
 ```
         resources:
@@ -247,17 +268,19 @@ Conditions:
 Events:           <none>
 ```
 
-Now restart the load generator program. Note that you may need to edit the script to reduce the sleep time from 0.175 to a lower value if the load generated is not high enough to trigger an autoscale operation, but don't set it to high !
+Now restart the load generator program. Note that you may need to change the sleep time from 0.1 to a different value if the load generated is not high enough to trigger an autoscale operation, but don't set it to low !
 
 - In a terminal window (substitute the IP address for the one for your cluster)
-  -  `bash generate-load.sh 132.145.253.186`
+  -  `bash generate-load.sh 132.145.253.186 0.1`
 
 
 ```
-Itertation 1
-[]Itertation 2
+[...]Itertation 1
+[...]Itertation 2
 ...
 ```
+
+- Stop the load generator with Control-C after a bit
 
 Allow a short time for the load to be recorded, then look at the load on the pods (you may have to adjust the request frequency in the script if the load does not increase enough to trigger autoscaling
 - In a terminal window type
@@ -277,7 +300,7 @@ Notice that the load on the pods has increased, let's look at the autoscaler
 
 ```
 NAME         REFERENCE               TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
-storefront   Deployment/storefront   73%/50%   2         5         2          16m
+storefront   Deployment/storefront   73%/50%   2         5         3          16m
 ```
 
 The current load (in thic case 73%) is above the 50% target. The autoscaler will have kicked in and be starting to do it's thing. 
@@ -347,14 +370,14 @@ The autoscaler tries not to "thrash" the system by starting and stopping pods al
 
 For now let's delete the autoscaler to we can proceed with the next part of the lab
 - In a terminal window type
-  - `kubectl delete hpa -n helidon deployment stockmanager`
+  - `kubectl delete hpa storefront`
 
 ```
 horizontalpodautoscaler.autoscaling "storefront" deleted
 ```
 
 ## Autoscaling on other metrics
-We have here looked at how to use CPU and memory to determine when to autoscale, that may be a good solution, or it may . Kubernetes autoscaling can support the use of other metrics to manage autoscaling.
+We have here looked at how to use CPU and memory to determine when to autoscale, that may be a good solution, or it may not. Kubernetes autoscaling can support the use of other metrics to manage autoscaling.
 
 These other metrics can be other Kuberneties metrics (known as custom metrics) for example the number of requests to the ingress controller, or (with the provision of the [Prometheus Adaptor (helm chart)](https://github.com/helm/charts/tree/master/stable/prometheus-adapter)) any metric that Prometheus gathers. This last is especially useful as it means you can autoscale on what are effectively business metrics.
 

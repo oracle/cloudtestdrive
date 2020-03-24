@@ -39,7 +39,16 @@ replicaset.apps/storefront-74cd999d8      1         1         1       152m
 replicaset.apps/zipkin-88c48d8b9          1         1         1       152m
 ```
 
-You can see that there is a replica set for each deployment. They are actually implicitly defined in the deployment yaml files (replica sets are the definition, but the deployments are the management point, I don't understand why) though they don't have an explicit section the `replicas : 1` line tells the Kubernetes deployment to automatically create a replica set for us with one of the pods (as the pod is described later in the file.) If we hadn't specified the `replicas : 1` line it defaults to a single pod. Kubernetes will create a replica set automatically for us with a single pod for each deployment, and as we've seen in the health, liveness and readiness labs if there is a problem it will automatically restart the services so that there is one service available.
+You can see that there is a replica set for each deployment. They are actually implicitly defined in the deployment yaml files, though they don't have an explicit section the `replicas : 1` line tells the Kubernetes deployment to automatically create a replica set for us with one of the pods (as the pod is described later in the file.) If we hadn't specified the `replicas : 1` line it defaults to a single pod. Kubernetes will create a replica set automatically for us with a single pod for each deployment, and as we've seen in the health, liveness and readiness labs if there is a problem it will automatically restart the services so that there is one service available.
+
+<details><summary><b>Deplpoyments vs replica sets</b></summary>
+<p>
+In Kubernetes a deployment defines the micro-service, this is regardless of the service version.
+
+A replica set manages a specific number of replicas for a specific version.
+
+This is especially useful for things like rolling upgrades as we will see in that section.
+</p></details>
 
 We can if we want modify the number of replicas in the deployment by modifying the YAML and then re-applying it, or of course we could use the kubectl scale command to do it as well, but for this lab we're going to use the dashbaord.
 
