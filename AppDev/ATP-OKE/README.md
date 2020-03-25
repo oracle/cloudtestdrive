@@ -14,7 +14,7 @@ This lab will walk you through the steps to set up a CI/CD environment for devel
 
 To run these labs you will need access to an Oracle Cloud Account.  We have prepared this lab for the following situations: 
 
-- <u>You are using your own Oracle Cloud Tenancy,</u> either via a **Free Tier**, using a **Pay-as-you-Go** account, or using the **Corporate account** of your organization.  If you do not have an account yet, you can obtain  an Oracle Free Tier account by [clicking here.](https://myservices.us.oraclecloud.com/mycloud/signup?sourceType=:eng:eo:ie::RC_EMMK190926P00040:Vlab_microATPnov)
+- <u>You are using your own Oracle Cloud Tenancy,</u> either via a **Free Tier**, using a **Pay-as-you-Go** account, or using the **Corporate account** of your organization.  If you do not have an account yet, you can obtain  an Oracle Free Tier account by [clicking here.](https://myservices.us.oraclecloud.com/mycloud/signup?sourceType=:em:lw:rce:cpo:RC_EMMK200131P00049:Vlab_microATPmar)
 
   Next, follow the steps described on this page in the **Components of this lab** section.
 
