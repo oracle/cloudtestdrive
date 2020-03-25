@@ -83,15 +83,13 @@ The goals of this are to:
   
   `This should execute without errors.`
 
-### Load the training data
+## Load the training data
   
-- We'll split this into train and test later.
-
-  All these type of data operations are handled by the Pandas library (named `"pd"` here)
+We'll split this into train and test later. All these type of data operations are handled by the Pandas library (named `"pd"` here)
   
-  ```python
-  alldata = pd.read_csv('./housesales.csv')
-  ```
+```python
+alldata = pd.read_csv('./housesales.csv')
+```
 
 .
 
