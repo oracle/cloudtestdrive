@@ -67,7 +67,7 @@ git push
 
 - Your wallet is now visible in Developer Cloud - you might have to refresh your browser window to see the changes
 
-![](/Users/jleemans/dev/github/old/cloudtestdrive/AppDev/ATP-OKE/images/400/wallet_added.png)
+![](images/400/wallet_added.png)
 
 
 
