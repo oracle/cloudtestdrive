@@ -126,8 +126,8 @@ Grafana allows us to combine the data using the Prometheus query language, by us
 
 Now any pod that provides the `application:list_all_stock_meter_one_min_rate_per_second` data will be part of the total, giving us the total rate across all of the pods.
 
-- Make a few requests using curl to generate some new data
-  -  `curl -i -X GET -u jack:password http://localhost:80/store/stocklevel`
+- Make a few requests using curl to generate some new data (replace the ip address with the one for your service)
+  -  `curl -i -k -X GET -u jack:password https://123.456.789.123/store/stocklevel`
 
 ```
 HTTP/1.1 200 OK
@@ -277,8 +277,8 @@ Lastly we need to rename out panel, after all "New dashboard" is not especially 
 
 - Using the duration dropdown in the upper right ![grafana-duration-dropdown-6-hours](images/grafana-duration-dropdown-6-hours.png) change the duration to be the last 5 mins ![grafana-duration-dropdown-5-mins](images/grafana-duration-dropdown-5-mins.png)
 
-- Now make a bunch of curl requests to get some new data
-  -  `curl -i -X GET -u jack:password http://localhost:80/store/stocklevel`
+- Now make a bunch of curl requests to get some new data (replacing the IP address with the one for your service of course)
+  -  `curl -i -k -X GET -u jack:password https://localhost/store/stocklevel`
 
 ```
 HTTP/1.1 200 OK

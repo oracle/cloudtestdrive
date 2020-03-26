@@ -19,8 +19,8 @@ These labs look at how that is achieved.
 
 As we've seen a service in Kubernetes is delivered by programs running in containers. The way a container operates is that it runs a single program, once that program exists then the container exits, and the pod is no longer providing the service. 
 
-- Make sure that the service is running. 
-  - In a terminal type : `curl -i -X GET -u jack:password http://localhost:80/store/stocklevel`
+- Make sure that the service is running (replace the IP address with the one for your service)  
+  - In a terminal type : `curl -i -k -X GET -u jack:password https://987.123.456.789/store/stocklevel`
 
 ```
 HTTP/1.1 200 OK
@@ -71,9 +71,9 @@ root@storefront-65bd698bb4-cq26l:/# command terminated with exit code 137
 
 Within a second or two of the process being killed the connection to the container in the pod is terminated as the container exits.
 
-If we now try getting the data again it still responds:
+If we now try getting the data again it still responds  (replace the IP address with the one for your service)
 
-- `curl -i -X GET -u jack:password http://localhost:80/store/stocklevel`
+- `curl -i -k -X GET -u jack:password https://987.123.456.789/store/stocklevel`
 
 ```
 HTTP/1.1 200 OK
@@ -452,7 +452,7 @@ The ReadinessProbe section should now look like this :
 
 The various options for readiness are similar to those for Liveliness, except you see here we've got an exec instead of httpGet.
 
-The exec means that we are going to run code **inside** the pod to determine if the pod is ready to serve requests. The command section defined the command that will be run and the arguments. In this case we run the /bin/bash shell, -c means to use the arguments as a command (so it won't try and be interactive) and the 'curl -s http://localhost:9080/health/ready | json_pp | grep "\"outcome\" : \"UP\""' is the command.
+The exec means that we are going to run code **inside** the pod to determine if the pod is ready to serve requests. The command section defined the command that will be run and the arguments. In this case we run the /bin/bash shell, -c means to use the arguments as a command (so it won't try and be interactive) and the `'curl -s http://localhost:9080/health/ready | json_pp | grep "\"outcome\" : \"UP\""'` is the command.
 
 Some points about 'curl -s http://localhost:9080/health/ready | json_pp | grep "\"outcome\" : \"UP\""'
 
@@ -658,8 +658,8 @@ What happens if a request is made to the service while before the pod is ready ?
 
 To see what happens if the readiness probe does not work we can simply undeploy the stock manager service.
 
-- First let's check it's running fine 
-  -  `curl -i -X GET -u jack:password http://your-ip:80/store/stocklevel
+- First let's check it's running fine  (replace the IP address with the one for your service)
+  -  `curl -i -k -X GET -u jack:password https://987.123.456.789/store/stocklevel
 
 ```
 HTTP/1.1 200 OK
@@ -712,8 +712,8 @@ replicaset.apps/zipkin-88c48d8b9       1         1         1       28m
 ```
 Something else has also happened though, the storefront service has no pods in the ready state, neither does the storefront deployment and replica set. The readiness probe has run against the storefront pod and when the probe checked the results it found that the storefront pod was not in a position to operate, because the service it depended on (the stock manager) was no longer available. 
 
-- Let's try accessing the service
-  -  `curl -i -X GET -u jack:password http://your-ip:80/store/stocklevel`
+- Let's try accessing the service (replace the IP address with the one for your service)
+  -  `curl -i -k -X GET -u jack:password https://987.123.456.789/store/stocklevel`
 
 ```
 HTTP/1.1 503 Service Temporarily Unavailable
@@ -792,9 +792,9 @@ replicaset.apps/storefront-74cd999d8      1         1         1       35m
 replicaset.apps/zipkin-88c48d8b9          1         1         1       35m
 ```
 
-The storefront readiness probe has kicked in and the services are all back in the ready state once again
+The storefront readiness probe has kicked in and the services are all back in the ready state once again  (replace the IP address with the one for your service)
 
-- Check the service : `curl -i -X GET -u jack:password http://your-ip:80/store/stocklevel`
+- Check the service : `curl -i -k -X GET -u jack:password https://987.123.456.789/store/stocklevel`
 
 ```
 HTTP/1.1 200 OK

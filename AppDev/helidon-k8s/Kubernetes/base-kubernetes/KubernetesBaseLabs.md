@@ -651,7 +651,31 @@ For the moment there are no actual ingress rules defined yet, we can see this us
 No resources found in tg-helidon namespace.
 ```
 
+As we will be providing a secure TLS protected connection we need to create a certificate to protect the connection. In a **production** environment this would be accomplished by going to a certificate authority and having them issue a certificate. This however can take time as certificates are (usually) based on a DNS name and a commercial provider may well require that you prove your organizations identity before issuing a certificate.
 
+To enable the lab to complete in a reasonable time we will therefore be generating our own self-signed certificate. For a lab environment that's fine, but in a production environment you wouldn't do this.
+
+- Run the following command to generate a certificate.
+
+  - `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=nginxsvc/O=nginxsvc"`
+
+```
+Generating a 2048 bit RSA private key
+............................+++
+............................................................................................+++
+writing new private key to 'tls.key'
+-----
+```
+ 
+The certificate needs to be in a Kubernetes secret, we'll look at these in more detail, but for now :
+
+- Run the following command to save the certificate as a secret
+
+  - `kubectl create secret tls tls-secret --key tls.key --cert tls.crt`
+ 
+```
+secret/tls-secret created
+```
 
 <details><summary><b>More on Ingress rules</b></summary>
 <p>
@@ -662,7 +686,7 @@ The rules define URL's and service endpoints to pass those URLs to, the URL's ca
 
 An ingress rule defines a URL path that is looked for, when it's discovered the action part of the rule is triggered and that 
 
-There are ***many*** possible tupes of rules that we could define, but here we're just going to look at two types: Rules that are plain in that the recognize part of a path, and just pass the whole URL along to the actual service, and rules that re-write the URL before passing it on. Let's look at the simpler case first, that of the forwarding.
+There are ***many*** possible types of rules that we could define, but here we're just going to look at two types: Rules that are plain in that the recognize part of a path, and just pass the whole URL along to the actual service, and rules that re-write the URL before passing it on. Let's look at the simpler case first, that of the forwarding.
 
 ```
 apiVersion: extensions/v1beta1
@@ -673,6 +697,8 @@ metadata:
     # use the shared ingress-nginx
     kubernetes.io/ingress.class: "nginx"
 spec:
+  tls:
+  - secretName: tls-secret
   rules:
   - http:
       paths:
@@ -686,7 +712,7 @@ Firstly note that the api here is the extensions/v1beta1 API. In more recent ver
 
 The metadata specifies the name of the ingress (in this case zipkin) and also the annotations. Annotations are a way of specifying name / value pairs that can be monitored for my other services. In this case we are specifying that this ingress Ingress rule has a label of kubernetes.io/ingress.class and a value of nginx. The nginx ingress controller will have setup a request inthe Kubernetes infrastructure so it will detect any ingress rules with that annotation as being targeted to be processed by it. This allows us to define rules as standalonw items, without having to setup and define a configuration for each rule in the ingress controller configuration itself. This annotation based approach is a simple way for services written to be cloud native to identify other kubernetes objects and determine how to hendle them, as we will see when we look at monitoring in kubenteres.
 
-The spec section basically defined the rules to do the processing, basically if there's an http connection coming in with a url that starts with /zipkin then the connection will be proxied to the zikin service on port 9411. The entire URL will be forwarded including the /zipkin.
+The spec section basically defined the certificate for the TLS connection and the rules to do the processing, basically if there's an connection coming in with a url that starts with /zipkin then the connection will be proxied to the zikin service on port 9411. The entire URL will be forwarded including the /zipkin.
 
 In some cases we don't want the entire URL to be forwarded however, what if we were using the initial part of the URL to identify a different service, perhaps for the health or metrics capabilities of the microservices which are on a different port (http://storefront:9081/health for example) In this case we want to re-write the incomming URL as it's passed to the target
 
@@ -699,6 +725,8 @@ metadata:
     # use a re-writer
     nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
+  tls:
+  - secretName: tls-secret
   rules:
   - http:
       paths:
@@ -721,6 +749,15 @@ Note that it is possible to match multiple paths in the same ingress, and they c
 
 ---
 
+<details><summary><b>Allowing http access ?</b></summary>
+<p>
+We have provided a certificate in a secret to use for https traffic, but the ingress controller will not block http traffic without some ingress controller specific annotations that seem to very betwene not only the different ingress controllers but also the same controller in different cloud providers. 
+
+One simple solution however is to modify the load balancer settings to block non ssl traffic. This is generally cloud provider specific however.
+</p></details>
+
+---
+
 
 
 - Apply the Ingress Config file : 
@@ -734,6 +771,7 @@ ingress.extensions/storefront-status created
 ingress.extensions/stockmanager-status created
 ingress.extensions/stockmanager-management created
 ingress.extensions/storefront-management created
+ingress.extensions/storefront-openapi created
 ```
 
 We can see the resulting ingresses using kubectl
@@ -770,6 +808,8 @@ Direct mappings
 
 `/smmgt/<stuff> -> stockmanager:9081/<stuff> e.g. /smmgt/metrics -> stockmanager:8081/metrics`
 
+`/openapi -> storefront:8080/openapi`
+
 Notice the different ports in use on the target.
 
 Visualize the port the ingress controller is running on :
@@ -792,7 +832,7 @@ Or look up the ingress service in the namespace *'default'* in the dashboard, th
 
 We now have a working endpoint, let's try accessing it using curl - expect an error !
 
--  `curl -i -X GET http://<ip address>/sf`
+-  `curl -i -k -X GET https://<ip address>/sf`
 
 ```
 HTTP/1.1 503 Service Temporarily Unavailable
@@ -811,11 +851,16 @@ Connection: keep-alive
 </html>
 ```
 
+<details><summary><b>What's with the *-k* flag ?</b></summary>
+<p>
+Previously we didn't use the -k flag or https when testing in the Helidon labs. That's because in the development phase we were using a direct http connection. Now we're using https (because that's what you should do in a production environment) we need to tell curl not to generate a error because in this case we're using a self signed certificate 
+</p></details>
+
 We got a **service unavailable** error. This is because that web page is recognised as an ingress rule, but there are no pods able to deliver the service. This isn't a surprise as we haven't started them yet !
 
 If we tried to go to a URL that's not defined we will as expected get a **404 error**:
 
--  `curl -i -X GET http://<ip address>/unknowningress`
+-  `curl -i -k -m -X GET https://<ip address>/unknowningress`
 
 ```
 HTTP/1.1 404 Not Found
@@ -1360,7 +1405,7 @@ kubernetes                                    ClusterIP      10.96.0.1       <no
 The External_IP column displays the external address. 
 
 - Let's try to get some data - **you might get an error**
-  -  `curl -i -X GET -u jack:password http://132.145.232.69:80/store/stocklevel`
+  -  `curl -i -k -X GET -u jack:password https://132.145.232.69/store/stocklevel`
 
 ```
 HTTP/1.1 200 OK
@@ -1437,7 +1482,7 @@ As we are runnig zipkin and have an ingress setup to let us access the zipkin po
 Of course the other services are also available, for example we can get the minimum change using the re-writer rules
 
 - Consult minimum change
-  -  `curl -i -X GET http://132.145.232.69:80/sf/minimumChange`
+  -  `curl -i -k -X GET https://132.145.232.69/sf/minimumChange`
 
 ```
 HTTP/1.1 200 OK
@@ -1452,7 +1497,7 @@ Connection: keep-alive
 
 And in this case we are going to look at data on the admin port for the stock management service and get it's readiness data
 
-- Readiness call: `curl -i -X GET http://132.145.232.69:80/smmgt/health/ready`
+- Readiness call: `curl -i -k -X GET https://132.145.232.69/smmgt/health/ready`
 
 ```
 HTTP/1.1 200 OK
@@ -1469,7 +1514,7 @@ Connection: keep-alive
 We saw in the helidon labs that it's possible to have the helidon framework monitor the configuration files and triger a refresh of the configuration data if something changed. Let's see how that works in Kubernetes.
 
 - Get the status resource data :
-  -  `curl -i -X GET http://132.145.232.69:80/sf/status`
+  -  `curl -i -k -X GET https://132.145.232.69/sf/status`
 
 ```
 HTTP/1.1 200 OK
@@ -1558,7 +1603,7 @@ The storefront-config.yaml file has now changed to reflect the modifications you
 
 If we now get the status resource data again it's also updated
 
-- Query the status: `curl -i -X GET http://132.145.232.69:80/sf/status`
+- Query the status: `curl -i -k -X GET https://132.145.232.69/sf/status`
 
 ```bash
 HTTP/1.1 200 OK
@@ -1570,7 +1615,7 @@ Connection: keep-alive
 
 {"name":"Tims Shop","alive":true,"frozen":false}
 ```
-Of course there is time delay from the change being visible in the pod to the Helidon framework doing it's scan to detect the change and reloading the config, so yu may have to issue the curl command a few times to see when the change has fully propogated.
+Of course there is time delay from the change being visible in the pod to the Helidon framework doing it's scan to detect the change and reloading the config, so you may have to issue the curl command a few times to see when the change has fully propogated.
 We've shown how to change the config in helidon using config maps, but the same principle woudl apply if you were using secrets and modified those (though there isn't really a usable secret editor in the dashboard)
 
 

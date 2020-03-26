@@ -393,7 +393,7 @@ If we look at the data we can see that the retrieved value is 0 (it may be anoth
 Let's make a few calls to list the stock and see what we get
 
 - Execute the following command a few times, **replacing *your_ip* with your Ingress endpoint:**
-  -  `curl -i -X GET -u jack:password http://your_ip:80/store/stocklevel`
+  -  `curl -i -k -X GET -u jack:password https://your_ip/store/stocklevel`
 
 ```
 HTTP/1.1 200 OK
