@@ -7,7 +7,7 @@
 
 #### **Extra Steps**
 
-Because you are working in your own Cloud Tenancy, you need to perform a few extra stepps to set all parameters up correctly:
+Because you are working in your own Cloud Tenancy, you need to perform a few extra steps to set all parameters up correctly:
 
 ## Steps
 

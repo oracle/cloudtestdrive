@@ -75,15 +75,12 @@ After you successfully created the compartment, note down the **Compartment OCID
 
   ![img](images/devcs/LabGuide200-a321171a.png)
 
-- Click **PSM-root-policy**
+- Click **Create Policy** button
 
-  ![img](images/devcs/LabGuide200-e67b7705.png)
-
-- Click the **Add Policy Statement** button
-
-  ![img](images/devcs/LabGuide200-3d4a7471.png)
-
-- In the Statement box, enter: `allow service OKE to manage all-resources in tenancy` and click **Add Statement**
+  - Name : PSM-root-policy
+  - Choose **Keep policy current**
+  - In the Statement box, enter: `allow service OKE to manage all-resources in tenancy` 
+  - Click **Add Statement**
 
   ![img](images/devcs/LabGuide200-bd5bcbd1.png)
 
@@ -97,22 +94,35 @@ After you successfully created the compartment, note down the **Compartment OCID
 
   - Navigate to the "Identity" , "Users" screen and add a user called "api.user"
 
-  - Add an API key: you need a private/public key pair, and you need to paste the public one into the key field. 
-
-    - You can use the following [OpenSSL](http://www.openssl.org/) commands to generate the key pair in the required PEM format. If you're using Windows, you'll need to install [Git Bash for Windows](https://git-scm.com/download/win) and run the commands with that tool.
-
-    - Open a console window and execute following commands
+    - Click the **Create User** button
+    - Enter the name= **api.user**
+      - Enter a description
+    - Click **Create**
   
-      - ```
+  - The user is now visible in the list of users, click on the user name **api.user** to see the details
+  
+  - Add an API key: you need a private/public key pair, and you need to paste the public one into the key field. 
+  
+    - You can use the following [OpenSSL](http://www.openssl.org/) commands to generate the key pair in the required PEM format. If you're using Windows, you'll need to install [Git Bash for Windows](https://git-scm.com/download/win) and run the commands with that tool.
+  
+  - Open a console window and execute following commands
+  
+    - ```
         mkdir ./mykey
-        openssl genrsa -out ./mykey/api_key.pem 2048
+      openssl genrsa -out ./mykey/api_key.pem 2048
         openssl rsa -pubout -in ./mykey/api_key.pem -out ./mykey/api_key_public.pem
         ```
-
+  
     - For more details on this key creation, see the [documentation](https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm).
-
+  
+  - Once you have the key pair available, return to the detailed screen of the **api.user**
+  
+    - Click on the **Add Public Key** button
+    - Either select the local file containing the public key, or paste the content of the file into the "Public Key" field.
+    - Click **Add** to create the key
+  
   - Copy the fingerprint of your API key in a temporary file
-
+  
   - Copy the OCID of this new user in a temporary file
   
   ![alt text](images/devcs/OCI_user_details_new.png)

@@ -24,7 +24,7 @@ Open your project in Developer Cloud, and follow the steps below:
   - Registry Name: **MyOCIR**
 
   - Registry URL: fill in the URL of your OCI Repository.  Example for an instance based in Frankfurt:
-     https://fra.ocir.io  , but replace the "fra" by the correct code : **phx** for Phenix,  **lhr** for London, ...
+     https://fra.ocir.io  , but replace the "fra" by the correct code : **phx** for Phoenix,  **lhr** for London, ...
   
 - The **Username** is composed of {object namespace}/{username}, for example **oractdemeabdmnative/api.user** 
   
@@ -94,7 +94,7 @@ Open your project in Developer Cloud, and follow the steps below:
 
 ### Step 3: Add more steps to the build: Execute the Docker commands
 
-- Use the **Add Step** button and add a step of type **Docker Builder->Docker login**. 
+- Use the **Add Step** button and add a step of type **Docker -> Docker login**. 
 
 - ![](images/650/image038-1.png)
 
@@ -106,21 +106,25 @@ Open your project in Developer Cloud, and follow the steps below:
 
 
 
-- Using the **Add Step** drop-down, select **Docker Builder->Docker build**. 
+- Using the **Add Step** drop-down, select **Docker->Docker build**. 
 
   ![](images/650/image038-3.png)
 
   - Select the **MyOCIR** registry from the dropdown field of the  **Registry Host** field (should be pre-filled in)
 
-  - The **Image Name** is composed as follows: my_tenancy_namespace/your_repo_name/image_name
-    - Example : oractdemeabdmnative/jle_repo/atp01
-    - Use your initials in the repo name to distinguish from other users
-    
+  - The **Image Name** is composed as follows: my_tenancy_storage_namespace/your_repo_name/image_name
+
+    - my_tenancy_storage_namespace: this is the name of your storage namespace you collected earlier
+    - your_repo_name: a name you can choose, for example including your initials in case you are sharing a tenancy with other participants
+    - image_name: name of the image you want to create
+
+  - Example : oractdemeabdmnative/jle_repo/atp01
+
   - In the **Source** radio buttons, click **Context root in Workspace**.
 
     ![](images/650/im52.png)
 
-- Using the **Add Step** drop-down, select **Docker Builder->Docker push**. 
+- Using the **Add Step** drop-down, select **Docker->Docker push**. 
   - Your **Registry Host** and **Image Name** should be pre-filled with the previously specified values.
 
   ![](images/650/im46-1.png)

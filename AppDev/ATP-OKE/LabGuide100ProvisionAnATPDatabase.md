@@ -40,9 +40,9 @@ This lab walks you through the steps to get started using the Oracle Autonomous 
    -  Verify your compartment is selected
    -  Specify a name for the instance, for example containing your initials for easy reference
    -  Select **Transaction Processing**
-   -  Select **Serverless**
+   -  Select **Shared Infrastructure**
 
-![](./images/100/Picture100-24-1.png)
+![](./images/100/Picture100-24-2.png)
 
 
 
@@ -57,14 +57,6 @@ WElcome_123#
 
 
 ![](./images/100/Picture100-28-2.png)
-
-
-
-- Select 
-
-
-
-
 
 
 
@@ -94,12 +86,6 @@ WElcome_123#
 ![](./images/100/Picture100-33.jpeg)
 
 You now have created your first Autonomous Transaction Processing Cloud instance.
-
-
-
-## Secure Connectivity and Data Access
-
-Now you will configure a secure connection to your Database using Oracle SQL Developer.
 
 
 
