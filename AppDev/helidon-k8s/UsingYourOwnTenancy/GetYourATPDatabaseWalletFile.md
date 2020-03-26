@@ -12,7 +12,7 @@ You need an existing database with a user. See the [Creating an ATP database doc
 
 # Getting the Wallet file
 
-The easiest way to get the database Wallet file it to use the cloud console to download it.
+The easiest way to get the database Wallet file into your virtual machine is to use the cloud console to download it.
 
 - Open a web browser **inside** the virtual machine
 
