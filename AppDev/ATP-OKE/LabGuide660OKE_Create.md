@@ -59,7 +59,7 @@ Screen shots of the various locations to find this information
   
     "\\\Data\\\keys\\\API_key\\\api_key.pem"	
   
-    because the 
+    because the "backslash" character has a special meaning on Windows.
 
 
 
@@ -134,7 +134,6 @@ Screen shots of the various locations to find this information
          10.0.11.2   Ready    node    30s   v1.12.6
          10.0.12.2   Ready    node    14s   v1.12.6
          ```
-
 
 
 
