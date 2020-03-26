@@ -150,12 +150,17 @@ This labs looks at how Helidion can help you gather data on the fow of operating
 
 
 
-### 5. Cloud Native support in Helidon
-This last Helidon lab looks as the features in Helidon that are designed to provide support for cloud native functionality in deployment systems like Kubernetes. For example to help report if a program is still running, but is actually failing to operate (for example it's in a deadlock)
+### 5. Cloud Native support in Helidon - Kubernetes support
+This Helidon lab looks as the features in Helidon that are designed to provide support for cloud native functionality in deployment systems like Kubernetes. For example to help report if a program is still running, but is actually failing to operate (for example it's in a deadlock)
 
 [The Helidon support for Cloud Native Operations lab](Helidon-cloud-native/helidon-cloud-native.md)
 
 
+
+### 6. Cloud Native support in Helidon - Self describing API's
+To enable a service to be easily consumed Helidon provides support for the dynamic creation of Open API (previously known as Swagger) documents that document the REST APIs provided by a micro-service. This lab looks at how configure your Helidon projects to generate this information. 
+
+[The Helidon support for Open API Document generation](Helidon-Operations/helidon-open-api.md)
 
 
 
