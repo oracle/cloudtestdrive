@@ -269,7 +269,7 @@ Be ***very*** careful to only remove the # character and **no other whitespace**
 ```
 
 - Now run the script **undeploy.sh** to remove the deployments
-  -  `./undeploy.sh`
+  -  `bash undeploy.sh`
 
 ``` 
 Deleting storefront deployment
@@ -297,7 +297,7 @@ replicaset.apps/zipkin-88c48d8b9         1         1         1       8h
 This script just does a kubectl delete -f on each of the deployments. 
 
 - Now recreate the deployments: 
-  -  `./deploy.sh `
+  -  `bash deploy.sh `
 
 ```
 Creating zipkin deployment
@@ -396,12 +396,12 @@ Let's make a few calls to list the stock and see what we get
   -  `curl -i -k -X GET -u jack:password https://your_ip/store/stocklevel`
 
 ```
-HTTP/1.1 200 OK
-Server: openresty/1.15.8.2
-Date: Mon, 30 Dec 2019 16:58:26 GMT
-Content-Type: application/json
-Content-Length: 184
-Connection: keep-alive
+HTTP/2 200 
+server: nginx/1.17.8
+date: Fri, 27 Mar 2020 10:05:52 GMT
+content-type: application/json
+content-length: 220
+strict-transport-security: max-age=15724800; includeSubDomains
 
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```

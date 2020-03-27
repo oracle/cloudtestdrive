@@ -76,12 +76,12 @@ If we now try getting the data again it still responds  (replace the IP address 
 - `curl -i -k -X GET -u jack:password https://987.123.456.789/store/stocklevel`
 
 ```
-HTTP/1.1 200 OK
-Server: openresty/1.15.8.2
-Date: Thu, 02 Jan 2020 14:10:04 GMT
-Content-Type: application/json
-Content-Length: 184
-Connection: keep-alive
+HTTP/2 200 
+server: nginx/1.17.8
+date: Fri, 27 Mar 2020 10:08:15 GMT
+content-type: application/json
+content-length: 220
+strict-transport-security: max-age=15724800; includeSubDomains
 
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
@@ -458,7 +458,7 @@ Some points about 'curl -s http://localhost:9080/health/ready | json_pp | grep "
 
 Firstly this is a command string that actually runs 3 commands connecting the output of one to the input of the other. If you exec to the pod you can actually run these by hand if you like
 
-The first (the curl) gets the readiness data from the service (you may remember this in the Helidon labs) 
+The first (the curl) gets the readiness data from the service (you may remember this in the Helidon labs) In this case as the code is running within the pod itself, so it's a localhost connection and as it'd direct to the micro-service it's http
 
 ```
 root@storefront-b44457b4d-29jr7:/# curl -s http://localhost:9080/health/ready 
