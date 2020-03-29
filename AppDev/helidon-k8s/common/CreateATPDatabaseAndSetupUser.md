@@ -34,7 +34,4 @@ GRANT UNLIMITED TABLESPACE TO HelidonLabs;
 Run the script (The Page of paper with the green "run" button.) if it works OK you will see a set of messages in the Script Output window saying the User has been created and grants made.
 
 ## Creating database tables
-Fortunately for us we don't need to create the database tables ourselves. The labs use a database engine called Hibernate, and that has been configured to create the tables if it needs to.
-
-# **VERY IMPORTANT**
-Make sure you take a copy of the DB OCID
+Fortunately for us we don't need to create the database tables ourselves. The labs uses a database engine called Hibernate, and that has been configured to create the tables if it needs to.
