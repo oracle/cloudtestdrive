@@ -4,62 +4,9 @@
 
 # Migration of Monolith to Cloud Native
 
-# Lab instructions - please read
-There are multiple versions of this lab which use the same base document. These cover different options and in some cases require different setup. The options are as follows :
-
-- Running both the Helidon and Kubernetes sections of the lab in an Oracle provided cloud tenancy
-
-- Running only the Kubernetes sections of the lab in an Oracle provided cloud tenancy
-
-- Running both the Helidon and Kubernetes sections of the lab in your own cloud tenancy (this might be corporate or a trial tenancy)
-
-- Running only the Kubernetes sections of the lab in your own cloud tenancy (this might be corporate or a trial tenancy)
-
-Your tutor will tell you which version you are doing (though hopefully it will also be obvious !)
-
-In the lab instructions you will occasionally find sections titled **Lab Setup** which look like the following. It is critical that **you** follow the instructions for the specific lab option that you are doing. If you don't then your environment will not be setup properly, and the lab will almost certainly fail to work.
-
-Note that in many cases situations there will be combined sets of instructions, for example sometimes the instructions for the Kubernetes only versions will be the same, regardless of if it's an Oracle provided tenancy or your own (e.g. configuring the docker image name.) Equally you may find that in other cases the instructions very based on if it's an Oracle provided tenancy or your own and within that are the same if you're doing the combined Helidon / Kubernetes labs or just the Kubernetes labs (for example how to get the database details.)
-
-**Lab Setup**
-
-<details><summary><b>Running both the Helidon and Kubernetes sections of the lab in an Oracle provided cloud tenancy</b></summary>
-<p>
-In general the instructions here will tell you to execute a command and to look in a document supplied by your tutor for some arguments to the command, for example to get the database identifier.
-
-There will have been some steps you took in the Helidon labs where you will need to use the information in the Kubernetes labs, for example the naming of the docker images
-</p>
-</details>
 
 
-<details><summary><b>Running only the Kubernetes sections of the lab in an Oracle provided cloud tenancy</b></summary>
-<p>
-In general the instructions here will tell you to execute a command and to look in a document supplied by your tutor for some arguments to the command, for example to get the database identifier.
-
-There may be specific instructions you need to follow as you will not have done them as you have not done the Heildon labs. e.g. the Helidon labs sets up docker images for each user, but for this version of the lab you will be using a pre-built docker image.
-</p>
-</details>
-
-
-<details><summary><b>Running both the Helidon and Kubernetes sections of the lab in your own cloud tenancy</b></summary>
-<p>
-In general the instructions here will tell you how to do a specific function, for example how to create a database and get it's identifier (the identifiers are specific to each tenancy)
-
-There will have been some steps you took in the Helidon labs where you will need to use the information in the Kubernetes labs, for example the naming of the docker images
-</p>
-</details>
-
-
-<details><summary><b>Running only the Kubernetes sections of the lab in your own cloud tenancy</b></summary>
-<p>
-There may be specific instructions you need to follow as you will not have done them as you have not done the Heildon labs. e.g. the Helidon labs sets up docker images for each user, but for this version of the lab you will be using a pre-built docker image.
-
-</p>
-</details>
-
----
-
-# Lab Setup (all versions)
+# Lab Setup
 
 You will be using the Oracle Cloud shell to run the kubernetes parts of the labs. There are a few steps we need do to to configure it with the data that's needed.
 
