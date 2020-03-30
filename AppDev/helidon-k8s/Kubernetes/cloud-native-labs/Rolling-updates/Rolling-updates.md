@@ -78,7 +78,7 @@ Finally we're going to tell kubernetes what limits we want to place on the rolli
 
 This limits the rollout process to having no more than 1 additional pods online above the normal replicas set, and only one pod below that specified in the replica set unavailable. So the roll out (in this case) allows us to have up to 5 pods running during the rollout and requires that at least 3 are running.
 
-Note that unless you have very specific needs the default settings for strategy type and maxSurge / minUnavailable. We are setting these for two reasons. First to show that the settings are available, and secondly for the purposes of this lab to show the roll out process in a way that let's us actually see what's happening by slowing things down (of course in a production you'd want it to run as fast as possible, so think about the settings used if you do override the defaults)
+Note that unless you have very specific reasons don't change the default settings for strategy type and maxSurge / minUnavailable. We are setting these for two reasons. First to show that the settings are available, and secondly for the purposes of this lab to show the roll out process in a way that let's us actually see what's happening by slowing things down (of course in a production you'd want it to run as fast as possible, so think about the settings used if you do override the defaults)
 
 The section of the file after the changes will look like this
 
@@ -161,85 +161,7 @@ Let's do something that will trigger the pods to update : change the image.  The
 
 We will change the version text of the data returned by the isAlive method to see the difference:
 
-- In Eclipse, navigate to the **helidon-labs-storefront** project
-  - Then navigate to **src/main/java**, then **com.oracle.labs.helidon.storefront**, then **resources**
-  - Open the file **StatusResource.java** 
-  - Change the version in the below part of the code to **0.0.2** 
 
-  ```
-	  public JsonObject isAlive() throws InterruptedException {
-		  return JSON.createObjectBuilder().add("name", storename).add("alive", true).add("version", "0.0.2").build();
-	  }
-  ```
-
-  - Save the changes
-
-- In a terminal window, let's build the new version of the container:
-
-  -  Change to folder **helidon-labs-storefront**
-  - Run the v2 script:
-    -  `bash buildV0.0.2PushToRepo.sh `
-
-```
-Using repository fra.ocir.io/oractdemeabdmnative/tg_repo
-[MVNVM] Using maven: 3.5.2
-[INFO] Scanning for projects...
-
-<Lots of Maven output removed>
-
-[INFO] Total time: 23.872 s
-[INFO] Finished at: 2020-01-03T12:13:40Z
-[INFO] Final Memory: 39M/188M
-[INFO] ------------------------------------------------------------------------
-Sending build context to Docker daemon  112.1kB
-Step 1/3 : FROM jib-storefront:latest
- ---> d31de67d9272
-Step 2/3 : RUN cp -r /app/resources/* /app/classes
- ---> Running in 818de3f3faec
-Removing intermediate container 818de3f3faec
- ---> 121bb2f37bb7
-Step 3/3 : RUN rm -rf /app/resources
- ---> Running in 9d650231ec09
-Removing intermediate container 9d650231ec09
- ---> df30253a82ec
-Successfully built df30253a82ec
-Successfully tagged fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:latest
-Successfully tagged fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:0.0.2
-The push refers to repository [fra.ocir.io/oractdemeabdmnative/tg_repo/storefront]
-7f699cf87b87: Pushed 
-76ad72d8097b: Pushed 
-b158b5f94634: Pushed 
-341c644e75cf: Pushed 
-84fad9f97da3: Layer already exists 
-2f6d5006f5d1: Layer already exists 
-1608029e89ad: Layer already exists 
-03ff63c55220: Layer already exists 
-bee1e39d7c3a: Layer already exists 
-1f59a4b2e206: Layer already exists 
-0ca7f54856c0: Layer already exists 
-ebb9ae013834: Layer already exists 
-latest: digest: sha256:65db7b35e2f2bd73f0010771f66794034eecddb6b10b69a3f34b9a8ffd16d8f5 size: 2839
-The push refers to repository [fra.ocir.io/oractdemeabdmnative/tg_repo/storefront]
-7f699cf87b87: Layer already exists 
-76ad72d8097b: Layer already exists 
-b158b5f94634: Layer already exists 
-341c644e75cf: Layer already exists 
-84fad9f97da3: Layer already exists 
-2f6d5006f5d1: Layer already exists 
-1608029e89ad: Layer already exists 
-03ff63c55220: Layer already exists 
-bee1e39d7c3a: Layer already exists 
-1f59a4b2e206: Layer already exists 
-0ca7f54856c0: Layer already exists 
-ebb9ae013834: Layer already exists 
-0.0.2: digest: sha256:65db7b35e2f2bd73f0010771f66794034eecddb6b10b69a3f34b9a8ffd16d8f5 size: 2839
-built and pushed v0.0.2
-
-```
-
-There is a lot of output, most of which has been removed in the example output above. You can see that the 0.0.2 version has been pushed to the repo.
-
-(Note the Maven output may refer to v0.0.1, don't worry this is because we haven't changes the version details in the maven pom.xml file. The later stages of the process override this.)
 
 </p>
 </details>
