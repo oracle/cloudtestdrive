@@ -10,9 +10,9 @@
 
 ## Lab Setup
 
-You will be using the **Oracle Cloud shell** to run the kubernetes parts of the labs. 
+You will be using the **Oracle Cloud shell** to run the kubernetes parts of the labs.
 
-The **Cloud Shell** is accessible through the Oracle Cloud GUI, and has a number of elements set up out of the box, like the Oracle Cloud Command Line Interface, and it also has quite some usefull command-line tools pre-installed, like git, docker, kubectl, helm and more.
+The **Cloud Shell** is accessible through the Oracle Cloud GUI, and has a number of elements set up out of the box, like the Oracle Cloud Command Line Interface, and it also has quite some useful command-line tools pre-installed, like git, docker, kubectl, helm and more.
 
 To access the shell, you can use the native browser on your laptop (no need for using the Linux desktop anymore).
 
@@ -32,16 +32,17 @@ Note, in some steps you may want to minimize the Oracle Cloud Shell so you can g
 
 ### Downloading the scripts
 
-Firstly we need to download all of the scripts and other configuration data to run the labs, these are stored in a Oracle Cloud storage bucket. Your tutor will have provided you with instructions which include the URL to use below.
+Firstly we need to download all of the scripts and other configuration data to run the labs, these are stored in git.
 
-**Need better instructions for this bit, can we switch to using git ? How does that work in eclipse ?**
 
 - Open a cloud Shell
 - Make a directory to hold this, for compatibility with the Helidon part of the labs we'll call this workspace
-  - `mkdir workspace`
-  - `cd workspace`
+  - `mkdir -p $HOME/workspace`
+  - `cd $HOME/workspace`
+  
 - Clone the repository with all scripts from github into your cloud shell environment:
-  - `git clone xxxxxxxxx`
+  - `git clone https://github.com/CloudTestDrive/helidon-kubernetes.git`
+  
 ### Downloading the database wallet file
 
 Usually you do not hard code the database details in to the images, they are held externally. This is for security reasons, and also convenience, you may decide to switch to a different database, or just change the user password of the database, and it's a lot easier doing that through configuration than having to rebuild the image.
