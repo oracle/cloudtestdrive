@@ -140,38 +140,18 @@ One point to note here, these changes *only* modified the deployment roll out co
 
 ### Making a change that updates the pods
 
-**Lab Setup**
-The different versions of the labs diverge here. Please expand and then follow the instructions for the version of the lab that you are following.
+Of course normally you would make a change, test it and build it, then push to the registry, you would probably use some form of CI/CD tooling to manage the process, for example a pipeline built using the Oracle Developer Cloud Service (other options include the open source tools Jenkins / Hudson and Ansible). 
 
-<details><summary><b>Running only the Kubernetes sections of the lab (in an Oracle provided or your own cloud tenancy)</b></summary>
-<p>
-As you do not have the Helidon build environment configured we have provided you with two pre-built versions of the image, 0.0.1 and 0.0.2
+For this lab we are focusing on Helidon and Kubernetes, not the entire CICD chain so like any good cooking program we're going to use the v0.0.2 image we created earlier, so we just need to deploy it.
 
-Because of this you do not need to make any changes to the source code, only update the image as described below.
-</p>
-</details>
-
-<details><summary><b>If you've previously done the Helidon sections of the lab (in an Oracle provided or your own cloud tenancy)</b></summary>
-<p>
-
-You need to switch back to the Helidon and docker development VM to make the changes and create updated docker images.
-
-**Preparing our new image**
-Let's do something that will trigger the pods to update : change the image.  The **buildV0.0.2PushToRepo.sh** script will create and push a new version of the container image for version 0.0.2
-
-We will change the version text of the data returned by the isAlive method to see the difference:
-
-
-
-</p>
-</details>
 
 ### Applying our new image
+
 To apply the new v0.0.2 image we need to upgrade the configuration again. As discussed above this we would *normally* and following best practice do this by creating a new version of the deployment yaml file (say storefront-deploymentv0.0.2.yaml to match the container and code versions)
 
-However ... for the purpose of showing how this can be done using kubectl we are going to do this using the command line, not a configuration file change. This **might** be somethign you'd do in a test environment, but **don't** do it in a production environment or your change management processes may end up broken.
+However ... for the purpose of showing how this can be done using kubectl we are going to do this using the command line, not a configuration file change. This **might** be something you'd do in a test environment, but **don't** do it in a production environment or your change management processes will almost certainly end up damaged.
 
-- Execute the command : 
+- Execute the command (replacing the image details with your repo details of course) 
   -  `kubectl set image deployment storefront storefront=fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:0.0.2`
 
 ```
