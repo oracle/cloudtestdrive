@@ -4,148 +4,99 @@
 
 # Migration of Monolith to Cloud Native
 
-# Lab instructions - please read
-There are multiple versions of this lab which use the same base document. These cover different options and in some cases require different setup. The options are as follows :
+## C. Deploying to Kubernetes
 
-- Running both the Helidon and Kubernetes sections of the lab in an Oracle provided cloud tenancy
+## 1. Basic Kubernetes
 
-- Running only the Kubernetes sections of the lab in an Oracle provided cloud tenancy
+## Lab Setup
 
-- Running both the Helidon and Kubernetes sections of the lab in your own cloud tenancy (this might be corporate or a trial tenancy)
+You will be using the **Oracle Cloud shell** to run the kubernetes parts of the labs. 
 
-- Running only the Kubernetes sections of the lab in your own cloud tenancy (this might be corporate or a trial tenancy)
+The **Cloud Shell** is accessible through the Oracle Cloud GUI, and has a number of elements set up out of the box, like the Oracle Cloud Command Line Interface, and it also has quite some usefull command-line tools pre-installed, like git, docker, kubectl, helm and more.
 
-Your tutor will tell you which version you are doing (though hopefully it will also be obvious !)
+To access the shell, you can use the native browser on your laptop (no need for using the Linux desktop anymore).
 
-In the lab instructions you will occasionally find sections titled **Lab Setup** which look like the following. It is critical that **you** follow the instructions for the specific lab option that you are doing. If you don't then your environment will not be setup properly, and the lab will almost certainly fail to work.
+- Login to your Oracle Cloud Console
 
-Note that in many cases situations there will be combined sets of instructions, for example sometimes the instructions for the Kubernetes only versions will be the same, regardless of if it's an Oracle provided tenancy or your own (e.g. configuring the docker image name.) Equally you may find that in other cases the instructions very based on if it's an Oracle provided tenancy or your own and within that are the same if you're doing the combined Helidon / Kubernetes labs or just the Kubernetes labs (for example how to get the database details.)
+- Click the icon on the top right of your screen:  **>_**
 
-**Lab Setup**
+  ![](images/home-screen.png)
 
-<details><summary><b>Running both the Helidon and Kubernetes sections of the lab in an Oracle provided cloud tenancy</b></summary>
-<p>
-In general the instructions here will tell you to execute a command and to look in a document supplied by your tutor for some arguments to the command, for example to get the database identifier.
+- This will result in the cloud shell to be displayed at the bottom of your window.
 
-There will have been some steps you took in the Helidon labs where you will need to use the information in the Kubernetes labs, for example the naming of the docker images
-</p>
-</details>
+  - To maximise the size of the shell window, click the "Arrows" button on the right of the console as indicated below:
 
+    ![](images/cloud-console.png)
 
-<details><summary><b>Running only the Kubernetes sections of the lab in an Oracle provided cloud tenancy</b></summary>
-<p>
-In general the instructions here will tell you to execute a command and to look in a document supplied by your tutor for some arguments to the command, for example to get the database identifier.
+Note, in some steps you may want to minimize the Oracle Cloud Shell so you can get information from the GUI. Click the arrows icon again [](images/cloud-console-shrink.png) to minimize the cloud shell and see the Oracle Cloud GUI again. Alternatively you can open a second browser window or tab onto the Oracle Cloud GUI.
 
-There may be specific instructions you need to follow as you will not have done them as you have not done the Heildon labs. e.g. the Helidon labs sets up docker images for each user, but for this version of the lab you will be using a pre-built docker image.
-</p>
-</details>
-
-
-<details><summary><b>Running both the Helidon and Kubernetes sections of the lab in your own cloud tenancy</b></summary>
-<p>
-In general the instructions here will tell you how to do a specific function, for example how to create a database and get it's identifier (the identifiers are specific to each tenancy)
-
-There will have been some steps you took in the Helidon labs where you will need to use the information in the Kubernetes labs, for example the naming of the docker images
-</p>
-</details>
-
-
-<details><summary><b>Running only the Kubernetes sections of the lab in your own cloud tenancy</b></summary>
-<p>
-There may be specific instructions you need to follow as you will not have done them as you have not done the Heildon labs. e.g. the Helidon labs sets up docker images for each user, but for this version of the lab you will be using a pre-built docker image.
-
-</p>
-</details>
-
----
-
-# Lab Setup (all versions)
-
-You will be using the Oracle Cloud shell to run the kubernetes parts of the labs. There are a few steps we need do to to configure it with the data that's needed.
-
-## Downloading the scripts
+### Downloading the scripts
 
 Firstly we need to download all of the scripts and other configuration data to run the labs, these are stored in a Oracle Cloud storage bucket. Your tutor will have provided you with instructions which include the URL to use below.
 
 **Need better instructions for this bit, can we switch to using git ? How does that work in eclipse ?**
 
-- Open the cloud Shell
-
+- Open a cloud Shell
 - Make a directory to hold this, for compatibility with the Helidon part of the labs we'll call this workspace
   - `mkdir workspace`
   - `cd workspace`
-  
-- Use curl to download the configuration, replace the URL shown here with the one in your instruction document
- - `curl -o helidon-k8s.tar https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/Helidon-Kubernetes/o/helidon-k8s-2020-03-18.tar`
- 
-- Extract the information in the tar file (this used the name you gave the tar file above)
-  - `tar -xf helidon-k8s.tar`
-  
-## Downloading the database wallet file and configuring the pertistence.xml file
+- Clone the repository with all scripts from github into your cloud shell environment:
+  - `git clone xxxxxxxxx`
+### Downloading the database wallet file
 
-Usually you do not hard code the database details in to the images, they are held externally. This is for security reasons, and also convenience, you may decide to switch to a different database, or just change the uer password of the database, and it's a lot easier doing that through configuration than having to rebuild the image.
+Usually you do not hard code the database details in to the images, they are held externally. This is for security reasons, and also convenience, you may decide to switch to a different database, or just change the user password of the database, and it's a lot easier doing that through configuration than having to rebuild the image.
 
-To keep the secrets outside the image means that you need to get the database connection details so you can add them to your kubernetes configuration (more on how to do this in the secrets section below)
+To keep the secrets outside the image means that you need to get the database connection details so you can add them to your kubernetes configuration.
 
 We will use the oci shell to download the database wallet file. 
 
-If you are running in an Oracle provided tenancy your instructor will have provided you with a document that contains the ocid of the database.
 
-If you are in your own tenancy and have done the helidon labs you will have already setup the database, and may already have got the database ocid, if not then [this document tells you how to get it](../../common/GetTheATPDatabaseDetailsForYourTenancy.md)
-
-If you are in your own tenancy and have **not** done the helidon labs (you are doing only the Kubernetes sections) then you will need to [follow these instructions](../../common/CreateATPDatabaseAndSetupUser.md) to create a database. (Remember to take a copy of the OCID when doing this)
-
-
-- Create the wallet directory
+- Create the wallet directory and navigate to it:
+  
   - `mkdir -p $HOME/workspace/helidon-labs-stockmanager/Wallet_ATP`
-- Navigate to the stock manager folder
+  
   - `cd $HOME/workspace/helidon-labs-stockmanager/Wallet_ATP`
-- Get the wallet file (remembering to replace the example ODIC below, note the password is in 'single quotes' to avoid shell expansion)
-  - `oci db autonomous-database generate-wallet --file Wallet.zip --password 'Pa$$w0rd' --autonomous-database-id ocid1.autonomousdatabase.oc1.eu-frankfurt-1.aa8d698erlewaiehqrfklnoiwehfoeqwfaalkdhfuieiq`
+  
+- Get the wallet file of your database
+  
+  
+  - Attention: replace the example ODIC below with the OCID of your database
+    
+  - `oci db autonomous-database generate-wallet --file Wallet.zip --password 'Pa$$w0rd' --autonomous-database-id ocid1.autonomousdatabase.oc1.eu-frankfurt-1.aa8d698erlewaiehqrfklhfoeqwfaalkdhfuieiq`
+  
     ```
     Downloading file  [####################################]  100%
     ```
+  
 - Unzip the wallet file
+  
   - `unzip Wallet.zip`
   
-- Look at the contents of the tnsnames.ora file to get the database connection name
+- Look at the contents of the tnsnames.ora file to get the database connection names
   - `cat tnsnames.ora`
-  ```
-  tg_high = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_high.atp.oraclecloud.com))(security=(ssl_ser
-ver_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
-
-  tg_low = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_low.atp.oraclecloud.com))(security=(ssl_serve
-r_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
-
-  tg_medium = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_medium.atp.oraclecloud.com))(security=(ssl
-_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
-
-  tg_tp = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_tp.atp.oraclecloud.com))(security=(ssl_server_
-cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
-
-  tg_tpurgent = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_tpurgent.atp.oraclecloud.com))(security=
-(ssl_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
-  ```
   
-- Locate the "high" connection and take a note of the name, in the example above this is jleoow_high
+  You will see a list of the various connection types to your database.
+
+- Locate the "high" connection type to your database and take a note of the full name, for example **jleoow_high**
+
+### Point your Application to the database
+
 
 - Edit the database configuration file to specify the database name. This file is `$HOME/workspace/helidon-labs-stockmanager/confsecure/stockmanager-database.yaml`
   - Locate the javax.sql.DataSource.stockLevelDataSourceOraATPJTA.datasource.url line. This will look something like 
     ```
     url: jdbc:oracle:thin:@jleoow_high?TNS_ADMIN=./Wallet_ATP
     ```
-  - update the name of the connection (here it's shown as `jleoow_high`) and replace it with the name form the tnsnames.ora file, in this case `tg_high` In this particular case the resulting line will look like  
+  - update the name of the connection (here it's shown as `jleoow_high`) and replace it with the name from the tnsnames.ora file, for example `tg_high`.  In this particular case the resulting line will look like  
     ```
     url: jdbc:oracle:thin:@tghigh?TNS_ADMIN=./Wallet_ATP
     ```
+  
 - Save the changes
 
-# And now for the lab itself
 
-## C. Deploying to Kubernetes
-## 1. Basic Kubernetes
 
-### **Introduction**
+## Introduction to the lab
 
 ### Kubernetes
 Docker is great, but it only runs on a local machine, and doesn't have all of the nice cloud native features of kubernetes.
@@ -246,6 +197,7 @@ You can get the current list of repositories
     ```
 
 - Run the following command : 
+  
   -  `helm install kubernetes-dashboard  stable/kubernetes-dashboard   --namespace kube-system --set service.type=LoadBalancer`
 
 ```
@@ -625,7 +577,6 @@ Though an Ingress itself is a Kubernetes concept Kubernetes does not itself prov
 <p>
 Normally in a production environment you would use an ingress for the dashbaord rather than setting up (and paying for) a separate load balancer. For this lab however we are using a load balancer because the dashboard uses certificates, and while it is possible to create and install the certificates that takes time (especially if using real, not self-signed certificates)
 </p></details>
-
 ---
 
 
@@ -1520,6 +1471,7 @@ We don't need an image pull secret as the files are in a public location
   
   - Remove the `imagePullSecrets` lines
   
+
 </p></details>
 
 - Now run the deploy.sh script

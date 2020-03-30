@@ -6,6 +6,10 @@
 
 ## C. Deploying to Kubernetes 
 
+## Introduction
+
+In this series of labs we will focus on the specific features of Kubernetes to run Microservices.  These labs assume you have previously executed the **A. Helidon** and **B. Docker** part of this lab series.  In case you would want to execute *only this part C. Kubernetes of the labs,* you need to perform some [initial steps](../common/CreateATPDatabaseAndSetupUser.md) to prepare your environment.
+
 ## The Labs
 
 ### 1. Basic Kubernetes
