@@ -9,24 +9,6 @@
 ### Prerequisites
 To run this part of the lab you need the working storefront and stockmanager microservices (as per the Helidon labs) connected to the database.
 
-<details><summary><b>Not done the Helidon lab ?</b></summary>
-<p>
-If you are using a the "completed" VM image (i.e. only doing the docker and subsequent parts of the workshop) then in the helidon-labs-stockmanager project you will need to edit the in the conf/stockmanager-conf.yaml file and add a line of the form `department: "Your_department_name"` (change the name to be a name unique to you)
-
-For example
-
-```
-app:
-  persistenceUnit: "HelidonATPJTA"
-  department: "Tims"
-```
-
-Changing "Tims" to match your name of course
-
-</p></details>
-
----
-
 - Make sure the zipkin container is running. You may have done this in the previous lab chapter and left it running. 
   - To check if it is already running type :
 
@@ -43,7 +25,7 @@ Changing "Tims" to match your name of course
 
 #### Docker image build tool
 
-We will be using **jib** to build the docker images. The pom.xml file contains the details of the jib tooling and it's settings. 
+We will be using **jib** to build the docker images. The Maven pom.xml file contains the details of the jib tooling and it's settings. 
 
 - Open the **storefront** project, and on the top level, open the **pom.xml** file
 - Locate the **jib-maven-plugin** dependency near line 162
@@ -259,25 +241,10 @@ As the storefront depends on the stockmanager (and both depend on zipkin) it's i
 - Run the **Stockmanager** container via script:
   -  `./runLocalExternalConfig.sh`
   - Keep the terminal window open to see logging info
+  
 - Open a **new** terminal window
   - Go to the Storefront project: `cd workspace/helidon-labs-storefront`
   - Run the **Storefront** container via script: `./runLocalExternalConfig.sh`
-
----
-
-<details><summary><b>Not done the Helidon lab ?</b></summary>
-<p>
-If you've not done the helidon lab then you won't have any stock items in the database under the department name you chose
-
-- Use curl to create some stock items :
-  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pin/5000`
-  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pencil/200`
-  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Eraser/50`
-  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Book/100`
-  
-</p></details>
-
----
 
 - Open **another** new terminal window
 - Call the stocklevel method of the application:
@@ -296,14 +263,6 @@ This call should return the entries you added earlier.
 - You probably will get a *424 Failed dependency* message:  it's because the lazy initialization has taken a while as the back end request has times out (remember the @Timeout annotation!) 
   - Just re-run the request a few times till you get the expected response
 
----
-
-<details><summary><b>No stock items returned ?</b></summary>
-<p>
-If the returned  data is an empty array `[]` then you've not added any stock items for your department name. Expand the `Not done the Helidon lab ?` section above and follow the instructions there.
-</p></details>
-
----
 
 The outputs for the storefront and stockmanager containers will display the log data generated as the operation was performed.
 
@@ -362,12 +321,54 @@ As there are probably many attendees doing the lab we need to separate the diffe
 
 Your full repo will be a combination of the repository host name (e.g. fra.ocir.io for an Oracle Cloud Infrastructure Registry) the tenancy name (oractdemeabdmnative) and the  details you've chosen
 
+#### Determining your Oracle Cloud Infrastructure Registry
+
+The Oracle Cloud Infrastructure Registry repo is of the form : `region.ocir.io/tenancy-name/repo-name` for example `fra.ocir.io/oractdemeabdmnative/tg_repo` 
+
+You therefore need to determine these three values.
+
+##### Determining the region code
+
+The region is based on the IATA code for the city hosting the region, for example Frankfurt is fra and Amsterdam is ams. Unfortunately some cities (e.g. London) have multiple airports, in others the IATA airport code refers to an old name for the city, or the airport itself is not directly named after the city it serves, so we need to look the right code up based on our region.
+
+To determine your region look at the top of your Oracle Cloud GUI in the web browser and you'll see your current region.
+
+![](images/region-name.png)
+
+If you click on the name you'll get a list of regions enabled for your tenancy and your home region
+
+![](images/regions-list.png)
+
+You can see here in this example we're using the Frankfurt region, which is also our home region. While you can use any region that's enabled for your tenancy for the purposed of this lab we recommend you use your home region.
+
+Now go to the [OCIR Availability By Region list.](https://docs.cloud.oracle.com/en-us/iaas/Content/Registry/Concepts/registryprerequisites.htm#Availab)
+
+Locate your region on the list and then to the right identify the region url, for example we can see below in the case of Sydney the region is syd.ocir.io
+
+[](images/sydney-region-code.png)
+
+Note that if your region is **not** on the list then you will need to chose one from your regions list list that is. If none of the regions in your list have OCIR availability then click the Manage Regions button to add a region that is on the [OCIR Availability By Region list.](https://docs.cloud.oracle.com/en-us/iaas/Content/Registry/Concepts/registryprerequisites.htm#Availab)
+
+##### Determining your tenancy and username
+
+In the upper right of the Oracle Cloud web GUI there is a shadow of a person ![](images/user-icon.png) 
+
+If you click it you will see a detail of the tenancy
+
+![](images/user-details.png)
+
+Here we can see the user is `username` and the tenancy is `oractdemeabdmnative`, details differ based on the tenancy of course.
+
+##### Chosing the repo name 
+
+You now need to chose a name for your repository,
+
 - Chose something unique **TO YOU** e.g. your initials : tg_repo 
-- this must be in **lower case** and can **only contain letters, numbers and hyphen**
+- this must be in **lower case** and can **only contain letters, numbers, underscore and hyphen**
 
-The ultimate full repository name will look something like fra.ocir.io/oractdemeabdmnative/tg_repo
+The ultimate full repository name will look something like `fra.ocir.io/oractdemeabdmnative/tg_repo` (yours will of course differ)
 
-Let's update the repoConfig.sh scripts in both the helidon-labs-stockmanager and helidon-labs-storefront directories to reflect your chosen repo details
+Let's update the repoConfig.sh scripts in **both** the helidon-labs-stockmanager and helidon-labs-storefront directories to reflect your chosen details
 
 - Navigate to the Storefront project
 
@@ -385,7 +386,11 @@ Let's update the repoConfig.sh scripts in both the helidon-labs-stockmanager and
 
 - Open file **repoConfig.sh** and edit the repo name again as above
 
+---
 
+# NEED THE PROCESS TO GET THE AUTH TOKEN AND DO THE DOCKER LOGIN
+
+---
 
 ---
 
@@ -395,12 +400,12 @@ Let's update the repoConfig.sh scripts in both the helidon-labs-stockmanager and
 The build script is pretty similar to what we had before. It uses mvn package to create the initial image using jib, but the docker build command in the file is different (don't actually run this, just look at it)
 
 ```
-$ docker build  --tag my.repo.io/some-id/storefront:latest --tag $REPO/storefront:0.0.1 -f Dockerfile .
+$ docker build  --tag $REPO/storefront:latest --tag $REPO/storefront:0.0.1 -f Dockerfile .
 ```
 
 Note that we have two --tag commands so the resulting image will be pointed to by two names, not just one. Both of the names include the repository information (we use this later on when pushing the images) but they also have a :<something> after the container name we're used to seeing. This is used as the version number, this is not processed in any meaningful way that I've discovered (for example I've yet to find a tool that allows you to do something like Version 1.2.4 or later) but by convention you should tag the most recent version with :latest and all images should be tagged with a version number in the form of :<major>.<minor>.<micro> e.g. 1.2.4
 
-Now the images are tagged with a name that included version and repo information we can push them to a repository, you will need to have logged in to your docker repository (the `docker login` command ) If you are using the VM image we provided then this will have been done for you and for the remainder of this workshop we will use the Oracle Cloud Infrastructure Registry.
+Now the images are tagged with a name that included version and repo information we can push them to a repository, you will need to have logged in to your docker repository (the `docker login` command )
 
 To push an image to the repository just push it, for example (don't actually run this, just look at it)
 
@@ -522,7 +527,89 @@ This is the end of the lab, let's stop the running images
 
 Congratulations, you are now able to run your microservices on Docker!  Next step is to use these images to deploy them on a Kubernetes cluster.  For this, navigate to the next chapter, [C. Deploying in Kubernetes](../Kubernetes/Kubernetes-labs.md)
 
+## Preparing for the Kubernetes labs
 
+When you do the Kubernetes labs you will test out performing a rolling upgrade. To do that you need to be able to show that the upgrade has applied, so you're going to make a small change now so you can see that in the later labs.
+
+- In Eclipse, navigate to the **helidon-labs-storefront** project
+  - Then navigate to **src/main/java**, then **com.oracle.labs.helidon.storefront**, then **resources**
+  - Open the file **StatusResource.java** 
+  - Change the version in the returned to **0.0.2** (updated version shown below)
+
+  ```
+	  public JsonObject isAlive() throws InterruptedException {
+		  return JSON.createObjectBuilder().add("name", storename).add("alive", true).add("version", "0.0.2").build();
+	  }
+  ```
+
+  - Save the changes
+
+- In a terminal window, let's build the new version of the container:
+
+  -  Change to folder **helidon-labs-storefront**
+  - Run the v2 script:
+    -  `bash buildV0.0.2PushToRepo.sh `
+
+```
+Using repository fra.ocir.io/oractdemeabdmnative/tg_repo
+[MVNVM] Using maven: 3.5.2
+[INFO] Scanning for projects...
+
+<Lots of Maven output removed>
+
+[INFO] Total time: 23.872 s
+[INFO] Finished at: 2020-01-03T12:13:40Z
+[INFO] Final Memory: 39M/188M
+[INFO] ------------------------------------------------------------------------
+Sending build context to Docker daemon  112.1kB
+Step 1/3 : FROM jib-storefront:latest
+ ---> d31de67d9272
+Step 2/3 : RUN cp -r /app/resources/* /app/classes
+ ---> Running in 818de3f3faec
+Removing intermediate container 818de3f3faec
+ ---> 121bb2f37bb7
+Step 3/3 : RUN rm -rf /app/resources
+ ---> Running in 9d650231ec09
+Removing intermediate container 9d650231ec09
+ ---> df30253a82ec
+Successfully built df30253a82ec
+Successfully tagged fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:latest
+Successfully tagged fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:0.0.2
+The push refers to repository [fra.ocir.io/oractdemeabdmnative/tg_repo/storefront]
+7f699cf87b87: Pushed 
+76ad72d8097b: Pushed 
+b158b5f94634: Pushed 
+341c644e75cf: Pushed 
+84fad9f97da3: Layer already exists 
+2f6d5006f5d1: Layer already exists 
+1608029e89ad: Layer already exists 
+03ff63c55220: Layer already exists 
+bee1e39d7c3a: Layer already exists 
+1f59a4b2e206: Layer already exists 
+0ca7f54856c0: Layer already exists 
+ebb9ae013834: Layer already exists 
+latest: digest: sha256:65db7b35e2f2bd73f0010771f66794034eecddb6b10b69a3f34b9a8ffd16d8f5 size: 2839
+The push refers to repository [fra.ocir.io/oractdemeabdmnative/tg_repo/storefront]
+7f699cf87b87: Layer already exists 
+76ad72d8097b: Layer already exists 
+b158b5f94634: Layer already exists 
+341c644e75cf: Layer already exists 
+84fad9f97da3: Layer already exists 
+2f6d5006f5d1: Layer already exists 
+1608029e89ad: Layer already exists 
+03ff63c55220: Layer already exists 
+bee1e39d7c3a: Layer already exists 
+1f59a4b2e206: Layer already exists 
+0ca7f54856c0: Layer already exists 
+ebb9ae013834: Layer already exists 
+0.0.2: digest: sha256:65db7b35e2f2bd73f0010771f66794034eecddb6b10b69a3f34b9a8ffd16d8f5 size: 2839
+built and pushed v0.0.2
+
+```
+
+There is a lot of output, most of which has been removed in the example output above. You can see that the 0.0.2 version has been pushed to the repo.
+
+(Note the Maven output may refer to v0.0.1, don't worry this is because we haven't changed the version details in the maven pom.xml file. The later stages of the process override this.)
 
 ------
 
