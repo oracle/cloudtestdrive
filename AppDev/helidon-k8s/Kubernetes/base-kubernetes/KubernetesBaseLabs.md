@@ -12,7 +12,7 @@
 
 You will be using the **Oracle Cloud shell** to run the kubernetes parts of the labs. 
 
-The **Cloud Shell** is accessible throuhg the Oracle Cloud GUI, and has a number of elements set up out of the box, like the Oracle Cloud Command Line Interface, and it also has quite some usefull command-line tools pre-installed, like git, docker, kubectl, helm and more.
+The **Cloud Shell** is accessible through the Oracle Cloud GUI, and has a number of elements set up out of the box, like the Oracle Cloud Command Line Interface, and it also has quite some usefull command-line tools pre-installed, like git, docker, kubectl, helm and more.
 
 To access the shell, you can use the native browser on your laptop (no need for using the Linux desktop anymore).
 
@@ -28,7 +28,7 @@ To access the shell, you can use the native browser on your laptop (no need for 
 
     ![](images/cloud-console.png)
 
-
+Note, in some steps you may want to minimize the Oracle Cloud Shell so you can get information from the GUI. Click the arrows icon again [](images/cloud-console-shrink.png) to minimize the cloud shell and see the Oracle Cloud GUI again. Alternatively you can open a second browser window or tab onto the Oracle Cloud GUI.
 
 ### Downloading the scripts
 
