@@ -38,9 +38,6 @@ Firstly we need to download all of the scripts and other configuration data to r
 
 
 - Open a cloud Shell
-- Make a directory to hold this, for compatibility with the Helidon part of the labs we'll call this workspace
-  - `mkdir -p $HOME/workspace`
-  - `cd $HOME/workspace`
   
 - Clone the repository with all scripts from github into your cloud shell environment:
   - `git clone https://github.com/CloudTestDrive/helidon-Kubernetes.git`
@@ -56,9 +53,9 @@ We will use the oci shell to download the database wallet file.
 
 - Create the wallet directory and navigate to it:
   
-  - `mkdir -p $HOME/workspace/helidon-labs-stockmanager/Wallet_ATP`
+  - `mkdir -p $HOME/helidon-kubernetes/configurations/stockmanagerconf/Wallet_ATP`
   
-  - `cd $HOME/workspace/helidon-labs-stockmanager/Wallet_ATP`
+  - `cd $HOME/helidon-kubernetes/configurations/stockmanagerconf/Wallet_ATP`
   
 - Get the wallet file of your database
   
@@ -85,7 +82,7 @@ We will use the oci shell to download the database wallet file.
 ### Point your Application to the database
 
 
-- Edit the database configuration file to specify the database name. This file is `$HOME/workspace/helidon-labs-stockmanager/confsecure/stockmanager-database.yaml`
+- Edit the database configuration file to specify the database name. This file is `$HOME/helidon-kubernetes/configurations/stockmanagerconf/confsecure/stockmanager-database.yaml`
   - Locate the javax.sql.DataSource.stockLevelDataSourceOraATPJTA.datasource.url line. This will look something like 
     ```
     url: jdbc:oracle:thin:@jleoow_high?TNS_ADMIN=./Wallet_ATP
@@ -1393,7 +1390,7 @@ The script deploy.sh will apply all three deployment configuration files (storef
 *** IMPORTANT ***
 The config files of the storefront and stockmanager refer to the location in the docker repo and any security keys that you used when setting up the labs. So you'll need to edit the deployment files to reflect the location of **your** images.
 
-- Make sure you are in the folder **workspace/helidon-Kubernetes**
+- Make sure you are in the folder **helidon-Kubernetes**
 
 - Open the file **stockmanager-deployment.yaml** 
 
