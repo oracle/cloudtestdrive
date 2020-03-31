@@ -108,7 +108,7 @@ Have a look at the architecture that we will build.
   x_train.shape
   ```
 
-  The training data set has 60000 images. The other values indicate the dimensions of the image: 28x28 pixels.
+  The training data set has `60000` images. The other values indicate the dimensions of the image: 28x28 pixels.
 
 - And what is the shape of the labels for training?
 
@@ -167,8 +167,8 @@ The Neural Network that we want to build will have an input layer of 784 neurons
 
 There are two issues that we have to address:
 
-1) `The shape`: We must convert the 2D shape of 28x28 pixels into a 1D array of 784 elements.
-2) `The values`: Our input neurons expect values between `0.0` and `1.0`, however our actual input values are currently `0` to `255`. We must convert these values as well.
+1) `The shape`: We must convert the 2D shape of 28x28x1 pixels into a 1D array of 784 elements.
+2) `The values`: Our input neurons expect values between `0.0` and `1.0`, however our actual input values are currently `0` to `255`. We must scale these values as well.
 
 - Flatten the 28x28 array of each image into a 784 array. Do this for train and test.
 
@@ -183,7 +183,7 @@ There are two issues that we have to address:
   x_train.shape
   ```
 
-- Now, convert the values of the pixels from 0-255 to 0.0-1.0.
+- Now, scale the values of the pixels from 0-255 to 0.0-1.0.
 
   ```python
   x_train = x_train.astype('float32')
@@ -214,6 +214,8 @@ There are two issues that we have to address:
   
 - Our data is ready to go. Now it's time to build the neural network. Remember, we will build an input layer of 784 neurons, then two hidden layers of 16 neurons each, and finally an output layer of 10 neurons (one for each digit). If this is unclear, please review the architecture at the start of the lab. We are using the Tensorflow and Keras open source libraries for this.
 
+  Notice that there is no clear methodology that can tell you from the beggining what the right size and number of hidden layers would be required. To be able to determine this parameters you would need to "debug" the neural network. Change the number of hidden layers or the size of the neurons and monitor if the loss gets lower and the accuracy increases. Later validate this on the test set.
+
   ```python
   import tensorflow as tf
   from keras.models import Sequential
@@ -224,9 +226,9 @@ There are two issues that we have to address:
   model.add(Dense(10, activation=tf.nn.softmax))
   ```
 
-  Notice how in the first model.add we have to specify both the input shape (784 neurons) and the first hidden layer (16 neurons).
+  Notice how in the first `model.add` we have to specify both the input shape (784 neurons) and the first hidden layer (16 neurons).
 
-- At this point the "template" of our Neural Network is ready. It has random weights to start with. Next, we will train the model to optimize the weights.
+- At this point the initial architecture of our Neural Network is ready. It has random weights to start with. Next, we will train the model to optimize the weights.
 
   ```python
   model.compile(optimizer='adam',
@@ -235,7 +237,7 @@ There are two issues that we have to address:
   model.fit(x=x_train, y=y_train, epochs=10)
   ```
 
-  Notice that the input for the model training are the training images (`x_train`) and the training labels (`y_train`). We have chosen 10 epochs. This means the neural network would run through the entire data 10 times. In addition there are a number of other parameters that we will not go into here.
+  Notice that the input for the model training are the training images (`x_train`) and the training labels (`y_train`). We have chosen `10 epochs`. This means the neural network would run through the entire data 10 times. `loss` specifies the loss or also called objective function. It calculates how far off the neural networks predictions are. The results are used from the backpropagation to adjust the weights in order to minimize the loss. `optimizer` is a function used to minimize the cost or the loss. To do so we need to adjust the waits in the fordward and the backpropagation. The optimizer is the function that would be used in that process. `metric` is a function that is used to judge the performance of the model. You can specify one or more metrics. It is similar to the loss function but the result is not used when training the model. You could use as a metric any of the loss functions available in Keras.
 
   If you installed your Notebook on shape `VM.Standard.E2.2`, the training process will take about 2 minutes.
   
