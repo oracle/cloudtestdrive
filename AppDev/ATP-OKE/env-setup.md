@@ -12,8 +12,7 @@ This page will guide you through the following activities :
 
 - Part A : Set up your Cloud Infrastructure
   - Step 1: Create a compartment called CTDOKE which we will use in this lab
-  - Step 2: Add a Policy statement for OKE
-  - Step 3: Create an API user with a certificate
+  - Step 2: Create an API user with a certificate
 - Part B : Install some software on your local machine:
   - Step 4: Install git
   - Step 5: Install kubectl
