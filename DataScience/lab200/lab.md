@@ -237,7 +237,13 @@ There are two issues that we have to address:
   model.fit(x=x_train, y=y_train, epochs=10)
   ```
 
-  Notice that the input for the model training are the training images (`x_train`) and the training labels (`y_train`). We have chosen `10 epochs`. This means the neural network would run through the entire data 10 times. `loss` specifies the loss or also called objective function. It calculates how far off the neural networks predictions are. The results are used from the backpropagation to adjust the weights in order to minimize the loss. `optimizer` is a function used to minimize the cost or the loss. To do so we need to adjust the waits in the fordward and the backpropagation. The optimizer is the function that would be used in that process. `metric` is a function that is used to judge the performance of the model. You can specify one or more metrics. It is similar to the loss function but the result is not used when training the model. You could use as a metric any of the loss functions available in Keras.
+  Notice that the input for the model training is the training images (`x_train`) and the training labels (`y_train`). We have chosen `10 epochs`. This means the neural network would run through the entire dataset 10 times.
+
+  `loss` specifies the loss or also called the objective function. It calculates how far off the neural network's predictions are. The results are used to adjust the weights to minimize the loss.
+
+  `optimizer` is a function used to minimize the loss. To do so we need to adjust the waits in the forward and the backpropagation. The optimizer is the function that would be used in that process.
+
+  `metrics` is a function that is used to judge the performance of the model. You can specify one or more metrics. It is similar to the loss function but the result is not used when training the model. You could use as metric any of the loss functions available in Keras.
 
   If you installed your Notebook on shape `VM.Standard.E2.2`, the training process will take about 2 minutes.
   
