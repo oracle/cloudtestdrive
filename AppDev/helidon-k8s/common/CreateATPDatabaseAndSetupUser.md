@@ -7,7 +7,7 @@ Login to the cloud tenancy
 Hamburger menu, go to the left side, then Database section -> Autonomous Transaction Processing 
 Click create DB
 
-Fill in the form (give the DB a unique name for you) remember the admin password
+Fill in the form (give the DB a unique name for you) remember the admin password, you'll need it in a bit
 
 ## Get the OCID
 

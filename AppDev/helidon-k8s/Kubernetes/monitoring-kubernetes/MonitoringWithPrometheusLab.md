@@ -45,7 +45,7 @@ To separate the monitoring services from the  other services we're going to put 
 
 <details><summary><b>Older versions of Kubernetes than 1.15.7</b></summary>
 <p>
-We assume you are using Kubernetes 1.15.7, in which case the latest version of the helm charts ( 9.7.4 at the time of writing) are supported. If you were using an older version of Kubernetes you may need to specify a particular version of the helm chart as follows :
+We assume you are using Kubernetes 1.15.7 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the latest version of the helm charts ( 9.7.4 at the time of writing) are supported. If you were using an older version of Kubernetes you may need to specify a particular version of the helm chart as follows :
 
 Kubernetes 1.14 Prometheus helm chart 9.7.1 worked for us
 
@@ -59,20 +59,8 @@ To specify a specific older version use the version keyword in your help command
 
 Installing Prometheus is simple, we just use helm.
 
-<details><summary><b>If you are using the Virtual machine</b></summary>
-<p>
-- Install prometheus :
-  -  `helm3 install prometheus stable/prometheus --namespace monitoring`
-</p></details>
-
-
-
-<details><summary><b>If you are using the Oracle Cloud Shell</b></summary>
-<p>
-- Install prometheus :
+- In the Oracle Cloud Shell type
   -  `helm install prometheus stable/prometheus --namespace monitoring --set server.service.type=LoadBalancer`
-  
-</p></details>
   
 
 ```
@@ -125,29 +113,6 @@ The Helm chart will automatically create a couple of small persistent volumes to
 
 If you are using the Oracle Cloud Shell just for the purposes of the lab we've set this up using a load balancer, but Prometheus itself does not provide any login or authentication mechanism to access the UI. Because of this in production you would not expose it without security measures to the public internet using an Ingress or load balancer (neither of which apply authentication rules, but delegate that to the underlying services.) 
 
-<details><summary><b>If you are using the  Virtual machine</b></summary>
-<p>
-
-Unless you've decided to setup a load balancer for the purposes of this lab we're just going to setup a port-forwarding using kubectl
-
-- Open up a ***new*** terminal
-- Run the following commands:
-  -  `export POD_NAME=$(kubectl get pods --namespace monitoring -l "app=prometheus,component=server" -o jsonpath="{.items[0].metadata.name}") `
-  -  `kubectl --namespace monitoring port-forward $POD_NAME 9090`
-
-```
-Forwarding from 127.0.0.1:9090 -> 9090
-Forwarding from [::1]:9090 -> 9090
-```
-
-- Now check it's all working :
-  - Navigate with your browser to `http://localhost:9090/graph`
-  - You should see the Prometheus graphs page below
-</p></details>
-
-<details><summary><b>If you are using the Oracle Cloud Shell</b></summary>
-<p>
-
 When we used Helm we asked it to setup a load balancer for us on the service, we just need to get the IP address
 
 - Run this command
@@ -164,12 +129,13 @@ prometheus-server               LoadBalancer   10.96.216.217   132.145.227.187  
 
 On the `prometheus-server` line you can see the external IP address the load balancer has allocated. In this case it's 132.145.227.187, but of course that will differ in your environment.
 
+If the external IP is <pending> then Kubernetes is still starting the Prometheus environment. Wait a short while (a few mins) and try again.
+
 Let's go to the service web page
-  - In your web browser open up (replace <Ip address> with the service one you got)
+  - In your web browser open up (replace <Ip address> with the external IP you got)
     - `http://<ip address>/graph`
  
-You'll se the Initial prometheus graph page as below.
-</p></details>
+You'll see the Initial prometheus graph page as below.
 
 ![Prometheus empty graphs page](images/prometheus-empty-graphs.png)
 

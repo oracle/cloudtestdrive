@@ -1,6 +1,6 @@
 # Creating the client VM in the OCI tenancy
 
-This page will guide you on how to set up a Compute instance on the Oracle Cloud, running a Linux desktop.  You will be using a *Custom Image* that was prepared by your instructor, which conains all the client-side components you need for running this lab, such as Eclipse and a variety of command-line tools.
+This page will guide you on how to set up a Compute instance on the Oracle Cloud, running a Linux desktop.  You will be using a *Custom Image* that was prepared by your instructor, which contains all the client-side components you need for running this lab, such as Eclipse and a variety of command-line tools.
 
 ---
 
@@ -28,7 +28,7 @@ Your instructor will inform you if the VM's have already been created for you or
   - Navigate to the **core infrastructure** section
   - Select **Compute**, then **Instances**
 
-<img src="Screenshot 2020-02-07 at 09.34.53.png" alt="Screenshot 2020-02-07 at 09.34.53" style="zoom:50%;" />
+![](images/compute-instances-access.png)
 
 
 
@@ -39,7 +39,7 @@ You will now see the list of instances already running in this compartment.
 
 - Click the **Create Instance** button to start the creation of a new instance.
 
-![Screenshot 2020-02-07 at 10.28.16](SelectCompartment.png)
+![](images/SelectCompartment.png)
 
 
 
@@ -54,7 +54,9 @@ This will open the **Create Compute Instance** wizard.  Fill in the following el
   - Click the **Select Image** button to return to the initial screen.
 - Use the **default values** provided for following elements: 
   - **Availability domain** (AD1), **Instance type** (Virtual Machine) and **Instance shape** (VM.Standard.2.1)
-- ![Screenshot 2020-02-07 at 10.32.08](createvm.png)
+  
+![](images/createvm.png)
+
 - The *Virtual Cloud Network Compartment* should already be set to **CTDOKE**.
 - In the **Virtual cloud Network** dropdown,  select the **CTDVMVCN** network. 
 - Leave all the other setings in the section as they are in the boot volume section

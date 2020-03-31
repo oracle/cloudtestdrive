@@ -19,8 +19,26 @@ These labs look at how that is achieved.
 
 As we've seen a service in Kubernetes is delivered by programs running in containers. The way a container operates is that it runs a single program, once that program exists then the container exits, and the pod is no longer providing the service. 
 
-- Make sure that the service is running. 
-  - In a terminal type : `curl -i -X GET -u jack:password http://localhost:80/store/stocklevel`
+<details><summary><b>Getting the service IP address if you don't have it</b></summary>
+<p>
+If you haven't written it down, or have forgotten how to get the IP address of the ingress controller service you can do the following
+
+- In the Oracle Cloud Shell type the following
+  - `kubectl get services -n ingress-nginx`
+  
+```
+NAME                                          TYPE           CLUSTER-IP      EXTERNAL-IP       PORT(S)                      AGE
+ingress-nginx-nginx-ingress-controller        LoadBalancer   10.96.210.131   132.145.253.186   80:31021/TCP,443:32009/TCP   19m
+ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.67.181    <none>            80/TCP                       19m
+```
+
+The Column EXTERNAL-IP gives you the IP address, in this case the IP address for the ingress-controller load balancer is `132.145.253.186` ** but this of course will be different in your environment !**
+</p></details>
+
+First let's make sure that the service is running, (replace <ip address> with the external ip address of the ingress)
+
+- In the Oracle Cloud Shell
+  - `curl -i -X GET -u jack:password http://<ip address>:80/store/stocklevel`
 
 ```
 HTTP/1.1 200 OK
@@ -46,13 +64,14 @@ zipkin-88c48d8b9-jkcvq          1/1     Running   0          92m
 
 We can see the state of our pods, look at the RESTARTS column, all of the values are 0 (if there was a problem, for example Kubernetes could not download the container images you would see a message in the Status column, and possibly additional re-starts, but here everything is A-OK.)
 
-We're going to simulate a crash in our program, this will cause the container to exit, and Kubernetes will idntify this and start a replacement container for us.
+We're going to simulate a crash in our program, this will cause the container to exit, and Kubernetes will identify this and start a replacement container in the pod for us.
 
-Using the name of the storefront pod above let's connect to the container in the pod using kubectl, and then use ps to see what processes are running in it:
+Using the name of the storefront pod above let's connect to the container in the pod using kubectl:
 
 -  `kubectl exec storefront-65bd698bb4-cq26l -ti -- /bin/bash` 
 
-- Simulate a major fault that causes a service failure by killing the process running our service :
+Simulate a major fault that causes a service failure by killing the process running our service :
+
   - `kill -1 1`
 
 ```
@@ -346,19 +365,11 @@ First let's start following the logs of your pod
 2020.01.02 16:24:41 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
 ```
 
-<details><summary><b>If you're using the virtual machine</b></summary>
-<p>
-- Open new terminal window 
-</p></details>
-
-<details><summary><b>If you're using the Oracle cloud shell</b></summary>
-<p>
 - Open new browser window or tab
 - Go to your cloud account
 - Once in the cloud account open a cloud shell in the new window
-</p></details>
 
-- Log in to the your container and create the /frozen file:
+- Log in to the your container and create the /frozen file  (replace the pod Id with yours)
   -  `kubectl exec -ti storefront-b44457b4d-29jr7 -- /bin/bash`
   -  `touch /frozen`
 - Go back to the window running the logs
@@ -513,7 +524,7 @@ That's all we're going to do with bash shell programming for now !
 
 Having made the changes let's undeploy the existing configuration and then deploy the new one
 
-- Open a terminal window
+In the Oracle Cloud Shell
 - Navigate to the **helidon-kubernetes** folder
 - Run the undeploy.sh script
   -  `bash undeploy.sh `

@@ -20,20 +20,9 @@ For now we are going to use the simplest approach of the metrics server.
 
 ### Installing the metrics server
 
-<details><summary><b>If you are using a virtual machine</b></summary>
-<p>
 
-- In a terminal window type
-  - `helm3 install metrics-server stable/metrics-server --namespace kube-system`
-
-</p></details>
-<details><summary><b>If you are using the Oracle Cloud shell</b></summary>
-<p>
-
-- In a terminal window type
+- In the Oracle Cloud Shell type
   - `helm install metrics-server stable/metrics-server --namespace kube-system`
-
-</p></details>
 
 ```
 NAME: metrics-server
@@ -52,7 +41,7 @@ command:
 
 It will take a short time for the metrics server to start up, but you can check the progress using kubectl
 
-- In a terminal window type
+- In the Oracle Cloud Shell type
   - `kubectl get deployments -n kube-system`
   
 ```
@@ -68,7 +57,7 @@ deployment.apps/metrics-server         0/1     1            0           18s
 Once the metrics server is running (it will have an AVAILABLE count of 1) you can get information on the state of the system
 
 let's look at how the nodes in the cluster are doing
-- In a terminal window type
+- In the Oracle Cloud Shell type
   - `kubectl top nodes`
 
 ```
@@ -82,7 +71,7 @@ Note that this was from a cluster with three nodes, depending on the side of the
   
 We can also see the status of the pods in terms of what they are using
 
-- In a terminal window type
+- In the Oracle Cloud Shell type
   - `kubectl top pods`
 
 ```
@@ -96,7 +85,7 @@ Note that like the other times we've used kubectl this uses the namespace config
 
 Let's have a look at what's happening in the kube-system namespace
 
-- In a termnal window type
+- In the Oracle Cloud Shell type
   - `kubectl top pods -n kube-system`
 
 ```
@@ -120,6 +109,7 @@ proxymux-client-lr7ft                   1m           8Mi
 
 <details><summary><b>Kubernetes dashboard and the metrics-server</b></summary>
 <p>
+
 The metrics server provides information on the current use of the cluster, the kubernetes dashboard is being updated to version 2, then it will be able to pull data from the metrics server and you'll be able to see the CPU and Memory utilization in the dashboard. At the time of writing (Feb 2020) the v2 dashboard had just started it's beta process
 
 </p></details>
@@ -130,7 +120,7 @@ You can see in the output above that all of the pods are using very small amount
 <p>
 If you haven't written it down, or have forgotten how to get the IP address of the ingress controller service you can do the following
 
-- In a terminal window type the following
+- In the Oracle Cloud Shell type the following
   - `kubectl get services -n ingress-nginx`
   
 ```
@@ -139,13 +129,13 @@ ingress-nginx-nginx-ingress-controller        LoadBalancer   10.96.210.131   132
 ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.67.181    <none>            80/TCP                       19m
 ```
 
-The Column EXTERNAL-IP gives you the IP address, in thie case the IP address for the ingress-controller load balancer is `132.145.253.186` ** but this of course will be different in your environment !**
+The Column EXTERNAL-IP gives you the IP address, in this case the IP address for the ingress-controller load balancer is `132.145.253.186` ** but this of course will be different in your environment !**
 </p></details>
 ---
 
 In the helidon-kubernetes project in the cloud-native-kubernetes/auto-scaling folder run the following. You must to replace the IP address here with the one for your ingress controller (see the expansion section above for details of how to get this if you've forgotten)
 
-- In a terminal window
+- In the Oracle Cloud Shell
   -  `bash generate-load.sh 132.145.253.186 0.1`
 
 ```
@@ -165,7 +155,7 @@ The script will just get the stock level data, attempting to do so about 10 time
 - Type Control-C to stop the script
 
 This will increase the load, to see the increased load
-- In a terminal window type
+- In the Oracle Cloud Shell type
   - `kubectl top pods`
   
 ```
@@ -177,7 +167,7 @@ zipkin-7db7558998-cnbjf        1m           218Mi
 
 You'll see the CPU load has increased, as the data is averaged over a short period of time you may have to wait a short while (say 30 seconds) for it to update.
 
-- In a terminal window (a bit later) type
+- In the Oracle Cloud Shell (a little bit later) type
   - `kubectl top pods`
   
 ```
@@ -197,7 +187,7 @@ Notice that in this particular example the CPU here for the storefront is at 251
 ```
 
 We can also get the current resource level for the container using kubectl and the jsonpath capability
-- In a terminal window (substitute your storefront pod name) type 
+- In the Oracle Cloud Shell (substitute your storefront pod name) type 
   - `kubectl get pod storefront-79c465dc6b-x8fbl -o=jsonpath='{.spec.containers[0].resources.limits.cpu}'`
  
  ```
@@ -211,7 +201,7 @@ That we have hit the limit is almost certainly a problem, it's quite likely that
 To fix this problem we need to add more pods, but we don;t want to do this by hand, that would mean we'd have to be monitoring the system all the time. Let's use a the Kubernetes autoscale functionality to do this for us 
 
 Setup autoscale (normally of course this would be handled using modifications to the YAML file for the deployment)
- - In a terminal window type
+ - In the Oracle Cloud Shell type
   - `kubectl autoscale deployment  storefront --min=2 --max=5 --cpu-percent=50`
   
 ```
@@ -222,7 +212,7 @@ The autoscaler will attempt to achieve a target CPU load of 50%, adding or remov
 
 
 We can see what the system has found by looking in the Horizontal Pod Autoscalers
-- In a terminal window type 
+- In the Oracle Cloud Shell type 
   - `kubectl get horizontalpodautoscaler storefront`
 
 ```
@@ -244,7 +234,7 @@ A few points on the output The TARGET column tells us what the **current** load 
 
 You can get more detail on the autoscaler state
 
-- In a terminal window type
+- In the Oracle Cloud Shell type
   - ` kubectl describe hpa storefront`
 
 ```
@@ -270,7 +260,7 @@ Events:           <none>
 
 Now restart the load generator program. Note that you may need to change the sleep time from 0.1 to a different value if the load generated is not high enough to trigger an autoscale operation, but don't set it to low !
 
-- In a terminal window (substitute the IP address for the one for your cluster)
+- In the Oracle Cloud Shell (substitute the IP address for the ingress for your cluster)
   -  `bash generate-load.sh 132.145.253.186 0.1`
 
 
@@ -283,7 +273,7 @@ Now restart the load generator program. Note that you may need to change the sle
 - Stop the load generator with Control-C after a bit
 
 Allow a short time for the load to be recorded, then look at the load on the pods (you may have to adjust the request frequency in the script if the load does not increase enough to trigger autoscaling
-- In a terminal window type
+- In the Oracle Cloud Shell type
   - `kubectl top pods`
 
 ```
@@ -295,7 +285,7 @@ zipkin-7db7558998-cnbjf        9m           341Mi
 ```
 
 Notice that the load on the pods has increased, let's look at the autoscaler
-- In a terminal window type
+- In the Oracle Cloud Shell type
   - `kubectl get horizontalpodautoscaler storefront`
 
 ```
@@ -303,10 +293,10 @@ NAME         REFERENCE               TARGETS   MINPODS   MAXPODS   REPLICAS   AG
 storefront   Deployment/storefront   73%/50%   2         5         3          16m
 ```
 
-The current load (in thic case 73%) is above the 50% target. The autoscaler will have kicked in and be starting to do it's thing. 
+The current load (in this case 73%) is above the 50% target. The autoscaler will have kicked in and be starting to do it's thing. 
 
 Let's look at the autoscaler details
-- In a terminal window type
+- In the Oracle Cloud Shell type
   - `kubectl describe hpa storefront`
   
 ```
@@ -334,8 +324,8 @@ Events:
   Normal  SuccessfulRescale  11s   horizontal-pod-autoscaler  New size: 5; reason: cpu resource utilization (percentage of request) above target
 ```
 
-In fact it seems that in the time between the commands above the short term average load increased sufficiently that the autoscaler having determined it wanted three pods then u[dated to realize it wanted 5 pods to meet the load. In this case if we look at the pods list we can see the details there
-- In a terminal window type
+In fact it seems that in the time between the commands above the short term average load increased sufficiently that the autoscaler having determined it wanted three pods then updated to realize it wanted 5 pods to meet the load. In this case if we look at the pods list we can see the details there
+- In the Oracle Cloud Shell type
   - `kubectl top pods`
 
 ```
@@ -351,8 +341,8 @@ zipkin-7db7558998-cnbjf        11m          387Mi
 
 All 5 pods are running and the service is distributing the load amongst them. Actually some of the storefront pods above are probably still in their startup phase as I gathered the above data immediately after getting the auto scale description.
 
-Let's get the autoscaler summar again
-- In a terminal window type
+Let's get the autoscaler summary again
+- In the Oracle Cloud Shell type
   - `kubectl get hpa storefront`
   
 ```
@@ -369,12 +359,14 @@ Note that the metrics server seems to operate on a decaying average basis (in ve
 The autoscaler tries not to "thrash" the system by starting and stopping pods all the time. Because of this it will only remove pods every few minutes rather than immediately the load becomes low, additionally it will also only remove a few pods at a time. The [autoscaler documentation](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#algorithm-details) describes the algorythm.
 
 For now let's delete the autoscaler to we can proceed with the next part of the lab
-- In a terminal window type
+- In the Oracle Cloud Shell type
   - `kubectl delete hpa storefront`
 
 ```
 horizontalpodautoscaler.autoscaling "storefront" deleted
 ```
+
+Note that this just stops the starting or stopping of pods, any existing pods will remain, even if there are more (or less) than specified in the deployment document.
 
 ## Autoscaling on other metrics
 We have here looked at how to use CPU and memory to determine when to autoscale, that may be a good solution, or it may not. Kubernetes autoscaling can support the use of other metrics to manage autoscaling.

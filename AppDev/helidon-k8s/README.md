@@ -42,7 +42,9 @@ If you feel you are already pretty familiar with a specific concept, you can jus
 
 ---
 
+## The lab environment
 
+You will be doing these labs in the Oracle Cloud Infrastructure (OCI) This is because to write the labs we need a place where we can provide you with a consistent environment, and working for Oracle OCI is the cloud we have easiest access to. The basic principles will however run in any Java IDE or Kubernetes environment, however you may need to adjust some aspects, for example to install a MySQL database on your laptop the process will be different than creating an Autonomous Transaction Processing database in the Oracle cloud.
 
 
 

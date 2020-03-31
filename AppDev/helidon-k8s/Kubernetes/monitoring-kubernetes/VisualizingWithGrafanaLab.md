@@ -17,23 +17,10 @@ For this lab we will use a small subset of the open source features only.
 ### Installing Grafana
 Like many other Kubernetes services Grafana can be installed using helm. By default the helm chart does not create a volume for the storage of the grafana configuration. This would be a problem in a production environment, so we're going to use the persistent storage option defined inthe helm chart for Grafana to create a storage volume. 
 
-<details><summary><b>If you are using the Virtual machine</b></summary>
-<p>
-
-- In a terminal window type following command:
-  -  `helm3 install grafana --namespace monitoring stable/grafana --set persistence.enabled=true`
-
-</p></details> 
- 
-<details><summary><b>If you are using the Oracle Cloud Shell</b></summary>
-<p>
-
-- In a terminal window type following command:
+- In the Oracle Cloud Shell type following command:
   -  `helm install grafana --namespace monitoring stable/grafana --set persistence.enabled=true --set service.type=LoadBalancer`
 
-Note that normally you woudl not expose Grafana directly, but would use a ingress or other front end. However to do that requires setting up DNS names and getting security certificates. Of course you'd do that in production, but for this lab we want to focus on the core Kubernetes learnign stream, so we're taking the easier approach of just creating a load balancer.
-
- </p></details>
+Note that normally you would not expose Grafana directly, but would use a ingress or other front end. However to do that requires setting up a reverse proxy with DNS names and getting security certificates, which can take time. Of course you'd do that in production, but for this lab we want to focus on the core Kubernetes learnign stream, so we're taking the easier approach of just creating a load balancer.
  
 ```
 
@@ -70,22 +57,7 @@ wzuiF89rmm2g671fdAkeyZ7GxGrpK71rdCD6YxBd
 
 - **Copy and paste** the password into a text editor so you can use it later.
 
-We need to open a web page to the Grafana service
-<details><summary><b>If you are using the Virtual machine</b></summary>
-<p>
-
-- In the same new terminal window let's setup the port forwarding:
-  -  `export POD_NAME=$(kubectl get pods --namespace monitoring -l "app=grafana,release=grafana" -o jsonpath="{.items[0].metadata.name}")`
-  -  `kubectl --namespace monitoring port-forward $POD_NAME 3000`
-
-- In the browser open a new tab and go to http://localhost:3000
-</p></details>
-
-
-<details><summary><b>If you are using the Oracle Cloud Shell</b></summary>
-<p>
-
-We need to get the IP address of the load balancer.
+We need to open a web page to the Grafana service. To do that we need to get the IP address of the load balancer.
 
 - Run the following command (here we are limiting to just the grafana service)
   - `kubectl get service grafana -n monitoring`
@@ -94,12 +66,12 @@ We need to get the IP address of the load balancer.
 NAME      TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)        AGE
 grafana   LoadBalancer   10.96.161.234   130.61.205.103   80:32261/TCP   4m57s
 ```
-Note the External IP address
+Note the External IP address (130.61.201.103 in this case)
+
+If the external IP address says <pending> then Kubernetes hasn't finished starting the service. wait a short whiel and run the command again.
 
 - Open a web page (replace <external IP> with the one you just got for the grafana service_
   - `http://<external ip>
-
-</p></details>
 
 You'll be presented with the Grafana login window
 ![grafana-login](images/grafana-login.png)

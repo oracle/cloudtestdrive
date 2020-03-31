@@ -44,7 +44,7 @@ Your instructor will inform you if the Kubernetes clusters have already been cre
 
   - **TURN OFF** the Add Ons : make sure that the sliders for **Kubernetes Dashboard** and **Tiller (Helm)**  are grey ("switch" to the left")
 
-![image-20200218220147715](image-20200218220147715.png)
+![](images/create-k8s-cluster.png)
 
 - Click the Next button to go to the review page.
 
@@ -57,30 +57,3 @@ You'll be presented with a progress option, if you want read what's happening
 
 The state will be "Creating" for **a few minutes** (usually 3-4 mins)
 
-Once the cluster has been created the "Accesss Kubeconfig" button will be enabled. 
-
-- Create a directory for the Kubernetes config
-  - `mkdir -p $HOME/.kube`
-
-- Click the **Accesss Kubeconfig** button to get the configuration for **your** cluster. 
-
-You will be presented with a page with details for downloading the Kubeconfig file. The main thing is to look for the line like shown below :
-
-```
-EXAMPLE ONLY, copy the line for your cluster !
-oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaa<lots of stuff>aaa --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0
-New config written to the Kubeconfig file /home/oracle/.kube/config
-```
-
-- Copy *your* config download script (the above is an example and won;t work for real)
-- Open a shell window and **paste** the line to execute it.
-
-Your kubernetes config file is now downloaded into the .kube/config file
-
-- Verify you can access the cluster:
-  -  `kubectl get nodes`
-
-```
-NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
-service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   13m
-```
