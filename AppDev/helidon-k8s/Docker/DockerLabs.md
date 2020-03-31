@@ -317,56 +317,29 @@ Of course in a production environment you'd probably have a separate folder cont
 ### Pushing your images to a container repository
 The docker container images are currently only held locally, that's not good if you want to distribute them or run them in other locations. We can save the images in an external repository, This could be public - e.g. dockerhub.com, private to your organization or in a cloud registry like the Oracle OCIR. Note that if you wanted to there are docker image save and docker image load commands that will save and load image files from a tar ball, but that's unlikely to be as easy to use as a repository, especially when trying to manage distribution across a large enterprise environment.
 
+#### Getting your docker credentials and other information
+
+There are a few details (registry id, authentication tokens and the like) you will need to get before you push your images. For instructions on how to gather them please read [this document on getting your docker details](../ManualSetup/GetDockerDetailsForYourTenancy.md)
+
 As there are probably many attendees doing the lab we need to separate the different images out, so we're also going to use your initials / name / something unique 
 
 Your full repo will be a combination of the repository host name (e.g. fra.ocir.io for an Oracle Cloud Infrastructure Registry) the tenancy name (oractdemeabdmnative) and the  details you've chosen
 
-#### Determining your Oracle Cloud Infrastructure Registry
+#### Docker login in to the Oracle Container Image Registry (OCIR)
 
-The Oracle Cloud Infrastructure Registry repo is of the form : `region.ocir.io/tenancy-name/repo-name` for example `fra.ocir.io/oractdemeabdmnative/tg_repo` 
+We need to tell docker your username and password for the registry. 
 
-You therefore need to determine these three values.
+You will have gathered the information needed in the previous step. You just need to execute the following command, of course you need to substitute the fields
 
-##### Determining the region code
+`docker login <registry> --username=<tenancy name>/oracleidentitycloudservice/<user name> --password='<auth token>'
 
-The region is based on the IATA code for the city hosting the region, for example Frankfurt is fra and Amsterdam is ams. Unfortunately some cities (e.g. London) have multiple airports, in others the IATA airport code refers to an old name for the city, or the airport itself is not directly named after the city it serves, so we need to look the right code up based on our region.
+For example a completed version may look like this (this is only an example, use your own values)
 
-To determine your region look at the top of your Oracle Cloud GUI in the web browser and you'll see your current region.
+`docker login fra.odir.io --username=cdtemeabdnse/oracleidentitycloudservice/my.email@you.server.com --password='q)u70[]eUkM1u}zu;:[L'`
 
-![](images/region-name.png)
+Enter the command with **your** details into a terminal in the virtual machine to login to the OCIR.
 
-If you click on the name you'll get a list of regions enabled for your tenancy and your home region
-
-![](images/regions-list.png)
-
-You can see here in this example we're using the Frankfurt region, which is also our home region. While you can use any region that's enabled for your tenancy for the purposed of this lab we recommend you use your home region.
-
-Now go to the [OCIR Availability By Region list.](https://docs.cloud.oracle.com/en-us/iaas/Content/Registry/Concepts/registryprerequisites.htm#Availab)
-
-Locate your region on the list and then to the right identify the region url, for example we can see below in the case of Sydney the region is syd.ocir.io
-
-[](images/sydney-region-code.png)
-
-Note that if your region is **not** on the list then you will need to chose one from your regions list list that is. If none of the regions in your list have OCIR availability then click the Manage Regions button to add a region that is on the [OCIR Availability By Region list.](https://docs.cloud.oracle.com/en-us/iaas/Content/Registry/Concepts/registryprerequisites.htm#Availab)
-
-##### Determining your tenancy and username
-
-In the upper right of the Oracle Cloud web GUI there is a shadow of a person ![](images/user-icon.png) 
-
-If you click it you will see a detail of the tenancy
-
-![](images/user-details.png)
-
-Here we can see the user is `username` and the tenancy is `oractdemeabdmnative`, details differ based on the tenancy of course.
-
-##### Chosing the repo name 
-
-You now need to chose a name for your repository,
-
-- Chose something unique **TO YOU** e.g. your initials : tg_repo 
-- this must be in **lower case** and can **only contain letters, numbers, underscore and hyphen**
-
-The ultimate full repository name will look something like `fra.ocir.io/oractdemeabdmnative/tg_repo` (yours will of course differ)
+#### Pushing the images
 
 Let's update the repoConfig.sh scripts in **both** the helidon-labs-stockmanager and helidon-labs-storefront directories to reflect your chosen details
 
@@ -386,11 +359,6 @@ Let's update the repoConfig.sh scripts in **both** the helidon-labs-stockmanager
 
 - Open file **repoConfig.sh** and edit the repo name again as above
 
----
-
-# NEED THE PROCESS TO GET THE AUTH TOKEN AND DO THE DOCKER LOGIN
-
----
 
 ---
 
@@ -403,7 +371,16 @@ The build script is pretty similar to what we had before. It uses mvn package to
 $ docker build  --tag $REPO/storefront:latest --tag $REPO/storefront:0.0.1 -f Dockerfile .
 ```
 
-Note that we have two --tag commands so the resulting image will be pointed to by two names, not just one. Both of the names include the repository information (we use this later on when pushing the images) but they also have a :<something> after the container name we're used to seeing. This is used as the version number, this is not processed in any meaningful way that I've discovered (for example I've yet to find a tool that allows you to do something like Version 1.2.4 or later) but by convention you should tag the most recent version with :latest and all images should be tagged with a version number in the form of :<major>.<minor>.<micro> e.g. 1.2.4
+Note that we have two --tag commands so the resulting image will be pointed to by two names, not just one. Both of the names include the repository information (we use this later on when pushing the images) but they also have a :<something> after the container name we're used to seeing. This is used as the version number, this is not processed in any meaningful way that I've discovered (for example I've yet to find a tool that allows you to do something like Version 1.2.4 or later) but by convention people tag the most recent version with :latest and all images should also be tagged with a version number in the form of :<major>.<minor>.<micro> e.g. 1.2.4
+
+<details><summary><b>On the dangers of using :latest</b></summary>
+<p>
+On the surface using :latest may seem like a really good idea, you want to run the latest version all the time right ?
+
+Well actually using :latest may not be what you want. In a production environment you probably want to know what your exact configuration is, you may well have accreditation requirements (especially in the finance sector) and in most situations you want the production environment to match your development, and test environment. Certainly if you have problems and want to fix them you would wnat to know the configuration the problem is occuring in.
+
+To make matters worse :latest is just a tag , it has no actual meaning. you could have a v0.0.1 version which is also tagged latest, even though there are many versions after it (0.0.2, 0.1.4, 1.0.2 etc.) docker doesn't ensure that :latest is actually the most recent version of an image.
+</p></details>
 
 Now the images are tagged with a name that included version and repo information we can push them to a repository, you will need to have logged in to your docker repository (the `docker login` command )
 
@@ -527,7 +504,7 @@ This is the end of the lab, let's stop the running images
 
 Congratulations, you are now able to run your microservices on Docker!  Next step is to use these images to deploy them on a Kubernetes cluster.  For this, navigate to the next chapter, [C. Deploying in Kubernetes](../Kubernetes/Kubernetes-labs.md)
 
-## Preparing for the Kubernetes labs
+# Preparing for the Kubernetes labs
 
 When you do the Kubernetes labs you will test out performing a rolling upgrade. To do that you need to be able to show that the upgrade has applied, so you're going to make a small change now so you can see that in the later labs.
 
