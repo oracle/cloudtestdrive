@@ -2,7 +2,7 @@
 
 # Lab: Recognize handwritten digits using Neural Networks
 
-In this lab we will build a Neural Network to recognize handwritten digits. In a second step we'll try to improve its accuracy by upgrading it to a Convolutional Neural Network.
+In this lab we will build a Neural Network to recognize handwritten digits.
 
 ## Objectives
 
