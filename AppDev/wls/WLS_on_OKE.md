@@ -5,7 +5,7 @@
 # Running WebLogic on Kubernetes
 
 ## Introduction
-This lab will showcase running WebLogic on a Kubernetes cluster, using the Operator to manage the WebLogic domains.  This tutorial is based on the [Quick Start Guide](https://oracle.github.io/weblogic-kubernetes-operator/quickstart/) that is part of the official WebLogic Kubernetes Operator page, but with most prerequisites already taken care of in our Test Drive Cloud Tenancy and using a Linux Desktop with all local software already installed and configured.
+This lab will showcase running WebLogic on a Kubernetes cluster, using the Operator to manage the WebLogic domains.  This tutorial is based on the [Quick Start Guide](https://oracle.github.io/weblogic-kubernetes-operator/quickstart/) that is part of the official WebLogic Kubernetes Operator page, but now using the **Cloud Shell** , allowing you to run this lab using just a browser and your Oracle Cloud account.
 
 ### Prerequisites
 
@@ -20,7 +20,7 @@ To run this lab, you need following elements :
 
 - Open the [OCI console](https://console.eu-frankfurt-1.oraclecloud.com), log in using the **Single Sign On** menu on the **left** 
 
-Create a token for your user (will be used to login to the docker repository)
+Create a token for your user (will be used to login to the docker repository):
 
 - Click on the **Magnifying glass** on the top of your console, and enter your username.  For example, if your name was **ppan** : 
 
@@ -215,12 +215,12 @@ EOF
       --set "domainNamespaces={}" \
       --wait
     ```
-    
+  
 - Verify that the operator’s pod is running, by listing the pods in the operator’s namespace. You should see one for the operator.
   
   ```bash
     $ kubectl get pods -n sample-weblogic-operator-ns
-    ```
+  ```
   
 - Create namespace where your WebLogic will run
 
