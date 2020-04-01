@@ -57,7 +57,7 @@ The basic principles will however run in any Java IDE or Kubernetes environment,
 **Preparing your environment**
 
 - You can run this lab on a **Oracle Free Tier** account.  In this case you need to perform some extra preparation steps, [explained in detail on this page](ManualSetup/FullSetupFreeTier.md).
-- In case you are running **an instructor-led lab**, your instructor might make a Cloud Tetancy available for you, minimizing the setup to [these few steps to connect to a remote desktop](CreateClientVm.md).
+- In case you are running **an instructor-led lab**, your instructor might make a Cloud Tetancy available for you, minimizing the setup to [these few steps to connect to a remote desktop](ManualSetup/CreateClientVm.md).
 
 
 
