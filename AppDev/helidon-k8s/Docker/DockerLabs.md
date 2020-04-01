@@ -319,11 +319,13 @@ The docker container images are currently only held locally, that's not good if 
 
 #### Getting your docker credentials and other information
 
-There are a few details (registry id, authentication tokens and the like) you will need to get before you push your images. For instructions on how to gather them please read [this document on getting your docker details](../ManualSetup/GetDockerDetailsForYourTenancy.md)
+There are a few details (registry id, authentication tokens and the like) you will need to get before you push your images. 
+
+- Please follow the instructions [in this document for getting your docker details](../ManualSetup/GetDockerDetailsForYourTenancy.md)
 
 As there are probably many attendees doing the lab we need to separate the different images out, so we're also going to use your initials / name / something unique 
 
-Your full repo will be a combination of the repository host name (e.g. fra.ocir.io for an Oracle Cloud Infrastructure Registry) the tenancy name (oractdemeabdmnative) and the  details you've chosen
+Your full repo will be a combination of the repository host name (e.g. fra.ocir.io for an Oracle Cloud Infrastructure Registry) the tenancy storage name (for example oractdemeabdmnative) and the  details you've chosen
 
 #### Docker login in to the Oracle Container Image Registry (OCIR)
 
@@ -331,11 +333,18 @@ We need to tell docker your username and password for the registry.
 
 You will have gathered the information needed in the previous step. You just need to execute the following command, of course you need to substitute the fields
 
-`docker login <registry> --username=<tenancy name>/oracleidentitycloudservice/<user name> --password='<auth token>'
+`docker login \<region-code>.ocir.io --username=\<tenancy object storage name\>/oracleidentitycloudservice/\<user name\> --password='\<auth token\>'
+
+where :
+
+- \<region-code> : 3-letter code of the region you are using : **fra** for Frankfurt, **lhr** for London, see [here](https://docs.cloud.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm) for all codes.
+- \<tenancy object storage name\>: name of your tenancy's Object Storage namespace
+- \<user name\>: user name you used to register
+- \<auth token\>': Auth token you associated with your username
 
 For example a completed version may look like this (this is only an example, use your own values)
 
-`docker login fra.odir.io --username=cdtemeabdnse/oracleidentitycloudservice/my.email@you.server.com --password='q)u70[]eUkM1u}zu;:[L'`
+`docker login fra.ocir.io --username=cdtemeabdnse/oracleidentitycloudservice/my.email@you.server.com --password='q)u70[]eUkM1u}zu;:[L'`
 
 Enter the command with **your** details into a terminal in the virtual machine to login to the OCIR.
 
@@ -359,7 +368,6 @@ Let's update the repoConfig.sh scripts in **both** the helidon-labs-stockmanager
 
 - Open file **repoConfig.sh** and edit the repo name again as above
 
-
 ---
 
 <details><summary><b>About the script and the docker tags</b></summary>
@@ -371,7 +379,7 @@ The build script is pretty similar to what we had before. It uses mvn package to
 $ docker build  --tag $REPO/storefront:latest --tag $REPO/storefront:0.0.1 -f Dockerfile .
 ```
 
-Note that we have two --tag commands so the resulting image will be pointed to by two names, not just one. Both of the names include the repository information (we use this later on when pushing the images) but they also have a :<something> after the container name we're used to seeing. This is used as the version number, this is not processed in any meaningful way that I've discovered (for example I've yet to find a tool that allows you to do something like Version 1.2.4 or later) but by convention people tag the most recent version with :latest and all images should also be tagged with a version number in the form of :<major>.<minor>.<micro> e.g. 1.2.4
+Note that we have two --tag commands so the resulting image will be pointed to by two names, not just one. Both of the names include the repository information (we use this later on when pushing the images) but they also have a :\<something\> after the container name we're used to seeing. This is used as the version number, this is not processed in any meaningful way that I've discovered (for example I've yet to find a tool that allows you to do something like Version 1.2.4 or later) but by convention people tag the most recent version with :latest and all images should also be tagged with a version number in the form of :\<major\>.\<minor\>.\<micro\> e.g. 1.2.4
 
 <details><summary><b>On the dangers of using :latest</b></summary>
 <p>

@@ -44,7 +44,20 @@ If you feel you are already pretty familiar with a specific concept, you can jus
 
 ## The lab environment
 
-You will be doing these labs in the Oracle Cloud Infrastructure (OCI) This is because to write the labs we need a place where we can provide you with a consistent environment, and working for Oracle OCI is the cloud we have easiest access to. The basic principles will however run in any Java IDE or Kubernetes environment, however you may need to adjust some aspects, for example to install a MySQL database on your laptop the process will be different than creating an Autonomous Transaction Processing database in the Oracle cloud.
+You will be running these labs on an Oracle Cloud Infrastructure (OCI) tenancy.  This allows us to provide you with a consistent environment. 
+
+Components we will be using : 
+
+- A Linux VM with a Linux Desktop, accessible through a VNC viewer.  This environment will contain Eclipse, Maven and Docker, tools you will need to run the first 2 labs (**A. Helidon** and **B. Docker**)
+- An ATP database to allow our application to store data in a persistent manner.
+- A Kubernetes cluster to deploy you microservices on (for the 3rd lab **C. Kubernetes**) 
+
+The basic principles will however run in any Java IDE or Kubernetes environment, however you may need to adjust some aspects, for example when installing a local database on your laptop the process will be different than when using an Autonomous Transaction Processing database in the Oracle cloud.
+
+**Preparing your environment**
+
+- You can run this lab on a **Oracle Free Tier** account.  In this case you need to perform some extra preparation steps, [explained in detail on this page](ManualSetup/FullSetupFreeTier.md).
+- In case you are running **an instructor-led lab**, your instructor might make a Cloud Tetancy available for you, minimizing the setup to [these few steps to connect to a remote desktop](CreateClientVm.md).
 
 
 
