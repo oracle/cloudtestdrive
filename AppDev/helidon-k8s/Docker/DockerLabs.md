@@ -335,13 +335,13 @@ We need to tell docker your username and password for the registry.
 
 You will have gathered the information needed in the previous step. You just need to execute the following command, of course you need to substitute the fields
 
-`docker login <region-code>.ocir.io --username=<tenancy object storage name>/oracleidentitycloudservice/<user name> --password='<auth token>'`
+`docker login <region-code>.ocir.io --username=<mytenancystoragenamespace>/oracleidentitycloudservice/<myusername> --password='<auth token>'`
 
 where :
 
 - `<region-code>` : 3-letter code of the region you are using
-- `<tenancy object storage name>` : name of your tenancy's Object Storage namespace
-- `<user name>` : user name you used to register
+- `<mytenancystoragenamespace>` : name of your tenancy's Object Storage namespace
+- `<myusername>` : user name you used to register for your cloud account, usually an email address
 - `<auth token>`: Auth token you associated with your username
 
 All of this is information you gathered when you were [getting your docker details](../ManualSetup/GetDockerDetailsForYourTenancy.md)

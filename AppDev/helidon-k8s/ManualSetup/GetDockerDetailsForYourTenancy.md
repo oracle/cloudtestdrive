@@ -38,7 +38,7 @@ Locate your region on the list and then to the right identify the region code, f
 
 ![](images/ObjStor.png) 
 
-- Note down the **Object Storage Namespace** of your tenancy
+- Note down the **Object Storage Namespace** of your tenancy, in the example above this is `frjqogy3byob` **but yours will be different** (this is what we mean when we say mytenancystoragenamespace in these labs)
 
   
 

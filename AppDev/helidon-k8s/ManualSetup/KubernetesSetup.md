@@ -113,7 +113,7 @@ All of this is information you gathered when you were [getting your docker detai
 
 For example a completed version may look like this (this is only an example, use your own values) ** Important** The auth token being used for the password may well contain characters with special meaning to the shell, so it's important to include it in single quotes as in the example below ( ' )
 
-`docker login fra.ocir.io --username=cdtemeabdnse/oracleidentitycloudservice/my.email@you.server.com --password='q)u70[]eUkM1u}zu;:[L'`
+`docker login fra.ocir.io --username=cdtemeabdnse/oracleidentitycloudservice/my.email@company.com --password='q)u70[]eUkM1u}zu;:[L'`
 
 Enter the command with **your** details into a terminal in the Oracle Cloud Shell to log in to the Oracle Cloud Image Registry
 
@@ -130,24 +130,24 @@ docker pull fra.ocir.io/oractdemeabdmnative/h-k8s_repo/stockmanager:0.0.1
 
 - Change the docker image tags as follows, replacing following strings:
   - the target OCIR name  **\<myregion\>** with your datacenter name (for example fra.ocir.io)
-  - the tenancy Object Storage Namespace (**\<mytenancy\>** in the example)
+  - the tenancy Object Storage Namespace (**\<mytenancystoragenamespace\>** in the example)
   - your chosen repository name (**\<myrepo\>** in the example)
 
 ```
-docker tag fra.ocir.io/oractdemeabdmnative/h-k8s_repo/storefront:0.0.1 <myregion>/<mytenancy>/<myrepo>/storefront:0.0.1
-docker tag fra.ocir.io/oractdemeabdmnative/h-k8s_repo/storefront:0.0.2 <myregion>/<mytenancy>/<myrepo>/storefront:0.0.2
-docker tag fra.ocir.io/oractdemeabdmnative/h-k8s_repo/stockmanager:0.0.1 <myregion>/<mytenancy>/<myrepo>/stockmanager:0.0.1
+docker tag fra.ocir.io/oractdemeabdmnative/h-k8s_repo/storefront:0.0.1 <myregion>.ocir.io/<mytenancystoragenamespace>/<myrepo>/storefront:0.0.1
+docker tag fra.ocir.io/oractdemeabdmnative/h-k8s_repo/storefront:0.0.2 <myregion>.ocir.io/<mytenancystoragenamespace>/<myrepo>/storefront:0.0.2
+docker tag fra.ocir.io/oractdemeabdmnative/h-k8s_repo/stockmanager:0.0.1 <myregion>.ocir.io/<mytenancystoragenamespace>/<myrepo>/stockmanager:0.0.1
 ```
 
 
 
 - Push the images up to your tenancy repo
-  - Again changing the myregion, mytenancy and myrepo parameters in the following commands to match the ones you used when you tagged the images
+  - Again changing the myregion, mytenancystoragenamespace and myrepo parameters in the following commands to match the ones you used when you tagged the images
 
 ```
-  docker push <myregion>/<mytenancy>/<myrepo>/storefront:0.0.1
-  docker push <myregion>/<mytenancy>/<myrepo>/storefront:0.0.2
-  docker push <myregion>/<mytenancy>/<myrepo>/stockmanager:0.0.1
+  docker push <myregion>.ocir.io/<mytenancystoragenamespace>/<myrepo>/storefront:0.0.1
+  docker push <myregion>.ocir.io/<mytenancystoragenamespace>/<myrepo>/storefront:0.0.2
+  docker push <myregion>.ocir.io/<mytenancystoragenamespace>/<myrepo>/stockmanager:0.0.1
 ```
 
 
