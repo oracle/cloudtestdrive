@@ -84,34 +84,43 @@ GRANT UNLIMITED TABLESPACE TO HelidonLabs;
 
 
 
-### 4. Prepare to log into your Docker Registry
+### 4. Getting your docker credentials and other information
 
-- Follow the instructions [in this document for getting your docker details](../ManualSetup/GetDockerDetailsForYourTenancy.md)
+There are a few details (registry id, authentication tokens and the like) you will need to get before you push your images. 
+
+- Please follow the instructions in this document for [getting your docker details](../ManualSetup/GetDockerDetailsForYourTenancy.md)
+
+As there are may be many attendees doing the lab going through the same tenancy we need to separate the different images out, so we're also going to use your initials / name / something unique 
+
+Your full repo will be a combination of the repository host name (e.g. fra.ocir.io for an Oracle Cloud Infrastructure Registry) the tenancy storage name (for example oractdemeabdmnative) and the  details you've chosen
+
+### 5. Docker login in to the Oracle Container Image Registry (OCIR)
+
+We need to tell docker your username and password for the registry. 
+
+You will have gathered the information needed in the previous step. You just need to execute the following command, of course you need to substitute the fields
+
+`docker login <region-code>.ocir.io --username=<tenancy object storage name>/oracleidentitycloudservice/<user name> --password='<auth token>'`
+
+where :
+
+- `<region-code>` : 3-letter code of the region you are using
+- `<tenancy object storage name>` : name of your tenancy's Object Storage namespace
+- `<user name>` : user name you used to register
+- `<auth token>`: Auth token you associated with your username
+
+All of this is information you gathered when you were [getting your docker details](../ManualSetup/GetDockerDetailsForYourTenancy.md)
+
+For example a completed version may look like this (this is only an example, use your own values) ** Important** The auth token being used for the password may well contain characters with special meaning to the shell, so it's important to include it in single quotes as in the example below ( ' )
+
+`docker login fra.ocir.io --username=cdtemeabdnse/oracleidentitycloudservice/my.email@you.server.com --password='q)u70[]eUkM1u}zu;:[L'`
+
+Enter the command with **your** details into a terminal in the Oracle Cloud Shell to log in to the Oracle Cloud Image Registry
 
 
+### 6. Copy the pre-built Docker images  
 
-### 5. Prepare to copy pre-build Docker images
-
-- Open the Cloud Shell by clicking on the "**>_**" icon on the top right of the console
-
-- Login to the Docker repository : You will have gathered the information needed in the previous step. You just need to execute the following command, of course you need to substitute the fields
-
-  `docker login \<region-code>.ocir.io --username=\<tenancy object storage name\>/oracleidentitycloudservice/\<user name\> --password='\<auth token\>'
-
-  where :
-
-  - \<region-code> : 3-letter code of the region you are using : **fra** for Frankfurt, **lhr** for London, see [here](https://docs.cloud.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm) for all codes.
-  - \<tenancy object storage name\>: name of your tenancy's Object Storage namespace
-  - \<user name\>: user name you used to register
-  - \<auth token\>': Auth token you associated with your username
-
-  For example a completed version may look like this (this is only an example, use your own values)
-
-  `docker login fra.ocir.io --username=cdtemeabdnse/oracleidentitycloudservice/my.email@you.server.com --password='q)u70[]eUkM1u}zu;:[L'`
-
-  
-
-- Download the pre-built docker images by executing following commands:
+- Download the pre-built docker images by executing following commands: **IMPORTANT** run these exactly as they are, don't change any of the parameters as here you are downloading from an existing repository
 
 ```
 docker pull fra.ocir.io/oractdemeabdmnative/h-k8s_repo/storefront:0.0.1
@@ -133,7 +142,7 @@ docker tag fra.ocir.io/oractdemeabdmnative/h-k8s_repo/stockmanager:0.0.1 <myregi
 
 
 - Push the images up to your tenancy repo
-  - Again changing the myregion, mytenancy and myrepo parameters in the blow command
+  - Again changing the myregion, mytenancy and myrepo parameters in the following commands to match the ones you used when you tagged the images
 
 ```
   docker push <myregion>/<mytenancy>/<myrepo>/storefront:0.0.1
