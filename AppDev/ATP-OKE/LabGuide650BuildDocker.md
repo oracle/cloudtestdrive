@@ -26,7 +26,7 @@ Open your project in Developer Cloud, and follow the steps below:
   - Registry URL: fill in the URL of your OCI Repository.  Example for an instance based in Frankfurt:
      https://fra.ocir.io  , but replace the "fra" by the correct code : **phx** for Phoenix,  **lhr** for London, ...
   
-- The **Username** is composed of {object namespace}/{username}, for example **oractdemeabdmnative/api.user** 
+- The **Username** is composed of {object namespace}/oracleidentitycloudservice/{username}, for example **oractdemeabdmnative/api.user** 
   
 - To get your "object-storage-namespace" name, you must navigate to the "Administration" and "Tenancy Details" menu:
   
@@ -47,7 +47,7 @@ Open your project in Developer Cloud, and follow the steps below:
 
 ### Step 2: Configure the Docker build job for building your container - create the job and get required libraries
 
-- Click **Build** in the left nav bar, then click **New Job**. 
+- Click **Build** in the left nav bar, then click Create Job**. 
 
   ![](images/650/image034-1.png)
 
@@ -76,23 +76,8 @@ Open your project in Developer Cloud, and follow the steps below:
 
   
 
-- Navigate to **Steps**, and use the **Add Step** button to select **Unix Shell** and enter the below commands in the **Script** field
 
-```
-    chmod 400 atpkey
-    scp -o 'StrictHostKeyChecking no' -i atpkey opc@130.61.120.69:/home/opc/jle/instantclient-basic-linux.x64-12.1.0.2.0.zip instantclient-basic-linux.x64-12.1.0.2.0.zip
-    ls -al 
-```
-
-​	![](images/650/image_unix-1.png)
-
-- Explanation of these operations:
-  We need the library to access the ATP database, called **instantclient** in the environment where we will execute the Docker Build operation, so we can include it in the container.  Since this is a "Licensed" library that can be downloaded from the Oracle website by accepting the T&C's, we automate this operation by supplying a copy on a running Compute instance with the IP address 130.61.120.69.
-
-  
-  
-
-### Step 3: Add more steps to the build: Execute the Docker commands
+### Step 3: Add steps to the build: Execute the Docker commands
 
 - Use the **Add Step** button and add a step of type **Docker -> Docker login**. 
 
@@ -145,7 +130,7 @@ Before we can run the Build Job we just created, we need to parametrize some scr
 - You need to ensure the docker image has the right connection information for connecting to the database.  Navigate to the folder **aone/scripts**, and locate the file called **dbconfig.js**
 
   - In this file, enter the username, password and connect string of your ATP database.  This is just a crude way of simply setting up connectivity, this should be parametrized in a real-world deployment!
-  - The connect string is  **jleoow_high**, where jleoow is your database name.
+  - The connect string is composed as **\<db_name\>_high**, for example :   **jleoow_high**, where jleoow is your database name.
   - Hit the **Commit** button to save the modifications.
 
 

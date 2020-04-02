@@ -10,7 +10,7 @@ This Lab describes how to instantiate an **Oracle Managed Kubernetes cluster usi
 
 In this lab we will perform the steps described below : 
 
-- Open a command prompt and navigate to the **terraform** folder in the ATPDocker git repository folder
+- Use the Cloud Shell Open a command prompt and navigate to the **terraform_0.12** folder in the ATPDocker git repository folder
 - Edit the file terraform.tfvars and enter your instance OCID's on the first lines
 - run ```terraform init``` , `terraform plan` and `terraform apply` to spin up your infrastructure
 - validate the resulting K8S infrastructure via `kubectl`, using the file **mykubeconfig** that was created 
@@ -26,9 +26,6 @@ You need to collect a series of OCID's from your instance in order for Terraform
 - Region name
 - Object Storage Namespace
 - Compartiment OCID
-- User OCID
-- API Key fingerprint
-- Private key API local path
 
 
 
@@ -44,30 +41,14 @@ Screen shots of the various locations to find this information
   - Select the compartment where you want to create the cluser (for example "Demo")
   ![](images/660/OkeCompart.png)
   
-- **User OCID** and **API Key Fingerprint**
-  - Navigate to "Identity", "Users"
-  - Select the user you created
-  ![](images/660/OkeUser.png)
   
-- **Private Key API Path**
   
-  - This is the local path on your laptop where the private key file is located.  
-  
-  - In case you are running Terraform on a Linux instance that was provided to you, you can download the private key using the Firefox browser and the document link provided by your instructor.
-  
-  - **Attention** : when on windows, you need to use following syntax for entering your path : 
-  
-    "\\\Data\\\keys\\\API_key\\\api_key.pem"	
-  
-    because the "backslash" character has a special meaning on Windows.
-
-
 
 ### Step 2: Set the Terraform parameters and run the script ###
 
-- Open a new Terminal window, and navigate to the **terraform_0.12** folder in the **ATPDocker** git repository folder
+- In your **Cloud Shell**,  navigate to the **terraform_0.12** folder in the **ATPDocker** git repository folder
 
-- Edit the file terraform.tfvars 
+- Edit the file terraform.tfvars using your preferred editor: vi or nano.
 
    - Enter your instance OCID's on the first lines, using the information collected in the previous section
    - Enter your initials for the  the parameter **Participant_Initials**
@@ -95,27 +76,10 @@ Screen shots of the various locations to find this information
 
 ### Step 3: Validate and connect to the Kubernetes cluster
 
-- make sure you have the OCI CLI client side software installed on your environment
-
-   - Validate with following command :
-   
-      ```
-      oci --version
-      ```
-   
-      This should return a version number of 2.6.14 or above
-
-   - If you don't have the CLI installed, follow [these instructions](https://docs.cloud.oracle.com/iaas/Content/API/SDKDocs/cliinstall.htm) to install it. 
-   
-      - First install the CLI
-   - Next configure the CLI to point to your tenancy
-   
-   
-   
 - validate the resulting K8S infrastructure :
 
    - ```bash
-     export KUBECONFIG=./mykubeconfig_0
+     export KUBECONFIG=$PWD/mykubeconfig_0
      kubectl version
      kubectl get nodes
      ```
@@ -137,25 +101,6 @@ Screen shots of the various locations to find this information
 
 
 
----
-
-- **Attention** : As of 16-Dec-2019, the use of a v1 token certificate for the kubeconfig is not supported anymore.  Please [follow the instructions on this page](env-setup-kubeconfig.md) to obtain a valid and permanent certificate for your cluster, and create a new kubeconfig file with this token.
-
-   **==> ATTENTION**: be sure to use the modified kubeconfig file in the remainder of this tutorial !
-
----
-
-
-
-- To access the Kubernetes console:
-
-   - ```
-     kubectl proxy
-     ```
-
-   - Then navigate in a browser to the following address:   
-  http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/login
-
 
 - Set up a "Secret" to allow you to pull images from your private repository:
 
@@ -163,13 +108,13 @@ Screen shots of the various locations to find this information
 
     ```bash
     kubectl create secret docker-registry <your-initials>-ocirsecret
-    --docker-server=<region-code>.ocir.io --docker-username='<Object-Storage-Namespace>/<oci-username>' --docker-password='<oci-auth-token>' --docker-email='<email-address>'
+    --docker-server=<region-code>.ocir.io --docker-username='<Object-Storage-Namespace>/oracleidentitycloudservice/<oci-username>' --docker-password='<oci-auth-token>' --docker-email='<email-address>'
     ```
 
     - **your-initials** as part of the name of the secret so this is your individual secret in case you are working in a shared environment
     - **region-code** is for example **fra** for Frankfurt, **iad** for Ashburn, etc.  See [here](https://docs.cloud.oracle.com/iaas/Content/Registry/Concepts/registryprerequisites.htm#Availab) for details.
     - **Object-Storage-Namespace** is the name of Object Storage Namespace you noted down.
-    - **oci-username** is the name of the **api.user** you just created
+    - **oci-username** is the name of the user you used to log into the console
     - **oci-auth-token** is the **Auth Token** you just created and noted down
     
   - **email-address** is mandatory but not used, can be jdoe@acme.com
@@ -177,7 +122,7 @@ Screen shots of the various locations to find this information
   - Example command:
   
     ```bash
-    kubectl create secret docker-registry jle-ocirsecret --docker-server=fra.ocir.io --docker-username='epqldntjs/api.user' --docker-password='k]j64r{1sJSSF-;)K8' --docker-email='jdoe@acme.com'
+    kubectl create secret docker-registry jle-ocirsecret --docker-server=fra.ocir.io --docker-username='epqldntjs/oracleidentitycloudservice/ppan@oracle.com' --docker-password='k]j64r{1sJSSF-;)K8' --docker-email='jdoe@acme.com'
     ```
   
     
