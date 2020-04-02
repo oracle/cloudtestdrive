@@ -47,7 +47,7 @@ This page explains all the steps to set up your **Oracle Cloud Tenancy** so you 
 
   ![](images/images2.png)
 
-- **ATTENTION** : if an image with a name composed like **H-K8S-Lab-A-Helidon-2020-03-13** already exists (date at the end may vary), **you are OK for this step**, please move to the next item on this page.
+- **ATTENTION** : if an image with a name composed like **H-K8S-Lab-A-Helidon-2020-03-13** already exists and the date at the end (it's in the form year-month-day) is the same as or newer than the date in the import URL your instructor has given you then **you are OK for this step**, please move to the next item on this page.
 - If you do not have this image available, import it with following steps:
   - Click the `Import Image` button
   - Make sure the **CTDOKE** compartment is selected
@@ -70,10 +70,10 @@ You need to set up a Virtual Cloud Network to run the instances of this lab on.
 - Click the `Networking Quickstart` button
 - Chose the `VCN with Internet Connectivity` option
 - Click the `Start Workflow` button
-- Enter a namr for the VCN : **CTDVMVCN**
-- Make sure that the compartment matches the compartment you chose / created
+- Enter a name for the VCN : **CTDVMVCN**
+- Make sure that the compartment matches the compartment **CTDOKE** you just chose / created
 - Leave the fields in the Configure VCN and Subnets with their default values.
-- If you are using a non trial tenancy and your organization rrequired it add the appropriate tags (click the `Show Tagging Options` to see these
+- If you are using a non trial tenancy and your organization requires it add the appropriate tags (click the `Show Tagging Options` to see these)
 - Click the `Next` button
 - Double check the information you've provided
 - Click the `Create` button
@@ -83,7 +83,7 @@ You need to set up a Virtual Cloud Network to run the instances of this lab on.
 
 
 
-### 4. Adding an ingress rule for VNC
+### 4. Adding an OCI ingress rule for VNC
 
 You need to be sure that the Virtual Cloud Network supports remote access using VNC.
 
@@ -140,7 +140,7 @@ Be sure to remember the **admin password**, save it in a notes document for late
 
 
 
-### 6. Setup your user
+### 6. Setup your database user
 
 - On the details page for the database, click the **Service Console** button
 
@@ -152,7 +152,8 @@ Be sure to remember the **admin password**, save it in a notes document for late
 
 - Copy and paste the below SQL instructions:
 
-```CREATE USER HelidonLabs IDENTIFIED BY H3lid0n_Labs;
+```
+CREATE USER HelidonLabs IDENTIFIED BY H3lid0n_Labs;
 CREATE USER HelidonLabs IDENTIFIED BY H3lid0n_Labs;
 GRANT CONNECT TO HelidonLabs;
 GRANT CREATE SESSION TO HelidonLabs;
@@ -161,7 +162,6 @@ GRANT UNLIMITED TABLESPACE TO HelidonLabs;
 ```
 
 - Run the script (The Page of paper with the green "run" button.) if it works OK you will see a set of messages in the Script Output window saying the User has been created and grants made.
-
 
 
 ### 7. Create a VM using the image you imported
@@ -242,7 +242,7 @@ The easiest way to get the database Wallet file into your virtual machine is to 
 - Open a web browser **inside the virtual machine**
 - Login to the Oracle Cloud Console
 - Open the `hamburger` menu (three bars on the top left)
-- Scroll down (if needed) to the `Database` section. Click on the `Autonomous Transation Processing` menu option
+- Scroll down (if needed) to the `Database` section. Click on the `Autonomous Transaction Processing` menu option
 - Click on your database name in the list (it's a link)
 - On the database page click the `DB Connection` button
   - This will display a Database connection popup
@@ -251,7 +251,7 @@ The easiest way to get the database Wallet file into your virtual machine is to 
 - A password pop-up will be displayed. Enter and confirm a password, this is used to encrypt some of the details. if you have a password manager let it generate a password for you if you like
 - Once your password is accepted and confirmed click the `Download` button
 - If you are asked what to do with the file make sure you chose the `Save file` option
-- The wallet file will start to download and the password pop-up will disapear and you'll be returned to the `Database connection` pop-up
+- The wallet file will start to download and the password pop-up will disappear and you'll be returned to the `Database connection` pop-up
 - Click `Close` on the `Database Connection` popup
 
 
@@ -260,9 +260,9 @@ The easiest way to get the database Wallet file into your virtual machine is to 
 
 ### 10. Using the Wallet file
 
-The Wallet file will have been downloaded to $HOME/Downloads, we want to place it in the right location for the labs and with the right name. It is **very** important that you follow the instructions below to ensure you are in the right directory as otherwise you may delete the lab files !
+The Wallet file will have been downloaded to $HOME/Downloads, we want to place it in the right location for the labs and with the right name. It is **very** important that you follow the exact instructions below to ensure you are in the right directory as otherwise you may delete the lab files !
 
-- Delete any existing waller information
+- Delete any existing wallet information
   - `rm -rf $HOME/workspace/helidon-labs-stockmanager/Wallet_ATP`
 
 - Create a new wallet directory
@@ -307,10 +307,9 @@ We now need to locate the wallet connection details.
   - Locate the javax.sql.DataSource.stockLevelDataSourceOraATPJTA.datasource.url line. This will look something like 
 
     ```
-    url: jdbc:oracle:thin:@jleoow_high?TNS_ADMIN=./Wallet_ATP
+    url: jdbc:oracle:thin:@<connection name>?TNS_ADMIN=./Wallet_ATP
     ```
-
-  - update the name of the connection (here it's shown as `jleoow_high`) and replace it with the name from the tnsnames.ora file, in this case `tg_high` In this particular case the resulting line will look like. ** Yours will need to reflect your connection name, not tg_high**
+  - update the name of the connection (shown here as `<connection name>`) and replace `<connection name>` with the name from the tnsnames.ora file, for example `tg_high`.  In this particular case the resulting line will look like the following. ** Yours will need to reflect your connection name, not tg_high**
 
     ```
     url: jdbc:oracle:thin:@tg_high?TNS_ADMIN=./Wallet_ATP

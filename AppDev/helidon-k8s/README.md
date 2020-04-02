@@ -16,7 +16,7 @@ Then we look at how to **run the docker containers in Kubernetes**, examining ho
 
 Finally we look at **monitoring and graphing** to extract data on how the system operates.
 
-In the future the labs will include sections on auto-scaling and the use of a Service Mesh, and other Kubernetes based cloud native capabilities such as A/B testing of new releases etc.
+In the future the labs will include sections on the use of a Service Mesh, and other Kubernetes based cloud native capabilities such as A/B testing of new releases etc.
 
 ### Lab conventions
 
@@ -52,12 +52,14 @@ Components we will be using :
 - An ATP database to allow our application to store data in a persistent manner.
 - A Kubernetes cluster to deploy you microservices on (for the 3rd lab **C. Kubernetes**) 
 
-The basic principles will however run in any Java IDE or Kubernetes environment, however you may need to adjust some aspects, for example when installing a local database on your laptop the process will be different than when using an Autonomous Transaction Processing database in the Oracle cloud.
+The basic principles will however run in any Java IDE or Kubernetes environment, however you may need to adjust some aspects, for example if you were to build on this lab by installing a local database on your laptop the process will be different than when using an Autonomous Transaction Processing database in the Oracle cloud.
 
-**Preparing your environment**
+# Preparing your environment
+
+There are some steps you need to take to prepare the environment for your own individual use.
 
 - You can run this lab on a **Oracle Free Tier** account.  In this case you need to perform some extra preparation steps, [explained in detail on this page](ManualSetup/FullSetupFreeTier.md).
-- In case you are running **an instructor-led lab**, your instructor might make a Cloud Tetancy available for you, minimizing the setup to [these few steps to connect to a remote desktop](ManualSetup/CreateClientVm.md).
+- If you are part of **an instructor-led lab**, your instructor might provide Cloud Tenancy for you, minimizing the setup to [these few steps to connect to a remote desktop](ManualSetup/CreateClientVm.md).
 
 
 

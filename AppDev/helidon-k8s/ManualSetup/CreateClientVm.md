@@ -8,8 +8,8 @@ This page will guide you on how to set up a Compute instance on the Oracle Cloud
 
 Your instructor will inform you if the VM's have already been created for you or not.  
 
-- In case you need create them yourselves, follow all instructions below.
-- If the VM's are already running, **Scroll down** to section **Installing a VNC Viewer**.
+- In case you need create the VM yourself, follow all instructions below.
+- If the VMs has already been created by your instructor, **Scroll down** to section **Installing a VNC Viewer**.
 
 ---
 

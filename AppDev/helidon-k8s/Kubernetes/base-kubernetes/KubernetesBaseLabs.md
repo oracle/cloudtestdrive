@@ -87,7 +87,7 @@ We will use the oci shell to download the database wallet file.
     ```
     url: jdbc:oracle:thin:@jleoow_high?TNS_ADMIN=./Wallet_ATP
     ```
-  - update the name of the connection (here it's shown as `jleoow_high`) and replace it with the name from the tnsnames.ora file, for example `tg_high`.  In this particular case the resulting line will look like  
+  - update the name of the connection (shown here as `<connection name>`) and replace `<connection name>` with the name from the tnsnames.ora file, for example `tg_high`.  In this particular case the resulting line will look like  
     ```
     url: jdbc:oracle:thin:@tg_high?TNS_ADMIN=./Wallet_ATP
     ```
