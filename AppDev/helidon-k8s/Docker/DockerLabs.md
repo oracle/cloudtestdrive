@@ -90,6 +90,8 @@ Use the Maven package target (mvn package) to trigger jib to create the docker c
 [INFO] ------------------------------------------------------------------------
 ```
 
+Note : This may take a little time especially if Maven and docker need to download a lot of stuff. Fortunately for us they cache what they download, which speeds things up considerably the nest time they run.
+
 Now repeat this step for the stockmanager:
 
 - Go to the other project directory
@@ -158,16 +160,17 @@ You can explore the containers by running them to give you shell access (This is
 This command creates a docker container running the shell which is connected to your terminal. Once you're running in the container you can look around
 
 - Take a look inside the container
-  -  `ls`
+  - `ls`
   - `ls Wallet_ATP`
   - `ls conf`
+  - `ls confsecure`
 - Now exit the container
   -  `exit`
 
 ```
 root@1e640494f039:/# ls
 Wallet_ATP  app  app.yml  bin  boot  conf  confsecure dev	  etc  home  lib	lib64  media  mnt  opt	proc  root  run  sbin  srv  sys  tmp  usr  var
-root@1e640494f039:/# ls Wallet_ATP/
+root@1e640494f039:/# ls Wallet_ATP
 root@1e640494f039:/# ls conf
 root@1e640494f039:/# ls confsecure
 root@1e640494f039:/# exit
@@ -200,11 +203,11 @@ Let's use docker volumes (the docker --volume flag) to inject the configuration 
     docker run --tty --interactive --volume `pwd`/Wallet_ATP:/Wallet_ATP --volume `pwd`/conf:/conf --volume `pwd`/confsecure:/confsecure  --rm --entrypoint=/bin/bash stockmanager
     ```
 
-As before we find ourselves in the container and the root directory looks the same
+As before we find ourselves in the container and the root directory looks the same, but the other directories now have content
 
 - Look around
   - `ls`
-  - ` ls conf`
+  - `ls conf`
   - `ls Wallet_ATP`
 
 ```
@@ -307,7 +310,7 @@ To stop the containers do Ctrl-C in each of the windows, or in a separate termin
 - Stop the containers:
   -  `docker stop storefront stockmanager`
 
-<details><summary><b>Why use volumes ?</b></summary>
+<details><summary><b>Why use volumes for stuff that's not secret ?</b></summary>
 <p>
 
 You may be asking in the storefront why do we need to inject configuration using the docker volumes, and not just copy it in to the image, after all it has no database connection details ? The reason is that though we could certainly build the configuration into the container that we should not do this with the authentication data, for a test environment you'd want to inject some hard coded authentication data, but in production you'd want to inject an external authentication service. You certainly would want the microservice to not have default authentication info that would be used if you forgot to do this, having a default that opens up security is a bad thing !
@@ -346,7 +349,9 @@ where :
 
 All of this is information you gathered when you were [getting your docker details](../ManualSetup/GetDockerDetailsForYourTenancy.md)
 
-For example a completed version may look like this (this is only an example, use your own values) ** Important** The auth token being used for the password may well contain characters with special meaning to the shell, so it's important to include it in single quotes as in the example below ( ' )
+For example a completed version may look like this (this is only an example, use your own values) 
+
+**Important** The auth token being used for the password may well contain characters with special meaning to the shell, so it's important to include it in single quotes as in the example below ( ' )
 
 `docker login fra.ocir.io --username=cdtemeabdnse/oracleidentitycloudservice/my.email@you.server.com --password='q)u70[]eUkM1u}zu;:[L'`
 
@@ -358,7 +363,7 @@ You need to update the repoConfig.sh scripts in **both** the helidon-labs-stockm
 
 - Navigate to the Storefront project
 
-- Open file **repoConfig.sh** and edit the repo name to contain your initials
+- Open file **repoConfig.sh** and edit the repo name to reflect **your** initials
 
   - Example for region `Frankfurt`, in the `oractdemeabdmnative` tenancy with initials `tg` you might have : 
 
@@ -384,6 +389,9 @@ $ docker build  --tag $REPO/storefront:latest --tag $REPO/storefront:0.0.1 -f Do
 ```
 
 Note that we have two --tag commands so the resulting image will be pointed to by two names, not just one. Both of the names include the repository information (we use this later on when pushing the images) but they also have a :\<something\> after the container name we're used to seeing. This is used as the version number, this is not processed in any meaningful way that I've discovered (for example I've yet to find a tool that allows you to do something like Version 1.2.4 or later) but by convention people tag the most recent version with :latest and all images should also be tagged with a version number in the form of :\<major\>.\<minor\>.\<micro\> e.g. 1.2.4
+
+</p>
+</details>
 
 <details><summary><b>On the dangers of using :latest</b></summary>
 <p>
@@ -438,11 +446,9 @@ f2d4659d7ea1: Layer already exists
 e4b20fcc48f4: Layer already exists 
 latest: digest: sha256:7f5638210c48dd39d458ba946e13e82b56922c3b99096d3372301c1f234772af size: 2839
 ```
-Notice that the layers all already exist, so nothing needs to be uploaded at all (except of course to establish the name to image hash mapping)
+Notice that for the second example layers all already exist, so nothing needs to be uploaded at all (except of course to establish the name to image hash mapping)
 
-</p></details>
-
-- Rebuild the images
+Let's actually push the images.
 
 Run the buildPushToRepo.sh script in one of the project directories, then once it's finished in the other. 
 
@@ -484,6 +490,11 @@ The script will do the build then push the container images. The first time you 
 
 You can now re-run the images that have been pushed the cloud.
 
+In the Stock manager directory
+- `bash runRepo.sh`
+
+Wait for it to start, then in the storefront directory
+- `bash runRepo.sh`
 
 
 ### Cleaning up
@@ -503,7 +514,7 @@ This is the end of this section of the lab, let's stop the running images
 When you do the Kubernetes labs you will test out performing a rolling upgrade. To do that you need to be able to show that the upgrade has applied, so you're going to do a bit of advance work now make a small change now so you can see the differences in versions in the later labs.
 
 - In Eclipse, navigate to the **helidon-labs-storefront** project
-  - Then navigate to **src/main/java**, then **com.oracle.labs.helidon.storefront**, then **resources**
+  - Then navigate to **src/main/java**, then open the **com.oracle.labs.helidon.storefront.resources package**
   - Open the file **StatusResource.java** 
   - Change the version in the returned to **0.0.2** (updated version shown below)
 
@@ -519,7 +530,7 @@ When you do the Kubernetes labs you will test out performing a rolling upgrade. 
 
   -  Change to folder **helidon-labs-storefront**
   - Run the v2 script:
-    -  `bash buildV0.0.2PushToRepo.sh `
+    -  `bash buildV0.0.2PushToRepo.sh`
 
 ```
 Using repository fra.ocir.io/oractdemeabdmnative/tg_repo

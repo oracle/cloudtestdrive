@@ -8,7 +8,7 @@
 
 ## 4. Helidon and operations
 
-One thing that many developers forget is that once they have finished writing code that it still has to run and be maintained. With the introduction of DevOps a lot of developers suddenly found they were the ones being woken up in the middle of the night to fix problems in their code. That changes the perception a bit and not many developers are acutely aware that they will have ongoing involvement in the code well after the time it compiles cleanly and passed the text suite.
+One thing that many developers used to forget is that once they have finished writing code it still has to run and be maintained. With the introduction of DevOps a lot of developers suddenly found they were the ones being woken up in the middle of the night to fix problems in their code. That changes the perception somewhat and now many developers are acutely aware that they will have ongoing involvement in the code well after the time it compiles cleanly and passed the text suite.
 
 To help maintain and operate systems after they have been released a lot of information is needed, especially in situations where a bug may be on one service, but not show up until the resulting data has passed through several other microservcies. 
 
@@ -36,7 +36,7 @@ Starting zipkin docker image in detached mode
 d12b253c50b7793ca8e3eb64658efead336fa3880d3df040f12152b57347f067
 ```
 
-- Now open a browser on the **Linux Desktop** 
+- Now open a browser in the **Virtual machine desktop** 
 - Navigate to : http://localhost:9411/zipkin/ 
 
 ![zipkin-initial](images/zipkin-initial.png)
@@ -99,7 +99,7 @@ You now need to tell Helidon what to call the tracing requests and where traces 
 
 
 
-- Make a request, for example reserving stock:
+- Make a request, for example reserving stock (this may take a few seconds due to the lazy initialization) :
   -  `curl -i -X POST -u jill:password -d '{"requestedItem":"Pencil", "requestedCount":7}' -H "Content-type:application/json" http://localhost:8080/store/reserveStock`
 
 ```
@@ -114,7 +114,7 @@ content-length: 37
 
 We've successfully reserved 7 pencils
 
-- Go to the **zipkin web page** and click find traces, you'll see the list of traces
+- Go to the **zipkin web page** and click find traces, you'll see the list of traces (the details you have will of course be different)
 
 
 
@@ -293,7 +293,7 @@ content-length: 148
 ```
 Now let's look at the metrics (I removed a bunch of unneeded output here to focus on the counters):
 
--  `curl -i -X GET http://localhost:9080/metrics`
+-  `curl -i -X GET http://localhost:9080/metrics/`
 
 ```
 HTTP/1.1 200 OK
@@ -320,7 +320,7 @@ application:com_oracle_labs_helidon_storefront_resources_storefront_resource_sto
 We can see that now 5 requests in total have been made to the storefront resource, and 5 requests to the listAllStock method, the others have had none. If we were looking for a place to optimize things then perhaps we might like to consider looking at that method first !
 
 
-Why port 9080 ? Well you may recall that in the helidon core lab we defined the network as having two ports, one for the main application on port 8080 and another for admin functions on port 9080, we then specified that metrics (and health which we'll see later) were in the admin category so they are on the admin port. It's useful to splis these things so we don't risk the core function of the microservice getting mixed up with operation data.  
+Why port 9080 ? Well you may recall that in the helidon core lab we defined the network as having two ports, one for the main application on port 8080 and another for admin functions on port 9080, we then specified that metrics (and health which we'll see later) were in the admin category so they are on the admin port. It's useful to split these things so we don't risk the core function of the microservice getting mixed up with operation data.  
 
 ### Other types of metrics
 There are other types of metrics, for examples times. 
@@ -392,12 +392,15 @@ application:list_all_stock_meter_fifteen_min_rate_per_second 0.00526411632294898
 ```
 
 ### Combining counters, metrics, times and so on
-You can have multiple annotations on your class / methods, but be careful that you don't get naming coliccions, if you do your program will likely fail to start.
+You can have multiple annotations on your class / methods, but be careful that you don't get naming collisions, if you do your program will likely fail to start.
 
 By default any of `@Metric`, `@Timed`, `@Counted` etc. will use a name that's depending on the class / method name, it does **not** append the type of thing it's looking for. So if you had `@Counted` on the class and `@Timed` a class (or `@Counted` and `@Timed` on a particular method) then there would be a naming clash between the two of them. It's best to get into the habit of naming these, and putting the type in the name. Then you also get the additional benefit of being able to easily extract it using the metrics url like `http://localhost:9080/metrics/application/listAllStockMeter`
 
+## Optional Open API lab
 
+In some cases you will want a description of the REST API you are offering, for example tools that automatically generate integrations or clients. Helidon has built in support to automatically generate documents in the Open API format (previously this was known as Swagger)
 
+The optional [Open API lab module](./helidon-open-api.md) takes you through the process of annotating your classes to generate the Open API documents automatically, **based on the source code itself** If you have the time or interest please feel free to do this lab module, or come back to it later for reference. 
 
 ### End of the lab
 You have finished this part of the lab, you can proceed to the next step of this lab:

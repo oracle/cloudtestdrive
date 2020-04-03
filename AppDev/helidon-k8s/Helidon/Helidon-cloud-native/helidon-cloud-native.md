@@ -38,7 +38,7 @@ Services like kubenetes will know if a microservice has crashed as the applicati
 
 Provding a Liveness capability is pretty simple. Somewhere in the class structure you just need a class that implements the HealthCheck interface (Helidon uses this interface to know what method to call to run the test) and is annotated with `@Liveness` 
 
-- Navigate to the folder **health**, and open the file **LivenessChecker.java**
+- Navigate to the package **health**, and open the file **LivenessChecker.java**
 - Add an annotation to the class definition:
   -  `@Liveness`
 

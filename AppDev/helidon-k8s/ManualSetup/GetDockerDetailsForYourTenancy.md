@@ -34,7 +34,9 @@ Locate your region on the list and then to the right identify the region code, f
 ### Determining your tenancy Object Storage Namespace
 
 - Navigate to the **Tenancy Information** screen
-  - In the menu, select **Administration**, then **Tenancy Details**
+  - Click the Hambueger menu
+  - In the menu, scroll down to **Administration**, 
+  - Click **Administration** then **Tenancy Details**
 
 ![](images/ObjStor.png) 
 

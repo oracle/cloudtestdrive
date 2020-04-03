@@ -7,7 +7,7 @@
 ## A. Helidon for Cloud Native
 
 ## 4. Helidon and Open API
-This is an optional module for the Helidon lab, but you will need to complete it if you are going to run the API Gateway section of the cloud infrastructre lab
+This is an optional module for the Helidon lab, but you will need to complete it if you are going to run the API Gateway section of the cloud infrastructure lab
 
 This module is how to get Helidon to self-describe the REST API you are offering. There are several use cases for this, some of those are :
 
@@ -93,7 +93,7 @@ The title, description and version fields are I hope self explanatory
 ### Creating the index
 Before we can see the updates to the OpenAPI spec we need to build an index of the annotations
 
-Unlike the server processing annotations the OpenAPI processing only operates against a jandex index, and won't can for OpenAPI annotations (in Helidon 1.4.3 at least, I'm not sure if this is a bug or a feature)
+Unlike the server processing annotations the OpenAPI processing only operates against a jandex index, and won't scan for OpenAPI annotations in the class files (in Helidon 1.4.3 at least, I'm not sure if this is a bug or a feature)
 
 Because of this the jandex index needs to be built to reflect the OpenAPI annotations. To do this you can manually run maven in Eclispe with the process-classes goal.
 
@@ -242,7 +242,7 @@ If you just saw the basic info that was returned when you initially did a curl t
 ---
 
 #### What does this output mean ?
-In summary it means that adding the @OpenAPIDefinition triggered Helidon to scan all of the classes references by the application to look for REST endpoints. Helidon then builds a OpenAPI document that returns the YAML description. Note that the precise order of the major sections may change (it depends on the order the annotations are processed) so you may see the `components:` section before or after the `info: or `path` section
+In summary it means that adding the @OpenAPIDefinition triggered Helidon to scan the jandex index for classes references by the application, looking for REST endpoints (@GET, @POST etc. annotations.) Helidon then builds a OpenAPI document that returns the YAML description. Note that the precise order of the major sections may change (it depends on the order the annotations are processed) so you may see the `components:` section before or after the `info: or `path` section
 
 First locate the `info:` section. 
 
@@ -513,10 +513,13 @@ For the rest of the lab documentation I'm going to stick with yaml as it's a bit
 ### To many paths, how do we hide private ones ?
 This has given us the entire API, but the /status is probably not relevant to external callers. (As we'll see in the Kubernetes sections it's more for the internal operation of the cluster and availability than something an client would call. So we need a way to remove some end-points from the output.
 
-- Open the src/main/resources/microprofile-config.properties file
+- Open the src/main/resources/META-INF/microprofile-config.properties file
   - Uncomment the line `mp.openapi.scan.exclude.classes=com.oracle.labs.helidon.storefront.resources.StatusResource,com.oracle.labs.helidon.storefront.data.ItemRequest`
-  
-This tells Helidon to ignore any paths in the StatusResource and ConfigurationResource classes.
+ 
+(It's the last line, so it may be a bit hidden)
+ 
+This tells Helidon to ignore any paths it fined in the StatusResource and ConfigurationResource classes when generating the Open API document.
+
 <details><summary><b>Other configuration settings for OpenAPI</b></summary>
 The Helidon runtime supports a large number of configuration settings that can be used to control the generation of the OpenAPI document, this include the ability to packages as well as classes to include / exclude, or if you need finer grained control you can even define filter and model classes that chose exactly which paths will be included or removed. 
 
@@ -527,7 +530,7 @@ See the OpenAPI documentation (link at the bottom of this module) for the full d
 It is of course possible to apply this exclusion in any of the config files, but this is an example of a setting that as a developer you probably want to have applied by default in every deployment, after all you're suppressing internal information. The microprofile-config.propertties file is embedded into the class path, so that will ensure that the default behaviour is what you want. If someone want's to they can of course override that in a local file system based config file such as conf/storefront-config.yaml
 </b></details>
 
-Let's see how this looks, there is no need to re-build the index this time.
+Let's see how this looks, there is no need to re-build the index this time as the change was in the config file, not annotations in the source code.
 
 - Restart the storefront service (have to do this as the microprofile-config.propeties file isn't one of the ones that's checked for changes)
 
@@ -836,7 +839,7 @@ Let's now add annotations to the `/store/reserveStock` method that let's us desc
 The updated method declaration should now look like the following. Note that other annotations for metrics, timers etc. may not be as displayed here depending on what sections of the lab you've done. Comments have been omitted to simplify the text
 
 ```java
-@POST
+	@POST
 	@Path("/reserveStock")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -987,7 +990,7 @@ We now have OpenAPI documentation that defines the reasonable error conditions t
 
 As a general rule of thumb you should only document the http status responses your end point might reasonably throw, in the case above that's 200 (OK), 404 / Not Found (when a request is made to reserve an item not in the database) 409 / CONFLICT (when there are not enough items available to reserve) and 406 / Not Acceptable (when the number of items to be reserved is not acceptable due to minimum change restrictions.)
 
-We have added `@APIResponse` annotations to deal with those as any client could reasonably expect to encounter them, but for codes that may be generated due to internal problems, for example the catch all 500 / Internal Server error and it's related 5xx series of codes we have not documented as a client woudl not under normal circumstances encounter them.
+We have added `@APIResponse` annotations to deal with those as any client could reasonably expect to encounter them, but for codes that may be generated due to internal problems, for example the catch all 500 / Internal Server error and it's related 5xx series of codes we have not documented as a client would not under normal circumstances encounter them.
 
 Here we have documented a the typical set of http status codes that the method can reasonably return, though of course exactly which ones are included in the documentation will vary by end point and your development standards.
 </p></details>

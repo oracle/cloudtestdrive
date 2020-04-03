@@ -96,6 +96,10 @@ To be complete update the adjustStockLevel and deleteStockItem methods in the sa
 		String user = securityContext.getUserPrincipal().getName();
 
 ```
+
+- Save the StockResource 
+
+- Stop and restart the stock manager
   
 ## Other information available
 The security context can be used to find out if a user is in a role, and what form of authentication is in place. You can also use it to find out if the request came over a secure (https) connection, but a little note of warning there. In many micro-servcies deployments you may do the https termination elsewhere in the framework (for example in a Kubernetes Ingress controller) which may result in being told the connection is not secure, when in fact the connection to the framework itself is secure.

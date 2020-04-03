@@ -223,6 +223,9 @@ content-length: 148
 
 [{"itemCount":5000,"itemName":"pin"},{"itemCount":150,"itemName":"Pencil"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":100,"itemName":"Book"}]
 ```
+<details><summary><b>Got an error ?</b></summary><p>
+It's possible that the services may take longer to do their initial initialization that the timeouts. (The initialization is done on demand) If this happens you may get an error. Wait a short while and retry, hopefully the initialization will have been completed then.
+</p></details>
 
 We have now got the data back from the database itself. Our client is working, and with very little effort !
 
@@ -239,7 +242,7 @@ We've put together a short document on how to [manually create a rest client](no
 
 <details><summary><b>Async requests</b></summary>
 <p>
-You may have noticed the delay in the request, if you try the request again it's much faster, this is because the second time all of the lazy initialization will have been done. But in some cases it may be that every call to a request takes a long time (perhaps it's getting data from a real physical service !) which may leave the client execution blocked until the request completes.
+You may have noticed the delay in the request, if you try the request again it's much faster, this is because the second time all of the lazy initialization will have been done. But in some cases it may be that every call to a request takes a long time (perhaps it's getting data from a real physical device !) which may leave the client execution blocked until the request completes.
 
 One solution to this is to make the request, then go and do something else while waiting for the response. We're not going go to into detail on this, but the REST client supports the use of async operations by having the returned object not be the actual object (which would require the entire call sequence to have completed) but a object of type `CompletionStage`. 
 
@@ -249,7 +252,7 @@ The CompletionStage objects are created by the framework on the client side, so 
 
 ---
 
-<details><summary><b>Authentication</b></summary>
+<details><summary><b>How does the authentication transfer ?</b></summary>
 <p>
 
 
