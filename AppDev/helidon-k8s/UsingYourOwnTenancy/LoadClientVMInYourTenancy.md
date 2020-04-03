@@ -56,28 +56,36 @@ Note, to create the VCN you should have creates or identified a compartment firs
 
 - In the `Core Infrastructure` section chose `Networking` and then `Virtual Cloud Networks`
 
-- Click the `Create Virtual Cloud Network` button
+- Click the `Networking Quickstart` button
 
-- Enter a suitable name
+- Chose the `VCN with Internet Connectivity` option
 
-- Chose the compartment you identified / created above
+- Click the `Start Workflow` button
 
-- For the CIDR use the CIDR example block in on the page
+- Give it a name E.g. MyVCN
 
-- Make sure the `USE DNS HOSTNAMES IN THIS VCN` is checked.
+- Make sure that the compartment matches the compartment you chose / created
 
-- **DO NOT** enter anything in DNS LABEL field ** LEAVE THIS EMPTY**
+- Leave the fields in the COnfigure VCN and Subnets with their default values.
 
-- Click the `Create Virtual Cloud Network` button. 
+- If you are using a non trial tenancy and your organization rrequired it add the appropriate tags (click the `Show Tagging Options` to see these
 
-#### Adding an ingress rule for VNC
+- Click the `Next` button
+
+- Double check the information you've provided
+
+- Click the `Create` button
+
+- Once the VCN has been created click the `View Virtual Cloud Network` button
+
+### Adding an ingress rule for VNC
 You need to be sure that the Virtual Cloud Network supports remote access using VNC.
 
 - Go to the VCN you created earlier (this is on the cloud networks list, click on the VNC name)
 
 - On the VNC page on the left hand side click the `Security Lists` option
 
-- Click on the security list in the list (there should only be one, if there are more than on this is probably a VCN configured by your tenancy admin, you should check with them that VNC ports are enabled and not change things without their approval)
+- Click on the security list in the list, Chose the one with a name something like `Default Security List for MyVCN` (don't select the private subnet one)
 
 - In the list click the `Add Ingress Rules` button
 
@@ -146,11 +154,17 @@ You must have created a compartment, imported the VM image and have created a Vi
   - Click the **Select Image** button to return to the initial screen.
   
 - Use the **default values** provided for following elements: 
-  - **Availability domain** (AD1), **Instance type** (Virtual Machine) and **Instance shape** (VM.Standard.2.1)
+  - **Availability domain** (AD1), and **Instance shape** (VM.Standard.2.1)
 
 - Set *Virtual Cloud Network Compartment* to be the compartment you just created / selected.
 
-- In the **Virtual cloud Network** dropdown,  select the VCN yu just created / selected. 
+- In the **Virtual cloud Network** dropdown
+
+- In the Virtual Cloud network select the VCN you just created / selected. 
+
+- The Subnet compartment should be the name of your compartment
+
+- The Subnet should be the name of the **public** subnet (created for you when you ran the VCN wizard)
 
 - Leave all the other setings in the section as they are in the boot volume section
   - Check the **Assign a public IP address** option is selected

@@ -374,8 +374,8 @@ In the current version of Helidon there is a conflict between the processing of 
 
 ### Creating some data and testing the stockmanager works
 - Use curl to create some stock items :
-  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pin/5000`
-  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pins/5000`
+  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pin/5000`
+  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pins/5000`
   - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pencil/200`
   - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Eraser/50`
   - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Book/100`
@@ -409,13 +409,13 @@ Date: Sun, 5 Jan 2020 19:01:01 GMT
 connection: keep-alive
 content-length: 185
 
-[{"itemCount":100,"itemName":"Book"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":200,"itemName":"Pencil"},{"itemCount":5000,"itemName":"pin"},{"itemCount":5000,"itemName":"pins"}]
+[{"itemCount":100,"itemName":"Book"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":200,"itemName":"Pencil"},{"itemCount":5000,"itemName":"Pin"},{"itemCount":5000,"itemName":"Pins"}]
 ```
 
-Note that we have "accidentally created two versions of the pin (pin and pins), let's remove one
+Note that we have "accidentally" created two versions of the Pin (Pin and Pins), let's remove one
 
 - Use curl to remove it
-  -  `curl -i -X DELETE -u jack:password http://localhost:8081/stocklevel/pins`
+  -  `curl -i -X DELETE -u jack:password http://localhost:8081/stocklevel/Pins`
 
 ```
 HTTP/1.1 200 OK
@@ -443,7 +443,7 @@ Date: Sun, 5 Jan 2020 19:03:11 GMT
 connection: keep-alive
 content-length: 148
 
-[{"itemCount":100,"itemName":"Book"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":150,"itemName":"Pencil"},{"itemCount":5000,"itemName":"pin"}]
+[{"itemCount":100,"itemName":"Book"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":150,"itemName":"Pencil"},{"itemCount":5000,"itemName":"Pin"}]
 ```
 
 **Please leave the stockmanager running, we're going to use it in the next few labs**

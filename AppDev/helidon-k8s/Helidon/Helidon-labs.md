@@ -40,16 +40,6 @@ We do not expect you to know the details of the Maven build / packaging tool. In
 
 </p></details>
 
-#### Access to the Linux Desktop
-
-This environment will contain Eclipse and Firefox applications, as well as a set of command-line tools you will need : maven, docker, kubectl. 
-
-Your instructor will inform you of the steps that still need to be executed to access or spin up the Desktop.
-
-You will have to install a VNC viewer on your laptop to access this environment.
-
-- Follow these [detailed instructions for accessing the Linux Desktop](../ManualSetup/CreateClientVm.md)
-
 ---
 
 

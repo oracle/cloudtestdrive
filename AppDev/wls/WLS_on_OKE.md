@@ -5,7 +5,7 @@
 # Running WebLogic on Kubernetes
 
 ## Introduction
-This lab will showcase running WebLogic on a Kubernetes cluster, using the Operator to manage the WebLogic domains.  This tutorial is based on the [Quick Start Guide](https://oracle.github.io/weblogic-kubernetes-operator/quickstart/) that is part of the official WebLogic Kubernetes Operator page, but with most prerequisites already taken care of in our Test Drive Cloud Tenancy and using a Linux Desktop with all local software already installed and configured.
+This lab will showcase running WebLogic on a Kubernetes cluster, using the Operator to manage the WebLogic domains.  This tutorial is based on the [Quick Start Guide](https://oracle.github.io/weblogic-kubernetes-operator/quickstart/) that is part of the official WebLogic Kubernetes Operator page, but now using the **Cloud Shell** , allowing you to run this lab using just a browser and your Oracle Cloud account.
 
 ### Prerequisites
 
@@ -13,25 +13,48 @@ To run this lab, you need following elements :
 
 - An Oracle account to download the docker image.  To create an account, follow instructions [here](https://profile.oracle.com/myprofile/account/create-account.jspx)
 
-- If you are following this lab as part of an **Oracle physical event**, your instructor will provide you with a Linux Virtual machine, in which case you can simply access the desktop of that environment via a VNC viewer.  All software will already be available on that environment.
-
-- If you prefer to install the various tools on your own laptop, please make sure you have following components available:
-  - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-  - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-  - [helm version 2](https://github.com/helm/helm/releases/tag/v2.16.1)
-  - [oci cli](https://docs.cloud.oracle.com/iaas/Content/API/SDKDocs/cliinstall.htm) (Oracle Cloud Infrastructure - Command Line Interface)
-  
-  Installation of these tools is out of the scope of this tutorial, please follow the above links for installation instructions of each tool.
 
 
+
+### Preparing your environment
+
+- Open the [OCI console](https://console.eu-frankfurt-1.oraclecloud.com), log in using the **Single Sign On** menu on the **left** 
+
+Create a token for your user (will be used to login to the docker repository):
+
+- Click on the **Magnifying glass** on the top of your console, and enter your username.  For example, if your name was **ppan** : 
+
+  ![](images/ppan.png)
+
+- Select the user **that looks like :  oracleidentitycloudservice/(your_name)**
+
+  ![](images/token1.png)
+
+- Select **Token** in the right-hand menu, then click the button **Create Token**.
+
+  - Enter a name for the token
+
+  - Use the **Copy** button to copy the token in your buffer, and **immediately paste it** in a notebook of your choice, you will need this later.
+
+    ![](images/token2.png)
+
+    
+
+- Obtain the name of your Docker repository so you can reference it when pushing or pulling images:
+
+  - Navigate to the "Tenancy Details" screen, selecting in the menu **Administration**, then **Tenancy Details**
+
+  - Note down the name of your Object Storage Namespace:
+
+    ![](images/object-storage.png)
+
+    
 
 ### Setting up a Kubernetes cluster
 
 We will be using an Oracle Cloud Managed Kubernetes cluster to deploy weblogic.
 
-This chapter gives a quick overview of the steps to follow, using the OCI Console to set up a *Quick Start* OKE cluster.
-
-- Open the [OCI console](https://console.eu-frankfurt-1.oraclecloud.com), log in using the **Single Sign On** menu on the **left** and navigate to the ***Developer Services***, then ***Container Clusters (OKE)***.
+- Navigate to the ***Developer Services***, then ***Container Clusters (OKE)***.
 
   ![image-20191220165407475](images/menuOKE.png)
 
@@ -40,10 +63,10 @@ This chapter gives a quick overview of the steps to follow, using the OCI Consol
 - On the Create cluster screen, enter following parameters:
 
   - Name : the name of your cluster.  We will be using the name *WlsOkeLab_(your_initials)* in this tutorial.  Please replace (your_initials) by a 3-letter code, for example Abc
-  - Choose the CTDOKE compartment
-  - Select version 14.8
-  - Select Public worker nodes
-  - Change the shape to VM_Standard2.1
+  - Choose the CTDOKE compartment if it is available in the tenancy.
+  - Select version 15.7
+  - Select **Public** worker nodes
+  - Choose the shape VM_Standard2.1
   - Activate the Add-ons (Dashboard and Tiller)
     
 
@@ -51,14 +74,21 @@ This chapter gives a quick overview of the steps to follow, using the OCI Consol
 
 
 
-
 Once the cluster is created (the nodes will continue to be created), you can access the button ![image-20191220181646639](images/kubeconfigbutton.png), and copy the commands to download the kubeconfig file of your cluster.
 
-- Open a terminal window where you have the oci cli installed, and execute the commands you copied.  Example :
+These commans will look like: 
+
+` mkdir -p $HOME/.kube`
+
+`oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaaaaymqyweojygcqwinbwg4yw --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0 `
+
+- Open the **Cloud Shell** using the button **">_"** in the upper right of the console.
+
+- execute the commands you copied.  Example :
 
   ```
   $ mkdir -p $HOME/.kube
-  $ oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaaaaaaae4wmmjvmzobzmojqmy3dqzdbgq4ggntbgcrtqzrvmy4d --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0 
+  $ oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaaaaaaae4wmmjvmzobzmojqmy3dqz4ggntbgcrtqzrvmy4d --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0 
   ```
 
 - Validate you are able to access the cluster with kubectl, and see the nodes that are up and running
@@ -75,7 +105,7 @@ Once the cluster is created (the nodes will continue to be created), you can acc
 
 ### Preparing your environment
 
-- Clone the repository containing the Kubernetes operator to your local machine :
+- Clone the repository containing the Kubernetes operator to your Cloud Shell :
 
   ```
   git clone https://github.com/oracle/weblogic-kubernetes-operator
@@ -137,17 +167,24 @@ EOF
     cd weblogic-kubernetes-operator/
     ```
 
+  - Set up Helm:
+
+    `helm repo add stable https://kubernetes-charts.storage.googleapis.com/`
+
+  - Create a namespace for the traefik loadbalancer:
+
+    `kubectl create namespace traefik`
+
   - Then execute the Helm chart:
 
     ```
-    helm install stable/traefik \
-      --name traefik-operator \
-      --namespace traefik \
-      --values kubernetes/samples/charts/traefik/values.yaml  \
-      --set "kubernetes.namespaces={traefik}" \
-      --wait
+    helm install traefik-operator stable/traefik \
+        --namespace traefik \
+        --values kubernetes/samples/charts/traefik/values.yaml \
+        --set "kubernetes.namespaces={traefik}" \
+        --wait
     ```
-
+    
   - Validate the Traefik service is up and running
 
     ```
@@ -171,21 +208,20 @@ EOF
   - Use `helm` to install and start the operator from the directory you just cloned:
 
     ```bash
-    $ helm install kubernetes/charts/weblogic-operator \
-      --name sample-weblogic-operator \
+    $ helm install sample-weblogic-operator kubernetes/charts/weblogic-operator \
       --namespace sample-weblogic-operator-ns \
-      --set image=oracle/weblogic-kubernetes-operator:2.4.0 \
+      --set image=oracle/weblogic-kubernetes-operator:2.5.0 \
       --set serviceAccount=sample-weblogic-operator-sa \
       --set "domainNamespaces={}" \
       --wait
     ```
-
-  - Verify that the operator’s pod is running, by listing the pods in the operator’s namespace. You should see one for the operator.
-
-    ```bash
+  
+- Verify that the operator’s pod is running, by listing the pods in the operator’s namespace. You should see one for the operator.
+  
+  ```bash
     $ kubectl get pods -n sample-weblogic-operator-ns
-    ```
-
+  ```
+  
 - Create namespace where your WebLogic will run
 
   - Create a namespace that can host one or more domains:
@@ -197,33 +233,68 @@ EOF
   - Use `helm` to configure the operator to manage domains in this namespace:
 
     ```bash
-    $ helm upgrade \
-      --reuse-values \
-      --set "domainNamespaces={sample-domain1-ns}" \
-      --wait \
-      sample-weblogic-operator \
-      kubernetes/charts/weblogic-operator
+    $ helm upgrade sample-weblogic-operator  kubernetes/charts/weblogic-operator \
+        --namespace sample-weblogic-operator-ns \
+        --reuse-values \
+        --set "domainNamespaces={sample-domain1-ns}" \
+        --wait
     ```
-
+    
   - Configure Traefik to manage Ingresses created in this namespace:
 
     ```bash
-    $ helm upgrade \
-      --reuse-values \
-      --set "kubernetes.namespaces={traefik,sample-domain1-ns}" \
-      --wait \
-      traefik-operator \
-      stable/traefik
+    $ helm upgrade traefik-operator stable/traefik \
+        --namespace traefik \
+        --reuse-values \
+        --set "kubernetes.namespaces={traefik,sample-domain1-ns}" \
+        --wait
     ```
-
+    
   - Create a Kubernetes secret for the WebLogic administrator credentials containing the `username` and `password` for the domain, using the [create-weblogic-credentials](http://github.com/oracle/weblogic-kubernetes-operator/blob/master/kubernetes/samples/scripts/create-weblogic-domain-credentials/create-weblogic-credentials.sh) script:
 
     ```bash
     $ kubernetes/samples/scripts/create-weblogic-domain-credentials/create-weblogic-credentials.sh \
       -u weblogic -p welcome1 -n sample-domain1-ns -d sample-domain1
     ```
+    
+  - Set up a "Secret" to allow you to pull images from your private repository:
 
+    - Run the following command, where you need to insert your specific parameters:
 
+      ```bash
+      kubectl create secret docker-registry <your-initials>-ocirsecret
+      --docker-server=<region-code>.ocir.io --docker-username='<Object-Storage-Namespace>/<oci-username>' --docker-password='<oci-auth-token>' --docker-email='<email-address>' -n sample-domain1-ns
+      ```
+
+      - **your-initials** as part of the name of the secret so this is your individual secret in case you are working in a shared environment
+
+      - **region-code** is for example **fra** for Frankfurt, **iad** for Ashburn, etc.  See [here](https://docs.cloud.oracle.com/iaas/Content/Registry/Concepts/registryprerequisites.htm#Availab) for details.
+
+      - **Object-Storage-Namespace** is the name of Object Storage Namespace you noted down.
+
+      - **oci-username** is the fully qualified username for which you created a token: 
+
+        `oracleidentitycloudservice/<user_name>`
+
+      - **oci-auth-token** is the **Auth Token** you just created and noted down
+
+    - **email-address** is mandatory but not used, can be jdoe@acme.com
+
+    - Example command:
+
+      ```bash
+      kubectl create secret docker-registry jle-ocirsecret --docker-server=fra.ocir.io --docker-username='epqldntjs/api.user' --docker-password='k]j64r{1sJSSF-;)K8' --docker-email='jdoe@acme.com' -n sample-domain1-ns
+      ```
+
+      The result should be 
+
+      ```
+      secret/jle-ocirsecret created
+      ```
+
+    
+
+  - - TO DO
 
 ### Configuring WebLogic
 
@@ -234,7 +305,7 @@ We'll now start configuring the WebLogic setup itself.  For this we will use the
   - Cd into the sample scripts directory for a **domain home in image** type of deployment.  
 
     ```
-    cd kubernetes/samples/scripts/create-weblogic-domain/domain-home-in-image
+      cd kubernetes/samples/scripts/create-weblogic-domain/domain-home-in-image
     ```
 
   - Copy the template config file to edit your version : 
@@ -243,11 +314,12 @@ We'll now start configuring the WebLogic setup itself.  For this we will use the
     cp create-domain-inputs.yaml my-create.yaml
     ```
 
-  - Now edit the file with your favourite editor, either vi or the text editor of your Linux desktop, and perform the following updates:
+  - Now edit the file with your favourite editor, either vi or nano, and perform the following updates:
 
     - `domainUID`: `sample-domain1`
     - image name: because we will all be using a common registry, you need to add your initials to the image name you will be using.  The format to use is *fra.ocir.io/oractdemeabdmnative/**(your_initials)**-wls/weblogic:12.2.1.3*
       Example for abc :  `image: fra.ocir.io/oractdemeabdmnative/abc-wls/weblogic:12.2.1.3`
+    - imagePullSecretName: `<your initials>-ocirsecret`
     - `weblogicCredentialsSecretName`: `sample-domain1-weblogic-credentials`
     - `namespace`: `sample-domain1-ns`
     - `domainHomeImageBase`: `container-registry.oracle.com/middleware/weblogic:12.2.1.3`
@@ -265,7 +337,7 @@ We'll now start configuring the WebLogic setup itself.  For this we will use the
 
   ```
   ./create-domain.sh -i my-create.yaml \
-  	-o /home/oracle/weblogic-kubernetes-operator/kubernetes/samples/scripts/create-weblogic-domain/domain-home-in-image/out_dir \
+  	-o out_dir \
   	-u weblogic -p welcome1
   ```
 
@@ -383,8 +455,7 @@ Before we can access the WLS environment, we need to set up an Ingress using the
 - Create an Ingress for the domain, in the domain namespace, by using a Helm chart:
 
 ```bash
-$ helm install kubernetes/samples/charts/ingress-per-domain \
-  --name sample-domain1-ingress \
+$ helm install sample-domain1-ingress kubernetes/samples/charts/ingress-per-domain \
   --namespace sample-domain1-ns \
   --set wlsDomain.domainUID=sample-domain1 \
   --set traefik.hostname=sample-domain1.org

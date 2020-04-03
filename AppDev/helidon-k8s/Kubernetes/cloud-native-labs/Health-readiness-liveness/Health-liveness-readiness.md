@@ -19,8 +19,27 @@ These labs look at how that is achieved.
 
 As we've seen a service in Kubernetes is delivered by programs running in containers. The way a container operates is that it runs a single program, once that program exists then the container exits, and the pod is no longer providing the service. 
 
-- Make sure that the service is running (replace the IP address with the one for your service)  
-  - In a terminal type : `curl -i -k -X GET -u jack:password https://987.123.456.789/store/stocklevel`
+
+<details><summary><b>Getting the service IP address if you don't have it</b></summary>
+<p>
+If you haven't written it down, or have forgotten how to get the IP address of the ingress controller service you can do the following
+
+- In the Oracle Cloud Shell type the following
+  - `kubectl get services -n ingress-nginx`
+  
+```
+NAME                                          TYPE           CLUSTER-IP      EXTERNAL-IP       PORT(S)                      AGE
+ingress-nginx-nginx-ingress-controller        LoadBalancer   10.96.210.131   132.145.253.186   80:31021/TCP,443:32009/TCP   19m
+ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.67.181    <none>            80/TCP                       19m
+```
+
+The Column EXTERNAL-IP gives you the IP address, in this case the IP address for the ingress-controller load balancer is `132.145.253.186` ** but this of course will be different in your environment !**
+</p></details>
+
+First let's make sure that the service is running, (replace <ip address> with the external ip address of the ingress)
+
+- In the Oracle Cloud Shell
+  - `curl -i -X GET -u jack:password http://<ip address>:80/store/stocklevel`
 
 ```
 HTTP/1.1 200 OK
@@ -46,28 +65,24 @@ zipkin-88c48d8b9-jkcvq          1/1     Running   0          92m
 
 We can see the state of our pods, look at the RESTARTS column, all of the values are 0 (if there was a problem, for example Kubernetes could not download the container images you would see a message in the Status column, and possibly additional re-starts, but here everything is A-OK.)
 
-We're going to simulate a crash in our program, this will cause the container to exit, and Kubernetes will idntify this and start a replacement container for us.
+We're going to simulate a crash in our program, this will cause the container to exit, and Kubernetes will identify this and start a replacement container in the pod for us.
 
-Using the name of the storefront pod above let's connect to the container in the pod using kubectl, and then use ps to see what processes are running in it:
+Using the name of the storefront pod above let's connect to the container in the pod using kubectl:
 
 -  `kubectl exec storefront-65bd698bb4-cq26l -ti -- /bin/bash` 
-  - In the container, type : `ps -ef`
 
-```
-UID        PID  PPID  C STIME TTY          TIME CMD
-root         1     0  0 12:23 ?        00:00:29 java -server -Djava.awt.headless=true -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -cp /app/resources:/app/classes:/app/libs/* com.oracle.labs.helidon.storefront.Main
-root        47     0  0 14:04 pts/0    00:00:00 /bin/bash
-root        53    47  0 14:04 pts/0    00:00:00 ps -ef
-```
+Simulate a major fault that causes a service failure by killing the process running our service :
 
-We can see the bash and ps process we just kicked off, but also the primary process which is running our service, the java process.
-
-- Simulate a major fault that causes a service failure by killing the process:
-  - `pkill java`
+  - `kill -1 1`
 
 ```
 root@storefront-65bd698bb4-cq26l:/# command terminated with exit code 137
 ```
+
+<details><summary><b>How do you know it's process 1 ?</b></summary>
+<p>
+To be honest this is a bit of inside knowledge, docker images run the command they are given as process 1. The Graalvm image is pretty restricted in the commands it contains and sadly does not include the `ps` command, so sadly we can't check this.
+</p></details>
 
 Within a second or two of the process being killed the connection to the container in the pod is terminated as the container exits.
 
@@ -110,7 +125,7 @@ Kubernetes has identified that the container exited and within the pod restarted
 2020.01.02 14:10:04 INFO com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[hystrix-io.helidon.microprofile.faulttolerance-1,5,server]: Found 5 items
 ```
 
-The reason it took a bit longer than usual when starting the service is that the code was doing the on-demand setup of the web services.
+The reason it took a bit longer than usual when accessing the service is that the code was doing the on-demand setup of the web services.
 
 ### Liveness
 We now have mechanisms in place to restart a container if it fails, but it may be that the container does not actually fail, just that the program running in it ceases to behave properly, for example there is some kind of non fatal resource starvation such as a deadlock. In this case the pod cannot recognize the problem as the container is still running.
@@ -198,7 +213,7 @@ Let's apply the changes we made in the deployment :
 
 - Make sure you are in the folder **helidon-kubernetes**
 
--  `./undeploy.sh`
+-  `bash undeploy.sh`
 
 ```
 Deleting storefront deployment
@@ -225,7 +240,7 @@ replicaset.apps/zipkin-88c48d8b9          1         1         1       66m
 
 ```
 
-- Deploy the updated version : `./deploy.sh`
+- Deploy the updated version : `bash deploy.sh`
 
 ```
 Creating zipkin deployment
@@ -341,8 +356,9 @@ Let's see what happens in this case.
 
 First let's start following the logs of your pod
 
-- Open new window
--  `kubectl logs -f --tail=10 storefront-b44457b4d-29jr7 `
+- Run the following command (replace the pod Id with yours)
+  -  `kubectl logs -f --tail=10 storefront-b44457b4d-29jr7 `
+
 
 ```
 ...
@@ -350,11 +366,14 @@ First let's start following the logs of your pod
 2020.01.02 16:24:41 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
 ```
 
-- Open a new terminal window
-- Log in to the your container and create the /frozen file:
+- Open new browser window or tab
+- Go to your cloud account
+- Once in the cloud account open a cloud shell in the new window
+
+- Log in to the your container and create the /frozen file  (replace the pod Id with yours)
   -  `kubectl exec -ti storefront-b44457b4d-29jr7 -- /bin/bash`
   -  `touch /frozen`
-- Wait and see what happened in your log window
+- Go back to the window running the logs
 
 Kubernetes detected that the liveness probes were not responding in time, and after 3 failures it restarted the pod.
 
@@ -396,8 +415,9 @@ Events:
   Normal   Started    55s (x2 over 8m11s)  kubelet, docker-desktop  Started container storefront
 ```
 
-The pod became unhealthy, then the container was killed and a new container restarted
+The pod became unhealthy, then the container was killed and a fresh new container restarted.
 
+ (Leave the extra window open as you'll be using it again later)
 ### Readiness
 The first two probes determine if a pod is alive and running, but it doesn't actually report if it's able to process events. That can be a problem if for example a pod has a problem connecting to a backend service, perhaps there is a network configuration issue and the pods path to a back end service like a database is not available.
 
@@ -418,7 +438,7 @@ Unlike a liveness probe, if a container fails it's not killed off, and calls to 
 #            command:
 #            - /bin/bash
 #            - -c
-#            - 'curl -s http://localhost:9080/health/ready | json_pp | grep "\"outcome\" : \"UP\""'
+#            - 'curl -s http://localhost:9080/health/ready | grep "\"outcome\":\"UP\""'
 #          # No point in checking until it's been running for a while 
 #          initialDelaySeconds: 15
 #          # Allow a short delay for the response
@@ -439,7 +459,7 @@ The ReadinessProbe section should now look like this :
             command:
             - /bin/bash
             - -c
-            - 'curl -s http://localhost:9080/health/ready | json_pp | grep "\"outcome\" : \"UP\""'
+            - 'curl -s http://localhost:9080/health/ready | grep "\"outcome\":\"UP\""'
           # No point in checking until it's been running for a while 
           initialDelaySeconds: 15
           # Allow a short delay for the response
@@ -452,11 +472,11 @@ The ReadinessProbe section should now look like this :
 
 The various options for readiness are similar to those for Liveliness, except you see here we've got an exec instead of httpGet.
 
-The exec means that we are going to run code **inside** the pod to determine if the pod is ready to serve requests. The command section defined the command that will be run and the arguments. In this case we run the /bin/bash shell, -c means to use the arguments as a command (so it won't try and be interactive) and the `'curl -s http://localhost:9080/health/ready | json_pp | grep "\"outcome\" : \"UP\""'` is the command.
+The exec means that we are going to run code **inside** the pod to determine if the pod is ready to serve requests. The command section defined the command that will be run and the arguments. In this case we run the /bin/bash shell, -c means to use the arguments as a command (so it won't try and be interactive) and the 'curl -s http://localhost:9080/health/ready | grep "\"outcome\":\"UP\""' is the command.
 
-Some points about 'curl -s http://localhost:9080/health/ready | json_pp | grep "\"outcome\" : \"UP\""'
+Some points about 'curl -s http://localhost:9080/health/ready | grep "\"outcome\":\"UP\""'
 
-Firstly this is a command string that actually runs 3 commands connecting the output of one to the input of the other. If you exec to the pod you can actually run these by hand if you like
+Firstly this is a command string that actually runs several commands connecting the output of one to the input of the other. If you exec to the pod you can actually run these by hand if you like
 
 The first (the curl) gets the readiness data from the service (you may remember this in the Helidon labs) In this case as the code is running within the pod itself, so it's a localhost connection and as it'd direct to the micro-service it's http
 
@@ -465,36 +485,16 @@ root@storefront-b44457b4d-29jr7:/# curl -s http://localhost:9080/health/ready
 {"outcome":"UP","status":"UP","checks":[{"name":"storefront-ready","state":"UP","status":"UP","data":{"storename":"My Shop"}}]}
 ```
 
-The resulting data however is a single line, so not easy to look at just the results of the outcome. We then use json_pp to take that single line of data and reformat it into something nice 
-
-```
-root@storefront-b44457b4d-29jr7:/# curl -s http://localhost:9080/health/ready | json_pp
-{
-   "status" : "UP",
-   "outcome" : "UP",
-   "checks" : [
-      {
-         "state" : "UP",
-         "status" : "UP",
-         "data" : {
-            "storename" : "My Shop"
-         },
-         "name" : "storefront-ready"
-      }
-   ]
-}
-```
-
-Now each element is on a line of it's own, and we can just use the final command the grep to look for a line containing `"outcome" : "UP"` We do however have to be careful because " is actually part of what we want to look for, as are the space characters, so to define these as a constant we need to ensure it's a single string, we do this by enclosing the entire thing in quotes `"` and to prevent the `"` within the string being interpresed as end of string (and thuis new argument) characters we need to escape them, hence we end up with `"\"outcome\" : \"UP\""`
+We can just use the final command the grep to look for a line containing `"outcome":"UP"` We do however have to be careful because " is actually part of what we want to look for (and if you ran the text thoguht a json formatter you may have space characters) So to define these as a constant we need to ensure it's a single string, we do this by enclosing the entire thing in quotes `"` and to prevent the `"` within the string being interpreted as end of string (and thus new argument) characters we need to escape them, hence we end up with `"\"outcome\":\"UP\""`
 
 Now try it out:
 
 - Connect to the pod : `kubectl exec -ti storefront-b44457b4d-29jr7  -- /bin/bash`
 - Run the command in the pod:
-  -  `curl -s http://localhost:9080/health/ready | json_pp | grep "\"outcome\" : \"UP\""`
+  -  `curl -s http://localhost:9080/health/ready | grep "\"outcome\":\"UP\""`
 
 ```
-   "outcome" : "UP",
+{"outcome":"UP","status":"UP","checks":[{"name":"storefront-ready","state":"UP","status":"UP","data":{"storename":"My Shop"}}]}
 ```
 
 In this case the pod is ready, so the grep command returns what it's found. We are not actually concerned with what the pod returns in terms of string output, we are looking for the exit code, interactivly we can find that by looking in the $? variable:
@@ -510,23 +510,25 @@ And can see that the variable value (which is what's returned back to the Kubern
 If you want to see what it would do if the outcome was not UP try running the command changing the UP to DOWN (or actually anything other than UP) **Important** While you can run this command in the pods shell •DO NOT• modify the yaml like this.
 
 ```
-root@storefront-b44457b4d-29jr7:/# curl -s http://localhost:9080/health/ready | json_pp | grep "\"outcome\" : \"DOWN\""
+root@storefront-b44457b4d-29jr7:/# curl -s http://localhost:9080/health/ready | grep "\"outcome\":\"DOWN\""
 root@storefront-b44457b4d-29jr7:/# echo $?
 1
 ```
 
 In this case the return value in $? is 1, not 0, and in Unix / Linux terms that means something's gone wrong.
 
-The whole thing is held in single quotes `'curl -s http://localhost:9080/health/ready | json_pp | grep "\"outcome\" : \"UP\""'` to that it's treated as a single string by the yaml file parser and when being handed to the bash shell.
+The whole thing is held in single quotes `'curl -s http://localhost:9080/health/ready | grep "\"outcome\":\"UP\""'` to that it's treated as a single string by the yaml file parser and when being handed to the bash shell.
+
+Remember, in this case the command is executed inside the container, so you have to make sure that the commands you want to run will be available. This is especially important if you change the base image, you might find you are relying on a command that's no longer there, or works in a different way from your expectations.
 
 That's all we're going to do with bash shell programming for now !
 
 Having made the changes let's undeploy the existing configuration and then deploy the new one
 
-- Open a terminal window
+In the Oracle Cloud Shell
 - Navigate to the **helidon-kubernetes** folder
 - Run the undeploy.sh script
-  -  `./undeploy.sh `
+  -  `bash undeploy.sh `
 
 ```
 Deleting storefront deployment
@@ -566,7 +568,7 @@ service/zipkin         ClusterIP   10.104.81.126   <none>        9411/TCP       
 
 Now let's deploy them again, run the deploy.sh script, be prepared to run kubectl get all within a few seconds of the deploy finishing.
 
-- Run the deploy script :  `./deploy.sh`
+- Run the deploy script :  `bash deploy.sh`
 
 ```
 Creating zipkin deployment
@@ -621,7 +623,7 @@ replicaset.apps/storefront-74cd999d8      1         1         0       12s
 replicaset.apps/zipkin-88c48d8b9          1         1         1       12s
 ```
 
-We see something different, usually within a few seconds of starting a pod it's in the Running state (as are these) **BUT** if we look at the pods we see that though it's running the storefront is not actually ready, the replica set doesn't have any storefront ready (even though we've asked for 1) and neither does the deployment. 
+We see something different, usually within a few seconds of starting a pod it's in the Running state (as are these) **BUT** if we look at the pods we see that though it's running the storefront is not actually ready, the replica set doesn't have any storefront ready (even though we've asked for pod 1) and neither does the deployment. 
 
 If after a minute or so we re-do the kubectl command it's as we expected.
 
@@ -654,7 +656,7 @@ Well the answer is simple. If there is a readiness probe enabled a pod is not co
 
 As to why it didn't happen before if a pod does not have a readiness probe specified then it is automatically assumed to be in a ready state as soon as it's running
 
-What happens if a request is made to the service while before the pod is ready ? Well if there are other pods in the service (the selector for the service matches the labels and the pods are ready to respond) then the service requests are sent to those pods. If there are **no** pods ab.e to servcie the requests than a 503 "Service Temporarily Unavailable" is generated back to the caller
+What happens if a request is made to the service while before the pod is ready ? Well if there are other pods in the service (the selector for the service matches the labels and the pods are ready to respond) then the service requests are sent to those pods. If there are **no** pods ab.e to service the requests than a 503 "Service Temporarily Unavailable" is generated back to the caller
 
 To see what happens if the readiness probe does not work we can simply undeploy the stock manager service.
 
@@ -687,7 +689,7 @@ stockmanager-6456cfd8b6-vqq7c   0/1     Terminating   0          26m
 storefront-74cd999d8-dzl2n      1/1     Running       0          26m
 zipkin-88c48d8b9-vdn47          1/1     Running       0          26m
 ```
-The stock manager service is being stopped, after a short while if we run kubectl again to get everything we see it's gone
+The stock manager service is being stopped, after 60 seconds or so if we run kubectl again to get everything we see it's gone
 
 -  `kubectl get all`
 
@@ -710,6 +712,7 @@ replicaset.apps/storefront-74cd999d8   1         1         0       28m
 replicaset.apps/zipkin-88c48d8b9       1         1         1       28m
 
 ```
+
 Something else has also happened though, the storefront service has no pods in the ready state, neither does the storefront deployment and replica set. The readiness probe has run against the storefront pod and when the probe checked the results it found that the storefront pod was not in a position to operate, because the service it depended on (the stock manager) was no longer available. 
 
 - Let's try accessing the service (replace the IP address with the one for your service)
@@ -808,7 +811,7 @@ Connection: keep-alive
 ```
 
 ### Startup probes
-You may have noticed above that we had to wait for the readiness probe to complete on a pod before it became ready, and worse we had to wait the intialDelaySeconds before we could sensibly even start testing to see if the pod was ready. This means that is we wanted to do add extra pods then there is a delay before the new capacity come online and support the service, In the case of the storefront this is not to much of a problem as the service starts up fast, but for a more complex service, especially a legacy service that may have a startup time that varies a lot depending on other factors, this could be a problem, after all we want to respond to request as soon as we can.
+You may have noticed above that we had to wait for the readiness probe to complete on a pod before it became ready, and worse we had to wait the intialDelaySeconds before we could sensibly even start testing to see if the pod was ready. This means that if we wanted to add extra pods then there is a delay before the new capacity come online and support the service, In the case of the storefront this is not to much of a problem as the service starts up fast, but for a more complex service, especially a legacy service that may have a startup time that varies a lot depending on other factors, this could be a problem, after all we want to respond to request as soon as we can.
 
 To solve this in Kubernetes 1.16 the concept of startup probes was introduced. A startup probe is a very simple probe that tests to see if the service has started running, usually at a basic level, and then starts up the liveness and readiness probes. Effectively the startupProbe means there is no longer any need for the initialDelaySeconds.
 

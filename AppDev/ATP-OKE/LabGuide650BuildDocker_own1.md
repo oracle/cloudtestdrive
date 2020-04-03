@@ -11,9 +11,9 @@ Because you are working in your own Cloud Tenancy, you need to perform a few ext
 
 ## Steps
 
-- On your PC, navigate to the directory where you cloned your **Git** repository
+- In the **Cloud Shell**, navigate to the directory where you cloned your **Git** repository
 
-- Navigate into your database wallet folder, and editthe file **sqlnet.ora** 
+- Navigate into your database wallet folder, and edit the file **sqlnet.ora** 
 
   - In this file, replace the default line below:
 
@@ -39,17 +39,21 @@ Because you are working in your own Cloud Tenancy, you need to perform a few ext
   - Run the following command :
 
     ```
-    kubectl create secret generic db-wallet --from-file=<wallet_directory>
+    #First move up one level
+    cd ..
+  
+    # Now create a second secret
+  kubectl create secret generic db-wallet --from-file=<wallet_directory>
     ```
 
     - <wallet_directory> is the location of your wallet folder.  This can be a relative or a full path, finishing with a "/"
-
+  
   - Example command:
 
     ```
     kubectl create secret generic jle-wallet --from-file=./Wallet_JLEOOW/
     ```
-
+  
     
 
 

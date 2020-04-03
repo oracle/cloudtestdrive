@@ -6,26 +6,10 @@
 
 ## B. Running as a docker images locally
 
+Like the Helidon lab you perform these steps **inside** the client virtual machine
+
 ### Prerequisites
 To run this part of the lab you need the working storefront and stockmanager microservices (as per the Helidon labs) connected to the database.
-
-<details><summary><b>Not done the Helidon lab ?</b></summary>
-<p>
-If you are using a the "completed" VM image (i.e. only doing the docker and subsequent parts of the workshop) then in the helidon-labs-stockmanager project you will need to edit the in the conf/stockmanager-conf.yaml file and add a line of the form `department: "Your_department_name"` (change the name to be a name unique to you)
-
-For example
-
-```
-app:
-  persistenceUnit: "HelidonATPJTA"
-  department: "Tims"
-```
-
-Changing "Tims" to match your name of course
-
-</p></details>
-
----
 
 - Make sure the zipkin container is running. You may have done this in the previous lab chapter and left it running. 
   - To check if it is already running type :
@@ -43,7 +27,7 @@ Changing "Tims" to match your name of course
 
 #### Docker image build tool
 
-We will be using **jib** to build the docker images. The pom.xml file contains the details of the jib tooling and it's settings. 
+We will be using **jib** to build the docker images. The Maven pom.xml file contains the details of the jib tooling and it's settings. 
 
 - Open the **storefront** project, and on the top level, open the **pom.xml** file
 - Locate the **jib-maven-plugin** dependency near line 162
@@ -112,7 +96,7 @@ Now repeat this step for the stockmanager:
   -  `cd ../helidon-labs-stockmanager/`
 - Run maven : `mvn package`
 
-This operation will create two docker images. The mvn package triggers jib to run which will build the docker image based on the properties in the jib section of the pom.xml file.
+This operation will create two docker images, stored locally. The mvn package triggers jib to run which will build the docker image based on the properties in the jib section of the pom.xml file.
 
 The jib tool has many advantages over creating a docker image by hand, because it uses the pom.xml file to know what dependencies to copy over, so any changes to the dependencies will automatically be handled when jib is run.
 
@@ -208,7 +192,7 @@ The docker flags are handled as following,
 
 </p></details>
 
-Let's use docker volumes (the docker --volume flag) to inject the configuration for us, each volume argument is the host file system name (this needs to be an absolute pathname) and the location inside the container to mount it. Again in the helidon-labs-stockmanager 
+Let's use docker volumes (the docker --volume flag) to inject the configuration for us, each volume argument is the host file system name (this needs to be an absolute pathname) and the location inside the container to mount it. Again in the helidon-labs-stockmanager directory
 
 - Run the container with a volumes attached:
 
@@ -257,27 +241,12 @@ It means you've not stopped the storefront and / or stock manager programs runni
 As the storefront depends on the stockmanager (and both depend on zipkin) it's important to ensure that the proper order is followed
 
 - Run the **Stockmanager** container via script:
-  -  `./runLocalExternalConfig.sh`
+  -  `bash runLocalExternalConfig.sh`
   - Keep the terminal window open to see logging info
+  
 - Open a **new** terminal window
   - Go to the Storefront project: `cd workspace/helidon-labs-storefront`
-  - Run the **Storefront** container via script: `./runLocalExternalConfig.sh`
-
----
-
-<details><summary><b>Not done the Helidon lab ?</b></summary>
-<p>
-If you've not done the helidon lab then you won't have any stock items in the database under the department name you chose
-
-- Use curl to create some stock items :
-  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pin/5000`
-  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pencil/200`
-  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Eraser/50`
-  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Book/100`
-  
-</p></details>
-
----
+  - Run the **Storefront** container via script: `bash runLocalExternalConfig.sh`
 
 - Open **another** new terminal window
 - Call the stocklevel method of the application:
@@ -296,14 +265,6 @@ This call should return the entries you added earlier.
 - You probably will get a *424 Failed dependency* message:  it's because the lazy initialization has taken a while as the back end request has times out (remember the @Timeout annotation!) 
   - Just re-run the request a few times till you get the expected response
 
----
-
-<details><summary><b>No stock items returned ?</b></summary>
-<p>
-If the returned  data is an empty array `[]` then you've not added any stock items for your department name. Expand the `Not done the Helidon lab ?` section above and follow the instructions there.
-</p></details>
-
----
 
 The outputs for the storefront and stockmanager containers will display the log data generated as the operation was performed.
 
@@ -358,24 +319,50 @@ Of course in a production environment you'd probably have a separate folder cont
 ### Pushing your images to a container repository
 The docker container images are currently only held locally, that's not good if you want to distribute them or run them in other locations. We can save the images in an external repository, This could be public - e.g. dockerhub.com, private to your organization or in a cloud registry like the Oracle OCIR. Note that if you wanted to there are docker image save and docker image load commands that will save and load image files from a tar ball, but that's unlikely to be as easy to use as a repository, especially when trying to manage distribution across a large enterprise environment.
 
-As there are probably many attendees doing the lab we need to separate the different images out, so we're also going to use your initials / name / something unique 
+#### Getting your docker credentials and other information
 
-Your full repo will be a combination of the repository host name (e.g. fra.ocir.io for an Oracle Cloud Infrastructure Registry) the tenancy name (oractdemeabdmnative) and the  details you've chosen
+There are a few details (registry id, authentication tokens and the like) you will need to get before you push your images. 
 
-- Chose something unique **TO YOU** e.g. your initials : tg_repo 
-- this must be in **lower case** and can **only contain letters, numbers and hyphen**
+- Please follow the instructions in this document for [getting your docker details](../ManualSetup/GetDockerDetailsForYourTenancy.md)
 
-The ultimate full repository name will look something like fra.ocir.io/oractdemeabdmnative/tg_repo
+As there are may be many attendees doing the lab going through the same tenancy we need to separate the different images out, so we're also going to use your initials / name / something unique 
 
-Let's update the repoConfig.sh scripts in both the helidon-labs-stockmanager and helidon-labs-storefront directories to reflect your chosen repo details
+Your full repo will be a combination of the repository host name (e.g. fra.ocir.io for an Oracle Cloud Infrastructure Registry) the tenancy storage name (for example oractdemeabdmnative) and the  details you've chosen
+
+#### Docker login in to the Oracle Container Image Registry (OCIR)
+
+We need to tell docker your username and password for the registry. 
+
+You will have gathered the information needed in the previous step. You just need to execute the following command, of course you need to substitute the fields
+
+`docker login <region-code>.ocir.io --username=<mytenancystoragenamespace>/oracleidentitycloudservice/<myusername> --password='<auth token>'`
+
+where :
+
+- `<region-code>` : 3-letter code of the region you are using
+- `<mytenancystoragenamespace>` : name of your tenancy's Object Storage namespace
+- `<myusername>` : user name you used to register for your cloud account, usually an email address
+- `<auth token>`: Auth token you associated with your username
+
+All of this is information you gathered when you were [getting your docker details](../ManualSetup/GetDockerDetailsForYourTenancy.md)
+
+For example a completed version may look like this (this is only an example, use your own values) ** Important** The auth token being used for the password may well contain characters with special meaning to the shell, so it's important to include it in single quotes as in the example below ( ' )
+
+`docker login fra.ocir.io --username=cdtemeabdnse/oracleidentitycloudservice/my.email@you.server.com --password='q)u70[]eUkM1u}zu;:[L'`
+
+Enter the command with **your** details into a terminal in the virtual machine to login to the OCIR.
+
+#### Pushing the images
+
+You need to update the repoConfig.sh scripts in **both** the helidon-labs-stockmanager and helidon-labs-storefront directories to reflect your chosen details
 
 - Navigate to the Storefront project
 
 - Open file **repoConfig.sh** and edit the repo name to contain your initials
 
-  - Example for initials tg : 
+  - Example for region `Frankfurt`, in the `oractdemeabdmnative` tenancy with initials `tg` you might have : 
 
-    ```
+    ```bash
     #!/bin/bash
     REPO=fra.ocir.io/oractdemeabdmnative/tg_repo
     echo Using repository $REPO
@@ -385,8 +372,6 @@ Let's update the repoConfig.sh scripts in both the helidon-labs-stockmanager and
 
 - Open file **repoConfig.sh** and edit the repo name again as above
 
-
-
 ---
 
 <details><summary><b>About the script and the docker tags</b></summary>
@@ -395,12 +380,21 @@ Let's update the repoConfig.sh scripts in both the helidon-labs-stockmanager and
 The build script is pretty similar to what we had before. It uses mvn package to create the initial image using jib, but the docker build command in the file is different (don't actually run this, just look at it)
 
 ```
-$ docker build  --tag my.repo.io/some-id/storefront:latest --tag $REPO/storefront:0.0.1 -f Dockerfile .
+$ docker build  --tag $REPO/storefront:latest --tag $REPO/storefront:0.0.1 -f Dockerfile .
 ```
 
-Note that we have two --tag commands so the resulting image will be pointed to by two names, not just one. Both of the names include the repository information (we use this later on when pushing the images) but they also have a :<something> after the container name we're used to seeing. This is used as the version number, this is not processed in any meaningful way that I've discovered (for example I've yet to find a tool that allows you to do something like Version 1.2.4 or later) but by convention you should tag the most recent version with :latest and all images should be tagged with a version number in the form of :<major>.<minor>.<micro> e.g. 1.2.4
+Note that we have two --tag commands so the resulting image will be pointed to by two names, not just one. Both of the names include the repository information (we use this later on when pushing the images) but they also have a :\<something\> after the container name we're used to seeing. This is used as the version number, this is not processed in any meaningful way that I've discovered (for example I've yet to find a tool that allows you to do something like Version 1.2.4 or later) but by convention people tag the most recent version with :latest and all images should also be tagged with a version number in the form of :\<major\>.\<minor\>.\<micro\> e.g. 1.2.4
 
-Now the images are tagged with a name that included version and repo information we can push them to a repository, you will need to have logged in to your docker repository (the `docker login` command ) If you are using the VM image we provided then this will have been done for you and for the remainder of this workshop we will use the Oracle Cloud Infrastructure Registry.
+<details><summary><b>On the dangers of using :latest</b></summary>
+<p>
+On the surface using :latest may seem like a really good idea, you want to run the latest version all the time right ?
+
+Well actually using :latest may not be what you want. In a production environment you probably want to know what your exact configuration is, you may well have accreditation requirements (especially in the finance sector) and in most situations you want the production environment to match your development, and test environment. Certainly if you have problems and want to fix them you would wnat to know the configuration the problem is occuring in.
+
+To make matters worse :latest is just a tag , it has no actual meaning. you could have a v0.0.1 version which is also tagged latest, even though there are many versions after it (0.0.2, 0.1.4, 1.0.2 etc.) docker doesn't ensure that :latest is actually the most recent version of an image.
+</p></details>
+
+Now the images are tagged with a name that included version and repo information we can push them to a repository, you will need to have logged in to that docker repository (you did this earlier with the `docker login` command)
 
 To push an image to the repository just push it, for example (don't actually run this, just look at it)
 
@@ -448,24 +442,6 @@ Notice that the layers all already exist, so nothing needs to be uploaded at all
 
 </p></details>
 
----
-
-To push images to a private docker repository you will usually need to have done some form of docker login to that repository, this has already been done for you in the virtual machine you are using.
-
-<details><summary><b>Docker logins to other repos</b></summary>
-<p>
-If you were doing this yourself and needed to log in to a docker repository other than dockerhub then the command will look something like the following
-
-```
-docker login <repo dns name>/<repo account> --username <username> --password <password>
-```
-
-If you omit the --username and --password option flags then docker login will prompt you for the details
-
-</p></details>
-
----
-
 - Rebuild the images
 
 Run the buildPushToRepo.sh script in one of the project directories, then once it's finished in the other. 
@@ -504,7 +480,7 @@ ebb9ae013834: Layer already exists
 build and pushed with tags 0.0.1
 ```
 
-The script will do the build then push the container images. The first time you push to the repository it may take a while as mentioned above because you've pushing all of the layers in the runtime, the next time however only changes layers will need to be pushed.
+The script will do the build then push the container images. The first time you push to the repository it may take a while because you've pushing all of the layers in the runtime, the next time however only changes layers will need to be pushed.
 
 You can now re-run the images that have been pushed the cloud.
 
@@ -512,7 +488,7 @@ You can now re-run the images that have been pushed the cloud.
 
 ### Cleaning up
 
-This is the end of the lab, let's stop the running images
+This is the end of this section of the lab, let's stop the running images
 
 - Open a new terminal window
 - Stop the Storefront and Stockmanager apps:
@@ -522,9 +498,92 @@ This is the end of the lab, let's stop the running images
 
 
 
+# Preparing for the Kubernetes labs
+
+When you do the Kubernetes labs you will test out performing a rolling upgrade. To do that you need to be able to show that the upgrade has applied, so you're going to do a bit of advance work now make a small change now so you can see the differences in versions in the later labs.
+
+- In Eclipse, navigate to the **helidon-labs-storefront** project
+  - Then navigate to **src/main/java**, then **com.oracle.labs.helidon.storefront**, then **resources**
+  - Open the file **StatusResource.java** 
+  - Change the version in the returned to **0.0.2** (updated version shown below)
+
+  ```
+	  public JsonObject isAlive() throws InterruptedException {
+		  return JSON.createObjectBuilder().add("name", storename).add("alive", true).add("version", "0.0.2").build();
+	  }
+  ```
+
+  - Save the changes
+
+- In a terminal window, let's build the new version of the container:
+
+  -  Change to folder **helidon-labs-storefront**
+  - Run the v2 script:
+    -  `bash buildV0.0.2PushToRepo.sh `
+
+```
+Using repository fra.ocir.io/oractdemeabdmnative/tg_repo
+[MVNVM] Using maven: 3.5.2
+[INFO] Scanning for projects...
+
+<Lots of Maven output removed>
+
+[INFO] Total time: 23.872 s
+[INFO] Finished at: 2020-01-03T12:13:40Z
+[INFO] Final Memory: 39M/188M
+[INFO] ------------------------------------------------------------------------
+Sending build context to Docker daemon  112.1kB
+Step 1/3 : FROM jib-storefront:latest
+ ---> d31de67d9272
+Step 2/3 : RUN cp -r /app/resources/* /app/classes
+ ---> Running in 818de3f3faec
+Removing intermediate container 818de3f3faec
+ ---> 121bb2f37bb7
+Step 3/3 : RUN rm -rf /app/resources
+ ---> Running in 9d650231ec09
+Removing intermediate container 9d650231ec09
+ ---> df30253a82ec
+Successfully built df30253a82ec
+Successfully tagged fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:latest
+Successfully tagged fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:0.0.2
+The push refers to repository [fra.ocir.io/oractdemeabdmnative/tg_repo/storefront]
+7f699cf87b87: Pushed 
+76ad72d8097b: Pushed 
+b158b5f94634: Pushed 
+341c644e75cf: Pushed 
+84fad9f97da3: Layer already exists 
+2f6d5006f5d1: Layer already exists 
+1608029e89ad: Layer already exists 
+03ff63c55220: Layer already exists 
+bee1e39d7c3a: Layer already exists 
+1f59a4b2e206: Layer already exists 
+0ca7f54856c0: Layer already exists 
+ebb9ae013834: Layer already exists 
+latest: digest: sha256:65db7b35e2f2bd73f0010771f66794034eecddb6b10b69a3f34b9a8ffd16d8f5 size: 2839
+The push refers to repository [fra.ocir.io/oractdemeabdmnative/tg_repo/storefront]
+7f699cf87b87: Layer already exists 
+76ad72d8097b: Layer already exists 
+b158b5f94634: Layer already exists 
+341c644e75cf: Layer already exists 
+84fad9f97da3: Layer already exists 
+2f6d5006f5d1: Layer already exists 
+1608029e89ad: Layer already exists 
+03ff63c55220: Layer already exists 
+bee1e39d7c3a: Layer already exists 
+1f59a4b2e206: Layer already exists 
+0ca7f54856c0: Layer already exists 
+ebb9ae013834: Layer already exists 
+0.0.2: digest: sha256:65db7b35e2f2bd73f0010771f66794034eecddb6b10b69a3f34b9a8ffd16d8f5 size: 2839
+built and pushed v0.0.2
+
+```
+
+There is a lot of output, most of which has been removed in the example output above. You can see that the 0.0.2 version has been pushed to the repo.
+
+(Note the Maven output may refer to v0.0.1, don't worry this is because we haven't changed the version details in the maven pom.xml file. The later stages of the process override this.)
+
+## Summary
 Congratulations, you are now able to run your microservices on Docker!  Next step is to use these images to deploy them on a Kubernetes cluster.  For this, navigate to the next chapter, [C. Deploying in Kubernetes](../Kubernetes/Kubernetes-labs.md)
-
-
 
 ------
 
