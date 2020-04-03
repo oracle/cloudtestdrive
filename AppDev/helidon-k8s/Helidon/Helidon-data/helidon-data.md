@@ -448,7 +448,13 @@ content-length: 148
 
 **Please leave the stockmanager running, we're going to use it in the next few labs**
 
+### Optional lab - accessing the context of the request
 
+There are situations where you need to access the context of a request, for example in getting the identity of the user, or examining in detail the Http headers.
+
+Not all projects need to access this information, which is why this is an optional step in the lab you can do if you have time, or come back to later if you wish.
+
+If you'd like to then please work through the [accessing the context](./accessing-the-context.md) module.
 
 ### Summary
 We haven't looked at JPA / JTA in much detail, but we've seen how the Helidon configuration system can be used to supply configuration data to the JPA and JTA as they are being setup.
