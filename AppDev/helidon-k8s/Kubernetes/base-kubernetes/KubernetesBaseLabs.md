@@ -1242,7 +1242,7 @@ The script deploy.sh will apply all three deployment configuration files (storef
 *** IMPORTANT ***
 The config files of the storefront and stockmanager refer to the location in the docker repo that you used when setting up the labs.   So you'll need to edit the deployment files to reflect this
 
-- Make sure you are in the folder **workspace/helidon-kubernetes**
+- Make sure you are in the folder **helidon-kubernetes**
 
   - You need to move up one level : `cd ..`
 
