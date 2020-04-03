@@ -974,7 +974,7 @@ This of course may be a problem if the constructor if you want to use does actua
 
 To use a constructor that is not the default no args constructor then you need to use the @Inject annotation on the constructor to use. Then you have to get the arguments for it.
 
-Fortunately for us Helidon can get values to use for a constructor form the configuration, using the `@ConfigProperty` annotation on a constructors arguments
+Fortunately for us Helidon can get values to use for a constructor from the configuration, using the `@ConfigProperty` annotation on a constructors arguments
 
 </p>
 
@@ -987,7 +987,8 @@ Fortunately for us Helidon can get values to use for a constructor form the conf
 - In folder **data**, open the file **MinimumChange.java**
 - Add an additional constructor after the no args constructor:
 
-  ```@Inject
+  ```java
+    @Inject
     	public MinimumChange(@ConfigProperty(name = "app.minimumchange") Integer initialMinimumChange) {
     		this.minimumChange.set(initialMinimumChange);
     	}
@@ -1352,7 +1353,7 @@ connection: keep-alive
 {"errormessage":"Unable to connect to the stock manager service"}
 ```
 
-At least now the called is getting something useful !
+At least now the caller is getting something useful !
 
 
 ### Handling code exceptions
@@ -1362,7 +1363,7 @@ Helidon has another approach error handling we're going to look at here that doe
 - Add the annotation `@Fallback(StorefrontFallbackHandler.class)`
 
 ```
-@POST
+	@POST
 	@Path("/reserveStock")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -1390,7 +1391,7 @@ connection: keep-alive
 {"Problem processing request in ":"com.oracle.labs.helidon.storefront.resources.StorefrontResource.reserveStockItem(com.oracle.labs.helidon.storefront.data.ItemRequest)","param values":["ItemRequest(requestedItem=Pencil, requestedCount=6)"],"Exception":"Message is null"}
 ```
 
-Now the caller has more details on what went wrong.
+Now the caller has lots of details on what went wrong.
 
 The fallback class is com.oracle.labs.helidon.storefront.resources.fallback.StorefrontFallbackHandler. If you're interested do have a look at it, but be warned it has quite a lot of slightly complex Java code for manipulating stacks, parameters and so on.
 
