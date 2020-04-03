@@ -10,6 +10,10 @@
 
 This lab will walk you through the steps to set up a CI/CD environment for developing Microservices, based on the automation possible in Developer Cloud and deploying all components on Oracle's Managed Container platform and the ATP database.
 
+***3-Apr-2020 : New Version using Cloud Shell !***  For Lab Instructors, please be aware this lab has been updated to use the **Oracle Cloud Shell** for all operations involving git, terraform and kubectl.  The full lab is now executed through the browser !
+
+
+
 ## Prerequisites
 
 To run these labs you will need access to an Oracle Cloud Account.  We have prepared this lab for the following situations: 
