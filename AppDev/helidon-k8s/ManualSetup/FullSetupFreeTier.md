@@ -154,7 +154,6 @@ Be sure to remember the **admin password**, save it in a notes document for late
 
 ```
 CREATE USER HelidonLabs IDENTIFIED BY H3lid0n_Labs;
-CREATE USER HelidonLabs IDENTIFIED BY H3lid0n_Labs;
 GRANT CONNECT TO HelidonLabs;
 GRANT CREATE SESSION TO HelidonLabs;
 GRANT DWROLE TO HelidonLabs ;
