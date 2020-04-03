@@ -12,15 +12,10 @@ This page will guide you through the following activities :
 
 - Part A : Set up your Cloud Infrastructure
   - Step 1: Create a compartment called CTDOKE which we will use in this lab
-  - Step 2: Add a Policy statement for OKE
-  - Step 3: Create an API user with a certificate
-- Part B : Install some software on your local machine:
-  - Step 4: Install git
-  - Step 5: Install kubectl
-  - Step 6 : Install terraform
-- Part C : Set up Developer Cloud Service
-  - Step 7 : Create an Instance
-  - Step 8 : Configure the new DevCS instance
+  - Step 2: Add a certificate and a token to your user
+- Part B : Set up Developer Cloud Service
+  - Step 3 : Create an Instance
+  - Step 4 : Configure the new DevCS instance
 
 
 
@@ -62,201 +57,75 @@ After you successfully created the compartment, note down the **Compartment OCID
 
 
 
+### STEP 2: Create a user certificate and token
 
-### **STEP 2**: Add a Policy Statement for OKE
+First you need to locate your user using the Search functionality of the console:
 
-- If you are using an Instructor provided instance, this policy will already be defined.
+- Click on the **Magnifying glass** on the top of your console, and enter your username.  For example, if your name was **ppan** : 
 
-- Before the Oracle managed Kubernetes service can create compute instances in your OCI tenancy, we must explicitly give it permission to do so using a policy statement. From the OCI Console navigation menu, choose **Identity->Policies**.
+  ![](/Users/jleemans/dev/github/cloudtestdrive/AppDev/wls/images/ppan.png)
 
-  ![img](images/devcs/LabGuide200-13c980fa.png)
+- Select the user **that looks like :  oracleidentitycloudservice/(your_name)**
 
-- In the Compartment drop down menu on the left side, choose the **root compartment**. It will have the same name as your OCI tenancy (Cloud Account Name).
+  ![](/Users/jleemans/dev/github/cloudtestdrive/AppDev/wls/images/token1.png)
 
-  ![img](images/devcs/LabGuide200-a321171a.png)
+- Select **Token** in the right-hand menu, then click the button **Create Token**.
 
-- Click **PSM-root-policy**
+  - Enter a name for the token
 
-  ![img](images/devcs/LabGuide200-e67b7705.png)
+  - Use the **Copy** button to copy the token in your buffer, and **immediately paste it** in a notebook of your choice, you will need this later.
 
-- Click the **Add Policy Statement** button
+    ![](/Users/jleemans/dev/github/cloudtestdrive/AppDev/wls/images/token2.png)
 
-  ![img](images/devcs/LabGuide200-3d4a7471.png)
+    
 
-- In the Statement box, enter: `allow service OKE to manage all-resources in tenancy` and click **Add Statement**
+- Add an API key:
 
-  ![img](images/devcs/LabGuide200-bd5bcbd1.png)
-
-
-
-### STEP 3: Create an API user with a certificate
-
-**ATTENTION** : if you are using an Instructor-provided instance, a user called **api.user** will already have been set up for you, and the keys, fingerprints and tokens of this user will be provided to you.
-
-- Add an API (non-SSO) user with an API key:
-
-  - Navigate to the "Identity" , "Users" screen and add a user called "api.user"
+  - In the left-hand menu, click on the **API Keys** menu
 
   - Add an API key: you need a private/public key pair, and you need to paste the public one into the key field. 
-
-    - You can use the following [OpenSSL](http://www.openssl.org/) commands to generate the key pair in the required PEM format. If you're using Windows, you'll need to install [Git Bash for Windows](https://git-scm.com/download/win) and run the commands with that tool.
-
-    - Open a console window and execute following commands
   
-      - ```
-        mkdir ./mykey
-        openssl genrsa -out ./mykey/api_key.pem 2048
-        openssl rsa -pubout -in ./mykey/api_key.pem -out ./mykey/api_key_public.pem
-        ```
-
-    - For more details on this key creation, see the [documentation](https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm).
-
+    - An **Example** is proveded below: both private and public keys are made available, so obviously this is **not good security practice**.
+  
+      - [Public key](keys/api_key_public.pem)
+      - [Private key](api_key.pem)
+  
+    - **Good practice** is to generate your own keys: You can use the following [OpenSSL](http://www.openssl.org/) commands to generate the key pair in the required PEM format. You can use the Oracle Cloud Shell to issue these commands: use the "**>_**" icon in the top right of your console.
+  
+      - Open a Cloud Shell and execute following commands
+  
+        - ```
+          mkdir ./mykey
+          openssl genrsa -out ./mykey/api_key.pem 2048
+          openssl rsa -pubout -in ./mykey/api_key.pem -out ./mykey/api_key_public.pem
+          ```
+        
+      - For more details on this key creation, see the [documentation](https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm).
+  
+  - Once you have the key pair available, return to the detailed screen of your user
+  
+    - Click on the **Add Public Key** button
+    - Either select the local file containing the public key, or paste the content of the file into the "Public Key" field.
+    - Click **Add** to create the key
+  
   - Copy the fingerprint of your API key in a temporary file
-
-  - Copy the OCID of this new user in a temporary file
+  
+  - Copy the OCID of this user in a temporary file
   
   ![alt text](images/devcs/OCI_user_details_new.png)
 
 
-- Create an Auth Token for the user api.user
-
-  - Take care to copy the Token string in a file on your PC : you will need it later, and you cannot retrieve it back from the console.
-
-    ![img](images/660/Auth_token.png)
-
-- Add the **api.user** to the administrator group
-
-
-  - Navigate to the **Identity** and **Groups** menu
-
-    ![img](images/660/Groups.png)
-
-
-  - Open the group **Administrators**
-
-  - Click the **Add User to Group** button, and select the **api.user**
-
-    ![img](images/660/AddUser.png)
-
-  - Click the **add** button to finalize the operation
-
-
-
-## Part B: Install required software on your Laptop ##
-
-
-
-### STEP 4: Installing git
-
-In order to easily update and upload files into your Developer repository, we will clone the newly created DevCS repository onto your machine.  For this you need to install **git** on your laptop.   
-
-- Download the software for your OS on [this location](https://git-scm.com/downloads) 
-- In this tutorial we will use the command line to execute the required git operations, but if you have a git GUI installed (like GitHub Desktop or GitKraken) you can execute the equivalent operations through these tools.
-
-### Step 5 : Installing kubectl
-
-This page covers how to install the Kubernetes command line interface and connect to your Kubernetes cluster
-
-Choose the section that corresponds to your machine:
-
-##### MacOS
-
-Download the latest release with the following `curl` command:
-
-```
-$ curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/darwin/amd64/kubectl
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100 49.9M  100 49.9M    0     0  4289k      0  0:00:11  0:00:11 --:--:-- 4150k
-```
-
-Make the kubectl binary executable.
-
-```
-$ chmod +x ./kubectl
-```
-
-Move the binary in to your PATH.
-
-```
-$ mv ./kubectl /usr/local/bin/kubectl
-```
-
-Verify the installation using the version command.
-
-```
-$ kubectl version
-Client Version: version.Info{Major:"1", Minor:"8", GitVersion:"v1.8.4", GitCommit:"9befc2b8928a9426501d3bf62f72849d5cbcd5a3", GitTreeState:"clean", BuildDate:"2017-11-20T05:28:34Z", GoVersion:"go1.8.3", Compiler:"gc", Platform:"linux/amd64"}
-The connection to the server localhost:8080 was refused - did you specify the right host or port?
-```
-
-At this step the server connection failure is normal. For easier usage it is recommended to setup the autocomplete for bash.
-
-```
-$ source <(kubectl completion bash)
-```
-
-
-
-##### Linux machines
-
-For Linux, use the same sequence as described above for Linux, only replace the CURL command with the following:
-
-```
-$ curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100 49.9M  100 49.9M    0     0  4289k      0  0:00:11  0:00:11 --:--:-- 4150k
-```
-
-​	Note the difference: you are using /bin/linux/... instead of /bin/darwin/...
-​
-
-##### Windows
-
-To find out the latest stable version take a look at [https://storage.googleapis.com/kubernetes-release/release/stable.txt](https://storage.googleapis.com/kubernetes-release/release/stable.txt)
-
-For example if latest stable version is: **v1.8.4** then construct the download link in the following way: *https://storage.googleapis.com/kubernetes-release/release/VERSION_NUMBER/bin/windows/amd64/kubectl.exe*. Thus in case of **v1.8.4** the link looks like this:
-
-[https://storage.googleapis.com/kubernetes-release/release/v1.8.4/bin/windows/amd64/kubectl.exe](https://storage.googleapis.com/kubernetes-release/release/v1.8.4/bin/windows/amd64/kubectl.exe)
-
-Once you have the executable binary add to your PATH variable.
-
-```
-set PATH=%PATH%;c:\download_folder\kubectl.exe
-```
-
-Verify the installation using the version command.
-
-```
-C:\Users\pnagy>kubectl version
-Client Version: version.Info{Major:"1", Minor:"7", GitVersion:"v1.7.0", GitCommit:"d3ada0119e776222f11ec7945e6d860061339aad", GitTreeState:"clean", BuildDate:"2
-017-06-29T23:15:59Z", GoVersion:"go1.8.3", Compiler:"gc", Platform:"windows/amd64"}
-Unable to connect to the server: dial tcp 192.168.99.100:8443: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
-```
-
-
-
-### Step 6 : Installing terraform
-
-Terraform is an open-source infrastructure as code software tool created by HashiCorp. It enables users to define and provision a datacenter infrastructure using a high-level configuration language known as Hashicorp Configuration Language
-
-- Go to the [Hashicorp Terraform website](https://www.terraform.io/downloads.html) to download the software for your OS
-- unzip the executable file in the directory of your choice
-- Add the terraform command to your path
-  - On Mac: export PATH=$PATH:`pwd`
-  - On Windows: go to System Steetings, Advanced, Environment Variables, and add the path to your Terraform directory 
 
 
 
 
 
 
-## Part C : Set up your Cloud Infrastructure
+## Part B : Set up your Developer environment
 
 
 
-### Step 7 : Setting up Developer Cloud Service ###
+### Step 3 : Setting up Developer Cloud Service ###
 
 This step will guide you through the setup of a new Developer Cloud instance :
 
@@ -315,7 +184,7 @@ To access your Developer Cloud Instance, refresh the page and use the hamburger 
 
 
 
-### Step 8 : Configure DevCS Compute & Storage using OCI credentials
+### Step 4 : Configure DevCS Compute & Storage using OCI credentials
 
 To configure DevCS to use the OCI Compute resources for its build engines, we need to manually provide the OCI credentials in the DevCSD setup menu.
 

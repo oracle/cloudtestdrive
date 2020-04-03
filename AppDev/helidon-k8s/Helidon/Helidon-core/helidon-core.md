@@ -137,7 +137,7 @@ public Collection<ItemDetails> listAllStock() {
 
 `@GET` the method will be called in response to http GET requests, For REST services by convention the GET method is the one called when retrieving data.
 
-`@Path("/stocklevel")` that it will respond to the relative (to the class) path /stocklevel As the class as a whole is under /stock the actual effective path combined the two so it's /stock/stocklevel 
+`@Path("/stocklevel")` on the method specifies that it will respond to the relative (to the class) path /stocklevel As the class as a whole has a path annotiaton ti gnicalpunder /stock the actual effective path combined the two so it's /stock/stocklevel 
 
 `@Produces(MediaType.APPLICATION_JSON)` means that the framework will convert the resulting object into JSON format (there are other formats available, for example APPLICATION_XML, but JSON is nice for humans to read and parse, and it also relatively compact compared to XML)
 

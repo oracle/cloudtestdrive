@@ -18,6 +18,10 @@ Finally we look at **monitoring and graphing** to extract data on how the system
 
 In the future the labs will include sections on the use of a Service Mesh, and other Kubernetes based cloud native capabilities such as A/B testing of new releases etc.
 
+For reference, this is the architecture you'll be building
+
+![](images/Architecture-overview.png)
+
 ### Lab conventions
 
 This is a rather long lab, therefore we used a few layout tricks to make the reading of this tutorial more intuitive : 
@@ -37,7 +41,6 @@ As we cover quite some theoretical concepts, we included pretty verbose explanat
 If you feel you are already pretty familiar with a specific concept, you can just skip it, or read quickly through the text, then re-collapse the text section by re-clicking on the title. 
 
 </p>
-
 </details>
 
 ---

@@ -402,15 +402,15 @@ If we look at the data we can see that the retrieved value is 0 (it may be anoth
 Let's make a few calls to list the stock and see what we get
 
 - Execute the following command a few times, **replacing *your_ip* with your Ingress endpoint:**
-  -  `curl -i -X GET -u jack:password http://your_ip:80/store/stocklevel`
+  -  `curl -i -k -X GET -u jack:password https://your_ip/store/stocklevel`
 
 ```
-HTTP/1.1 200 OK
-Server: openresty/1.15.8.2
-Date: Mon, 30 Dec 2019 16:58:26 GMT
-Content-Type: application/json
-Content-Length: 184
-Connection: keep-alive
+HTTP/2 200 
+server: nginx/1.17.8
+date: Fri, 27 Mar 2020 10:05:52 GMT
+content-type: application/json
+content-length: 220
+strict-transport-security: max-age=15724800; includeSubDomains
 
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```

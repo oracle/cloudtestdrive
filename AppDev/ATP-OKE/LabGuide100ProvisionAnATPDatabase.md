@@ -40,9 +40,9 @@ This lab walks you through the steps to get started using the Oracle Autonomous 
    -  Verify your compartment is selected
    -  Specify a name for the instance, for example containing your initials for easy reference
    -  Select **Transaction Processing**
-   -  Select **Serverless**
+   -  Select **Shared Infrastructure**
 
-![](./images/100/Picture100-24-1.png)
+![](./images/100/Picture100-24-2.png)
 
 
 
@@ -57,14 +57,6 @@ WElcome_123#
 
 
 ![](./images/100/Picture100-28-2.png)
-
-
-
-- Select 
-
-
-
-
 
 
 
@@ -97,38 +89,7 @@ You now have created your first Autonomous Transaction Processing Cloud instance
 
 
 
-## Secure Connectivity and Data Access
-
-Now you will configure a secure connection to your Database using Oracle SQL Developer.
-
-
-
-### **STEP 2: Download the secure connection wallet for your provisioned instance**
-
-- Log into your cloud account using your tenant name, username and password.
-- Click on Menu and select Autonomous Transaction Processing
-- On the ATP console, select your ATP instance provisioned in Step 1
-
-![](images/200/Picture200-1.png)
-
-- Click on  **DB Connection** to open up Database Connection pop-up window
-
-![](images/200/picture200-2-2.png)
-
-- Click on **Download Wallet** to supply a password for the wallet and download your client credentials, using the default "Instance Wallet" type.
-
-#### Example password:
-
-```
-WElcome_123#
-```
-
-![](images/200/Picture200-3.png)
-
-- Once you have downloaded your wallet, you will be navigated to ATP overview page
-- The credentials zip file contains the encryption wallet, Java keystore and other relevant files to make a secure TLS 1.2 connection to your database from client applications. Store this file in a secure location.
-
-### **STEP 3: Connect to the ATP instance with SQL Developer** Web
+### **STEP 2: Connect to the ATP instance with SQL Developer** Web
 
 Lets connect to the database you just created using the build-in **SQL Developer Web** tool.
 

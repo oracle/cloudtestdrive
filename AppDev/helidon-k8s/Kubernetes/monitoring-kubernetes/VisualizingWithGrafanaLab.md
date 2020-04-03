@@ -140,15 +140,15 @@ Grafana allows us to combine the data using the Prometheus query language, by us
 Now any pod that provides the `application:list_all_stock_meter_one_min_rate_per_second` data will be part of the total, giving us the total rate across all of the pods.
 
 - Make a few requests using curl to generate some new data (replace <ip address> with that of the ingress controller you were using earlier)
-  -  `curl -i -X GET -u jack:password http://<ip address>:80/store/stocklevel`
+  -  `curl -i -k -X GET -u jack:password https://123.456.789.123/store/stocklevel`
 
 ```
-HTTP/1.1 200 OK
-Server: openresty/1.15.8.2
-Date: Tue, 31 Dec 2019 15:37:01 GMT
-Content-Type: application/json
-Content-Length: 184
-Connection: keep-alive
+HTTP/2 200 
+server: nginx/1.17.8
+date: Fri, 27 Mar 2020 10:06:39 GMT
+content-type: application/json
+content-length: 220
+strict-transport-security: max-age=15724800; includeSubDomains
 
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
@@ -290,16 +290,16 @@ Lastly we need to rename out panel, after all "New dashboard" is not especially 
 
 - Using the duration dropdown in the upper right ![grafana-duration-dropdown-6-hours](images/grafana-duration-dropdown-6-hours.png) change the duration to be the last 5 mins ![grafana-duration-dropdown-5-mins](images/grafana-duration-dropdown-5-mins.png)
 
-- Now make a bunch of curl requests to get some new data
-  -  `curl -i -X GET -u jack:password http://localhost:80/store/stocklevel`
+- Now make a bunch of curl requests to get some new data (replacing the IP address with the one for your service of course)
+  -  `curl -i -k -X GET -u jack:password https://987.123.456.789/store/stocklevel`
 
 ```
-HTTP/1.1 200 OK
-Server: openresty/1.15.8.2
-Date: Tue, 31 Dec 2019 18:03:39 GMT
-Content-Type: application/json
-Content-Length: 184
-Connection: keep-alive
+HTTP/2 200 
+server: nginx/1.17.8
+date: Fri, 27 Mar 2020 10:08:15 GMT
+content-type: application/json
+content-length: 220
+strict-transport-security: max-age=15724800; includeSubDomains
 
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```

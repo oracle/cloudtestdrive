@@ -352,29 +352,29 @@ Events:
 
 We see the usual deployment info, the Image is indeed the new one we specified, `fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:0.0.2` and the events log section shows us the various stages of rolling out the update.
 
-We should of course check that out update is correctly delivering a service
+We should of course check that our update is correctly delivering a service (replace the IP address with one for your service)
 
 ```
-$ curl -i -X GET -u jack:password http://localhost:80/store/stocklevel
-HTTP/1.1 200 OK
-Server: openresty/1.15.8.2
-Date: Fri, 03 Jan 2020 12:56:24 GMT
-Content-Type: application/json
-Content-Length: 184
-Connection: keep-alive
+$ curl -i -k -X GET -u jack:password https://987.123.456.789/store/stocklevel
+HTTP/2 200 
+server: nginx/1.17.8
+date: Fri, 27 Mar 2020 10:33:47 GMT
+content-type: application/json
+content-length: 220
+strict-transport-security: max-age=15724800; includeSubDomains
 
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
-- Now let's check the output form the StausResource:
-  -  `curl -i -X GET http://my-ip:80/sf/status`
+- Now let's check the output from the StausResource (again replace the IP address with the one for your service) :
+  -  `curl -i -k -X GET https://987.123.456.789/sf/status`
 
 ```
-HTTP/1.1 200 OK
-Server: openresty/1.15.8.2
-Date: Fri, 03 Jan 2020 12:56:15 GMT
-Content-Type: application/json
-Content-Length: 49
-Connection: keep-alive
+HTTP/2 200 
+server: nginx/1.17.8
+date: Fri, 27 Mar 2020 10:34:05 GMT
+content-type: application/json
+content-length: 51
+strict-transport-security: max-age=15724800; includeSubDomains
 
 {"name":"My Shop","alive":true,"version":"0.0.2"}
 ```
@@ -563,16 +563,16 @@ replicaset.apps/zipkin-88c48d8b9                                         1      
 ```
 We see that all of the pods are not the origional replica set version, and there are no pods in the new one.
 
-- If we check this by going to the status we can see the rollback has worked :
-  -  `curl -i -X GET http://my-ip:80/sf/status`
+- If we check this by going to the status we can see the rollback has worked (remember to replace the IP address with the one for your service) :
+  -  `curl -i -k -X GET https://987.123.456.789/sf/status`
 
 ```
-HTTP/1.1 200 OK
-Server: openresty/1.15.8.2
-Date: Fri, 03 Jan 2020 13:08:54 GMT
-Content-Type: application/json
-Content-Length: 31
-Connection: keep-alive
+HTTP/2 200 
+server: nginx/1.17.8
+date: Fri, 27 Mar 2020 10:34:43 GMT
+content-type: application/json
+content-length: 51
+strict-transport-security: max-age=15724800; includeSubDomains
 
 {"name":"My Shop","alive":true,"version":"0.0.2"}
 ```
