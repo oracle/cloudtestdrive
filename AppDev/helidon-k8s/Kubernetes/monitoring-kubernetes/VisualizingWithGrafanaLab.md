@@ -17,10 +17,13 @@ For this lab we will use a small subset of the open source features only.
 ### Installing Grafana
 Like many other Kubernetes services Grafana can be installed using helm. By default the helm chart does not create a volume for the storage of the grafana configuration. This would be a problem in a production environment, so we're going to use the persistent storage option defined inthe helm chart for Grafana to create a storage volume. 
 
-- In a terminal window type following command:
-  -  `helm3 install grafana --namespace monitoring stable/grafana --set persistence.enabled=true`
+- In the Oracle Cloud Shell type following command:
+  -  `helm install grafana --namespace monitoring stable/grafana --set persistence.enabled=true --set service.type=LoadBalancer`
 
+Note that normally you would not expose Grafana directly, but would use a ingress or other front end. However to do that requires setting up a reverse proxy with DNS names and getting security certificates, which can take time. Of course you'd do that in production, but for this lab we want to focus on the core Kubernetes learnign stream, so we're taking the easier approach of just creating a load balancer.
+ 
 ```
+
 NAME: grafana
 LAST DEPLOYED: Tue Dec 31 11:59:27 2019
 NAMESPACE: monitoring
@@ -45,7 +48,7 @@ NOTES:
 
 Like many helm charts the output has some useful hints in it, specifically in this case how to get the admin password and setup port-forwarding using Kubectl.
 
-- Now get the login password. In a ***new*** terminal window type :
+- Now get the login password. In a window type :
   -  `kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo`
 
 ```
@@ -54,11 +57,21 @@ wzuiF89rmm2g671fdAkeyZ7GxGrpK71rdCD6YxBd
 
 - **Copy and paste** the password into a text editor so you can use it later.
 
-- In the same new terminal window let's setup the port forwarding:
-  -  `export POD_NAME=$(kubectl get pods --namespace monitoring -l "app=grafana,release=grafana" -o jsonpath="{.items[0].metadata.name}")`
-  -  `kubectl --namespace monitoring port-forward $POD_NAME 3000`
+We need to open a web page to the Grafana service. To do that we need to get the IP address of the load balancer.
 
-- In the browser open a new tab and go to http://localhost:3000
+- Run the following command (here we are limiting to just the grafana service)
+  - `kubectl get service grafana -n monitoring`
+
+```
+NAME      TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)        AGE
+grafana   LoadBalancer   10.96.161.234   130.61.205.103   80:32261/TCP   4m57s
+```
+Note the External IP address (130.61.201.103 in this case)
+
+If the external IP address says <pending> then Kubernetes hasn't finished starting the service. wait a short whiel and run the command again.
+
+- Open a web page (replace <external IP> with the one you just got for the grafana service_
+  - `http://<external ip>
 
 You'll be presented with the Grafana login window
 ![grafana-login](images/grafana-login.png)
@@ -90,7 +103,7 @@ Assuming you entered the details correctly it will report that it's done the sav
 
 ![grafana-configure-prometheus-data-source-saved](images/grafana-configure-prometheus-data-source-saved.png)
 
-- Click the "Back" button at the bottom of the page or the grafana logo ![grafana-logo](images/grafana-logo.png) at the top left to return to the Grafana home page
+- Click the grafana logo ![grafana-logo](images/grafana-logo.png) at the top left to return to the Grafana home page
 
 ![grafana-home-datasource-done](images/grafana-home-datasource-done.png)
 
@@ -114,9 +127,9 @@ Once you've selected it then the display will update with the graph you've selec
 
 ![grafana-new-dashboard-first-panel-add-query-list-stock-meter-rate-individual-pods](images/grafana-new-dashboard-first-panel-add-query-list-stock-meter-rate-individual-pods.png)
 
-You should see two pods listed in the legend, one as a green line in the chart, the other as orange.
+You may see multiple pods listed in the legend (above one as a green line in the chart, the other as orange.) Do not worry of you can only see one, it depends on the exact flow and timing of the labs which will vary between participants.
 
-Grafana allows us to combine the data using the Prometheus query language, by using the ***SUM*** function in the language to combine all of these. 
+Grafana allows us to combine the data using the Prometheus query language, by using the ***SUM*** function in the language to combine all of these.  If you only have one pod do the following anyway, just so see how to use functions)
 
 - Click in the metics box and change it to :
   - `sum(application:list_all_stock_meter_one_min_rate_per_second)` 
@@ -126,7 +139,7 @@ Grafana allows us to combine the data using the Prometheus query language, by us
 
 Now any pod that provides the `application:list_all_stock_meter_one_min_rate_per_second` data will be part of the total, giving us the total rate across all of the pods.
 
-- Make a few requests using curl to generate some new data (replace the ip address with the one for your service)
+- Make a few requests using curl to generate some new data (replace <ip address> with that of the ingress controller you were using earlier)
   -  `curl -i -k -X GET -u jack:password https://123.456.789.123/store/stocklevel`
 
 ```
@@ -161,7 +174,7 @@ For now we're going to leave this as a Graph, but if you want try clicking on so
 For now (as there is only a single set of numeric data) we are going to leave this as a line graph, but we'll make it a little more interesting.
 
 -  In the Draw options make sure that Bars and Points are turned off and Lines is turned on. 
-- In Mode options set Fill to 3, Fill Gradient to 10 and Line Width to 10.
+- In Mode options set Fill to 3, Fill Gradient to 10 and Line Width to 2.
 
 ![grafana-new-dashboard-first-panel-visualization-options-updated](images/grafana-new-dashboard-first-panel-visualization-options-updated.png)
 
@@ -172,7 +185,7 @@ For now (as there is only a single set of numeric data) we are going to leave th
 
 - Click the Back arrow at the top left ![grafana-back-icon](images/grafana-back-icon.png) to return to the New Dashboard
 
-Now we see out dashboard with a graph panel
+Now we see our dashboard with a graph panel
 
 ![grafana-new-dashboard-first-panel-completed](images/grafana-new-dashboard-first-panel-completed.png)
 

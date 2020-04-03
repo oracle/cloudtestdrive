@@ -236,6 +236,7 @@ Of course here we've been assuming that this is a Helidon MP micro-service talki
 We've put together a short document on how to [manually create a rest client](non-helidon-rest-clients.md) if you want more information. (Reading this is an optional activity in this lab)
 
 ---
+
 <details><summary><b>Async requests</b></summary>
 <p>
 You may have noticed the delay in the request, if you try the request again it's much faster, this is because the second time all of the lazy initialization will have been done. But in some cases it may be that every call to a request takes a long time (perhaps it's getting data from a real physical service !) which may leave the client execution blocked until the request completes.
@@ -245,7 +246,9 @@ One solution to this is to make the request, then go and do something else while
 The CompletionStage objects are created by the framework on the client side, so the response is much faster, and by looking into the CompletionStage object it's possible to determine if the call has finished, and if so what the result was. If you want you can register code to be run independently when the CompletionStage finishes (or the process errors.)
 
 </p></details>
+
 ---
+
 <details><summary><b>Authentication</b></summary>
 <p>
 
@@ -257,6 +260,7 @@ The solution to this is another reason why using Helidon (or other microprofile 
 This is why we've used the same user credentials, and in a production environment you'd use the same security system across both services.
 
 </p></details>
+
 ---
 
 
