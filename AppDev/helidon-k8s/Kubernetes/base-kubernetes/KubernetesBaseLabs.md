@@ -32,6 +32,11 @@ Note, in some steps you may want to minimize the Oracle Cloud Shell so you can g
 
 In some steps you are asked to edit files. The Oracle Cloud Shell supports typical Linux editors such at `vi`, `emacs` and `nano` Use the editor you prefer to make changes to files.
 
+<details><summary><b>Permissions problem accessing the cloud shell ?</b></summary>
+<p>
+Ifyou are denied access to the cloud shell then it means that you do not have the right policies set for your groups in your tenancy. This can be a problem in existing tenancies if you are not an admin (In a trial tenancy you are usually the admin with all rights so it's not generally an issue there.) You will need to ask your tenancy admin to add you to a group which has rights to access the cloud shell. See the [Required IAM policy](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cloudshellintro.htm#RequiredIAMPolicy) in the cloud shell documentation.
+</p></details>
+
 ### Downloading the scripts
 
 Firstly we need to download all of the scripts and other configuration data to run the labs into your cloud shell environment. You have a few GB of storage so these will fit just fine. The scripts and instructions are stored in git.
