@@ -36,7 +36,7 @@ This defines what's required for jib, including the base image to use.  We will 
 
 <details><summary><b>More details on Graal</b></summary>
 <p>
-Though not covered in this lab if you want more details on the free to use community edition of the Graal JVM or the fully supported enterprise version which includes the Ahead-of-Time compilation capabilities for Java applications that compiles the Java bytecode into native programs (and thus makes for a much faster startup and more efficient operations) or info on it's support for polyglot applications (which are becoming increasingly important.) there are other labs available.
+Though not covered in this lab if you want more details on the free to use community edition of the Graal JVM or the fully supported enterprise version which includes the Ahead-of-Time compilation capabilities for Java applications that compiles the Java byte code into native programs (and thus makes for a much faster startup and more efficient operations) or info on it's support for polyglot applications (which are becoming increasingly important.) there are other labs available.
 
 The [Graal web site](https://www.graalvm.org/) provides more details om Graal.
 </p></details>
@@ -454,7 +454,9 @@ Run the buildPushToRepo.sh script in one of the project directories, then once i
 
 <details><summary><b>Upload denied error?</b></summary>
 <p>
-If during the docker push stage you get image upload denied errors then it means that you do not have the right policies set for your groups in your tenancy. This can be a problem in existing tenancies if you are not an admin (In a trial tenancy you are usually the admin with all rights so it's not generally an issue there.) You will need to ask your tenancy admin to add you to a group which has rights to upload to your OCIR instance. See the [Policies to control repository access](https://docs.cloud.oracle.com/en-us/iaas/Content/Registry/Concepts/registrypolicyrepoaccess.htm) document.
+
+If during the docker push stage you get image upload denied errors then it means that you do not have the right policies set for your groups in your tenancy. This can happen in existing tenancies if you are not an admin or been given rights via a policy. (In a trial tenancy you are usually the admin with all rights so it's not generally an issue there.) You will need to ask your tenancy admin to add you to a group which has rights to create repos in your OCIR instance and upload them. See the [Policies to control repository access](https://docs.cloud.oracle.com/en-us/iaas/Content/Registry/Concepts/registrypolicyrepoaccess.htm) document.
+
 </p></details>
 
 - In the Storefront directory:
@@ -533,8 +535,8 @@ When you do the Kubernetes labs you will test out performing a rolling upgrade. 
 
 - In a terminal window, let's build the new version of the container:
 
-  -  Change to folder **helidon-labs-storefront**
-  - Run the v2 script:
+  - Change to folder **helidon-labs-storefront**
+  - Run the build and push script that uses 0.0.2 as a tag:
     -  `bash buildV0.0.2PushToRepo.sh`
 
 ```

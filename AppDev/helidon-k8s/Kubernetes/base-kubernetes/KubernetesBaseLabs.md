@@ -34,7 +34,9 @@ In some steps you are asked to edit files. The Oracle Cloud Shell supports typic
 
 <details><summary><b>Permissions problem accessing the cloud shell ?</b></summary>
 <p>
-Ifyou are denied access to the cloud shell then it means that you do not have the right policies set for your groups in your tenancy. This can be a problem in existing tenancies if you are not an admin (In a trial tenancy you are usually the admin with all rights so it's not generally an issue there.) You will need to ask your tenancy admin to add you to a group which has rights to access the cloud shell. See the [Required IAM policy](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cloudshellintro.htm#RequiredIAMPolicy) in the cloud shell documentation.
+If you are denied access to the cloud shell then it means that you do not have the right policies set for your groups in your tenancy. This can happen in existing tenancies if you are not an admin or been given rights via a policy. (In a trial tenancy you are usually the admin with all rights so it's not generally an issue there.) 
+
+You will need to ask your tenancy admin to add you to a group which has rights to access the cloud shell. See the [Required IAM policy](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cloudshellintro.htm#RequiredIAMPolicy) in the cloud shell documentation.
 </p></details>
 
 ### Downloading the scripts
@@ -45,7 +47,7 @@ Firstly we need to download all of the scripts and other configuration data to r
 - Open a cloud Shell
   
 - Clone the repository with all scripts from github into your cloud shell environment:
-  - `git clone https://github.com/CloudTestDrive/helidon-Kubernetes.git`
+  - `git clone https://github.com/CloudTestDrive/helidon-kubernetes.git`
   
 ### Downloading the database wallet file
 
@@ -107,7 +109,7 @@ Helm is the tool we will be using to install standard software into Kubernetes. 
 The cloud shell has helm already installed for you, however it does not know what repositories to use for the helm charts. We need to tell help what repositories to use.
 
 - Run the following command :
-  - `helm repo add stable https://Kubernetes-charts.storage.googleapis.com/`
+  - `helm repo add stable https://kubernetes-charts.storage.googleapis.com/`
     ```
     "stable" has been added to your repositories
     ```
@@ -116,7 +118,7 @@ You can get the current list of repositories
   - `helm repo list`
     ```
     NAME    URL                                              
-    stable  https://Kubernetes-charts.storage.googleapis.com/
+    stable  https://kubernetes-charts.storage.googleapis.com/
     ```
 
 ## Introduction to the lab
@@ -149,30 +151,32 @@ Access to the cluster is managed via a config file that by default is located in
 
 ![](images/cluster-details.png)
 
-- Click the **Accesss Kubeconfig** button to get the configuration for **your** cluster. 
+- Click the **Accesss Cluster** button to get the configuration for **your** cluster.
 
-![](images/access-your-cluster)
+![](images/access-your-cluster.png)
 
-You will be presented with a page with details for downloading the Kubeconfig file. The main thing is to look for the line like shown below :
+You will be presented with a page with details for downloading the kubeconfig file. Make sure the **Cloud Shell Access** is selected.
+
+Look for the line like shown below :
 
 ```
 oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaa<lots of stuff>aaa --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0
 ```
 
 
-- Copy *your* config download script (the above is an example and won't work for real)
+- Click the `Copy` to get *your* config download script (the above is an example and won't work for real)
 
 - Open your Oracle Cloud Shell window and **paste** the line to execute it.
 
 ```
 oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaa<lots of stuff>aaa --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0
-New config written to the Kubeconfig file /home/oracle/.kube/config
+New config written to the kubeconfig file /home/oracle/.kube/config
 ```
 
-NOte that if there was an existing Kubernetes config file (most likely because you're using an existing tenancy) then the output will say
+Note that if there was an existing Kubernetes config file (most likely because you're using an existing tenancy) then the output will say
 
 ```
-Existing Kubeconfig file found at /home/oracle/.kube/config and new config merged into it
+Existing kubeconfig file found at /home/oracle/.kube/config and new config merged into it
 ```
 
 
@@ -187,7 +191,7 @@ NAME        STATUS   ROLES   AGE     VERSION
 10.0.10.3   Ready    node    9m2s    v1.15.7
 ```
 
- (The details and number of nodes will vary depending on the settings you chose when you created the cluster)
+ (The details and number of nodes will vary depending on the settings you chose when you created the cluster, it may also take a few mins for the nodes to be up and running)
 
 
 ### Basic cluster infrastructure services install
@@ -200,7 +204,7 @@ The latest version of helm is helm 3. This is a client side only program that is
 
 Fortunately for us helm 3 is installed within the Oracle Cloud Shell, but if later on you want to use your own laptop to manage a Kubernetes cluster [here are the instructions for a local install of helm](https://helm.sh/docs/intro/install/)
 
-Our first use of helm is to install the Kubernetes-dashboard This coudl be installed by Oracle Kubernetes Environment during cluster setup, but in this case we didn't do that as we want to show you how to use Helm.
+Our first use of helm is to install the kubernetes-dashboard This could have been installed for us by the Oracle Kubernetes Environment during cluster setup, but in this case we didn't do that as we want to show you how to use Helm.
 
 Setting up the Kubernetes dashboard (or any) service using helm is pretty easy. it's basically a simple command. 
 
@@ -209,10 +213,10 @@ If you are using the OCI Cloud shell for **this** section of the lab (either in 
 
 - Run the following command : 
   
-  -  `helm install Kubernetes-dashboard  stable/Kubernetes-dashboard   --namespace kube-system --set service.type=LoadBalancer`
+  -  `helm install kubernetes-dashboard  stable/kubernetes-dashboard   --namespace kube-system --set service.type=LoadBalancer`
 
 ```
-NAME: Kubernetes-dashboard
+NAME: kubernetes-dashboard
 LAST DEPLOYED: Tue Dec 24 13:51:24 2019
 NAMESPACE: kube-system
 STATUS: deployed
@@ -220,10 +224,10 @@ REVISION: 1
 TEST SUITE: None
 NOTES:
 *********************************************************************************
-*** PLEASE BE PATIENT: Kubernetes-dashboard may take a few minutes to install ***
+*** PLEASE BE PATIENT: kubernetes-dashboard may take a few minutes to install ***
 *********************************************************************************
 Get the Kubernetes Dashboard URL by running:
-  export POD_NAME=$(kubectl get pods -n kube-system -l "app=Kubernetes-dashboard,release=Kubernetes-dashboard" -o jsonpath="{.items[0].metadata.name}")
+  export POD_NAME=$(kubectl get pods -n kube-system -l "app=kubernetes-dashboard,release=kubernetes-dashboard" -o jsonpath="{.items[0].metadata.name}")
   echo https://127.0.0.1:8443/
   kubectl -n kube-system port-forward $POD_NAME 8443:8443
 ```
@@ -234,9 +238,9 @@ The helm options are :
 
 - `install` do an install operation, helm has many other operations type zhelm --help` for a list.
 
-- `Kubernetes-dashboard` This is the "human" name to give the installation, it's easier to use that later on than using a machine generated one.
+- `kubernetes-dashboard` This is the "human" name to give the installation, it's easier to use that later on than using a machine generated one.
 
-- `stable/Kubernetes-dashboard` is the name of the *chart* to install. Helm will download the char from the repo and then execute it. if you had needed a specific chart version they you could have added a version specifier, for example `--version=1.2.3`
+- `stable/kubernetes-dashboard` is the name of the *chart* to install. Helm will download the char from the repo and then execute it. if you had needed a specific chart version they you could have added a version specifier, for example `--version=1.2.3`
 
 - `--namespace kube-system` This tells helm to install the dashboard into the kube-system namespace. Namespaces are ways of partitioning the cluster to help you manage related resources
 
@@ -251,7 +255,7 @@ Note that Helm does all the work needed here, it creates the service, deployment
 
 ```
 NAME                	NAMESPACE  	REVISION	UPDATED                             	STATUS  	CHART                      	APP VERSION
-Kubernetes-dashboard	kube-system	1       	2019-12-24 16:16:48.112474 +0000 UTC	deployed	Kubernetes-dashboard-1.10.1	1.10.1 
+kubernetes-dashboard	kube-system	1       	2019-12-24 16:16:48.112474 +0000 UTC	deployed	kubernetes-dashboard-1.10.1	1.10.1 
 ```
 
 We've seen it's been deployed by Helm, this doesn't however mean that the pods are actually running yet (they may still be downloading)
@@ -268,57 +272,57 @@ pod/kube-apiserver-docker-desktop            1/1     Running   0          48m
 pod/kube-controller-manager-docker-desktop   1/1     Running   0          48m
 pod/kube-proxy-5mt6m                         1/1     Running   0          49m
 pod/kube-scheduler-docker-desktop            1/1     Running   0          48m
-pod/Kubernetes-dashboard-58d96f69b8-tlhgx    1/1     Running   0          8m5s
+pod/kubernetes-dashboard-58d96f69b8-tlhgx    1/1     Running   0          8m5s
 
 NAME                           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                  AGE
 service/kube-dns               ClusterIP   10.96.0.10       <none>        53/UDP,53/TCP,9153/TCP   49m
-service/Kubernetes-dashboard   ClusterIP   10.110.174.155   <none>        443/TCP                  8m5s
+service/kubernetes-dashboard   ClusterIP   10.110.174.155   <none>        443/TCP                  8m5s
 
 NAME                        DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
 daemonset.apps/kube-proxy   1         1         1       1            1           <none>          49m
 
 NAME                                   READY   UP-TO-DATE   AVAILABLE   AGE
 deployment.apps/coredns                2/2     2            2           49m
-deployment.apps/Kubernetes-dashboard   1/1     1            1           8m5s
+deployment.apps/kubernetes-dashboard   1/1     1            1           8m5s
 
 NAME                                              DESIRED   CURRENT   READY   AGE
 replicaset.apps/coredns-6dcc67dcbc                2         2         2       49m
-replicaset.apps/Kubernetes-dashboard-58d96f69b8   1         1         1       8m5s
+replicaset.apps/kubernetes-dashboard-58d96f69b8   1         1         1       8m5s
 ```
 We see all the elements of the dashboard: a pod, a replica set, a deployment and a service.(
 
 If you want more detailed information then you can extract it, for example to get the details on the pods do the following
 
 -  Execute below command, replacing the ID with the ID of your pod:
-  -  `kubectl get pod Kubernetes-dashboard-58d96f69b8-tlhgx  -n kube-system -o yaml`
+  -  `kubectl get pod kubernetes-dashboard-58d96f69b8-tlhgx  -n kube-system -o yaml`
 
 ```
 apiVersion: v1
 kind: Pod
 metadata:
   creationTimestamp: "2019-12-24T16:16:48Z"
-  generateName: Kubernetes-dashboard-58d96f69b8-
+  generateName: kubernetes-dashboard-58d96f69b8-
   labels:
-    app: Kubernetes-dashboard
+    app: kubernetes-dashboard
     pod-template-hash: 58d96f69b8
-    release: Kubernetes-dashboard
-  name: Kubernetes-dashboard-58d96f69b8-tlhgx
+    release: kubernetes-dashboard
+  name: kubernetes-dashboard-58d96f69b8-tlhgx
   namespace: kube-system
   ownerReferences:
   - apiVersion: apps/v1
     blockOwnerDeletion: true
     controller: true
     kind: ReplicaSet
-    name: Kubernetes-dashboard-58d96f69b8
+    name: kubernetes-dashboard-58d96f69b8
     uid: c93ec88c-2668-11ea-a75b-025000000001
   resourceVersion: "3519"
-  selfLink: /api/v1/namespaces/kube-system/pods/Kubernetes-dashboard-58d96f69b8-tlhgx
+  selfLink: /api/v1/namespaces/kube-system/pods/kubernetes-dashboard-58d96f69b8-tlhgx
   uid: c93fbdbd-2668-11ea-a75b-025000000001
 spec:
   containers:
   - args:
     - --auto-generate-certificates
-    image: k8s.gcr.io/Kubernetes-dashboard-amd64:v1.10.1
+    image: k8s.gcr.io/kubernetes-dashboard-amd64:v1.10.1
  (lots more lines of output)
 ```
 If you want the output in json then replace the -o yaml with -o json.
@@ -326,37 +330,37 @@ If you want the output in json then replace the -o yaml with -o json.
 If you're using JSON and want to focuse in on just one section of the data structure you can use the JSONPath printer in kubectl to do this, in this case we're going to look at the image that's used for the pod
 
 - Get a specific element from a configuration:
-  -  `kubectl get pod Kubernetes-dashboard-58d96f69b8-tlhgx  -n kube-system -o=jsonpath='{.spec.containers[0].image}'`
+  -  `kubectl get pod kubernetes-dashboard-58d96f69b8-tlhgx  -n kube-system -o=jsonpath='{.spec.containers[0].image}'`
 
 ```
-k8s.gcr.io/Kubernetes-dashboard-amd64:v1.10.1
+k8s.gcr.io/kubernetes-dashboard-amd64:v1.10.1
 ```
 This used the "path" in json of .spec.containers[0].image where the first . means the "root" of the JSON structure (subesquent . are delimiters in the way that / is a delimiter in Unix paths) the spec means the spec object (the specification) containers[0] means the first object in the containers list in the spec object and image means the attribute image in the located container.
 
 We can use this coupled with kubectl to identify the specific pods associated with a service, for example 
 
 - Command : 
-  -  `kubectl get service Kubernetes-dashboard -n kube-system -o=jsonpath='{.spec.selector}'`
+  -  `kubectl get service kubernetes-dashboard -n kube-system -o=jsonpath='{.spec.selector}'`
 
 ```
-map[app:Kubernetes-dashboard release:Kubernetes-dashboard]
+map[app:kubernetes-dashboard release:kubernetes-dashboard]
 ```
-Tells us that any thing with label app matching Kubernetes-dashboard and label release matching Kubernetes-dashboard will be part of the service
+Tells us that any thing with label app matching kubernetes-dashboard and label release matching kubernetes-dashboard will be part of the service
 
 - Get the list of pods providing the service:
-  -  `kubectl get pod -n kube-system --selector=app=Kubernetes-dashboard`
+  -  `kubectl get pod -n kube-system --selector=app=kubernetes-dashboard`
 
 ```
 NAME                                    READY   STATUS    RESTARTS   AGE
-Kubernetes-dashboard-58d96f69b8-tlhgx   1/1     Running   0          43m
+kubernetes-dashboard-58d96f69b8-tlhgx   1/1     Running   0          43m
 ```
 
 ### Accessing the Kubernetes dashboard
 
-First we're going to need create a user to access the dashboard. This involves creating the user, then giving it the Kubernetes-dashbaord role that helm created for us when it installed the dashbaord chart.
+First we're going to need create a user to access the dashboard. This involves creating the user, then giving it the kubernetes-dashbaord role that helm created for us when it installed the dashbaord chart.
 
-- Go to the helidon-Kubernetes project folder, then the base-Kubernetes directory
-  -  `cd  helidon-Kubernetes/base-Kubernetes`
+- Go to the helidon-kubernetes project folder, then the base-kubernetes directory
+  -  `cd  helidon-kubernetes/base-kubernetes`
 - Create the user and role
   -  `kubectl apply -f dashboard-user.yaml`
 
@@ -387,7 +391,7 @@ There is then a "divider" of `---` between the next section, this tells kubectl 
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
-  name: Kubernetes-dashboard-role
+  name: kubernetes-dashboard-role
 rules:
   - apiGroups:
       - "*"
@@ -407,15 +411,15 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: Kubernetes-dashboard-role
+  name: kubernetes-dashboard-role
 subjects:
 - kind: ServiceAccount
   name: dashboard-user
   namespace: kube-system
 ```
-The last section tells Kubernetes to use the rbac.authorization.k8s.io service (This naming scheme uses DNS type naming and basically means the role based access controls capability of the authorization service in Kubernetes.io) create a binding that connects the user dashboard-user in namespace kub-system to the Kubernetes-dashboard role, basically anyone logged in as dashboard-user has cluster the ability to run the commands specified in the cluster Kubernetes-dashboard role. 
+The last section tells Kubernetes to use the rbac.authorization.k8s.io service (This naming scheme uses DNS type naming and basically means the role based access controls capability of the authorization service in Kubernetes.io) create a binding that connects the user dashboard-user in namespace kube-system to the kubernetes-dashboard role, basically anyone logged in as dashboard-user has cluster the ability to run the commands specified in the cluster kubernetes-dashboard role. 
 
-In practice this means that when the Kubernetes-dashboard asks the RBAC service it the user identified as dashboard-user is allowed to use the dashboard it will return yes, and this the dashboard service will allow the dashbaord user to log in and process requests. So basically standard type of Role Based Access Control ideas. 
+In practice this means that when the kubernetes-dashboard asks the RBAC service it the user identified as dashboard-user is allowed to use the dashboard it will return yes, and this the dashboard service will allow the dashbaord user to log in and process requests. So basically standard type of Role Based Access Control ideas. 
 
 
 
@@ -442,10 +446,10 @@ Before we can login to the dashboard we need to get the access token for the das
 Name:         dashboard-user-token-mhtf9
 Namespace:    kube-system
 Labels:       <none>
-Annotations:  Kubernetes.io/service-account.name: dashboard-user
-              Kubernetes.io/service-account.uid: a09cd40c-2663-11ea-a75b-025000000001
+Annotations:  kubernetes.io/service-account.name: dashboard-user
+              kubernetes.io/service-account.uid: a09cd40c-2663-11ea-a75b-025000000001
 
-Type:  Kubernetes.io/service-account-token
+Type:  kubernetes.io/service-account-token
 Data
 ====
 namespace:  11 bytes
@@ -457,7 +461,7 @@ ca.crt:     1025 bytes
 - Copy the contents of the token (in this case the `eyJh........W5iA` text, but it *will* vary in your environment.) 
 - Save it in a plain text editor on your laptop for easy use later in the lab
 
-As the cloud shell runs in a web browser and is not itself a web browser we need to setup access so that the Kubernetes-dashboard is available to your web browser on your laptop. This would normally be a problem as it would be running on a network that it internal to the cluster. 
+As the cloud shell runs in a web browser and is not itself a web browser we need to setup access so that the kubernetes-dashboard is available to your web browser on your laptop. This would normally be a problem as it would be running on a network that it internal to the cluster. 
 
 Fortunately for us Kubernetes provides several mechanisms to expose a service outside the cluster network. Usually you would use port forwarding to enable this, of expose the dashboard using an ingress (more on which later)
 
@@ -466,10 +470,10 @@ Fortunately for us helm is a very powerful mechanism for configuring services, a
 To get the IP address of the dashboard load balancer :
 
 - Run the following command
-  - `kubectl get service Kubernetes-dashboard -n kube-system`
+  - `kubectl get service kubernetes-dashboard -n kube-system`
     ```
     NAME                   TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)         AGE
-    Kubernetes-dashboard   LoadBalancer   10.96.21.252   130.61.134.234   443:32302/TCP   4m48s
+    kubernetes-dashboard   LoadBalancer   10.96.21.252   130.61.134.234   443:32302/TCP   4m48s
     ```
 
 The IP address of the load balancer is in the EXTERNAL-IP column. Note that this can take a few minutes to be assigned, so it it's listed as <pending> just re-run the `kubectl get` command after a short while
@@ -527,19 +531,19 @@ If you click the deployments in the left menu you'll see the deployments list (t
 
 ![dashboard-deployments-list](images/dashboard-deployments-list.png)
 
-click on the Kubernetes-dashnboard deployment to look into the detail of the deployment and you'll see the deployment details, including the list of replica sets that are in use. We'll look into the old / new distinction when we look at rolling upgrades) 
+click on the kubernetes-dashboard deployment to look into the detail of the deployment and you'll see the deployment details, including the list of replica sets that are in use. We'll look into the old / new distinction when we look at rolling upgrades) 
 
 ![dashboard-deployment-dashboard](images/dashboard-deployment-dashboard.png)
 
-Click on the replica set (something like Kubernetes-dashboard-58d96f69b8) to see the pods in the replica set. 
+Click on the replica set (something like kubernetes-dashboard-58d96f69b8) to see the pods in the replica set. 
 
 ![dashboard-replicaset-dashboard](images/dashboard-replicaset-dashboard.png)
 
-In this case there's only one pod (Kubernetes-dashboard-58d96f69b8-tlhgx in this case, yours will vary) so click on that to see the details of the pod. 
+In this case there's only one pod (kubernetes-dashboard-58d96f69b8-tlhgx in this case, yours will vary) so click on that to see the details of the pod. 
 
 ![dashboard-pod-dashboard](images/dashboard-pod-dashboard.png)
 
-Using Kubernetes-dashboard to look at a pod provides several useful features, we can look at any log data it's generated (output the pod has written to stderr or stdout) by clicking the Logs button on the upper right.
+Using kubernetes-dashboard to look at a pod provides several useful features, we can look at any log data it's generated (output the pod has written to stderr or stdout) by clicking the Logs button on the upper right.
 ![dashboard-logs-dashboard](images/dashboard-logs-dashboard.png)
 
 This opens a new tab / window with the log data which can be very useful when debugging.  Of course it's also possible to use kubectl to download logs info if you wanted to rather than just displaying it in the browser.
@@ -572,7 +576,7 @@ Normally in a production environment you would use an ingress for the dashboard 
 ---
 
 
-For this lab we're going to use an nginx based Ingress controller. The nginx based Ingress controller is maintained byt the Kubernetes team, but there are several others that could be used in you r environments if you want. There are a list of commercial and open source Ingress controllers in the [Kubernetes ingress documentation](https://Kubernetes.io/docs/concepts/services-networking/ingress-controllers/)
+For this lab we're going to use an nginx based Ingress controller. The nginx based Ingress controller is maintained by the Kubernetes team, but there are several others that could be used in your environments if you want. There are a list of commercial and open source Ingress controllers in the [Kubernetes ingress documentation](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)
 
 Firstly we need to create a namespace for the ingress controller.
 
@@ -613,7 +617,7 @@ Because the Ingress controller is a service, to make it externally available it 
 NAME                                     TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)                      AGE   SELECTOR
 ingress-nginx-nginx-ingress-controller   LoadBalancer   10.111.0.168   136.23.44.21 80:31934/TCP,443:31827/TCP   61s   app=nginx-ingress,component=controller,release=ingress-nginx
 ```
-In this case we can see that the load balancer has been created and the external-IP address is available.
+In this case we can see that the load balancer has been created and the external-IP address is available. If the External IP address is listed as `<pending>` then the load balancer is still being created, wait a short while then try the command again
 
 
 ### Running your containers in Kubernetes
@@ -624,8 +628,8 @@ Kubernetes supports the concept of namespaces, these logically split the cluster
 
 In a production cluster where you may have many applications running composed of many microservices having separate namespaces is basically essential to avoid mistakes and misunderstandings that could impact the service operation.
 
-- Create a namespace and set the environment, to make it easier we have created a script called create-namespce.sh that does this for you. You must use **your initials** as a parameter (here the example uses tg as initials)
-  -  `cd helidon-Kubernetes/base-Kubernetes`
+- Create a namespace and set the environment, to make it easier we have created a script called create-namespace.sh that does this for you. You must use **your initials** as a parameter (here the example uses tg as initials)
+  -  `cd helidon-kubernetes/base-kubernetes`
   -  `bash create-namespace.sh tg-helidon`
   
 ```
@@ -690,7 +694,7 @@ Once you have a namespace you can use it by adding --namespace <my namespace nam
 $ kubectl config set-context --current --namespace=<my namespace name>
 ```
 
-Of course the Kubernetes dashboard also understands namespaces. If you go to the dashboard page (http://localhost:8443 assuming you've got the port forwarding running) you can chose the namespace to use (initially the dashboard used the "default" namespace, so if you can't see what you're expecting there remember to change it to the namespace you've chosen. 
+Of course the Kubernetes dashboard also understands namespaces. If you go to the dashboard page you can chose the namespace to use (initially the dashboard uses the "default" namespace, so if you can't see what you're expecting there remember to change it to the namespace you've chosen. 
 
 </p></details>
 
@@ -712,7 +716,7 @@ Services determine what pods they will talk to using selectors. Each pod had met
 
 Services can be exposed externally via load balancer on a specific port (the type field is LoadBalancer) or can be mapped on to an external to the cluster port (basically it's randomly assigned when the type is NodePort) but by default are only visible inside the cluster (or if the type is ClusterIP.) In this case we're going to be using ingress to provide the access to the services from the outside world so we'll not use a load balancer.
 
-The helidon-Kubernetes/base-Kubernetes/servicesClusterIP.yaml file defined the services for us. Below is the definition of the storefront service (the file also defines the stock manager and zipkin servcies as well)
+The helidon-kubernetes/base-kubernetes/servicesClusterIP.yaml file defined the services for us. Below is the definition of the storefront service (the file also defines the stock manager and zipkin servcies as well)
 
 ```
 apiVersion: v1
@@ -870,7 +874,7 @@ metadata:
   name: zipkin
   annotations:
     # use the shared ingress-nginx
-    Kubernetes.io/ingress.class: "nginx"
+    kubernetes.io/ingress.class: "nginx"
 spec:
   tls:
   - secretName: tls-secret
@@ -885,7 +889,7 @@ spec:
 
 Firstly note that the api here is the extensions/v1beta1 API. In more recent versions of Kubernetes this has been changed to networking.k8s.io/v1beta1 to indicate that Ingress configuration is part of the Kubernetes networking features.
 
-The metadata specifies the name of the ingress (in this case zipkin) and also the annotations. Annotations are a way of specifying name / value pairs that can be monitored for my other services. In this case we are specifying that this ingress Ingress rule has a label of Kubernetes.io/ingress.class and a value of nginx. The nginx ingress controller will have setup a request inthe Kubernetes infrastructure so it will detect any ingress rules with that annotation as being targeted to be processed by it. This allows us to define rules as standalonw items, without having to setup and define a configuration for each rule in the ingress controller configuration itself. This annotation based approach is a simple way for services written to be cloud native to identify other Kubernetes objects and determine how to hendle them, as we will see when we look at monitoring in kubenteres.
+The metadata specifies the name of the ingress (in this case zipkin) and also the annotations. Annotations are a way of specifying name / value pairs that can be monitored for my other services. In this case we are specifying that this ingress Ingress rule has a label of Kubernetes.io/ingress.class and a value of nginx. The nginx ingress controller will have setup a request in the Kubernetes infrastructure so it will detect any ingress rules with that annotation as being targeted to be processed by it. This allows us to define rules as standalone items, without having to setup and define a configuration for each rule in the ingress controller configuration itself. This annotation based approach is a simple way for services written to be cloud native to identify other Kubernetes objects and determine how to hendle them, as we will see when we look at monitoring in kubenteres.
 
 The spec section basically defined the certificate for the TLS connection and the rules to do the processing, basically if there's an connection coming in with a url that starts with /zipkin then the connection will be proxied to the zikin service on port 9411. The entire URL will be forwarded including the /zipkin.
 
@@ -898,7 +902,7 @@ metadata:
   name: stockmanager-management
   annotations:
     # use a re-writer
-    nginx.ingress.Kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   tls:
   - secretName: tls-secret
@@ -995,7 +999,6 @@ Find the external IP address the ingress controller is running on :
 NAME                                          TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
 ingress-nginx-nginx-ingress-controller        LoadBalancer   10.111.0.168    132.18.12.23     80:31934/TCP,443:31827/TCP   5h50m
 ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <none>        80/TCP                       5h50m
-Kubernetes                                    ClusterIP      10.96.0.1       <none>        443/TCP                      3d3h
 ```
 
 The external-ip will be the public ip address of the load balancer setup for the ingress controller.
@@ -1026,7 +1029,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 </html>
 ```
 
-<details><summary><b>What's with the *-k* flag ?</b></summary>
+<details><summary><b>What's with the -k flag ?</b></summary>
 <p>
 Previously we didn't use the -k flag or https when testing in the Helidon labs. That's because in the development phase we were using a direct http connection and connecting to a service running locally, and the micro-service itself didn't use https. Now we're using the ingress controller to provide us with a secure https connection (because that's what you should do in a production environment) we need to tell curl not to generate a error because in this case we're using a self signed certificate 
 </p></details>
@@ -1048,11 +1051,11 @@ strict-transport-security: max-age=15724800; includeSubDomains
 default backend - 404
 ```
 
-This is being served by the default backeng service that was installed at the same time as the ingress controller. It's possible to [customize the behavior of the default backend](https://Kubernetes.github.io/ingress-nginx/user-guide/default-backend/), for example replacing the error page and so on.
+This is being served by the default backeng service that was installed at the same time as the ingress controller. It's possible to [customize the behavior of the default backend](https://kubernetes.github.io/ingress-nginx/user-guide/default-backend/), for example replacing the error page and so on.
 
-For more information on the nginx ingress controller and the different rules types see the [nginx ingress default backend docs page.](https://github.com/Kubernetes/ingress-nginx/tree/master/docs)
+For more information on the nginx ingress controller and the different rules types see the [nginx ingress default backend docs page.](https://github.com/kubernetes/ingress-nginx/tree/master/docs)
 
-For see the doc more information on how the regular expressions with with see the [nginx ingress path matching page.](https://Kubernetes.github.io/ingress-nginx/user-guide/ingress-path-matching/) 
+For see the doc more information on how the regular expressions with with see the [nginx ingress path matching page.](https://kubernetes.github.io/ingress-nginx/user-guide/ingress-path-matching/) 
 
 ### Secrets and external configuration
 
@@ -1092,7 +1095,7 @@ To help you setup the image pull secrets and the others used as configuration vo
 
 We need to edit the script to provide the details of the OCIR you used and your identity information
 
-- Make sure you are in the **helidon-Kubernetes/base-Kubernetes** directory
+- Make sure you are in the **helidon-kubernetes/base-kubernetes** directory
 
 - Edit the create-secrets.sh script
 
@@ -1130,7 +1133,7 @@ sm-wallet-atp
 Deleted secrets
 Secrets remaining in namespace are
 NAME                  TYPE                                  DATA   AGE
-default-token-7tk9z   Kubernetes.io/service-account-token   3      22s
+default-token-7tk9z   kubernetes.io/service-account-token   3      22s
 Creating general secrets
 my-docker-reg
 secret/my-docker-reg created
@@ -1143,8 +1146,8 @@ Creating store front secrets
 secret/sf-conf-secure created
 Existing in namespace are
 NAME                  TYPE                                  DATA   AGE
-default-token-7tk9z   Kubernetes.io/service-account-token   3      23s
-my-docker-reg         Kubernetes.io/dockerconfigjson        1      1s
+default-token-7tk9z   kubernetes.io/service-account-token   3      23s
+my-docker-reg         kubernetes.io/dockerconfigjson        1      1s
 sf-conf-secure        Opaque                                1      0s
 sm-conf-secure        Opaque                                2      1s
 sm-wallet-atp         Opaque                                7      1s
@@ -1161,8 +1164,8 @@ Listing the secrets is simple:
 
 ```
 NAME                  TYPE                                  DATA   AGE
-default-token-7tk9z   Kubernetes.io/service-account-token   3      5m31s
-my-docker-reg         Kubernetes.io/dockerconfigjson        1      5m9s
+default-token-7tk9z   kubernetes.io/service-account-token   3      5m31s
+my-docker-reg         kubernetes.io/dockerconfigjson        1      5m9s
 sf-conf-secure        Opaque                                1      5m8s
 sm-conf-secure        Opaque                                2      5m9s
 sm-wallet-atp         Opaque                                7      5m9s
@@ -1246,7 +1249,7 @@ For example (**don't type this**) `$ kubectl create configmap sf-config-map --fr
 
 We need to configure the stockmanager-config.yaml file. You need to do this even if you have done the Helidon labs as the set of configuration data downloaded into the Cloud shell is generic and does not include the customizations you made in the Helidon labs 
 
-- Navigate into the folder helidon-labs-stockmanager/**conf**
+- Navigate into the folder $HOME/helidon-kubernetes/configurations/stockmanagerconf/conf
 - Open the file **stockmanager-config.yaml**
 - In the `app:` section, add a property **department** with **your** your name, initials or something that's going to be **unique**:
   -  `department: "your_name"`
@@ -1262,7 +1265,7 @@ app:
 
 \---
 
-In the helidon-Kubernetes/base-Kubernetes folder there is a script create-configmaps.sh. We have created this to help you setup the configuration maps (though you can of course do this by hand instead of creating a script.) If you run this script it will delete existing config maps and create an up to date config for us :
+In the helidon-kubernetes/base-kubernetes folder there is a script create-configmaps.sh. We have created this to help you setup the configuration maps (though you can of course do this by hand instead of creating a script.) If you run this script it will delete existing config maps and create an up to date config for us :
 
 -  `bash create-configmaps.sh `
 
@@ -1330,7 +1333,7 @@ As we'll see later we can also update the text by modifying the file and re-crea
 
 ### Deploying the actual microservices
 
-It's been quite a few steps (many of which are one off and don't have to be repeated for each application we want to run in Kuberntes) but we're finally ready to create the deployments and actually run our Helidon microservices inside of Kubernetes!
+It's been quite a few steps (many of which are one off and don't have to be repeated for each application we want to run in Kubernetes) but we're finally ready to create the deployments and actually run our Helidon microservices inside of Kubernetes!
 
 <details><summary><b>About the deploymets</b></summary>
 <p>
@@ -1339,7 +1342,7 @@ A deployment is the microservice itself, this is a replica set containing one or
 
 Pods are monitored by services so that a service will direct traffic to pod(s_ that have labels (names / values) which match those specified in the services selector. If there are multiple pods matching then the Kubernetes netowrking layer switched between them, usually with a round robin approach (at least until we look at health and readiness !)
 
-The stockmanager-deployment.yaml, storefront-deployment.yaml and zipkin-deployment.yaml files contain the deployments. These files are in the helidon-Kubernetes folder (***not*** the base-Kubernetes folder) The following is the core contents of storefront-deployment.yaml file (actually the file has substantial amounts of additional content that is commented out, but we'll get to that when we look at other parts of the lab later on, If you do look at the file itself for now ignore everything that's commented out with #)
+The stockmanager-deployment.yaml, storefront-deployment.yaml and zipkin-deployment.yaml files contain the deployments. These files are in the helidon-kubernetes folder (***not*** the base-kubernetes folder) The following is the core contents of storefront-deployment.yaml file (actually the file has substantial amounts of additional content that is commented out, but we'll get to that when we look at other parts of the lab later on, If you do look at the file itself for now ignore everything that's commented out with #)
 
 ```
 apiVersion: extensions/v1beta1
@@ -1440,7 +1443,7 @@ The script deploy.sh will apply all three deployment configuration files (storef
 *** IMPORTANT ***
 The config files of the storefront and stockmanager refer to the location in the docker repo and any security keys that you used when setting up the labs. So you'll need to edit the deployment files to reflect the location of **your** images.
 
-- Make sure you are in the folder **helidon-Kubernetes**
+- Make sure you are in the folder **helidon-kubernetes**
 
 - Open the file **stockmanager-deployment.yaml** 
 
@@ -1458,7 +1461,7 @@ The config files of the storefront and stockmanager refer to the location in the
   - Edit the line specifying the image to reflect *your* docker image location for the storefront.
 
 - Now run the deploy.sh script
-  -  `./deploy.sh`
+  -  `bash deploy.sh`
 
 ```
 Creating zipkin deployment
