@@ -5,10 +5,16 @@
         "theme": "default",
         "labs": [
 			{
+                "number": "00",
+                "filename": "wlscnonjrfprereq.md",
+                "title": "WebLogic for OCI as a VM - prereq",
+                "description": "WebLogic for OCI as a VM - non JRF - prerequisites"
+            },
+			{
                 "number": "01",
                 "filename": "wlscnonjrf.md",
-                "title": "WebLogic Cloud on OCI as a VM",
-                "description": "WebLogic Cloud on OCI as a VM - non JRF"
+                "title": "WebLogic for OCI as a VM",
+                "description": "WebLogic for OCI as a VM - non JRF"
             },
       {
                 "number": "02",
