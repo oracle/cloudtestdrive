@@ -396,11 +396,6 @@ You can have multiple annotations on your class / methods, but be careful that y
 
 By default any of `@Metric`, `@Timed`, `@Counted` etc. will use a name that's depending on the class / method name, it does **not** append the type of thing it's looking for. So if you had `@Counted` on the class and `@Timed` a class (or `@Counted` and `@Timed` on a particular method) then there would be a naming clash between the two of them. It's best to get into the habit of naming these, and putting the type in the name. Then you also get the additional benefit of being able to easily extract it using the metrics url like `http://localhost:9080/metrics/application/listAllStockMeter`
 
-## Optional Open API lab
-
-In some cases you will want a description of the REST API you are offering, for example tools that automatically generate integrations or clients. Helidon has built in support to automatically generate documents in the Open API format (previously this was known as Swagger)
-
-The optional [Open API lab module](./helidon-open-api.md) takes you through the process of annotating your classes to generate the Open API documents automatically, **based on the source code itself** If you have the time or interest please feel free to do this lab module, or come back to it later for reference. 
 
 ### End of the lab
 You have finished this part of the lab, you can proceed to the next step of this lab:

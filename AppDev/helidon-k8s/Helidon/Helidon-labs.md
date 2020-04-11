@@ -148,9 +148,12 @@ This Helidon lab looks as the features in Helidon that are designed to provide s
 
 
 ### 6. Cloud Native support in Helidon - Self describing API's
+
+This is an optional lab if you chose to do it.
+
 To enable a service to be easily consumed Helidon provides support for the dynamic creation of Open API (previously known as Swagger) documents that document the REST APIs provided by a micro-service. This lab looks at how configure your Helidon projects to generate this information. 
 
-[The Helidon support for Open API Document generation](Helidon-Operations/helidon-open-api.md)
+[The Helidon support for Open API Document generation](Helidon-open-api/helidon-open-api.md)
 
 
 
