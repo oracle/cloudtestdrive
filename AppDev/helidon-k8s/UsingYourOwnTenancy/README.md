@@ -4,7 +4,7 @@
 
 # Running the Helidon labs in your own tenancy
 
-In some cases you may wish to run the Helidon labs in your own tenancy, this might be a trial account or for Oracle staff your own teams tenancy. This document and the ones it connects to show you how to configure your own tenancy.
+In some cases you may wish to run the Helidon labs in your own tenancy, this might be a **Oracle Free Tier** account or your own organization tenancy. This document and the ones it connects to show you how to configure your own tenancy.
 
 Please note that you will still need details from your instructor on the location of the VM image export and other details. 
 
