@@ -347,7 +347,7 @@ Lets take a look at the artifacts generated :
 - the updated docker image, tagged to be pushed to the private registry of your tenancy
 
   ```
-  docker images | grep 
+  docker images
   ```
 
   you should see a line containing `fra.ocir.io/oractdemeabdmnative/(your_initials)-wls/weblogic    12.2.1.3`
