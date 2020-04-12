@@ -104,5 +104,5 @@ Alternatively you can request an Oracle Cloud Free Tier account. To get an accou
 
 
 ## [License](LICENSE)
-Copyright (c) 2014, 2016 Oracle and/or its affiliates
+Copyright (c) 2014, 2020 Oracle and/or its affiliates
 The Universal Permissive License (UPL), Version 1.0
