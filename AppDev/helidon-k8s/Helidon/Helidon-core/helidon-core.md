@@ -8,6 +8,19 @@
 
 ## 1. The Helidon core
 
+
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to the Helidon core capabilities lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Helidon core capabilities lab Introduction Video](https://img.youtube.com/vi/QCeQ6aKyBHU/0.jpg)](https://youtu.be/QCeQ6aKyBHU "Helidon core capabilities lab introduction video")
+
+</p>
+</details>
+
+---
+
 #### Where we look at our initial java classes and REST enable them.
 
 - Open the Eclipse IDE. There is an Eclipse icon on the desktop, double click it, and wait for Eclipse to start.

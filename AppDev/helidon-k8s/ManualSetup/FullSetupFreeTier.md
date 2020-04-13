@@ -12,6 +12,16 @@ This page explains all the steps to set up your **Oracle Cloud Tenancy** so you 
 
 **If you are attending an instructor-led lab**, your instructor will detail steps you need to execute and which ones you can skip.
 
+<details><summary><b>Self guided student - section video introduction</b></summary>
+<p>
+
+This video is an introduction to this section of the lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Introduction to lab preparation Video](https://img.youtube.com/vi/fxrOnJjCLBc/0.jpg)](https://youtu.be/fxrOnJjCLBc "Lab preparation introduction video")
+
+</p>
+</details>
+
 ### 1. Create the CTDOKE compartment
 
 - Click the `hamburger` menu (three bars on the upper left)

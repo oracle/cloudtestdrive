@@ -9,6 +9,19 @@
 ## 4. Helidon and Open API
 This is an optional module for the Helidon lab, but you will need to complete it if you are going to run the API Gateway section of the cloud infrastructure lab
 
+
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to the Helidon Open API (ex Swagger) lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Helidon Open API lab Introduction Video](https://img.youtube.com/vi/A_gVG2cb308/0.jpg)](https://youtu.be/A_gVG2cb308 "Helidon Open APIlab introduction video")
+
+</p>
+</details>
+
+---
+
 This module is how to get Helidon to self-describe the REST API you are offering. There are several use cases for this, some of those are :
 
 1/ You need the API description in a consistent machine readable form that can be processed by other applications, for example you are using an API gateway and need to define rules for certain endpoints

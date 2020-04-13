@@ -7,6 +7,18 @@
 ## C. Deploying to Kubernetes
 ## 6. Rolling Updates
 
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to the Kubernetes rolling upgrades lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Kubernetes rolling upgrades lab Introduction Video](https://img.youtube.com/vi/x2hXZrUWM0c/0.jpg)](https://youtu.be/x2hXZrUWM0c "Kubernetes rolling upgrades lab introduction video")
+
+</p>
+</details>
+
+---
+
 ### **Introduction**
 
 One of the problems when deploying an application is how to update it while still delivering service, and perhaps more important (but usually given little consideration) how to revert the changes in the event that the update fails to work in some way.

@@ -6,6 +6,18 @@
 
 ## Setting up for the Kubernetes section
 
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to the Kubernetes labs setup - for people who have not done the Helidon and docker sections. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Kubernetes labs only setup Introduction Video](https://img.youtube.com/vi/o3KqqMqRxPk/0.jpg)](https://youtu.be/o3KqqMqRxPk "Kubernetes labs only setup introduction video")
+
+</p>
+</details>
+
+---
+
 ### Introduction
 
 This page explains the steps to set up your **Oracle Cloud Tenancy** so you are ready to run the **C. Helidon lab**. 

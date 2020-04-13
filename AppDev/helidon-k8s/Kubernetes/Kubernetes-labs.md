@@ -6,6 +6,18 @@
 
 ## C. Deploying to Kubernetes 
 
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to the Kubernetes labs. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Kubernetes labs Introduction Video](https://img.youtube.com/vi/6Kg-zH6h3Is/0.jpg)](https://youtu.be/6Kg-zH6h3Is "Kubernetes labs introduction video")
+
+</p>
+</details>
+
+---
+
 ## Introduction
 
 In this series of labs we will focus on the specific features of Kubernetes to run Microservices.  These labs assume you have previously executed the **A. Helidon** and **B. Docker** part of this lab series.  In case you would want to execute *only this part C. Kubernetes of the labs,* you need to perform some [initial steps](../ManualSetup/KubernetesSetup.md) to prepare your environment.
@@ -32,7 +44,7 @@ Monitoring metrics may also help us determining things like how changes when rel
 As you've seen Prometheus is great at capturing the data, but it's not the worlds best tool for displaying the data. Fortunately for us there is an open source tool called **Grafana** which is way better than Prometheus at this.
 
 The process for installing and using Grafana is detailed in the next lab :  
-[Visualusing with Grafana lab document.](monitoring-kubernetes/VisualizingWithGrafanaLab.md)
+[Visualising with Grafana lab document.](monitoring-kubernetes/VisualizingWithGrafanaLab.md)
 
 
 
@@ -52,9 +64,9 @@ To understand how this works see the [Health Readiness Liveness labs.](cloud-nat
 
 ### 5. Horizontal Scaling
 
-Kubernetes also supports horizontal scaling of services, enabling multiple instances of a service to run with the load being shared amongst all of them.
+Kubernetes also supports horizontal scaling of services, enabling multiple instances of a service to run with the load being shared amongst all of them. The scaling can be manually controlled or Kubernetes can automatically scale services within limits you set.
 
-[The Replica set labs](cloud-native-labs/Horizontal-scaling/Horizontal-scaling.md) 
+[The horizontal scaling labs](cloud-native-labs/Horizontal-scaling/Horizontal-scaling.md) 
 
 
 

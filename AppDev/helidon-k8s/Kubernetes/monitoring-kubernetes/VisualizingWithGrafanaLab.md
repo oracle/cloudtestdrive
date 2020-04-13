@@ -7,6 +7,19 @@
 ## C. Deploying to Kubernetes
 ## 3. Visualizing using Grafana
 
+
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to the Visualizing metrics with Grafana lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Visualizing metrics with Grafana lab Introduction Video](https://img.youtube.com/vi/z1dKR94TQOE/0.jpg)](https://youtu.be/z1dKR94TQOE "Visualizing metrics with Grafana lab introduction video")
+
+</p>
+</details>
+
+---
+
 ### **Introduction**
 As we've seen while Prometheus can gather lots of data, it is not exactly the most powerful visualization mechanism.
 
