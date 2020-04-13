@@ -8,12 +8,12 @@
 
 ## 5. Supporting cloud native operations with Helidon
 
-details><summary><b>Self guided student - video introduction</b></summary>
+<details><summary><b>Self guided student - video introduction</b></summary>
 <p>
 
 This video is an introduction to the Helidon cloud native support lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
-[![Helidon cloud native support lab Introduction Video](https://img.youtube.com/vi/uvcykjawpUM/0.jpg)](https://youtu.be/uvcykjawpUM "Helidon cloud native support lab introduction video")
+[![Helidon cloud native support lab Introduction Video](https://img.youtube.com/vi/vPSphbTg1MQ/0.jpg)](https://youtu.be/vPSphbTg1MQ "Helidon cloud native support lab introduction video")
 
 </p>
 </details>
