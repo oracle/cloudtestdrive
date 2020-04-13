@@ -22,6 +22,7 @@ For reference, this is the architecture you'll be building
 
 ![](images/Architecture-overview.png)
 
+
 ### Lab conventions
 
 This is a rather long lab, therefore we used a few layout tricks to make the reading of this tutorial more intuitive : 
@@ -39,6 +40,29 @@ As we cover quite some theoretical concepts, we included pretty verbose explanat
 <p>
 
 If you feel you are already pretty familiar with a specific concept, you can just skip it, or read quickly through the text, then re-collapse the text section by re-clicking on the title. 
+
+</p>
+</details>
+
+---
+
+## Video introductions
+
+These labs were designed in part to be delivered in a classroom environment where we would do a short presentation to introduce the labs, and also each section.
+
+To support those who are doing the labs in a self-guided mode we have created an introduction video to the entire labs, and short videos for each lab section. If you are doing the labs with an instructor you don't need to review these, but for self guided students we **strongly** recommend that you review the videos.
+
+Each video is in a expandable section, see the one below. If you are a self guided student open it and click on the video image to be taken to the video streaming web site where you can play it. Once you've finished just click the back button to return to these instructions.
+
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to this lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+Note. The current videos were recorded during the lock down, hence the poor sound quality, you may need to turn up the volume on your computer to hear them properly.
+
+[![Introduction Video](https://img.youtube.com/vi/9bYn7huyQ5g/0.jpg)](https://youtu.be/9bYn7huyQ5g "Labs introduction video")
+
 
 </p>
 </details>

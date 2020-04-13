@@ -7,6 +7,19 @@
 ## C. Deploying to Kubernetes
 ## 5. Horizontal Scaling labs
 
+
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to the Kubernetes horizontal scaling lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Kubernetes horizontal scaling lab Introduction Video](https://img.youtube.com/vi/1hIQ5TRPt-M/0.jpg)](https://youtu.be/1hIQ5TRPt-M "Kubernetes horizontal scaling lab introduction video")
+
+</p>
+</details>
+
+---
+
 In most cases a microservice is horizontally scalable, at least if the services were developed using the principles defined in [The 12 factors](https://12factor.net/)
 
 Kubernetes has built in support for easily managing the horizontal scaling of services.

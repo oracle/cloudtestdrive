@@ -8,6 +8,18 @@
 
 ### **Introduction**
 
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to the Helidon labs. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Helidon labs Introduction Video](https://img.youtube.com/vi/182KYHSrf5A/0.jpg)](https://youtu.be/182KYHSrf5A "Helidon labs introduction video")
+
+</p>
+</details>
+
+---
+
 <details><summary><b>What is Helidon?</b></summary>
 <p>
 
@@ -104,10 +116,8 @@ This is a deliberately simple example, the goal is to see how these two modules 
 Also we are not addressing how to split any existing monolith into modules, hopefully you will have done that when you created the initial program and functionally decomposed your original requirements. There is no single "right" or "wrong" way to decompose your monolith functionally, but I do recommend reading up on the "Strangler Pattern" and the "Anti Corruption Pattern" as they are very useful architectural approaches to take.
 </p></details>
 
+
 ---
-
-
-
 
 
 ## The labs

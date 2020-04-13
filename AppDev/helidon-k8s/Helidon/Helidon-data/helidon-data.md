@@ -8,6 +8,18 @@
 
 ## 2. Helidon and Databases
 
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to the Helidon database capabilities lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Helidon database capabilities lab Introduction Video](https://img.youtube.com/vi/-qNDJtjGfhQ/0.jpg)](https://youtu.be/-qNDJtjGfhQ "Helidon database capabilities lab introduction video")
+
+</p>
+</details>
+
+---
+
 <details><summary><b>Introduction to Databases</b></summary>
 <p>
 
@@ -37,8 +49,6 @@ If you want to understand JPA and JTA in a lot of detail there are courses avail
 </p></details>
 
 ---
-
-
 
 
 

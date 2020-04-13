@@ -7,6 +7,19 @@
 ## C. Deploying to Kubernetes
 ## 4. Health, Readiness and Liveness
 
+
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to the Kubernetes health, readiness and liveness lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Kubernetes health, readiness and liveness lab Introduction Video](https://img.youtube.com/vi/z1dKR94TQOE/0.jpg)](https://youtu.be/z1dKR94TQOE "Kubernetes health, readiness and liveness lab introduction video")
+
+</p>
+</details>
+
+---
+
 ### **Introduction**
 
 Kubernetes provides a service that monitors the pods to see if they meet the requirements in terms of running, being responsive, and being able to process requests. 

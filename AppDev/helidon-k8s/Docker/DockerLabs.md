@@ -6,6 +6,18 @@
 
 ## B. Running as a docker images locally
 
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to the Helidon and Docker lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Docker with Helidon lab Introduction Video](https://img.youtube.com/vi/SxVC2FGdN9k/0.jpg)](https://youtu.be/SxVC2FGdN9k "Docker with Helidon introduction video")
+
+</p>
+</details>
+
+---
+
 Like the Helidon lab you perform these steps **inside** the client virtual machine
 
 ### Prerequisites

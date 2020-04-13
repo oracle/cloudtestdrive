@@ -8,11 +8,22 @@
 
 ## 3. Communicating between microservcies
 
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to the Helidon communicating with other REST services lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Helidon communication to other REST services capabilities lab Introduction Video](https://img.youtube.com/vi/IZnlF6lhfNA/0.jpg)](https://youtu.be/IZnlF6lhfNA "Helidon communication to other REST services lab introduction video")
+
+</p>
+</details>
+
+---
+
 For one thing (person, program etc.) to talk to another it does of course need to talk the same language, in the case of microservcies this is generaly based on the ideas in REST, which is an **architectural style, not a standard** (Anyone who tries to say that REST is a standard should go read the [Wikipedia REST article](https://en.wikipedia.org/wiki/Representational_state_transfer))
 
 REST is generally implemented using http(s) as the transport using XML or JSON text in the body of the request to represent data if needed, so though REST is **not** a standard usually we can get it to work using these mechanisms.
 
----
 
 <details><summary><b>Implementing communications (historically)</b></summary>
 <p>

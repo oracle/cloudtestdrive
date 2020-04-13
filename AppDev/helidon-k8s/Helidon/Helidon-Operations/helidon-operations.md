@@ -8,6 +8,18 @@
 
 ## 4. Helidon and operations
 
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to the Helidon operations support lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Helidon operations support lab Introduction Video](https://img.youtube.com/vi/MF7LaX0nH-o/0.jpg)](https://youtu.be/MF7LaX0nH-o "Helidon operations support lab introduction video")
+
+</p>
+</details>
+
+---
+
 One thing that many developers used to forget is that once they have finished writing code it still has to run and be maintained. With the introduction of DevOps a lot of developers suddenly found they were the ones being woken up in the middle of the night to fix problems in their code. That changes the perception somewhat and now many developers are acutely aware that they will have ongoing involvement in the code well after the time it compiles cleanly and passed the text suite.
 
 To help maintain and operate systems after they have been released a lot of information is needed, especially in situations where a bug may be on one service, but not show up until the resulting data has passed through several other microservcies. 
