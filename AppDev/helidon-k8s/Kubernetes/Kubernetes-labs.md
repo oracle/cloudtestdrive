@@ -83,22 +83,17 @@ Commonly when a service is deployed it will be updated, Kubernetes provides supp
 
 The following sections have not yet been written, they will be added in time.
 
-#### Horizontal Autoscaling
-
-Automatic horizontal scaling (HPA) which would automatically adjust the number of instances of a pod based on it's load.
-
 #### Automatic CI/CD and Kubenetes
 
 Integration of DevCS pipelines into the lab using DevCS as the build engine.
 
 #### Automatic A/B testing
 
-Automated testing of different versions of software to see which is most efective.
+Automated testing of different versions of a microservice to see which is most effective.
 
 #### Services Meshes.
 
-The service mesh is one of the latest ideas to come out of the cloud native forum.
-To be completed
+The service mesh is one of the latest ideas to come out of the cloud native forum. It's basically a layer that sits on top of the various services in your Kubenetes environment. It can provide multiple capabilities, including ensuring that those communications re secure (service meshes can manage cross service encryption) but also implementing policies within your service communications, for example rate limiting to prevent a wayward services using all of the resources of another service, thus starving other clients. One very useful feature is the ability to do things like identify test traffic based on the user, and to route the test traffic to a different version of a service. Thus enabling the testing of a new version of a microservice within the full operational environment, but with the normal user traffic still going to the production versions of a service.
 
 
 
