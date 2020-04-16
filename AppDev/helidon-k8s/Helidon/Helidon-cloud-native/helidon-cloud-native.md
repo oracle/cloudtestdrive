@@ -58,7 +58,7 @@ Provding a Liveness capability is pretty simple. Somewhere in the class structur
 
 @ApplicationScoped
 @Liveness
-@Log
+@Slf4j
 public class LivenessChecker implements HealthCheck {
 ```
 
@@ -135,7 +135,7 @@ Readiness is a way to let the microservices runtime determine if a service has e
 ```
 @ApplicationScoped
 @Readiness
-@Log
+@Slf4j
 public class ReadinessChecker implements HealthCheck {
 ```
 

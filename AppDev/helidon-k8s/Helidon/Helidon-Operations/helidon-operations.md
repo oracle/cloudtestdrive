@@ -162,7 +162,7 @@ The pom.xml will need to be updated for the metrics, that's already been done fo
 @Counted(monotonic = true)
 @Authenticated
 @Timeout(value = 15, unit = ChronoUnit.SECONDS)
-@Log
+@Slf4j
 @NoArgsConstructor
 public class StorefrontResource {
 ```

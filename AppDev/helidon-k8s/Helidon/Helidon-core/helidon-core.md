@@ -41,7 +41,7 @@ The main class we will be using is **StorefrontResource.java**.   Locate it in t
 <p>
 
 
-You see a couple of annotations already on place on the class definition (`@Log` and `@NoArgsConstructor`) These are being processed by [Lombok](https://projectlombok.org/).  Lombok is a set of Java based tools tha use annotations to perform common tasks for us. In this case the `@Log` annotation tells Lombok to automatically generate a Java system logger using the class name as the loggers name. The `@NoArgsConstructor` does what the name suggests and creates a constructor for us without any arguments. 
+You see a couple of annotations already on place on the class definition (`@Slf4j` and `@NoArgsConstructor`) These are being processed by [Lombok](https://projectlombok.org/).  Lombok is a set of Java based tools tha use annotations to perform common tasks for us. In this case the `@Slf4j` annotation tells Lombok to automatically generate a Java logger (Actually we use the simple logging facade, which makes is easy to switch the logging engine) using the class name as the loggers name. The `@NoArgsConstructor` does what the name suggests and creates a constructor for us without any arguments. 
 
 Lombok provides a wide variety of other useful annotations to speed up development, for example rather than manually creating getters and setters, hash codes and equals we can just use the @Lombok `@Data` annotation to create them for us automatically. As Lombok is executed when a class if compiled as we change the class any new fields would have getters / setters automatically created for us and any fields that had been removed would no longer have getters / setters created.
 
@@ -76,7 +76,7 @@ Your class definition now should look something like
 ```java
 @Path("/store")
 @RequestScoped
-@Log
+@Slf4j
 @NoArgsConstructor
 public class StorefrontResource {
    .....
@@ -245,7 +245,7 @@ Eclipse may automatically switch to the console for you, but if not in the lower
 
 ![Eclipse console tab](images/eclipse-run-console-tab.png)
 
-In the console you'll see a bunch of output representing the loging information generated as the storefront starts up.
+In the console you'll see a bunch of output representing the logging information generated as the storefront starts up.
 
 ```
 ... 
@@ -479,7 +479,7 @@ Result:
 @Path("/store")
 @RequestScoped
 @Authenticated
-@Log
+@Slf4j
 @NoArgsConstructor
 public class StorefrontResource {
    .....
@@ -739,7 +739,7 @@ How do we fix this ? Simple, we just change the ConfigurationResource class form
 @Path("/minimumChange")
 @ApplicationScoped
 // Have Lombok create a logger for us
-@Log
+@Slf4j
 public class ConfigurationResource {
 ```
 
@@ -1445,7 +1445,7 @@ It's hard to actually simulate these in action, but we're going to show how to d
 @RequestScoped
 @Authenticated
 @Timeout(value = 15, unit = ChronoUnit.SECONDS)
-@Log
+@Slf4j
 @NoArgsConstructor
 public class StorefrontResource {
 ```

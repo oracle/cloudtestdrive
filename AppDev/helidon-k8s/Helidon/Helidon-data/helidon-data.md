@@ -366,7 +366,7 @@ Fortunately for us all we need is an @Transactional annotation and Heliton will 
 ```
 @Path("/stocklevel")
 @RequestScoped
-@Log
+@Slf4j
 @Transactional
 public class StockResource {
 ```
