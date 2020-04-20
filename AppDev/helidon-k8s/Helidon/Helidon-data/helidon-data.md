@@ -8,6 +8,18 @@
 
 ## 2. Helidon and Databases
 
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to the Helidon database capabilities lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Helidon database capabilities lab Introduction Video](https://img.youtube.com/vi/-qNDJtjGfhQ/0.jpg)](https://youtu.be/-qNDJtjGfhQ "Helidon database capabilities lab introduction video")
+
+</p>
+</details>
+
+---
+
 <details><summary><b>Introduction to Databases</b></summary>
 <p>
 
@@ -37,8 +49,6 @@ If you want to understand JPA and JTA in a lot of detail there are courses avail
 </p></details>
 
 ---
-
-
 
 
 
@@ -289,7 +299,7 @@ The result should show the application listening on http://localhost:8081
 <p>
 You may have seen what looks like SQL in the output. The library we are using here to actually handle the database conneciton is a very commonly used package called Hibernate. One of it's nice features is that it can be set to create the database tables for you if needed. 
 
-You're probably running this against a nice new database that doesn't have the required tables in it yet, so Hibernate has looked at the classes it's ben told to manage (These are specified in the persistence.xml file) and has created the tables for us. It can also modify the database scheme to match the classes if the classes have been changed.
+You're probably running this against a nice new database that doesn't have the required tables in it yet, so Hibernate has looked at the classes it's been told to manage (These are specified in the persistence.xml file) and has created the tables for us. It can also modify the database scheme to match the classes if the classes have been changed.
 
 Of course in a production environment you wouldn't want the database changing under you as the classes are updated, so you'd turn that off (the `hibernate.hbm2ddl.auto` setting) but for a lab it makes things a lot easier for us. 
 </p></details>
@@ -356,7 +366,7 @@ Fortunately for us all we need is an @Transactional annotation and Heliton will 
 ```
 @Path("/stocklevel")
 @RequestScoped
-@Log
+@Slf4j
 @Transactional
 public class StockResource {
 ```

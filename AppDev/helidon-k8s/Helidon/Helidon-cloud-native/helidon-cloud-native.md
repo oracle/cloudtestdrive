@@ -8,6 +8,18 @@
 
 ## 5. Supporting cloud native operations with Helidon
 
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to the Helidon cloud native support lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Helidon cloud native support lab Introduction Video](https://img.youtube.com/vi/vPSphbTg1MQ/0.jpg)](https://youtu.be/vPSphbTg1MQ "Helidon cloud native support lab introduction video")
+
+</p>
+</details>
+
+---
+
 Most cloud native platforms (and Kubernetes in particular) need to know is a microservcies is running at all, if it's capable to responding to requests and if it has access to all the dependent services it needs to operate. In the event that these conditions are not fulfilled the cloud native platform will take steps like re-starting a microservice instance, or stopping sending it requests for a short while.
 
 The exercises in this section show how you can use Helidon to directly support the cloud native capabilities that Kubernetes uses. It does not directly cover using them in Kubernetes however, but if you're doing the microservices in kubernetes sections of the workshop then this will make sense when you do it.
@@ -46,7 +58,7 @@ Provding a Liveness capability is pretty simple. Somewhere in the class structur
 
 @ApplicationScoped
 @Liveness
-@Log
+@Slf4j
 public class LivenessChecker implements HealthCheck {
 ```
 
@@ -123,7 +135,7 @@ Readiness is a way to let the microservices runtime determine if a service has e
 ```
 @ApplicationScoped
 @Readiness
-@Log
+@Slf4j
 public class ReadinessChecker implements HealthCheck {
 ```
 

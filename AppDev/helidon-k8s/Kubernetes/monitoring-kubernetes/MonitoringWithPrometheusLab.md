@@ -7,6 +7,18 @@
 ## C. Deploying to Kubernetes
 ## 2. Monitoring with Prometheus
 
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to the Monitoring microservcies with Prometheus lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Gathering metrics with Prometheus lab Introduction Video](https://img.youtube.com/vi/qnDzZ2eOy0E/0.jpg)](https://youtu.be/qnDzZ2eOy0E "Gathering metrics with Prometheus lab introduction video")
+
+</p>
+</details>
+
+---
+
 ### **Introduction**
 
 Monitoring a service in Kubernetes involves three components

@@ -8,6 +8,19 @@
 
 ## 1. Basic Kubernetes
 
+
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to the Kubernetes core features lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Kubernetes core features lab only setup Introduction Video](https://img.youtube.com/vi/kc1SvmTbvZ8/0.jpg)](https://youtu.be/kc1SvmTbvZ8 "Kubernetes core features lab introduction video")
+
+</p>
+</details>
+
+---
+
 ## Lab Setup
 
 You will be using the **Oracle Cloud shell** to run the Kubernetes parts of the labs.
@@ -1747,7 +1760,8 @@ content-type: application/json
 content-length: 51
 strict-transport-security: max-age=15724800; includeSubDomains
 
-{"name":"My Shop","alive":true,"frozen":false}
+
+{"name":"My Shop","alive":true,"version":"0.0.1"}
 ```
 (assuming your storefront-config.yamp file says the storename is My Shop this is what you should get back, if you changed it it will be slightly different)
 
@@ -1824,7 +1838,7 @@ Now let's return to the pod and see what's happened
 
 The storefront-config.yaml file has now changed to reflect the modifications you made to the config map. Note that it usually takes between 30 - 60  seconds for the change to propogate into the pod.
 
-If we now get the status resource data again it's also updated
+If we now get the status resource data again it's also updated (substitute your IP address of course)
 
 - Query the status: `curl -i -k -X GET https://132.145.232.69/sf/status`
 
@@ -1836,7 +1850,8 @@ content-type: application/json
 content-length: 51
 strict-transport-security: max-age=15724800; includeSubDomains
 
-{"name":"Tims Shop","alive":true,"frozen":false}
+
+{"name":"Tims Shop","alive":true,"version":"0.0.1"}
 ```
 Of course there is time delay from the change being visible in the pod to the Helidon framework doing it's scan to detect the change and reloading the config, so you may have to issue the curl command a few times to see when the change has fully propogated.
 We've shown how to change the config in helidon using config maps, but the same principle woudl apply if you were using secrets and modified those (though there isn't really a usable secret editor in the dashboard)
