@@ -88,7 +88,7 @@ First you need to locate your user using the Search functionality of the console
     - An **Example** is proveded below: both private and public keys are made available, so obviously this is **not good security practice**.
   
       - [Public key](keys/api_key_public.pem)
-      - [Private key](api_key.pem)
+      - [Private key](keys/api_key.pem)
   
     - **Good practice** is to generate your own keys: You can use the following [OpenSSL](http://www.openssl.org/) commands to generate the key pair in the required PEM format. You can use the Oracle Cloud Shell to issue these commands: use the "**>_**" icon in the top right of your console.
   
