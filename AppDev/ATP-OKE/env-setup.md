@@ -61,13 +61,13 @@ After you successfully created the compartment, note down the **Compartment OCID
 
 First you need to locate your user using the Search functionality of the console:
 
-- Click on the **Magnifying glass** on the top of your console, and enter your username.  For example, if your name was **ppan** : 
+- Click on the **Search Bar** on the top of your console, and enter your username.  For example, if your name was **ppan** : 
 
-  ![](/Users/jleemans/dev/github/cloudtestdrive/AppDev/wls/images/ppan.png)
+  ![](../wls/images/ppan2.png)
 
 - Select the user **that looks like :  oracleidentitycloudservice/(your_name)**
 
-  ![](/Users/jleemans/dev/github/cloudtestdrive/AppDev/wls/images/token1.png)
+  ![](../wls/images/token1.png)
 
 - Select **Token** in the right-hand menu, then click the button **Create Token**.
 
@@ -75,7 +75,7 @@ First you need to locate your user using the Search functionality of the console
 
   - Use the **Copy** button to copy the token in your buffer, and **immediately paste it** in a notebook of your choice, you will need this later.
 
-    ![](/Users/jleemans/dev/github/cloudtestdrive/AppDev/wls/images/token2.png)
+    ![](../wls/images/token2.png)
 
     
 
