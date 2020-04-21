@@ -8,6 +8,18 @@
 
 ## 2. Helidon and Databases
 
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to the Helidon database capabilities lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Helidon database capabilities lab Introduction Video](https://img.youtube.com/vi/-qNDJtjGfhQ/0.jpg)](https://youtu.be/-qNDJtjGfhQ "Helidon database capabilities lab introduction video")
+
+</p>
+</details>
+
+---
+
 <details><summary><b>Introduction to Databases</b></summary>
 <p>
 
@@ -40,14 +52,12 @@ If you want to understand JPA and JTA in a lot of detail there are courses avail
 
 
 
-
-
 ### Configuring the project to be personal to you
 For this project all attendees will be operating on a shared database, updating the same table. To ensure that your work doesn't interfere with other peoples work you need to provide a unique identity for yourself
 
 - In Eclipse, switch to the **helidon-labs-stockmanager** project.
 - Navigate into the folder **conf**
-- Open the file **stockmanager-config.xml**
+- Open the file **stockmanager-config.yaml**
 - In the `app:` section, add a property **department** with **your** your name, initials or something that's going to be **unique**:
   -  `department: "your_name"`
 
@@ -58,6 +68,8 @@ app:
   persistenceUnit: "HelidonATPJTA"
   department: "just_a_name"
 ```
+
+(There is a sample line there already, if you prefer modify the value and uncomment the line)
 
 The way this operates is that the StockResource will automatically and transparently add the department to the primary key in all requests.
 
@@ -200,9 +212,9 @@ Let's look at the StockResource.createStockLevel method to see how this works
 
 The `@Path("/{itemName}/{itemCount}")` makes two params called itemName and itemCount available. Then in the method signature the `@PathParam("itemName")` binds whatever was in the itemName path param to the itemName parameter, and the same for the itemCount.
 
-Helidon does sanity checks here, it the itemCount wasn't a String verion of an integer then the caller would get an error message back before the method was called.
+Helidon does sanity checks here, it the itemCount wasn't a String version of an integer then the caller would get an error message from the Helidon framework itself before the method was called.
 
-Here (to make it clear whatn's happening) I've used the same name for the path and method param, but that's not required.
+Here (to make it clear what's happening) I've used the same name for the path and method param, but that's not required.
 
 Other possible sources for the params are @QueryParam and @FormsParam. Which one you chose will depend on what the URL you are expecting (or want) to get.
 
@@ -281,8 +293,16 @@ The result should show the application listening on http://localhost:8081
 ```
 2020.01.05 18:30:33 INFO io.helidon.microprofile.server.ServerImpl Thread[nioEventLoopGroup-2-1,10,main]: Server started on http://localhost:8081 (and all other host addresses) in 69 milliseconds.
 2020.01.05 18:30:33 INFO com.oracle.labs.helidon.stockmanager.Main Thread[main,5,main]: http://localhost:8081
-
 ```
+
+<details><summary><b>What with the SQL in the output ?</b></summary>
+<p>
+You may have seen what looks like SQL in the output. The library we are using here to actually handle the database conneciton is a very commonly used package called Hibernate. One of it's nice features is that it can be set to create the database tables for you if needed. 
+
+You're probably running this against a nice new database that doesn't have the required tables in it yet, so Hibernate has looked at the classes it's been told to manage (These are specified in the persistence.xml file) and has created the tables for us. It can also modify the database scheme to match the classes if the classes have been changed.
+
+Of course in a production environment you wouldn't want the database changing under you as the classes are updated, so you'd turn that off (the `hibernate.hbm2ddl.auto` setting) but for a lab it makes things a lot easier for us. 
+</p></details>
 
 - Use curl to see what's there:
   -  `curl -i -X GET -u jack:password http://localhost:8081/stocklevel`
@@ -346,13 +366,13 @@ Fortunately for us all we need is an @Transactional annotation and Heliton will 
 ```
 @Path("/stocklevel")
 @RequestScoped
-@Log
+@Slf4j
 @Transactional
 public class StockResource {
 ```
 This means that every operation in the class will be wrapped in a transaction automatically, If the method returns normally (so no exceptions thrown) then the transaction will be automatically committed, but if the transaction returned abnormally (e.g. an exception was thrown) then the transaction will be rolled back.
 
-This will apply if there were multiple entity managers or database modification actions operating within the method. So if the method modifies data in several databases then they woudl all suceed of fail. This your database ACID (Atomic, Consistent, Isolated and Durable) semantics are maintained 
+This will apply if there were multiple entity managers or database modification actions operating within the method. So if the method modifies data in several databases then they would all succeed of fail. This how Helidon helps ensure that the database ACID (Atomic, Consistent, Isolated and Durable) semantics are maintained 
 
 
 
@@ -373,9 +393,11 @@ In the current version of Helidon there is a conflict between the processing of 
 
 
 ### Creating some data and testing the stockmanager works
-- Use curl to create some stock items :
-  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pin/5000`
-  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pins/5000`
+- Restart the stockmanaer.Main 
+
+- Use curl to create some stock items (expect an error on the last one) :
+  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pin/5000`
+  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pins/5000`
   - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pencil/200`
   - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Eraser/50`
   - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Book/100`
@@ -409,13 +431,13 @@ Date: Sun, 5 Jan 2020 19:01:01 GMT
 connection: keep-alive
 content-length: 185
 
-[{"itemCount":100,"itemName":"Book"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":200,"itemName":"Pencil"},{"itemCount":5000,"itemName":"pin"},{"itemCount":5000,"itemName":"pins"}]
+[{"itemCount":100,"itemName":"Book"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":200,"itemName":"Pencil"},{"itemCount":5000,"itemName":"Pin"},{"itemCount":5000,"itemName":"Pins"}]
 ```
 
-Note that we have "accidentally created two versions of the pin (pin and pins), let's remove one
+Note that we have "accidentally" created two versions of the Pin (Pin and Pins), let's remove one
 
 - Use curl to remove it
-  -  `curl -i -X DELETE -u jack:password http://localhost:8081/stocklevel/pins`
+  -  `curl -i -X DELETE -u jack:password http://localhost:8081/stocklevel/Pins`
 
 ```
 HTTP/1.1 200 OK
@@ -443,14 +465,21 @@ Date: Sun, 5 Jan 2020 19:03:11 GMT
 connection: keep-alive
 content-length: 148
 
-[{"itemCount":100,"itemName":"Book"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":150,"itemName":"Pencil"},{"itemCount":5000,"itemName":"pin"}]
+[{"itemCount":100,"itemName":"Book"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":150,"itemName":"Pencil"},{"itemCount":5000,"itemName":"Pin"}]
 ```
+
+### Optional lab - accessing the context of the request
+
+There are situations where you need to access the context of a request, for example in getting the identity of the user, or examining in detail the Http headers.
+
+Not all projects need to access this information, which is why this is an optional step in the lab you can do if you have time, or come back to later if you wish.
+
+If you'd like to then please work through the [accessing the context](./accessing-the-context.md) module.
+
+### Summary
 
 **Please leave the stockmanager running, we're going to use it in the next few labs**
 
-
-
-### Summary
 We haven't looked at JPA / JTA in much detail, but we've seen how the Helidon configuration system can be used to supply configuration data to the JPA and JTA as they are being setup.
 
 We've seen how we can use the Helidon dependency injection system with the `@PersistenceContext` annotation to create and manage entity managers for us.

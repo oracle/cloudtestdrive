@@ -1,6 +1,6 @@
 # Creating the client VM in the OCI tenancy
 
-This page will guide you on how to set up a Compute instance on the Oracle Cloud, running a Linux desktop.  You will be using a *Custom Image* that was prepared by your instructor, which conains all the client-side components you need for running this lab, such as Eclipse and a variety of command-line tools.
+This page will guide you on how to set up a Compute instance on the Oracle Cloud, running a Linux desktop.  You will be using a *Custom Image* that was prepared by your instructor, which contains all the client-side components you need for running this lab, such as Eclipse and a variety of command-line tools.
 
 ---
 
@@ -8,8 +8,8 @@ This page will guide you on how to set up a Compute instance on the Oracle Cloud
 
 Your instructor will inform you if the VM's have already been created for you or not.  
 
-- In case you need create them yourselves, follow all instructions below.
-- If the VM's are already running, **Scroll down** to section **Installing a VNC Viewer**.
+- In case you need create the VM yourself, follow all instructions below.
+- If the VMs has already been created by your instructor, **Scroll down** to section **Installing a VNC Viewer**.
 
 ---
 
@@ -28,7 +28,7 @@ Your instructor will inform you if the VM's have already been created for you or
   - Navigate to the **core infrastructure** section
   - Select **Compute**, then **Instances**
 
-<img src="Screenshot 2020-02-07 at 09.34.53.png" alt="Screenshot 2020-02-07 at 09.34.53" style="zoom:50%;" />
+![](images/compute-instances-access.png)
 
 
 
@@ -39,7 +39,7 @@ You will now see the list of instances already running in this compartment.
 
 - Click the **Create Instance** button to start the creation of a new instance.
 
-![Screenshot 2020-02-07 at 10.28.16](SelectCompartment.png)
+![](images/SelectCompartment.png)
 
 
 
@@ -48,13 +48,15 @@ This will open the **Create Compute Instance** wizard.  Fill in the following el
 - Enter a meaningfull **name** for your instance: `helidonlabVm-yourInitials`, using your initials to distinguish from other participants.
 - Click the **Change Image Source** button.
   - In the resulting page click the **Custom Images** tab
-  - Select the image called H-K8S-Initial-State-\<YYYY-MM-DD\> where the YYYY-MM-DD is a date
-    - If there are more than one image chose the one with the most recent date. 
-    - DO NOT chose any image containing the work Export.
+  - Select the image called H-K8S-Lab-A-Helidon-\<YYYY-MM-DD\> where the YYYY-MM-DD is a date
+    - If there is more than one image starting H-K8S-Lab-A-Helidon chose the one with the most recent date. 
+    - DO NOT chose any image containing the word Export.
   - Click the **Select Image** button to return to the initial screen.
-- Use the **defauld values** provided for following elements: 
+- Use the **default values** provided for following elements: 
   - **Availability domain** (AD1), **Instance type** (Virtual Machine) and **Instance shape** (VM.Standard.2.1)
-- ![Screenshot 2020-02-07 at 10.32.08](createvm.png)
+  
+![](images/createvm.png)
+
 - The *Virtual Cloud Network Compartment* should already be set to **CTDOKE**.
 - In the **Virtual cloud Network** dropdown,  select the **CTDVMVCN** network. 
 - Leave all the other setings in the section as they are in the boot volume section
@@ -75,7 +77,7 @@ Once the create button has been clicked you will see the Vm details page.  Initi
 
 ### Installing a VNC viewer
 
-- For **macOS** we advise realVNC which can be obtained from 
+- For **macOS** we recommend realVNC which can be obtained from 
 
   - https://www.realvnc.com/en/connect/download/viewer/macos/
 
@@ -101,6 +103,6 @@ Use your VNC client to connect to the VM desktop on display 1. The precise forma
   - Example : `123.23.43.2:1`
     - Note the :1 at the end! 
 
-When you connect you will get warnings about an insecure connection, as this lab does nto process any confidential data and is only running for a short time that's OK
+When you connect you will get warnings about an insecure connection, as this lab does not process any confidential data and is only running for a short time that's OK
 
 You will need to enter a password for the VNC session. The instructor will provide you with this.

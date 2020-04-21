@@ -16,7 +16,17 @@ Then we look at how to **run the docker containers in Kubernetes**, examining ho
 
 Finally we look at **monitoring and graphing** to extract data on how the system operates.
 
-In the future the labs will include sections on auto-scaling and the use of a Service Mesh, and other Kubernetes based cloud native capabilities such as A/B testing of new releases etc.
+Finally we look at **horizontal scaling** the number of microservice instances to handle changes in load and also how multiple instances can be used to support a **rolling upgrade.**
+
+There are also several optional lab sections you can do which cover development activities such as extracting information from the REST request (e.g. the name of the user making the request) and how to have the Helidon framework automatically generate Open API documentation (previously known as Swagger) to ensure that the REST API documentation reflects exactly the service currently in use. Optional sections also cover deployment activities such as capturing log data and sending it to a data store for analysis.
+
+
+In the future the labs will include sections on the use of a Service Mesh, and other Kubernetes based cloud native capabilities such as A/B testing of new releases etc.
+
+For reference, this is the architecture you'll be building
+
+![](images/Architecture-overview.png)
+
 
 ### Lab conventions
 
@@ -37,12 +47,51 @@ As we cover quite some theoretical concepts, we included pretty verbose explanat
 If you feel you are already pretty familiar with a specific concept, you can just skip it, or read quickly through the text, then re-collapse the text section by re-clicking on the title. 
 
 </p>
-
 </details>
 
 ---
 
+## Video introductions
 
+These labs were designed in part to be delivered in a classroom environment where we would do a short presentation to introduce the labs, and also each section.
+
+To support those who are doing the labs in a self-guided mode we have created an introduction video to the entire labs, and short videos for each lab section. If you are doing the labs with an instructor you don't need to review these, but for self guided students we **strongly** recommend that you review the videos.
+
+Each video is in a expandable section, see the one below. If you are a self guided student open it and click on the video image to be taken to the video streaming web site where you can play it. Once you've finished just click the back button to return to these instructions.
+
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to this lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+Note. The current videos were recorded during the lock down, hence the poor sound quality, you may need to turn up the volume on your computer to hear them properly.
+
+[![Introduction Video](https://img.youtube.com/vi/9bYn7huyQ5g/0.jpg)](https://youtu.be/9bYn7huyQ5g "Labs introduction video")
+
+
+</p>
+</details>
+
+---
+
+## The lab environment
+
+You will be running these labs on an Oracle Cloud Infrastructure (OCI) tenancy.  This allows us to provide you with a consistent environment. 
+
+Components we will be using : 
+
+- A Linux VM with a Linux Desktop, accessible through a VNC viewer.  This environment will contain Eclipse, Maven and Docker, tools you will need to run the first 2 labs (**A. Helidon** and **B. Docker**)
+- An ATP database to allow our application to store data in a persistent manner.
+- A Kubernetes cluster to deploy you microservices on (for the 3rd lab **C. Kubernetes**) 
+
+The basic principles will however run in any Java IDE or Kubernetes environment, however you may need to adjust some aspects, for example if you were to build on this lab by installing a local database on your laptop the process will be different than when using an Autonomous Transaction Processing database in the Oracle cloud.
+
+# Preparing your environment
+
+There are some steps you need to take to prepare the environment for your own individual use.
+
+- You can run this lab on a **Oracle Free Tier** account.  In this case you need to perform some extra preparation steps, [explained in detail on this page](ManualSetup/FullSetupFreeTier.md).
+- If you are part of **an instructor-led lab**, your instructor might provide Cloud Tenancy for you, minimizing the setup to [these few steps to connect to a remote desktop](ManualSetup/CreateClientVm.md).
 
 
 
@@ -81,5 +130,5 @@ Go to [the Kubernetes Labs](Kubernetes/Kubernetes-labs.md)
 
 #### [License](../../LICENSE)
 
-Copyright (c) 2014, 2016 Oracle and/or its affiliates
+Copyright (c) 2014, 2020 Oracle and/or its affiliates
 The Universal Permissive License (UPL), Version 1.0

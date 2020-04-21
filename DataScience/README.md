@@ -1,4 +1,4 @@
-[Go to the Cloud Test Drive Overview](../../readme.md)
+[Go to the Cloud Test Drive Overview](../readme.md)
 
 ![](./commonimages/customer_logo2.png)
 
@@ -15,4 +15,4 @@
 
 ---
 
-[Go to the Cloud Test Drive Overview](../../readme.md)
+[Go to the Cloud Test Drive Overview](../readme.md)

@@ -8,11 +8,22 @@
 
 ## 3. Communicating between microservcies
 
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to the Helidon communicating with other REST services lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Helidon communication to other REST services capabilities lab Introduction Video](https://img.youtube.com/vi/IZnlF6lhfNA/0.jpg)](https://youtu.be/IZnlF6lhfNA "Helidon communication to other REST services lab introduction video")
+
+</p>
+</details>
+
+---
+
 For one thing (person, program etc.) to talk to another it does of course need to talk the same language, in the case of microservcies this is generaly based on the ideas in REST, which is an **architectural style, not a standard** (Anyone who tries to say that REST is a standard should go read the [Wikipedia REST article](https://en.wikipedia.org/wiki/Representational_state_transfer))
 
 REST is generally implemented using http(s) as the transport using XML or JSON text in the body of the request to represent data if needed, so though REST is **not** a standard usually we can get it to work using these mechanisms.
 
----
 
 <details><summary><b>Implementing communications (historically)</b></summary>
 <p>
@@ -78,19 +89,19 @@ We could of course build a class ourselves that has a delete method that does th
 
 **RestClients**
 
-Fortunately for us Eclipse microprofile have created a solution to this in a manner
+Fortunately for us Eclipse Microprofile have created a solution for this in a manner that results in minimal code changes to your logic.
 
 Best software development practice is to to follow the [loose coupling design patterns](https://en.wikipedia.org/wiki/Loose_coupling) so that the caller can't see the details of the implementation. In Java this is achieved using interfaces, so a developer created an interface for externally use that defines the functionality and then a separate class the implements it, this is especially true if your class is in a library class or a different package.
 
-All a developer then need to do is to have your caller create an instance of the class (or preferably have a factory create it) and interact with the actual implementation using the interface, which is by definition public and (if designed properly) will not expose any of the implementation details.
+All a developer then need to do is to have your code create a proxy for the interface (or preferably have a factory create it) and interact with the actual implementation of the micro-service using the proxy which looks like the interface, The interface is of course by definition public and (if designed properly) will not expose any of the implementation details.
 
-With Helidon and the Rest Client functionality all we need to do is to annotate the interface with details of paths and such like, add the @RegisterRestClient annotation and then inject it as a Rest client to the class that uses it. Then we can carry on using the interface as if it was an interface for a local class, for example 
+With Helidon and the Rest Client functionality all we need to do is to annotate the interface with details of paths and such like, add the @RegisterRestClient annotation and then inject it as a Rest client to the class that uses it. Then we can carry on in our code using the interface as if it was an interface for a local class, for example 
 
 ```
 	ItemDetails itemDetails = stockManager.getStockItem(itemRequest.getRequestedItem());
 ```
 
-We don't need to change any of our code that uses the interface at all !
+We don't need to change any of our code that uses the interface at all, and Helidon creates the RestClient proxy to do all of the network activities for us automatically!
 
 </p></details>
 
@@ -161,7 +172,7 @@ StockManager/mp-rest/connectTimeout=5000
 StockManager/mp-rest/responseTimeout=5000
 ```
 
-The only thing we absolutely have to specify is the URL, though this can be specified as an option in the `RegisterRestClient` if desired. The timeouts and so on are really for convenience, we could also (if it wasn't defined in the interface itself) specify the scope of the rest client. Note that configuration property settings will override those in the source code.
+The only thing we absolutely have to specify is the URL, though this can be specified as an option in the `RegisterRestClient` annotation if desired as well (the configuration files will override anything that's hard coded in the annotation.) The timeouts and so on are really for convenience, we could also (if it wasn't defined in the interface itself) specify the scope of the rest client. Note that configuration property settings will override those in the source code.
 
 Also in the microprofile-config.properties file are details for another REST client
 
@@ -203,9 +214,9 @@ Result:
 	private StockManager stockManager;
 ```
 
-Now when the StorefrontResource class is initialized the Helidon runtime will dynamically create (if needed, or use an existing instance as appropriate depending on the scope) a class that looks like the interface, but under the covers does all of the work to make the REST calls and process the response into the returned objects. Exceptions are also correctly handled.
+Now when the StorefrontResource class is initialized the Helidon runtime will dynamically create (if needed, or use an existing instance as appropriate depending on the scope) a proxy implementation that looks like the interface, but under the covers does all of the work to make the REST calls and process the response into the returned objects.
 
-Basically this looks pretty simple in comparisson to making all of the http requests by hand !
+Basically this looks pretty simple in comparison to making all of the http requests by hand !
 
 - **Save the changes** to the files
 - **Run** the storefront main class.
@@ -223,23 +234,36 @@ content-length: 148
 
 [{"itemCount":5000,"itemName":"pin"},{"itemCount":150,"itemName":"Pencil"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":100,"itemName":"Book"}]
 ```
+<details><summary><b>Got an error ?</b></summary><p>
+It's possible that the services may take longer to do their initial initialization that the timeouts. (The initialization is done on demand) If this happens you may get an error. Wait a short while and retry, hopefully the initialization will have been completed then.
+</p></details>
 
 We have now got the data back from the database itself. Our client is working, and with very little effort !
 
+### Talking to non Helidon REST services
+If you have a non Helidon micro-service and want to talk to it from a Helidon MP client just create an appropriate interface to represent the REST service and then follow the approach above to create the proxy implementations of the interface and use it.
 
+
+## Non Helidon MP clients of a micro service, also known as My monolith is not decomposed yet
+Of course here we've been assuming that this is a Helidon MP micro-service talking to another Helidon MP micro-service. But it's quite possible (even probable) that you are actually going to be making a gradual transition of your monolithic applications to micro-services and will be splitting of bits of the monolith at a time. In those cases you want to be able to connect your remaining monolith to the new micro-service while making as few changes to the monolith as possible. In that case you can still use the approach of defining an interface for your micro-service and then creating a proxy implementation. Your original code just continues to use the proxy which it thinks is the real local object, not a remote micro-service, the only code changed required in the origional monolith code is to crate the proxy rather than instantiate a local class.
+
+We've put together a short document on how to [manually create a rest client](non-helidon-rest-clients.md) if you want more information. (Reading this is an optional activity in this lab)
 
 ---
+
 <details><summary><b>Async requests</b></summary>
 <p>
-You may have noticed the delay in the request, if you try the request again it's much faster, this is because the second time all of the lazy initialization will have been done. But in some cases it may be that every call to a request takes a long time (perhaps it's getting data from a real physical service !) which may leave the client execution blocked until the request completes.
+You may have noticed the delay in the request, if you try the request again it's much faster, this is because the second time all of the lazy initialization will have been done. But in some cases it may be that every call to a request takes a long time (perhaps it's getting data from a real physical device !) which may leave the client execution blocked until the request completes.
 
-One solution to this is to make the request, then go and do something else while waiting for the response. We're not going go to into detail on this, but the REST client supports the use of async operations by having the returned object not be the actual object (which would require the entire call sequence to have completed) but a object called a `CompletionStage`. 
+One solution to this is to make the request, then go and do something else while waiting for the response. We're not going go to into detail on this, but the REST client supports the use of async operations by having the returned object not be the actual object (which would require the entire call sequence to have completed) but a object of type `CompletionStage`. 
 
-The CompletionStag objects are created by the framework on the client side, so the response is much faster, and by looking into the CompletionStage object it's possible to determine if the call has finished, and if so what the result was. While waiting for it to finish the code can do other things.
+The CompletionStage objects are created by the framework on the client side, so the response is much faster, and by looking into the CompletionStage object it's possible to determine if the call has finished, and if so what the result was. If you want you can register code to be run independently when the CompletionStage finishes (or the process errors.)
 
 </p></details>
+
 ---
-<details><summary><b>Authentication</b></summary>
+
+<details><summary><b>How does the authentication transfer ?</b></summary>
 <p>
 
 
@@ -250,8 +274,8 @@ The solution to this is another reason why using Helidon (or other microprofile 
 This is why we've used the same user credentials, and in a production environment you'd use the same security system across both services.
 
 </p></details>
----
 
+---
 
 
 ### End of the lab

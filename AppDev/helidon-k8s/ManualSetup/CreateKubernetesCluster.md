@@ -1,64 +1,59 @@
 # Creating your own Kubernetes cluster in the OCI tenancy
 
-You will need to have created (or been allocated) a client VM instance. If you have not got one then contact your instructor.
+This page details the instructions to spin up a Managed Kubernetes cluster on the Oracle Cloud.  
 
-**IMPORTANT** The following steps will need to be performed •within* your client VM instance.
+---
 
-In the client VM open the web browser (double click the Firefox icon on the desktop)
+**ATTENTION !!!** 
 
-Go the the cloud.oracle.com page (making choices about cookies as you see fit)
+Your instructor will inform you if the Kubernetes clusters have already been created for you or not.  
 
-Click the "View Accounts" button on the upper right of the page
+- In case you need create them yourselves, follow the instructions below.
+- If the clusters are already running, your kubeconfig file will be provided by your instructor
 
-In the resulting list click the "Sign in to cloud" option
+---
 
-enter the cloud account name (your instructor will provide this)
+- Make sure you are working in your Virtual Linux environment using your VNC viewer. 
 
-enter your user name and password (you will have been assigned one or these are the details you provided when you use the self-registration tool and did the initial login)
 
-Once you have signed in you may find yourself on the Clout Infrastructure Classic page. If you do click the "Infrastructure" link just to the right of the heading on the page (you may be asked to provide the cloud details and re-authenticate again, if you are please ensure you chose the Single Sign On / SSO option when you've provide the tenancy information)
 
-Once you have signed in the the OCI infrastructure click on the hamburger menu (three bars on the upper left) Go dowen the menu until you get th the Solutions and Platform section, then click on the Developer services -> Container Clusters (OKE) option
+**Navigate to the Managed Kubernetes dashboard**
 
-In the List Scope section use the dropdown to select CTDOKE as the compartment (you may have to expand the tree nodes to locate this) Click the "Create Cluster" button at the top of the clusters list
+- Log into the **Cloud Console** using the URL provided, and using the username and password you created earlier.
+- Once on the **OCI infrastructure** page, click on the hamburger menu to navigate to 
+  - **Developer services**, then **Container Clusters (OKE)**
 
-Take the option for the "Quick Create" (this provides automatic versions of most of the key elements for you) then click the "Launch workflow" button
+- In the **List Scope** section, use the dropdown to select the **CTDOKE** compartment
+  - You may have to expand the tree nodes to locate this compartment
+- Click the **Create Cluster** button at the top of the clusters list
 
-In the next form name the cluster something like LAB-<your initials>-Helidon-Cluster (you can of course use anything you like instead of <your initials> as long as it's unique)
+- Choose the option for the **Quick Create**, then click the **Launch workflow** button
 
-Make sure the compartment is CTKOKE
 
-Make sure the Kubernetes version is the highest on the list (currently 1.14.8)
 
-Leave the visibility type as private
+**Creating the cluster**
 
-Leave the shape as VM.Standard1.1
+- Fill in the form with following parameters:
 
-Set the number of nodes to be 1
+  - In the next form name the cluster something like Helidon-Lab-YOUR-INITIALS
+  - Make sure the compartment is **CTDOKE**
+  - Make sure the Kubernetes version is the highest on the list (at the time of writing that was 1.15.7)
+  - Leave the visibility type as **private**
+  - Set the shape to VM.Standard2.1
+  - Set the number of nodes to be 2
 
-**TURN OFF** the Add Ons, make sure that the sliders for both Kubernetes Dashboard Enabled and Tiller (Helm) Enabled are grey ("switch" to the left")
+  - **TURN OFF** the Add Ons : make sure that the sliders for **Kubernetes Dashboard** and **Tiller (Helm)**  are grey ("switch" to the left")
 
-Click the Next button to go to the review page.
+![](images/create-k8s-cluster.png)
 
-On the review page check the details you have provided are there, then click the Create Cluster button.
+- Click the Next button to go to the review page.
 
-You'll be presented with a progress option, if you want read what's happening, but scroll to the bottom of it and click the Close button which will take you to the instance page for your cluster.
+- On the review page check the details you have provided are correct
+- Click the Create Cluster button.
 
-The state will be "Creating" for a few mins (usually 3-4 mins)
+You'll be presented with a progress option, if you want read what's happening
 
-Once the cluster has been created the "Accesss Kubeconfig" button will be enabled. Click it to get the configuration for **your** cluster. Remember you need to be doing this in your client VM (it has sll of the other items needed), no point in downloading the kube config anywhere else !
+- Scroll to the bottom and click the **Close** button
 
-You will be presented with a page with detial of downloading the Kubeconfig file. The main thing is to look for the line like this. Copy the line (your's not the one) by selecting the test starting with the OCI and ending in the token version. Then click right and chose copy. In a terminal run the command it says to get the config
+The state will be "Creating" for **a few minutes** (usually 3-4 mins)
 
-```
-oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaa<lots of stuff>aaa --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0
-New config written to the Kubeconfig file /home/oracle/.kube/config
-```
-
-Make sure you can access the cluster using the `kubectl get all` command
-
-```
-kubectl get all
-NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
-service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   13m
-```

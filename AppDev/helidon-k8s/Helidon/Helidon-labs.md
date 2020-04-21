@@ -8,6 +8,18 @@
 
 ### **Introduction**
 
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to the Helidon labs. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Helidon labs Introduction Video](https://img.youtube.com/vi/182KYHSrf5A/0.jpg)](https://youtu.be/182KYHSrf5A "Helidon labs introduction video")
+
+</p>
+</details>
+
+---
+
 <details><summary><b>What is Helidon?</b></summary>
 <p>
 
@@ -36,19 +48,9 @@ The labs **do require basic programming knowledge**. As Helidon is a Java set of
 
 The labs were developed using the Eclipse IDE. Again you don't need to be an expert here, but you need to have some familiarity with how to navigate using the IDE (It's very similar to other IDE's like Netbeans or InteliJ) and how to compile and run things.
 
-We do not expect you to know the details of the Maven build / packaging tool. In particular we are **not** going to be getting you to edit the pom.xml file (the Maven configuration file) for these projects. If you are familiar with Maven and the pom.xml file please feel free to explore it, or copy it for your own projects as a start point, but please do not make any changes.
+We do not expect you to know the details of the Maven build / packaging tool. In particular we are **not** going to be getting you to edit the pom.xml file (the Maven configuration file) for these projects. If you are familiar with Maven and the pom.xml file please feel free to explore it, or copy it for your own projects as a start point, but please do not make any changes to it in this lab.
 
 </p></details>
-
-#### Access to the Linux Desktop
-
-This environment will contain Eclipse and Firefox applications, as well as a set of command-line tools you will need : maven, docker, kubectl. 
-
-Your instructor will inform you of the steps that still need to be executed to spin up the Desktop.
-
-You will have to install a VNC viewer on your laptop to access this environment.
-
-- Follow these [detailed instructions for accessing the Linux Desktop](../ManualSetup/CreateClientVm.md)
 
 ---
 
@@ -58,7 +60,7 @@ You will have to install a VNC viewer on your laptop to access this environment.
 
 Most of the labs explain what a specific Helidon features is and why it's useful, then there is a coding example with explanation of the feature. The coding example will usually tell you to modify a particular class (usually by providing you with the fully qualified name of the class, for example `com.oracle.labs.helidon.stockmanager.Main`) and make a specific change to a certain method (e.g. the `buildConfig` method or the constructor.) 
 
-Occasionally it will tell you to just modify the class itself, for example adding an annotation. We try to be clear what the project is for each set of labs, but expect you to be able to use eclipse to open the right .java file (which is referred to but it's fully qualified class name to you can navigate to it) and find the method. We have tried to put markers in place to indicate where you need to make the changes, but please remember that the changes are not comments (`// @Inject` on a method isn't actually going to do anything useful :-) )
+Occasionally it will tell you to just modify the class itself, for example adding an annotation on the class declaration. We try to be clear what the project is for each set of labs, but expect you to be able to use eclipse to open the right .java file (which is referred to but it's fully qualified class name to you can navigate to it) and find the method. We have tried to put markers in place to indicate where you need to make the changes, but please remember that the changes are not comments (`// @Inject` on a method isn't actually going to do anything useful :-) )
 
 </p></details>
 
@@ -101,21 +103,21 @@ If you want to use other REST client tools available to you feel free to use the
 <p>
 The labs follow the migration of a (admittedly) simple Java program to being a couple of separate microservices. The related Docker and Kubenetes labs then take the microservices, show how to package and run them in Docker and then deploy on Kubernetes in a Cloud Native format.
 
-At it's core the program allows a caller to request the levels of stock items held in a database, and to record items as having been removed. Think of this as perhaps a system that handles a post room or something. People may lookup what's there, take stationary and update the database when they do so. As a separate function not included here (but just to explain the scenario) the facilities manager may look at the database, order replacement items and update the stock levels when they are delivered.
+At it's core the program allows a caller to request the levels of stock items held in a database, and to record items as having been removed. Think of this as perhaps a system that handles consumable items in a post room or something. People may lookup what's there, take stationary and update the database when they do so. As a separate function not included here (but just to explain the scenario) the facilities manager may look at the database, order replacement items and update the stock levels when they are delivered.
 
-Fortunately this company is not run by people who think that the cost of a inter-departmental cross charge for a box of paper clips is good use of people's (or developer's) time, so when someone updates the database having taken stock there is no need to record who took what.
+Fortunately this company is not run by people who think that the cost of a inter-departmental cross charge for a box of paper clips is good use of people's (or developer's) time, so when someone updates the database having taken stock there is no need to record who took what :-)
 
-The code does not provide a front end UI. It would normally be libraries that are used part of a larger function.
+The code does not provide a front end UI. It would normally be libraries that are used part of a larger function and the external interface.
 
 The basic program has two sets of functionality, split into two projects in Eclipse. A module (stockmanager) that interacts with a database table. This module allows Create Delete, Update and Deletes to be made on a table. A second module (storefront) provides a bit of business logic and processing, for example ensuring that business rules around minimum quantities are applied when taking stock.
 
 This is a deliberately simple example, the goal is to see how these two modules can be converted from a traditional **Monolith** type of approach into cloud native ready microservices, with as little as possible being changed in the actual code - we actually don't make *any* changes to the code logic, all of the modifications are done by adding annotations.
+
+Also we are not addressing how to split any existing monolith into modules, hopefully you will have done that when you created the initial program and functionally decomposed your original requirements. There is no single "right" or "wrong" way to decompose your monolith functionally, but I do recommend reading up on the "Strangler Pattern" and the "Anti Corruption Pattern" as they are very useful architectural approaches to take.
 </p></details>
 
+
 ---
-
-
-
 
 
 ## The labs
@@ -148,12 +150,20 @@ This labs looks at how Helidion can help you gather data on the fow of operating
 
 
 
-### 5. Cloud Native support in Helidon
-This last Helidon lab looks as the features in Helidon that are designed to provide support for cloud native functionality in deployment systems like Kubernetes. For example to help report if a program is still running, but is actually failing to operate (for example it's in a deadlock)
+### 5. Cloud Native support in Helidon - Kubernetes support
+This Helidon lab looks as the features in Helidon that are designed to provide support for cloud native functionality in deployment systems like Kubernetes. For example to help report if a program is still running, but is actually failing to operate (for example it's in a deadlock)
 
 [The Helidon support for Cloud Native Operations lab](Helidon-cloud-native/helidon-cloud-native.md)
 
 
+
+### 6. Cloud Native support in Helidon - Self describing API's
+
+This is an optional lab if you chose to do it.
+
+To enable a service to be easily consumed Helidon provides support for the dynamic creation of Open API (previously known as Swagger) documents that document the REST APIs provided by a micro-service. This lab looks at how configure your Helidon projects to generate this information. 
+
+[The Helidon support for Open API Document generation](Helidon-open-api/helidon-open-api.md)
 
 
 

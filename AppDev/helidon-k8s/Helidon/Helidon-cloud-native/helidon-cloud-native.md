@@ -8,12 +8,24 @@
 
 ## 5. Supporting cloud native operations with Helidon
 
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to the Helidon cloud native support lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Helidon cloud native support lab Introduction Video](https://img.youtube.com/vi/vPSphbTg1MQ/0.jpg)](https://youtu.be/vPSphbTg1MQ "Helidon cloud native support lab introduction video")
+
+</p>
+</details>
+
+---
+
 Most cloud native platforms (and Kubernetes in particular) need to know is a microservcies is running at all, if it's capable to responding to requests and if it has access to all the dependent services it needs to operate. In the event that these conditions are not fulfilled the cloud native platform will take steps like re-starting a microservice instance, or stopping sending it requests for a short while.
 
 The exercises in this section show how you can use Helidon to directly support the cloud native capabilities that Kubernetes uses. It does not directly cover using them in Kubernetes however, but if you're doing the microservices in kubernetes sections of the workshop then this will make sense when you do it.
 
 **Monitoring and metrics**
-Kuberneties does not itself have built in monitoring tools, however many users of Kuberneties use Prometheus which can use the /metrics API Helidon provides and we saw in the operations section of these labs to extract data on the operation and performance of a microservice.
+Kubernetes does not itself have built in monitoring tools, however many users of Kubernetes use Prometheus which can use the /metrics API Helidon provides and we saw in the operations section of these labs to extract data on the operation and performance of a microservice.
 
 ### Health
 Helidon has built in health info as standard. By default this is available on the same port as the service, but our runtime config (conf/storefront-network.yaml) separates these  onto different ports (8080 for the service, 9080 for the non service) 
@@ -38,7 +50,7 @@ Services like kubenetes will know if a microservice has crashed as the applicati
 
 Provding a Liveness capability is pretty simple. Somewhere in the class structure you just need a class that implements the HealthCheck interface (Helidon uses this interface to know what method to call to run the test) and is annotated with `@Liveness` 
 
-- Navigate to the folder **health**, and open the file **LivenessChecker.java**
+- Navigate to the package **health**, and open the file **LivenessChecker.java**
 - Add an annotation to the class definition:
   -  `@Liveness`
 
@@ -46,7 +58,7 @@ Provding a Liveness capability is pretty simple. Somewhere in the class structur
 
 @ApplicationScoped
 @Liveness
-@Log
+@Slf4j
 public class LivenessChecker implements HealthCheck {
 ```
 
@@ -108,7 +120,7 @@ There is however a different situation where a microservice itself can be behavi
 
 In this situation restarting the higher level microservice won;t solve the problem, if the downstream service is unavailable doing a restart of the upstream service won't solve that problem, and the restart will place unneeded load on the environment.
 
-Readiness is a way to let the microservices runtime determine if a service has everything it needs to respond to requests. Helidon has a build in configuration to offer a readiness response to platforms like Kuberneties, but like Liveness you need to look at the actual implementation carefully, you don't want to be making expensive calls to the downstream service, but equally you want to make sure that it is responding. In particular if the downstream service does become ready again your readiness checker needs to return to reflecting that in the readiness response it generates.
+Readiness is a way to let the microservices runtime determine if a service has everything it needs to respond to requests. Helidon has a build in configuration to offer a readiness response to platforms like Kubernetes, but like Liveness you need to look at the actual implementation carefully, you don't want to be making expensive calls to the downstream service, but equally you want to make sure that it is responding. In particular if the downstream service does become ready again your readiness checker needs to return to reflecting that in the readiness response it generates.
 
 </p></details>
 
@@ -123,7 +135,7 @@ Readiness is a way to let the microservices runtime determine if a service has e
 ```
 @ApplicationScoped
 @Readiness
-@Log
+@Slf4j
 public class ReadinessChecker implements HealthCheck {
 ```
 

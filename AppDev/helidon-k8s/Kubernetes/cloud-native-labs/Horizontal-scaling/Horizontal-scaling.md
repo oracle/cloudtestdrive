@@ -1,21 +1,36 @@
 [Go to Overview Page](../Kubernetes-labs.md)
 
-![](../../../../common/images/customer.logo2.png)
+![](../../../../../common/images/customer.logo2.png)
 
 # Migration of Monolith to Cloud Native
 
 ## C. Deploying to Kubernetes
 ## 5. Horizontal Scaling labs
 
-In most cases (especially if the services were developed using the principles defined in [The 12 factors](https://12factor.net/)) a microservice is horizontally scalable.
+
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to the Kubernetes horizontal scaling lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Kubernetes horizontal scaling lab Introduction Video](https://img.youtube.com/vi/1hIQ5TRPt-M/0.jpg)](https://youtu.be/1hIQ5TRPt-M "Kubernetes horizontal scaling lab introduction video")
+
+</p>
+</details>
+
+---
+
+In most cases a microservice is horizontally scalable, at least if the services were developed using the principles defined in [The 12 factors](https://12factor.net/)
 
 Kubernetes has built in support for easily managing the horizontal scaling of services.
 
 ### Manual scaling
-In many of the labs when you've looked at the contents of the namespace wou'll have seen things called replica sets, and may have wondered what they are. We can get this info using kubectl. In a terminal window
+In many of the labs when you've looked at the contents of the namespace you'll have seen things called replica sets, and may have wondered what they are. We can get this info using kubectl. 
+
+- In the Oracle Cloud Shell, type :
+  -  `kubectl get all`
 
 ```
-$ $ kubectl get all
 NAME                                READY   STATUS    RESTARTS   AGE
 pod/stockmanager-6456cfd8b6-4mpl2   1/1     Running   0          118m
 pod/storefront-74cd999d8-dzl2n      1/1     Running   0          152m
@@ -37,11 +52,20 @@ replicaset.apps/storefront-74cd999d8      1         1         1       152m
 replicaset.apps/zipkin-88c48d8b9          1         1         1       152m
 ```
 
-You can see that there is a replica set for each deployment. They are actually implicitly defined in the deployment yaml files (replica sets are the definition, but the deployments are the management point, I don't understand why) though they don't have an explicit section the `replicas : 1` line tells the Kubernetes deployment to automatically create a replica set for us with one of the pods (as the pod is described later in the file.) If we hadn't specified the `replicas : 1` line it defaults to a single pod. Kubernetes will create a replica set automatically for us with a single pod for each deployment, and as we've seen in the health, liveness and readiness labs if there is a problem it will automatically restart the services so that there is one service available.
+You can see that there is a replica set for each deployment. They are actually implicitly defined in the deployment yaml files, though they don't have an explicit section the `replicas : 1` line tells the Kubernetes deployment to automatically create a replica set for us with one of the pods (as the pod is described later in the file.) If we hadn't specified the `replicas : 1` line it defaults to a single pod. Kubernetes will create a replica set automatically for us with a single pod for each deployment, and as we've seen in the health, liveness and readiness labs if there is a problem it will automatically restart the services so that there is one service available.
+
+<details><summary><b>Deplpoyments vs replica sets</b></summary>
+<p>
+In Kubernetes a deployment defines the micro-service, this is regardless of the service version.
+
+A replica set manages a specific number of replicas for a specific version.
+
+This is especially useful for things like rolling upgrades as we will see in that section.
+</p></details>
 
 We can if we want modify the number of replicas in the deployment by modifying the YAML and then re-applying it, or of course we could use the kubectl scale command to do it as well, but for this lab we're going to use the dashbaord.
 
-Open the dashboard and switch to your namespace (tg-helidon in my case) In the left menu under the workloads section chose Deployments
+- Open the dashboard and switch to your namespace (tg-helidon in my case) In the left menu under the workloads section chose Deployments
 
 ![scaling-deployments-list](images/scaling-deployments-list.png)
 
@@ -53,15 +77,18 @@ We can see the replica sets that match the deployment, and if we click on the re
 
 ![scaling-replicaset-storefront-pre-scale](images/scaling-replicaset-storefront-pre-scale.png)
 
-Go back to the storefront deployment.
+- Go back to the storefront deployment.
 
-Scaling the deployment is simple, on the deployment page just click on the Scale Icon ![scaling-scale-icon](images/scaling-scale-icon.png) and in the new pop up enter the desired number of pods you want. In this case I've chosen 4
+Scaling the deployment is simple, :
+
+- Click on the Scale Icon ![scaling-scale-icon](images/scaling-scale-icon.png) 
+- In the new pop up enter the desired number of pods you want. Enter 4
 
 ![scaling-deployment-chose-scaling](images/scaling-deployment-chose-scaling.png)
 
-Then click the Ok button on the pop up.
+- Click the Ok button
 
-Kuberneties immediately gets to work creating new pods for us
+Kubernetes immediately gets to work creating new pods for us
 
 The deployment updates
 ![scaling-deployment-started-scaling](images/scaling-deployment-started-scaling.png)
@@ -85,16 +112,7 @@ If on the deployments page we scroll down we'll see the list of events for that 
 
 If you are on a Kubernetes cluster with multiple physical nodes the scaling operation will try and place the pods on different nodes, protecting the service so if one node fails for any reason the other nodes can still be used to provide the service.
 
-### Horizontal Pod Autoscaling
-Strictly speaking this should be called Horizontal Deployment Autoscaling 
-This currently relies on a Kubernetes feature called heapster that's been deprecated. but here's the page
-[K8S Docs HPA](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
-This lab content will be updated later once we've worked this out.
-
-
-
-
-
+- To prepare for the following lab sections please go back to the storefront deployment and follow the approach described above to scale it back down to a single pod.
 
 ---
 
