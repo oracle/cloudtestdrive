@@ -42,9 +42,11 @@ The ones that operate on a TCP/IP connection don't look inside the contents of t
 
 The other type operates at the http / https level. These can perform operations such as terminating the SSL connection, potentially adding extra headers to the http request (for example with proxy information) and usually they can also then re-encrypt the http(s) traffic as it makes the onward connection to the micro-service if you want internal encryption. This type of load balancer may have dedicated hardware to perform functions such as encryption / decryption of data, and is likely to have better certificate management than you would implement in your own micro-service code.
 
-The second type can provide an https connection externaly but internally route the requests to your micro-service (usually via an ingress controller) so you don;t need to implement the encryption in the ingress controller or micro-service.
+The second type can provide an https connection externaly but internally route the requests to your micro-service (usually via an ingress controller) so you don't need to implement the encryption in the ingress controller or micro-service.
 
 Load balancers however are often not part of your Kubernetes environment, and often are offered as a distinct service from the micro-service environment and used by other services from your cloud provider. This means that they may well have their own certificate management approaches and not integrate into the Kubernetes based certificate systems.
+
+For the Oracle load balancer there are some annotations you can apply when creating the service, these cover a number of possibilities that avoid manually configuring the load balancer, for example you can specify a Kubernetes secret to be used for the TLS certificate. [See the Load balancers section in the Oracle Kubernetes documentation](https://docs.cloud.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengcreatingloadbalancer.htm#creatinglbhttps) for more details.
 
 ### With an API Gateway
 
