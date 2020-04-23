@@ -9,14 +9,14 @@ This lab will showcase running WebLogic on a Kubernetes cluster, using the Opera
 
 ### Prerequisites
 
-To run this lab, you need following elements : 
+To run these labs you will need access to an Oracle Cloud Tenancy, either via a **Free Tier**, using a **Pay-as-you-Go** account, or using the **Corporate account** of your organization. 
 
-- An Oracle account to download the docker image.  To create an account, follow instructions [here](https://profile.oracle.com/myprofile/account/create-account.jspx)
-
-
+If you do not have an account yet, you can obtain an Oracle Free Tier account by [clicking here.](https://myservices.us.oraclecloud.com/mycloud/signup?sourceType=:em:lw:rce:cpo:RC_EMMK200131P00052:WLLabApril)
 
 
-### Preparing your environment
+
+
+### 1. Preparing your environment
 
 - Open the [OCI console](https://console.eu-frankfurt-1.oraclecloud.com), log in using the **Single Sign On** menu on the **left** 
 
@@ -50,7 +50,40 @@ Create a token for your user (will be used to login to the docker repository):
 
     
 
-### Setting up a Kubernetes cluster
+- Check if you already have the **CTDOKE** compartment
+
+  - In the Cloud Infrastructure Console, click on the hamburger menu on the top left of the screen. From the pull-out menu, under Identity, click Compartments.
+
+  <img src="/Users/jleemans/dev/github/cloudtestdrive/AppDev/ATP-OKE/images/100/Compartments.jpeg" style="zoom:50%;" />
+
+  
+
+  - You will see the list of compartments currently available in your instance, which will include at least the root compartment of your tenancy (with has the tenancy name). 
+
+    - ![](/Users/jleemans/dev/github/cloudtestdrive/AppDev/ATP-OKE/images/100/ListCompartmentsCTDOKE.png)
+
+  - If you already see the **CTDOKE** compartment in this list, 
+    **==> no need to create a new compartment !!**
+
+  - If you are using a new **Free Tier** account, you will probably only have the root compartment, in that case : 
+
+    - Click on **Create Compartment** button to start the compartment creation process
+
+      <img src="/Users/jleemans/dev/github/cloudtestdrive/AppDev/ATP-OKE/images/100/CreateCompartment4.png" style="zoom:50%;" />
+
+      Enter the following in create Compartment window
+
+      - **Name**: Enter **CTDOKE**
+      - **Description**: Enter a description for the compartment
+      - **Parent Compartment**:  select the root compartment.
+      - Click on the **Create Compartment** link 
+      - You can verify the compartment created on Compartments page
+
+  
+
+
+
+### 2. Setting up a Kubernetes cluster
 
 We will be using an Oracle Cloud Managed Kubernetes cluster to deploy weblogic.
 
@@ -74,23 +107,24 @@ We will be using an Oracle Cloud Managed Kubernetes cluster to deploy weblogic.
 
 
 
-Once the cluster is created (the nodes will continue to be created), you can access the button ![image-20191220181646639](images/kubeconfigbutton.png), and copy the commands to download the kubeconfig file of your cluster.
+Once the cluster is created (the nodes will continue to be created), you can access the button ![image-20191220181646639](images/kubeconfigbutton2.png), and copy the commands to download the kubeconfig file of your cluster.
 
-These commans will look like: 
+These commands will look like: 
 
-` mkdir -p $HOME/.kube`
+```
+oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaaaaymqyweojygcqwinbwg4yw --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0
+```
 
-`oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaaaaymqyweojygcqwinbwg4yw --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0 `
+
 
 - Open the **Cloud Shell** using the button **">_"** in the upper right of the console.
 
 - execute the commands you copied.  Example :
 
   ```
-  $ mkdir -p $HOME/.kube
   $ oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaaaaaaae4wmmjvmzobzmojqmy3dqz4ggntbgcrtqzrvmy4d --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0 
   ```
-
+  
 - Validate you are able to access the cluster with kubectl, and see the nodes that are up and running
 
   ```
@@ -103,7 +137,7 @@ These commans will look like:
 
 
 
-### Preparing your environment
+### 3. Configuring the WebLogic Operator
 
 - Clone the repository containing the Kubernetes operator to your Cloud Shell :
 
@@ -135,8 +169,6 @@ These commans will look like:
     ```
 
 
-
-### Configuring the Kubernetes cluster
 
 - Setting up the necessary Roles for the Helm service:
 
@@ -283,7 +315,7 @@ EOF
     - Example command:
 
       ```bash
-      kubectl create secret docker-registry jle-ocirsecret --docker-server=fra.ocir.io --docker-username='epqldntjs/api.user' --docker-password='k]j64r{1sJSSF-;)K8' --docker-email='jdoe@acme.com' -n sample-domain1-ns
+      kubectl create secret docker-registry jle-ocirsecret --docker-server=fra.ocir.io --docker-username='frpqldntjs/oracleidentitycloudservice/ppan' --docker-password='k]j64r{1sJSSF-;)K8' --docker-email='jdoe@acme.com' -n sample-domain1-ns
       ```
 
       The result should be 
@@ -294,9 +326,8 @@ EOF
 
     
 
-  - - TO DO
 
-### Configuring WebLogic
+### 4. Configuring WebLogic
 
 We'll now start configuring the WebLogic setup itself.  For this we will use the **create-domain** utility, which will generate a custom WLS image based on the starard image you previously downloaded.
 
@@ -317,9 +348,12 @@ We'll now start configuring the WebLogic setup itself.  For this we will use the
   - Now edit the file with your favourite editor, either vi or nano, and perform the following updates:
 
     - `domainUID`: `sample-domain1`
-    - image name: because we will all be using a common registry, you need to add your initials to the image name you will be using.  The format to use is *fra.ocir.io/oractdemeabdmnative/**(your_initials)**-wls/weblogic:12.2.1.3*
-      Example for abc :  `image: fra.ocir.io/oractdemeabdmnative/abc-wls/weblogic:12.2.1.3`
-    - imagePullSecretName: `<your initials>-ocirsecret`
+    - `image name`: this line is commented out in the example, please remove the `#` .
+      Just in case you might be sharing your tenancy repository with colleagues, we will add your initials to the image name you will be using.  
+      The format to use is : 
+      -  \<**region code**\>.ocir.io/\<**Object-Storage-Namespace**\>\<your_initials\>-wls/weblogic:12.2.1.3"
+      - Example : `fra.ocir.io/frpqldntjs/ppa-wls/weblogic:12.2.1.3`
+    - `imagePullSecretName`: `<your initials>-ocirsecret`
     - `weblogicCredentialsSecretName`: `sample-domain1-weblogic-credentials`
     - `namespace`: `sample-domain1-ns`
     - `domainHomeImageBase`: `container-registry.oracle.com/middleware/weblogic:12.2.1.3`
@@ -350,7 +384,11 @@ Lets take a look at the artifacts generated :
   docker images
   ```
 
-  you should see a line containing `fra.ocir.io/oractdemeabdmnative/(your_initials)-wls/weblogic    12.2.1.3`
+  you should see a line containing something like : 
+
+   `fra.ocir.io/frpqldntjs/ppa-wls/weblogic    12.2.1.3`
+
+  
 
 - a definition file of the kubernetes domain resource
 
@@ -390,21 +428,26 @@ Lets take a look at the artifacts generated :
 First we need to push the generated docker image to the private registry of our tenancy.  Execute following operations to achieve this.
 
 - Execute a "docker login" into the registry.
-  - username to use : (tenancy_name)/(username)
-    - For our environment, use `oractdemeabdmnative/api.user`
+  - 
+  
+  ```
+docker login <region-code>.ocir.io/<storage namespace>
+  ```
+  
+  For example : `docker login fra.ocir.io/frpqldntjs`
+  
+  - username to use : \<storage namespace\>/\<full_username\>
+    - For example:  `frpqldntjs/oracleidentitycloudservice/ppan`
   - Password: you need to use the password token, see the provided access document
-
-  ```
-  docker login fra.ocir.io/oractdemeabdmnative
-  ```
-
-
-
+  
 - Now you can push the image : *pay attention to replace (your_initials)*
 
   ```
-  docker push fra.ocir.io/oractdemeabdmnative/(your_initials)-wls/weblogic:12.2.1.3
+  docker push <region-code>.ocir.io/<storage namespace>/<your_initials>-wls/weblogic:12.2.1.3
   ```
+
+  For example :
+   `docker push fra.ocir.io/frpqldntjs/ppa-wls/weblogic:12.2.1.3`
 
 
 
@@ -502,6 +545,10 @@ $ helm install sample-domain1-ingress kubernetes/samples/charts/ingress-per-doma
 - To access the WLS Administration Console:
 
    Open a browser to `http://130.61.34.87:30701/console/`, **and replace the address with your IP address**.
+   
+   You will be asked for the username and password, remember we set this to **weblogic/welcome1** as tradition requires ;-)
+   
+   
 
 
 
