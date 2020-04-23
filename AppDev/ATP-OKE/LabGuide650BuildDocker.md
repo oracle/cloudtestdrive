@@ -28,7 +28,7 @@ Open your project in Developer Cloud, and follow the steps below:
   
 - The **Username** is composed of {object namespace}/oracleidentitycloudservice/{username}, for example **oractdemeabdmnative/api.user** 
   
-- To get your "object-storage-namespace" name, you must navigate to the "Administration" and "Tenancy Details" menu:
+- To get your **object-storage-namespace** name, you must navigate to the "Administration" and "Tenancy Details" menu:
   
    <img src="images/650/im41.png" style="zoom: 50%;" />
   
@@ -136,7 +136,7 @@ Before we can run the Build Job we just created, we need to parametrize some scr
 
 
 
-- **Running on your personal Trial instance** ?  Then you have [two more steps](LabGuide650BuildDocker_own1.md) to perform.
+- **ATTENTION !!!!! ....   Running on your personal Trial instance** ?  Then you have [two more steps](LabGuide650BuildDocker_own1.md) to perform.
 
 
 

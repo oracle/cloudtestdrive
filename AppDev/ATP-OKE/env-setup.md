@@ -25,7 +25,11 @@ This page will guide you through the following activities :
 
 ## Part A : Set up your Cloud Infrastructure
 
+### Log in to your cloud account
 
+In this lab you will be using the PaaS services that are linked with the **Identity Management Service** called IDCS.  In order to be able to manage these services you need to login using the option shown below:
+
+![image-20200422220552977](images/100/login.png) 
 
 ### **STEP 1: Create a Compartment**
 
@@ -218,6 +222,22 @@ In the following section you will need to switch repeatedly between the DevCS co
 
 - You should have noted the OCID of the **CTDOKE** Compartment earlier in this section just after the creation.
 
+- The **Home Region** can be found by simply selecting the name of your region in the top menu bar, and clicking on **Manage Regions**
+
+  ![alt text](images/devcs/region1.png)
+
+  
+
+  - On the resulting screen you can see the **Region Identifier**, in this example ***eu-frankfurt-1***
+
+    ![alt text](images/devcs/region2.png)
+
+
+
+- Now that you have collected all the required data, you can fill in your OCI Credentials screen in the Developer Console : 
+
+  ![alt text](images/devcs/oci_cred2.png)
+
 
 
 #### Create a Virtual Machine
@@ -237,7 +257,7 @@ In the following section you will need to switch repeatedly between the DevCS co
 ![alt text](images/devcs/im05-3.png)
 
 - Select the following packages:
-  - Docker 17.2
+  - Docker 17.12
   - Kubectl
   - OCIcli ==> this will prompt you to also install Python3
   - SQLcl 18

@@ -21,9 +21,9 @@ Let’s get started!
 In this section, you’ll provision a complete development platform for your team by leveraging DevCS’s web interface.
 
 - Access your Developer Cloud Instance : Use the URL to your Developer Cloud Console you saved during the setup of your environment 
-- On the Welcome page, click **New Project**.
+- On the Welcome page, click **+ Create**.
 
-![](images/150/image001-3.png)
+![](images/150/create.png)
 
 
 
