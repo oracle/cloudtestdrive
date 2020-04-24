@@ -2,6 +2,8 @@
 
 # Lab: Recognize handwritten digits using Neural Networks
 
+Video recording of the solution for this lab: [https://youtu.be/xWzvmAiQM9Q](https://youtu.be/xWzvmAiQM9Q)
+
 In this lab we will build a Neural Network to recognize handwritten digits.
 
 ## Objectives
@@ -13,8 +15,8 @@ In this lab we will build a Neural Network to recognize handwritten digits.
 
 You require the following:
 
-- An Oracle Cloud tenancy
-- A Data Science project + notebook. Please follow these [instructions](../prereq1/lab.md) first in case you don't have this yet.
+- An Oracle Cloud tenancy. Please follow these [prerequisites](../prereq1/lab.md) first in case you don't have this yet.
+- A Data Science project + notebook. Please follow these [prerequisites](../prereq2/lab.md) first in case you don't have this yet.
 - We assume that you're familiar with basic ML concepts of data exploration, preparation, training/evaluating, et cetera. If not, you may want to do the [previous lab on Linear Regression](../lab100/lab.md) first.
 
 ## The dataset

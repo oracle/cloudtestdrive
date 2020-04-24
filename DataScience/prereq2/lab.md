@@ -1,38 +1,75 @@
 ![](../commonimages/workshop_logo.png)
 
-# Provision an Autonomous Transaction Processing database
+## Prerequisite 2: Provision the Data Science service and its required network resources
 
-  - On the left hand menu, choose Autonomous Transaction Processing.
+This consists of the following:
+- Create a user group for your data scientists.
+- Create a compartment for your data science work.
+- Create the VCN and subnet necessary to give your data scientists egress access to the public internet from a notebook session.
+- Create the proper policies to give your data scientists access to the data science service.
+- Provision the Data Science service (Project and Notebook)
 
-  ![](./images/go_to_atp.png)
+There are two ways to do this:
+1) If you are working in an Oracle Cloud tenancy that is "empty", e.g. you have just created your Cloud Free Tier account, then we recommend you use the automated script to install the prerequisites. 
 
-  - Choose to create a new instance.
-  
-  ![](./images/create_atp_01.png)
+2) In case you have already provisioned several services or you have already performed configurations in your Oracle Cloud tenancy before, we recommend you provision these resources manually. In this case, follow the manual instructions so that you can control and review each step of the process as you go along and, if necessary, adapt it to your unique situation.
 
-  - Choose any name for the database, in this case "WORKSHOP".
-  
-  ![](./images/create_atp_02.png)
+### Option 1: Using an automated script to provision network resources and the Data Science service
 
-  - Choose the Transaction Processing option. This will optimize the database for daily transactional processing. 
-  
-  ![](./images/create_atp_03.png)
-  
-  - Choose the Serverless deployment type.
-  
-  ![](./images/create_atp_serverless.png)
+This is the recommend approach in case you are working in an Oracle Cloud tenancy that is "empty", e.g. you have just created your Cloud (Trial) tenancy. This is the fastest way to provision these resources.
 
-  - In order to have an equal performance over all of the ATP instances of all the workshop participants, we recommend that you __keep the Always Free option turned off__. 
+- Download the script from [here](./data/provision_data_science.zip), save it on your local harddrive. The result should be a ZIP file.
 
-  ![](./images/create_atp_free.png)
+- In your Oracle Cloud console, open the menu.
 
-  - Set the admin password. *Make a note of this as you will need it.*
+![](./images/openmenu.png)
 
-  ![](./images/create_atp_04.png)
+- Select Resource Manager -> Stacks.
 
-  - Create the database. 
+![](./images/resourcemanager.png)
 
-  ![](./images/create_atp_05.png)
-  
-  This process typically completes within about 5 minutes, after which you will see the status "AVAILABLE".
+- Click the "Create Stack" button.
 
+![](./images/createstackbutton.png)
+
+- Upload the ZIP file (that you downloaded earlier), e.g. by dragging it over to the indicated box.
+
+![](./images/uploadzip.png)
+
+Leave the other values at their defaults and click Next.
+
+- Now configure the variables for this stack.
+
+1. Change the compute shape to **VM.Standard.E2.2**
+This is more than enough for the workshop, and it will allow you to use the services for longer.
+
+2. Make sure you **UNcheck the option to include Functions**. 
+We wil not be using Functions in this workshop, and it makes the configuration much easier.
+
+![](./images/configurestack.png)
+
+Click Next.
+
+- The configuration you've entered is shown for verification. Click Create.
+
+- Run the job by going to "Terraform Actions" and choosing "Apply".
+
+![](./images/configurestack.png)
+
+- Click Apply once more to confirm the submission of the job.
+
+Provisioning should take about 10 minutes.
+
+
+
+### Option 2: Manual installation steps to provision network resources and the Data Science service
+
+This approach is recommended if you already have other services / configurations made in your Oracle Cloud tenancy. 
+
+If this is the case, please follow the detailed provisioning steps [here](https://docs.cloud.oracle.com/en-us/iaas/data-science/data-science-tutorial/tutorial/get-started.htm#concept_tpd_33q_zkb).
+
+![](./images/manualinstructions.png)
+
+## Next
+
+Continue to [Prerequisite 3: Install Oracle Analytics Desktop](../prereq3/lab.md).

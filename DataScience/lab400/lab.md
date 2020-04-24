@@ -12,7 +12,12 @@ We will use [Apache Zeppelin](http://www.oracle.com/technetwork/database/options
 - Understand how APEX can be used to operationalize ML models.
 - Get familiar with the business value of identifying customers that are likely to buy a certain product.
 
-Follow these [prerequisites](../prereq2/lab.md) to set up the required Autonomous Transaction Processing instance.
+# Prerequisites
+
+You require the following:
+
+- An Oracle Cloud tenancy. Please follow these [prerequisites](../prereq1/lab.md) first in case you don't have this yet.
+- An Autonomous Transaction Processing instance. Please follow these [prerequisites](../prereq4/lab.md) first in case you don't have this yet.
 
 # Steps
 

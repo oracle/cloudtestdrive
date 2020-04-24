@@ -2,9 +2,12 @@
 
 # Lab: Predict house sales prices through Regression
 
+Video recording of the solution for this lab: [https://youtu.be/raFODMMBJ4s](https://youtu.be/raFODMMBJ4s)
+
 This lab will guide you through a practical example of how to train and apply a regression model. You have access to a dataset with house sale data. The dataset includes the Sale Price and many attributes that describe some aspect of the house, including size, area, features, et cetera. You will use this dataset to build a regression model that can be used to estimate what a house with certain characteristics might sell for.
 
 There are many applications of regression in business. The main use cases are around forecasting and optimization. For example, predicting future demand for products, estimating the optimal price for a product and fine-tuning manufacturing and delivery processes. In other words, the principles that you learn with this exercise are applicable to those business scenarios as well.
+
 
 ## Objectives
 
@@ -12,14 +15,12 @@ There are many applications of regression in business. The main use cases are ar
 - Become familiar with Python and its popular ML libraries, in particular Scikit Learn.
 - Become familiar with the Oracle Data Science service.
 
-# Prerequisites
+## Prerequisites
 
 You require the following:
 
-- An Oracle Cloud Tenancy
-- A Data Science Project + Notebook
-
-Please follow the [prerequisites](../prereq/lab.md) first in case you don't have these yet.
+- An Oracle Cloud tenancy. Please follow these [prerequisites](../prereq1/lab.md) first in case you don't have this yet.
+- A Data Science project + notebook. Please follow these [prerequisites](../prereq2/lab.md) first in case you don't have this yet.
 
 # Upload House Sales Data
 
