@@ -40,6 +40,10 @@ This is the recommend approach in case you are working in an Oracle Cloud tenanc
 
 ![](./images/resourcemanager.png)
 
+- Change the compartment to "data-science-work".
+
+![](./images/changecompartment.png)
+
 - Click the "Create Stack" button.
 
 ![](./images/createstackbutton.png)
