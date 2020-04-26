@@ -24,6 +24,18 @@ This is the recommend approach in case you are working in an Oracle Cloud tenanc
 
 ![](./images/openmenu.png)
 
+- Near the bottom of the menu, go to Identity and Administration -> Identity -> Compartments.
+
+![](./images/compartmentmenu.png)
+
+- Create a new subcompartment within your root compartment, name it "data-science-work".
+
+![](./images/createcompartment.png)
+
+- Open the menu again.
+
+![](./images/openmenu.png)
+
 - Select Resource Manager -> Stacks.
 
 ![](./images/resourcemanager.png)
@@ -36,29 +48,34 @@ This is the recommend approach in case you are working in an Oracle Cloud tenanc
 
 ![](./images/uploadzip.png)
 
-Leave the other values at their defaults and click Next.
+- **Important** - Change the compartment to "data-science-work". Leave the other values at their defaults and click Next.
 
-- Now configure the variables for this stack.
+![](./images/choosecompartment.png)
+![](./images/next.png)
 
-1. Change the compute shape to **VM.Standard.E2.2**
-This is more than enough for the workshop, and it will allow you to use the services for longer.
+- Now configure the variables for this stack. Again, choose the subcompartment that you created earlier.
 
-2. Make sure you **UNcheck the option to include Functions**. 
-We wil not be using Functions in this workshop, and it makes the configuration much easier.
+![](./images/choosecompartmentvariable.png)
 
-![](./images/configurestack.png)
+The rest of the variables should remain the same. In particular we recommend that you keep the default compute shape VM.Standard.E2.2 as it is more than enough for the workshop, and it will allow you to use the services for longer.
+Also please keep the Functions option UNchecked, we wil not be using Functions in this workshop, and it makes the configuration much easier.
+
+<!--![](./images/configurestack.png)-->
 
 Click Next.
 
 - The configuration you've entered is shown for verification. Click Create.
 
+![](./images/create.png)
+
+
 - Run the job by going to "Terraform Actions" and choosing "Apply".
 
-![](./images/configurestack.png)
+![](./images/applytf.png)
 
 - Click Apply once more to confirm the submission of the job.
 
-Provisioning should take about 10 minutes.
+Provisioning should take about 10 minutes after which the status of the Job should become "Succeeded".
 
 
 
