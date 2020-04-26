@@ -18,7 +18,7 @@ There are two ways to do this:
 
 This is the recommend approach in case you are working in an Oracle Cloud tenancy that is "empty", e.g. you have just created your Cloud (Trial) tenancy. This is the fastest way to provision these resources.
 
-- Download the script from [here](./data/provision_data_science.zip), save it on your local harddrive. The result should be a ZIP file.
+- Download the script from [here](./scripts/provision_data_science.zip), save it on your local harddrive. The result should be a ZIP file.
 
 - In your Oracle Cloud console, open the menu.
 
