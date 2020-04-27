@@ -1760,11 +1760,11 @@ content-type: application/json
 content-length: 51
 strict-transport-security: max-age=15724800; includeSubDomains
 
-{"name":"My Shop","alive":true,"frozen":false}
+{"name":"My Shop","alive":true,"version":"0.0.1"}
 ```
-(assuming your storefront-config.yamp file says the storename is My Shop this is what you should get back, if you changed it it will be slightly different)
+(assuming your storefront-config.yamp file says the storename is My Shop this is what you should get back, if you changed the config file it should reflect your changes)
 
-We've mounted the sf-config-map (which contains the contents of storefront-config.yaml file) onto /conf1. Let's use a command to connect to the running pod (remember your storefront pod will have a different id so use kubectl get pods to retrieve that) and see how it looks in there, then exit the connection
+We've mounted the sf-config-map (which contains the contents of storefront-config.yaml file) onto /conf. Let's use a command to connect to the running pod (remember your storefront pod will have a different id so use kubectl get pods to retrieve that) and see how it looks in there, then exit the connection
 
 - Execute these commands :
   -  `kubectl exec -it storefront-588b4d69db-w244b -- /bin/bash`
@@ -1798,7 +1798,7 @@ As expected we see the contents of our config file. Let's use the dashboard to m
 
 ![Config Maps details](images/config-map-orig-details.png)
 
-As we'd expect it has our contents (You may have text that doesn't say "My Shop" by instead shows what you edited it to in the helidon labs, if so don't worry)
+As we'd expect it has our contents (You may have a different storename than `My Shop` if you changed the storefront-config.yaml file before creating the config map)
 
 - Click the **Edit button** (upper right) to get an on-screen editor where we can change the yaml that represents the map. 
 
@@ -1806,7 +1806,7 @@ As we'd expect it has our contents (You may have text that doesn't say "My Shop"
 
 - Locate the **storename** attribute at the bottom of the file. 
 
-- Now edit the text and **change** the *'My Shop'* to something else. Be sure to only change the text, not the quote characters or other things (don't want to create corrupt YAML which will be rejected).
+- Now edit the text and **change** the text `My Shop` to something else. Be sure to change only the `My Shop` text, not the quote characters or other things (you don't want to create corrupt YAML which will be rejected).
 
 
 
@@ -1814,7 +1814,7 @@ As we'd expect it has our contents (You may have text that doesn't say "My Shop"
 
 - Click on the update button to save your changes
 
-You'll see the changes reflected in the window. If you made any changes which caused syntax errors then you'll get an error message and the changes will be discarded.
+You'll see the changes reflected in the window. If you made any changes which caused syntax errors then you'll get an error message and the changes will be discarded, in that case re-edit the config map, being careful to only change the `My Shop` text.
 
 ![Config Maps updated details](images/config-map-updated-details.png)
 
@@ -1828,14 +1828,14 @@ Now let's return to the pod and see what's happened
       storename: "Tims Shop"
       minimumdecrement: 3
     
-    #tracing:
-    #  service: "storefront"
-    #  host: "zipkin"
+    tracing:
+      service: "storefront"
+      host: "zipkin"
     ```
 
   - Exit the pod :   `exit`
 
-The storefront-config.yaml file has now changed to reflect the modifications you made to the config map. Note that it usually takes between 30 - 60  seconds for the change to propogate into the pod.
+The storefront-config.yaml file has now changed to reflect the modifications you made to the config map. Note that it usually seems to take between 30 - 60  seconds for the change to propogate into the pod.
 
 If we now get the status resource data again it's also updated
 
@@ -1849,10 +1849,10 @@ content-type: application/json
 content-length: 51
 strict-transport-security: max-age=15724800; includeSubDomains
 
-{"name":"Tims Shop","alive":true,"frozen":false}
+{"name":"Tims Shop","alive":true,"version":"0.0.1"}
 ```
 Of course there is time delay from the change being visible in the pod to the Helidon framework doing it's scan to detect the change and reloading the config, so you may have to issue the curl command a few times to see when the change has fully propogated.
-We've shown how to change the config in helidon using config maps, but the same principle woudl apply if you were using secrets and modified those (though there isn't really a usable secret editor in the dashboard)
+We've shown how to change the config in helidon using config maps, but the same principle would apply if you were using secrets and modified those (though there isn't really a usable secret editor in the dashboard)
 
 
 
