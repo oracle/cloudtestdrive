@@ -339,8 +339,8 @@ First we will set up a user for Zeppelin.
   
   Paste in the SQL that you have just downloaded. Execute it.
 
-- Go back to the APEX application and edit the Customers page. 
-  Add the "RECOMMENDATION" column in the select statement. Don't forget the comma just after the previous column.
+- Go back to the APEX application and edit the Customers page. Choose Customers section in Content body. Add the "RECOMMENDATION" column in the select statement at the right.
+  **Don't forget the comma just after the previous column.**
   Then Save the page.
 
   ![](./images/add_recommendation_column.png)
