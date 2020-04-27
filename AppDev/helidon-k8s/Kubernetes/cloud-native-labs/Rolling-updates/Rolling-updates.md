@@ -42,7 +42,7 @@ Kubernetes aims to keep a service running during the rolling upgrade, it does th
 
 We are going to once again edit the storefront-deployment.yaml file to give Kubernetes some rules to follow when doing a rolling upgrade. Importantly however we're going to edit a *Copy* of the file so we have a history.
 
-- In the Oracle Cloud Shell navigate to the folder **helidon-kubernetes**
+- In the OCI Cloud Shell navigate to the folder **helidon-kubernetes**
 - Copy the storefront-deployment yaml file:
   -  `cp storefront-deployment.yaml storefront-deployment-v0.0.1.yaml`
 

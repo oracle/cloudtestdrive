@@ -71,7 +71,7 @@ To specify a specific older version use the version keyword in your help command
 
 Installing Prometheus is simple, we just use helm.
 
-- In the Oracle Cloud Shell type
+- In the OCI Cloud Shell type
   -  `helm install prometheus stable/prometheus --namespace monitoring --set server.service.type=LoadBalancer`
   
 
@@ -123,7 +123,7 @@ Note the name given to the Prometheus server within the cluster, in this case `p
 
 The Helm chart will automatically create a couple of small persistent volumes to hold the data it captures. If you want to see more on the volume in the dashboard (namespace monitoring) look at the Config and storage section / Persistent volume claims section, chose the prometheus-server link to get more details, then to locate the volume in the storage click on the Volume link in the details section) Alternatively in the Workloads / Pods section click on the prometheus server pod and scroll down to see the persistent volumes assigned to it.
 
-If you are using the Oracle Cloud Shell just for the purposes of the lab we've set this up using a load balancer, but Prometheus itself does not provide any login or authentication mechanism to access the UI. Because of this in production you would not expose it without security measures to the public internet using an Ingress or load balancer (neither of which apply authentication rules, but delegate that to the underlying services.) 
+For the purposes of the lab we've set this up using a load balancer, but Prometheus itself does not provide any login or authentication mechanism to access the UI. Because of this in production you would not expose it without security measures to the public internet using an Ingress or load balancer (neither of which apply authentication rules, but delegate that to the underlying services.) 
 
 When we used Helm we asked it to setup a load balancer for us on the service, we just need to get the IP address
 

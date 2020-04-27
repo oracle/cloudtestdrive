@@ -27,7 +27,7 @@ Kubernetes has built in support for easily managing the horizontal scaling of se
 ### Manual scaling
 In many of the labs when you've looked at the contents of the namespace you'll have seen things called replica sets, and may have wondered what they are. We can get this info using kubectl. 
 
-- In the Oracle Cloud Shell, type :
+- In the OCI Cloud Shell, type :
   -  `kubectl get all`
 
 ```

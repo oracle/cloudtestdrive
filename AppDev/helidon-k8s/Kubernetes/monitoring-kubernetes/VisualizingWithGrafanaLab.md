@@ -30,7 +30,7 @@ For this lab we will use a small subset of the open source features only.
 ### Installing Grafana
 Like many other Kubernetes services Grafana can be installed using helm. By default the helm chart does not create a volume for the storage of the grafana configuration. This would be a problem in a production environment, so we're going to use the persistent storage option defined inthe helm chart for Grafana to create a storage volume. 
 
-- In the Oracle Cloud Shell type following command:
+- In the OCI Cloud Shell type following command:
   -  `helm install grafana --namespace monitoring stable/grafana --set persistence.enabled=true --set service.type=LoadBalancer`
 
 Note that normally you would not expose Grafana directly, but would use a ingress or other front end. However to do that requires setting up a reverse proxy with DNS names and getting security certificates, which can take time. Of course you'd do that in production, but for this lab we want to focus on the core Kubernetes learnign stream, so we're taking the easier approach of just creating a load balancer.
