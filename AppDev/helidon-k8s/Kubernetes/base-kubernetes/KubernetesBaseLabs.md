@@ -1106,11 +1106,11 @@ The Oracle Cloud Image Registry (OCIR) that we used to hold the images uses toke
 
 To help you setup the image pull secrets and the others used as configuration volumes we have created a script called create-secrets.sh This script deletes any existing secrets and sets up the secrets (in your chosen namespace.) This is just a convenience script, you could of course create them by hand, but for a reproducible setup it's best to have these documented in a easily reusable form, and not have to rely on a human remembering to type them !
 
-We need to edit the script to provide the details of the OCIR you used and your identity information
+**You** need to edit the script to provide the details of the OCIR you used and your identity information
 
 - Make sure you are in the **helidon-kubernetes/base-kubernetes** directory
 
-- Edit the create-secrets.sh script
+- **Edit** the create-secrets.sh script
 
 Locate the line where we setup the docker registry details. It will look similar to the below 
 
@@ -1131,7 +1131,7 @@ You will be using the details you gathered for the docker login.
 
 - Save the file and the changes you made
 
-- Run the following command to create the secrets:
+- Once you have made the changes above run the following command to create the secrets:
   -  `bash create-secrets.sh`
 
 
