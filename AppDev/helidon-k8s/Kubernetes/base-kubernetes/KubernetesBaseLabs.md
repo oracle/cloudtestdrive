@@ -1051,7 +1051,7 @@ We got a **service unavailable** error. This is because that web page is recogni
 
 If we tried to go to a URL that's not defined we will as expected get a **404 error**:
 
--  `curl -i -k -m -X GET https://<ip address>/unknowningress`
+-  `curl -i -k -X GET https://<ip address>/unknowningress`
 
 ```
 HTTP/2 404 
