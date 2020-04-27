@@ -29,7 +29,7 @@ The update process for code changes involves using your development tooling to c
 
 The update process for configuration changes is to modify the yaml file that defines your service, for example defining different volume mounts, and then applying the change, or to issue a kubectl command to directly update the change.
 
-For *both* cases Kubernetes will keep track of the changes and will undetake a rolling upgrade strategy.
+For *both* approaches Kubernetes will keep track of the changes and will undertake a rolling upgrade strategy.
 
 As a general observation though it may be tempting to just go in and modify the configuration directly with kubectl ... this is a **bad** thing to do, it's likely to lead to unrecorded changes in your configuration management system so in the event that you had to do a complete restart of the system changes manually done with kubectl are likely to be forgotten. It is **strongly** recommended that you make changes by modifying your yaml file, and that the yaml file itself has a versioning scheme so you can identify exactly what versions of the service a given yaml file version provides. If you must make changes using kubectl (say you need to make a minor change in a test environment) then as soon as you decide it should be permanent then make the corresponding change in the yaml file *and do a rolling upgrade using the yaml file to ensure you are using the correct configuration* (after all, you may have made a typo in either the kubectl or yaml file.)
 
@@ -148,13 +148,13 @@ REVISION  CHANGE-CAUSE
 
 We can see that the previous state of the deployment resulted from us doing the initial apply. Note that the filename is specified in the rollout, as long as we version our file names we will be able to know exactly what configuration was applied to different versions of the deployment.
 
-One point to note here, these changes *only* modified the deployment roll out configuration, there was no need to actually stop or start any pods as those were unchanged.
+One point to note here, these changes *only* modified the deployment roll out configuration, so there was no need for Kubernetes to actually stop or start any pods as those were unchanged.
 
 ### Making a change that updates the pods
 
 Of course normally you would make a change, test it and build it, then push to the registry, you would probably use some form of CI/CD tooling to manage the process, for example a pipeline built using the Oracle Developer Cloud Service (other options include the open source tools Jenkins / Hudson and Ansible). 
 
-For this lab we are focusing on Helidon and Kubernetes, not the entire CICD chain so like any good cooking program we're going to use the v0.0.2 image we created earlier, so we just need to deploy it.
+For this lab we are focusing on Helidon and Kubernetes, not the entire CI/CD chain so like any good cooking program we're going to use the v0.0.2 image we created earlier, so we just need to deploy it.
 
 
 ### Applying our new image
@@ -208,7 +208,7 @@ If we look at the replica sets we seem something unusual. There are *two* replic
 
 Finally if we look at the pods themselves we see that there are five storefront pods. A point on pod naming, the first part of the pod name is actually the replica set the pod is in, so the three pods starting `storefront-5f777cb4f5-` are actually in the replic set `storefront-5f777cb4f5` (the old one) and the two pods starting `storefront-79d7d954d6-` are in the `storefront-79d7d954d6` replica set (the new one)
 
-Basically what kuberntes has done is created a new replica set and started some new pods in it by adjusting the number of pod replicas in each set, maintaingi the overall count of having 3 pods available at all times, and only one additional pod over the replica count set in the deployment. Over time as those new pods come onlinein the nre replica set **and** pass their readiness test, then they can provide the service and a the **old** replica set will be reduced by one pod, allowing another new pod to be started.
+Basically what Kuberntes has done is created a new replica set and started some new pods in it by adjusting the number of pod replicas in each set, maintaining the overall count of having 3 pods available at all times, and only one additional pod over the replica count set in the deployment. Over time as those new pods come online in the new replica set **and** pass their readiness test, then they can provide the service and the **old** replica set will be reduced by one pod, allowing another new pod to be started. At all times there are 3 pods running.
 
 - Rerun the status command a few times to see the changes 
   -  `kubectl get all`
