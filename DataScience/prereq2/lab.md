@@ -28,7 +28,7 @@ This is the recommend approach in case you are working in an Oracle Cloud tenanc
 
 ![](./images/compartmentmenu.png)
 
-- Create a new subcompartment within your root compartment, name it "data-science-work".
+- Create a new subcompartment within your root compartment, name it "data-science-work". Also put "data-science-work" in the description.
 
 ![](./images/createcompartment.png)
 
