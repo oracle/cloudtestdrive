@@ -54,13 +54,13 @@ Create a token for your user (will be used to login to the docker repository):
 
   - In the Cloud Infrastructure Console, click on the hamburger menu on the top left of the screen. From the pull-out menu, under Identity, click Compartments.
 
-  <img src="/Users/jleemans/dev/github/cloudtestdrive/AppDev/ATP-OKE/images/100/Compartments.jpeg" style="zoom:50%;" />
+  <img src="../../AppDev/ATP-OKE/images/100/Compartments.jpeg" style="zoom:50%;" />
 
   
 
   - You will see the list of compartments currently available in your instance, which will include at least the root compartment of your tenancy (with has the tenancy name). 
 
-    - ![](/Users/jleemans/dev/github/cloudtestdrive/AppDev/ATP-OKE/images/100/ListCompartmentsCTDOKE.png)
+    - ![](../../AppDev/ATP-OKE/images/100/ListCompartmentsCTDOKE.png)
 
   - If you already see the **CTDOKE** compartment in this list, 
     **==> no need to create a new compartment !!**
@@ -69,7 +69,7 @@ Create a token for your user (will be used to login to the docker repository):
 
     - Click on **Create Compartment** button to start the compartment creation process
 
-      <img src="/Users/jleemans/dev/github/cloudtestdrive/AppDev/ATP-OKE/images/100/CreateCompartment4.png" style="zoom:50%;" />
+      <img src="../../AppDev/ATP-OKE/images/100/CreateCompartment4.png" style="zoom:50%;" />
 
       Enter the following in create Compartment window
 
@@ -428,18 +428,17 @@ Lets take a look at the artifacts generated :
 First we need to push the generated docker image to the private registry of our tenancy.  Execute following operations to achieve this.
 
 - Execute a "docker login" into the registry.
-  - 
-  
+
   ```
-docker login <region-code>.ocir.io/<storage namespace>
+  docker login <region-code>.ocir.io/<storage namespace>
   ```
-  
+
   For example : `docker login fra.ocir.io/frpqldntjs`
-  
+
   - username to use : \<storage namespace\>/\<full_username\>
     - For example:  `frpqldntjs/oracleidentitycloudservice/ppan`
   - Password: you need to use the password token, see the provided access document
-  
+
 - Now you can push the image : *pay attention to replace (your_initials)*
 
   ```
