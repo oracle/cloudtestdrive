@@ -42,7 +42,9 @@ Create a token for your user (will be used to login to the docker repository):
 
 - Obtain the name of your Docker repository so you can reference it when pushing or pulling images:
 
-  - Navigate to the "Tenancy Details" screen, selecting in the menu **Administration**, then **Tenancy Details**
+  - Navigate to the "Tenancy Details" screen:
+
+    - Selecting in the menu **Administration**, then **Tenancy Details**
 
   - Note down the name of your Object Storage Namespace:
 
@@ -158,10 +160,12 @@ oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.a
 
   - Sign in to Oracle
 
+    - ATTENTION: you are logging into the Oracle website to download the docker image, and you need to use your **Oracle Account**, so ***not*** your **Oracle Cloud Tenancy** credentials !
+
   - Accept the T&C.
 
   - You are now ready to download the image :
-
+  
     ```
     docker login container-registry.oracle.com
     
@@ -294,8 +298,12 @@ EOF
     - Run the following command, where you need to insert your specific parameters:
 
       ```bash
-      kubectl create secret docker-registry <your-initials>-ocirsecret
-      --docker-server=<region-code>.ocir.io --docker-username='<Object-Storage-Namespace>/<oci-username>' --docker-password='<oci-auth-token>' --docker-email='<email-address>' -n sample-domain1-ns
+      kubectl create secret docker-registry <your-initials>-ocirsecret \
+      --docker-server=<region-code>.ocir.io \
+      --docker-username='<Object-Storage-Namespace>/<oci-username>' \
+  --docker-password='<oci-auth-token>' \
+      --docker-email='<email-address>' \
+  -n sample-domain1-ns
       ```
 
       - **your-initials** as part of the name of the secret so this is your individual secret in case you are working in a shared environment
@@ -311,19 +319,24 @@ EOF
       - **oci-auth-token** is the **Auth Token** you just created and noted down
 
     - **email-address** is mandatory but not used, can be jdoe@acme.com
-
+    
     - Example command:
 
       ```bash
-      kubectl create secret docker-registry jle-ocirsecret --docker-server=fra.ocir.io --docker-username='frpqldntjs/oracleidentitycloudservice/ppan' --docker-password='k]j64r{1sJSSF-;)K8' --docker-email='jdoe@acme.com' -n sample-domain1-ns
+  kubectl create secret docker-registry jle-ocirsecret \
+      --docker-server=fra.ocir.io \
+    --docker-username='frpqldntjs/oracleidentitycloudservice/ppan' \
+      --docker-password='k]j64r{1sJSSF-;)K8' \
+--docker-email='jdoe@acme.com' \
+      -n sample-domain1-ns
       ```
-
+      
       The result should be 
-
+      
       ```
       secret/jle-ocirsecret created
       ```
-
+    
     
 
 
@@ -436,8 +449,14 @@ First we need to push the generated docker image to the private registry of our 
   For example : `docker login fra.ocir.io/frpqldntjs`
 
   - username to use : \<storage namespace\>/\<full_username\>
+
     - For example:  `frpqldntjs/oracleidentitycloudservice/ppan`
+
   - Password: you need to use the password token, see the provided access document
+
+    - ATTENTION : in the beginning of this tutorial you created the  token for a specific user, and in order to make things simple we suggested the user provided through the Oracle Identity Cloud Service.  This is where you will use that token, so if the login should fail, double-check you created the token for the correct user called for example `oracleidentitycloudservice/ppan` , as opposed to the "non-idcs" user called `ppan` ! 
+
+    
 
 - Now you can push the image : *pay attention to replace (your_initials)*
 
@@ -447,6 +466,9 @@ First we need to push the generated docker image to the private registry of our 
 
   For example :
    `docker push fra.ocir.io/frpqldntjs/ppa-wls/weblogic:12.2.1.3`
+
+  - Remark: if you are not the administrator of the Cloud Tenancy, you need to ask your administrator to allow you the use of the registry service through a **policy**:
+    - `allow group <your_group> to manage repos in tenancy `
 
 
 
