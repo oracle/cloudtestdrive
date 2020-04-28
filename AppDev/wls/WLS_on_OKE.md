@@ -30,7 +30,7 @@ Create a token for your user (will be used to login to the docker repository):
 
   ![](images/token1.png)
 
-- Select **Token** in the right-hand menu, then click the button **Create Token**.
+- Select **Auth Token** in the left-hand menu, then click the button **Generate Token**.
 
   - Enter a name for the token
 
@@ -361,12 +361,13 @@ We'll now start configuring the WebLogic setup itself.  For this we will use the
   - Now edit the file with your favourite editor, either vi or nano, and perform the following updates:
 
     - `domainUID`: `sample-domain1`
-    - `image name`: this line is commented out in the example, please remove the `#` .
+    - `image`: this line is commented out in the example, please remove the `#` .
       Just in case you might be sharing your tenancy repository with colleagues, we will add your initials to the image name you will be using.  
       The format to use is : 
       -  \<**region code**\>.ocir.io/\<**Object-Storage-Namespace**\>\<your_initials\>-wls/weblogic:12.2.1.3"
       - Example : `fra.ocir.io/frpqldntjs/ppa-wls/weblogic:12.2.1.3`
-    - `imagePullSecretName`: `<your initials>-ocirsecret`
+    - `imagePullSecretName`: `<your initials>-ocirsecret` 
+      Note this line is commented out in the example, please remove the `#` . 
     - `weblogicCredentialsSecretName`: `sample-domain1-weblogic-credentials`
     - `namespace`: `sample-domain1-ns`
     - `domainHomeImageBase`: `container-registry.oracle.com/middleware/weblogic:12.2.1.3`
