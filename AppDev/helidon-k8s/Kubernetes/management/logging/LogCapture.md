@@ -111,8 +111,9 @@ Normally you wouldn't do this as the elastic search is an internal service that'
 ```
 ingress.extensions/elasticsearch created
 ```
+<details><summary><b>If you need to remind yourself of the ingress controller IP address</b></summary>
+<p>
 
-If you need to remind yourself of the ingress controller IP address
 - In the OCI Cloud Shell type :
   - `kubectl get services -n ingress-nginx`
 
@@ -123,6 +124,7 @@ ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.17.121   <non
 ```
 
 look at the `ingress-nginx-nginx-ingress-controller` row, IP address inthe `EXTERNAL-IP` column is the one you want, in this case that's `130.61.195.102` **but yours will vary**
+</p></details>
 
 - In a web browser go to the web page - remember the one below is **my** ip address **you need to use yours** (If challenged about the "unsafe" or "self signed" certificate that's OK, follow the steps in your browser to go to that page anyway.
 
@@ -134,7 +136,7 @@ We can see that the elastic search service is up and running, let's see what dat
 
 ![](images/ES-no-indices.png)
 
-Well, it's empty ! Of course that shouldn't be a surprise, we've not actually been putting any log data in it !
+Well, it's empty ! Of course that shouldn't be a surprise, we've not put any log data in it yet !
 
 ### Capturing the log data from the micro-services
 
@@ -170,8 +172,9 @@ We have added a volume mount entry and associated volume to bring in the log fil
 Finally we have changes the namespace from kube-system to logging, this is really just for convenience as this is an optional lab module, and we didn't want to complicate following modules with text along the lines of "If you've done the logging module you'll see xxxx in kube-system, but if you haven't you'll see yyyy" Also it's generally good practice to separate things by their function.
 
 Let's create the daemonset
+- Make sure you are in the `$HOME/helidon-kubernetes/management/logging` directory
 - In the OCI Cloud Shell terminal type :
-  - `kubectl apply -f fluentd-daemonset-elasticsearch-rbac.yaml `
+  - `kubectl apply -f fluentd-daemonset-elasticsearch-rbac.yaml`
 
 ```
 serviceaccount/fluentd created
