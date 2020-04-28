@@ -5,7 +5,7 @@
 # Migration of Monolith to Cloud Native
 
 ## C. Deploying to Kubernetes
-## 2. Log Processing with Prometheus
+## 2. Log Capture with Prometheus
 
 
 
@@ -26,15 +26,15 @@ All of these options make logging complicated, where to capture the data and wha
 
 Fortunately the 12 factors has a [simple recommendation on logging](https://12factor.net/logs) that addresses at least some of these problems. The recommendation is that logs should be treated as a stream of data being sent to the applications standard out, and that the rest of the process is a problem for the execution environment.
 
-As part of its design Kubernetes does save the information sent to standard out, and we have seen this when we look at the logs for a pod, we did this earlier on when we used the dashbaord to have a log at the logs, and also the command `kubectl logs <pod> -n <namespace>` let's us see the logs (use `-f` to "follow" the log as new information is added)
+As part of its design Kubernetes does save all the information sent by a pod to its standard out, and we have seen this when we look at the logs for a pod, we did this earlier on when we used the dashboard to have a log at the logs, and also the command `kubectl logs <pod> -n <namespace>` let's us see the logs (use `-f` to "follow" the log as new information is added)
 
 This is good, but with in a distributed architecture a single request may (almost certainly will) be processed by multiple individual micro-services. We've seen how zipkin can be used to generate trace data as a request traverses multiple micro-services, but how can integrate the log data ?
 
-To start with we need to get all of the data into one place. We're going to use [fluentd](https://www.fluentd.org/) to capture the data and sent it to  using Elastic search deployed in our Kubernetes cluster in the initial example below, but there are many other options.
+To start with we need to get all of the data into one place. We're going to use [fluentd](https://www.fluentd.org/) to capture the data and send it to  an Elastic search instance deployed in our Kubernetes cluster in the initial example below, but there are many other options.
 
 ### Installing elastic search
 
-As with elsewhere in the labs we'll install this in it's own namespace
+As with elsewhere in the labs we'll install this in it's own namespace, so first we have to create one.
 
 - In the cloud console type :
   - `kubectl create namespace logging`
@@ -113,7 +113,7 @@ ingress.extensions/elasticsearch created
 ```
 
 If you need to remind yourself of the ingress controller IP address
-- In the cloud shell type :
+- In the OCI Cloud Shell type :
   - `kubectl get services -n ingress-nginx`
 
 ```
@@ -140,15 +140,22 @@ Well, it's empty ! Of course that shouldn't be a surprise, we've not actually be
 
 Kubernetes writes the log data it captures to files on the host that's running the node. To get the data we therefore need to run a program on every node that accesses the log files and sends them to the storage (elastic search in this case)
 
-So far we've just asked Kubernetes to create deployments / replica sets / pods and it's determined the node they will run on to best balance availability and resources, how do we ensure that we can run a service in each node ? 
+So far we've just asked Kubernetes to create deployments / replica sets / pods and it's determined the node they will run based on the best balance of availability and resources, how do we ensure that we can run a service in each node ? 
 
-Well the daemonset in Kubernetes allows the defintion of a pod that will run on every node in the cluster, we just have to define the daemonset and the pod that's goiong to run it and Kubernetes will deal with the rest, ensuring that even if nodes are added or removed that a pod matching the daemonset definition is running on the node.
+Well the daemonset in Kubernetes allows the defintion of a pod that will run on every node in the cluster, we just have to define the daemonset and the template of the pod that's going to do the work and Kubernetes will deal with the rest, ensuring that even if nodes are added or removed that a pod matching the daemonset definition is running on the node.
+
+<details><summary><b>Other benefits of using daemon sets</b></summary>
+<p>
+The daemon set is a separate pod, running with it's own set of resources, thus while it does consume resources at the node and cluster level it doesn't impact the performance of the pods it's extracting log data for.
+
+Additionally the daemon set can look at the log data for all of the pods in the node, if we did the logging within a pod (say by replacing the log processor or your micro-service) then you'd have to modify every pod, but by logging it to standard out and using a deamonset you can capture the data of all of the logs at the same time, and only need to make changes in a singple place.
+</p></details>
 
 Why run the data gathering in a pod ? Well why not ? While we could run the data capture process by hand manually on each node then we'd have to worry about stopping and starting the service, restarting if it fails, managing and updating configuration files and so on. If we just run it in a Kubernetes pod we can let Kuberneties do all of it's magic for us and we can focus on defining the capture process, and leave running it to Kubernetes ! 
 
 How will our capture pod get the log data though ? We've seen previously how we can use volumes to bring in a config map or secret to a pod and make it look like it's part of the local file system, well there are several other types of source for a volume (in the Prometheus section we briefly saw how helm setup an external storage object as a volume for storing the data.) One of the volume types provides the ability to bring in a local file system, in this case in the node as part of the pods file structure.
 
-Fluentd is an open source solution to processing the log data, it's basically an engine, reading data from input sources and sending them to output sources (that's more complicated than you'd think when dealing with potentially large numbers of high volume sources.) it supports multiple input sources, including reading log files (imported from the node into the pods via a volume) It also supports many output types. We will be using the output that writes to elastic search, but writing to S3 compatible storage systems (of which the Oracle Storage Service is one) is one of many others. See [this blog for an example of doing that](http://www.ankitbansal.net/centralized-logging-in-oracle-kubernetes-engine-with-object-storage/#)
+Fluentd is an open source solution to processing the log data, it's basically an engine, reading data from input sources and sending them to output sources (that's more complicated than you'd think when dealing with potentially large numbers of high volume sources.) it supports multiple input sources, including reading log files saved from the containers by Kubernetes (imported from the node into the pods via a volume) It also supports many output types. We will be using the output that writes to elastic search
 
 There are a number of yaml daemonset configuration files at the [fluentd daemonset github](https://github.com/fluent/fluentd-kubernetes-daemonset) We will be using a modified version of the `fluentd-daemonset-elasticsearch-rbac.yaml` configuration.
 
@@ -163,7 +170,7 @@ We have added a volume mount entry and associated volume to bring in the log fil
 Finally we have changes the namespace from kube-system to logging, this is really just for convenience as this is an optional lab module, and we didn't want to complicate following modules with text along the lines of "If you've done the logging module you'll see xxxx in kube-system, but if you haven't you'll see yyyy" Also it's generally good practice to separate things by their function.
 
 Let's create the daemonset
-- In the cloud shell terminal type :
+- In the OCI Cloud Shell terminal type :
   - `kubectl apply -f fluentd-daemonset-elasticsearch-rbac.yaml `
 
 ```
@@ -173,7 +180,7 @@ clusterrolebinding.rbac.authorization.k8s.io/fluentd created
 daemonset.apps/fluentd created
 ```
 Let's make sure that everything has started
-- In the cloud shell type :
+- In the OCI Cloud Shell type :
   - `kubectl get daemonsets -n logging`
 
 ```
@@ -200,7 +207,7 @@ But it's easier to see what's happening using the Kubernetes dashboard in this c
 
 You can get the IP address being used for the dashboard by looking at the servcies list for the kube-system namespace
 
-- In the cloud shell type :
+- In the OCI Cloud Shell type :
   - `kubectl get services -n kube-system`
   
 ```
@@ -294,7 +301,7 @@ It's empty, the hits count is zero ! But that's because we haven't generated any
 
 Let's do some requests to the stock manager service which will generate log data
 
-- In the cloud shell terminal type :
+- In the OCI Cloud Shell terminal type :
   - `curl -i -k -X GET -u jack:password https://130.61.195.102/store/stocklevel`
   
 ```
@@ -317,3 +324,28 @@ Now we can see that there is data in the system, there were 12 hits.
 
 You may have seen that the data arrived into the elastic search index pretty fast, fluentd is monitoring the log files all the time, in my testing it's usually less than a second between the log data being generated and the data being in the logs cache, though of course that can very.
 
+### Other log capture options
+
+Fluentd itself sup-ports many other output plugins for writing the data, including to the Oracle Storage Service, or other services which provide a S3 compatible. See [this blog for an example of that process](http://www.ankitbansal.net/centralized-logging-in-oracle-kubernetes-engine-with-object-storage/#)
+
+### How do I handle my Monoliths logging ?
+
+It's quite possible (even probable) that you have elements of your overall service that are not running in micro-services in Kubernetes. To capture the log data from those applications you can run fluentd on the operating systems of the environments running them. In the case of some logging frameworks there may even be the ability to send log data direct to a central fluentd server.
+
+Of course fluentd is not the only logging solution out there, and elastic search is not the only data storage option, after all you could also write data to an Oracle data warehouse and analyze it using Oracle Analytics !
+
+### Log processing
+
+Once the data has been captured there needs to be analysis of it, as we saw before it's possible to extract specific records from the storage (and far more complex queries can be constructed than those shown) but for proper data analysis we need additional tools. The usage of these tools is outside the scope of this lab, and the process of data ingest and analysis is specific to the particular tool, but here are some tools you may like to consider.
+
+One such tool that is often used in conjunction with elastic search is Kibana, which is developed by the company that owns Elasticsearch. It's important to note that though parts of Kibana are open source not all the functionality is covered by the open source license, even though it may be in the Kibana image. So you must abode by the licensing restrictions and of course only use the features you have access to either under the open source license or via a [subscription.](https://www.elastic.co/subscriptions)
+
+The Oracle Log Analytics cloud service can be used when processing logs from many sources including on-premise and in the cloud. It's capable of [taking data direct from fluentd](https://docs.oracle.com/en/cloud/paas/management-cloud/logcs/use-fluentd-log-collection.html) or via the Oracle Storage Service
+
+The Kubernetes documentation has a [section covering logging](https://kubernetes.io/docs/concepts/cluster-administration/logging/)
+
+### Summary of log capture
+
+You've seen that the capture of Log data for Kubernetes hosted microservcies is pretty easy, but so far we haven't done a lot of processing of the log data, and though we've seen we can extract the data this approach is not very useful unless you want to look at the specifics of a single log message. 
+
+Although we haven't looked at the analytis of log data there are many tools available to help with that.
