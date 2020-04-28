@@ -10,6 +10,8 @@ Once you have your WbebLogic environment operational on Kubernets, you can perfo
 - Scaling your WebLogic cluster via the Operator
 - Labeling your nodes to assign WebLogic to specific servers
 
+<strong style="color: red;">Some text</strong>
+
 These operations have been described in a generic way in [this excellent lab](https://github.com/nagypeter/weblogic-operator-tutorial/blob/master/tutorials/domain.home.in.image_short.md) by Peter Nagy.  Below you find a simplified version, using the setup of the Cloud Test Drive environment.
 
 #### Prerequisites
