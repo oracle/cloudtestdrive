@@ -165,7 +165,7 @@ To actually invoke the function we need to append the route's path which you def
 For example to search for files that have jpg in the name use the following URL:
 
 
-> https://j4eqxpligw8vmfybhresyi5lte.apigateway.eu-frankfurt-1.oci.customer-oci.com/imagequery***/name/jpg***
+> https://j4eqxpligw8vmfybhresyi5lte.apigateway.eu-frankfurt-1.oci.customer-oci.com/imagequery/name/jpg
 
 
 You should see the response similar to this:
