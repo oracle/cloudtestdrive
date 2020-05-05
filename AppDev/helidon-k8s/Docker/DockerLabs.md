@@ -218,7 +218,9 @@ The docker flags are handled as following,
 
 </p></details>
 
-Let's use docker volumes (the docker --volume flag) to inject the configuration for us, each volume argument is the host file system name (this needs to be an absolute pathname) and the location inside the container to mount it. Again in the helidon-labs-stockmanager directory
+Let's use docker volumes (the docker --volume flag) to inject the configuration for us, each volume argument is the host file system name (this needs to be an absolute pathname) and the location inside the container to mount it. 
+
+Make sure you are in the **helidon-labs-stockmanager** directory
 
 - Run the container with a volumes attached:
 
@@ -277,6 +279,14 @@ It means you've not stopped the storefront and / or stock manager programs runni
 
 As the storefront depends on the stockmanager (and both depend on zipkin) it's important to ensure that the proper order is followed
 
+<details><summary><b>If you can't find the runStockmanagerLocalExternalConfig.sh and runStorefrontLocalExternalConfig.sh scripts </b></summary>
+<p>
+In older versions of the VM these were both called runLocalExternalConfig.sh, there was one of them in each of the helidon-labs-stockmanager and helidon-labs-storefront directory, but people found this confusing, so we re-named them to make it clear.
+
+If you can't find the scripts then use the runLocalExternalConfig.sh version, but make sure you know which directory you are in to make sure you are running the right version.
+
+You will need to run the runLocalExternalConfig.sh script in each directory, in the order below.
+</p></details>
 
 - Make sure you are in the helidon-labs-stockmanager directory
 - Once you are in the helidon-labs-stockmanager directory run the **Stockmanager** container via script:

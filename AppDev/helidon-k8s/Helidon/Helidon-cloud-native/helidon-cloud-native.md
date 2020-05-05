@@ -50,7 +50,7 @@ Services like kubenetes will know if a microservice has crashed as the applicati
 
 Provding a Liveness capability is pretty simple. Somewhere in the class structure you just need a class that implements the HealthCheck interface (Helidon uses this interface to know what method to call to run the test) and is annotated with `@Liveness` 
 
-- Navigate to the package **health**, and open the file **LivenessChecker.java**
+- In the storefront project navigate to the package **com.oracle.labs.helidon.storefront.health**, and open the file **LivenessChecker.java**
 - Add an annotation to the class definition:
   -  `@Liveness`
 
@@ -118,7 +118,7 @@ If an application crashes then clearly the solution is to restart it, and in bas
 
 There is however a different situation where a microservice itself can be behaving just fine, but it can't actually process requests because a service it depends on is for some reason not available. In many situations the downstream service will likely become available again - perhaps there has been a temporary network issue. 
 
-In this situation restarting the higher level microservice won;t solve the problem, if the downstream service is unavailable doing a restart of the upstream service won't solve that problem, and the restart will place unneeded load on the environment.
+In this situation restarting the higher level microservice won-t solve the problem, if the downstream service is unavailable doing a restart of the upstream service won't solve that problem, and the restart will place unneeded load on the environment.
 
 Readiness is a way to let the microservices runtime determine if a service has everything it needs to respond to requests. Helidon has a build in configuration to offer a readiness response to platforms like Kubernetes, but like Liveness you need to look at the actual implementation carefully, you don't want to be making expensive calls to the downstream service, but equally you want to make sure that it is responding. In particular if the downstream service does become ready again your readiness checker needs to return to reflecting that in the readiness response it generates.
 
@@ -128,7 +128,7 @@ Readiness is a way to let the microservices runtime determine if a service has e
 
 
 
-- Open the file **ReadinessChecker.java**
+- In the storefront project navigate to the package **com.oracle.labs.helidon.storefront.health** Open the file **ReadinessChecker.java**
 - Add the following annotation to the class ReadinessChecker
   -  `@Readiness`
 
