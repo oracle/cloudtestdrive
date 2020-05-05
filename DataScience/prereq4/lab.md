@@ -38,4 +38,4 @@
 
 ## Next
 
-Go back to the [main page](../readme.md).
+Go back to the [main page](../README.md).
