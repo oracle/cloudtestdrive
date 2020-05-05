@@ -10,21 +10,22 @@ This consists of the following:
 - Provision the Data Science service (Project and Notebook)
 
 There are two ways to do this:
-1) If you are working in an Oracle Cloud tenancy that is "empty", e.g. you have just created your Cloud Free Tier account, then we recommend you use the automated script to install the prerequisites. 
+1) If you are working in an Oracle Cloud tenancy that is "empty", e.g. you have just created your Cloud Free Tier account, then we recommend you use the automated approach. 
 
 2) In case you have already provisioned several services or you have already performed configurations in your Oracle Cloud tenancy before, we recommend you provision these resources manually. In this case, follow the manual instructions so that you can control and review each step of the process as you go along and, if necessary, adapt it to your unique situation.
 
-### Option 1: Using an automated script to provision network resources and the Data Science service
+### Option 1: Automated provisioning of network resources and the Data Science service
 
 This is the recommend approach in case you are working in an Oracle Cloud tenancy that is "empty", e.g. you have just created your Cloud (Trial) tenancy. This is the fastest way to provision these resources.
 
-- Download the script from [here](./scripts/provision_data_science.zip), save it on your local harddrive. The result should be a ZIP file.
+- Download the stack from [here](./scripts/provision_data_science.zip), save it on your local harddrive. The result should be a ZIP file.
+  A stack contains the instructions for all the required components / configurations.
 
 - In your Oracle Cloud console, open the menu.
 
 ![](./images/openmenu.png)
 
-- Near the bottom of the menu, go to Identity and Administration -> Identity -> Compartments.
+<!--- Near the bottom of the menu, go to Identity and Administration -> Identity -> Compartments.
 
 ![](./images/compartmentmenu.png)
 
@@ -34,15 +35,15 @@ This is the recommend approach in case you are working in an Oracle Cloud tenanc
 
 - Open the menu again.
 
-![](./images/openmenu.png)
+![](./images/openmenu.png)-->
 
 - Select Resource Manager -> Stacks.
 
 ![](./images/resourcemanager.png)
 
-- Change the compartment to "data-science-work".
+- Choose the compartment in which you wish to install. This can be a subcompartment you've created or  the root compartment in your Oracle trial.
 
-![](./images/changecompartment.png)
+<!--![](./images/changecompartment.png)-->
 
 - Click the "Create Stack" button.
 
@@ -52,21 +53,20 @@ This is the recommend approach in case you are working in an Oracle Cloud tenanc
 
 ![](./images/uploadzip.png)
 
-- **Important** - Change the compartment to "data-science-work". Leave the other values at their defaults and click Next.
+<!--- **Important** - Change the compartment to "data-science-work". Leave the other values at their defaults and click Next.
 
-![](./images/choosecompartment.png)
+![](./images/choosecompartment.png)-->
+- Set the compartment to where you wish to provision the services. Click Next.
 ![](./images/next.png)
 
-- Now configure the variables for this stack. Again, choose the subcompartment that you created earlier.
+- Now configure the variables for this stack. We recommend that you keep the default compute shape VM.Standard.E2.2 as it is more than enough for the workshop, and it will allow you to use the services for longer.
+Also please keep the Functions option UNchecked, we wil not be using Functions in this workshop, and it makes the configuration much easier. Click Next.
 
-![](./images/choosecompartmentvariable.png)
+<!--Again, choose the subcompartment that you created earlier.-->
 
-The rest of the variables should remain the same. In particular we recommend that you keep the default compute shape VM.Standard.E2.2 as it is more than enough for the workshop, and it will allow you to use the services for longer.
-Also please keep the Functions option UNchecked, we wil not be using Functions in this workshop, and it makes the configuration much easier.
+<!--![](./images/choosecompartmentvariable.png)-->
 
 <!--![](./images/configurestack.png)-->
-
-Click Next.
 
 - The configuration you've entered is shown for verification. Click Create.
 
