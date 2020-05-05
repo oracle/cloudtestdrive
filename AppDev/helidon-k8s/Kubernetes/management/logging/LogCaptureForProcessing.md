@@ -5,7 +5,7 @@
 # Migration of Monolith to Cloud Native
 
 ## C. Deploying to Kubernetes
-## 2. Log Capture with Prometheus
+## 2. Log Capture for processing
 
 
 
@@ -72,7 +72,7 @@ Elasticsearch can be accessed:
 
 Note the DNS name, in this case it's `elasticsearch-client.logging.svc`
 
-Let's check on the instalation, note that is can take a ew mins for the elastic search to be loaded and installed.
+Let's check on the installation, note that is can take a few mins for the elastic search to be loaded and installed.
 
 - In the cloud console type :
   - `kubectl get all -n logging`
@@ -111,6 +111,7 @@ Normally you wouldn't do this as the elastic search is an internal service that'
 ```
 ingress.extensions/elasticsearch created
 ```
+
 <details><summary><b>If you need to remind yourself of the ingress controller IP address</b></summary>
 <p>
 
@@ -124,6 +125,7 @@ ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.17.121   <non
 ```
 
 look at the `ingress-nginx-nginx-ingress-controller` row, IP address inthe `EXTERNAL-IP` column is the one you want, in this case that's `130.61.195.102` **but yours will vary**
+
 </p></details>
 
 - In a web browser go to the web page - remember the one below is **my** ip address **you need to use yours** (If challenged about the "unsafe" or "self signed" certificate that's OK, follow the steps in your browser to go to that page anyway.
@@ -329,7 +331,7 @@ You may have seen that the data arrived into the elastic search index pretty fas
 
 ### Other log capture options
 
-Fluentd itself sup-ports many other output plugins for writing the data, including to the Oracle Storage Service, or other services which provide a S3 compatible. See [this blog for an example of that process](http://www.ankitbansal.net/centralized-logging-in-oracle-kubernetes-engine-with-object-storage/#)
+Fluentd itself supports many other output plugins for writing the data, including to the OCI Object Storage service, or other services which provide a S3 compatible. We will see in the next section how to use those.
 
 ### How do I handle my Monoliths logging ?
 
@@ -339,16 +341,18 @@ Of course fluentd is not the only logging solution out there, and elastic search
 
 ### Log processing
 
-Once the data has been captured there needs to be analysis of it, as we saw before it's possible to extract specific records from the storage (and far more complex queries can be constructed than those shown) but for proper data analysis we need additional tools. The usage of these tools is outside the scope of this lab, and the process of data ingest and analysis is specific to the particular tool, but here are some tools you may like to consider.
+Once the data has been captured there needs to be analysis of it, as we saw before it's possible to extract specific records from the storage (and far more complex queries can be constructed than those shown) but for proper data analysis we need additional tools. The usage of these tools is outside the scope of this lab, (and as you've only been gathering data for a short time period there just isn't enough log data to perform an analasys on.)
 
-One such tool that is often used in conjunction with elastic search is Kibana, which is developed by the company that owns Elasticsearch. It's important to note that though parts of Kibana are open source not all the functionality is covered by the open source license, even though it may be in the Kibana image. So you must abode by the licensing restrictions and of course only use the features you have access to either under the open source license or via a [subscription.](https://www.elastic.co/subscriptions)
+The process of data ingest and analysis is specific to the particular tool, though many can retrieve data from elasticsearch or a storage bucket, but here are some tools you may like to consider.
 
-The Oracle Log Analytics cloud service can be used when processing logs from many sources including on-premise and in the cloud. It's capable of [taking data direct from fluentd](https://docs.oracle.com/en/cloud/paas/management-cloud/logcs/use-fluentd-log-collection.html) or via the Oracle Storage Service
+One such tool that is often used in conjunction with elastic search is Kibana, which is developed by the company that owns Elasticsearch. It's important to note that though parts of Kibana are open source not all the functionality is covered by the open source license, even though it may be in the Kibana container image. You must be careful to follow the licensing restrictions and of course only use the features you have access to either under the open source license or via a [license or subscription.](https://www.elastic.co/subscriptions)
+
+The Oracle Log Analytics cloud service can be used when processing logs from many sources including on-premise and in the cloud. It's capable of [taking data direct from fluentd](https://docs.oracle.com/en/cloud/paas/management-cloud/logcs/use-fluentd-log-collection.html) or via the Oracle Object Storage Service.
 
 The Kubernetes documentation has a [section covering logging](https://kubernetes.io/docs/concepts/cluster-administration/logging/)
 
-### Summary of log capture
+### Summary
 
-You've seen that the capture of Log data for Kubernetes hosted microservcies is pretty easy, but so far we haven't done a lot of processing of the log data, and though we've seen we can extract the data this approach is not very useful unless you want to look at the specifics of a single log message. 
+You've seen that the capture of Log data for Kubernetes hosted microservices is pretty easy, but so far we haven't done a lot of processing of the log data, and though we've seen we can extract the data this approach is not very useful unless you want to look at the specifics of a single log message. 
 
-Although we haven't looked at the analytis of log data there are many tools available to help with that.
+Although we haven't looked at the analysis of log data there are many tools available to help with that.
