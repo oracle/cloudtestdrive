@@ -495,7 +495,8 @@ The IP address of the load balancer is in the EXTERNAL-IP column. Note that this
 ### Looking around the dashboard.
 In several of the labs we're going to be using the dashboard, so let's look around it a bit to get familiar with it's operation.
 
-- Open a web browser and using the IP address you got above and go to `https://<load balancer ip address>/#!/login`
+- Open a web browser and using the IP address you got above and go to :
+  - `https://<load balancer ip address>/#!/login`
 
 - In the browser, accept a self signed certificate. 
   - In Safari you will be presented with a page saying "This Connection Is Not Private" Click the "Show details" button, then you will see a link titled `visit this website` click that, then click the `Visit Website` button on the confirmation pop-up. To update the security settings you may need to enter a password, use Touch ID or confirm using your Apple Watch.
