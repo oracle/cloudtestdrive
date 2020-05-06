@@ -7,7 +7,17 @@
 ## C. Deploying to Kubernetes
 ## 5b. Auto Scaling labs
 
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
 
+This video is an introduction to the Kubernetes auto scaling lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Kubernetes auto scaling lab Introduction Video](https://img.youtube.com/vi/awmLUpBwqig.jpg)](https://youtu.be/awmLUpBwqig "Kubernetes auto scaling lab introduction video")
+
+</p>
+</details>
+
+---
 We've seen how we can increase (or decrease) the number of pods underlying a service and that the service will automatically balance the load across the pods for us as the pod count changes.
 
 This is great, but it required manual intervention to change the number of pods, and that means we need to keep an eye on what's happening. Fortunately for us Kubernetes has support for automating this process based on rules we define.
