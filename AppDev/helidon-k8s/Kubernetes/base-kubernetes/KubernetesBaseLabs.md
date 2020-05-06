@@ -249,7 +249,7 @@ Get the Kubernetes Dashboard URL by running:
 <p>
 The helm options are :
 
-- `install` do an install operation, helm has many other operations type zhelm --help` for a list.
+- `install` do an install operation, helm has many other operations type helm --help` for a list.
 
 - `kubernetes-dashboard` This is the "human" name to give the installation, it's easier to use that later on than using a machine generated one.
 

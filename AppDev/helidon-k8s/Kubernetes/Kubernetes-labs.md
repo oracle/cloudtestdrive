@@ -62,12 +62,19 @@ To understand how this works see the [Health Readiness Liveness labs.](cloud-nat
 
 
 
-### 5. Horizontal Scaling
+### 5. Horizontal and Auto Scaling
 
-Kubernetes also supports horizontal scaling of services, enabling multiple instances of a service to run with the load being shared amongst all of them. The scaling can be manually controlled or Kubernetes can automatically scale services within limits you set.
+Kubernetes also supports horizontal scaling of services, enabling multiple instances of a service to run with the load being shared amongst all of them. 
+
+This first scaling lab shows how you can manually control the number of instances.
 
 [The horizontal scaling labs](cloud-native-labs/Horizontal-scaling/Horizontal-scaling.md) 
 
+Horizontal scaling provides you with a manual process to control how many instances of a microservice you have running, but Kubernetes also offers a mechanism to automatically change the number of instances.
+
+This second scaling labs shows how you can have Kubernetes automatically scale the number of instances for you.
+
+[The auto scaling labs](cloud-native-labs/Horizontal-scaling/Auto-scaling.md)
 
 
 ### 6. Rolling out deployment updates

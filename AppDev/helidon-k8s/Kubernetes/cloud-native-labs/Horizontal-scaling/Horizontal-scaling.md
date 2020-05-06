@@ -5,7 +5,7 @@
 # Migration of Monolith to Cloud Native
 
 ## C. Deploying to Kubernetes
-## 5. Horizontal Scaling labs
+## 5a. Horizontal Scaling labs
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>

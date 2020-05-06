@@ -1,8 +1,12 @@
-[Go to Overview Page](../README.md)
+[Go to Overview Page](../Kubernetes-labs.md)
 
-![](../../../common/images/customer.logo2.png)
+![](../../../../../common/images/customer.logo2.png)
 
-# Horizontal auto scaling of pods
+# Migration of Monolith to Cloud Native
+
+## C. Deploying to Kubernetes
+## 5b. Auto Scaling labs
+
 
 We've seen how we can increase (or decrease) the number of pods underlying a service and that the service will automatically balance the load across the pods for us as the pod count changes.
 
