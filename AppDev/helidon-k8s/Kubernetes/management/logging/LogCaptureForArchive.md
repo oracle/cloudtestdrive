@@ -24,13 +24,13 @@ This video is an introduction to the Log Capture for archive labs Once you've wa
 
 We've seen one way to capture log data so it can be processed, but sometimes you just want to save it in the longer term, possibly for legal reasons. While the initial part of the process is similar the approach needed for long term retrieval of data is usually very different from that needed for the analysis of the data. This is especially true if the chance is high that the data will not ever be used ("Write Only Data") where you need to meet the obligations to store it, but are focused on the costs or saving and storing, and the cost of a very occasional retrieval is less important. For example it may be considered very reasonable to not index log data that is in being held for long term storage, but only group it in large chunks, say one chunk per day) understanding that if data is needed that the entire days data may need to be processed, but accepting the cost of doing that as it's less than the overhead of creating and maintaining an index with a higher resolution.
 
-We're going to now look at how to extract data and save it to a storage service. This section is based on [this blog entry created by Ankit Bansal](http://www.ankitbansal.net/centralized-logging-in-oracle-kubernetes-engine-with-object-storage/#) but modified to fit in with the specific environment of the lab.
+We're going to now look at how to extract data and save it to a storage service. This section is based on [this blog entry created by Ankit Bansal](http://www.ankitbansal.net/centralized-logging-in-oracle-kubernetes-engine-with-object-storage/#) but modified to fit in with the specific environment of the lab and to split the configuration of the storage from the fluentd basic configuration.
 
 Note, if you still have the fluentd configuration setup monitoring to Elastic Search you can leave that running if you like. It is of course consuming resources, but there are situations where you may want long term storage of log data as well as short term analytics. 
 
 ### Storing the log data
 
-We will be using one of them built in output plug-ins of Fluentd that allows us to write to storage solutions that provide a Amazon S3 compatible interface. In this case we will be writing the data to the Oracle Storage Service, but you could of course use other compatible services.
+We will be using one of them built in output plug-ins of Fluentd that allows us to write to storage solutions that provide a Amazon S3 compatible interface. In this case we will be writing the data to the Oracle Object Storage Service, but you could of course use other compatible services.
 
 The first thing we need to do is to gather a bit of data about the storage service to configure the fluentd output plugin.
 
@@ -66,12 +66,15 @@ We can see here that the region identifier for Frankfurt (the region I'm using) 
 Next we need to get the storage endpoint this is of the form `https://<object storage namespace>.compat.objectstorage.<region identifier>.oraclecloud.com` Obviously we need to determine the value of `<object storage namespace>` (you have just retrieved the region identifier)
 
 In the upper right of the screen you can access your tenancy details.
+
 ![](images/Region-dropdown.png)
 
 - Click on the little "shadow" of a person to access your profile.
+
 ![](images/User-profile-details.png)
 
 - Click on the tenancy name (oractdemeabdnmative in this case) to access the tenancy details
+
 ![](images/Tenancy-details.png)
 
 In this case in the Object Storage Settings you can see that the `Object Storage Namespace` is `oractdemeabdmnative` It will be different in other tenancies. This particular tenancy is quite old which is why the storage namespace is the same as the tenancy name, recent tenancies have a storage namespace that is a set of random letters and numbers.
@@ -84,7 +87,9 @@ For example **FOR MY TENANCY, YOURS WILL VARY** it might be  `https://oractdemea
 
 - Note the value for the `Amazon S3 Compatibility API Designated Compartment:` (`JAM` in this case)
 
-This is the OCI compartment that will be used to hold the storage bucket. In this case the compartment is names `JAM` If there is no compartment shown then the storage bucket will be created in the root compartment. If you want to change that (only do this if this is your tenancy, if it belongs to your organization then make sure your tenancy admin is OK with you changing it as you might break other things) then click the `Edit Object Storage Settings` and chose another compartment (if this is a new tenancy you may only have one compartment)
+This is the OCI compartment that will be used to hold the storage bucket. In this case the compartment is named `JAM` If there is no compartment shown then the storage bucket will be created in the root compartment. If you want to change that (only do this if this is your tenancy, if it belongs to your organization then make sure your tenancy admin is OK with you changing it as you might break other things) then click the `Edit Object Storage Settings` and chose another compartment (if this is a new tenancy you may only have the root compartment.)
+
+**Important** You need to have rights to create storage objects in the compatibility compartment, If this is a trial tenancy then you will be operating as the tenancy administrator, if it's a commercial tenancy you may need to check with your admins to ensure you have the appropriate rights.
 
 We need to have security keys to access the S3 compliant storage API. Access those from the User details. 
 
@@ -148,9 +153,9 @@ Here  we're using the archive tier, but if you were writing the data to storage 
 <details><summary><b>What's the difference between Standard and Archive tiers?</b></summary>
 <p>
 
-The `Standard` storage tier is designed for immediate access, the `Archive` tier is designed for infrequent access, may have a time delay (up to an hour) between requesting access and being able to read the data. There is a significant cost difference between the two storage tiers, at the time of writing this document (early May 2020) Archive storage was 1/10th the cost of Standard storage / GB / month.
+The `Standard` storage tier is designed for immediate access, the `Archive` tier is designed for infrequent access, may have a time delay (up to an hour) between requesting and being able to access the data. There is a significant cost difference between the two storage tiers, at the time of writing this document (early May 2020)  for the Object storage service data in the archive tier was 1/10th the cost of standard tier in terms of GB data stored / month.
 
-Though it is an implementation detail it is highly likely that data placed in archive storage is actually held on magnetic tape, not disk, this also means that data that has just been written cannot be immediately retrieved as that tape is almost certainly still in use having other data written to it. This and the time taken to get a free tape drive and load a tape (in a automated tape library of course) are the reasons why it can take a while to make archive data available for retrieval.
+Though it is an implementation detail (and I genuinely don't know if this is the case or not) it is highly likely that data placed in archive storage is actually held on magnetic tape, not disk. To make the data available for access the tape must be loaded into a tape drive from it's slot in the tape library (and there may be a delay for a tape drive to be available.) Then the tape drivers has to wind the tape to the right position to read the data (think of the old cassete tapes you may have has in your car when you wanted to locate a particular song - tapes are linear access devices, **not** true random access devices.) Then the drive has to read the data into a cache to make it available for access. ALl of this takes time and if you want to load data on a tape that is currently being used to write other data then you will also have to wait for the current write operations to complete before the tape can be repositioned to access your data. Thus there are several reasons why it can take a while to make archive data available for retrieval. For more information on tape libraries (the large libraries are impressive beasts and can hold over 100,000 tapes each.)
 
 In both cases the data is encrypted at rest, and is protected via the use of multiple copies and checksums.
 
@@ -230,6 +235,7 @@ As an example of the YAML uses that does this see the following small segment of
 in the `env:` section we see the name of the environment variable (`SWITCH_LOG_FILE_INTERVAL` in this case) that it comes from the key `SWITCH_LOG_FILE_INTERVAL` which is in the config map called `fluentd-s3-config`
 
 ---
+
 </p></details>
 You will need to edit the `fluentd-s3-configmap.yaml` file and update it with the values you gathered earlier. Remember to keep the values in double quotes.
 
@@ -263,7 +269,9 @@ data:
 The SWITCH_LOG_FILE_INTERVAL tells fluentd how often to switch to a new output file.
 
 For lab purposes we have setup the configuration with a 60 second cycle on switching log files. This is to enable us to see output in a reasonable time (the files don't show up in the object storage until they have been written and closed, then the archiving process completed. In a normal situation this would be set to a much higher value, say 3600 seconds, so the log files would switch once an hour (so if you use this config file in your environment remember to update the SWITCH_LOG_FILE_INTERVAL value to reflect your needs.)
+
 ---
+
 </p></details>
 
 ### Actually starting the log capture
@@ -323,7 +331,9 @@ fluentd-to-ooss-w7g94                   1/1     Running            0          55
 <details><summary><b>What's with the CrashLoopBackOff STATUS ?</b></summary>
 <p>
 You may occasionally see a fluentd pod with status CrashLoopBackOff, this is usually due to the pod having problems getting log data, it seems there is a problem in fluentd where it sometimes crashes on reading specific kubernetes log files. Kubernetes of course recognises the failure and restarts the pod for us automatically, and fluentd will recover.
+
 ---
+
 </p></details>
 
 
@@ -396,7 +406,34 @@ Lots more output
 
 The log data shows is the sources whish fluentd is scanning looking for the log data, The match section is the contents of the config map we specified in `fluentd-to-ooss-configmap.yaml` but nots that there are values for items like `s3-bucket` which reflect the settings we provided in the `fluentd-s3-configmap.yaml` file of our environment specific settings.
 
+<details><summary><b>If the log is reporting an unexpected error</b></summary>
+<p>
+
+You may find that the log is reporitng an error similar to this :
+
+  ```
+  [error]: #0 unexpected error error_class=Aws::S3::Errors::BucketAlreadyExists error="Either the bucket 'TGFLCOMPAT' in namespace 'oractdemeabdmnative' already exists or you are not authorized to create it"`
+  ```
+  
+There are several possible causes. 
+
+The most likely problem is that you do not have permission to modify the bucket (if you have a trial tenancy should have full admin rights if you are using the user that created the tenancy)
+
+To fix this get your tenancy admin to create a group, say COMPATSTORAGE, add your user to the group and then create policies to allow members of the group, below are the policies that apply in my tenancy
+   
+   ```
+   Allow group COMPATSTORAGE to manage buckets in compartment JAM
+   Allow group COMPATSTORAGE to manage objects in compartment JAM
+   ```
+   
+It may be that the bucket name is already in use (though this should have generated an error when you created the bucket earlier (OCI does not allow duplicate bucket names in the tenancy, even in different compartments.)
+
+---
+</p></details>
+
 ### The saved log files
+
+Though the creation of the logs in the Object Storage Service is pretty cloud independent actually retrieving them is outside Kubernetes and specific to the cloud provider. The instructions below apply to the Oracle Object Storage Service.
 
 Open the Object storage page on the OCI web console again and navigate to the bucket you created
 ![](images/Object-storage-bucket-with-logs.png)
@@ -405,18 +442,19 @@ You can see the list of logs that have been saved. Note that all of them have a 
 
 Let's start the process to restore from the archive.
 
-Click the selection checkbox next to **one** of the entries. 
+- Click the selection checkbox next to **one** of the entries. 
+
 ![](images/Object-storage-select-for-restore.png)
 
 Note that the `Restore` and `Delete` buttons are now enabled.
 
-Click the `Restore` button, the confirm restore popup is shown
+- Click the `Restore` button, the confirm restore popup is shown
 
 ![](images/Object-storage-confirm-restore.png)
 
 By default the restored data is available for 24 hours before it's only available in the archive again, you can change this duration if you like, but for now we'll leave the field blank which keeps the default 24 hours download window. The storage service will be charging you the extra copy for the time it's spent online, so you want to keep that to a minimum that meets your needs
 
-Click the `Restore` button and the object storage service will trigger the restore process to start.
+- Click the `Restore` button and the object storage service will trigger the restore process to start.
 
 ![](images/Object-storage-restore-in-process.png)
 
@@ -438,7 +476,7 @@ Once the restore process has completed you will see that the objets state become
 
 Your web browser will start to download the object and depending on the web browser you will get a download options popup. This is the one I got when doing the download using Firefor on MacOS Catalina
 
-![](Object-storage-restored-object-download-options.png)
+![](images/Object-storage-restored-object-download-options.png)
 
 To access the restored object follow whatever the normal procedure is on your computer to access a downloaded `.gz` file.
 
