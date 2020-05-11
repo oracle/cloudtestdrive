@@ -1861,7 +1861,7 @@ We've shown how to change the config in helidon using config maps, but the same 
 
 This lab has only implemented basic security in that it's securing the REST API using the Ingress controller.
 
-There are other ways of securing the connection however, we've put together a [short document](SecuringTheRestEngpoint.md) on some of the other appriaches.
+There are other ways of securing the connection however, we've put together a [short document](SecuringTheRestEndpoint.md) on some of the other appriaches.
 
 Also when deploying in Kubernetes you should create roles and users for performing specific functions. The [Kubernetes documentation](https://kubernetes.io/docs/concepts/security/overview/) has more information on it's security.
 
