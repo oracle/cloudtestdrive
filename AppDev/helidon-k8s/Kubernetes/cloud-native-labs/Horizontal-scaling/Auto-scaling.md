@@ -210,9 +210,9 @@ We can also get the current resource level for the container using kubectl and t
 
 As an aside if you do the above for the zipkin pod you'll see that it has no resource constraint in place, so it can use as much CPU as the cluster allows for a pod by default
 
-That we have hit the limit is almost certainly a problem, it's quite likely that the performance of the service is limited out because of this. Of course it may be that you have made a deliberate decision to limit the service, possibly to ensure a limit on the back end database (though as it's an ATP database it can scale automatically for you if the load gets high)
+That we have hit the limit is almost certainly a problem, it's quite likely that the performance of the service is limited out because of this. Of course it may be that you have made a deliberate decision to limit the service, possibly to avoid overloading the back end database (though as it's an ATP database it can scale automatically for you if the load gets high)
 
-To fix this problem we need to add more pods, but we don;t want to do this by hand, that would mean we'd have to be monitoring the system all the time. Let's use a the Kubernetes autoscale functionality to do this for us 
+To fix this problem we need to add more pods, but we don't want to do this by hand, that would mean we'd have to be monitoring the system all the time. Let's use a the Kubernetes autoscale functionality to do this for us 
 
 Setup autoscale (normally of course this would be handled using modifications to the YAML file for the deployment)
  - In the OCI Cloud Shell type
@@ -380,7 +380,30 @@ For now let's delete the autoscaler to we can proceed with the next part of the 
 horizontalpodautoscaler.autoscaling "storefront" deleted
 ```
 
-Note that this just stops the starting or stopping of pods, any existing pods will remain, even if there are more (or less) than specified in the deployment document.
+Note that this just stops changes to the number of pods, any existing pods will remain, even if there are more (or less) than specified in the deployment document. Of course now the auto scaler has been deleted regardless of the load that number will no longer change automatically.
+
+To return to the numbers of replicas originally defined we'll use kubectl
+
+- In the OCI Cloud Shell type
+  - `kubectl scale --replicas=1 deployment storefront`
+
+```
+deployment.extensions/storefront scaled
+```
+
+Now let's check what's happening
+
+- In the OCI Cloud Shell type
+  - `kubectl get deployment storefront`
+
+```
+NAME           READY   UP-TO-DATE   AVAILABLE   AGE
+stockmanager   1/1     1            1           4d2h
+storefront     1/1     1            1           4d2h
+zipkin         1/1     1            1           4d2h
+```
+
+The number of pods is now back to one (it may be that you get a report of 2 pods still running, in which case try getting the deployments again a little bit later.
 
 ## Autoscaling on other metrics
 We have here looked at how to use CPU and memory to determine when to autoscale, that may be a good solution, or it may not. Kubernetes autoscaling can support the use of other metrics to manage autoscaling.
