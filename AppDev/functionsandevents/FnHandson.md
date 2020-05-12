@@ -39,9 +39,7 @@ Please refer to [Appendix B](AppendixB.md) if you would prefer to use the Chrome
 
 Run the following command to install the Fn project CLI on your VM
 
-```
 curl -LSs https://raw.githubusercontent.com/fnproject/cli/master/install | sh
-```
 
 Once installed you’ll see the Fn CLI version printed out.
 
