@@ -38,7 +38,7 @@ As a general observation though it may be tempting to just go in and modify the 
 So far we've been stopping our services (the undeploy.sh script deletes the deployments) and then creating new ones (the deploy.sh script applies the deployment configurations for us) This results in service down time, and we don't want that. But before we can switch to properly using rolling upgrades there are a few bits of configuration we should do
 
 #### Pod counts
-Kubernetes aims to keep a service running during the rolling upgrade, it does this by starting new pods to run the service, then stopping old ones once the new ones are ready. Through the magic of services and using labels as selectors the Kubernetes run time adds and removed pods from the service. This will work with a deployment whose replica sets only contain a single pod (the new pod will be started before the old one is stopped) but if your service contains multiple pods it will use some configuration rules to try and manage the process in a more balanced manner.
+Kubernetes aims to keep a service running during the rolling upgrade, it does this by starting new pods to run the service, then stopping old ones once the new ones are ready. Through the magic of services and using labels as selectors the Kubernetes run time adds and removed pods from the service. This will work with a deployment whose replica sets only contain a single pod (the new pod will be started before the old one is stopped) but if your service contains multiple pods it will use some configuration rules to try and manage the process in a more balanced manner and sticking reasonably closely to the number of pods you've asked for (or the auto scaler has.)
 
 We are going to once again edit the storefront-deployment.yaml file to give Kubernetes some rules to follow when doing a rolling upgrade. Importantly however we're going to edit a *Copy* of the file so we have a history.
 
@@ -204,7 +204,7 @@ We're going to look at these in a different order to the output
 
 Firstly the deployments info. We can see that 3 out of 4 pods are available, this is because we specified a maxUnavailable of 1, so as we have 4 replicas we must always have 3 of them available.
 
-If we look at the replica sets we seem something unusual. There are *two* replica sets for the storefront. the origional replica set (`storefront-5f777cb4f5z`) has 3 pods available and running, one of them was stopped as we allow one a maxUnavailable of 1. There is however an additional storefront replica set `storefront-79d7d954d6` This has 2 pods in it, at the time the data was gathered neither of them was ready. But why 2 pods when we'd only specified a surge over the replicas count of 1 pod ? That's because we have one pod count "available" to us form the surge, and another "available" to us because we're allowed to kill of one pod below the replicas count, making a total of two new pods that can be started.
+If we look at the replica sets we seem something unusual. There are *two* replica sets for the storefront. the original replica set (`storefront-5f777cb4f5z`) has 3 pods available and running, one of them was stopped as we allow one a maxUnavailable of 1. There is however an additional storefront replica set `storefront-79d7d954d6` This has 2 pods in it, at the time the data was gathered neither of them was ready. But why 2 pods when we'd only specified a surge over the replicas count of 1 pod ? That's because we have one pod count "available" to us from the surge, and another "available" to us because we're allowed to kill of one pod below the replicas count, making a total of two new pods that can be started.
 
 Finally if we look at the pods themselves we see that there are five storefront pods. A point on pod naming, the first part of the pod name is actually the replica set the pod is in, so the three pods starting `storefront-5f777cb4f5-` are actually in the replic set `storefront-5f777cb4f5` (the old one) and the two pods starting `storefront-79d7d954d6-` are in the `storefront-79d7d954d6` replica set (the new one)
 
@@ -299,7 +299,7 @@ REVISION  CHANGE-CAUSE
 2         <none>
 ```
 
-Note that the 2nd revision doesn't tell us what change, another reason we should use configuration files to do this !
+Note that the 2nd revision doesn't tell us what changed, another reason we should use configuration files to do this !
 
 - Let's check on our deployment to make sure that the image is the v0.0.2 we expect
   -  `kubectl describe deployment storefront`
@@ -573,7 +573,7 @@ replicaset.apps/storefront-5f777cb4f5                                    4      
 replicaset.apps/storefront-79d7d954d6                                    0         0         0       40m
 replicaset.apps/zipkin-88c48d8b9                                         1         1         1       69m
 ```
-We see that all of the pods are not the origional replica set version, and there are no pods in the new one.
+We see that all of the pods are now the original replica set version, and there are no pods in the new one.
 
 - If we check this by going to the status we can see the rollback has worked (remember to replace the IP address with the one for your service) :
   -  `curl -i -k -X GET https://987.123.456.789/sf/status`
@@ -591,14 +591,33 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 Normally of course the testing of the pods would be linked into CI/CD automated tooling that would trigger the rollback if it detected a problem automatically, but here we're trying to show you the capabilities of Kubernetes rather than just run automation.
 
-#### Important note on external services
+<details><summary><b>What if I do new update while another is still in progress ?</b></summary>
+<p>
+If you change a different deployment then that will proceed in the same way, the different deployment will create the replica sets and gradually increase the side of the new one while reducing the size of the old one as above (this hopefully is what you'd expect !)
+
+If you changed and started a rollout of a deployment that was currently in the process of being upgraded  then Kubernetes still does the right thing. You will have the old replica set (let's call that replica set 1) and the new one (let's call that replica set 2) Kubernetes will stop the transition from replicas set 1 to replica set 2, and will create another replica set (let's call this replica set 3) for the latest version of the deployment. It will then transition both replica set 1 and 2 to the new replica set 3.
+
+Obviously this is not something you're likely to be doing often, but it's quite possible that you may have realized there was a mistake part way through the upgrade (say you pointed to the wrong image, or there was a config error and the containers in the pods kept failing) so re-doing the deployment with a fix can help you keep the services available.
+
+---
+
+</p></details>
+
+
+### Important note on external services
 Kubernetes can manage changes and rollbacks within it's environment, provided the older versions of the changes are available. So don't delete your old container images unless you're sure you won't need them ! Kubernetes can handle the older versions of the config itself, but always a good idea to keep an archive of them anyway, in case your cluster crashes and takes your change history with it.
 
 However, Kubernetes itself cannot manage changes outside it's environment. It may seem obvious, but Kubernetes is about compute, not persistence, and in most cases the persistence layer is external to Kubernetes on the providers storage environments.
 
+Persistence is by definition about making things persistent, they exist outside the compute operation, and that can cause problems if other elements also use the stored data.
+
 This is especially critical for data in databases. You need to coordinate changes to the database, especially changes to the database schema (which is outside Kubernetes) with changes to the code in the services that access the database (usually running in Kubernetes.) Kubernetes can handle the rolling upgrades of the *services*, but if different versions of your service have incompatible data requirements you've got a problem. Equally if you do an upgrade that changes the database scheme in a way that's incompatible with earlier versions of the service, and then you need to roll back to a previous version you've got a problem.
 
 These issues are not unique to Kubernetes, they have always existed when a new version of some code that interacts with the persistence layer is deployed, but the very fast deployment cycle of microservices enabled my Kubernetes makes this more of a critical issue to consider (in 2016 Netflix were doing thousands of deployments a day, admittedly not all of them would involve persistence system changes.) 
+
+One common approach used is the have the microservices support different versions of the scheme, and then only upgrade to the new version once all of the microservices that access the data have support for the new version, and sufficient testing has shown that there is likely to be no need to roll back to old versions which wouldn't support the updated schema. Than, and only then is the database (or other persistence) updates to reflect the new structure.
+
+To assist with this you might like to consider and approach to limit access to the data to a single microservice (obviously for resillience there would be multiple instances) which then presents the data to the other consumers, potentially using different API endpoints to reflect the data structure. The new microservices use the new API and the old microservices can continue to use the old API's with the data microservice converting between them and the data. Of course for this to work there needs to be ways to map both API's on to a common data representation (e.g. by using default values for additional fields required by t                                                                                         he new API) and it may not always be possible.
 
 The newer automated tooling integrating CI/CD with automated A/B resting means that even larger numbers of deployments are coming, and some of those will involve persistence changes. 
 
@@ -606,11 +625,33 @@ The important thing is to have a strategy for combining microservice rollouts (a
 
 See the further info for links on this.
 
+---
 
 
+<details><summary><b>What other update strategies are there ?</b></summary>
+<p>
+Kubernetes has native support for two strategies, the rolling upgrade we've seen above, but also a strategy type called recreate. 
 
+The rolling upgrade strategy attempts to keep the microservice responding without excess use of resources.
+
+The recreate strategy focuses on the resource usage and basically stops the exiting microservices before it then starts the new ones. This strategy means there is a reduction in performance as the pods in the original replica set are stopped before the new replica set is created and pods started in it. 
+
+There are several other options which require additional external actions.
+
+The Blue / Green (also known as red / black) focuses on the performance at the cost of processing. It creates a new replica set with all of the required pods, then switches all the traffic from the old replica set to the new one before stopping the old one. To do this all the deployments have a specific version and the service is configured with additional selectors for the version/ When the new replica set is up and running and time comes to switch the service selector is updated to refer to the new version and it will thus no longer match the pods of the old version, but will instead match the pods of the new one and switch all traffic to that. Note that this may require the creation of additional deployments.
+
+One major benefit of the blue / green approach is that if your new version of the service means that the persistence required an incompatible change then you won't have to worry about old / new versions of persisted data (though you will have to work out a strategy for actually updating the data itself)
+
+Other rollout types exist, though these do require the use of a service mesh (e.g. [Linkerd](https://linkerd.io/) or [Istio](https://istio.io/)to split the request flow between different versions. Examples include :
+
+Canary rollouts where the new services instances are created, then a limited amount of traffic is diverted to them by the service mesh (the bulk of the traffic going to the original version.) Once the new version has been tested for a while and shown to meet the release criteria for quality then traffic is switched to the new version is ramped up quickly and the old version stopped. If the quality metrics turn out not to be met then all of the traffic is redirected to the old version.
+
+A/B testing is a variant of canary testing, and also requires a service mesh. Like canary testing both versions of the microservice exist at the same time, and the traffic is shared between them. But for A/B testing instead of the quality being the focus the switch is driven by some form of business metric, for example the new version results in 5% more orders than the old one.
+
+Both canary testing and A/B testing require a service mesh to handle the split of the requests between versions, but also a mechanism to gather metrics (quality / business etc.) and then adjust the split. These metrics are unlikely to be the type of thing gathered by standard Prometheus and specialized tools like [Spinaker](https://www.spinnaker.io/) may be used to help with managing the service mesh configuration.
 
 ---
+</p></details>
 
 You have reached the end of this lab !!
 
