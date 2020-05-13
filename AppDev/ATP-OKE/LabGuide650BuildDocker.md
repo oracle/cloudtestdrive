@@ -24,11 +24,11 @@ Open your project in Developer Cloud, and follow the steps below:
   - Registry Name: **MyOCIR**
 
   - Registry URL: fill in the URL of your OCI Repository.  Example for an instance based in Frankfurt:
-     https://fra.ocir.io  , but replace the "fra" by the correct code : **phx** for Phenix,  **lhr** for London, ...
+     https://fra.ocir.io  , but replace the "fra" by the correct code : **phx** for Phoenix,  **lhr** for London, ...
   
-- The **Username** is composed of {object namespace}/{username}, for example **oractdemeabdmnative/api.user** 
+- The **Username** is composed of {object namespace}/oracleidentitycloudservice/{username}, for example **oractdemeabdmnative/api.user** 
   
-- To get your "object-storage-namespace" name, you must navigate to the "Administration" and "Tenancy Details" menu:
+- To get your **object-storage-namespace** name, you must navigate to the "Administration" and "Tenancy Details" menu:
   
    <img src="images/650/im41.png" style="zoom: 50%;" />
   
@@ -47,7 +47,7 @@ Open your project in Developer Cloud, and follow the steps below:
 
 ### Step 2: Configure the Docker build job for building your container - create the job and get required libraries
 
-- Click **Build** in the left nav bar, then click **New Job**. 
+- Click **Build** in the left nav bar, then click Create Job**. 
 
   ![](images/650/image034-1.png)
 
@@ -76,25 +76,10 @@ Open your project in Developer Cloud, and follow the steps below:
 
   
 
-- Navigate to **Steps**, and use the **Add Step** button to select **Unix Shell** and enter the below commands in the **Script** field
 
-```
-    chmod 400 atpkey
-    scp -o 'StrictHostKeyChecking no' -i atpkey opc@130.61.120.69:/home/opc/jle/instantclient-basic-linux.x64-12.1.0.2.0.zip instantclient-basic-linux.x64-12.1.0.2.0.zip
-    ls -al 
-```
+### Step 3: Add steps to the build: Execute the Docker commands
 
-​	![](images/650/image_unix-1.png)
-
-- Explanation of these operations:
-  We need the library to access the ATP database, called **instantclient** in the environment where we will execute the Docker Build operation, so we can include it in the container.  Since this is a "Licensed" library that can be downloaded from the Oracle website by accepting the T&C's, we automate this operation by supplying a copy on a running Compute instance with the IP address 130.61.120.69.
-
-  
-  
-
-### Step 3: Add more steps to the build: Execute the Docker commands
-
-- Use the **Add Step** button and add a step of type **Docker Builder->Docker login**. 
+- Use the **Add Step** button and add a step of type **Docker -> Docker login**. 
 
 - ![](images/650/image038-1.png)
 
@@ -106,21 +91,25 @@ Open your project in Developer Cloud, and follow the steps below:
 
 
 
-- Using the **Add Step** drop-down, select **Docker Builder->Docker build**. 
+- Using the **Add Step** drop-down, select **Docker->Docker build**. 
 
   ![](images/650/image038-3.png)
 
   - Select the **MyOCIR** registry from the dropdown field of the  **Registry Host** field (should be pre-filled in)
 
-  - The **Image Name** is composed as follows: my_tenancy_namespace/your_repo_name/image_name
-    - Example : oractdemeabdmnative/jle_repo/atp01
-    - Use your initials in the repo name to distinguish from other users
-    
+  - The **Image Name** is composed as follows: my_tenancy_storage_namespace/your_repo_name/image_name
+
+    - my_tenancy_storage_namespace: this is the name of your storage namespace you collected earlier
+    - your_repo_name: a name you can choose, for example including your initials in case you are sharing a tenancy with other participants
+    - image_name: name of the image you want to create
+
+  - Example : oractdemeabdmnative/jle_repo/atp01
+
   - In the **Source** radio buttons, click **Context root in Workspace**.
 
     ![](images/650/im52.png)
 
-- Using the **Add Step** drop-down, select **Docker Builder->Docker push**. 
+- Using the **Add Step** drop-down, select **Docker->Docker push**. 
   - Your **Registry Host** and **Image Name** should be pre-filled with the previously specified values.
 
   ![](images/650/im46-1.png)
@@ -141,13 +130,13 @@ Before we can run the Build Job we just created, we need to parametrize some scr
 - You need to ensure the docker image has the right connection information for connecting to the database.  Navigate to the folder **aone/scripts**, and locate the file called **dbconfig.js**
 
   - In this file, enter the username, password and connect string of your ATP database.  This is just a crude way of simply setting up connectivity, this should be parametrized in a real-world deployment!
-  - The connect string is  **jleoow_high**, where jleoow is your database name.
+  - The connect string is composed as **\<db_name\>_high**, for example :   **jleoow_high**, where jleoow is your database name.
   - Hit the **Commit** button to save the modifications.
 
 
 
 
-- **Running on your personal Trial instance** ?  Then you have [two more steps](LabGuide650BuildDocker_own1.md) to perform.
+- **ATTENTION !!!!! ....   Running on your personal Trial instance** ?  Then you have [two more steps](LabGuide650BuildDocker_own1.md) to perform.
 
 
 

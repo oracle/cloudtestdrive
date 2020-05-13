@@ -2,12 +2,18 @@
 ---
 # ORACLE Cloud Test Drive #
 
-## How to request for trial ##
+## How to request an Oracle Cloud Free Tier account ##
 
-Open [cloud.oracle.com](https://cloud.oracle.com/home)
+Most of the labs in this repository require you to have access to an Oracle Cloud Tenancy.  You can simply request to obtain an Oracle Cloud Free Tier account by following the below instructions.
 
-At top right corner click a button *Try for Free*
+- Using a browser, navigate to  [the Oracle website](https://oracle.com)
 
-Click the "Sign Up" button and follow the wizard.
+- On the top right of the screen, click the button "Try Oracle Cloud Free Tier"
 
-Login tou Your Cloud account
+- Click the "Start for free" button
+
+- Follow the instructions of the wizard that will guide you throught the account creation process
+
+  
+
+

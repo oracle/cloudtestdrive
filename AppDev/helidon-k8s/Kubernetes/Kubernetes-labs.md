@@ -6,55 +6,21 @@
 
 ## C. Deploying to Kubernetes 
 
-### **Introduction**
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
 
-We have tried to set the labs up so that you do not need to be an expert in Kubernetes to run them. However we do expect that you have some basic knowledge of how to use a computer, open terminals etc.
+This video is an introduction to the Kubernetes labs. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
-The host operating system for the virtual machines we use for attendees to run the lab use Linux, we expect you to have some familiarity with Linux, and especially the terminal environment. We assume that you know enough that when you see something like the following instruction and sample text
+[![Kubernetes labs Introduction Video](https://img.youtube.com/vi/6Kg-zH6h3Is/0.jpg)](https://youtu.be/6Kg-zH6h3Is "Kubernetes labs introduction video")
 
-*In the helidon-labs-stockmananger folder do an ls to see what's there*
+</p>
+</details>
 
-```
-$ ls
-DBScripts			PutObjectStoreDirHere		Wallet_ATP			buildPushToRepo.sh		confsecure			repoConfig.sh			src
-Dockerfile			README-Lombok			app.yaml			buildV0.0.2PushToRepo.sh	etc				runLocalExternalConfig.sh	target
-ObjectStore			README.md			buildLocalExternalConfig.sh	conf				pom.xml				runRepo.sh
-```
+---
 
-That means you will know you need to cd to the folder (if you're not already there !) type ls (not the preceding $) and that the output will be DBScripts et all (so you don't type that)
+## Introduction
 
-Also there are a number of situations in the labs where we will be running a command to get some information and then expect you to use the returned information in the next command. **For example** (so don't run this) if the instructions say 
-
-*Run the kubectl command to get the pods list on the kubesystem namespace*
-
-```
-$ kubectl get pods -n kube-system
-NAMESPACE     NAME                                     READY   STATUS    RESTARTS   AGE
-kube-system   coredns-6dcc67dcbc-kw9qw                 1/1     Running   0          6h45m
-kube-system   coredns-6dcc67dcbc-zlww8                 1/1     Running   0          6h45m
-kube-system   etcd-docker-desktop                      1/1     Running   0          6h44m
-kube-system   kube-apiserver-docker-desktop            1/1     Running   0          6h44m
-kube-system   kube-controller-manager-docker-desktop   1/1     Running   0          6h44m
-kube-system   kube-proxy-w9njs                         1/1     Running   0          6h45m
-kube-system   kube-scheduler-docker-desktop            1/1     Running   0          6h44m
-kube-system   kubernetes-dashboard-58d96f69b8-lgk9t    1/1     Running   0          6h43m
-```
-*Then let's look at your dashbaord in more detail*
-
-```
-$ kubectl describe pod kubernetes-dashboard-58d96f69b8-lgk9t -n kube-system
-Name:           kubernetes-dashboard-58d96f69b8-lgk9t
-Namespace:      kube-system
-Priority:       0
-Node:           docker-desktop/192.168.65.3
-Start Time:     Fri, 03 Jan 2020 09:54:07 +0000
-Labels:         app=kubernetes-dashboard
-                pod-template-hash=58d96f69b8
-                release=kubernetes-dashboard
-<lots of output removed>
-```
-
-We do assume that you will recognize that the output you get from the first command would be different from the output we give, and that if you were to run the second command the `kubernetes-dashboard-58d96f69b8-lgk9t` will need to be replaced with whatever the first command returned on **your environment** when you ran it. We to try to remind folks about this occasionally, but if we did so everywhere it would get tedious for people having to read it.
+In this series of labs we will focus on the specific features of Kubernetes to run Microservices.  These labs assume you have previously executed the **A. Helidon** and **B. Docker** part of this lab series.  In case you would want to execute *only this part C. Kubernetes of the labs,* you need to perform some [initial steps](../ManualSetup/KubernetesSetup.md) to prepare your environment.
 
 ## The Labs
 
@@ -78,7 +44,7 @@ Monitoring metrics may also help us determining things like how changes when rel
 As you've seen Prometheus is great at capturing the data, but it's not the worlds best tool for displaying the data. Fortunately for us there is an open source tool called **Grafana** which is way better than Prometheus at this.
 
 The process for installing and using Grafana is detailed in the next lab :  
-[Visualusing with Grafana lab document.](monitoring-kubernetes/VisualizingWithGrafanaLab.md)
+[Visualising with Grafana lab document.](monitoring-kubernetes/VisualizingWithGrafanaLab.md)
 
 
 
@@ -96,12 +62,19 @@ To understand how this works see the [Health Readiness Liveness labs.](cloud-nat
 
 
 
-### 5. Horizontal Scaling
+### 5. Horizontal and Auto Scaling
 
-Kubernetes also supports horizontal scaling of services, enabling multiple instances of a service to run with the load being shared amongst all of them.
+Kubernetes also supports horizontal scaling of services, enabling multiple instances of a service to run with the load being shared amongst all of them. 
 
-[The Replica set labs](cloud-native-labs/Horizontal-scaling/Horizontal-scaling.md) 
+This first scaling lab shows how you can manually control the number of instances.
 
+[The horizontal scaling labs](cloud-native-labs/Horizontal-scaling/Horizontal-scaling.md) 
+
+Horizontal scaling provides you with a manual process to control how many instances of a microservice you have running, but Kubernetes also offers a mechanism to automatically change the number of instances.
+
+This second scaling labs shows how you can have Kubernetes automatically scale the number of instances for you.
+
+[The auto scaling labs](cloud-native-labs/Horizontal-scaling/Auto-scaling.md)
 
 
 ### 6. Rolling out deployment updates
@@ -117,22 +90,17 @@ Commonly when a service is deployed it will be updated, Kubernetes provides supp
 
 The following sections have not yet been written, they will be added in time.
 
-#### Horizontal Autoscaling
-
-Sadly the automatic horizontal scaling capability which would automatically adjust the number of instances of a pod based on it's load seems to currently be unavailable as one of the services it depended on (Heapster) is no longer available in Kubernetes. Once a solution for that is available it will be documented here.
-
 #### Automatic CI/CD and Kubenetes
 
-To be completed.
+Integration of DevCS pipelines into the lab using DevCS as the build engine.
 
 #### Automatic A/B testing
 
-To be completed.
+Automated testing of different versions of a microservice to see which is most effective.
 
 #### Services Meshes.
 
-The service mesh is one of the latest ideas to come out of the cloud native forum.
-To be completed
+The service mesh is one of the latest ideas to come out of the cloud native forum. It's basically a layer that sits on top of the various services in your Kubenetes environment. It can provide multiple capabilities, including ensuring that those communications re secure (service meshes can manage cross service encryption) but also implementing policies within your service communications, for example rate limiting to prevent a wayward services using all of the resources of another service, thus starving other clients. One very useful feature is the ability to do things like identify test traffic based on the user, and to route the test traffic to a different version of a service. Thus enabling the testing of a new version of a microservice within the full operational environment, but with the normal user traffic still going to the production versions of a service.
 
 
 

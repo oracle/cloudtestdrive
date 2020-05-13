@@ -28,11 +28,34 @@ Let’s get started!
 
 - In the Builders tab, add the following Builder steps:
 
-  - Docker Login : use the predefined Repository definition **MyOCIR** as you did in the previous job
+  - **Docker Login** : use the predefined Repository definition **MyOCIR** as you did in the previous job
 
     ![](images/670/im53.png)
 
-  - Unix Shell Builder:
+  
+
+  - **OCIcli** step: 
+    - Enter the required parameters to set up the OCI Command line environment:
+      - User OCID : the OCID of the user you attached the certificate to.  This string starts with : ocid1.user.oc1..aaaaaaaavgjs6jhi...
+      - Fingerprint : the fingerprint of your API Key.  Forma looks like: 60:25:4a:81:01:55:85:c3:1c:c7:18 ...
+      - Tenancy: this is the OCID of the tenancy.  This OCID starts with: ocid1.tenancy.oc1..aaaaaaaa46ywh ...
+      - Private Key: visualize the private key you generated in the **Cloud Shell** with the command:
+        - `cat api_key.pem`
+        - Paste the full text of the result in the Private Key field.  Below an abbreviated exaple:
+        - -----BEGIN RSA PRIVATE KEY-----
+          MIIEpQIBAAKCAQEAvErG6O47tjqDUzJGtIpks6CO0ydja/nGEkr3k3VQrCggY9RX
+          SX34OuAgN9YFB1y1UqC6bH2NkT7DyKhuYMPFzzOgpqOLxWwmiXWYvhy28O191pkQ
+          ...
+          x5aB2O+hkY2k2QwiA8D4ZKsd+tiJyxj5fomzCt4pNWUGOyUuweE4BroH1XRizKmK
+          rDNFBWkCgYEAtRL5vd4UOXxGP6bAjPs1ZzI3JkLxeznBMHHnl03f6nMHJEgcCY3K
+          08oVHiNKOPxhsJ8zgWHXB40QUZ3+WGEL9QCBd3Hv1lsOC83KfY+FIiBCY/++mPfj
+          l8qwvaYS9fp8jwDiQ+H1rfD5YCD5HV1Mh4dcTNY0A147xHQBsEIdqts=
+          -----END RSA PRIVATE KEY-----
+      - Region: name of the region your tenancy is running in.  For example : eu-frankfurt-1
+
+  
+
+  - **Unix Shell** step:
 
     - launch the script "kubescript.sh" that is in your repository.  We will edit this script after completing the Build definition to adapt it to your needs.
 
@@ -60,7 +83,7 @@ Let’s get started!
   
   ![](images/670/im52.png)
   
-  **Attention** : make sure NOT to accidentally insert any line feeds in the long lines 4 and 17 that contain a certificate.  See picture above how the file should look after the paste command.
+  **Attention** : make sure NOT to accidentally insert any line feeds in the long line 4 that contains a certificate.  See picture above how the file should look after the paste command.
   
   - Commit the new file
 
@@ -125,91 +148,14 @@ Let’s get started!
 
   ![](images/670/log_deploy.png)
 
-- Although we included a few commands in the build job to show the resulting state of the cluster, the best way to visualize this is by launching the **kubernetes Dashboard**.  This is explained in the next step.
 
 
 
-### Step 5: Setting up kubectl
-
-First make sure you have the **kubectl** executable available on the machine you are running this lab on :
-
-```
-kubectl --help
-```
-
-If not, you can follow [the detailed steps on this page](env-setup-kubectl.md) for setting up this utility.
-
-Next you need to configure your terminal window to point to the kubeconfig configuration file that belongs to the cluster you just created. This file has been generated during the terraform setup of your cluster.
-
-The *kubeconfig* file contains the necessary details and parameters to connect to Oracle Container Engine (Kubernetes cluster). The *clusters* parameter defines the available clusters. 
-
-When you execute a `kubectl` command first it tries to read the default configuration file: *config* file from default location. On Linux it is `~/.kube` and on Windows it is `c:\Users\<USERNAME>\.kube`. But you can store *config* file at different path and even with different name e.g. *mykubeconfig_0*. Just set the configuration file location as KUBECONFIG environment variable in your command line terminal where you want to execute `kubectl` commands.
-
-```
-export KUBECONFIG=~/Downloads/mykubeconfig_0
-```
 
 
+### Step 5: Visualize the Service to obtain the URL of your application
 
-*Remark: in case you are running these commands on a Windows machine, the correct syntax is:*
-
-```
-				set KUBECONFIG=c:\Downloads\mykubeconfig_0
-```
-
-
-
-Now `kubectl` is ready to use. Test again using the version option.
-
-```
-$ kubectl version
-Client Version: version.Info{Major:"1", Minor:"8", GitVersion:"v1.8.4", GitCommit:"9befc2b8928a9426501d3bf62f72849d5cbcd5a3", GitTreeState:"clean", BuildDate:"2017-11-20T05:28:34Z", GoVersion:"go1.8.3", Compiler:"gc", Platform:"linux/amd64"}
-Server Version: version.Info{Major:"1", Minor:"7+", GitVersion:"v1.7.4-2+af88312fe58fec", GitCommit:"af88312fe58fec576aed346d707bf58f0132ef2a", GitTreeState:"clean", BuildDate:"2017-10-24T20:06:27Z", GoVersion:"go1.8.3", Compiler:"gc", Platform:"linux/amd64"}
-$ 
-```
-
-Check the output, it has to contain both client and server version information.
-
-### Step 6: Kubectl Web UI (dashboard)
-
-Dashboard is a web-based Kubernetes user interface what is deployed by default on Oracle Container Engine. You can use Dashboard to deploy containerized applications to a Kubernetes cluster, troubleshoot your containerized application, and manage the cluster itself along with its attendant resources. You can use Dashboard to get an overview of applications running on your cluster, as well as for creating or modifying individual Kubernetes resources (such as Deployments, Jobs, DaemonSets, etc).
-
-You can access Dashboard using the kubectl command-line tool by running the following command:
-
-```
-$ kubectl proxy
-Starting to serve on 127.0.0.1:8001
-```
-
-This command runs `kubectl` in a mode where it acts as a reverse proxy. It handles locating the apiserver and authenticating and make Dashboard available at the following link:
-
-http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#%21/overview?namespace=default.
-
-The default port used by the proxy command is port 8001. In case this port is already in use by another application you can easily specify to use another port using following syntax:
-
-```
-kubectl proxy --port=8333
-```
-
-You will be asked to provide the kubeconfig file before you can access the console.
-
-- Choose the Kubeconfig option
-- Click on the "Choose kubeconfig file" area and select the kubeconfig file you have downloaded on your machine
-- Click "Sign In"
-
-![alt text](images/670/kubeproxy.png)
-
-REMARK: the screen you will get might look slightly different, as this depends on the state of the cluster you are visualizing.
-
-![alt text](images/670/wercker.application.31.png)	
-
-
-
-### Step 7: Visualize the Service to obtain the URL of your application
-
-In order to see the application you just deployed, we need to construct the URL where the container is listening.  You can do this via the command line and kubectl, or via the Kubernetes dashboard.
-
-Using the command line:
+In order to see the application you just deployed, we need to construct the URL where the container is listening.  You can do this via the command line and kubectl.
 
 - ```
   kubectl get nodes -o wide
@@ -230,15 +176,7 @@ Using the command line:
   kubernetes   ClusterIP   10.96.0.1     <none>        443/TCP          16h
   ```
 
-  Now elect any of the external IP addresses of the nodes, and combine it with the external port of your service : in the above example : 130.61.56.185:31056
-
-You can obtain the same info using the Kubernetes dashboard:
-
-- Navigate to the **Cluster - Nodes** screen and select a node to get its external IP addres
-  - ![alt text](images/670/ExternalIP2.png)
-
-- Navigate to the **Discovery and Load Balancing - Services** menu to view the port
-  - ![alt text](images/670/ServicePort2.png)
+  Now select any of the external IP addresses of the nodes, and combine it with the external port of your service : in the above example : 130.61.56.185:31056
 
 
 

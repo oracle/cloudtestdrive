@@ -21,9 +21,9 @@ Let’s get started!
 In this section, you’ll provision a complete development platform for your team by leveraging DevCS’s web interface.
 
 - Access your Developer Cloud Instance : Use the URL to your Developer Cloud Console you saved during the setup of your environment 
-- On the Welcome page, click **New Project**.
+- On the Welcome page, click **+ Create**.
 
-![](images/150/image001-3.png)
+![](images/150/create.png)
 
 
 
@@ -103,15 +103,12 @@ In this section, you’ll provision a complete development platform for your tea
 
 
 
-### Extra step when using a personal Trial environment ###
-
-If you are using a personal trial Cloud Tenancy, you need to upload some larger files to the Developr Cloud git Repository.  The easiest way to do this consists of making a local branch of the repository on your machine.
-
 ### Cloning your repository locally
 
-In order to easily update and upload files into your Developer repository, we will clone the newly created DevCS repository onto your (VM) machine.
+We want to upload some larger files (e.g. libraries) to the Developr Cloud git Repository.  The easiest way to do this consists of making a local branch of the repository on your machine.  For this lab, to avoid having to install software on your local machine (git, kubectl, terraform), we will be using the **Oracle Cloud Shell**, a Linux environment that is part of your **Oracle Cloud Console** in the browser.
 
-- Open a Terminal window on your laptop
+To open the **Cloud Shell**, use the button **">_"** in the upper right of the console.
+
 - In the home directory, create a directory where you will clone the repository, and move into this directory:
 
 ```
@@ -135,11 +132,11 @@ The result should look like:
 
 `git clone https://<user_name>@ctddevcs-<instance_name>.developer.ocp.oraclecloud.com/ctddevcs-<instance_name>/s/ctddevcs-<instance_name>_atpdocker_1741/scm/ATPDocker.git`
 
+You will be asked for the password of the user you used to login to the DevCS environment.
+
 This will result in following output:
 
 ![](images/150/image014.png)
-
-
 
 
 

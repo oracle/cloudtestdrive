@@ -8,7 +8,19 @@
 
 ## 4. Helidon and operations
 
-One thing that many developers forget is that once they have finished writing code that it still has to run and be maintained. With the introduction of DevOps a lot of developers suddenly found they were the ones being woken up in the middle of the night to fix problems in their code. That changes the perception a bit and not many developers are acutely aware that they will have ongoing involvement in the code well after the time it compiles cleanly and passed the text suite.
+<details><summary><b>Self guided student - video introduction</b></summary>
+<p>
+
+This video is an introduction to the Helidon operations support lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Helidon operations support lab Introduction Video](https://img.youtube.com/vi/MF7LaX0nH-o/0.jpg)](https://youtu.be/MF7LaX0nH-o "Helidon operations support lab introduction video")
+
+</p>
+</details>
+
+---
+
+One thing that many developers used to forget is that once they have finished writing code it still has to run and be maintained. With the introduction of DevOps a lot of developers suddenly found they were the ones being woken up in the middle of the night to fix problems in their code. That changes the perception somewhat and now many developers are acutely aware that they will have ongoing involvement in the code well after the time it compiles cleanly and passed the text suite.
 
 To help maintain and operate systems after they have been released a lot of information is needed, especially in situations where a bug may be on one service, but not show up until the resulting data has passed through several other microservcies. 
 
@@ -21,13 +33,13 @@ We now managed to achieve the situation where we have a set of microservices tha
 
 Tracing in a microservices environment allows us to see the flow of a request across all of the microservices involved, not just the sequence of method calls in a particular service. 
 
-Helidon has built-in support for tracing. There are a few actions that we need to take to activate this.
+Helidon has built-in support for tracing. There are a few steps that we need to take to activate this.
 
 Firstly we need to deploy a tracing engine, Helidon supports several tracing engines, but for this lab we will use the Zipkin engine. For now we will use docker to run Zipkin. In the Kubeneres labs we will see how we can run Zipkin in Kubernetes.
 
 In the VM you have docker installed and running, so to start zipkin:
 
--  Open a terminal on your Linux desktop
+- Open a terminal on your Linux desktop
 - Run the following command to start Zipkin in a container:
   - `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin`
 
@@ -36,12 +48,40 @@ Starting zipkin docker image in detached mode
 d12b253c50b7793ca8e3eb64658efead336fa3880d3df040f12152b57347f067
 ```
 
-- Now open a browser on the **Linux Desktop** 
+- Now open a browser in the **Virtual machine desktop** 
 - Navigate to : http://localhost:9411/zipkin/ 
 
 ![zipkin-initial](images/zipkin-initial.png)
 
-You normally would need to add the zipkin packages into the pom.xml file, but that's already been done for you. Helidon automatically recognizes the presence of the zipkin files in it's runtime environment.
+Now you need to add the zipkin packages to the pom.xml file for **both** the storefront and stockmanager projects. This will trigger Helidon to automatically setup the tracing, no code changes are needed by you at all to use the tracing.
+
+For **both** the storefront and stockmanager projects open the pom.xml file, this is in the top level of the project, towards the end of the files for the project.
+
+Look for the dependency `helidon-tracing-zipkin` in **each** pom.xml file, you may want to use the search facility to look for zipkin. You will find a section that has been commented out and looks like the following
+
+```
+		<!-- tracing calls -->
+		<!-- 
+		<dependency>
+			<groupId>io.helidon.tracing</groupId>
+			<artifactId>helidon-tracing-zipkin</artifactId>
+		</dependency>
+		-->
+```
+
+- Remove the `<!--` and `-->` around the dependency ONLY
+
+The result will look like 
+
+```
+		<!-- tracing calls -->
+		<dependency>
+			<groupId>io.helidon.tracing</groupId>
+			<artifactId>helidon-tracing-zipkin</artifactId>
+		</dependency>
+```
+
+You now need to tell Helidon what to call the tracing requests and where traces should be sent.
 
 - In the **storefront** project, navigate to the toplevel folder **conf** and open file **storefront-config.yaml**
 
@@ -71,7 +111,7 @@ You normally would need to add the zipkin packages into the pom.xml file, but th
 
 
 
-- Make a request, for example reserving stock:
+- Make a request, for example reserving stock (this may take a few seconds due to the lazy initialization) :
   -  `curl -i -X POST -u jill:password -d '{"requestedItem":"Pencil", "requestedCount":7}' -H "Content-type:application/json" http://localhost:8080/store/reserveStock`
 
 ```
@@ -86,7 +126,7 @@ content-length: 37
 
 We've successfully reserved 7 pencils
 
-- Go to the **zipkin web page** and click find traces, you'll see the list of traces
+- Go to the **zipkin web page** and click find traces, you'll see the list of traces (the details you have will of course be different)
 
 
 
@@ -122,7 +162,7 @@ The pom.xml will need to be updated for the metrics, that's already been done fo
 @Counted(monotonic = true)
 @Authenticated
 @Timeout(value = 15, unit = ChronoUnit.SECONDS)
-@Log
+@Slf4j
 @NoArgsConstructor
 public class StorefrontResource {
 ```
@@ -265,7 +305,7 @@ content-length: 148
 ```
 Now let's look at the metrics (I removed a bunch of unneeded output here to focus on the counters):
 
--  `curl -i -X GET http://localhost:9080/metrics`
+-  `curl -i -X GET http://localhost:9080/metrics/`
 
 ```
 HTTP/1.1 200 OK
@@ -292,7 +332,7 @@ application:com_oracle_labs_helidon_storefront_resources_storefront_resource_sto
 We can see that now 5 requests in total have been made to the storefront resource, and 5 requests to the listAllStock method, the others have had none. If we were looking for a place to optimize things then perhaps we might like to consider looking at that method first !
 
 
-Why port 9080 ? Well you may recall that in the helidon core lab we defined the network as having two ports, one for the main application on port 8080 and another for admin functions on port 9080, we then specified that metrics (and health which we'll see later) were in the admin category so they are on the admin port. It's useful to splis these things so we don't risk the core function of the microservice getting mixed up with operation data.  
+Why port 9080 ? Well you may recall that in the helidon core lab we defined the network as having two ports, one for the main application on port 8080 and another for admin functions on port 9080, we then specified that metrics (and health which we'll see later) were in the admin category so they are on the admin port. It's useful to split these things so we don't risk the core function of the microservice getting mixed up with operation data.  
 
 ### Other types of metrics
 There are other types of metrics, for examples times. 
@@ -364,11 +404,9 @@ application:list_all_stock_meter_fifteen_min_rate_per_second 0.00526411632294898
 ```
 
 ### Combining counters, metrics, times and so on
-You can have multiple annotations on your class / methods, but be careful that you don't get naming coliccions, if you do your program will likely fail to start.
+You can have multiple annotations on your class / methods, but be careful that you don't get naming collisions, if you do your program will likely fail to start.
 
 By default any of `@Metric`, `@Timed`, `@Counted` etc. will use a name that's depending on the class / method name, it does **not** append the type of thing it's looking for. So if you had `@Counted` on the class and `@Timed` a class (or `@Counted` and `@Timed` on a particular method) then there would be a naming clash between the two of them. It's best to get into the habit of naming these, and putting the type in the name. Then you also get the additional benefit of being able to easily extract it using the metrics url like `http://localhost:9080/metrics/application/listAllStockMeter`
-
-
 
 
 ### End of the lab

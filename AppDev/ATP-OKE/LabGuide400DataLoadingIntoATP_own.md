@@ -24,40 +24,36 @@ In real life, you would want to set up a more sophisticated logic to manage your
 
 
 
-### STEP 1: Set up your ATP Wallet in Developer Cloud
+### STEP 1: Set up your ATP Database Wallet in Developer Cloud
 
 In the ATP Connection step of this lab, you downloaded the ATP Connection wallet zip file into the Downloads folder.  We will now unizp the file and copy both the wallet zip file and the folder into the git repository folder.
 
 ```bash
-cd Downloads
+# Position yourself in the git repo
+cd dev/ATPDocker
 
-# List downloaded files
-ls -l
+# Download the file via the OCI CLI, replacing the database OCID with the OCID of your database
+oci db autonomous-database generate-wallet --file Wallet.zip --password 'Pa$$w0rd' --autonomous-database-id ocid1.autonomousdatabase.oc1.eu-frankfurt-1.abtheljtn3slgmzqr2benreqkrs55gwg3v3tz6lgwhgfgzaccrb
 
-unzip Wallet_yourwalletfilename.zip -d Wallet_yourwalletfilename
-
-# Move Wallet file and directory into your git repository - assuming you placed it in "dev"
-mv Wallet_yourwalletfilename.zip ~/dev/ATPDocker
-mv Wallet_yourwalletfilename ~/dev/ATPDocker
+# Unzip the file
+unzip Wallet.zip -d Wallet
 ```
 
-
+- In the  above sequence of commands, we used the "OCI CLI", or the **Oracle Cloud Command Line Interface**  to interact with elements in the infrastructure, in this case the database.  For more information on how this works, you can look at the [documentation](https://docs.cloud.oracle.com/en-us/iaas/tools/oci-cli/2.9.9/oci_cli_docs/cmdref/db/autonomous-database/generate-wallet.html).
 
 - On the command line, add the new files to the git repository, commit them and push them to the Developer Cloud with the following commands:
 
 ```bash
-# Position yourself in the actual Git directory
-cd ~/dev/ATPDocker
-
 # add the new files to the git repository
 git add .
 
-# Commit the change with the appropriate comment
-git commit -m "Add wallet"
-
-# In case you get an error "Please tell me who you are" at this point, please execute below commands:
+# Setup git to be able to commit changes
 git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
+git config --global push.default simple
+
+# Commit the change with the appropriate comment
+git commit -m "Add wallet"
 
 # Push the change from your laptop back into the DevCS repository
 git push
@@ -67,7 +63,7 @@ git push
 
 - Your wallet is now visible in Developer Cloud - you might have to refresh your browser window to see the changes
 
-![](/Users/jleemans/dev/github/old/cloudtestdrive/AppDev/ATP-OKE/images/400/wallet_added.png)
+![](images/400/wallet_added.png)
 
 
 
@@ -105,7 +101,8 @@ git push
   - username of the ATP instance : **admin**
   - password of the ATP instance
   - your wallet .zip file
-  - your connect string, for example **jleoow_high**, where *jleoow* is the name of the database
+  - your connect string, for example **jleoow_high**, where *jleoow* is the name of the database.
+    Check out your **tnsnames.ora** file inside the wallet folder for a list of available connections.
   - the sql file containing the create script: **aone/create_schema.sql**
 
 
@@ -144,7 +141,7 @@ Now navigate back to the Build job you launched.
 
 To execute the query, hit the green arrow "Run Statement" icon
 
-![](images/400/sql_2.png)
+![](images/400/sql_3.png)
 
 
 

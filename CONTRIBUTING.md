@@ -1,6 +1,6 @@
 # Contributing to Oracle GitHub projects
 
-*Copyright (c) 2016, Oracle and/or its affiliates. All rights reserved.*
+*Copyright (c) 2020, Oracle and/or its affiliates. All rights reserved.*
 
 Pull requests can be made under the OCA - 
 [Oracle Contributor Agreement](https://www.oracle.com/technetwork/community/oca-486395.html).
