@@ -37,7 +37,7 @@ As we've seen a service in Kubernetes is delivered by programs running in contai
 <p>
 If you haven't written it down, or have forgotten how to get the IP address of the ingress controller service you can do the following
 
-- In the Oracle Cloud Shell type the following
+- In the OCI Cloud Shell type the following
   - `kubectl get services -n ingress-nginx`
   
 ```
@@ -51,7 +51,7 @@ The Column EXTERNAL-IP gives you the IP address, in this case the IP address for
 
 First let's make sure that the service is running, (replace <ip address> with the external ip address of the ingress)
 
-- In the Oracle Cloud Shell
+- In the OCI Cloud Shell
   - `curl -i -X GET -u jack:password http://<ip address>:80/store/stocklevel`
 
 ```
@@ -381,7 +381,7 @@ First let's start following the logs of your pod
 
 - Open new browser window or tab
 - Go to your cloud account
-- Once in the cloud account open a cloud shell in the new window
+- Once in the cloud account open an OCI Cloud Shell in the new window
 
 - Log in to the your container and create the /frozen file  (replace the pod Id with yours)
   -  `kubectl exec -ti storefront-b44457b4d-29jr7 -- /bin/bash`
@@ -538,7 +538,7 @@ That's all we're going to do with bash shell programming for now !
 
 Having made the changes let's undeploy the existing configuration and then deploy the new one
 
-In the Oracle Cloud Shell
+In the OCI Cloud Shell
 - Navigate to the **helidon-kubernetes** folder
 - Run the undeploy.sh script
   -  `bash undeploy.sh `

@@ -34,6 +34,28 @@ Because you are working in your own Cloud Tenancy, you need to perform a few ext
 
 
 
+- Make sure the **KUBECONFIG** variable is still set correctly, as you might be in a different cloud shell session as compared to when you set up the cluster:
+
+  
+- Check the value of the variable: 
+  `echo $KUBECONFIG`
+    
+  
+    - This command should show something like : 
+    
+      
+    - ```
+    /home/jan_1_dema/dev/ATPDocker/terraform_0.12/mykubeconfig_0
+        ```
+    
+  - To set the variable correctly, go to your terraform folder and re-define it:
+
+  
+    - ```
+      cd dev/ATPDocker/terraform_0.12
+      export KUBECONFIG=$PWD/mykubeconfig_0
+      ```
+  
 - Create a secret for making the database wallet available as a mounted volume inside your pods
 
   - Run the following command :

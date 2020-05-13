@@ -13,9 +13,9 @@ In addition, there's a set of featured called "Augmented analytics" in this plat
 
 # Prerequisites
 
-You require the following: 
-- An Oracle Cloud tenancy
-- Either an Oracle Analytics Cloud instance **or** a local installation of Oracle Analytics Desktop. Please follow these [instructions](../prereq3/lab.md) to install Oracle Analytics desktop.
+You require an Oracle Analytics Cloud instance **or** a local installation of Oracle Analytics Desktop. 
+
+Please follow these [instructions](../prereq3/lab.md) to install Oracle Analytics Desktop. Note that you also require the machine learning package to be installed in Oracle Analytics desktop as described in these instructions.
 
 # Data Preparation
 

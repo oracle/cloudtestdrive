@@ -23,11 +23,11 @@ This video is an introduction to the Kubernetes core features lab. Once you've w
 
 ## Lab Setup
 
-You will be using the **Oracle Cloud shell** to run the Kubernetes parts of the labs.
+You will be using the **Oracle OCI Cloud shell** to run the Kubernetes parts of the labs.
 
-The **Cloud Shell** is accessible through the Oracle Cloud GUI, and has a number of elements set up out of the box, like the Oracle Cloud Command Line Interface, and it also has quite some useful command-line tools pre-installed, like git, docker, kubectl, helm and more.
+The **OCI Cloud Shell** is accessible through the Oracle Cloud GUI, and has a number of elements set up out of the box, like the Oracle Cloud Command Line Interface, and it also has quite some useful command-line tools pre-installed, like git, docker, kubectl, helm and more.
 
-To access the shell, you can use the native browser on your laptop (no need for using the Linux desktop anymore).
+To access the OCI Cloud Shell, you can use the native browser on your laptop (no need for using the Linux desktop anymore).
 
 - Login to your Oracle Cloud Console
 
@@ -35,31 +35,31 @@ To access the shell, you can use the native browser on your laptop (no need for 
 
   ![](images/home-screen.png)
 
-- This will result in the cloud shell to be displayed at the bottom of your window.
+- This will result in the OCI Cloud Shell to be displayed at the bottom of your window.
 
-  - To maximise the size of the shell window, click the "Arrows" button on the right of the console as indicated below:
+  - To maximise the size of the OCI Cloud Shell window, click the "Arrows" button on the right of the console as indicated below:
 
     ![](images/cloud-console.png)
 
-Note, in some steps you may want to minimize the Oracle Cloud Shell so you can get information from the GUI. Click the arrows icon again [](images/cloud-console-shrink.png) to minimize the cloud shell and see the Oracle Cloud GUI again. Alternatively you can open a second browser window or tab onto the Oracle Cloud GUI.
+Note, in some steps you may want to minimize the OCI Cloud Shell so you can get information from the GUI. Click the arrows icon again [](images/cloud-console-shrink.png) to minimize the OCI Cloud Shell and see the Oracle Cloud GUI again. Alternatively you can open a second browser window or tab onto the Oracle Cloud GUI.
 
-In some steps you are asked to edit files. The Oracle Cloud Shell supports typical Linux editors such at `vi`, `emacs` and `nano` Use the editor you prefer to make changes to files.
+In some steps you are asked to edit files. The OCI Cloud Shell supports typical Linux editors such at `vi`, `emacs` and `nano` Use the editor you prefer to make changes to files.
 
-<details><summary><b>Permissions problem accessing the cloud shell ?</b></summary>
+<details><summary><b>Permissions problem accessing the OCI Cloud Shell ?</b></summary>
 <p>
-If you are denied access to the cloud shell then it means that you do not have the right policies set for your groups in your tenancy. This can happen in existing tenancies if you are not an admin or been given rights via a policy. (In a trial tenancy you are usually the admin with all rights so it's not generally an issue there.) 
+If you are denied access to the OCI Cloud Shell then it means that you do not have the right policies set for your groups in your tenancy. This can happen in existing tenancies if you are not an admin or been given rights via a policy. (In a trial tenancy you are usually the admin with all rights so it's not generally an issue there.) 
 
-You will need to ask your tenancy admin to add you to a group which has rights to access the cloud shell. See the [Required IAM policy](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cloudshellintro.htm#RequiredIAMPolicy) in the cloud shell documentation.
+You will need to ask your tenancy admin to add you to a group which has rights to access the OCI Cloud Shell. See the [Required IAM policy](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cloudshellintro.htm#RequiredIAMPolicy) in the OCI Cloud Shell documentation.
 </p></details>
 
 ### Downloading the scripts
 
-Firstly we need to download all of the scripts and other configuration data to run the labs into your cloud shell environment. You have a few GB of storage so these will fit just fine. The scripts and instructions are stored in git.
+Firstly we need to download all of the scripts and other configuration data to run the labs into your OCI Cloud Shell environment. You have a few GB of storage so these will fit just fine. The scripts and instructions are stored in git.
 
 
-- Open a cloud Shell
+- Open the OCI Cloud Shell
   
-- Clone the repository with all scripts from github into your cloud shell environment:
+- Clone the repository with all scripts from github into your OCI Cloud Shell environment:
   - `git clone https://github.com/CloudTestDrive/helidon-kubernetes.git`
   
 ### Downloading the database wallet file
@@ -68,7 +68,7 @@ Usually you do not hard code the database details in to the images, they are hel
 
 To keep the secrets outside the image means that you need to get the database connection details so you can add them to your Kubernetes configuration.
 
-We will use the oci shell to download the database wallet file. 
+We will use the OCI Cloud Shell to download the database wallet file. 
 
 
 - Create the wallet directory and navigate to it:
@@ -119,7 +119,7 @@ We will use the oci shell to download the database wallet file.
 
 Helm is the tool we will be using to install standard software into Kubernetes. While it's possible to load software into Kubertetes by hand Helm makes it much easier as it has pre-defined configurations (called charts) that it pulls from an internet based repository.
 
-The cloud shell has helm already installed for you, however it does not know what repositories to use for the helm charts. We need to tell help what repositories to use.
+The OCI Cloud Shell has helm already installed for you, however it does not know what repositories to use for the helm charts. We need to tell help what repositories to use.
 
 - Run the following command :
   - `helm repo add stable https://kubernetes-charts.storage.googleapis.com/`
@@ -168,7 +168,7 @@ Access to the cluster is managed via a config file that by default is located in
 
 ![](images/access-your-cluster.png)
 
-You will be presented with a page with details for downloading the kubeconfig file. Make sure the **Cloud Shell Access** is selected.
+You will be presented with a page with details for downloading the kubeconfig file. Make sure the **OCI Cloud Shell Access** is the selected option.
 
 Look for the line like shown below :
 
@@ -179,7 +179,7 @@ oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.a
 
 - Click the `Copy` to get *your* config download script (the above is an example and won't work for real)
 
-- Open your Oracle Cloud Shell window and **paste** the line to execute it.
+- Open your OCI Cloud Shell window and **paste** the line to execute it.
 
 ```
 oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaa<lots of stuff>aaa --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0
@@ -215,7 +215,7 @@ For most standard services in Kubernetes Helm is used to install and configure n
 
 The latest version of helm is helm 3. This is a client side only program that is used to configure the Kubernetes cluster with the services you chose. If you're familiar with previous versions of helm you will know about the cluster side component "tiller". This is no longer used in Helm 3
 
-Fortunately for us helm 3 is installed within the Oracle Cloud Shell, but if later on you want to use your own laptop to manage a Kubernetes cluster [here are the instructions for a local install of helm](https://helm.sh/docs/intro/install/)
+Fortunately for us helm 3 is installed within the OCI Cloud Shell, but if later on you want to use your own laptop to manage a Kubernetes cluster [here are the instructions for a local install of helm](https://helm.sh/docs/intro/install/)
 
 Our first use of helm is to install the kubernetes-dashboard This could have been installed for us by the Oracle Kubernetes Environment during cluster setup, but in this case we didn't do that as we want to show you how to use Helm.
 
@@ -249,7 +249,7 @@ Get the Kubernetes Dashboard URL by running:
 <p>
 The helm options are :
 
-- `install` do an install operation, helm has many other operations type zhelm --help` for a list.
+- `install` do an install operation, helm has many other operations type helm --help` for a list.
 
 - `kubernetes-dashboard` This is the "human" name to give the installation, it's easier to use that later on than using a machine generated one.
 
@@ -474,7 +474,7 @@ ca.crt:     1025 bytes
 - Copy the contents of the token (in this case the `eyJh........W5iA` text, but it *will* vary in your environment.) 
 - Save it in a plain text editor on your laptop for easy use later in the lab
 
-As the cloud shell runs in a web browser and is not itself a web browser we need to setup access so that the kubernetes-dashboard is available to your web browser on your laptop. This would normally be a problem as it would be running on a network that it internal to the cluster. 
+As the OCI Cloud Shell runs in a web browser and is not itself a web browser we need to setup access so that the kubernetes-dashboard is available to your web browser on your laptop. This would normally be a problem as it would be running on a network that it internal to the cluster. 
 
 Fortunately for us Kubernetes provides several mechanisms to expose a service outside the cluster network. Usually you would use port forwarding to enable this, of expose the dashboard using an ingress (more on which later)
 
@@ -495,12 +495,13 @@ The IP address of the load balancer is in the EXTERNAL-IP column. Note that this
 ### Looking around the dashboard.
 In several of the labs we're going to be using the dashboard, so let's look around it a bit to get familiar with it's operation.
 
-- Open a web browser and if you are using a virtual machine go to page `https://localhost:8443/` If you are using the cloud shell user the IP address you got above and go to `https://<load balancer ip address>`
+- Open a web browser and using the IP address you got above and go to :
+  - `https://<load balancer ip address>/#!/login`
 
-- In the browser, accept a self signed certificate. 
+- In the browser, accept a self signed certificate.
   - In Safari you will be presented with a page saying "This Connection Is Not Private" Click the "Show details" button, then you will see a link titled `visit this website` click that, then click the `Visit Website` button on the confirmation pop-up. To update the security settings you may need to enter a password, use Touch ID or confirm using your Apple Watch.
   - In Firefox once the security risk page is displayed click on the "Advanced" button, then on the "Accept Risk and Continue" button
-  - In Chrome once the "Your connection is not private" page is displayed click the advanced button, then you will see a link titled `Proceed to ....(unsafe)` click that
+  - In Chrome once the "Your connection is not private" page is displayed click the advanced button, then you should see a link titled `Proceed to ....(unsafe)` click that. We have had reports that some versions of Chrome will not allow you to do this, in which case you will need to use a different browser.
 
 You'll now be presented with the login screen for the dashboard.
 
@@ -511,7 +512,7 @@ You'll now be presented with the login screen for the dashboard.
 
 ![dashboard-login-completed](images/dashboard-login-completed.png)
 
-
+**Important** The kubernetes dashboard will only beep the login session open for a short time, after which you will be logged out. Unfortunately when your login session expires the kubernetes dashboard doesn't always return you to the login screen. If you find that you are making changes and the dashboard doesn't reflect them, or that you can see something using kubectl - but not in the dashboard, or you trigger an action on the dashboard (e.g. switching to a different a namespace) but the content doesn't update it's probable that the session has expired. In this case **reload** the web page or go to the login URL (above), this will reset the pages state and present you with the login screen again, login using your token as previously (the token does not change, so you don't have to extract it again)
 
 You now should see the **Overview** dashboard :
 
@@ -1051,7 +1052,7 @@ We got a **service unavailable** error. This is because that web page is recogni
 
 If we tried to go to a URL that's not defined we will as expected get a **404 error**:
 
--  `curl -i -k -m -X GET https://<ip address>/unknowningress`
+-  `curl -i -k -X GET https://<ip address>/unknowningress`
 
 ```
 HTTP/2 404 
@@ -1106,11 +1107,11 @@ The Oracle Cloud Image Registry (OCIR) that we used to hold the images uses toke
 
 To help you setup the image pull secrets and the others used as configuration volumes we have created a script called create-secrets.sh This script deletes any existing secrets and sets up the secrets (in your chosen namespace.) This is just a convenience script, you could of course create them by hand, but for a reproducible setup it's best to have these documented in a easily reusable form, and not have to rely on a human remembering to type them !
 
-We need to edit the script to provide the details of the OCIR you used and your identity information
+**You** need to edit the script to provide the details of the OCIR you used and your identity information
 
 - Make sure you are in the **helidon-kubernetes/base-kubernetes** directory
 
-- Edit the create-secrets.sh script
+- **Edit** the create-secrets.sh script
 
 Locate the line where we setup the docker registry details. It will look similar to the below 
 
@@ -1126,12 +1127,12 @@ You will be using the details you gathered for the docker login.
 - Replace the `fra.ocir.io` with the name of the registry you used (if its not fra.ocir.io of course !)
 - Replace `tenancy-name` with the name of your tenancy
 - Replace `username` with your username
-- Replace `abcdefrghijklmnopqrstuvwxyz` with the auth token you used previously during the docker login. As this may well have characters in it that have special meaning to the shell you should make sure that's in single quotes ( ' ' )
+- Replace `abcdefrghijklmnopqrstuvwxyz` with the auth token you used previously during the docker login. As this may well have characters in it that have special meaning to the Unix shell you should make sure that's in single quotes ( ' ' )
 - Replace `you@email.com` with the email address you used for your Oracle Cloud account.
 
 - Save the file and the changes you made
 
-- Run the following command to create the secrets:
+- Once you have made the changes above run the following command to create the secrets:
   -  `bash create-secrets.sh`
 
 
@@ -1260,7 +1261,7 @@ For example (**don't type this**) `$ kubectl create configmap sf-config-map --fr
 \---
 
 
-We need to configure the stockmanager-config.yaml file. You need to do this even if you have done the Helidon labs as the set of configuration data downloaded into the Cloud shell is generic and does not include the customizations you made in the Helidon labs 
+We need to configure the stockmanager-config.yaml file. You need to do this even if you have done the Helidon labs as the set of configuration data downloaded into the OCI Cloud Shell is generic and does not include the customizations you made in the Helidon labs 
 
 - Navigate into the folder $HOME/helidon-kubernetes/configurations/stockmanagerconf/conf
 - Open the file **stockmanager-config.yaml**
@@ -1760,11 +1761,11 @@ content-type: application/json
 content-length: 51
 strict-transport-security: max-age=15724800; includeSubDomains
 
-{"name":"My Shop","alive":true,"frozen":false}
+{"name":"My Shop","alive":true,"version":"0.0.1"}
 ```
-(assuming your storefront-config.yamp file says the storename is My Shop this is what you should get back, if you changed it it will be slightly different)
+(assuming your storefront-config.yamp file says the storename is My Shop this is what you should get back, if you changed the config file it should reflect your changes)
 
-We've mounted the sf-config-map (which contains the contents of storefront-config.yaml file) onto /conf1. Let's use a command to connect to the running pod (remember your storefront pod will have a different id so use kubectl get pods to retrieve that) and see how it looks in there, then exit the connection
+We've mounted the sf-config-map (which contains the contents of storefront-config.yaml file) onto /conf. Let's use a command to connect to the running pod (remember your storefront pod will have a different id so use kubectl get pods to retrieve that) and see how it looks in there, then exit the connection
 
 - Execute these commands :
   -  `kubectl exec -it storefront-588b4d69db-w244b -- /bin/bash`
@@ -1798,7 +1799,7 @@ As expected we see the contents of our config file. Let's use the dashboard to m
 
 ![Config Maps details](images/config-map-orig-details.png)
 
-As we'd expect it has our contents (You may have text that doesn't say "My Shop" by instead shows what you edited it to in the helidon labs, if so don't worry)
+As we'd expect it has our contents (You may have a different storename than `My Shop` if you changed the storefront-config.yaml file before creating the config map)
 
 - Click the **Edit button** (upper right) to get an on-screen editor where we can change the yaml that represents the map. 
 
@@ -1806,7 +1807,7 @@ As we'd expect it has our contents (You may have text that doesn't say "My Shop"
 
 - Locate the **storename** attribute at the bottom of the file. 
 
-- Now edit the text and **change** the *'My Shop'* to something else. Be sure to only change the text, not the quote characters or other things (don't want to create corrupt YAML which will be rejected).
+- Now edit the text and **change** the text `My Shop` to something else. Be sure to change only the `My Shop` text, not the quote characters or other things (you don't want to create corrupt YAML which will be rejected).
 
 
 
@@ -1814,7 +1815,7 @@ As we'd expect it has our contents (You may have text that doesn't say "My Shop"
 
 - Click on the update button to save your changes
 
-You'll see the changes reflected in the window. If you made any changes which caused syntax errors then you'll get an error message and the changes will be discarded.
+You'll see the changes reflected in the window. If you made any changes which caused syntax errors then you'll get an error message and the changes will be discarded, in that case re-edit the config map, being careful to only change the `My Shop` text.
 
 ![Config Maps updated details](images/config-map-updated-details.png)
 
@@ -1828,14 +1829,14 @@ Now let's return to the pod and see what's happened
       storename: "Tims Shop"
       minimumdecrement: 3
     
-    #tracing:
-    #  service: "storefront"
-    #  host: "zipkin"
+    tracing:
+      service: "storefront"
+      host: "zipkin"
     ```
 
   - Exit the pod :   `exit`
 
-The storefront-config.yaml file has now changed to reflect the modifications you made to the config map. Note that it usually takes between 30 - 60  seconds for the change to propogate into the pod.
+The storefront-config.yaml file has now changed to reflect the modifications you made to the config map. Note that it usually seems to take between 30 - 60  seconds for the change to propogate into the pod.
 
 If we now get the status resource data again it's also updated
 
@@ -1849,10 +1850,10 @@ content-type: application/json
 content-length: 51
 strict-transport-security: max-age=15724800; includeSubDomains
 
-{"name":"Tims Shop","alive":true,"frozen":false}
+{"name":"Tims Shop","alive":true,"version":"0.0.1"}
 ```
 Of course there is time delay from the change being visible in the pod to the Helidon framework doing it's scan to detect the change and reloading the config, so you may have to issue the curl command a few times to see when the change has fully propogated.
-We've shown how to change the config in helidon using config maps, but the same principle woudl apply if you were using secrets and modified those (though there isn't really a usable secret editor in the dashboard)
+We've shown how to change the config in helidon using config maps, but the same principle would apply if you were using secrets and modified those (though there isn't really a usable secret editor in the dashboard)
 
 
 
@@ -1860,7 +1861,7 @@ We've shown how to change the config in helidon using config maps, but the same 
 
 This lab has only implemented basic security in that it's securing the REST API using the Ingress controller.
 
-There are other ways of securing the connection however, we've put together a [short document](SecuringTheRestEngpoint.md) on some of the other appriaches.
+There are other ways of securing the connection however, we've put together a [short document](SecuringTheRestEndpoint.md) on some of the other appriaches.
 
 Also when deploying in Kubernetes you should create roles and users for performing specific functions. The [Kubernetes documentation](https://kubernetes.io/docs/concepts/security/overview/) has more information on it's security.
 
@@ -1871,4 +1872,6 @@ Also when deploying in Kubernetes you should create roles and users for performi
 You have reached the end of this lab !!
 
 Use your **back** button to return to the **C. Deploying to Kubernetes** section
+
+n to return to the **C. Deploying to Kubernetes** section
 

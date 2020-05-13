@@ -6,6 +6,8 @@
 
 ## A. Helidon for Cloud Native
 
+This set of lab instructions is based on the virtual machine image dated 2020-04-03 (3rd April 2020)
+
 ### **Introduction**
 
 <details><summary><b>Self guided student - video introduction</b></summary>
@@ -118,7 +120,6 @@ Also we are not addressing how to split any existing monolith into modules, hope
 
 
 ---
-
 
 ## The labs
 

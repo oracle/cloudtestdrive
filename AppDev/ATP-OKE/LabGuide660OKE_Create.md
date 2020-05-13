@@ -55,8 +55,10 @@ Screen shots of the various locations to find this information
 
    
 
-- Run `terraform init` in this directory, all dependencies, including oci v3 should download
+- Run `terraform init` in this directory, all dependencies should download.  Actual versions will differ from screenshot below, as this evolves over time.
+
 - ![](images/660/terra_init.png)
+
 - run `terraform plan` to validate your config
 
    - You should see 10 objects to be created
@@ -64,12 +66,15 @@ Screen shots of the various locations to find this information
    
    - **Attention**: In case you are running your tenancy in a datacenter with only 1 Availability Domain, you will get an error at this point, saying "**Error: Invalid index**.  Edit your **k8s.tf** and remove the last 2 elements of the Node Pool configuration referring to AD's no. 2 and 3.  
      Re-run the **terraform plan** command to validate it passes this time.
+   
 - run `terraform apply` to spin up your infrastructure
 
    - ![](images/660/terra_apply.png)
+   
 - type "yes"
    - **Attention:** you might get an error on the version of your kubernetes cluster.  The version of Kubernetes specified in the file **k8s.tf** might be a too old version as compared to the versions made available by the OKE service.  If you encounter this error, verify the available versions on the OKE console that are available.
    - **Attention:** You might also get an error on the version of the Linux Image to use for the Worker Nodes.  If you encounter this, please check available Linux versions in your datacenter and correct the file **k8s.tf** accordingly.
+   
 - Observe the resulting files that were created on your machine : 
    - **terraform.tfstate**: this file contains the details of the created elements.  Terraform will require this file when you do an update to your configuration file and you want top apply this change to the infrastructure.
    -  **mykubeconfig_0**: this is the config file that allows you to connect to your newly created Kubernetes cluster.  You will need it in the next steps to access the kubernetes management console.

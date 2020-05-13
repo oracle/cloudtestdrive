@@ -12,7 +12,12 @@ We will use [Apache Zeppelin](http://www.oracle.com/technetwork/database/options
 - Understand how APEX can be used to operationalize ML models.
 - Get familiar with the business value of identifying customers that are likely to buy a certain product.
 
-Follow these [prerequisites](../prereq2/lab.md) to set up the required Autonomous Transaction Processing instance.
+# Prerequisites
+
+You require the following:
+
+- An Oracle Cloud tenancy. Please follow these [prerequisites](../prereq1/lab.md) first in case you don't have this yet.
+- An Autonomous Transaction Processing instance. Please follow these [prerequisites](../prereq4/lab.md) first in case you don't have this yet.
 
 # Steps
 
@@ -334,8 +339,8 @@ First we will set up a user for Zeppelin.
   
   Paste in the SQL that you have just downloaded. Execute it.
 
-- Go back to the APEX application and edit the Customers page. 
-  Add the "RECOMMENDATION" column in the select statement. Don't forget the comma just after the previous column.
+- Go back to the APEX application and edit the Customers page. Choose Customers section in Content body. Add the "RECOMMENDATION" column in the select statement at the right.
+  **Don't forget the comma just after the previous column.**
   Then Save the page.
 
   ![](./images/add_recommendation_column.png)

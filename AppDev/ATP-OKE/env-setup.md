@@ -25,7 +25,11 @@ This page will guide you through the following activities :
 
 ## Part A : Set up your Cloud Infrastructure
 
+### Log in to your cloud account
 
+In this lab you will be using the PaaS services that are linked with the **Identity Management Service** called IDCS.  In order to be able to manage these services you need to login using the option shown below:
+
+![image-20200422220552977](images/100/login.png) 
 
 ### **STEP 1: Create a Compartment**
 
@@ -61,13 +65,13 @@ After you successfully created the compartment, note down the **Compartment OCID
 
 First you need to locate your user using the Search functionality of the console:
 
-- Click on the **Magnifying glass** on the top of your console, and enter your username.  For example, if your name was **ppan** : 
+- Click on the **Search Bar** on the top of your console, and enter your username.  For example, if your name was **ppan** : 
 
-  ![](/Users/jleemans/dev/github/cloudtestdrive/AppDev/wls/images/ppan.png)
+  ![](../wls/images/ppan2.png)
 
 - Select the user **that looks like :  oracleidentitycloudservice/(your_name)**
 
-  ![](/Users/jleemans/dev/github/cloudtestdrive/AppDev/wls/images/token1.png)
+  ![](../wls/images/token1.png)
 
 - Select **Token** in the right-hand menu, then click the button **Create Token**.
 
@@ -75,7 +79,7 @@ First you need to locate your user using the Search functionality of the console
 
   - Use the **Copy** button to copy the token in your buffer, and **immediately paste it** in a notebook of your choice, you will need this later.
 
-    ![](/Users/jleemans/dev/github/cloudtestdrive/AppDev/wls/images/token2.png)
+    ![](../wls/images/token2.png)
 
     
 
@@ -88,7 +92,7 @@ First you need to locate your user using the Search functionality of the console
     - An **Example** is proveded below: both private and public keys are made available, so obviously this is **not good security practice**.
   
       - [Public key](keys/api_key_public.pem)
-      - [Private key](api_key.pem)
+      - [Private key](keys/api_key.pem)
   
     - **Good practice** is to generate your own keys: You can use the following [OpenSSL](http://www.openssl.org/) commands to generate the key pair in the required PEM format. You can use the Oracle Cloud Shell to issue these commands: use the "**>_**" icon in the top right of your console.
   
@@ -218,6 +222,22 @@ In the following section you will need to switch repeatedly between the DevCS co
 
 - You should have noted the OCID of the **CTDOKE** Compartment earlier in this section just after the creation.
 
+- The **Home Region** can be found by simply selecting the name of your region in the top menu bar, and clicking on **Manage Regions**
+
+  ![alt text](images/devcs/region1.png)
+
+  
+
+  - On the resulting screen you can see the **Region Identifier**, in this example ***eu-frankfurt-1***
+
+    ![alt text](images/devcs/region2.png)
+
+
+
+- Now that you have collected all the required data, you can fill in your OCI Credentials screen in the Developer Console : 
+
+  ![alt text](images/devcs/oci_cred2.png)
+
 
 
 #### Create a Virtual Machine
@@ -237,7 +257,7 @@ In the following section you will need to switch repeatedly between the DevCS co
 ![alt text](images/devcs/im05-3.png)
 
 - Select the following packages:
-  - Docker 17.2
+  - Docker 17.12
   - Kubectl
   - OCIcli ==> this will prompt you to also install Python3
   - SQLcl 18

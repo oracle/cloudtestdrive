@@ -170,7 +170,9 @@ GRANT DWROLE TO HelidonLabs ;
 GRANT UNLIMITED TABLESPACE TO HelidonLabs;
 ```
 
-- Run the script (The Page of paper with the green "run" button.) if it works OK you will see a set of messages in the Script Output window saying the User has been created and grants made.
+- Run the script (The Page of paper with the green "run" button, identified in the image below.) if it works OK you will see a set of messages in the Script Output window saying the User has been created and grants made.
+
+![](images/SQLDeveloper-button.png)
 
 
 ### 7. Create a VM using the image you imported

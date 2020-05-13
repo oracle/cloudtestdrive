@@ -39,7 +39,7 @@ oci db autonomous-database generate-wallet --file Wallet.zip --password 'Pa$$w0r
 unzip Wallet.zip -d Wallet
 ```
 
-
+- In the  above sequence of commands, we used the "OCI CLI", or the **Oracle Cloud Command Line Interface**  to interact with elements in the infrastructure, in this case the database.  For more information on how this works, you can look at the [documentation](https://docs.cloud.oracle.com/en-us/iaas/tools/oci-cli/2.9.9/oci_cli_docs/cmdref/db/autonomous-database/generate-wallet.html).
 
 - On the command line, add the new files to the git repository, commit them and push them to the Developer Cloud with the following commands:
 
@@ -101,7 +101,8 @@ git push
   - username of the ATP instance : **admin**
   - password of the ATP instance
   - your wallet .zip file
-  - your connect string, for example **jleoow_high**, where *jleoow* is the name of the database
+  - your connect string, for example **jleoow_high**, where *jleoow* is the name of the database.
+    Check out your **tnsnames.ora** file inside the wallet folder for a list of available connections.
   - the sql file containing the create script: **aone/create_schema.sql**
 
 
@@ -140,7 +141,7 @@ Now navigate back to the Build job you launched.
 
 To execute the query, hit the green arrow "Run Statement" icon
 
-![](images/400/sql_2.png)
+![](images/400/sql_3.png)
 
 
 

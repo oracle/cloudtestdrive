@@ -160,7 +160,18 @@ Successfully built 90bd16d9e6bc
 Successfully tagged storefront:latest
 ```
 
-For your convenience in the future there is a script in each directory called buildLocalExternalConfig.sh that will run a mvn build and the appropriate docker commands. You will need to run the script in *each* directory (so once in the helidon-labs-storefront directory and once in the helidon-labs-stockmanager, it needs to be run from within the directory as that's where docker looks for the content) Initially it may take a few mins to run if it needs to download the appropriate base layers, but once they are downloaded it should speed up. It's best to let one build finish before starting the next one.
+For your convenience in the future there are scripts buildStockmanagerLocalExternalConfig.sh and buildStorefrontLocalExternalConfig.sh in the helidon-labs-stockmanager and helidon-labs-storefront directories that will run a mvn build and the appropriate docker commands.
+
+You will need to run each script from within the relevant directory (so buildStockmanagerLocalExternalConfig.sh in the helidon-labs-stockmanager directory and buildStorefrontLocalExternalConfig.sh form the helidon-labs-storefront directory) as that's where maven and docker looks for the code and content.
+
+Initially the scripts may take a few mins to run if docker needs to download the appropriate base layers, but once they are downloaded it should speed up. It's best to let one build finish before starting the next one as it can re-use the content downloaded by the previous script.
+
+<details><summary><b>If you can't find the buildStockmanagerLocalExternalConfig.sh and buildStorefrontLocalExternalConfig.sh scripts </b></summary>
+<p>
+In older versions of the VM these were both called buildLocalExternalConfig.sh, there was one of them in each of the helidon-labs-stockmanager and helidon-labs-storefront directory, but people found this confusing, so we re-named them to make it clear.
+
+If you can't find the scripts then use the buildLocalExternalConfig.sh version, but make sure you know which directory you are in to make sure you are running the right version.
+</p></details>
 
 If you look at the scripts you will see that they run the maven package process to create the docker image using jib. They then create a new docker image which has the changes needed to run helidon. These are the commands you'd have run by hand.
 
@@ -207,7 +218,9 @@ The docker flags are handled as following,
 
 </p></details>
 
-Let's use docker volumes (the docker --volume flag) to inject the configuration for us, each volume argument is the host file system name (this needs to be an absolute pathname) and the location inside the container to mount it. Again in the helidon-labs-stockmanager directory
+Let's use docker volumes (the docker --volume flag) to inject the configuration for us, each volume argument is the host file system name (this needs to be an absolute pathname) and the location inside the container to mount it. 
+
+Make sure you are in the **helidon-labs-stockmanager** directory
 
 - Run the container with a volumes attached:
 
@@ -235,7 +248,16 @@ cwallet.sso  ewallet.p12  keystore.jks	ojdbc.properties  sqlnet.ora  tnsnames.or
 ```
 - Exit the container: `exit`
 
-To save having to copy and paste (or type !) each time in both the helidon-labs-storefront and helidon-labs-stockmanager directories there is a script called runLocalExternalConfig.sh to manage this.
+To save having to copy and paste (or type !) each time there are scripts runStorefrontLocalExternalConfig.sh and runStockmanagerLocalExternalConfig.sh (one in each of the helidon-labs-storefront and helidon-labs-stockmanager directories.)
+
+<details><summary><b>If you can't find the runStockmanagerLocalExternalConfig.sh and runStorefrontLocalExternalConfig.sh scripts </b></summary>
+<p>
+In older versions of the VM these were both called runLocalExternalConfig.sh, there was one of them in each of the helidon-labs-stockmanager and helidon-labs-storefront directory, but people found this confusing, so we re-named them to make it clear.
+
+If you can't find the scripts then use the runLocalExternalConfig.sh version, but make sure you know which directory you are in to make sure you are running the right version.
+
+You will need to run the runLocalExternalConfig.sh script in each directory, in the order below.
+</p></details>
 
 This script uses a docker command to locates the IP addresses of the containers running dependencies (for stockmanager this is zipkin, and for the storefront this is zipkin and stockmanager) and injects the IP addresses and suitable hostnames into the containers as it starts them using the --add-host option to the docker run command.
 
@@ -253,15 +275,27 @@ docker: Error response from daemon: driver failed programming external connectiv
 
 It means you've not stopped the storefront and / or stock manager programs running in Eclipse
 
+
+
 As the storefront depends on the stockmanager (and both depend on zipkin) it's important to ensure that the proper order is followed
 
-- Run the **Stockmanager** container via script:
-  -  `bash runLocalExternalConfig.sh`
+<details><summary><b>If you can't find the runStockmanagerLocalExternalConfig.sh and runStorefrontLocalExternalConfig.sh scripts </b></summary>
+<p>
+In older versions of the VM these were both called runLocalExternalConfig.sh, there was one of them in each of the helidon-labs-stockmanager and helidon-labs-storefront directory, but people found this confusing, so we re-named them to make it clear.
+
+If you can't find the scripts then use the runLocalExternalConfig.sh version, but make sure you know which directory you are in to make sure you are running the right version.
+
+You will need to run the runLocalExternalConfig.sh script in each directory, in the order below.
+</p></details>
+
+- Make sure you are in the helidon-labs-stockmanager directory
+- Once you are in the helidon-labs-stockmanager directory run the **Stockmanager** container via script:
+  -  `bash runStockmanagerLocalExternalConfig.sh`
   - Keep the terminal window open to see logging info
   
 - Open a **new** terminal window
   - Go to the Storefront project: `cd workspace/helidon-labs-storefront`
-  - Run the **Storefront** container via script: `bash runLocalExternalConfig.sh`
+  - Run the **Storefront** container via script: `bash runStorefrontLocalExternalConfig.sh`
 
 - Open **another** new terminal window
 - Call the stocklevel method of the application:
@@ -371,23 +405,30 @@ Enter the command with **your** details into a terminal in the virtual machine t
 
 #### Pushing the images
 
-You need to update the repoConfig.sh scripts in **both** the helidon-labs-stockmanager and helidon-labs-storefront directories to reflect your chosen details
+You need to update **both** of the repoStockmanagerConfig.sh and repoStorefrontConfig.sh scripts in the helidon-labs-stockmanager and helidon-labs-storefront directories to reflect your chosen details
+
+<details><summary><b>If you can't find the repoStockmanagerConfig.sh and repoStorefrontConfig.sh scripts </b></summary>
+<p>
+In older versions of the VM these were both called repoConfig.sh, there was one of them in each of the helidon-labs-stockmanager and helidon-labs-storefront directory, but people found this confusing, so we re-named them to make it clear.
+
+If you can't find the scripts then you will edit the repoConfig.sh scripts, but make sure you edit both of them as described below.
+</p></details>
 
 - Navigate to the Storefront project
 
-- Open file **repoConfig.sh** and edit the repo name to reflect **your** initials
+- Open file **repoStorefrontConfig.sh** and edit the repo name to reflect **your** initials
 
   - Example for region `Frankfurt`, in the `oractdemeabdmnative` tenancy with initials `tg` you might have : 
 
-    ```bash
+```bash
     #!/bin/bash
     REPO=fra.ocir.io/oractdemeabdmnative/tg_repo
     echo Using repository $REPO
-    ```
+```
 
 - Navigate to the Stockmanager project
 
-- Open file **repoConfig.sh** and edit the repo name again as above
+- Open file **repoStockmanagerConfig.sh** and edit the repo name again as above
 
 ---
 
@@ -411,7 +452,7 @@ On the surface using :latest may seem like a really good idea, you want to run t
 
 Well actually using :latest may not be what you want. In a production environment you probably want to know what your exact configuration is, you may well have accreditation requirements (especially in the finance sector) and in most situations you want the production environment to match your development, and test environment. Certainly if you have problems and want to fix them you would wnat to know the configuration the problem is occuring in.
 
-To make matters worse :latest is just a tag , it has no actual meaning. you could have a v0.0.1 version which is also tagged latest, even though there are many versions after it (0.0.2, 0.1.4, 1.0.2 etc.) docker doesn't ensure that :latest is actually the most recent version of an image.
+To make matters worse :latest is just a tag , it has no actual meaning. you could have a v0.0.1 version which is also tagged latest, even though there are many versions after it (0.0.2, 0.1.4, 1.0.2 etc.) docker doesn't ensure that :latest is actually the most recent version of an image. In fact it is only convention that 1.2.3 is more recent than 1.2.2, there is nothing in docker itself that enforces this.
 </p></details>
 
 Now the images are tagged with a name that included version and repo information we can push them to a repository, you will need to have logged in to that docker repository (you did this earlier with the `docker login` command)
@@ -462,7 +503,15 @@ Notice that for the second example layers all already exist, so nothing needs to
 
 Let's actually push the images.
 
-Run the buildPushToRepo.sh script in one of the project directories, then once it's finished in the other. 
+Run the buildStockmanagerPushToRepo.sh in the helidon-labs-stockmanager project director, then once it's finished run the buildStorefrontPushToRepo.sh script in the helidon-labs-storefront project directory.
+
+
+<details><summary><b>If you can't find the buildStockmanagerPushToRepo.sh and buildStorefrontPushToRepo.sh scripts </b></summary>
+<p>
+In older versions of the VM these were both called buildPushToRepo.sh, there was one of them in each of the helidon-labs-stockmanager and helidon-labs-storefront directory, but people found this confusing, so we re-named them to make it clear.
+
+If you can't find the scripts then you will find there is a buildPushToRepo.sh script in both directories, run that instead.
+</p></details>
 
 <details><summary><b>Upload denied error?</b></summary>
 <p>
@@ -472,9 +521,9 @@ If during the docker push stage you get image upload denied errors then it means
 </p></details>
 
 - In the Storefront directory:
-  - Run `bash buildPushToRepo.sh`
-- In the Sockmanager directory:
-  - Run `bash buildPushToRepo.sh`
+  - Run `bash buildStorefrontPushToRepo.sh`
+- In the Stockmanager directory:
+  - Run `bash buildStockmanagerPushToRepo.sh`
 
 ```$ bash buildPushToRepo.sh 
 Using repository fra.ocir.io/oractdemeabdmnative/tg_repo
@@ -510,11 +559,25 @@ The script will do the build then push the container images. The first time you 
 You can now re-run the images that have been pushed the cloud.
 
 In the Stock manager directory
+- `bash runStockmanagerRepo.sh`
+
+Wait for it to start, then in the storefront directory
+- `bash runStorefrontRepo.sh`
+
+
+<details><summary><b>If you can't find the buildStockmanagerPushToRepo.sh and buildStorefrontPushToRepo.sh scripts </b></summary>
+<p>
+In older versions of the VM these were both called runRepo.sh, there was one of them in each of the helidon-labs-stockmanager and helidon-labs-storefront directory, but people found this confusing, so we re-named them to make it clear.
+
+You will find the scripts with the original runRepo.sh name that you can run as below
+
+In the Stock manager directory
 - `bash runRepo.sh`
 
 Wait for it to start, then in the storefront directory
 - `bash runRepo.sh`
 
+</p></details>
 
 ### Cleaning up
 
@@ -549,7 +612,19 @@ When you do the Kubernetes labs you will test out performing a rolling upgrade. 
 
   - Change to folder **helidon-labs-storefront**
   - Run the build and push script that uses 0.0.2 as a tag:
+    -  `bash buildStorefrontV0.0.2PushToRepo.sh`
+ 
+<details><summary><b>If you can't find the buildStorefrontV0.0.2PushToRepo.sh script </b></summary>
+<p>
+In older versions of the VM this was called buildV0.0.2PushToRepo.sh, but people found this confusing, so we re-named it to make it clear.
+
+You will find the script with the original buildV0.0.2PushToRepo.sh name that you can run as below
+
+ - Change to folder **helidon-labs-storefront**
+  - Run the build and push script that uses 0.0.2 as a tag:
     -  `bash buildV0.0.2PushToRepo.sh`
+    
+</p></details>
 
 ```
 Using repository fra.ocir.io/oractdemeabdmnative/tg_repo
