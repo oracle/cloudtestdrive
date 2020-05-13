@@ -23,7 +23,7 @@ This video is an introduction to the Visualizing metrics with Grafana lab. Once 
 ### **Introduction**
 As we've seen while Prometheus can gather lots of data, it is not exactly the most powerful visualization mechanism.
 
-Grafana on the other hand is a very powerful open source visualization engine and it can take data from many sources, including Prometheus.  The core engine of Grafana is Open source.  However some of the additional component features (for example specific dashboard configurations, plugins for graph types etc.) are not open source and are chargable.
+Grafana on the other hand is a very powerful open source visualization engine and it can take data from many sources, including Prometheus.  The core engine of Grafana is Open source.  However some of the additional component features (for example specific dashboard configurations, plugins for graph types etc.) are not open source and are chargeable.
 
 For this lab we will use a small subset of the open source features only.
 
@@ -33,7 +33,7 @@ Like many other Kubernetes services Grafana can be installed using helm. By defa
 - In the OCI Cloud Shell type following command:
   -  `helm install grafana --namespace monitoring stable/grafana --set persistence.enabled=true --set service.type=LoadBalancer`
 
-Note that normally you would not expose Grafana directly, but would use a ingress or other front end. However to do that requires setting up a reverse proxy with DNS names and getting security certificates, which can take time. Of course you'd do that in production, but for this lab we want to focus on the core Kubernetes learnign stream, so we're taking the easier approach of just creating a load balancer.
+Note that normally you would not expose Grafana directly, but would use a ingress or other front end. However to do that requires setting up a reverse proxy with DNS names and getting security certificates, which can take time. Of course you'd do that in production, but for this lab we want to focus on the core Kubernetes learning stream, so we're taking the easier approach of just creating a load balancer.
  
 ```
 
@@ -81,10 +81,10 @@ grafana   LoadBalancer   10.96.161.234   130.61.205.103   80:32261/TCP   4m57s
 ```
 Note the External IP address (130.61.201.103 in this case)
 
-If the external IP address says <pending> then Kubernetes hasn't finished starting the service. wait a short whiel and run the command again.
+If the external IP address says <pending> then Kubernetes hasn't finished starting the service. wait a short while and run the command again.
 
-- Open a web page (replace <external IP> with the one you just got for the grafana service_
-  - `http://<external ip>
+- Open a web page (replace `<external IP>`) with the one you just got for the grafana service.
+  - `http://<external ip>`
 
 You'll be presented with the Grafana login window
 ![grafana-login](images/grafana-login.png)
@@ -210,7 +210,7 @@ Of course this looks pretty basic, It's good to see how many requests we're gett
 
 - Chose the Add Query option
 
-- In the metics field, enter following :
+- In the metrics field, enter following :
 
   - `avg(application:com_oracle_labs_helidon_storefront_resources_storefront_resource_list_all_stock_timer_mean_seconds)` 
 
@@ -318,10 +318,10 @@ strict-transport-security: max-age=15724800; includeSubDomains
 ```
 
 and after it updates it'll look something like 
-![grafana-stock-perfprmance-dashboard-with-data](images/grafana-stock-perfprmance-dashboard-with-data.png)
+![grafana-stock-performance-dashboard-with-data](images/grafana-stock-performance-dashboard-with-data.png)
 
 ### More complex dashboards
-This is a fairly simple dashboard, far more complex ones are easily achievable using a combination or Prometheus and Grafana. As an example we're going to look at a prebuild dashboard.
+This is a fairly simple dashboard, far more complex ones are easily achievable using a combination or Prometheus and Grafana. As an example we're going to look at a prebuilt dashboard.
 
 - Click the Grafana logo ![grafana-logo](images/grafana-logo.png) on the upper left. 
 - On the left side menu click the settings "cog", and then Datasources.
