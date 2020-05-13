@@ -9,7 +9,7 @@ The gateway will be publicly enabled and allow you to query, from a browser, the
 
 From the ssh session to the lab virtual machine you were using earlier, it is possible to locate a 2nd function that has already been created for you and deploy it to your existing function based application.
 The function has been made available with a zip file located in the root directory of the opc user you are using.
- 
+
 Locate the imagequeryfunction.zip file in the /home/opc directory and unzip it:
 
 ```bash
@@ -160,9 +160,9 @@ Paste the complete URL into a browser window on your laptop and you should see a
 }
 ```
 
-To actually invoke the function we need to append the route's path which you defined as "**/name**" earlier along with the search query parameter. 
+To actually invoke the function we need to append the route's path which you defined as "**/name**" as well as the search query parameter that will be used to filter the items returned. 
 
-For example to search for files that have jpg in the name use the following URL:
+For example to search for files that have jpg in the name use the following URL (i.e. adding /name/jpg):
 
 
 > https://j4eqxpligw8vmfybhresyi5lte.apigateway.eu-frankfurt-1.oci.customer-oci.com/imagequery/name/jpg
