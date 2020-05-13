@@ -116,7 +116,7 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
   - **Existing Subnet for WebLogic Server**: *WLSCB2-wls-subnet*
   - Tick to **Provision Load Balancer**
   - **Existing Subnet For Load Balancer**: *WLSCB2-lb-subnet-1*
-  - **Load Balancer Shape**: *400Mbps*
+  - **Load Balancer Shape**: *100Mbps*
   - Tick to **Prepare Load Balancer for Https**
 
 
