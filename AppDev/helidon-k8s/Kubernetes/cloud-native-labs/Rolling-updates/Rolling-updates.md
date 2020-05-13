@@ -648,7 +648,12 @@ Canary rollouts where the new services instances are created, then a limited amo
 
 A/B testing is a variant of canary testing, and also requires a service mesh. Like canary testing both versions of the microservice exist at the same time, and the traffic is shared between them. But for A/B testing instead of the quality being the focus the switch is driven by some form of business metric, for example the new version results in 5% more orders than the old one.
 
-Both canary testing and A/B testing require a service mesh to handle the split of the requests between versions, but also a mechanism to gather metrics (quality / business etc.) and then adjust the split. These metrics are unlikely to be the type of thing gathered by standard Prometheus and specialized tools like [Spinaker](https://www.spinnaker.io/) may be used to help with managing the service mesh configuration.
+Shadow deployments (also known as mirror or dark deployments) which also requires a servcie mesh are where you recreate the entire deployment (as with blue/green testing) but have the service mesh mirror the traffic to both the old and new versions. This is good is you want to test the performance of the new deployment, but of course you also need mechanisms to ensure that only one version is actually applied (customers would not want two orders just because you are mirroring)
+
+Another version that doesn't really have a name is when you deploy a microservice instance, and then use the service mesh to divert traffic based on headers. For example if you make a request with a header that indicates it should be sent to the test version of the service. This is really useful as it allows you to test a microservice that may be way down the flow of processing in the actuall production environment, but without end users being impacted by it.
+
+Canary testing and A/B testing require a service mesh to handle the split of the requests between versions, but also a mechanism to gather metrics (quality / business etc.) and then adjust the split. These metrics are unlikely to be the type of thing gathered by standard Prometheus and specialized tools like [Spinaker](https://www.spinnaker.io/) may be used to help with managing the service mesh configuration.
+
 
 ---
 </p></details>
