@@ -27,7 +27,11 @@ This video is an introduction to the Service mesh basics lab. Once you've watche
 
 The concept behind a service mesh is pretty simple. It's basically a set of network proxies that are interposed between the containers running on a pod and the external network of the pod. This is achieved by the service mesh management capability (the control plane) which automatically adds proxies (the data plane) to the pods when the pods are started (if the pod is in a namespace that requests this via annotations)
 
-The data plane consists of proxies which intercept the network operations of the pods and can apply rules to the data, for example encrypting data between proxies so cross microservcie connections are transparently encrypted, splitting or mirroring traffic to help with update processes, and also gathering metrics on the number of calls, how often a cross microservice call failed and such like. Of course in a non kubernetes environment you may have had your network switches or host operating systems do this, but in kubernetes the boundary between the physical and logical compute resources is blured, so using a servcie mesh allows you to have a simple implementation approach that applies regardless of if pods are running on the same node, different nodes in the same environment, or potentially even between data centres in opposite sides of the world.
+The following diagram (from [servicemesh.io](https://servicemesh.io)) whoes the components in the [linkerd](https://linkerd.io) service mesh, but other service mesh implementations have a similar structure
+
+![](https://servicemesh.io/images/control-plane.png) 
+
+The data plane consists of proxies which intercept the network operations of the pods and can apply rules to the data, for example restricting which services can be called by other services, encrypting data between proxies so cross microservice connections are transparently encrypted, splitting or mirroring traffic to help with update processes, and also gathering metrics on the number of calls, how often a cross microservice call failed and such like. Of course in a non Kubernetes environment you may have had your network switches or host operating systems do this, and many organizations had various levels of networking (separated by firewalls) for users, web applications, and databases, but in Kubernetes the boundary between the physical and logical compute resources is blurred, so using a service mesh allows you to have a simple implementation approach that applies regardless of if pods are running on the same node, different nodes in the same environment, or potentially even between data centers in opposite sides of the world.
 
 The control plans does what it says on the box, it provides control functions to the data plane, for example getting and updating certificates, providing a management point so you can set the properties you want the data plane to implement (and passing those to the data plane)
 
@@ -37,9 +41,9 @@ The mechanisms to do this are relatively simple to the user, though the internal
 
 There are multiple service mesh implementations available, a non exclusive list (there are others) includes Linkerd, Istio, Consul, Kuma, Maesh and Grey Matter. 
 
-Most Service mesh implementations are open source to some level, but currently only [Linkerd](https://linkerd.io/) from [Buoyant Inc.](https://buoyant.io/) is listed as being a Cloud Native Computing Foundation (the governance body for open source Kubernetes related things) project though there have been press discussions that Istio may be donated by Google to an open source founcation. 
+Most Service mesh implementations are open source to some level, but currently only [Linkerd](https://linkerd.io/) from [Buoyant Inc.](https://buoyant.io/) is listed as being a Cloud Native Computing Foundation (the governance body for open source Kubernetes related things) project though there have been press discussions that Istio may be donated by Google to an open source foundation. 
 
-For more details on the service mesh the site [servicemesh.io](https://servicemesh.io) has lot's of interestign information, it is however run by one of the creators of linkerd so may be biased towards that. 
+For more details on the service mesh the site [servicemesh.io](https://servicemesh.io) has lot's of interesting information, it is however run by one of the creators of linkerd so may be biased towards that. 
 
 Currently there is no agreed standard on how to manage a service mesh, or even exactly what it does, though the [CNCF Service Mesh Interface project](https://smi-spec.io/)  is starting to define one. 
 
@@ -57,9 +61,9 @@ Factors to consider are functionality, if it's fully or partially open source, w
 
 ## How to install a a service mesh ?
 
-For the purposes of this lab we've chosen to use Linkerd as it's a long standing service mesh implementation and is a CNCF supported project. It also has a reputation for being simple to install and use.
+For the purposes of this lab we've chosen to use Linkerd as it's a long standing service mesh implementation and is the only CNCF supported service mesh project (at the time of writing.) It also has a reputation for being simple to install and use.
 
-Linkerd is in two parts, the linkerd command which runs local to your environment (similar to the kubectl command) and the linkerd control pane which runs in your Kubernetes cluster (similar to the kubernetes cluster management elements) and manages the data plane.
+Linkerd is in two parts, the linkerd command which runs local to your environment (similar to the kubectl command) and the linkerd control pane which runs in your Kubernetes cluster (similar to the Kubernetes cluster management elements) and manages the data plane.
 
 These instructions are based on the [Getting started](https://linkerd.io/2/getting-started/) page at Linkerd.io
 
@@ -100,7 +104,7 @@ Looking for more? Visit https://linkerd.io/2/next-steps
   
 Warning, this may take a while to run, in my case about 20 mins because the OCI Cloud shell system does not provide huge throughput as it's designed for management activities, not running applications !
   
-Now we need to add it to our path
+Now we need to add the linkerd command to our path
 
 - In the OCI Cloud Shell type :
   - `export PATH=$PATH:$HOME/.linkerd2/bin`
@@ -122,7 +126,6 @@ Server version: unavailable
 ```
 
 The server is unavailable because we haven't installed it yet. The version numbers will of course change over time, but these are the ones when this lab module was written.
-
 
 
 ### Installing linkerd into your Kubernetes cluster
@@ -242,7 +245,21 @@ There is a lot of output here, we've only seen the beginning of it above
 
 </p></details>
 
-Linkerd creates it's own namespace so we can chesk what's in there using kubectl 
+Let's check that the linkerd command can talk to the control plane
+
+- In the OCI Cloud Shell type
+  - `linkerd version`
+
+```
+Client version: stable-2.7.1
+Server version: stable-2.7.1
+```
+
+Expect a short delay while the linkerd command contacts the control plane servers.
+
+We can see the version information (this was correct at the time of writing, you make have later versions.)
+
+Linkerd creates it's own namespace so we can check what's in there using kubectl 
 
 - In the OCI Cloud shell type 
   - `kubectl get namespaces`
@@ -422,12 +439,12 @@ edit the linkerd web deployment yaml normally would not do
 
 - Save the changes
 
-kubectl will pick them up and apply them, kubernetes will restart the linkerd-web deployment withthe new arguments and linkerd-web will no longer enforce the check on the hostnames.
+kubectl will pick them up and apply them, Kubernetes will restart the linkerd-web deployment with the new arguments and linkerd-web will no longer enforce the check on the hostnames.
 
 
 ### Create a TLS secret
 
-Curiously the linkerd-web ingress does not use a TLS certificate to ensure that the connection to it is encrtyped, as we will be sending passwords we want to ensure it is encrypted, to do which we need to create a TLS secret in kubernetes that the ingress controller can use.
+Curiously the linkerd-web ingress does not use a TLS certificate to ensure that the connection to it is encrypted, as we will be sending passwords we want to ensure it is encrypted, to do which we need to create a TLS secret in Kubernetes that the ingress controller can use.
 
 Change to the directory for the service mesh scripts
 
@@ -447,7 +464,7 @@ writing new private key to 'tls-linkerd.key'
 -----
 ```
 
-Now create a kubernetes TLS secret from the key and certificate
+Now create a Kubernetes TLS secret from the key and certificate
 
 - In the OCI CLoud shell type
   - `kubectl create secret tls tls-linkerd-secret --key tls-linkerd.key --cert tls-linkerd.crt -n linkerd`
@@ -469,7 +486,7 @@ First let's create a password file for the admin user. In the example below I'm 
 Adding password for user admin
 ```
 
-Now having create the password file we need to add it to kuberntes as a secret so the ingress controller can use it.
+Now having create the password file we need to add it to Kuberntes as a secret so the ingress controller can use it.
 
 - In the OCI Cloud Shell type
   - `kubectl create secret generic web-ingress-auth -n linkerd --from-file=auth`
@@ -541,7 +558,7 @@ Let's also check you can access the grafana dashboard that's been installed by l
 
 Exposing linkerd via an ingress allows anyone who has access to the external point of the ingress to access it. This may be required due to the way your organization operates, but you can also restrict access to the linkerd UI by using the linkerd command to setup a secure tunnel for you.
 
-On your local laptop (which must already be configured with the appropriate kuberntes configuration and other credentials your provider may require)
+On your local laptop (which must already be configured with the appropriate Kuberntes configuration and other credentials your provider may require)
 
 - Open a terminal window and type
   - `linkerd dashboard`
