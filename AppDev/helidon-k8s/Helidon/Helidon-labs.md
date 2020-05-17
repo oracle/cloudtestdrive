@@ -157,6 +157,12 @@ This Helidon lab looks as the features in Helidon that are designed to provide s
 
 
 
+
+
+---
+
+
+
 <details><summary><b> Optional Step: 6. Self describing API's</b></summary>
 <p>
 
@@ -171,6 +177,12 @@ To enable a service to be easily consumed Helidon provides support for the dynam
 [The Helidon support for Open API Document generation](Helidon-open-api/helidon-open-api.md)
 
 </p></details>
+
+---
+
+
+
+
 
 
 
