@@ -118,7 +118,6 @@ This is a deliberately simple example, the goal is to see how these two modules 
 Also we are not addressing how to split any existing monolith into modules, hopefully you will have done that when you created the initial program and functionally decomposed your original requirements. There is no single "right" or "wrong" way to decompose your monolith functionally, but I do recommend reading up on the "Strangler Pattern" and the "Anti Corruption Pattern" as they are very useful architectural approaches to take.
 </p></details>
 
-
 ---
 
 ## The labs
@@ -158,13 +157,20 @@ This Helidon lab looks as the features in Helidon that are designed to provide s
 
 
 
-### 6. Cloud Native support in Helidon - Self describing API's
+<details><summary><b> Optional Step: 6. Self describing API's</b></summary>
+<p>
+
+
+
+### 					6. Cloud Native support in Helidon - Self describing API's
 
 This is an optional lab if you chose to do it.
 
 To enable a service to be easily consumed Helidon provides support for the dynamic creation of Open API (previously known as Swagger) documents that document the REST APIs provided by a micro-service. This lab looks at how configure your Helidon projects to generate this information. 
 
 [The Helidon support for Open API Document generation](Helidon-open-api/helidon-open-api.md)
+
+</p></details>
 
 
 
