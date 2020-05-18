@@ -163,20 +163,19 @@ This Helidon lab looks as the features in Helidon that are designed to provide s
 
 
 
-<details><summary><b> Optional Step: 6. Self describing API's</b></summary>
-<p>
+## Optional Lab modules
+
+The following modules are in **some** cases optional, this is because some of the later modules may depend on these (For example the Visual Builder module relies on the completion of the OpenAPI module.) If you are in a guided lab with an instructor they will tell you which of the optional modules you need to complete, if you are doing this in a self-guided mode then please read the descriptions below to determine which optional modules you shoudl do.
 
 
 
-### 					6. Cloud Native support in Helidon - Self describing API's
+### 	Optional 1. Cloud Native support in Helidon - Self describing API's
 
-This is an optional lab if you chose to do it.
+This is an optional lab if you chose to do it. If you are going to do the Visual Builder optional module (it shows how to create a mobile / browser based application, with form like capabilities) then you will need to do this module.
 
-To enable a service to be easily consumed Helidon provides support for the dynamic creation of Open API (previously known as Swagger) documents that document the REST APIs provided by a micro-service. This lab looks at how configure your Helidon projects to generate this information. 
+To enable a service to be easily consumed Helidon provides support for the dynamic creation of Open API documents (previously known as Swagger)  that document the REST APIs provided by a micro-service. This lab looks at how configure your Helidon projects to generate this information. 
 
 [The Helidon support for Open API Document generation](Helidon-open-api/helidon-open-api.md)
-
-</p></details>
 
 ---
 
