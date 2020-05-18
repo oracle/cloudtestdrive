@@ -5,7 +5,7 @@
 # Migration of Monolith to Cloud Native
 
 ## C. Deploying to Kubernetes
-## 5b. Auto Scaling labs
+## 3b. Auto Scaling labs
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 <p>

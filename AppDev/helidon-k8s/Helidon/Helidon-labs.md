@@ -156,17 +156,13 @@ This Helidon lab looks as the features in Helidon that are designed to provide s
 [The Helidon support for Cloud Native Operations lab](Helidon-cloud-native/helidon-cloud-native.md)
 
 
-
-
-
 ---
 
 
 
 ## Optional Lab modules
 
-The following modules are in **some** cases optional, this is because some of the later modules may depend on these (For example the Visual Builder module relies on the completion of the OpenAPI module.) If you are in a guided lab with an instructor they will tell you which of the optional modules you need to complete, if you are doing this in a self-guided mode then please read the descriptions below to determine which optional modules you shoudl do.
-
+The following modules are in **some** cases optional, this is because some of the later modules may depend on these (For example the Visual Builder module relies on the completion of the OpenAPI module.) If you are in a guided lab with an instructor they will tell you which of the optional modules you need to complete, if you are doing this in a self-guided mode then please read the descriptions below to determine which optional modules you should do.
 
 
 ### 	Optional 1. Cloud Native support in Helidon - Self describing API's
