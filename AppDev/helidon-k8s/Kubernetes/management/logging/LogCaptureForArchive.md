@@ -5,7 +5,7 @@
 # Migration of Monolith to Cloud Native
 
 ## C. Deploying to Kubernetes
-## 2. Log Capture for archive
+## Optional 2b. Log Capture for archive
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
@@ -22,15 +22,76 @@ This video is an introduction to the Log Capture for archive labs Once you've wa
 
 ### Introduction
 
-We've seen one way to capture log data so it can be processed, but sometimes you just want to save it in the longer term, possibly for legal reasons. While the initial part of the process is similar the approach needed for long term retrieval of data is usually very different from that needed for the analysis of the data. This is especially true if the chance is high that the data will not ever be used ("Write Only Data") where you need to meet the obligations to store it, but are focused on the costs or saving and storing, and the cost of a very occasional retrieval is less important. For example it may be considered very reasonable to not index log data that is in being held for long term storage, but only group it in large chunks, say one chunk per day) understanding that if data is needed that the entire days data may need to be processed, but accepting the cost of doing that as it's less than the overhead of creating and maintaining an index with a higher resolution.
+<details><summary><b>The problem with log data in a distributed cloud native environment</b></summary>
+<p>
+
+Many applications generate log data, in the case of Java programs this is usually achieved by a logging library, in the case of the Helidon parts of the labs we have used the Simple Logging Facade (The @slf4j Lombok annotation in the code) which allows us to easily switch the actuall logging engine being used. Other languages also have their own logging frameworks, for example in Ruby there is the Logger class, and in there are open source libraries like log4c.
+
+Most Unix (and Linux) systems provide support for syslogd which enables system operations as well as code to generate log messages.
+
+The problem is that the output of the log messages is not always consistent, for example syslogd writes it's data to a system directory and most code logging frameworks have many different output mechanisms including files, the system console, and also standard output.
+
+To make things even more complicated there are many different output formats, plain ASCII is common, but json, xml are often used. Even something as simple as the date / time is often specified by the authors of the code itself and is in their local format (it's rare to see a log event using seconds / milliseconds as per Unix / Java time)
+
+All of these options make logging complicated, where to capture the data and what it looks like make it very difficult to have consistent logging, and given that micro-service based architectures are often deployed using micro-services from many locations and in many programming languages this is a problem.
+
+Fortunately the 12 factors has a [simple recommendation on logging](https://12factor.net/logs) that addresses at least some of these problems. The recommendation is that logs should be treated as a stream of data being sent to the applications standard out, and that the rest of the process is a problem for the execution environment.
+
+As part of its design Kubernetes does save all the information sent by a pod to its standard out, and we have seen this when we look at the logs for a pod, we did this earlier on when we used the dashboard to have a log at the logs, and also the command `kubectl logs <pod> -n <namespace>` let's us see the logs (use `-f` to "follow" the log as new information is added)
+
+This is good, but with in a distributed architecture a single request may (almost certainly will) be processed by multiple individual micro-services. We've seen how zipkin can be used to generate trace data as a request traverses multiple micro-services, but how can integrate the log data ?
+
+---
+
+</p></details>
+
+
+Sometimes you want to save log data in the longer term, possibly for legal reasons. While the initial part of the process is similar the approach used for capturing log data for processing the storage structure needed for long term storage of data is usually very different from that needed for the analysis of the data. This is especially true if the chance is high that the data will not ever be used ("Write Only Data") where you need to meet the obligations to store it, but are focused on the costs or saving and storing, and the cost of a very occasional retrieval is less important. For example it may be considered very reasonable to not index log data that is in being held for long term storage, but only group it in large chunks, say one chunk per day) understanding that if data is needed that the entire days data may need to be processed, but accepting the cost of doing that as it's less than the overhead of creating and maintaining an index with a higher resolution.
 
 We're going to now look at how to extract data and save it to a storage service. This section is based on [this blog entry created by Ankit Bansal](http://www.ankitbansal.net/centralized-logging-in-oracle-kubernetes-engine-with-object-storage/#) but modified to fit in with the specific environment of the lab and to split the configuration of the storage from the fluentd basic configuration.
 
-Note, if you still have the fluentd configuration setup monitoring to Elastic Search you can leave that running if you like. It is of course consuming resources, but there are situations where you may want long term storage of log data as well as short term analytics. 
+Note, if you have the fluentd configuration setup monitoring to Elastic Search you can leave that running if you like. It is of course consuming resources, but there are situations where you may want long term storage of log data as well as short term analytics. 
+
+### Create the logging namespace
+
+If you  did not do the capture log for processing, or deleted the logging namespace at the end of that module you will need to create a namespace for this module.
+
+As with elsewhere in the labs we'll install this in it's own namespace. 
+
+- In the cloud console type :
+  - `kubectl create namespace logging`
+  
+```
+namespace/logging created
+```
+
+If the namespace already exists this command will report : `Error from server (AlreadyExists): namespaces "logging" already exists`
 
 ### Storing the log data
 
-We will be using one of them built in output plug-ins of Fluentd that allows us to write to storage solutions that provide a Amazon S3 compatible interface. In this case we will be writing the data to the Oracle Object Storage Service, but you could of course use other compatible services.
+Kubernetes writes the log data it captures to files on the host that's running the node. To get the data we therefore need to run a program on every node that accesses the log files and sends them to the storage.
+
+So far we've just asked Kubernetes to create deployments / replica sets / pods and it's determined the node they will run based on the best balance of availability and resources, how do we ensure that we can run a service in each node ? 
+
+Well the daemonset in Kubernetes allows the definition of a pod that will run on every node in the cluster, we just have to define the daemonset and the template of the pod that's going to do the work and Kubernetes will deal with the rest, ensuring that even if nodes are added or removed that a pod matching the daemonset definition is running on the node.
+
+<details><summary><b>Other benefits of using daemon sets</b></summary>
+<p>
+The daemon set is a separate pod, running with it's own set of resources, thus while it does consume resources at the node and cluster level it doesn't impact the performance of the pods it's extracting log data for.
+
+Additionally the daemon set can look at the log data for all of the pods in the node, if we did the logging within a pod (say by replacing the log processor or your micro-service) then you'd have to modify every pod, but by logging it to standard out and using a deamonset you can capture the data of all of the logs at the same time, and only need to make changes in a single place.
+
+---
+
+</p></details>
+
+Why run the data gathering in a pod ? Well why not ? While we could run the data capture process by hand manually on each node then we'd have to worry about stopping and starting the service, restarting if it fails, managing and updating configuration files and so on. If we just run it in a Kubernetes pod we can let Kubernetes do all of it's magic for us and we can focus on defining the capture process, and leave running it to Kubernetes ! 
+
+How will our capture pod get the log data though ? We've seen previously how we can use volumes to bring in a config map or secret to a pod and make it look like it's part of the local file system, well there are several other types of source for a volume (in the Prometheus section we briefly saw how helm setup an external storage object as a volume for storing the data.) One of the volume types provides the ability to bring in a local file system, in this case in the node as part of the pods file structure.
+
+Fluentd is an open source solution to processing the log data, it's basically an engine, reading data from input sources and sending them to output sources (that's more complicated than you'd think when dealing with potentially large numbers of high volume sources.) it supports multiple input sources, including reading log files saved from the containers by Kubernetes (imported from the node into the pods via a volume) It also supports many output types.
+
+We will be using one of the built in output plug-ins of Fluentd that allows us to write to storage solutions that provide a Amazon Simple Storage Service (S3) compatible interface. In this case we will be writing the data to the Oracle Object Storage Service, but you could of course use other compatible services.
 
 The first thing we need to do is to gather a bit of data about the storage service to configure the fluentd output plugin.
 
@@ -146,9 +207,7 @@ You have now gathered the
 
 ### Create the storage bucket
 
-You can let the S3 integration just create the storage bucket, but the scenario we are looking at here is for the long term retention of the log data for occasional access, in that case you want the cheapest possible storage, and for that you need the archive storage tier for the storage bucket, that needs to be set when the Oracle Object Storage Service bucket is created.
-
-Here  we're using the archive tier, but if you were writing the data to storage on a temporary basis (maybe you do a daily batch upload into the Oracle Log Analytics) then there is no point in using the archive tier as you'd be wiping them every day once they were uploaded, so you would use the standard tier.
+You can let the S3 integration just create the storage bucket, but the scenario we are looking at here is for the long term retention of the log data for occasional access, in that case you want the cheapest possible storage, and for that you need the archive storage tier for the storage bucket. This is not the default tier so it needs to be set when the Oracle Object Storage Service bucket is created.e delay to retrieve the data and as you'd be wiping them every day once they were uploaded you would use the standard tier.
 
 <details><summary><b>What's the difference between Standard and Archive tiers?</b></summary>
 <p>
@@ -162,6 +221,8 @@ In both cases the data is encrypted at rest, and is protected via the use of mul
 ---
 
 </p></details>
+
+Here we're using the archive tier at that's the most cost effective for long term data retention, but if you were writing the data to storage on a temporary basis (maybe you are using [Oracle Log Analytics](https://www.oracle.com/cloud/systems-management/log-analytics.html) and have configured it to load the data from storage once a day) then there is no point in using the archive tier as don't want the delay to retrieve the data and as you'd be wiping them every day once they were uploaded you would use the standard tier.
 
 Let's create our storage bucket. 
 
@@ -185,7 +246,7 @@ We're going to create a new bucket set for archive storage
 
 - Click the `Create Bucket` button.
 
-- In the popup name the bucket **<your initials>**-FLUENTD For fluentd to write to this bucket the name **must** be entirely in UPPER CASE and you **must** replace <your initials> with something unique to you !
+- In the popup name the bucket **<YOUR INITIALS>**-FLUENTD For fluentd to write to this bucket the name **must** be entirely in UPPER CASE and you **must** replace <YOUR INITIALS> with something unique to you !
 
 - Change the storage tier option to **archive**
 ![](images/Object-storage-create-bucket.png)
@@ -305,6 +366,17 @@ clusterrole.rbac.authorization.k8s.io/fluentd-to-ooss created
 clusterrolebinding.rbac.authorization.k8s.io/fluentd-to-ooss created
 daemonset.extensions/fluentd-to-ooss created
 ```
+Let's make sure that everything has started
+
+- In the OCI Cloud Shell type :
+  - `kubectl get daemonsets -n logging`
+
+```
+NAME      DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+fluentd   3         3         3       3            3           <none>          2m17s
+```
+
+We can see that there are 3 instances running, this is because the cluster I am using has 3 nodes, and Kubernetes will ensure that there is a pod for each daemonset running on each node (restarting it on the same node if the pod crashes)
 
 Let's get the specifics of the pods
 
@@ -327,6 +399,8 @@ fluentd-to-ooss-fgx4s                   1/1     Running            0          55
 fluentd-to-ooss-frkrp                   1/1     Running            0          55s
 fluentd-to-ooss-w7g94                   1/1     Running            0          55s
 ```
+
+In this case I had left the fluentd and elastic search instances running from the log capture for processing module running. This is why you can see a total of 6 fluentd pods running, three (fluentd-to-es) writing to Elastic Search (whcih itself has a number of pods) and three (fluentd-to-ooss) writing to Oracle Object Storage Service. If you have not done the log capture for processing lab (or tidies up after it) then you should only see three fluend based pods.
 
 <details><summary><b>What's with the CrashLoopBackOff STATUS ?</b></summary>
 <p>
@@ -412,7 +486,7 @@ The log data shows is the sources whish fluentd is scanning looking for the log 
 You may find that the log is reporitng an error similar to this :
 
   ```
-  [error]: #0 unexpected error error_class=Aws::S3::Errors::BucketAlreadyExists error="Either the bucket 'TGFLCOMPAT' in namespace 'oractdemeabdmnative' already exists or you are not authorized to create it"`
+  [error]: #0 unexpected error error_class=Aws::S3::Errors::BucketAlreadyExists error="Either the bucket 'TG-FLCOMPAT' in namespace 'oractdemeabdmnative' already exists or you are not authorized to create it"`
   ```
   
 There are several possible causes. 
@@ -430,6 +504,9 @@ It may be that the bucket name is already in use (though this should have genera
 
 ---
 </p></details>
+
+
+
 
 ### The saved log files
 
@@ -464,7 +541,7 @@ It can take up to an hour for the restore process to complete (remember we chose
 
 If you want to progress with the lab then you can do so and come back to this section later to look at the restored data.
 
-Once the restore process has completed you will see that the objets state becomes `Restored`
+Once the restore process has completed you will see that the objects state becomes `Restored`
 
 ![](images/Object-storage-restored-object.png)
 

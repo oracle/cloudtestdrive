@@ -5,7 +5,7 @@
 # Migration of Monolith to Cloud Native
 
 ## C. Deploying to Kubernetes
-## 2. Log Capture for processing
+## Optional 2a. Log Capture for processing
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 <p>
@@ -20,6 +20,9 @@ This video is an introduction to the Log Capture for processing labs Once you've
 ---
 
 ### Introduction
+
+<details><summary><b>The problem with log data in a distributed cloud native environment</b></summary>
+<p>
 
 Many applications generate log data, in the case of Java programs this is usually achieved by a logging library, in the case of the Helidon parts of the labs we have used the Simple Logging Facade (The @slf4j Lombok annotation in the code) which allows us to easily switch the actuall logging engine being used. Other languages also have their own logging frameworks, for example in Ruby there is the Logger class, and in there are open source libraries like log4c.
 
@@ -37,7 +40,11 @@ As part of its design Kubernetes does save all the information sent by a pod to 
 
 This is good, but with in a distributed architecture a single request may (almost certainly will) be processed by multiple individual micro-services. We've seen how zipkin can be used to generate trace data as a request traverses multiple micro-services, but how can integrate the log data ?
 
-To start with we need to get all of the data into one place. We're going to use [fluentd](https://www.fluentd.org/) to capture the data and send it to  an Elastic search instance deployed in our Kubernetes cluster in the initial example below, but there are many other options.
+---
+
+</p></details>
+
+To process log data in a consistent manner we need to get all of the data into one place. We're going to use [fluentd](https://www.fluentd.org/) to capture the data and send it to  an Elastic search instance deployed in our Kubernetes cluster in the initial example below, but there are many other options.
 
 ### Installing elastic search
 
@@ -153,20 +160,25 @@ Kubernetes writes the log data it captures to files on the host that's running t
 
 So far we've just asked Kubernetes to create deployments / replica sets / pods and it's determined the node they will run based on the best balance of availability and resources, how do we ensure that we can run a service in each node ? 
 
-Well the daemonset in Kubernetes allows the defintion of a pod that will run on every node in the cluster, we just have to define the daemonset and the template of the pod that's going to do the work and Kubernetes will deal with the rest, ensuring that even if nodes are added or removed that a pod matching the daemonset definition is running on the node.
+Well the daemonset in Kubernetes allows the definition of a pod that will run on every node in the cluster, we just have to define the daemonset and the template of the pod that's going to do the work and Kubernetes will deal with the rest, ensuring that even if nodes are added or removed that a pod matching the daemonset definition is running on the node.
 
 <details><summary><b>Other benefits of using daemon sets</b></summary>
 <p>
 The daemon set is a separate pod, running with it's own set of resources, thus while it does consume resources at the node and cluster level it doesn't impact the performance of the pods it's extracting log data for.
 
-Additionally the daemon set can look at the log data for all of the pods in the node, if we did the logging within a pod (say by replacing the log processor or your micro-service) then you'd have to modify every pod, but by logging it to standard out and using a deamonset you can capture the data of all of the logs at the same time, and only need to make changes in a singple place.
+Additionally the daemon set can look at the log data for all of the pods in the node, if we did the logging within a pod (say by replacing the log processor or your micro-service) then you'd have to modify every pod, but by logging it to standard out and using a deamonset you can capture the data of all of the logs at the same time, and only need to make changes in a single place.
+
+---
+
 </p></details>
 
 Why run the data gathering in a pod ? Well why not ? While we could run the data capture process by hand manually on each node then we'd have to worry about stopping and starting the service, restarting if it fails, managing and updating configuration files and so on. If we just run it in a Kubernetes pod we can let Kuberneties do all of it's magic for us and we can focus on defining the capture process, and leave running it to Kubernetes ! 
 
 How will our capture pod get the log data though ? We've seen previously how we can use volumes to bring in a config map or secret to a pod and make it look like it's part of the local file system, well there are several other types of source for a volume (in the Prometheus section we briefly saw how helm setup an external storage object as a volume for storing the data.) One of the volume types provides the ability to bring in a local file system, in this case in the node as part of the pods file structure.
 
-Fluentd is an open source solution to processing the log data, it's basically an engine, reading data from input sources and sending them to output sources (that's more complicated than you'd think when dealing with potentially large numbers of high volume sources.) it supports multiple input sources, including reading log files saved from the containers by Kubernetes (imported from the node into the pods via a volume) It also supports many output types. We will be using the output that writes to elastic search
+Fluentd is an open source solution to processing the log data, it's basically an engine, reading data from input sources and sending them to output sources (that's more complicated than you'd think when dealing with potentially large numbers of high volume sources.) it supports multiple input sources, including reading log files saved from the containers by Kubernetes (imported from the node into the pods via a volume) It also supports many output types. 
+
+We will be using the output that writes to elastic search, this does all the work of creating indices for us and storing the data for each day.
 
 There are a number of yaml daemonset configuration files at the [fluentd daemonset github](https://github.com/fluent/fluentd-kubernetes-daemonset) We will be using a modified version of the `fluentd-daemonset-elasticsearch-rbac.yaml` configuration.
 
@@ -358,6 +370,28 @@ The Oracle Log Analytics cloud service can be used when processing logs from man
 
 The Kubernetes documentation has a [section covering logging](https://kubernetes.io/docs/concepts/cluster-administration/logging/)
 
+
+### Keeping the environment running
+
+Note, if you are planning on doing the optional lab on capturing log data for archive you can leave the fluentd configuration setup monitoring to Elastic Search you can leave that running if you like. It is of course consuming resources, but there are situations where you may want long term storage of log data as well as short term analytics.
+
+<details><summary><b>If you want to delete the logging configuration<b></summary>
+<p>
+
+If you want to delete this logging work you can delete the logging namespace, this will remove all of the services in the namespace.
+
+To delete the logging namespace **Only do this if you want to delete the entire logging environment** do the following
+
+- In the OCI Cloud shell type 
+  - `kubectl delete namespace logging`
+  
+```
+namespace "logging" deleted
+```
+---
+
+</p></details>
+  
 ### Summary
 
 You've seen that the capture of Log data for Kubernetes hosted microservices is pretty easy, but so far we haven't done a lot of processing of the log data, and though we've seen we can extract the data this approach is not very useful unless you want to look at the specifics of a single log message. 
