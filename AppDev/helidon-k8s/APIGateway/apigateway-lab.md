@@ -582,7 +582,7 @@ After some moments, the API Deployment should be available and active:
 
 
 
-Check the base endpoint of the API Deployment. This will be the base URL that the end-client we'll be using:
+Check the base endpoint of the API Deployment. This will be the base URL that the end-clients we'll be using:
 
 ![image-20200515151130310](images/image-450.png)
 
@@ -592,4 +592,114 @@ Check the base endpoint of the API Deployment. This will be the base URL that th
 
 ---
 
-*[TO DO]*
+One easy way of testing the StoreFront services - and implicit the API Gateway - is using Postmen. Of course, we can use other tools or `curl` command, but in this lab we've chosen Postman.
+
+
+
+##### Import StoreFront *openapi* specification
+
+Launch Postman, click on **Import** button in the upper left menu toolbar, choose **Link** in the *Import* window option tabs.
+
+Enter the URL of our API Deployment to which we append `/openapi` (remember that we have created a Route to expose the *openapi* specification document). Click **Continue**:
+
+![image-20200518085309598](images/image-500.png)
+
+
+
+Leave default options in the next screen; click **Import**:
+
+![image-20200518090717344](images/image-510.png)
+
+
+
+We can see that Postman has generated a collection with the two methods:
+
+- **POST** for reserving stock items
+- **GET** for listing stock items
+
+![image-20200518090835378](images/image-520.png)
+
+
+
+Before testing, we need to setup the Authentication method and the *baseURL* variable of the collection. Go to *StorefrontApplication* collection menu, and click on **Edit**:
+
+![image-20200518091226647](images/image-530.png)
+
+
+
+Go to *Authorization* tab, choose **Basic Auth** for the authentication *Type*; setup:
+
+- *Username*: **joe**
+- *Password*: **password**
+
+![image-20200518091418158](images/image-540.png)
+
+
+
+Go to *Variables* tab and setup the *baseUrl* Postman variable. This variable will be used for all Collection resources, so we can change the endpoints base URL in one single place. For **Current Value**, set the same API Deployment URL that we used before; click **Update**:
+
+![image-20200518091701264](images/image-550.png)
+
+
+
+##### Testing
+
+First, let's test the *List stock items* method. Click on the method name in the *StorefrontApplication* collection methods list:
+
+![image-20200518092106317](images/image-560.png)
+
+
+
+In the *Authorization* tab, switch to **Inherit auth from parent**. This will propagate the Basic auth type that we've setup at collection level. Click **Send**:
+
+![image-20200518092231938](images/image-570.png)
+
+
+
+The list of items it's returned:
+
+![image-20200518092428387](images/image-580.png)
+
+
+
+Let's now try the other method, to reserve some stock items.  Similarly, setup **Inherit auth from parent** in the *Authorization* tab:
+
+![image-20200518092615566](images/image-590.png)
+
+
+
+In the *Body* tab, we can see that the request structure has been generated accordingly with the schema defined in the *openapi* specification. Let's reserve 50 pencils:
+
+- requestedCount: **50**
+
+- requestedItem: **Pencil**
+
+  Click **Send**:
+
+![image-20200518093204743](images/image-600.png)
+
+
+
+We can see from the response that the pencils stock dropped by 50, in this case to 420:
+
+![image-20200518093503496](images/image-610.png)
+
+
+
+Let's test the *List stock items*  method again:
+
+![image-20200518093559935](images/image-620.png)
+
+
+
+##### Check API Gateway Metrics
+
+If we open our API Gateway details page in OCI Console, we can see some activity:
+
+![image-20200518094137609](images/image-630.png)
+
+
+
+In case we have multiple API Deployments for the same API Gateway, we can check the activity at API Deployment level:
+
+![image-20200518094306100](images/image-640.png)
