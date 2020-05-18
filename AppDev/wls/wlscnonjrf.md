@@ -1,14 +1,14 @@
-# WebLogic Cloud - non JRF
+# WebLogic for OCI - non JRF
 
 ## with provided cloud environment
 
 
 
-This Hands on Lab will go through the process of creating a non JRF type of WebLogic Cloud Instance - using Oracle Cloud Marketplace - and through the steps of deploying a simple application. A provided and partially preconfigured (lab) cloud environment will be used.
+This Hands on Lab will go through the process of creating a non JRF type of WebLogic for OCI Instance - using Oracle Cloud Marketplace - and through the steps of deploying a simple application. A provided and partially preconfigured (lab) cloud environment will be used.
 
 
 
-### Step 1. Create WLS Cloud Stack
+### Step 1. Create WebLogic for OCI Stack
 
 - Go to https://console.eu-frankfurt-1.oraclecloud.com/ and login to the lab cloud environment
 - Choose **oractdemeabdmnative** as Cloud Tenant:
@@ -35,7 +35,7 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 
 
-- You can choose to browser-search for *WebLogic Cloud*, or you can apply the filters:
+- You can choose to browser-search for *WebLogic Server*, or you can apply the filters:
   - **Type**: *Stack*
   - **Publisher**: *Oracle*
   - **Category**: *Application Development*
@@ -44,21 +44,15 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 
 
-- Choose *WebLogic Cloud Enterprise Edition BYOL*; This brings you to the Stack Overview page:
+- Choose *WebLogic Server Enterprise Edition UCM*; This brings you to the Stack Overview page:
 
 ![](images/wlscnonjrfwithenv/image060.png)
 
 
 
-- Choose *CTDOKE* compartment:
+- Make sure *CTDOKE* compartment is selected and to accept *Oracle Terms of Use*:
 
 ![](images/wlscnonjrfwithenv/image070.png)
-
-
-
-- And accept the terms for Launching the Stack:
-
-![](images/wlscnonjrfwithenv/image080.png)
 
 
 
@@ -87,7 +81,7 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
   - **WebLogic Server Availability Domain**: choose one of the three ADs
   - **WebLogic Server Node count**: *2* (we will create a WebLogic cluster with two nodes / managed servers)
   - **Admin user name**: *weblogic*
-  - **Admin password**: enter the provided *encrypted* weblogic password;  see provided *weblogic_password_encrypted.txt* file; for getting this, a Virtual Vault key was used for encrypting the plain text password;
+  - **Admin password**: enter the *encrypted* WebLogic Admin password;  see provided *weblogic_password_encrypted.txt* file; for obtaining this, a Virtual Vault Key was used for encrypting the base64 encoded password;
 
 
 ![](images/wlscnonjrfwithenv/image110.png)
@@ -116,7 +110,7 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
   - **Existing Subnet for WebLogic Server**: *WLSCB2-wls-subnet*
   - Tick to **Provision Load Balancer**
   - **Existing Subnet For Load Balancer**: *WLSCB2-lb-subnet-1*
-  - **Load Balancer Shape**: *400Mbps*
+  - **Load Balancer Shape**: *100Mbps*
   - Tick to **Prepare Load Balancer for Https**
 
 
@@ -151,7 +145,7 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 
 
-- A Stack Job is being run and our WLS Server is being provisioned:
+- A Stack Job is being run and our WebLogic Server is being provisioned:
 
 ![](images/wlscnonjrfwithenv/image180.png)
 

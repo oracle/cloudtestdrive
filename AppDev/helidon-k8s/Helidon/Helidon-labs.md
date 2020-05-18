@@ -118,7 +118,6 @@ This is a deliberately simple example, the goal is to see how these two modules 
 Also we are not addressing how to split any existing monolith into modules, hopefully you will have done that when you created the initial program and functionally decomposed your original requirements. There is no single "right" or "wrong" way to decompose your monolith functionally, but I do recommend reading up on the "Strangler Pattern" and the "Anti Corruption Pattern" as they are very useful architectural approaches to take.
 </p></details>
 
-
 ---
 
 ## The labs
@@ -157,14 +156,28 @@ This Helidon lab looks as the features in Helidon that are designed to provide s
 [The Helidon support for Cloud Native Operations lab](Helidon-cloud-native/helidon-cloud-native.md)
 
 
+---
 
-### 6. Cloud Native support in Helidon - Self describing API's
 
-This is an optional lab if you chose to do it.
 
-To enable a service to be easily consumed Helidon provides support for the dynamic creation of Open API (previously known as Swagger) documents that document the REST APIs provided by a micro-service. This lab looks at how configure your Helidon projects to generate this information. 
+## Optional Lab modules
+
+The following modules are in **some** cases optional, this is because some of the later modules may depend on these (For example the Visual Builder module relies on the completion of the OpenAPI module.) If you are in a guided lab with an instructor they will tell you which of the optional modules you need to complete, if you are doing this in a self-guided mode then please read the descriptions below to determine which optional modules you should do.
+
+
+### 	Optional 1. Cloud Native support in Helidon - Self describing API's
+
+This is an optional lab if you chose to do it. If you are going to do the Visual Builder optional module (it shows how to create a mobile / browser based application, with form like capabilities) then you will need to do this module.
+
+To enable a service to be easily consumed Helidon provides support for the dynamic creation of Open API documents (previously known as Swagger)  that document the REST APIs provided by a micro-service. This lab looks at how configure your Helidon projects to generate this information. 
 
 [The Helidon support for Open API Document generation](Helidon-open-api/helidon-open-api.md)
+
+---
+
+
+
+
 
 
 

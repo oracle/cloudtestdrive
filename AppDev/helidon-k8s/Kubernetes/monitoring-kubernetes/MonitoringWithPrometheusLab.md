@@ -5,7 +5,7 @@
 # Migration of Monolith to Cloud Native
 
 ## C. Deploying to Kubernetes
-## 2. Monitoring with Prometheus
+## Optional 1. Monitoring with Prometheus
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 <p>

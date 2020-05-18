@@ -5,7 +5,7 @@
 # Migration of Monolith to Cloud Native
 
 ## C. Deploying to Kubernetes
-## 3. Visualizing using Grafana
+## Optional 2. Visualizing using Grafana
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
