@@ -66,23 +66,45 @@ Commonly when a service is deployed it will be updated, Kubernetes provides supp
 
 ## Optional Lab modules
 
-The following modules are in **some** cases optional, this is because some of the later modules may depend on these (For example the Grafana module relies on the completion of the Prmetheus module.) If you are in a guided lab with an instructor they will tell you which of the optional modules you need to complete, if you are doing this in a self-guided mode then please read the descriptions below to determine which optional modules you should do.
+The following modules are in **some** cases optional, this is because some of the later modules may depend on these (For example the Grafana module relies on the completion of the Prometheus module.) If you are in a guided lab with an instructor they will tell you which of the optional modules you need to complete, if you are doing this in a self-guided mode then please read the descriptions below to determine which optional modules you should do.
 
+These optional modules are grouped by subject area. Unless there are dependencies specified you should be able to do them in any order, or 
 
-### Optional 1. Monitoring services -  Prometheus for data gathering
+### Optional labs group 1. Monitoring your services
+
+##### Optional 1a. Monitoring services -  Prometheus for data gathering
 Once a service is running in Kubernetes we want to start seeing how well it's working in terms of the load on the service. At a basic level this is CPU / IO's but more interesting are things like the number of requests being serviced. You will need to do this module if you are going to do the Grafana for data display module.
 
 Monitoring metrics may also help us determining things like how changes when releasing a new version of the service may effect it's operation, for example does adding a database index increase the services efficiency by reducing lookup times, or increase it by adding extra work when updating the data. With this information you can determine if a change is worthwhile keeping.
 
 [Prometheus lab](monitoring-kubernetes/MonitoringWithPrometheusLab.md)
 
-### Optional 2. Monitoring services - Grafana for data display
+##### Optional 1b. Monitoring services - Grafana for data display
 To do this optional module you will have to have completed the optional Promtheus for data gathering module.
 
 As you've seen Prometheus is great at capturing the data, but it's not the worlds best tool for displaying the data. Fortunately for us there is an open source tool called **Grafana** which is way better than Prometheus at this.
 
 The process for installing and using Grafana is detailed in the next lab :  
 [Visualising with Grafana lab document.](monitoring-kubernetes/VisualizingWithGrafanaLab.md)
+
+### Optional labs group 2. Capturing log data
+These labs are self standing, you can do either of them, or both. They have no dependencies and currently there are no other optional modules dependent on them.
+
+
+Both these lab modules use fluentd to read the log data within the Kuberntes environment
+
+##### Optional 2a. Log Capture for processing
+
+This optional module shows how you can use fluentd to capture the log data, and then write the output to Elastic Search (often used to help process log data in Cloud Native deployments.) The module is intended as an example of how to handle log data for people who will need instant indexed access to the log data.
+
+[Log capture for processing lab](management/logging/LogCaptureForProcessing.md)
+
+
+##### Optional 2b. Log Capture for long term storage (archive)
+
+This optional module shows how you can use fluentd to capture the log data, and then write the output to a long term storage offering, In this case we will be writing to the S3 compatible Oracle Object Storage Service. The module is intended as an example to how to handle log data for people that need to retain log data for the long term (perhaps for legal reasons) but don;t need instant access, so can use the most cost effective long term storage.
+
+[Log capture for processing lab](management/logging/LogCaptureForArchive.md)
 
 ### Additional optional modules in development.
 

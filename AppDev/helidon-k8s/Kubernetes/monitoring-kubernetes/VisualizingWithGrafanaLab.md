@@ -5,7 +5,7 @@
 # Migration of Monolith to Cloud Native
 
 ## C. Deploying to Kubernetes
-## Optional 2. Visualizing using Grafana
+## Optional 1b. Visualizing using Grafana
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
@@ -21,6 +21,9 @@ This video is an introduction to the Visualizing metrics with Grafana lab. Once 
 ---
 
 ### **Introduction**
+
+If you are going to do this lab module you must have completed the [**Monitoring with Prometheus** module](MonitoringWithPrometheusLab.md)
+
 As we've seen while Prometheus can gather lots of data, it is not exactly the most powerful visualization mechanism.
 
 Grafana on the other hand is a very powerful open source visualization engine and it can take data from many sources, including Prometheus.  The core engine of Grafana is Open source.  However some of the additional component features (for example specific dashboard configurations, plugins for graph types etc.) are not open source and are chargeable.
@@ -359,11 +362,28 @@ The dashbaords will be imported (there will be a quick "I'm doing an import" mes
 
 
 
-
-
-
-
 ---
+
+<details><summary><b>If you want to delete the monitoring configuration<b></summary>
+<p>
+
+** ONLY** do this if you no longer want the Prometheus and Grafana environment
+
+If you want to delete this monitoing work you can delete the monitoring namespace, this will remove all of the services in the namespace.
+
+To delete the logging namespace **Only do this if you want to delete the entire monitoring environment including Prometheus and Grafana** 
+
+Do the following
+
+- In the OCI Cloud shell type 
+  - `kubectl delete namespace monitoring`
+  
+```
+namespace "monitoring" deleted
+```
+---
+
+</p></details>
 
 You have reached the end of this lab !!
 
