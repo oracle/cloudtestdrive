@@ -361,19 +361,11 @@ The dashbaords will be imported (there will be a quick "I'm doing an import" mes
 ![grafana-prometheus-stats-dashboard](images/grafana-prometheus-stats-dashboard.png)
 
 
+## Tidying up the environment
 
----
+If you are in a trial tenancy there are limitations on how many Load Balancers and other resources you can have in use at any time, and you may need them for other modules. The simplest way to release the resources used in his module (including the load balancer) is to delete the entire namespace.
 
-<details><summary><b>If you want to delete the monitoring configuration<b></summary>
-<p>
-
-** ONLY** do this if you no longer want the Prometheus and Grafana environment
-
-If you want to delete this monitoing work you can delete the monitoring namespace, this will remove all of the services in the namespace.
-
-To delete the logging namespace **Only do this if you want to delete the entire monitoring environment including Prometheus and Grafana** 
-
-Do the following
+To delete the monitoring namespace do the following
 
 - In the OCI Cloud shell type 
   - `kubectl delete namespace monitoring`
@@ -381,9 +373,8 @@ Do the following
 ```
 namespace "monitoring" deleted
 ```
----
 
-</p></details>
+---
 
 You have reached the end of this lab !!
 

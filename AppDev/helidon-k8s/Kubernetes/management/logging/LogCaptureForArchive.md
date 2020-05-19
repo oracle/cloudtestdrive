@@ -56,7 +56,7 @@ Note, if you have the fluentd configuration setup monitoring to Elastic Search y
 
 If you  did not do the capture log for processing, or deleted the logging namespace at the end of that module you will need to create a namespace for this module.
 
-As with elsewhere in the labs we'll install this in it's own namespace. 
+As with elsewhere in the labs we do this module in it's own namespace. 
 
 - In the cloud console type :
   - `kubectl create namespace logging`
@@ -557,9 +557,12 @@ Your web browser will start to download the object and depending on the web brow
 
 To access the restored object follow whatever the normal procedure is on your computer to access a downloaded `.gz` file.
 
-### Stopping the log capture
+## Tidying up the environment
 
-If you want to leave the log capture running to see more of the data please feel free to do so, but do remember that this is consuming processing and storage resources. If you don't want to keep those tasks running the simplest way to stop all of the log capture activities is to delete the entire `logging` namespace. 
+
+If you are in a trial tenancy there are limitations on how many resources you can have in use at any time, and you may need them for other modules. The simplest way to release the resources used in his module (including the load balancer) is to delete the entire namespace.
+
+If you want to leave the log capture running to see more of the data please feel free to do so (this particular module only generates storage objects) but do remember that this is consuming processing and storage resources. If you don't want to keep those tasks running the simplest way to stop all of the log capture activities is to delete the entire `logging` namespace. 
 
 To delete the `logging` namespace (if you have chosen to do this)
 - In the OCI Cloud Shell type :

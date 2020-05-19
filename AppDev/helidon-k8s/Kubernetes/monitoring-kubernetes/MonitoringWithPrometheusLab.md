@@ -471,15 +471,15 @@ Prometheus was not designed to be a high end graphing tool, the graphs cannot fo
 
 ---
 
+## Tidying up the environment
 
-<details><summary><b>If you want to delete the monitoring configuration<b></summary>
-<p>
+If you are going to do the [Visualizing with Gafana module](VisualizingWithGrafanaLab.md) please do **not** do the following, but [click here](VisualizingWithGrafanaLab.md) or click the back button on your browser to return to the main [Kubernetes labs document.](../Kubernetes-labs.md) 
 
-** ONLY** do this if you no longer want the Prometheus environment. **DO NOT** do this if you are planning on running the Visualising with Grafana module.
+** ONLY** do the following if you no longer want the Prometheus environment. **DO NOT** do this if you are planning on running the Visualising with Grafana module.
 
-If you want to delete this logging work you can delete the monitoring namespace, this will remove all of the services in the namespace.
+If you are in a trial tenancy there are limitations on how many Load Balancers and other resources you can have in use at any time, and you may need them for other modules. The simplest way to release the resources used in his module (including the load balancer) is to delete the entire namespace.
 
-To delete the logging namespace **Only do this if you want to delete the entire monitoring environment and will not be doing the Visualising with Grafana module** 
+To delete the monitoring namespace **Only do this if you want to delete the entire monitoring environment and will not be doing the Visualising with Grafana module** 
 
 Do the following
 
@@ -489,9 +489,8 @@ Do the following
 ```
 namespace "monitoring" deleted
 ```
----
 
-</p></details>
+---
 
 You have reached the end of this lab !!
 

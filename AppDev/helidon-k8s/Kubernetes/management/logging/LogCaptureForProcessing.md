@@ -48,7 +48,7 @@ To process log data in a consistent manner we need to get all of the data into o
 
 ### Installing elastic search
 
-As with elsewhere in the labs we'll install this in it's own namespace, so first we have to create one.
+As with elsewhere in the labs we'll do this module in it's own namespace, so first we have to create one.
 
 - In the cloud console type :
   - `kubectl create namespace logging`
@@ -371,11 +371,13 @@ The Oracle Log Analytics cloud service can be used when processing logs from man
 The Kubernetes documentation has a [section covering logging](https://kubernetes.io/docs/concepts/cluster-administration/logging/)
 
 
-### Keeping the environment running
+## Tidying up the environment
 
-Note, if you are planning on doing the optional lab on capturing log data for archive you can leave the fluentd configuration setup monitoring to Elastic Search you can leave that running if you like. It is of course consuming resources, but there are situations where you may want long term storage of log data as well as short term analytics.
+If you are in a trial tenancy there are limitations on how many Load Balancers and other resources you can have in use at any time, and you may need them for other modules. The simplest way to release the resources used in his module (including the load balancer) is to delete the entire namespace.
 
-<details><summary><b>If you want to delete the logging configuration<b></summary>
+Note, if you are planning on doing the optional lab on capturing log data for archive you can leave the fluentd configuration setup monitoring to Elastic Search you can leave that running if you like. It is of course consuming resources, but there are situations where you may want long term storage of log data as well as short term analytics. After completing that module however please follow the instructions to delete the namespace.
+
+<details><summary><b>If you want to release the logging resources now<b></summary>
 <p>
 
 If you want to delete this logging work you can delete the logging namespace, this will remove all of the services in the namespace.
