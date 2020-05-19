@@ -12,12 +12,12 @@
 
 ---
 
-A common approach in the Cloud Native Application Development is to expose backend APIs to outside world through a sort of gateway that can control and restrict the access to the APIs. Such component is called *API Gateway* and Oracle Cloud Infrastructure does come with a gateway solution to address this need.
+A common approach in the Cloud Native Application Development is to expose backend APIs to outside world through a sort of gateway that can control and restrict the access to the APIs with much greater flexibility than that provided in the load balancer and ingress controller. Such component is called *API Gateway* and Oracle Cloud Infrastructure has an API gateway solution to address this need.
 
 <details><summary><b>Some more words about OCI API Gateway</b></summary>
 <p>
 
-The Oracle Cloud Infrastructure API Gateway service enables you to publish APIs with private endpoints that are accessible from within your network, and which you can expose with public IP addresses if you want them to accept internet traffic. The endpoints support API validation, request and response transformation, CORS, authentication and authorization, and request limiting.
+The Oracle Cloud Infrastructure API Gateway service enables you to publish APIs with private endpoints that are accessible from within your network, and which you can expose with public IP addresses if you want them to accept internet traffic. The endpoints support API validation, request and response transformation, CORS (Cross-Origin Resource Sharing), authentication and authorization, and request limiting.
 
 Using the API Gateway service, you create one or more API gateways to process traffic from front-end clients and route it to back-end services. You can use a single API gateway to link multiple back-end services (such as load balancers, compute instances, and Oracle Functions) into a single consolidated API endpoint.
 
@@ -32,16 +32,20 @@ After running the previous labs, you've probably ended up with a architecture si
 
 ![image-20200512143610167](images/image-010.png)
 
+TG - Note, a number of the elements you can see were created automatically by the Cloud Infrastructure.
+
 As you have created your OKE cluster using the *Quick create* workflow, the wizard also created for you:
 
 - a Virtual Cloud Network (VCN)
 - an Internet Gateway (IG) for allowing traffic from Internet
-- a NAT Gateway (NAT) for allowing access to Internet from Kubernetes worker nodes 
+- a NAT Gateway (NAT) for allowing outbound access to Internet from Kubernetes worker nodes 
 
 The Virtual Cloud Network has been pre-configured with two regional subnets:
 
 - one Regional Private Subnet for the Kubernetes worker nodes
 - one Regional Public Subnet for the Load Balancer Services
+
+TG - Note that is it possible to have the Kubernetes worker nodes on a public network (it is an option in the cluster creation wizard) but it's generally not good practice, as it means you can't ensure they are protected from malicious actors on the internet.
 
 So each of the Kubernetes worker node got an IP address within the Private Subnet network and each load balancer (for the K8s Dashboard or for the Ingress Controller) got an IP address within the Public Subnet.
 
@@ -49,9 +53,9 @@ Now, to get more control on how the backend REST services are exposed to and acc
 
 ![image-20200512153226101](images/image-020.png)
 
-The *API Gateway* will sit in front of the *Load Balancer* and will handle the requests from Internet. As It needs to be visible from the Internet, it has to be part of a Public Subnet and have associated an Public IP address. The OCI API Gateways can be deployed also in Private Subnets, being visible only from internal network, but in our case it has to serve public clients.
+The *API Gateway* will sit in front of the *Load Balancer* and will handle the requests from Internet. As It needs to be visible from the Internet, it has to be part of a Public Subnet and have associated an Public IP address. The OCI API Gateways can be deployed also in Private Subnets, being visible only from internal network (in case you want to apply internal security rules, say to protect core systems) but in our case it will be used to serve public clients, so will be on a public internet facing network.
 
-As the *Load Balancer* will accept requests only coming from the *API Gateway* the simple way is to put it in a Private Subnet, without the need to have a Public IP address as before.
+As the *Load Balancer* will accept requests only coming from the *API Gateway* the normal approach is to put it in a Private Subnet, without the need to have a Public IP address as before. This has the additional benefit of reducing the number of public IP addresses you need (and thus reducing costs.)
 
 
 
@@ -67,48 +71,52 @@ The get to above target architecture, ideally, we would need to:
 - Create  a new Load Balancer in the dedicated Private Regional Subnet
 - Delete or reconfigure current Load Balancer to restrict Internet access
 
-But, for making this lab simpler we will re-use existing resources, the Public and the Private Regional Subnets to be more specifically.
+However, to make this lab simpler we will re-use the existing resources created when the Kubernetes cluster quick setup wizard ran, specifically the Public and the Private Regional Subnets.
 
 It means that we only need to:
 
 - Create a new Load Balancer in the existing Private Regional Subnet and configure associated Listener and Backend Set to point the the Kubernetes Worker Nodes
 - Edit existing Private Regional Subnet Security List so that incoming traffic it's allowed to internal Load Balancer Listener port.
 
-The API Gateway will be later on created in the existing Public Regional Subnet so we won't mind creating and configuring dedicated subnet for it. We will leave existing Public Load Balancer configuration as-is for testing/workshop purposes but keep in mind that in a production environment the only way of exposing the backend REST services would be through the API Gateway.
+Later we will create the API Gateway in the existing Public Regional Subnet, so for this module we don't need to creating and configuring a dedicated subnet for it. We will leave existing Public Load Balancer configuration as-is for testing/workshop purposes (this makes it easuer to define other lab modules for people who have not done this module) but keep in mind that in a production environment you should only expose the backend REST services would be through the API Gateway, otherwise people could just bypass it!
 
 
 
-##### Identify your Virtual Cloud Network
+#### Identify your Virtual Cloud Network 
 
-In order to get to work, we need to Identify the VCN that has been created by the OKE *Create Cluster* Wizard.
+To start we need to Identify the Virtual Cloud Network (VCN) that was created for you by the OKE *Create Cluster* Wizard.
 
-Go to Menu, *Core Infrastructure* > *Networking* > *Virtual Cloud Networks*. Don't forget the compartment you've been working on, **CTDOKE** in this case.
+Click the "Hamburger" menu ![](images/hamburger-menu.png) on the upper left, then in the `Developer Services` section click the `Container Clusters (OKE)` option. 
 
-![image-20200512161645777](images/image-030.png)
+![](images/hamburger-menu-developer-containers.png)
 
+This will take you to the clusters list page
 
+![](images/oke-clusters-list.png)
 
-You should see listed all existing VCNs in the Compartment. When you have created the OKE Cluster, you name it *Helidon-lab-YOUR-INITIALS*. During cluster provisioning, a VCN prefixed with *oke-vcn-quick-Helidon-lab-YOUR-INITIALS* has been also created. You should identify it in the list, for example:
+On the left side make sure it's the right compartment (CTDOKE was the one we recommended you use)
 
-![image-20200512163321229](images/image-040.png)
+When you created the OKE Cluster, you named it `Helidon-lab-<YOUR-INITIALS>`. Locate that in the list and click on it's name to go to the details page for it
 
+![](images/oke-cluster-details.png)
 
+In the `Network details` section you'll see the VCN that was created for your cluster, in this case `oke-vcn-quick-Helidon-lab-TG-e4e205c8a` but yours will of course vary.
 
-You can also find a reference to the VCN on the OKE Cluster detail page. Note the VCN Name as we need it during Load Balancer provisioning.
+- Be sure to save the VCN name in a text editor, you'll need it later.
 
-Click on the VCN name and observe the two Subnets created in this Virtual Cloud Network.
+Click on the VCN name to see it's details page, you can see the two Subnets which were created for you in this Virtual Cloud Network.
 
-![image-20200512180656838](images/image-045.png)
+![](images/oke-vcn-details.png)
 
-You can see that the Public Subnet Name it's prefixed with *oke-svclbsubnet-quick*, so intended for the Load Balancers.
+You can see that the Public Subnet Name, `oke-svclbsubnet-quick-Helidon-lab-TG-e4e205c8a-regional` in tis case (yours will of course be different) it's prefixed with `oke-svclbsubnet-quick`, so intended for the Load Balancers.
 
 
 
 ##### Inspect existing Load Balancer configuration
 
-Next, before creating the Private Load Balancer, we need to inspect existing Load Balancer Configuration. This will help us creating a new Private Load Balancer that will use the same backend nodes as the public existing one.
+Next, before creating the Private Load Balancer, we need to inspect existing Load Balancer Configuration. This will help give us the information we need to creating the new Private Load Balancer, as that will use the same backend nodes as the public existing one.
 
-In order to identify the OCI Load Balancer associated with out OKE Cluster Ingress Controller, we can search it by the public IP address.
+In order to identify the OCI Load Balancer associated with our OKE Cluster Ingress Controller, we can search it by the public IP address.
 
 To get the IP address, run the following kubectl command using the OCI Cloud Shell:
 
@@ -124,30 +132,31 @@ Note the **EXTERNAL-IP** address of *ingress-nginx-nginx-ingress-controller*.
 
 
 
-Now, in the OCI Console, navigate to: *Core Infrastructure* > *Networking* > *Load Balancers*:
+Now, in the OCI Console,click the "Hamburger" menu on the upper left ![](images/hamburger-menu.png) In the `Core Infrastructure` section click `Networking` then `Load Balancers`
 
-![image-20200512180153494](images/image-050.png)
+![](images/hamburger-menu-network-loadbalancers.png)
 
+This will go to the load balancers page
 
+![](images/oci-network-load-balancers.png)
 
 Identify the Load Balancer with the above External IP address:
 
 ![image-20200512180400990](images/image-060.png)
 
-
-
-If we look at the Load Balancer Information we can recognize the VCN and the Subnet names:
+Click on the load balancer name to go to it's details page. (note this image was taken from a different cluster, so the VCN names don't match)
 
 ![image-20200512181039266](images/image-070.png)
 
-
-
 Now, in order to create a new Load Balancer with similar role (balancing traffic to Kubernetes worker nodes), we need to check for the backend nodes information and for the health check configuration.
 
-Go to *Backend Sets* using the *Resources* left hand side menu. You should see two backend sets:
+On the lower left side in the resources menu click `Backend Sets`
+
+![](images/oci-network-load-balancers-resources.png)
+
+You should see two backend sets:
 
 ![image-20200513191553816](images/image-080.png)
-
 
 
 We are interested in **TCP-80** Backend Set information as we will forward plain http traffic to the worker nodes. Click on the Backend Set name (**TCP-80**).
@@ -155,28 +164,20 @@ We are interested in **TCP-80** Backend Set information as we will forward plain
 ![image-20200513192037531](images/image-090.png)
 
 
+In the `Resources` menu click on `Backends`
 
-Click on *Backends* in the *Resources* menu to inspect the Kubernetes workers:
+![](images/oci-network-load-balancer-backend-set-resources.png)
+
+to inspect the Kubernetes workers:
 
 ![image-20200513192239487](images/image-100.png)
 
 
 
-We need to note:
+Copy in a text editor or similar :
 
 - the IP Addresses of the workers (in this example 10.0.10.2, 10.0.10.3 and 10.0.10.4)
 - the listening port (in this example 31969)
-
-We can find the worker nodes IP addresses also by running the `kubectl get nodes` command:
-
-```
-NAME        STATUS   ROLES   AGE   VERSION
-10.0.10.2   Ready    node    28d   v1.15.7
-10.0.10.3   Ready    node    28d   v1.15.7
-10.0.10.4   Ready    node    28d   v1.15.7
-```
-
-
 
 Now, lets go back to the Backend Set information and click on **Update Health Check** button:
 
@@ -184,7 +185,7 @@ Now, lets go back to the Backend Set information and click on **Update Health Ch
 
 
 
-Note the values for all the fields in the form:
+Copy all of the values for all the fields in the form into a test editor, here are the field names:
 
 - Protocol
 - Port
@@ -198,74 +199,97 @@ Note the values for all the fields in the form:
 ![image-20200513192907957](images/image-120.png)
 
 
+<details><summary><b>What do these mean ?</b></summary>
+<p>
+To check the health of each of the backend nodes (and so know which are active to send requests to) the load balancer will try to connect to the service. If the connection succeeds then the load balancer will include it as it distributes the requests, if it fails then this particular instance will not be included in the load balancer pool of available service instances.
 
-To check the health of each of the backend nodes, the load balancer will try to make a *Http* call on specified *Port* the *URL Path* every *Interval in ms* with a *Timeout in ms* timeout. In case of answer, it will check the provided *Status code* and it will compare the response body with the *Response body regex*.
+This particular health check will make a call using the `Protocol` (HTTP) on specified `Port` (10256) to the `URL Path` (/healthz) every `Interval in ms` (10000) with a time out of `Timeout in ms` (3000) Assuming the service responds (if it doesn't the load balancer assumes it's failed and retry the NUmber of Retries (3) times) the load balancer will check for the provided HTTP `Status code` (200 - OK) to see if it's what's expected. Optionally the load balancer can examine the response body to see if it matched the `Response body regex` (.* means basically there is some response)
 
-Now, we have all information to create our private Load Balancer.
+</p></details>
+
+Now, we have collected all information to create our private Load Balancer.
 
 
 
 
 ##### Create Private Load Balancer
 
-Go to Load Balancers Dashboard page and Choose to **Create Load Balancer**:
+Go to Load Balancers Dashboard page (Hamburger Menu -> `Core Infrastructure` section -> `Networking` -> `Load Balancers` )
+
+![](images/oci-network-load-balancers.png)
+
+On the load balancers list Choose the **Create Load Balancer**:
 
 ![image-20200514154043651](images/image-130.png)
 
+Fill in the form
 
+- Give a name, like `Helidon-Lab-<YourInitials>-privatelb` (of course you use your personal initials here !)
 
-Give a name, like *Helidon-Lab-YourInitials-privatelb*; Choose **Private** for the Visibility and **Small 100Mbps** shape:
+- Choose `Private` for the Visibility
+
+- Chose `Small 100Mbps` as the shape:
 
 ![image-20200514154513160](images/image-140.png)
 
 
+Scroll down to select the existing VCN and Subnet. 
 
-Scroll down for choosing an existing VCN and Subnet. Choose the Virtual Cloud Network where your OKE cluster runs (identified above) and the the *oke-subnet-quick-[...]* Subnet; Click **Next**:
+- Choose the Virtual Cloud Network your OKE cluster runs on from the list (you identified this above)
+
+- For the subnet chose the `oke-svclbsubnet-quick-[...]` from the list
+
+- Click the `Next` button
 
 ![image-20200514154810568](images/image-150.png)
 
+Leave the policy as `Weighted round robin`
 
-
-In the *Backends* section of the wizard, leave the default option for the *Load Balancing Policy*; we will add the backends information later on, after creating the Load Balancer
+We will add the backends information later on, after creating the Load Balancer
 
 ![image-20200514155216099](images/image-160.png)
 
 
 
-Scroll down to setup the *Health Check Policy*. Here make sure to provide the same values as the existing Load Balancer Health Policy (see above section, *Inspect existing Load Balancer configuration*):
+Scroll down to setup the `Health Check Policy`. Here make sure to provide the same values we gathered from the existing Load Balancer Health Policy (see above section, `Inspect existing Load Balancer configuration`):
 
-- **Protocol**: *Http*
-- **Port**: *10256*
-- **Interval in ms**: *10000*
-- **Timeout in ms**: *3000*
-- **Number of retries**: *3*
-- **Status code**: *200*
-- **URL Path**: */healthz*
-- **Response body regex**: *.\**
+The following is an example based on the settings in our deployment, you may find the port varies in your environment.
+
+- **Protocol**: `HTTP`
+- **Port**: `10256`
+- **Interval in ms**: `10000`
+- **Timeout in ms**: `3000`
+- **Number of retries**: `3`
+- **Status code**: `200`
+- **URL Path**: `/healthz`
+- **Response body regex**: `.\*`
 
 ![image-20200514155848925](images/image-170.png)
 
 
 
-Click **Next** to get to last section of the wizard. Here we configure the a listener for the Load Balancer. With the new topology, having API gateway in front of the internal Load Balancer and the worker nodes, it's sufficient to setup a **HTTP** type of listener. API Gateway will listen only on HTTPS (443), do SSL offloading and then direct the traffic to the private load balancer. 
+Click `Next` to get to last section of the wizard. Here we configure the a listener for the Load Balancer. With the new topology, having API gateway in front of the internal Load Balancer and the worker nodes, it's sufficient to setup a `HTTP` type of listener as the API Gateway will listen only on HTTPS (443), do SSL offloading and then direct the traffic to the private load balancer. 
 
 ![image-20200514160137276](images/image-180.png)
 
 
-
-You can overwrite the default *Listener Name*. For simplicity we can leave the default http port **80.** Click **Submit** to trigger Load Balancer provisioning.
+You can overwrite the default `Listener Name` if you like. Leave the default http port `80`. Click the `Submit` button to trigger Load Balancer provisioning.
 
 ![image-20200514160757370](images/image-190.png)
 
  
 
-After some moments, the Load Balancer should become *Active*. Take note of the **IP Address** allocated to the Load Balancer. We will need this information later on, when we'll configure the API Gateway backend routes.
+After some moments, the Load Balancer should become `Active`. Take note of the `IP Address` allocated to the Load Balancer. We will need this information later on, when we'll configure the API Gateway backend routes.
 
 ![image-20200514180457769](images/image-192.png)
 
 
 
-We need now to associate the Kubernetes backend worker nodes. Go to *Backends Sets* option in the *Resources* left hand side menu. Click on the existing backend set:
+We need now to associate the Kubernetes backend worker nodes. From the details page for your newly created Load Balancer in the `Resources` manu click the `Backends Sets` option.
+
+![](images/oci-network-load-balancer-backend-set-resources.png)
+
+ Click on the existing backend set:
 
 ![image-20200514161051350](images/image-200.png)
 
