@@ -498,10 +498,10 @@ In several of the labs we're going to be using the dashboard, so let's look arou
 - Open a web browser and using the IP address you got above and go to :
   - `https://<load balancer ip address>/#!/login`
 
-- In the browser, accept a self signed certificate. 
+- In the browser, accept a self signed certificate.
   - In Safari you will be presented with a page saying "This Connection Is Not Private" Click the "Show details" button, then you will see a link titled `visit this website` click that, then click the `Visit Website` button on the confirmation pop-up. To update the security settings you may need to enter a password, use Touch ID or confirm using your Apple Watch.
   - In Firefox once the security risk page is displayed click on the "Advanced" button, then on the "Accept Risk and Continue" button
-  - In Chrome once the "Your connection is not private" page is displayed click the advanced button, then you will see a link titled `Proceed to ....(unsafe)` click that
+  - In Chrome once the "Your connection is not private" page is displayed click the advanced button, then you should see a link titled `Proceed to ....(unsafe)` click that. We have had reports that some versions of Chrome will not allow you to do this, in which case you will need to use a different browser.
 
 You'll now be presented with the login screen for the dashboard.
 
@@ -512,7 +512,7 @@ You'll now be presented with the login screen for the dashboard.
 
 ![dashboard-login-completed](images/dashboard-login-completed.png)
 
-
+**Important** The kubernetes dashboard will only beep the login session open for a short time, after which you will be logged out. Unfortunately when your login session expires the kubernetes dashboard doesn't always return you to the login screen. If you find that you are making changes and the dashboard doesn't reflect them, or that you can see something using kubectl - but not in the dashboard, or you trigger an action on the dashboard (e.g. switching to a different a namespace) but the content doesn't update it's probable that the session has expired. In this case **reload** the web page or go to the login URL (above), this will reset the pages state and present you with the login screen again, login using your token as previously (the token does not change, so you don't have to extract it again)
 
 You now should see the **Overview** dashboard :
 
@@ -1861,7 +1861,7 @@ We've shown how to change the config in helidon using config maps, but the same 
 
 This lab has only implemented basic security in that it's securing the REST API using the Ingress controller.
 
-There are other ways of securing the connection however, we've put together a [short document](SecuringTheRestEngpoint.md) on some of the other appriaches.
+There are other ways of securing the connection however, we've put together a [short document](SecuringTheRestEndpoint.md) on some of the other appriaches.
 
 Also when deploying in Kubernetes you should create roles and users for performing specific functions. The [Kubernetes documentation](https://kubernetes.io/docs/concepts/security/overview/) has more information on it's security.
 

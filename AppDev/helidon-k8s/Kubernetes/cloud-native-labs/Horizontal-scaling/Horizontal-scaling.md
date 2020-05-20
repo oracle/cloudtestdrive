@@ -54,7 +54,7 @@ replicaset.apps/zipkin-88c48d8b9          1         1         1       152m
 
 You can see that there is a replica set for each deployment. They are actually implicitly defined in the deployment yaml files, though they don't have an explicit section the `replicas : 1` line tells the Kubernetes deployment to automatically create a replica set for us with one of the pods (as the pod is described later in the file.) If we hadn't specified the `replicas : 1` line it defaults to a single pod. Kubernetes will create a replica set automatically for us with a single pod for each deployment, and as we've seen in the health, liveness and readiness labs if there is a problem it will automatically restart the services so that there is one service available.
 
-<details><summary><b>Deplpoyments vs replica sets</b></summary>
+<details><summary><b>Deployments vs replica sets</b></summary>
 <p>
 In Kubernetes a deployment defines the micro-service, this is regardless of the service version.
 
@@ -89,6 +89,47 @@ Scaling the deployment is simple, :
 - Click the Ok button
 
 Kubernetes immediately gets to work creating new pods for us
+
+<details><summary><b>Changing the number of replicas using kubectl</b></summary>
+<p>
+We can of course change the number of replicas using kubectl as well (it's just more visual using the dashboard)
+
+To do this we can find out the current number of replicas in a deployment. Note that we operate at the deployment, not the replica set. If you tried changing the number in the replica set then you'll find that the deployment will come along and almost instantly reset the count to what the deployment thinks it should be, regardless of what you just told the replica set (I know this doesn't seem right when you first look at it, but it's sensible if you consider what happens in situations like a rolling update, more on which later.)
+
+The following is an example showing how it could be done, please just look at these, but follow the lab and in this section only make changes in the dashboard.
+
+First you would find out how many replicas you have in your deployment
+
+```
+$ kubectl get deployments
+NAME           READY   UP-TO-DATE   AVAILABLE   AGE
+stockmanager   1/1     1            1           4d2h
+storefront     1/1     1            1           4d1h
+zipkin         1/1     1            1           4d2h
+```
+
+Then you'd modify the number of replicas in the deployment, in this case to 2 replicas
+
+```
+$ kubectl scale --replicas=2 deployment storefront
+deployment.extensions/storefront scaled
+```
+
+Then you'd see how the upgrade was going
+
+```
+kubectl get deployments
+NAME           READY   UP-TO-DATE   AVAILABLE   AGE
+stockmanager   1/1     1            1           4d2h
+storefront     1/2     2            2           4d1h
+zipkin         1/1     1            1           4d2h
+```
+
+Notice that the deployment now says 1/2 meaning there is one running pod, but 2 are required. The reason we don't see both as being ready is because one is probably waiting for it's readiness checks to start running.
+
+---
+
+</p></details>
 
 The deployment updates
 ![scaling-deployment-started-scaling](images/scaling-deployment-started-scaling.png)

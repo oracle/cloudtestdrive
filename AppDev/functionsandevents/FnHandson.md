@@ -21,9 +21,10 @@ Once downloaded to a temporary file on your laptop, extract the contents as thes
 
 We have created for you an Oracle Linux 7 based virtual machine within the Oracle Cloud to host this lab. The machine has been installed with Docker and some other prerequisites for installing and running Fn. You will continue this now ...
 
-Use the SSH client of your choice to SSH to your lab virtual machine which will have been assigned at the start of the workshop. SSH as the **opc** user and use the id\_rsa private key. For example on Mac or Linux use the following command:
+Use the SSH client of your choice to SSH to your lab virtual machine which will have been assigned at the start of the workshop. SSH as the **opc** user and use the id\_rsa private key. For example on Mac or Linux use the following commands:
 
 ```
+$ chomd 600 /path/to/id_rsa
 $ ssh -i /path/to/id_rsa opc@your.vm.ip.address
 ```
 
@@ -39,9 +40,7 @@ Please refer to [Appendix B](AppendixB.md) if you would prefer to use the Chrome
 
 Run the following command to install the Fn project CLI on your VM
 
-```
 curl -LSs https://raw.githubusercontent.com/fnproject/cli/master/install | sh
-```
 
 Once installed you’ll see the Fn CLI version printed out.
 
