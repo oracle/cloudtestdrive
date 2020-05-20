@@ -5,7 +5,7 @@
 # Migration of Monolith to Cloud Native
 
 ## C. Deploying to Kubernetes
-## 4. Health, Readiness and Liveness
+## 2. Health, Readiness and Liveness
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>

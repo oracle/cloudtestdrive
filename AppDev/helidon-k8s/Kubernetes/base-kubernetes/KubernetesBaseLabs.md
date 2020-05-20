@@ -1065,7 +1065,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 default backend - 404
 ```
 
-This is being served by the default backeng service that was installed at the same time as the ingress controller. It's possible to [customize the behavior of the default backend](https://kubernetes.github.io/ingress-nginx/user-guide/default-backend/), for example replacing the error page and so on.
+This is being served by the default backend service that was installed at the same time as the ingress controller. It's possible to [customize the behavior of the default backend](https://kubernetes.github.io/ingress-nginx/user-guide/default-backend/), for example replacing the error page and so on.
 
 For more information on the nginx ingress controller and the different rules types see the [nginx ingress default backend docs page.](https://github.com/kubernetes/ingress-nginx/tree/master/docs)
 
@@ -1630,6 +1630,18 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 - If you get **424 failed dependency** or timeouts it's because the services are doing their lazy initialization, 
   - Wait a minute or so and retry the request
+  
+<details><summary><b>How to find out what pods are connected to a servcie</b></summary>
+<p>
+
+The service definition maps onto the actual pods in the dpeloyments using the selector as seen above. To find out exactly what pods match the selectors for a service 
+
+kubectl get endpoints
+NAME           ENDPOINTS                           AGE
+stockmanager   10.244.0.68:8081,10.244.0.68:9081   26d
+storefront     10.244.1.75:9080,10.244.1.75:8080   26d
+zipkin         10.244.0.67:9411                    26d
+</p></details>
   
 <details><summary><b>If you only get `[]` not a list of items</b></summary>
 <p>

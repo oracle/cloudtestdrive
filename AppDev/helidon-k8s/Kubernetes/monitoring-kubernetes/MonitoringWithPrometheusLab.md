@@ -5,7 +5,7 @@
 # Migration of Monolith to Cloud Native
 
 ## C. Deploying to Kubernetes
-## 2. Monitoring with Prometheus
+## Optional 1a. Monitoring with Prometheus
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 <p>
@@ -469,9 +469,26 @@ It's also possible to do things like separate out pods that are being used for t
 ### But it's not a very good visualization
 Prometheus was not designed to be a high end graphing tool, the graphs cannot for instance be saved so you can get back to them later. For that we need to move on to the next lab and have a look at the capabilities of Grafana
 
+---
 
+## Tidying up the environment
 
+If you are going to do the [Visualizing with Gafana module](VisualizingWithGrafanaLab.md) please do **not** do the following, but [click here](VisualizingWithGrafanaLab.md) or click the back button on your browser to return to the main [Kubernetes labs document.](../Kubernetes-labs.md) 
 
+** ONLY** do the following if you no longer want the Prometheus environment. **DO NOT** do this if you are planning on running the Visualising with Grafana module.
+
+If you are in a trial tenancy there are limitations on how many Load Balancers and other resources you can have in use at any time, and you may need them for other modules. The simplest way to release the resources used in his module (including the load balancer) is to delete the entire namespace.
+
+To delete the monitoring namespace **Only do this if you want to delete the entire monitoring environment and will not be doing the Visualising with Grafana module** 
+
+Do the following
+
+- In the OCI Cloud shell type 
+  - `kubectl delete namespace monitoring`
+  
+```
+namespace "monitoring" deleted
+```
 
 ---
 

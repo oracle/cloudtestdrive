@@ -5,7 +5,7 @@
 # Migration of Monolith to Cloud Native
 
 ## C. Deploying to Kubernetes
-## 6. Rolling Updates
+## 4. Rolling Updates
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 <p>
