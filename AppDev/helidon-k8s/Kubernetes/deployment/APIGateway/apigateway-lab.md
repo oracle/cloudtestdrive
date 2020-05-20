@@ -1,6 +1,6 @@
 [Go to Overview Page](../README.md)
 
-![](../../../common/images/customer.logo2.png)
+![](../../../../../common/images/customer.logo2.png)
 
 # Migration of Monolith to Cloud Native
 
@@ -118,7 +118,7 @@ Next, before creating the Private Load Balancer, we need to inspect existing Loa
 
 In order to identify the OCI Load Balancer associated with our OKE Cluster Ingress Controller, we can search it by the public IP address.
 
-To get the IP address, run the following kubectl command using the OCI Cloud Shell:
+To get the IP address, run the following `kubectl` command using the OCI Cloud Shell:
 
 - `kubectl get services -n ingress-nginx`
 
@@ -179,13 +179,13 @@ Copy in a text editor or similar :
 - the IP Addresses of the workers (in this example 10.0.10.2, 10.0.10.3 and 10.0.10.4)
 - the listening port (in this example 31969)
 
-Now, lets go back to the Backend Set information and click on **Update Health Check** button:
+Now, lets go back to the Backend Set information and click on `Update Health Check` button:
 
 ![image-20200513192804436](images/image-110.png)
 
 
 
-Copy all of the values for all the fields in the form into a test editor, here are the field names:
+Copy all of the values for all the fields in the form into a text editor, here are the field names:
 
 - Protocol
 - Port
@@ -203,7 +203,7 @@ Copy all of the values for all the fields in the form into a test editor, here a
 <p>
 To check the health of each of the backend nodes (and so know which are active to send requests to) the load balancer will try to connect to the service. If the connection succeeds then the load balancer will include it as it distributes the requests, if it fails then this particular instance will not be included in the load balancer pool of available service instances.
 
-This particular health check will make a call using the `Protocol` (HTTP) on specified `Port` (10256) to the `URL Path` (/healthz) every `Interval in ms` (10000) with a time out of `Timeout in ms` (3000) Assuming the service responds (if it doesn't the load balancer assumes it's failed and retry the NUmber of Retries (3) times) the load balancer will check for the provided HTTP `Status code` (200 - OK) to see if it's what's expected. Optionally the load balancer can examine the response body to see if it matched the `Response body regex` (.* means basically there is some response)
+This particular health check will make a call using the `Protocol` (HTTP) on specified `Port` (10256) to the `URL Path` (/healthz) every `Interval in ms` (10000) with a time out of `Timeout in ms` (3000). Assuming the service responds (if it doesn't the load balancer assumes it's failed and retry the `Number of Retries` (3) times) the load balancer will check for the provided HTTP `Status code` (200 - OK) to see if it's what's expected. Optionally the load balancer can examine the response body to see if it matched the `Response body regex` (.* means basically there is some response)
 
 </p></details>
 
@@ -218,7 +218,7 @@ Go to Load Balancers Dashboard page (Hamburger Menu -> `Core Infrastructure` sec
 
 ![](images/oci-network-load-balancers.png)
 
-On the load balancers list Choose the **Create Load Balancer**:
+On the load balancers list Choose the `Create Load Balancer`:
 
 ![image-20200514154043651](images/image-130.png)
 
@@ -285,23 +285,23 @@ After some moments, the Load Balancer should become `Active`. Take note of the `
 
 
 
-We need now to associate the Kubernetes backend worker nodes. From the details page for your newly created Load Balancer in the `Resources` manu click the `Backends Sets` option.
+We need now to associate the Kubernetes backend worker nodes. From the details page for your newly created Load Balancer in the `Resources` menu click the `Backends Sets` option.
 
 ![](images/oci-network-load-balancer-backend-set-resources.png)
 
- Click on the existing backend set:
+ Click on the existing backend set name:
 
 ![image-20200514161051350](images/image-200.png)
 
 
 
-Now, go to *Backends* menu option of the backend set page. Click on **Add Backends**:
+Now, go to `Backends` menu option of the backend set page. Click on `Add Backends`:
 
 ![image-20200514161241127](images/image-210.png)
 
 
 
-Choose to add backends by entering *IP ADDRESSES*. It's easier to add Kubernetes worker nodes this way as we already have the IP addresses and as it might be more difficult to identify the compute instances in a shared environment. Fill in the *IP ADRESSES* and the *PORT* information. Leave default weight as we want the load balancer to equally distribute the requests. Click **Add** to add the backends.
+Choose to add backends by entering *IP ADDRESSES*. It's easier to add Kubernetes worker nodes this way as we already have the IP addresses and as it might be more difficult to identify the compute instances in a shared environment. Fill in the *IP ADRESSES* and the *PORT* information. Leave default weight as we want the load balancer to equally distribute the requests. Click `Add` to add the backends.
 
 ![image-20200514161526206](images/image-220.png)
 
@@ -329,7 +329,7 @@ Let's go to the *Virtual Cloud Network* dashboard page and choose our Kubernetes
 
 
 
-Click on the Private (Regional) Subnet, it should be the one prefixed with *oke-subnet-quick-[...]*:
+Click on the Private (Regional) Subnet name, it should be the one prefixed with *oke-subnet-quick-[...]*:
 
 ![image-20200514172800358](images/image-045.png)
 
@@ -349,13 +349,13 @@ Check the *Ingress Rules*:
 
 
 
-We need to add a new rule that will allow HTTP traffic from the Public Subnet network to this Private Subnet on port 80 (or to a custom port if you've overwritten the default 80 port in the Load Balancer Listener configuration). Click on **Add Ingress Rules**:
+We need to add a new rule that will allow HTTP traffic from the Public Subnet network to this Private Subnet on port 80 (or to a custom port if you've overwritten the default 80 port in the Load Balancer Listener configuration). Click on `Add Ingress Rules`:
 
 ![image-20200514175147966](images/image-270.png)
 
 
 
-Make sure you set the same *Source CIDR* as the existing rules that allow traffic to 22 or 31969 ports. Click on *Add Ingress Rules*.
+Make sure you set the same *Source CIDR* as the existing rules that allow traffic to 22 or 31969 ports. Click on `Add Ingress Rules`.
 
 Now everything should be in place from networking perspective and we are ready to move on creating the API Gateway.
 
@@ -376,19 +376,19 @@ For creating and configuring an API Gateway, we have to:
 
 ##### Create API Gateway
 
-From the main menu go to *Solutions and Platform* > *Developer Services* > *API Gateway*
+From the main menu go to `Solutions and Platform`, then  `Developer Services` and `API Gateway`:
 
 ![image-20200515101801174](images/image-300.png)
 
 
 
-Make sure you are on the same compartment; click **Create Gateway** 
+Make sure you are on the same compartment; click `Create Gateway`:
 
 ![image-20200515102035060](images/image-310.png)
 
 
 
-Give a meaningful name for the gateway, for example *Helidon-Lab-YourInitials-apigw*; select the Virtual Cloud Network that we've been using until now and its Public Regional Subnet (prefixed with *oke-svclbsubnet-quick-[...]*); click **Create** to create the gateway:
+Give a meaningful name for the gateway, for example *Helidon-Lab-YourInitials-apigw*; select the Virtual Cloud Network that we've been using until now and its Public Regional Subnet (prefixed with *oke-svclbsubnet-quick-[...]*); click `Create` to create the gateway:
 
 ![image-20200515102221927](images/image-320.png)
 
@@ -509,7 +509,7 @@ Look at the *paths* section. We need to exposed following resources:
 
 ##### Create API Deployment
 
-In the OCI API Gateway details page, navigate to *Deployments* from the left hand side menu. Click on **Create Deployment**:
+In the OCI API Gateway details page, navigate to *Deployments* from the left hand side menu. Click on `Create Deployment`:
 
 ![image-20200515133954016](images/image-340.png)
 
@@ -533,12 +533,12 @@ Scroll down to the *API Request Policies*. Here we can define several types of p
 
 
 
-Before moving forward, let's add a request policy that will limit the number of calls. Click on the **Add** button in the *Rate Limiting* section. Setup:
+Before moving forward, let's add a request policy that will limit the number of calls. Click on the `Add` button in the *Rate Limiting* section. Setup:
 
-- *Number of requests per second:* **2**
-- *Type of Rate limit*: **Per client (IP)**
+- **Number of requests per second:** `2`
+- **Type of Rate limit**: `Per client (IP)`
 
-Click **Save Changes**:
+Click `Save Changes`:
 
 ![image-20200515140036695](images/image-370.png)
 
@@ -550,7 +550,7 @@ This will limit to **2** the total number of calls per second (to any of the API
 
 
 
-Scroll down to check the *Logging Policies* that we can activate. You can enable or not the *Access Logs* or the *Execution logs*. Click **Next**:
+Scroll down to check the *Logging Policies* that we can activate. You can enable or not the *Access Logs* or the *Execution logs*. Click `Next`:
 
 ![image-20200515140428239](images/image-390.png)
 
@@ -560,22 +560,22 @@ Now we need to define each route that this API Deployment will support.  For eac
 
 For each of the paths inspected in the previous section, add a *Route*:
 
-- *PATH*: **/store/reserveStock**
-- *METHODES*: **POST**
-- *TYPE*: **HTTP**
-- *URL*: **http://[Private Load Balancer IP]/sf/store/reserveStock**
+- **PATH**: `/store/reserveStock`
+- **METHODES**: `POST`
+- **TYPE**: `HTTP`
+- **URL**: `http://[Private Load Balancer IP]/sf/store/reserveStock`
 - leave the timeout options as default
 
 ![image-20200515141233676](images/image-400.png)
 
 
 
-Scroll down and click **+Another Route**. Fill in:
+Scroll down and click `+Another Route`. Fill in:
 
-- *PATH*: **/store/stocklevel
-- *METHODES*: **GET**
-- *TYPE*: **HTTP**
-- *URL*: **http://[Private Load Balancer IP]/sf/store/stocklevel**
+- **PATH**: `/store/stocklevel`
+- **METHODES**: `GET`
+- **TYPE**: `HTTP`
+- **URL**: `http://[Private Load Balancer IP]/sf/store/stocklevel`
 - leave the timeout options as default
 
 ![image-20200515142204840](images/image-410.png)
@@ -584,17 +584,17 @@ Scroll down and click **+Another Route**. Fill in:
 
 We also want to expose the *openapi* specification of the backend service, so we add a third route; Fill in:
 
-- *PATH*: **/openapi
-- *METHODES*: **GET**
-- *TYPE*: **HTTP**
-- *URL*: **http://[Private Load Balancer IP]/sf/store/openapi**
+- **PATH**: `/openapi`
+- **METHODES**: `GET`
+- **TYPE**: `HTTP`
+- **URL**: `http://[Private Load Balancer IP]/sf/store/openapi`
 - leave the timeout options as default
 
 ![image-20200515142506380](images/image-420.png)
 
 
 
-Click on the **Next** button of the wizard to *Review* the API deployment; Click **Create**:
+Click on the `Next` button of the wizard to *Review* the API deployment; Click `Create`:
 
 ![image-20200515142639670](images/image-430.png)
 
@@ -622,15 +622,15 @@ One easy way of testing the StoreFront services - and implicit the API Gateway -
 
 ##### Import StoreFront *openapi* specification
 
-Launch Postman, click on **Import** button in the upper left menu toolbar, choose **Link** in the *Import* window option tabs.
+Launch Postman, click on `Import` button in the upper left menu toolbar, choose `Link` in the *Import* window option tabs.
 
-Enter the URL of our API Deployment to which we append `/openapi` (remember that we have created a Route to expose the *openapi* specification document). Click **Continue**:
+Enter the URL of our API Deployment to which we append `/openapi` (remember that we have created a Route to expose the *openapi* specification document). Click `Continue`:
 
 ![image-20200518085309598](images/image-500.png)
 
 
 
-Leave default options in the next screen; click **Import**:
+Leave default options in the next screen; click `Import`:
 
 ![image-20200518090717344](images/image-510.png)
 
@@ -645,22 +645,22 @@ We can see that Postman has generated a collection with the two methods:
 
 
 
-Before testing, we need to setup the Authentication method and the *baseURL* variable of the collection. Go to *StorefrontApplication* collection menu, and click on **Edit**:
+Before testing, we need to setup the Authentication method and the *baseURL* variable of the collection. Go to *StorefrontApplication* collection menu, and click on `Edit`:
 
 ![image-20200518091226647](images/image-530.png)
 
 
 
-Go to *Authorization* tab, choose **Basic Auth** for the authentication *Type*; setup:
+Go to `Authorization` tab, choose `Basic Auth` for the authentication **Type**; setup:
 
-- *Username*: **joe**
-- *Password*: **password**
+- **Username**: `joe`
+- **Password**: `password`
 
 ![image-20200518091418158](images/image-540.png)
 
 
 
-Go to *Variables* tab and setup the *baseUrl* Postman variable. This variable will be used for all Collection resources, so we can change the endpoints base URL in one single place. For **Current Value**, set the same API Deployment URL that we used before; click **Update**:
+Go to `Variables` tab and setup the *baseUrl* Postman variable. This variable will be used for all Collection resources, so we can change the endpoints base URL in one single place. For **Current Value**, set the same API Deployment URL that we used before; click `Update`:
 
 ![image-20200518091701264](images/image-550.png)
 
@@ -674,7 +674,7 @@ First, let's test the *List stock items* method. Click on the method name in the
 
 
 
-In the *Authorization* tab, switch to **Inherit auth from parent**. This will propagate the Basic auth type that we've setup at collection level. Click **Send**:
+In the `Authorization` tab, switch to `Inherit auth from parent`. This will propagate the Basic auth type that we've setup at collection level. Click `Send`:
 
 ![image-20200518092231938](images/image-570.png)
 
@@ -686,19 +686,19 @@ The list of items it's returned:
 
 
 
-Let's now try the other method, to reserve some stock items.  Similarly, setup **Inherit auth from parent** in the *Authorization* tab:
+Let's now try the other method, to reserve some stock items.  Similarly, setup `Inherit auth from parent` in the `Authorization` tab:
 
 ![image-20200518092615566](images/image-590.png)
 
 
 
-In the *Body* tab, we can see that the request structure has been generated accordingly with the schema defined in the *openapi* specification. Let's reserve 50 pencils:
+In the `Body` tab, we can see that the request structure has been generated accordingly with the schema defined in the *openapi* specification. Let's reserve 50 pencils:
 
-- requestedCount: **50**
+- **requestedCount**: `50`
 
-- requestedItem: **Pencil**
+- **requestedItem**: `Pencil`
 
-  Click **Send**:
+  Click `Send`:
 
 ![image-20200518093204743](images/image-600.png)
 
