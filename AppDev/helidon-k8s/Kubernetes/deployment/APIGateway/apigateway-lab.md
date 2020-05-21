@@ -112,9 +112,49 @@ You can see that the Public Subnet Name, `oke-svclbsubnet-quick-Helidon-lab-TG-e
 
 
 
-##### Inspect existing Load Balancer configuration
+#### Inspect existing Load Balancer configuration
 
 Next, before creating the Private Load Balancer, we need to inspect existing Load Balancer Configuration. This will help give us the information we need to creating the new Private Load Balancer, as that will use the same backend nodes as the public existing one.
+
+<details><summary><b>Essential concepts when working with OCI Load Balancing</b></summary>
+<p>
+**Backend Server**.  An application server responsible for generating content in reply to the incoming TCP or HTTP traffic. You typically identify application servers with a unique combination of overlay (private) IPv4 address and port, for example, 10.10.10.1:8080 and 10.10.10.2:8080.
+
+**Backend Set**.  A logical entity defined by a list of backend servers, a load balancing policy, and a health check policy. SSL configuration is optional. The backend set determines how the load balancer directs traffic to the collection of backend servers.
+
+**Certificates**. If you use HTTPS or SSL for your listener, you must associate an SSL server certificate (X.509) with your load balancer. A certificate enables the load balancer to terminate the connection and decrypt incoming requests before passing them to the backend servers.
+
+**Health Check.** A test to confirm the availability of backend servers. A health check can be a request or a connection attempt. Based on a time interval you specify, the load balancer applies the health check policy to continuously monitor backend servers. If a server fails the health check, the load balancer takes the server temporarily out of rotation. If the server subsequently passes the health check, the load balancer returns it to the rotation.
+
+**Health Status**. An indicator that reports the general health of your load balancers and their components.
+
+**Listener**. A logical entity that checks for incoming traffic on the load balancer's IP address. You configure a listener's protocol and port number, and the optional SSL settings. To handle TCP, HTTP, and HTTPS traffic, you must configure multiple listeners.
+
+**Load Balancing Policy**.  A load balancing policy tells the load balancer how to distribute incoming traffic to the backend servers. Common load balancer policies include: *Round robin, Least connections, IP hash*.
+
+**Path Route Set**. A set of path route rules to route traffic to the correct backend set without using multiple listeners or load balancers.
+
+**Session Persistence**. A method to direct all requests originating from a single logical client to a single backend web server.
+
+**Shape**. A template that determines the load balancer's total pre-provisioned maximum capacity (bandwidth) for ingress plus egress traffic. Available shapes include 10Mbps, 100 Mbps, 400 Mbps, and 8000 Mbps.
+
+**SSL**. Secure Sockets Layer (SSL) is a security technology for establishing an encrypted link between a client and a server. You can apply the following SSL configurations to your load balancer:
+
+- SSL TERMINATION: The load balancer handles incoming SSL traffic and passes the unencrypted request to a backend server.
+- END TO END SSL: The load balancer terminates the SSL connection with an incoming traffic client, and then initiates an SSL connection to a backend server.
+- SSL TUNNELING: If you configure the load balancer's listener for TCP traffic, the load balancer tunnels incoming SSL connections to your application servers.
+
+**Virtual Hostname**. A virtual server name applied to a listener to enhance request routing.
+
+**Visibility**. Specifies whether your load balancer is public or private.
+
+- PUBLIC: A public load balancer has a public IP address that clients can access from the internet.
+
+- PRIVATE: A private load balancer has a private IP address from a VCN local subnet. Clients can access the private load balancer using methods and technology that can provide access to a private IP, such as:
+
+</p>
+</details>
+
 
 In order to identify the OCI Load Balancer associated with our OKE Cluster Ingress Controller, we can search it by the public IP address.
 
@@ -212,7 +252,7 @@ Now, we have collected all information to create our private Load Balancer.
 
 
 
-##### Create Private Load Balancer
+#### Create Private Load Balancer
 
 Go to Load Balancers Dashboard page (Hamburger Menu -> `Core Infrastructure` section -> `Networking` -> `Load Balancers` )
 
@@ -313,17 +353,21 @@ The Backend nodes should be listed now:
 
 
 
+**Important**: as we have manually created this Load Balancer - and not through OKE service as when deploying an app with attached load balancer service - any change to the backed Kubernetes worker nodes will not be reflected by the Load Balancer Backend Set configuration. This includes changes of IP addresses, adding or removing worker nodes, changing application listen ports, etc. 
+
+
+
 If we return to the Backend Set information, we should see that the backend servers number jumped to 3 and that there's no unhealthy backend server:
 
 ![image-20200514163429814](images/image-240.png)
 
 
 
-##### Add extra security list rule
+#### Add required Ingress Rule
 
 Last thing that we need to do is to allow traffic from the Public Regional Subnet to  the newly created private Load Balancer. Incoming traffic from the Public Subnet to the Private Subnet compute nodes is currently possible - as the Public Load Balancer is able to reach out the Kubernetes worker nodes - but it is allowed only to the ports used by the Kubernetes nodes, and not for the port 80 of the new Load Balancer. To permit this, we need to define a new *Ingress Rule* in the associated *Security List* of the Private Subnet.
 
-Let's go to the *Virtual Cloud Network* dashboard page and choose our Kubernetes VCN (the one identified above, with the name *oke-quick-Helidon-Lab-YourInitials-[...]*):
+Let's go to the `Virtual Cloud Network`s dashboard page and choose our Kubernetes VCN (the one identified above, with the name *oke-quick-Helidon-Lab-YourInitials-[...]*):
 
 ![image-20200514172322954](images/image-040.png)
 
@@ -335,15 +379,13 @@ Click on the Private (Regional) Subnet name, it should be the one prefixed with 
 
 
 
-There should be one security list associated with the Private Subnet. Click on the name:
+There should be one security list associated with the Private Subnet. Click on the security list name:
 
-### ![image-20200514174301327](images/image-250.png)Create API Gateway
-
----
+### ![image-20200514174301327](images/image-250.png)
 
 
 
-Check the *Ingress Rules*:
+Check the `Ingress Rules`:
 
 ![image-20200514174749803](images/image-260.png) 
 
@@ -374,7 +416,7 @@ For creating and configuring an API Gateway, we have to:
 
 
 
-##### Create API Gateway
+#### Create API Gateway
 
 From the main menu go to `Solutions and Platform`, then  `Developer Services` and `API Gateway`:
 
@@ -400,7 +442,7 @@ After some moments, the API Gateway should be available and active. Take notice 
 
 
 
-##### Inspect Kubernetes backend service
+#### Inspect Kubernetes backend service
 
 Before creating the OCI API Gateway Deployment we need to know what are the REST resources that we need to route to / expose using the gateway.  We can easily do this by taking a look at the Open API specification of the StoreFront backend service. As the initial public Load Balancer it's still up & running, we can download the specification using the browser. Open in a new browser tab:
 
@@ -507,9 +549,9 @@ Look at the *paths* section. We need to exposed following resources:
 
 
 
-##### Create API Deployment
+#### Create API Deployment
 
-In the OCI API Gateway details page, navigate to *Deployments* from the left hand side menu. Click on `Create Deployment`:
+In the OCI API Gateway details page, navigate to `Deployments` from the left hand side menu. Click on `Create Deployment`:
 
 ![image-20200515133954016](images/image-340.png)
 
@@ -612,7 +654,7 @@ Check the base endpoint of the API Deployment. This will be the base URL that th
 
 
 
-### Testing using Postman
+### [Optional] Testing using Postman
 
 ---
 
@@ -620,7 +662,7 @@ One easy way of testing the StoreFront services - and implicit the API Gateway -
 
 
 
-##### Import StoreFront *openapi* specification
+#### Import StoreFront *openapi* specification
 
 Launch Postman, click on `Import` button in the upper left menu toolbar, choose `Link` in the *Import* window option tabs.
 
@@ -666,7 +708,7 @@ Go to `Variables` tab and setup the *baseUrl* Postman variable. This variable wi
 
 
 
-##### Testing
+#### Testing
 
 First, let's test the *List stock items* method. Click on the method name in the *StorefrontApplication* collection methods list:
 
@@ -716,7 +758,7 @@ Let's test the *List stock items*  method again:
 
 
 
-##### Check API Gateway Metrics
+#### Check API Gateway Metrics
 
 If we open our API Gateway details page in OCI Console, we can see some activity:
 
