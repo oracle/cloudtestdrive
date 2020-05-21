@@ -229,7 +229,7 @@ But it's easier to see what's happening using the Kubernetes dashboard in this c
 <details><summary><b>If you've forgotten your Kubernetes dashboard details</b></summary>
 <p>
 
-You can get the IP address being used for the dashboard by looking at the servcies list for the kube-system namespace
+You can get the IP address being used for the dashboard by looking at the services list for the kube-system namespace
 
 - In the OCI Cloud Shell type :
   - `kubectl get services -n kube-system`
@@ -325,8 +325,8 @@ It's empty, the hits count is zero ! But that's because we haven't generated any
 
 Let's do some requests to the stock manager service which will generate log data
 
-- In the OCI Cloud Shell terminal type :
-  - `curl -i -k -X GET -u jack:password https://130.61.195.102/store/stocklevel`
+- In the OCI Cloud Shell terminal type (remember to replace the <external IP> with the IP address for the ingress controller for your service):
+  - `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
   
 ```
 HTTP/1.1 200 OK
