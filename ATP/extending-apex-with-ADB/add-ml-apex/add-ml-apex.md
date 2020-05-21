@@ -362,7 +362,7 @@ First we will set up a user for Zeppelin.
   - You have learned how to integrate the prediction in an APEX application.
 
 ## Acknowledgements
-* **Author** - Jan Leemans, Director, Business Development
+* **Author** - Jeroen Kloosterman, Technology Product Strategy Manager
 * **Last Updated By/Date** - Tom McGinn, Learning Architect, Database User Assistance, May 2020
 
 See an issue?  Please open up a request [here](https://github.com/oracle/learning-library/issues).   Please include the workshop name and lab in your request.

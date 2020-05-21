@@ -162,7 +162,7 @@ Even if the access to our application stays internal in our organization, someti
   - You have learned how to leverage the data redaction from the Advanced Security feature in order to protect your sensitive data in your application even before it leaves your ATP.
 
 ## Acknowledgements
-* **Author** - Jan Leemans, Director, Business Development
+* **Author** - Juan Cabrera Eisman, Senior Technology Solution Engineer, Oracle Digital
 * **Last Updated By/Date** - Tom McGinn, Learning Architect, Database User Assistance, May 2020
 
 See an issue?  Please open up a request [here](https://github.com/oracle/learning-library/issues).   Please include the workshop name and lab in your request.
