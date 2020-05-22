@@ -25,13 +25,12 @@ This video is an introduction to the Service mesh basics lab. Once you've watche
 
 ## What is a service mesh
 
-The concept behind a service mesh is pretty simple. It's basically a set of network proxies that are interposed between the containers running on a pod and the external network of the pod. This is achieved by the service mesh management capability (the control plane) which automatically adds proxies (the data plane) to the pods when the pods are started (if the pod is in a namespace that requests this via annotations)
+The concept behind a service mesh is pretty simple. It's basically a set of network proxies that are conceptually interposed between the containers running on a pod and the external network of the pod. This is achieved by the service mesh management capability (the control plane) which automatically adds proxies (the data plane) to the pods when the pods are started (if the pod is in a namespace that requests this via annotations)
 
-The following diagram (from [servicemesh.io](https://servicemesh.io)) shows the components in the [linkerd](https://linkerd.io) service mesh, but other service mesh implementations have a similar structure
-
+The following diagram (from [servicemesh.io](https://servicemesh.io)) whoes the components in the [linkerd](https://linkerd.io) service mesh, but other service mesh implementations have a similar structure. In this architecture, the proxies run as containers within the pod using the [sidecar pattern](https://dzone.com/articles/sidecar-design-pattern-in-your-microservices-ecosy-1)
 ![](https://servicemesh.io/images/control-plane.png) 
 
-The data plane consists of proxies which intercept the network operations of the pods and can apply rules to the data, for example restricting which services can be called by other services, encrypting data between proxies so cross microservice connections are transparently encrypted, splitting or mirroring traffic to help with update processes, and also gathering metrics on the number of calls, how often a cross microservice call failed and such like. Of course in a non Kubernetes environment you may have had your network switches or host operating systems do this, and many organizations had various levels of networking (separated by firewalls) for users, web applications, and databases, but in Kubernetes the boundary between the physical and logical compute resources is blurred, so using a service mesh allows you to have a simple implementation approach that applies regardless of if pods are running on the same node, different nodes in the same environment, or potentially even between data centers in opposite sides of the world.
+The data plane consists of proxies which intercept the network operations of the pods and can apply rules to the data, for example restricting which services can be called by other services, encrypting data between proxies so cross microservice connections are transparently encrypted, splitting or mirroring traffic to help with update processes, and also gathering metrics on the number of calls (a link to [golden metrics](https://blog.appoptics.com/the-four-golden-signals-for-monitoring-distributed-systems/) would be good here), how often a cross microservice call failed and such like. Of course in a non Kubernetes environment you may have had your network switches or host operating systems do this, and many organizations had various levels of networking (separated by firewalls) for users, web applications, and databases, but in Kubernetes the boundary between the physical and logical compute resources is blurred, so using a service mesh allows you to have a simple implementation approach that applies regardless of if pods are running on the same node, different nodes in the same environment, or potentially even between data centers in opposite sides of the world.
 
 The control plans does what it says on the box, it provides control functions to the data plane, for example getting and updating certificates, providing a management point so you can set the properties you want the data plane to implement (and passing those to the data plane)
 
@@ -39,7 +38,7 @@ The mechanisms to do this are relatively simple to the user, though the internal
 
 ### What service meshes are there ?
 
-There are multiple service mesh implementations available, a non exclusive list (there are others) includes Linkerd, Istio, Consul, Kuma, Maesh and Grey Matter. 
+There are multiple service mesh implementations available, a non exclusive list (there are others) includes Linkerd, Istio, Consul, Kuma, Maesh, Aspen Mesh, and Grey Matter. 
 
 Most Service mesh implementations are open source to some level, but currently only [Linkerd](https://linkerd.io/) from [Buoyant Inc.](https://buoyant.io/) is listed as being a Cloud Native Computing Foundation (the governance body for open source Kubernetes related things) project though there have been press discussions that Istio may be donated by Google to an open source foundation. 
 
@@ -47,11 +46,15 @@ For more details on the service mesh the site [servicemesh.io](https://serviceme
 
 Currently there is no agreed standard on how to manage a service mesh, or even exactly what it does, though the [CNCF Service Mesh Interface project](https://smi-spec.io/)  is starting to define one. 
 
-## What does that mean as an admin ?
+## What does that mean as an cluster operator or administrator?
 
 Well the short version is that you need to be careful in choosing the right service mesh to meet your needs!
 
-The longer version is that at least some of your concerns about managing networking within Kubernetes deployments have gone away. 
+The longer version is that at least some of your concerns about managing networking within Kubernetes deployments have gone away. In addition, you will gain insight into the traffic and overall health of your applications running in Kubernetes.
+
+Installing a service mesh adds an additional layer of abstraction to your cluster. This is not unlike the network overlay that runs on your cluster.
+
+Ultimately, the way to think about a service mesh as a cluster operator is to consider that adding this layer will result in better observability and security for your applications.
 
 ### Which service mesh to use ?
 
@@ -59,15 +62,19 @@ There is no simple answer to this, as none of them are built into Kubernetes and
 
 Factors to consider are functionality, if it's fully or partially open source, what support is available (most service mesh implementations have a company behind them that provides commercial support on the open source product) and also if you want to follow the CNCF projects list or not (some Kubernetes users are only willing to consider official CNCS projects for compatibility and other reasons)
 
+The important thing is to define your requirements before selecting a service mesh.
+
 ## How to install a a service mesh ?
 
 For the purposes of this lab we've chosen to use Linkerd as it's a long standing service mesh implementation and is the only CNCF supported service mesh project (at the time of writing.) It also has a reputation for being simple to install and use.
 
-Linkerd is in two parts, the linkerd command which runs local to your environment (similar to the kubectl command) and the linkerd control pane which runs in your Kubernetes cluster (similar to the Kubernetes cluster management elements) and manages the data plane.
+Linkerd is installed in two parts, the linkerd command which runs local to your environment (similar to the kubectl command) and the linkerd control pane which runs in your Kubernetes cluster (similar to the Kubernetes cluster management elements) and manages the data plane.
 
 These instructions are based on the [Getting started](https://linkerd.io/2/getting-started/) page at Linkerd.io
 
-### Installing the linkerd client command
+It's worth noting that Linkerd can also be installed using its [helm chart](https://linkerd.io/2/tasks/install-helm/).
+
+### Installing the linkerd CLI
 
 As linkerd is not a core Kubernetes component it's not included in the Oracle OCI Shell, so we need to do that first.
 
