@@ -681,7 +681,7 @@ No resources found in tg-helidon namespace.
 
 <details><summary><b>Details on the script used</b></summary>
 <p>
-A namespace is basically a "virtual" cluster that let's us separate out services from others that may be running in the cluster. If you have your own cluster it's still a good idea to have your own namespace so you can separate the lab from other activities in the cluster, letting you easily see what's happening in the lab and also no interfering with other cluster activities, and also easily delete it if needs be (deleting a namespace deletes everything in it)
+A namespace is basically a "virtual" cluster that let's us separate our services from others that may be running in the cluster. If you have your own cluster it's still a good idea to have your own namespace so you can separate the lab from other activities in the cluster, letting you easily see what's happening in the lab and also no interfering with other cluster activities, and also easily delete it if needs be (deleting a namespace deletes everything in it)
 
 The following command will create a namespace (don't actually do this)
 
@@ -1885,5 +1885,4 @@ You have reached the end of this lab !!
 
 Use your **back** button to return to the **C. Deploying to Kubernetes** section
 
-n to return to the **C. Deploying to Kubernetes** section
 
