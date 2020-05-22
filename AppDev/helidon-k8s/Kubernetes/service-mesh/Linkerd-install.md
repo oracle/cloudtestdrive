@@ -27,8 +27,7 @@ This video is an introduction to the Service mesh basics lab. Once you've watche
 
 The concept behind a service mesh is pretty simple. It's basically a set of network proxies that are conceptually interposed between the containers running on a pod and the external network of the pod. This is achieved by the service mesh management capability (the control plane) which automatically adds proxies (the data plane) to the pods when the pods are started (if the pod is in a namespace that requests this via annotations)
 
-The following diagram (from [servicemesh.io](https://servicemesh.io)) whoes the components in the [linkerd](https://linkerd.io) service mesh, but other service mesh implementations have a similar structure. In this architecture, the proxies run as containers within the pod using the sidecar pattern (this is a good place for a link to a definition of the sidecar pattern)
-
+The following diagram (from [servicemesh.io](https://servicemesh.io)) whoes the components in the [linkerd](https://linkerd.io) service mesh, but other service mesh implementations have a similar structure. In this architecture, the proxies run as containers within the pod using the [sidecar pattern](https://dzone.com/articles/sidecar-design-pattern-in-your-microservices-ecosy-1)
 ![](https://servicemesh.io/images/control-plane.png) 
 
 The data plane consists of proxies which intercept the network operations of the pods and can apply rules to the data, for example restricting which services can be called by other services, encrypting data between proxies so cross microservice connections are transparently encrypted, splitting or mirroring traffic to help with update processes, and also gathering metrics on the number of calls (a link to [golden metrics](https://blog.appoptics.com/the-four-golden-signals-for-monitoring-distributed-systems/) would be good here), how often a cross microservice call failed and such like. Of course in a non Kubernetes environment you may have had your network switches or host operating systems do this, and many organizations had various levels of networking (separated by firewalls) for users, web applications, and databases, but in Kubernetes the boundary between the physical and logical compute resources is blurred, so using a service mesh allows you to have a simple implementation approach that applies regardless of if pods are running on the same node, different nodes in the same environment, or potentially even between data centers in opposite sides of the world.
@@ -138,7 +137,7 @@ The server is unavailable because we haven't installed it yet. The version numbe
 
 ### Installing linkerd into your Kubernetes cluster
 
-Though we have the linkerd client application we still need to install the linkerd control plan in our clouster (The control plan will handle deploying the data plane)
+Though we have the linkerd client application we still need to install the linkerd control plan in our cluster (The control plane will handle deploying the proxies in the data plane)
 
 Firstly let's make sure that the cluster meets the requirements to deploy linkerd
 
@@ -425,7 +424,7 @@ Linkerd is managed via the linkerd command OR via it's browser based dashboard. 
 
 There are several ways to access the linkerd dashboard. In a production deployment you would use an ingress with very strict security rules, and configure linkerd to only accept external connections via that ingress, but to implement that requires the use of a certificate and DNS configuration.
 
-For ease of setting up the lab we are going to use an ingress but relax the security constraints around accessing the linkerd web front end a bit **YOU SHOULD NEVER DO THIS IN A PRODUCTION ENVIRONMENT** A service mesh like linkerd controls the entire communications network in your cluster, unauthorized access to it would enable hackers to have complete control of your cluster.
+For ease of setting up the lab we are going to use an ingress but relax the security constraints around accessing the linkerd web front end a bit **YOU SHOULD NEVER DO THIS IN A PRODUCTION ENVIRONMENT** - a service mesh like linkerd controls the entire communications network in your cluster, unauthorized access to it would enable hackers to have complete control of your cluster communications.
 
 
 ### Removing the linkerd-web hosts restriction
@@ -585,8 +584,618 @@ This will setup the tunnel for you. You can then access linkerd and the grafana 
 ---
 </p></details>
 
+### Enabling our pods for linkerd
+
+In the linkerd UI you will have seen that it was only active on the linkerd namespace, none of the other services were reporting (in the Grafana output would have seen the namespaces monitored count was 1, in the main web page there was only information displayed on the linkerd namespace)
+
+This is to be expected, linkerd will only install itself into pods where the namespace has the annotation `linkerd.io/inject: enabled`
+
+You can of course do this by editing the namespace directly via the yaml file that created it (actually we used a script that called kubectl in this lab, so there isn't a yaml file) or by using `kubectl edit` or having kubectl annotate the namespace directly using `kubectl annotate `but the linkerd command provides us with a nice tool to do this for us, and let's us use it to build scripts .
+
+First let's see what this looks like
+
+- in the OCI shell type the following, replacing <ns name> with your namespace :
+  `kubectl get namespace <ns name> -o yaml`
+  
+```
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: "2020-04-16T14:07:53Z"
+  name: tg-helidon
+  resourceVersion: "239255"
+  selfLink: /api/v1/namespaces/tg-helidon
+  uid: c77e0d99-e3b4-42cc-ad87-881c245aadf3
+spec:
+  finalizers:
+  - kubernetes
+status:
+  phase: Active
+```
+
+The above output was using tg-helidon as the namespace name, but of course you will have used a different name so the output will be different.
+
+<details><summary><b>If you can't remember your namespace name</b></summary>
+<p>
+
+If you followed the lab instructions correctly your namespace should be named <your initials>-helidon
+
+To get a list of the available namespaces
+
+- In the OC Cloud Shell type
+  - `kubectl get namespace`
+
+```
+NAME              STATUS   AGE
+default           Active   36d
+ingress-nginx     Active   35d
+kube-node-lease   Active   36d
+kube-public       Active   36d
+kube-system       Active   36d
+linkerd           Active   7d2h
+tg-helidon        Active   35d
+```
+
+(This is the cluster I'm using to test the lab, so it's been running a while, the age reported in your example will probably be measured in hours, not days!)
+
 ---
 
-You have reached the end of this lab modules !!
+</p></details>
 
-Use your **back** button to return to the lab sequence document and to access the modules on how to apply the service mesh to your deployments and how to use it for tasks like intelligent upgrades.
+We can use the linkerd command to add the annotations, first let's just see what it does
+
+- In the OCI Cloud shell type the following replacing `<ns-name>` with your namespace name
+  - `kubectl get namespace <ns-name> -o yaml | linkerd inject -`
+
+```
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    linkerd.io/inject: enabled
+  name: tg-helidon
+  resourceVersion: "239255"
+  selfLink: /api/v1/namespaces/tg-helidon
+  uid: c77e0d99-e3b4-42cc-ad87-881c245aadf3
+spec:
+  finalizers:
+  - kubernetes
+status:
+  phase: Active
+---
+
+namespace "tg-helidon" injected
+```
+
+You can see that there is now a annotations section with the annotation `linkerd.io/inject: enabled` (As before this is the output for my namespace)
+
+The text `namespace "tg-helidon" injected` is just for information, it doesn't actually appear in the output (technically it's been sent to stderr, not stdout)
+
+Let's have kubectl apply the change
+
+- In the OCI Cloud shell type the following replacing `<ns-name>` with your namespace name
+  - `kubectl get namespace <ns-name> -o yaml | linkerd inject - | kubectl replace -f -`
+  
+```
+
+namespace "tg-helidon" injected
+
+namespace/tg-helidon configured
+```
+
+The forst line of the output is from the linkerd command telling us that its added the annotation, the second is from the kubectl replace command telling us that the previous configuration has been replaced with the new one.
+
+Let's have a look at the web page again, refresh the main web page in the browser
+
+![](images/linkerd-web-main-page-after-namespace-inject.png)
+
+It doesn't look very different, and if you looked at the Grafana page that would still report it was only be monitoring one namespace. How come ? We added the annotation !
+
+Well the reason for this is to do with the way a service mesh works. 
+
+The following diagram (from [servicemesh.io](https://servicemesh.io)) shows the components in the [linkerd](https://linkerd.io) service mesh
+
+![](https://servicemesh.io/images/control-plane.png) 
+
+If you look at the data plane you can see what a pod looks like when the service mesh is enabled. In addition to the application containers in the pods you'll see there is also a container in the pod called `linkerd-proxy` This is a container that's automatically added to the pod for you when the pod is deployed. The proxy is what does the day to day activities of the service mesh as it intercepts the network traffic, does the metric counting, connection encryption and so on.
+
+The linkerd control plane running in the cluster can intercept the request to create a pod and if the namespace has the `linkerd.io/inject` annotation set to `true` the control plane will automatically inject the proxy for to the pod configuration for us, this is good news as it means that we don't need to modify our configuration to add the proxy manually. There is of course a downside to this, because linkerd (and other service meshes) add the proxy when the pod is created then existing pods won't have that in place. If you want more details on how the injection process works there is info on the [Linkerd website automatic proxy injection page](https://linkerd.io/2/features/proxy-injection/)
+
+We can of course delete and recreate the deployments which will restart the pods triggering the proxies to be added, but this is a bit drastic and will result in the service being unavailable for a short time, so we're going to use a different approach which is to restart the deployments as if we were doing a rolling upgrade, that way there will always be some pods running the service as it transitions (this feature was added in Kubernetes 1.15, if you have an older version you'll have to stop and restart the deployments)
+
+Let's get the list of deplpyments
+
+- In the OCI Cloud shell type :
+  - `kubectl get deployments`
+
+```
+NAME           READY   UP-TO-DATE   AVAILABLE   AGE
+stockmanager   1/1     1            1           14d
+storefront     1/1     1            1           14d
+zipkin         1/1     1            1           14d
+```
+
+We can see in this case we have deployments for stockmanager, storefront and zipkin. Depending on which other optional modules you've done there may be additional deployments in the list.
+
+Sadly there doesn't seem to be a way to restart all of the deployments in a namespace (maybe that will be added in a future Kubernetes release) so we have to restart each one individually.
+
+- In the OCI Cloud shell type the following, if you have additional deployments add them to the list
+
+  - `kubectl rollout restart deployments storefront stockmanager zipkin`
+
+```
+deployment.extensions/storefront restarted
+deployment.extensions/stockmanager restarted
+deployment.extensions/zipkin restarted
+```
+<details><summary><b>What has actually been done to my pod ?</b></summary>
+<p>
+
+Restarting the pods triggered linkerd to do it's automatic update of the pod adding the proxy. It actually also added somethign called an `init container` which is a container that is run as the pod starts up. The init container actually re-writes the networking configuration in the main application pod to send all connections to the the proxy. 
+
+- In the OCI Cloud shell type the following, if you have additional deployments add them to the list
+  - ` kubectl get pods
+NAME                            READY   STATUS    RESTARTS   AGE
+stockmanager-654f44d59d-bjn2v   2/2     Running   0          7m55s
+storefront-8ddc6db75-nxlnm      2/2     Running   0          7m55s
+zipkin-84466dc99f-w5hhc         2/2     Running   0          7m55s
+
+Note that pods have 2/2 in the READY column, this means that thee are **two** copntainers running in the pod, previously would have seen 1/1 meaning only one container was running, (the application)
+
+Let's see what's in those pods, here we're going to use the jsonpath ooption to kubectl to reduce the amount of output
+
+- In the OCI Cloud shell (remember to substitute the pod name for your storefront !)
+
+  - `kubectl get pods storefront-8ddc6db75-nxlnm   -o jsonpath='{.spec.containers[*].name}'`
+
+```
+storefront linkerd-proxy
+```
+
+The two containers are listed, the `storefront` application container and the `linkerd-proxy` container.
+
+<details><summary><b>If you want so see all the detail on the pod (including the init container)</b></summary>
+<p>
+
+The following will generate a **lot** of output, you'll see it's **way** bigger than the yaml file you used to define the deployment !
+
+- In the OCI Cloud shell (remember to substitute the pod name for your stockmanager !)
+
+  - `kubectl get pod stockmanager-654f44d59d-bjn2v -o yaml`
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kubectl.kubernetes.io/restartedAt: "2020-05-21T17:27:41Z"
+    linkerd.io/created-by: linkerd/proxy-injector stable-2.7.1
+    linkerd.io/identity-mode: default
+    linkerd.io/proxy-version: stable-2.7.1
+    prometheus.io/path: /metrics
+    prometheus.io/port: "9081"
+    prometheus.io/scrape: "true"
+  creationTimestamp: "2020-05-21T17:27:41Z"
+  generateName: stockmanager-654f44d59d-
+  labels:
+    app: stockmanager
+    linkerd.io/control-plane-ns: linkerd
+    linkerd.io/proxy-deployment: stockmanager
+    pod-template-hash: 654f44d59d
+  name: stockmanager-654f44d59d-bjn2v
+  namespace: tg-helidon
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: ReplicaSet
+    name: stockmanager-654f44d59d
+    uid: 088909ae-deb5-401f-a0a1-c9b23dbeb40e
+  resourceVersion: "8437962"
+  selfLink: /api/v1/namespaces/tg-helidon/pods/stockmanager-654f44d59d-bjn2v
+  uid: 67957775-ca04-4e8b-a06e-5901f0042582
+spec:
+  containers:
+  - image: fra.ocir.io/oractdemeabdmnative/h-k8s_repo/stockmanager:0.0.1
+    imagePullPolicy: IfNotPresent
+    name: stockmanager
+    ports:
+    - containerPort: 8081
+      name: service-port
+      protocol: TCP
+    - containerPort: 9081
+      name: health-port
+      protocol: TCP
+    resources:
+      limits:
+        cpu: 250m
+      requests:
+        cpu: 250m
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /conf
+      name: sm-config-map-vol
+      readOnly: true
+    - mountPath: /confsecure
+      name: sm-conf-secure-vol
+      readOnly: true
+    - mountPath: /Wallet_ATP
+      name: sm-wallet-atp
+      readOnly: true
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: default-token-t7mhn
+      readOnly: true
+  - env:
+    - name: LINKERD2_PROXY_LOG
+      value: warn,linkerd=info
+    - name: LINKERD2_PROXY_DESTINATION_SVC_ADDR
+      value: linkerd-dst.linkerd.svc.cluster.local:8086
+    - name: LINKERD2_PROXY_CONTROL_LISTEN_ADDR
+      value: 0.0.0.0:4190
+    - name: LINKERD2_PROXY_ADMIN_LISTEN_ADDR
+      value: 0.0.0.0:4191
+    - name: LINKERD2_PROXY_OUTBOUND_LISTEN_ADDR
+      value: 127.0.0.1:4140
+    - name: LINKERD2_PROXY_INBOUND_LISTEN_ADDR
+      value: 0.0.0.0:4143
+    - name: LINKERD2_PROXY_DESTINATION_GET_SUFFIXES
+      value: svc.cluster.local.
+    - name: LINKERD2_PROXY_DESTINATION_PROFILE_SUFFIXES
+      value: svc.cluster.local.
+    - name: LINKERD2_PROXY_INBOUND_ACCEPT_KEEPALIVE
+      value: 10000ms
+    - name: LINKERD2_PROXY_OUTBOUND_CONNECT_KEEPALIVE
+      value: 10000ms
+    - name: _pod_ns
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: metadata.namespace
+    - name: LINKERD2_PROXY_DESTINATION_CONTEXT
+      value: ns:$(_pod_ns)
+    - name: LINKERD2_PROXY_IDENTITY_DIR
+      value: /var/run/linkerd/identity/end-entity
+    - name: LINKERD2_PROXY_IDENTITY_TRUST_ANCHORS
+      value: |
+        -----BEGIN CERTIFICATE-----
+        MIIBhDCCASmgAwIBAgIBATAKBggqhkjOPQQDAjApMScwJQYDVQQDEx5pZGVudGl0
+        eS5saW5rZXJkLmNsdXN0ZXIubG9jYWwwHhcNMjAwNTE0MTQwNDA2WhcNMjEwNTE0
+        MTQwNDI2WjApMScwJQYDVQQDEx5pZGVudGl0eS5saW5rZXJkLmNsdXN0ZXIubG9j
+        YWwwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQISrJZ03NeTDRhTat47wIZ6jqJ
+        /7S3WhIIygaWcPHyWjAQMa/+l9KSa9OR34wK9NWx0TN4oDQpCea6Rx/IMB86o0Iw
+        QDAOBgNVHQ8BAf8EBAMCAQYwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMC
+        MA8GA1UdEwEB/wQFMAMBAf8wCgYIKoZIzj0EAwIDSQAwRgIhAOovTGff057hl3bk
+        vnv5n6NatvY9oLEJdLfM1gRanRbEAiEAw2JD+BvfaS5skaQ/b1CRtYbtINO0Us0w
+        q3NkC2nqPHM=
+        -----END CERTIFICATE-----
+    - name: LINKERD2_PROXY_IDENTITY_TOKEN_FILE
+      value: /var/run/secrets/kubernetes.io/serviceaccount/token
+    - name: LINKERD2_PROXY_IDENTITY_SVC_ADDR
+      value: linkerd-identity.linkerd.svc.cluster.local:8080
+    - name: _pod_sa
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: spec.serviceAccountName
+    - name: _l5d_ns
+      value: linkerd
+    - name: _l5d_trustdomain
+      value: cluster.local
+    - name: LINKERD2_PROXY_IDENTITY_LOCAL_NAME
+      value: $(_pod_sa).$(_pod_ns).serviceaccount.identity.$(_l5d_ns).$(_l5d_trustdomain)
+    - name: LINKERD2_PROXY_IDENTITY_SVC_NAME
+      value: linkerd-identity.$(_l5d_ns).serviceaccount.identity.$(_l5d_ns).$(_l5d_trustdomain)
+    - name: LINKERD2_PROXY_DESTINATION_SVC_NAME
+      value: linkerd-destination.$(_l5d_ns).serviceaccount.identity.$(_l5d_ns).$(_l5d_trustdomain)
+    - name: LINKERD2_PROXY_TAP_SVC_NAME
+      value: linkerd-tap.$(_l5d_ns).serviceaccount.identity.$(_l5d_ns).$(_l5d_trustdomain)
+    image: gcr.io/linkerd-io/proxy:stable-2.7.1
+    imagePullPolicy: IfNotPresent
+    livenessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /metrics
+        port: 4191
+        scheme: HTTP
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    name: linkerd-proxy
+    ports:
+    - containerPort: 4143
+      name: linkerd-proxy
+      protocol: TCP
+    - containerPort: 4191
+      name: linkerd-admin
+      protocol: TCP
+    readinessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /ready
+        port: 4191
+        scheme: HTTP
+      initialDelaySeconds: 2
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      runAsUser: 2102
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: FallbackToLogsOnError
+    volumeMounts:
+    - mountPath: /var/run/linkerd/identity/end-entity
+      name: linkerd-identity-end-entity
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: default-token-t7mhn
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  initContainers:
+  - args:
+    - --incoming-proxy-port
+    - "4143"
+    - --outgoing-proxy-port
+    - "4140"
+    - --proxy-uid
+    - "2102"
+    - --inbound-ports-to-ignore
+    - 4190,4191
+    image: gcr.io/linkerd-io/proxy-init:v1.3.2
+    imagePullPolicy: IfNotPresent
+    name: linkerd-init
+    resources:
+      limits:
+        cpu: 100m
+        memory: 50Mi
+      requests:
+        cpu: 10m
+        memory: 10Mi
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        add:
+        - NET_ADMIN
+        - NET_RAW
+      privileged: false
+      readOnlyRootFilesystem: true
+      runAsNonRoot: false
+      runAsUser: 0
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: FallbackToLogsOnError
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: default-token-t7mhn
+      readOnly: true
+  nodeName: 10.0.10.3
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - configMap:
+      defaultMode: 420
+      name: sm-config-map
+    name: sm-config-map-vol
+  - name: sm-conf-secure-vol
+    secret:
+      defaultMode: 420
+      secretName: sm-conf-secure
+  - name: sm-wallet-atp
+    secret:
+      defaultMode: 420
+      secretName: sm-wallet-atp
+  - name: default-token-t7mhn
+    secret:
+      defaultMode: 420
+      secretName: default-token-t7mhn
+  - emptyDir:
+      medium: Memory
+    name: linkerd-identity-end-entity
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2020-05-21T17:27:44Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2020-05-21T17:27:48Z"
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2020-05-21T17:27:48Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2020-05-21T17:27:41Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: docker://d8130bf907b4ae54206496125d14eafc590760b8ec26d8e05309f8e79c525cda
+    image: gcr.io/linkerd-io/proxy:stable-2.7.1
+    imageID: docker-pullable://gcr.io/linkerd-io/proxy@sha256:22af88a12d252f71a3aee148d32d727fe7161825cb4164776c04aa333a1dcd28
+    lastState: {}
+    name: linkerd-proxy
+    ready: true
+    restartCount: 0
+    state:
+      running:
+        startedAt: "2020-05-21T17:27:45Z"
+  - containerID: docker://513a84ab22bef8b3b425e1a074344373a4d53c2529540eed331341d3ed71a0a4
+    image: fra.ocir.io/oractdemeabdmnative/h-k8s_repo/stockmanager:0.0.1
+    imageID: docker-pullable://fra.ocir.io/oractdemeabdmnative/h-k8s_repo/stockmanager@sha256:5e6b0a6539e86cb9615faf3387a5924032f708737cfead227cb83d3d5cf53761
+    lastState: {}
+    name: stockmanager
+    ready: true
+    restartCount: 0
+    state:
+      running:
+        startedAt: "2020-05-21T17:27:44Z"
+  hostIP: 10.0.10.3
+  initContainerStatuses:
+  - containerID: docker://b3f8435a9c0d7c8cce343684a6e939c7cacef58a09fd55474faf7f59981e4d0e
+    image: gcr.io/linkerd-io/proxy-init:v1.3.2
+    imageID: docker-pullable://gcr.io/linkerd-io/proxy-init@sha256:e1d81404c653b8479df0316f68dfa0cbbb2c34f4e987483d4cb832a9b1d9cd0a
+    lastState: {}
+    name: linkerd-init
+    ready: true
+    restartCount: 0
+    state:
+      terminated:
+        containerID: docker://b3f8435a9c0d7c8cce343684a6e939c7cacef58a09fd55474faf7f59981e4d0e
+        exitCode: 0
+        finishedAt: "2020-05-21T17:27:44Z"
+        reason: Completed
+        startedAt: "2020-05-21T17:27:43Z"
+  phase: Running
+  podIP: 10.244.0.72
+  qosClass: Burstable
+  startTime: "2020-05-21T17:27:41Z"
+```
+
+</p></details>
+---
+
+</p></details>
+
+Of course we also want to have the traffic from the ingress controller protected by the service mesh as well (this is actually pretty important as the ingress controller is an access point, so in the unlikely situation it was hacked you want to stop it seeing other traffic internal to the cluster)
+
+Let's do the same process for that namespace
+
+First update the ingress-nginix namespace
+- In the OCI Cloud shell type :
+
+  - `kubectl get namespace ingress-nginx -o yaml | linkerd inject - | kubectl replace -f -`
+
+```
+namespace "ingress-nginx" injected
+
+namespace/ingress-nginx replaced
+```
+
+Now get the list of deployments in the ingress-nginx namespace
+- In the OCI Cloud shell type :
+
+  - `kubectl get deployments -n ingress-nginx`
+
+```
+NAME                                          READY   UP-TO-DATE   AVAILABLE   AGE
+ingress-nginx-nginx-ingress-controller        1/1     1            1           35d
+ingress-nginx-nginx-ingress-default-backend   1/1     1            1           35d
+```
+
+And next update them so the proxy will be added.
+
+
+- In the OCI Cloud shell type :
+
+  - `kubectl rollout restart deployments -n ingress-nginx ingress-nginx-nginx-ingress-controller ingress-nginx-nginx-ingress-default-backend`
+
+```
+deployment.extensions/ingress-nginx-nginx-ingress-controller restarted
+deployment.extensions/ingress-nginx-nginx-ingress-default-backend restarted
+```
+
+Now let's make a few calls to the service to check it's all working fine (you may want to wait a few mins for the ingress controller to restart)
+
+Let's do some requests to the stock manager service which will generate log data
+
+<details><summary><b>If you've forgotten your external IP address</b></summary>
+<p>
+
+You can get the external IP address being used for the ingress controller by looking at the services list for the ingress-nginx namespace
+
+- In the OCI Cloud Shell type :
+  - `kubectl get services -n ingress-nginx`
+
+```
+NAME                                          TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)                      AGE
+ingress-nginx-nginx-ingress-controller        LoadBalancer   10.96.196.6    130.61.195.102   80:31969/TCP,443:31302/TCP   35d
+ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.17.121   <none>           80/TCP                       35d
+```
+
+The address is in the EXTERNAL-IP column, in this case it's 130.61.195.102 **but yours will be different**
+
+</p></details>
+
+
+- In the OCI Cloud Shell terminal type the following, be prepared for an error (remember to replace <external IP> with the IP address for your ingress controller)
+  - `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
+  
+```
+HTTP/1.1 200 OK
+Server: nginx/1.17.8
+Date: Thu, 23 Apr 2020 18:38:50 GMT
+Content-Type: application/json
+Content-Length: 149
+Connection: keep-alive
+Strict-Transport-Security: max-age=15724800; includeSubDomains
+
+[{"itemCount":100,"itemName":"Book"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":500,"itemName":"Pencil"},{"itemCount":5000,"itemName":"Pins"}]
+```
+
+As you have restarted the services you may get 424 failed dependency errors as the services start up. If you do simply retry the request.
+
+Let's go and look at the dashboards again
+
+- In your laptop web browser go to `https://<external IP>` (replace <external IP> with the IP address of your ingress controller)
+
+You may get a certificate warning again, in which case follow the procedures for your browser to accept the self signed certificate
+
+If you are asked to login use `admin` as the user name and the password you setup earlier in this module when you created the ingress for linkerd
+
+You can now see the main page of the linkerd UI
+
+![](images/linkerd-web-main-page-after-enablement.png)
+
+Good news ! We can see that there is http traffic in the ingress-ngnix namespace and TCP traffic in the tg-helidon namespace (your namespace will of course be different)
+
+If we go to the Grafana page 
+
+- In your laptop web browser go to `https://<external IP>/grafana`
+
+![](images/linkerd-grafana-topline-after-services-enabled.png)
+
+In some rare situations Grafana may not show all of the namespaces and services, I'm not sure exactly why, but I think it gets occasionally gets confused by times and timezones. And it will only show information (including summaries) of the display range.
+
+Let's adjust the visualization range to cover the last 12 hours. In the upper right you will see the time range selection
+
+![](images/linkerd-grafana-time-range-selected.png)
+
+In this case it's showing `May 20,2020,12:00:00 to May 22,2020 11:59:59` but it might also be showing a relative time range like `Last 5 minutes`
+
+- Click time range to get the selection choice 
+
+![](images/linkerd-grafana-time-range-selection.png)
+
+- Click the `Last 12 hours` option
+
+![](images/linkerd-grafana-topline-after-services-enabled-last-12-hours.png)
+
+We can see that there are three namespaces being monitored and 14 deployments. You may need to play around a bit with the time range in the UI to get the proper details.
+
+---
+
+You have reached the end of this lab module !!
+
+In the next module we will look at how you can use linkerd and grafana to see the traffic flows in your cluster and to diagnose problems.
+
+Acknowledgements. I'd like to thank Charles Pretzer of Bouyant, Inc for reviewing and sanity checking parts of this document.
+
+Use your **back** button to return to the lab sequence document to access further service mesh modules.

@@ -642,9 +642,9 @@ Kubernetes supports the concept of namespaces, these logically split the cluster
 
 In a production cluster where you may have many applications running composed of many microservices having separate namespaces is basically essential to avoid mistakes and misunderstandings that could impact the service operation.
 
-- Create a namespace and set the environment, to make it easier we have created a script called create-namespace.sh that does this for you. You must use **your initials** as a parameter (here the example uses tg as initials)
+- Create a namespace for your projects and setup the environment to make it the default, to make it easier we have created a script called create-namespace.sh that does this for you. You must use **your initials** as a parameter (for example in my case that's `tg-helidon`)
   -  `cd helidon-kubernetes/base-kubernetes`
-  -  `bash create-namespace.sh tg-helidon`
+  -  `bash create-namespace.sh <your-initials>-helidon`
   
 ```
 Deleting old tg-helidon namespace
@@ -653,7 +653,7 @@ namespace/tg-helidon created
 Setting default kubectl namespace
 Context "docker-desktop" modified.
 ```
-The script tries to delete any existing namespace with that name, creates a new one, and sets it as a default.
+The script tries to delete any existing namespace with that name, creates a new one, and sets it as a default. The output above was using tg-helidon as the namespace, but of course you will have used your initials and so will see them in the output instead of tg.
 
 We can check the namespace has been created by listing all namespaces:
 
@@ -675,6 +675,8 @@ If we look into the namespace we've just created we'll see it contains nothing y
 ```
 No resources found in tg-helidon namespace.
 ```
+
+As we've set the namespace we just created as the default we don't need to specify it in the kubectl commands from now on, but if we want to refer to a different namespace, for example the kube-system namespace then we need to use the -n flag to tell kubectl we are not using the default namespace, e.g. `kubectl get all -n kube-system`
 
 ---
 
