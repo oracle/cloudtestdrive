@@ -1189,4 +1189,6 @@ You have reached the end of this lab module !!
 
 In the next module we will look at how you can use linkerd and grafana to see the traffic flows in your cluster and to diagnose problems.
 
+Acknowledgements. I'd like to thank Charles Pretzer of Bouyant, Inc for reviewing and sanity checking parts of this document.
+
 Use your **back** button to return to the lab sequence document to access further service mesh modules.
