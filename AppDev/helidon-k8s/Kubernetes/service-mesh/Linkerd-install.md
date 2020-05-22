@@ -6,7 +6,7 @@
 
 ## C. Deploying to Kubernetes
 
-## 7a. Service mesh basics
+## 7a. Service mesh install and setup
 
 
 # NEED INTRO VIDEO 
@@ -521,7 +521,7 @@ Though these are not perfect they do ensure that users need to be authenticated 
 ingress.extensions/web-ingress created
 ```
 
-Now you can go to the ingress ip address 
+Now you can go to the ingress ip address for the linkerd UI
 
 - In your laptop web browser go to `https://<external IP>`
 
@@ -556,7 +556,7 @@ You'll be presented with the linkerd-web main page
 
 Let's also check you can access the grafana dashboard that's been installed by linkerd
 
-- In your web browser go to `https://<externalIP>/grafana` Note if you dod not save the username / password details you may be prompted to re-enter tham
+- In your web browser go to `https://<externalIP>/grafana` Note if you did not save the username / password details you may be prompted to re-enter them
 
 ![](images/linkerd-grafana-initial-topline.png)
 
