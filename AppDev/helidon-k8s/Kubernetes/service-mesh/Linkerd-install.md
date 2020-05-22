@@ -1165,7 +1165,7 @@ If we go to the Grafana page
 
 ![](images/linkerd-grafana-topline-after-services-enabled.png)
 
-In some situations Grafana may not show all of the namespaces and services, I'm not sure exactly why, but I think it gets confused by times and timezones. And it will only show information (including summaries) of the display range.
+In some rare situations Grafana may not show all of the namespaces and services, I'm not sure exactly why, but I think it gets occasionally gets confused by times and timezones. And it will only show information (including summaries) of the display range.
 
 Let's adjust the visualization range to cover the last 12 hours. In the upper right you will see the time range selection
 
