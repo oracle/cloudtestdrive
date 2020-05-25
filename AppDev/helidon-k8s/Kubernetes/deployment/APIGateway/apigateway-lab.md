@@ -648,9 +648,95 @@ After some moments, the API Deployment should be available and active:
 
 
 
-Check the base endpoint of the API Deployment. This will be the base URL that the end-clients we'll be using:
+Check the base endpoint of the API Deployment. This will be the base URL that the end-clients will be using:
 
 ![image-20200515151130310](images/image-450.png)
+
+
+
+### Testing using cURL
+
+---
+
+The last step is to test the StoreFront services - and implicit the API Gateway. The simple way of doing this, without installing any software tool or browser add-on, it's by using `cURL` command and the Cloud Shell environment. If you can install software and/or if you already have Postman on your local machine, you can jump to the `Testing using Postman` section.
+
+
+
+To launch the Cloud Shell, click on the `>_` icon in the header bar of the Cloud Console:
+
+![image-20200523172850071](images/image-700.png)
+
+
+
+The shell console will load at the bottom of the web page:
+
+![image-20200523173037508](images/image-710.png)
+
+
+
+First method that we are going to test, is the one that retrieves the items in stock:
+
+> curl -i [API Gateway Deployment Endpoint]**/store/stocklevel**
+
+Example:
+
+![image-20200523173709607](images/image-720.png)
+
+
+
+As we can see, there's no response body in the answer as we need to authenticate for calling the StoreFront service. The service requires basic authentication and for that we need to send the `Authorization` header with the following value:
+
+> Basic [base64 encoded username and password]
+
+
+
+To get the base64 encoded authentication string, just run the following command:
+
+> echo -n '[username]:[password[' | base64
+
+
+
+For example:
+
+![image-20200523174628451](images/image-730.png)
+
+In the case you use the `joe` username and `password` password, the basic64 authentication token is `am9lOnBhc3N3b3Jk`.
+
+
+
+Now let's run the `cURL` command again , this time adding the `Authorization` header:
+
+> curl -i -H "Authorization: Basic [base64 token]" [API Gateway Deployment Endpoint]/store/stocklevel
+
+
+
+Example:
+
+![image-20200523175206287](images/image-740.png)
+
+
+
+This time we get a response body in the answer!
+
+Next, let's try to reserve 10 Pencils:
+
+> curl -i -X POST -H "Authorization: Basic [base64 token]" -H "Content-Type: application/json" -d '{"requestedCount": 10, "requestedItem": "Pencil"}' [API Gateway Deployment Endpoint]**/store/reserveStock**
+
+
+
+Example:
+
+![image-20200523175806798](images/image-750.png)
+
+
+
+We see that the service replies back with the updated information about Pencils stock. Let's check again the list of items in stock:
+
+![image-20200523175938905](images/image-760.png)
+
+
+
+As expected, the answer is consistent with the reserve call response.
 
 
 
@@ -658,7 +744,7 @@ Check the base endpoint of the API Deployment. This will be the base URL that th
 
 ---
 
-One easy way of testing the StoreFront services - and implicit the API Gateway - is using Postmen. Of course, we can use other tools or `curl` command, but in this lab we've chosen Postman.
+One other easy and visual way of testing  the StoreFront services is using Postman. It allows us to save the REST calls configuration and to group them by Collections and Folders.
 
 
 
@@ -758,9 +844,11 @@ Let's test the *List stock items*  method again:
 
 
 
-#### Check API Gateway Metrics
+### Check API Gateway Metrics
 
-If we open our API Gateway details page in OCI Console, we can see some activity:
+---
+
+After we have done some testing, if we open our API Gateway details page in OCI Console, we can see some activity:
 
 ![image-20200518094137609](images/image-630.png)
 
