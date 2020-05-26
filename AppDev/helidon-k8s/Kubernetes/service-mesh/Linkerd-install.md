@@ -66,7 +66,7 @@ The important thing is to define your requirements before selecting a service me
 
 ## How to install a a service mesh ?
 
-For the purposes of this lab we've chosen to use Linkerd as it's a long standing service mesh implementation and is the only CNCF supported service mesh project (at the time of writing.) It also has a reputation for being simple to install and use.
+For the purposes of this lab we've chosen to use Linkerd as it's a long standing service mesh implementation and is the only CNCF supported service mesh project (at the time of writing.) It also has a reputation for being simple to install and use. The Linkerd website has an [FAQ on the differences](https://linkerd.io/2/faq/#whats-the-difference-between-linkerd-and-istio) and open source implications
 
 Linkerd is installed in two parts, the linkerd command which runs local to your environment (similar to the kubectl command) and the linkerd control pane which runs in your Kubernetes cluster (similar to the Kubernetes cluster management elements) and manages the data plane.
 
@@ -1194,7 +1194,7 @@ We can see that there are three namespaces being monitored and 14 deployments. Y
 
 You have reached the end of this lab module !!
 
-In the next module we will look at how you can use linkerd and grafana to see the traffic flows in your cluster and to diagnose problems.
+In the next module we will look at how you can use linkerd and grafana to see the traffic flows in your cluster.
 
 Acknowledgements. I'd like to thank Charles Pretzer of Bouyant, Inc for reviewing and sanity checking parts of this document.
 
