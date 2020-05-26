@@ -180,6 +180,7 @@ components:
           example: Pencil
           type: string
       description: Details of the item in the database
+      example: '{"itemCount": 10, "itemName": "Pencil"}'
       type: object
     ItemRequest: 
       properties:
@@ -288,6 +289,7 @@ components:
           example: Pencil
           type: string
       description: Details of the item in the database
+      example: '{"itemCount": 10, "itemName": "Pencil"}'
       type: object
     ItemRequest: 
       properties:
@@ -527,7 +529,7 @@ For the rest of the lab documentation I'm going to stick with yaml as it's a bit
 This has given us the entire API, but the /status is probably not relevant to external callers. (As we'll see in the Kubernetes sections it's more for the internal operation of the cluster and availability than something an client would call. So we need a way to remove some end-points from the output.
 
 - Open the src/main/resources/META-INF/microprofile-config.properties file
-  - Uncomment the line `mp.openapi.scan.exclude.classes=com.oracle.labs.helidon.storefront.resources.StatusResource,com.oracle.labs.helidon.storefront.data.ItemRequest`
+  - Uncomment the line `mp.openapi.scan.exclude.classes=com.oracle.labs.helidon.storefront.resources.StatusResource,com.oracle.labs.helidon.storefront.resources.ConfigurationResource`
  
 (It's the last line, so it may be a bit hidden)
  
@@ -576,6 +578,7 @@ components:
           example: Pencil
           type: string
       description: Details of the item in the database
+      example: '{"itemCount": 10, "itemName": "Pencil"}'
       type: object
     ItemRequest: 
       properties:
@@ -638,7 +641,7 @@ We've got basic information on the ItemRequest (and of course full info on ItemD
     ```
 - Add the following annotation to the requestedCount field
   - ```java
-    @Schema(required = true, description = "Number of the items being requested, this must be larger than the minimumChange", example = "5")
+    @Schema(name = "ItemRequest", description = "Details of a Item reservation request", example = "{\"requestedItem\", \"Pin\", \"requestedCount\",5}")
     ```
 
 The resulting class looks like :
@@ -651,7 +654,7 @@ The resulting class looks like :
 public class ItemRequest {
 	@Schema(required = true, description = "Name of the item being requested", example = "Pencil")
 	private String requestedItem;
-	@Schema(required = true, description = "Number of the items being requested, this must be larger than the minimumChange", example = "5")
+	@Schema(name = "ItemRequest", description = "Details of a Item reservation request", example = "{\"requestedItem\", \"Pin\", \"requestedCount\",5}")
 	private int requestedCount;
 }
 ```
@@ -660,9 +663,9 @@ public class ItemRequest {
 
 `@Schema` is a commonly used annotation with OpenAPI, it basically is used to identify data objects and their fields. 
 
-There are a *very* large number of attributes that can be added to a `@Schema` annotation, and you can see common (and I hope self explanatory) ones here. There are also attributes that define minimum and maximum values of an attribute, or define the allowable fields of an enum. These could be used to enable client code to apply data validation checks itself before they get to the service itself. 
+There are a *very* large number of attributes that can be added to a `@Schema` annotation, and you can see common (and I hope self explanatory) ones here. There are also attributes that define minimum and maximum values of an attribute, or define the allowable fields of an enum. These could be used to enable client code to apply data validation checks itself before they get to the service itself.
 
-Some annotations like `required` might seem a bit strange, after all in Java there is no concept of optional attributes on a class or method, however it's important to remember that this relates to data being **transfered**, not to data at rest. The Helidon framework will create the **instance** of the class and it's quite reasonable that a class may have a default value for a field. In that case it's not going to be *required* that the REST API request defines a value for that field unless the request want's to override the default.
+Some annotations like `required` might seem a bit strange, after all in Java there is no concept of optional attributes on a class or method, however it's important to remember that this relates to data being **transfered**, not to data at rest. The Helidon framework will create the **instance** of the class and it's quite reasonable that a class may have a default value for a field. In that case it's not going to be **required** as the REST API request defines a value for that field unless the request want's to override the default.
 
 Full details of the `@Schema` annotation are in the Microprofile OpenAPI documentation linked to at the end of this module.
 
@@ -706,6 +709,7 @@ components:
           example: Pencil
           type: string
       description: Details of the item in the database
+      example: '{"itemCount": 10, "itemName": "Pencil"}'
       type: object
     ItemRequest: 
       required:
@@ -720,9 +724,10 @@ components:
           type: integer
         requestedItem: 
           description: Name of the item being requested
-          example: Pencil
+          example: Pin
           type: string
       description: Details of a Item reservation request
+      example: '{"requestedItem", "Pin", "requestedCount",5}'
       type: object
 info: 
   description: Acts as a simple stock level tool for a post room or similar
@@ -757,7 +762,7 @@ paths:
           description: OK
  ```
  
- Brilliant, the `component.schemas.ItemRequest` section is now as nicely documented (though I accept this is subjective) as the ItemDetails section.
+Brilliant, the `component.schemas.ItemRequest` section is now as nicely documented (though I accept this is subjective) as the ItemDetails section.
  
 ### OpenAPI annotations on the REST Methods
  
@@ -770,7 +775,9 @@ As we've excluded the StartResource and ConfigurationResource on the basis that 
 - Add the following annotations to the listAllStock method
   - ```java
     @Operation(summary = "List stock items", description = "Returns a list of all of the stock items currently held in the database (the list may be empty if there are no items)")
-	@APIResponse(description = "A set of ItemDetails representing the current data in the database", responseCode = "200", content = @Content(schema = @Schema(implementation = ItemDetails.class, type = SchemaType.ARRAY)))
+	@APIResponse(description = "A set of ItemDetails representing the current data in the database", responseCode = "200", content = @Content(schema = @Schema(implementation = ItemDetails.class, type = SchemaType.ARRAY, example = "[{\"itemCount\": 10, \"itemName\": \"Pencil\"},"
+			+ "{\"itemCount\": 50, \"itemName\": \"Eraserl\"}," + "{\"itemCount\": 4600, \"itemName\": \"Pin\"},"
+			+ "{\"itemCount\": 100, \"itemName\": \"Book\"}]")))
     ```
  
 <details><summary><b>Explaining the annotations</b></summary>
@@ -783,8 +790,9 @@ There is one useful attribute for the `@Operation` annotation which is the `hidd
 
 The content attribute of the `@APIResponse` defines what the method returns, in this case an array of instances of ItemDetails.
 
-</b></details>
+
 ---
+</b></details>
 
 Let's look at the updated REST API description 
 
@@ -825,11 +833,28 @@ paths:
           content:
             application/json: 
               schema: 
+                example: '[{"itemCount": 10, "itemName": "Pencil"},{"itemCount": 50,
+                  "itemName": "Eraserl"},{"itemCount": 4600, "itemName": "Pin"},{"itemCount":
+                  100, "itemName": "Book"}]'
                 items: 
-                  $ref: '#/components/schemas/ItemDetails'
+                  required:
+                  - itemCount
+                  - itemName
+                  properties:
+                    itemCount: 
+                      description: The number of items listed as being available
+                      example: '10'
+                      format: int32
+                      type: integer
+                    itemName: 
+                      description: The name of the item
+                      example: Pencil
+                      type: string
+                  description: Details of the item in the database
+                  example: '{"itemCount": 10, "itemName": "Pencil"}'
+                  type: object
                 type: array
           description: A set of ItemDetails representing the current data in the database
-      summary: List stock items
 ```
 
 We can now see the details of the `/store/stocklevel` end point. 
@@ -842,11 +867,11 @@ Let's now add annotations to the `/store/reserveStock` method that let's us desc
 - Add the following annotations to the reserveStock method
   - ```java
     @Operation(summary = "Reserves a number of stock items", description = "reserves a number of stock items in the database. The number of stock items being reserved must be greater than the defined minimum change")
-	@APIResponse(description = "The updated stock details for the item", responseCode = "200", content = @Content(schema = @Schema(implementation = ItemDetails.class)))
+	@APIResponse(description = "The updated stock details for the item", responseCode = "200", content = @Content(schema = @Schema(implementation = ItemDetails.class, example = "{\"itemCount\": 10, \"itemName\": \"Pencil\"}")))
     ```
 - Add the following annotation to the reserveStock method itemRequest parameter
   - ```java
-    @RequestBody(description = "The details of the item being requested", required = true, content = @Content(schema = @Schema(implementation = ItemRequest.class)))
+    @RequestBody(description = "The details of the item being requested", required = true, content = @Content(schema = @Schema(implementation = ItemRequest.class, example = "{\"requestedItem\", \"Pin\", \"requestedCount\",5}")))
     ```
 
 The updated method declaration should now look like the following. Note that other annotations for metrics, timers etc. may not be as displayed here depending on what sections of the lab you've done. Comments have been omitted to simplify the text
@@ -859,10 +884,10 @@ The updated method declaration should now look like the following. Note that oth
 	@Timed(name = "reserveStockTimer")
 	@Fallback(StorefrontFallbackHandler.class)
 	@Operation(summary = "Reserves a number of stock items", description = "reserves a number of stock items in the database. The number of stock items being reserved must be greater than the defined minimum change")
-	@APIResponse(description = "The updated stock details for the item", responseCode = "200", content = @Content(schema = @Schema(implementation = ItemDetails.class)))
+	@APIResponse(description = "The updated stock details for the item", responseCode = "200", content = @Content(schema = @Schema(implementation = ItemDetails.class, example = "{\"itemCount\": 10, \"itemName\": \"Pencil\"}")))
 	public ItemDetails reserveStockItem(
-			 @RequestBody(description = "The details of the item being requested", required = true, content = @Content(schema = @Schema(implementation = ItemRequest.class)))
-			ItemRequest itemRequest) throws MinimumChangeException, UnknownItemException, NotEnoughItemsException {
+			@RequestBody(description = "The details of the item being requested", required = true, content = @Content(schema = @Schema(implementation = ItemRequest.class, example = "{\"requestedItem\", \"Pin\", \"requestedCount\",5}"))) ItemRequest itemRequest)
+			throws MinimumChangeException, UnknownItemException, NotEnoughItemsException {
 ```
 
 - Stop the storefront instance, rebuild the index as usual and once that's done re-start the storefront service
@@ -871,7 +896,7 @@ The updated method declaration should now look like the following. Note that oth
 
   - `curl -i http://localhost:8080/openapi`
   
-(The following has been truncated to only include the `paths:` section)
+(The following has been truncated to only include the reserveStock path in the `paths:` section)
 
 ```yaml
 paths:
@@ -883,7 +908,23 @@ paths:
         content:
           application/json: 
             schema: 
-              $ref: '#/components/schemas/ItemRequest'
+              required:
+              - requestedCount
+              - requestedItem
+              properties:
+                requestedCount: 
+                  description: Number of the items being requested, this must be larger
+                    than the minimumChange
+                  example: '5'
+                  format: int32
+                  type: integer
+                requestedItem: 
+                  description: Name of the item being requested
+                  example: Pin
+                  type: string
+              description: Details of a Item reservation request
+              example: '{"requestedItem", "Pin", "requestedCount",5}'
+              type: object
         description: The details of the item being requested
         required: true
       responses:
@@ -891,27 +932,28 @@ paths:
           content:
             application/json: 
               schema: 
-                $ref: '#/components/schemas/ItemDetails'
+                required:
+                - itemCount
+                - itemName
+                properties:
+                  itemCount: 
+                    description: The number of items listed as being available
+                    example: '10'
+                    format: int32
+                    type: integer
+                  itemName: 
+                    description: The name of the item
+                    example: Pencil
+                    type: string
+                description: Details of the item in the database
+                example: '{"itemCount": 10, "itemName": "Pencil"}'
+                type: object
           description: The updated stock details for the item
       summary: Reserves a number of stock items
-  /store/stocklevel: 
-    get: 
-      description: Returns a list of all of the stock items currently held in the
-        database (the list may be empty if there are no items)
-      responses:
-        '200': 
-          content:
-            application/json: 
-              schema: 
-                items: 
-                  $ref: '#/components/schemas/ItemDetails'
-                type: array
-          description: A set of ItemDetails representing the current data in the database
-      summary: List stock items
 
 ```
 
-We can see that there is a lot more into on the `/store/reserveStock` REST endpoint, and also on the argument, we can see that it's required and also a description. If looked at the $ref you'll see it points you to the `/components/schamas/ItemRequest` (this is a yaml hierarchy, not a rest endpoint) and that section of the document has the detailed description of the method parameter.
+We can see that there is a lot more into on the `/store/reserveStock` REST endpoint, and also on the argument, we can see that it's required and also a description.
 
 ### Documenting the error status codes 
 Of course not every REST API call returns successfully, there may be problems, for example in the case of the `reserveStock` method it might throw a `UnknownItemException` In an earlier module we put an `@Fallback` annotation on the method directing Helidon to pass exceptions a handler class which convertc them into relevant http status codes, in this case an `UnknownItemException` is converted into a 404 / Not Found status. But we need a way to document this and the other returns a client may reasonably be expected to handle.
@@ -933,12 +975,12 @@ The updated method declaration should now look like this (comments omitted for c
 	@Timed(name = "reserveStockTimer")
 	@Fallback(StorefrontFallbackHandler.class)
 	@Operation(summary = "Reserves a number of stock items", description = "reserves a number of stock items in the database. The number of stock items being reserved must be greater than the defined minimum change")
-	@APIResponse(description = "The updated stock details for the item", responseCode = "200", content = @Content(schema = @Schema(implementation = ItemDetails.class)))
+	@APIResponse(description = "The updated stock details for the item", responseCode = "200", content = @Content(schema = @Schema(implementation = ItemDetails.class, example = "{\"itemCount\": 10, \"itemName\": \"Pencil\"}")))
 	@APIResponse(description = "The requested item does not exist", responseCode = "404")
 	@APIResponse(description = "The requested change does not meet the minimum level required for the change (i.e. is <= the minimumChange value)", responseCode = "406")
 	@APIResponse(description = "There are not enough of the requested item to fulfil your request", responseCode = "409")
 	public ItemDetails reserveStockItem(
-			@RequestBody(description = "The details of the item being requested", required = true, content = @Content(schema = @Schema(implementation = ItemRequest.class))) ItemRequest itemRequest)
+			@RequestBody(description = "The details of the item being requested", required = true, content = @Content(schema = @Schema(implementation = ItemRequest.class, example = "{\"requestedItem\", \"Pin\", \"requestedCount\",5}"))) ItemRequest itemRequest)
 			throws MinimumChangeException, UnknownItemException, NotEnoughItemsException {
 		log.info("Requesting the reservation of " + itemRequest.getRequestedCount() + " items of "
 				+ itemRequest.getRequestedItem());
@@ -950,7 +992,7 @@ The updated method declaration should now look like this (comments omitted for c
 
   - `curl -i http://localhost:8080/openapi`
   
-(The following has been truncated to only include the `paths:` section)
+(The following has been truncated to only include the reseve stock path in the `paths:` section)
 
 ```yaml
 paths:
@@ -962,7 +1004,23 @@ paths:
         content:
           application/json: 
             schema: 
-              $ref: '#/components/schemas/ItemRequest'
+              required:
+              - requestedCount
+              - requestedItem
+              properties:
+                requestedCount: 
+                  description: Number of the items being requested, this must be larger
+                    than the minimumChange
+                  example: '5'
+                  format: int32
+                  type: integer
+                requestedItem: 
+                  description: Name of the item being requested
+                  example: Pin
+                  type: string
+              description: Details of a Item reservation request
+              example: '{"requestedItem", "Pin", "requestedCount",5}'
+              type: object
         description: The details of the item being requested
         required: true
       responses:
@@ -977,23 +1035,24 @@ paths:
           content:
             application/json: 
               schema: 
-                $ref: '#/components/schemas/ItemDetails'
+                required:
+                - itemCount
+                - itemName
+                properties:
+                  itemCount: 
+                    description: The number of items listed as being available
+                    example: '10'
+                    format: int32
+                    type: integer
+                  itemName: 
+                    description: The name of the item
+                    example: Pencil
+                    type: string
+                description: Details of the item in the database
+                example: '{"itemCount": 10, "itemName": "Pencil"}'
+                type: object
           description: The updated stock details for the item
       summary: Reserves a number of stock items
-  /store/stocklevel: 
-    get: 
-      description: Returns a list of all of the stock items currently held in the
-        database (the list may be empty if there are no items)
-      responses:
-        '200': 
-          content:
-            application/json: 
-              schema: 
-                items: 
-                  $ref: '#/components/schemas/ItemDetails'
-                type: array
-          description: A set of ItemDetails representing the current data in the database
-      summary: List stock items
 ```
 
 We now have OpenAPI documentation that defines the reasonable error conditions that may be generated.
@@ -1003,7 +1062,7 @@ We now have OpenAPI documentation that defines the reasonable error conditions t
 
 As a general rule of thumb you should only document the http status responses your end point might reasonably throw, in the case above that's 200 (OK), 404 / Not Found (when a request is made to reserve an item not in the database) 409 / CONFLICT (when there are not enough items available to reserve) and 406 / Not Acceptable (when the number of items to be reserved is not acceptable due to minimum change restrictions.)
 
-We have added `@APIResponse` annotations to deal with those as any client could reasonably expect to encounter them, but for codes that may be generated due to internal problems, for example the catch all 500 / Internal Server error and it's related 5xx series of codes we have not documented as a client would not under normal circumstances encounter them.
+We have added `@APIResponse` annotations to deal with those as any client could reasonably expect to encounter them, but for codes that may be generated due to internal problems, for example the catch all 500 / Internal Server error and it's related 5xx series of codes we have not documented as a client would not expect to encounter them under normal operation of the call.
 
 Here we have documented a the typical set of http status codes that the method can reasonably return, though of course exactly which ones are included in the documentation will vary by end point and your development standards.
 </p></details>
