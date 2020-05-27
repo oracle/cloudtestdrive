@@ -662,6 +662,8 @@ The last step is to test the StoreFront services - and implicit the API Gateway.
 
 
 
+#### Simple Testing
+
 To launch the Cloud Shell, click on the `>_` icon in the header bar of the Cloud Console:
 
 ![image-20200523172850071](images/image-700.png)
@@ -737,6 +739,63 @@ We see that the service replies back with the updated information about Pencils 
 
 
 As expected, the answer is consistent with the reserve call response.
+
+
+
+#### Load Testing
+
+Now, we are going to do a bit of load testing in order to see how the *Rate limiting policy* works. When configuring the API Deployment, we've setup a limit of 2 calls per second (for each individual client IP).
+
+
+
+Using the Cloud Shell, download the following script:
+
+> wget https://raw.githubusercontent.com/CloudTestDrive/helidon-kubernetes/master/cloud-native-kubernetes/auto-scaling/generate-load.sh
+
+
+
+Make the script executable:
+
+> chmod +x generate-load.sh
+
+
+
+The script will call indefinite number of times the GET method that lists current items in stock. It requires two arguments:
+
+- the base Endpoint Path of the StoreFront Service (*API Gateway Deployment Endpoint* <u>without</u> the `https://` prefix)
+- the waiting time between subsequent calls (in seconds)
+
+
+
+Let's first test with a 400ms interval between calls:
+
+> ./generate-load.sh [API Gateway Deployment Endpoint without 'https://'] 0.4
+
+
+
+Example:
+
+![image-20200527113336773](images/image-770.png)
+
+
+
+Hit `Ctrl+C`  to interrupt the script.  As we can see, all request are fulfilled.
+
+
+
+Let's now test without any waiting interval between the calls:
+
+> ./generate-load.sh [API Gateway Deployment Endpoint without 'https://'] 0
+
+
+
+Example:
+
+![image-20200527113730762](images/image-780.png)
+
+
+
+Hit `Ctrl+C`  to interrupt the script. As we can see, from time to time, the calls are rejected by the API Gateway, as their number in a second timeframe exceeds the limit of 2 calls that we have setup during deployment.
 
 
 
@@ -844,16 +903,75 @@ Let's test the *List stock items*  method again:
 
 
 
+#### Load Testing
+
+Now, we are going to do a bit of load testing in order to see how the *Rate limiting policy* works. When configuring the API Deployment, we've setup a limit of 2 calls per second (for each individual client IP).
+
+
+
+In the top-left menu bar, click on `Runner`:
+
+![](images/image-630.png)
+
+
+
+Another window opens up. Choose the `StoreFrontApplication` Collection:
+
+![image-20200527115254295](images/image-640.png)
+
+
+
+Choose the store folder:
+
+![image-20200527115436710](images/image-650.png)
+
+
+
+For the first run, setup:
+
+- `Iterations`: **10**
+- `Delay`: **400** (ms)
+- Uncheck the POST method to reserve a stock item and leave just the GET method to list the items in stock
+
+Click `Run StorefrontApplication`:
+
+![image-20200527115645682](images/image-660.png)
+
+
+
+As we can see, all request are fulfilled. Click on `Collection Runner` to go back:
+
+![image-20200527120315848](images/image-670.png)
+
+
+
+This time let's setup just a 100ms delay between the calls. Setup:
+
+- `Delay`: 100** (ms)
+- Keep unchecked the POST method
+
+Click on `Run StorefrontApplication `again:
+
+![image-20200527120456260](images/image-680.png)
+
+
+
+As we can see now, from time to time, the calls are rejected by the API Gateway, as their number in a second timeframe exceeds the limit of 2 calls that we have setup during deployment:
+
+![image-20200527120759170](images/image-690.png)
+
+
+
 ### Check API Gateway Metrics
 
 ---
 
-After we have done some testing, if we open our API Gateway details page in OCI Console, we can see some activity:
+After we have done some testing, if we open our API Gateway details page in OCI Console, we can see the activity:
 
-![image-20200518094137609](images/image-630.png)
+![image-20200518094137609](images/image-800.png)
 
 
 
 In case we have multiple API Deployments for the same API Gateway, we can check the activity at API Deployment level:
 
-![image-20200518094306100](images/image-640.png)
+![image-20200518094306100](images/image-810.png)
