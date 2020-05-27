@@ -30,7 +30,7 @@ The API Gateway service is integrated with Oracle Cloud Infrastructure Identity 
 
 After running the previous labs, you've probably ended up with a architecture similar with the one in below picture:
 
-![image-20200512143610167](images/image-010.png)
+![](images/image-010.png)
 
 TG - Note, a number of the elements you can see were created automatically by the Cloud Infrastructure.
 
@@ -51,7 +51,7 @@ So each of the Kubernetes worker node got an IP address within the Private Subne
 
 Now, to get more control on how the backend REST services are exposed to and access from the Internet, we add an *API Gateway* component in our architecture.
 
-![image-20200512153226101](images/image-020.png)
+![](images/image-020.png)
 
 The *API Gateway* will sit in front of the *Load Balancer* and will handle the requests from Internet. As It needs to be visible from the Internet, it has to be part of a Public Subnet and have associated an Public IP address. The OCI API Gateways can be deployed also in Private Subnets, being visible only from internal network (in case you want to apply internal security rules, say to protect core systems) but in our case it will be used to serve public clients, so will be on a public internet facing network.
 
@@ -182,11 +182,11 @@ This will go to the load balancers page
 
 Identify the Load Balancer with the above External IP address:
 
-![image-20200512180400990](images/image-060.png)
+![](images/image-060.png)
 
 Click on the load balancer name to go to it's details page. (note this image was taken from a different cluster, so the VCN names don't match)
 
-![image-20200512181039266](images/image-070.png)
+![](images/image-070.png)
 
 Now, in order to create a new Load Balancer with similar role (balancing traffic to Kubernetes worker nodes), we need to check for the backend nodes information and for the health check configuration.
 
@@ -196,12 +196,12 @@ On the lower left side in the resources menu click `Backend Sets`
 
 You should see two backend sets:
 
-![image-20200513191553816](images/image-080.png)
+![](images/image-080.png)
 
 
 We are interested in **TCP-80** Backend Set information as we will forward plain http traffic to the worker nodes. Click on the Backend Set name (**TCP-80**).
 
-![image-20200513192037531](images/image-090.png)
+![](images/image-090.png)
 
 
 In the `Resources` menu click on `Backends`
@@ -210,7 +210,7 @@ In the `Resources` menu click on `Backends`
 
 to inspect the Kubernetes workers:
 
-![image-20200513192239487](images/image-100.png)
+![](images/image-100.png)
 
 
 
@@ -221,7 +221,7 @@ Copy in a text editor or similar :
 
 Now, lets go back to the Backend Set information and click on `Update Health Check` button:
 
-![image-20200513192804436](images/image-110.png)
+![](images/image-110.png)
 
 
 
@@ -236,7 +236,7 @@ Copy all of the values for all the fields in the form into a text editor, here a
 - URL Path and
 - Response body regex
 
-![image-20200513192907957](images/image-120.png)
+![](images/image-120.png)
 
 
 <details><summary><b>What do these mean ?</b></summary>
@@ -260,7 +260,7 @@ Go to Load Balancers Dashboard page (Hamburger Menu -> `Core Infrastructure` sec
 
 On the load balancers list Choose the `Create Load Balancer`:
 
-![image-20200514154043651](images/image-130.png)
+![](images/image-130.png)
 
 Fill in the form
 
@@ -270,7 +270,7 @@ Fill in the form
 
 - Chose `Small 100Mbps` as the shape:
 
-![image-20200514154513160](images/image-140.png)
+![](images/image-140.png)
 
 
 Scroll down to select the existing VCN and Subnet. 
@@ -281,13 +281,13 @@ Scroll down to select the existing VCN and Subnet.
 
 - Click the `Next` button
 
-![image-20200514154810568](images/image-150.png)
+![](images/image-150.png)
 
 Leave the policy as `Weighted round robin`
 
 We will add the backends information later on, after creating the Load Balancer
 
-![image-20200514155216099](images/image-160.png)
+![](images/image-160.png)
 
 
 
@@ -304,24 +304,24 @@ The following is an example based on the settings in our deployment, you may fin
 - **URL Path**: `/healthz`
 - **Response body regex**: `.\*`
 
-![image-20200514155848925](images/image-170.png)
+![](images/image-170.png)
 
 
 
 Click `Next` to get to last section of the wizard. Here we configure the a listener for the Load Balancer. With the new topology, having API gateway in front of the internal Load Balancer and the worker nodes, it's sufficient to setup a `HTTP` type of listener as the API Gateway will listen only on HTTPS (443), do SSL offloading and then direct the traffic to the private load balancer. 
 
-![image-20200514160137276](images/image-180.png)
+![](images/image-180.png)
 
 
 You can overwrite the default `Listener Name` if you like. Leave the default http port `80`. Click the `Submit` button to trigger Load Balancer provisioning.
 
-![image-20200514160757370](images/image-190.png)
+![](images/image-190.png)
 
  
 
 After some moments, the Load Balancer should become `Active`. Take note of the `IP Address` allocated to the Load Balancer. We will need this information later on, when we'll configure the API Gateway backend routes.
 
-![image-20200514180457769](images/image-192.png)
+![](images/image-192.png)
 
 
 
@@ -331,25 +331,25 @@ We need now to associate the Kubernetes backend worker nodes. From the details p
 
  Click on the existing backend set name:
 
-![image-20200514161051350](images/image-200.png)
+![](images/image-200.png)
 
 
 
 Now, go to `Backends` menu option of the backend set page. Click on `Add Backends`:
 
-![image-20200514161241127](images/image-210.png)
+![](images/image-210.png)
 
 
 
 Choose to add backends by entering *IP ADDRESSES*. It's easier to add Kubernetes worker nodes this way as we already have the IP addresses and as it might be more difficult to identify the compute instances in a shared environment. Fill in the *IP ADRESSES* and the *PORT* information. Leave default weight as we want the load balancer to equally distribute the requests. Click `Add` to add the backends.
 
-![image-20200514161526206](images/image-220.png)
+![](images/image-220.png)
 
 
 
 The Backend nodes should be listed now:
 
-![image-20200514163256714](images/image-230.png)
+![](images/image-230.png)
 
 
 
@@ -359,7 +359,7 @@ The Backend nodes should be listed now:
 
 If we return to the Backend Set information, we should see that the backend servers number jumped to 3 and that there's no unhealthy backend server:
 
-![image-20200514163429814](images/image-240.png)
+![](images/image-240.png)
 
 
 
@@ -369,13 +369,13 @@ Last thing that we need to do is to allow traffic from the Public Regional Subne
 
 Let's go to the `Virtual Cloud Network`s dashboard page and choose our Kubernetes VCN (the one identified above, with the name *oke-quick-Helidon-Lab-YourInitials-[...]*):
 
-![image-20200514172322954](images/image-040.png)
+![](images/image-040.png)
 
 
 
 Click on the Private (Regional) Subnet name, it should be the one prefixed with *oke-subnet-quick-[...]*:
 
-![image-20200514172800358](images/image-045.png)
+![](images/image-045.png)
 
 
 
@@ -387,13 +387,13 @@ There should be one security list associated with the Private Subnet. Click on t
 
 Check the `Ingress Rules`:
 
-![image-20200514174749803](images/image-260.png) 
+![](images/image-260.png) 
 
 
 
 We need to add a new rule that will allow HTTP traffic from the Public Subnet network to this Private Subnet on port 80 (or to a custom port if you've overwritten the default 80 port in the Load Balancer Listener configuration). Click on `Add Ingress Rules`:
 
-![image-20200514175147966](images/image-270.png)
+![](images/image-270.png)
 
 
 
@@ -401,7 +401,7 @@ Make sure you set the same *Source CIDR* as the existing rules that allow traffi
 
 Now everything should be in place from networking perspective and we are ready to move on creating the API Gateway.
 
-![image-20200514175615415](images/image-280.png)
+![](images/image-280.png)
 
 
 
@@ -420,25 +420,25 @@ For creating and configuring an API Gateway, we have to:
 
 From the main menu go to `Solutions and Platform`, then  `Developer Services` and `API Gateway`:
 
-![image-20200515101801174](images/image-300.png)
+![](images/image-300.png)
 
 
 
 Make sure you are on the same compartment; click `Create Gateway`:
 
-![image-20200515102035060](images/image-310.png)
+![](images/image-310.png)
 
 
 
 Give a meaningful name for the gateway, for example *Helidon-Lab-YourInitials-apigw*; select the Virtual Cloud Network that we've been using until now and its Public Regional Subnet (prefixed with *oke-svclbsubnet-quick-[...]*); click `Create` to create the gateway:
 
-![image-20200515102221927](images/image-320.png)
+![](images/image-320.png)
 
 
 
 After some moments, the API Gateway should be available and active. Take notice of the *Hostname* value.
 
-![image-20200515103136214](images/image-330.png)
+![](images/image-330.png)
 
 
 
@@ -553,7 +553,7 @@ Look at the *paths* section. We need to exposed following resources:
 
 In the OCI API Gateway details page, navigate to `Deployments` from the left hand side menu. Click on `Create Deployment`:
 
-![image-20200515133954016](images/image-340.png)
+![](images/image-340.png)
 
 
 
@@ -561,7 +561,7 @@ We see two options: either to created the API Deployment from scratch (using the
 
 Give the API Deployment a *Name*, for example **StoreFront**. For the *Path Prefix* we can set **/sf** to keep the same context root as the backend Kubernetes service. So any REST resource we expose through this API Deployment it will be prefixed with **/sf**.
 
-![image-20200515134121086](images/image-350.png)
+![](images/image-350.png)
 
 
 
@@ -571,7 +571,7 @@ Scroll down to the *API Request Policies*. Here we can define several types of p
 - *CORS* - configuring CORS access, useful if the APIs will be called directly from JS client-side frontend applications like web or hybrid mobile applications
 - *Rate Limiting* - limits fulfilling incoming calls to a specific rate
 
-![image-20200515135213202](images/image-360.png)
+![](images/image-360.png)
 
 
 
@@ -582,19 +582,19 @@ Before moving forward, let's add a request policy that will limit the number of 
 
 Click `Save Changes`:
 
-![image-20200515140036695](images/image-370.png)
+![](images/image-370.png)
 
 
 
 This will limit to **2** the total number of calls per second (to any of the API resources) that a client can perform. Any subsequent call in the time frame window of 1 second will be denied.
 
-![image-20200515140200228](images/image-380.png)
+![](images/image-380.png)
 
 
 
 Scroll down to check the *Logging Policies* that we can activate. You can enable or not the *Access Logs* or the *Execution logs*. Click `Next`:
 
-![image-20200515140428239](images/image-390.png)
+![](images/image-390.png)
 
 
 
@@ -608,7 +608,7 @@ For each of the paths inspected in the previous section, add a *Route*:
 - **URL**: `http://[Private Load Balancer IP]/sf/store/reserveStock`
 - leave the timeout options as default
 
-![image-20200515141233676](images/image-400.png)
+![](images/image-400.png)
 
 
 
@@ -620,7 +620,7 @@ Scroll down and click `+Another Route`. Fill in:
 - **URL**: `http://[Private Load Balancer IP]/sf/store/stocklevel`
 - leave the timeout options as default
 
-![image-20200515142204840](images/image-410.png)
+![](images/image-410.png)
 
 
 
@@ -632,25 +632,25 @@ We also want to expose the *openapi* specification of the backend service, so we
 - **URL**: `http://[Private Load Balancer IP]/sf/store/openapi`
 - leave the timeout options as default
 
-![image-20200515142506380](images/image-420.png)
+![](images/image-420.png)
 
 
 
 Click on the `Next` button of the wizard to *Review* the API deployment; Click `Create`:
 
-![image-20200515142639670](images/image-430.png)
+![](images/image-430.png)
 
 
 
 After some moments, the API Deployment should be available and active:
 
-![image-20200515142828535](images/image-440.png)
+![](images/image-440.png)
 
 
 
 Check the base endpoint of the API Deployment. This will be the base URL that the end-clients will be using:
 
-![image-20200515151130310](images/image-450.png)
+![](images/image-450.png)
 
 
 
@@ -666,13 +666,13 @@ The last step is to test the StoreFront services - and implicit the API Gateway.
 
 To launch the Cloud Shell, click on the `>_` icon in the header bar of the Cloud Console:
 
-![image-20200523172850071](images/image-700.png)
+![](images/image-700.png)
 
 
 
 The shell console will load at the bottom of the web page:
 
-![image-20200523173037508](images/image-710.png)
+![](images/image-710.png)
 
 
 
@@ -682,7 +682,7 @@ First method that we are going to test, is the one that retrieves the items in s
 
 Example:
 
-![image-20200523173709607](images/image-720.png)
+![](images/image-720.png)
 
 
 
@@ -700,7 +700,7 @@ To get the base64 encoded authentication string, just run the following command:
 
 For example:
 
-![image-20200523174628451](images/image-730.png)
+![](images/image-730.png)
 
 In the case you use the `joe` username and `password` password, the basic64 authentication token is `am9lOnBhc3N3b3Jk`.
 
@@ -714,7 +714,7 @@ Now let's run the `cURL` command again , this time adding the `Authorization` he
 
 Example:
 
-![image-20200523175206287](images/image-740.png)
+![](images/image-740.png)
 
 
 
@@ -728,13 +728,13 @@ Next, let's try to reserve 10 Pencils:
 
 Example:
 
-![image-20200523175806798](images/image-750.png)
+![](images/image-750.png)
 
 
 
 We see that the service replies back with the updated information about Pencils stock. Let's check again the list of items in stock:
 
-![image-20200523175938905](images/image-760.png)
+![](images/image-760.png)
 
 
 
@@ -775,7 +775,7 @@ Let's first test with a 400ms interval between calls:
 
 Example:
 
-![image-20200527113336773](images/image-770.png)
+![](images/image-770.png)
 
 
 
@@ -791,7 +791,7 @@ Let's now test without any waiting interval between the calls:
 
 Example:
 
-![image-20200527113730762](images/image-780.png)
+![](images/image-780.png)
 
 
 
@@ -813,13 +813,13 @@ Launch Postman, click on `Import` button in the upper left menu toolbar, choose 
 
 Enter the URL of our API Deployment to which we append `/openapi` (remember that we have created a Route to expose the *openapi* specification document). Click `Continue`:
 
-![image-20200518085309598](images/image-500.png)
+![](images/image-500.png)
 
 
 
 Leave default options in the next screen; click `Import`:
 
-![image-20200518090717344](images/image-510.png)
+![](images/image-510.png)
 
 
 
@@ -828,13 +828,13 @@ We can see that Postman has generated a collection with the two methods:
 - **POST** for reserving stock items
 - **GET** for listing stock items
 
-![image-20200518090835378](images/image-520.png)
+![](images/image-520.png)
 
 
 
 Before testing, we need to setup the Authentication method and the *baseURL* variable of the collection. Go to *StorefrontApplication* collection menu, and click on `Edit`:
 
-![image-20200518091226647](images/image-530.png)
+![](images/image-530.png)
 
 
 
@@ -843,13 +843,13 @@ Go to `Authorization` tab, choose `Basic Auth` for the authentication **Type**; 
 - **Username**: `joe`
 - **Password**: `password`
 
-![image-20200518091418158](images/image-540.png)
+![](images/image-540.png)
 
 
 
 Go to `Variables` tab and setup the *baseUrl* Postman variable. This variable will be used for all Collection resources, so we can change the endpoints base URL in one single place. For **Current Value**, set the same API Deployment URL that we used before; click `Update`:
 
-![image-20200518091701264](images/image-550.png)
+![](images/image-550.png)
 
 
 
@@ -857,25 +857,25 @@ Go to `Variables` tab and setup the *baseUrl* Postman variable. This variable wi
 
 First, let's test the *List stock items* method. Click on the method name in the *StorefrontApplication* collection methods list:
 
-![image-20200518092106317](images/image-560.png)
+![](images/image-560.png)
 
 
 
 In the `Authorization` tab, switch to `Inherit auth from parent`. This will propagate the Basic auth type that we've setup at collection level. Click `Send`:
 
-![image-20200518092231938](images/image-570.png)
+![](images/image-570.png)
 
 
 
 The list of items it's returned:
 
-![image-20200518092428387](images/image-580.png)
+![](images/image-580.png)
 
 
 
 Let's now try the other method, to reserve some stock items.  Similarly, setup `Inherit auth from parent` in the `Authorization` tab:
 
-![image-20200518092615566](images/image-590.png)
+![](images/image-590.png)
 
 
 
@@ -887,19 +887,19 @@ In the `Body` tab, we can see that the request structure has been generated acco
 
   Click `Send`:
 
-![image-20200518093204743](images/image-600.png)
+![](images/image-600.png)
 
 
 
 We can see from the response that the pencils stock dropped by 50, in this case to 420:
 
-![image-20200518093503496](images/image-610.png)
+![](images/image-610.png)
 
 
 
 Let's test the *List stock items*  method again:
 
-![image-20200518093559935](images/image-620.png)
+![](images/image-620.png)
 
 
 
@@ -917,13 +917,13 @@ In the top-left menu bar, click on `Runner`:
 
 Another window opens up. Choose the `StoreFrontApplication` Collection:
 
-![image-20200527115254295](images/image-640.png)
+![](images/image-640.png)
 
 
 
-Choose the store folder:
+Choose the `store` folder:
 
-![image-20200527115436710](images/image-650.png)
+![](images/image-650.png)
 
 
 
@@ -935,13 +935,13 @@ For the first run, setup:
 
 Click `Run StorefrontApplication`:
 
-![image-20200527115645682](images/image-660.png)
+![](images/image-660.png)
 
 
 
 As we can see, all request are fulfilled. Click on `Collection Runner` to go back:
 
-![image-20200527120315848](images/image-670.png)
+![](images/image-670.png)
 
 
 
@@ -952,13 +952,13 @@ This time let's setup just a 100ms delay between the calls. Setup:
 
 Click on `Run StorefrontApplication `again:
 
-![image-20200527120456260](images/image-680.png)
+![](images/image-680.png)
 
 
 
 As we can see now, from time to time, the calls are rejected by the API Gateway, as their number in a second timeframe exceeds the limit of 2 calls that we have setup during deployment:
 
-![image-20200527120759170](images/image-690.png)
+![](images/image-690.png)
 
 
 
@@ -968,10 +968,10 @@ As we can see now, from time to time, the calls are rejected by the API Gateway,
 
 After we have done some testing, if we open our API Gateway details page in OCI Console, we can see the activity:
 
-![image-20200518094137609](images/image-800.png)
+![](images/image-800.png)
 
 
 
 In case we have multiple API Deployments for the same API Gateway, we can check the activity at API Deployment level:
 
-![image-20200518094306100](images/image-810.png)
+![](images/image-810.png)
