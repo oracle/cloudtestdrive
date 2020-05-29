@@ -1254,9 +1254,10 @@ Note that the name is now what you changed it to ("Tims Shop" in this case)
 <details><summary><b>Injecting values into an objects fields using @ConfigProperty</b></summary>
 <p>
 
-We've seen the use of `@ConfigProperty` with constructors (it also works the same way with methods) but we can use the same approach to set a field in a class. Simply place an `@ConfigProperty` annotation before the field is declared.
+We've seen the use of `@ConfigProperty` with constructors (it also works the same way with methods) but we can use the same approach to set a field in a class. Simply place `@Inject` and `@ConfigProperty` annotations before the field is declared.
 
 ```Java
+	@Inject
 	@ConfigProperty(name = "service.name", defaultValue = "Storefront")
 	private String serviceName ;
 ```
