@@ -34,7 +34,7 @@ The first thing we need is some load so we can see what the service mesh is doin
 Change to the directory for the service mesh scripts
 
 - In the OCI Cloud shell type
-  - `cd $HOME/helidon-kubernetes/management/servicemesh`
+  - `cd $HOME/helidon-kubernetes/service-mesh`
 
 Once you are in the directory start the load generator
 
@@ -63,7 +63,7 @@ look at the `ingress-nginx-nginx-ingress-controller` row, IP address inthe `EXTE
  [1] 614
  ```
 
-This will display the job and process id, then return to the command prompt immediately, but it will continue generating the load.
+This will display the job and process id (these may vary in your case) then return to the command prompt immediately, but it will continue generating the load.
 
 Note, the OCI Cloud Shell session will terminate (and thus kill off the load generator) after 20 minutes of inactivity. If this happens you will see the throughput figures for your namespace and servcies in the Linkerd and Grafana UI's drop to zero and potentially even disappear if they fall outside the time ranges displayed. 
 
@@ -341,6 +341,27 @@ You will get a long list of dashboards
 The ones that have recently been visited are listed first (I've been exploring a fair bit as I write this module, so there are many recent's in my list, your's may only contain the `Linkerd Deployments` dashboard.) Then the full list of available dashboards. The ones relating to Linkerd are indicated by their name, and also the `linkers` tag on the right side of the list.
 
 Feel free to explore the dashboards if you like.
+
+## Stopping the load generator
+
+- In the OCI cloud shell type
+  - `jobs`
+
+```
+[1]+  Running                 bash generate-service-mesh-load.sh 130.61.195.102 > /dev/null &
+```
+
+We can see that our load generator is running, and at the begining of the line we see `[1]` which tells us it's job id is 1 (in the []) It's possible that you may have additional lines, if you have other jobs running, in which case look for the job that's running the `generate-service-mesh-load.sh` line and get it's job id
+
+We can now get the OCI Cloud Shell to stop the job
+
+- In the OCI cloud shell type (replace 1 with the job id if you had multiple jobs running)
+  - `kill %1`
+
+```
+[1]+  Terminated              bash generate-service-mesh-load.sh 130.61.195.102 > /dev/null
+```
+
 
 ---
 
