@@ -106,9 +106,53 @@ This optional module shows how you can use fluentd to capture the log data, and 
 
 [Log capture for processing lab](management/logging/LogCaptureForArchive.md)
 
+### Optional labs group 3 Service meshes
+
+These labs are semi-independent, You must do the 3a Service mesh install and setup module, but after that you can do any of the Service mesh modules in any order, though we recommend you do them in the sequence they are presented here.
+
+A service mesh is two parts, a control plane that manages the mesh, and a data layer that is automatically added to your Kubernetes deployments by the control plane (usually by what's known as a sidecar container.) The data plane sits between your micro-service implementations and the underlying network, and manages your network activities. Depending on the implementation the data plane can even cross multiple Kubernetes clusters, making them appear as one. 
+
+The data plane provides support for things like automatically encrypting traffic exiting your micro-service implementation and decrypt it on arrival at the next (whilst automatically handling certificate management for you.) It can also do things like traffic management functions where it implements the service balancing (again this can be cross cluster for some service mesh implementations) and traffic balancing where a portion of the traffic is diverted to a test instance, perhaps for automated A/B testing or for a canary rollout where a CI/CD toolkit triggers a deployment, and the tooling in conjunction with the service mesh tests it out on a small subset of the traffic, automatically canceling the rollout if there are problems.
+
+Service meshes can also monitor the traffic flowing throughout your clusters, enabling the gathering of detailed request / response statistics, for example what the failure rate is of requests to a particular endpoint.
+
+
+##### Optional 3a Service mesh install and setup
+
+You must do this module before you can do any of the other service mesh modules
+
+This module shows how to install the Linkerd service mesh, and enable it on the micro-servcies we have been using for this lab.
+
+[Installing the Linkerd service mesh.](service-mesh/Linkerd-install.md)
+
+##### Optional 3b. Monitoring traffic with the service mesh
+
+You must have done the service mesh install and setup module before this one.
+
+This module shows how to use the service mesh we installed in Optional lab 3a to report on the traffic between the micro-services in our application on the cluster.
+
+[Traffic monitoring with the service mesh](service-mesh/Linkerd-monitoring-traffic-flows.md)
+
+##### Optional 3c. Using the service mesh to troubleshoot problems
+
+You must have done the service mesh install and setup module before this one.
+
+This modules uses a simulated "broken" implementation of the stockmanager service to generate errors, then we use the servcie mesh monitoring capabilities to see where the error is and the conditions around it.
+
+[Troubleshooting with the service mesh](service-mesh/Linkerd-using-to-troubleshoot-problems.md)
+
+##### Optional 3d. Using the traffic split facility of the service mesh
+
+You must have done the service mesh install and setup module before this one.
+
+This module looks at the traffic split capability in the service mesh implementations to see how it can be used for testing purposes, and also for injecting faults to test out the overall environment.
+
+[Exploring what you can do with a service mesh traffic splits](service-mesh/Linkerd-exploring-traffic-splits.md)
+
+
 ### Additional optional modules in development.
 
-We are working on a number of additional optional modules, these include installing and using a service mesh, capturing log data, using an API Gateway, Building simple web front ends for your service. As these (and other) are completed they modules will be added here. If you have an interest in further additional modules please let us know.
+We are working on or exploring the posibility of a number of additional optional modules, these include integrating micro-services and serveless as part of your overall architecture, using an API Gateway, accessing your service with a chatbot, and building simple web front ends for your service. As these (and other) are completed they modules will be added here. If you have an interest in further additional modules please let us know and we'll see what we can do.
 
 ---
 

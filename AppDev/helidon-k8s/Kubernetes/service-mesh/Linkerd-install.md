@@ -6,7 +6,7 @@
 
 ## C. Deploying to Kubernetes
 
-## 7a. Service mesh install and setup
+## Optional 3a. Service mesh install and setup
 
 
 # NEED INTRO VIDEO 

@@ -6,7 +6,7 @@
 
 ## C. Deploying to Kubernetes
 
-## 7c. Using the Service mesh to troubleshoot problems
+## Optional 3c. Using the Service mesh to troubleshoot problems
 
 
 # NEED INTRO VIDEO 
@@ -14,7 +14,7 @@
 <details><summary><b>Self guided student - video introduction</b></summary>
 <p>
 
-This video is an introduction to the Service mesh basics lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+This video is an introduction to the troubleshooting with a Service mesh lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Kubernetes core features lab only setup Introduction Video](https://img.youtube.com/vi/kc1SvmTbvZ8/0.jpg)](https://youtu.be/kc1SvmTbvZ8 "Kubernetes core features lab introduction video")
 
@@ -23,11 +23,11 @@ This video is an introduction to the Service mesh basics lab. Once you've watche
 
 ---
 
-## Using a service mesh to find problems
+## Using a service mesh to troubleshoot
 
-A service mesh like Linkerd doesn't just provide encryption and traffic statistics. It can also be used to help identify problems and as we can see in a later module can actually be used to split the traffic between different services enabling you to do things like Canary deployments or to inject faults to see how well the environment handles them. This later function is part of a larger discipline called [Chaos Engineering](https://en.wikipedia.org/wiki/Chaos_engineering) and we will look at traffic splitting in a later module.
+A service mesh like Linkerd doesn't just provide encryption and traffic statistics. It can also be used to help identify problems though it's monitoring capabilities.
 
-In this module we are going to look at how to use a service mesh to identify the cause of a problem.
+In this module we are going to look at how to use a service mesh to track down the cause of a problem.
 
 ### What's the definition of a problem ?
 
