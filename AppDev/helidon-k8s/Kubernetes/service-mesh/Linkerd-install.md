@@ -36,6 +36,8 @@ The control plans does what it says on the box, it provides control functions to
 
 The mechanisms to do this are relatively simple to the user, though the internal implementation details of a service mash can be very complex !
 
+Service meshes can also provide functionality across multiple clusters, in these modules we will be using Linkerd, and that provides the capability to extend the service discovery across multiple Kubernetes clusters, that means a service in a different cluster can appear as if it was a local part of the data plane, enabling things like automatic connection to a service in a different cluster and automatic connection encryption between services in different clusters.
+
 ### What service meshes are there ?
 
 There are multiple service mesh implementations available, a non exclusive list (there are others) includes Linkerd, Istio, Consul, Kuma, Maesh, Aspen Mesh, and Grey Matter. 
@@ -52,7 +54,7 @@ Well the short version is that you need to be careful in choosing the right serv
 
 The longer version is that at least some of your concerns about managing networking within Kubernetes deployments have gone away. In addition, you will gain insight into the traffic and overall health of your applications running in Kubernetes.
 
-Installing a service mesh adds an additional layer of abstraction to your cluster. This is not unlike the network overlay that runs on your cluster.
+Installing a service mesh adds an additional layer of abstraction to your cluster. This is not unlike the network overlay that runs on your cluster. There is a processing overhead to this, but it's pretty small. 
 
 Ultimately, the way to think about a service mesh as a cluster operator is to consider that adding this layer will result in better observability and security for your applications.
 
