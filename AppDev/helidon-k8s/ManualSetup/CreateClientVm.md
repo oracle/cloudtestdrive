@@ -65,9 +65,9 @@ This will open the **Create Compute Instance** wizard.  Fill in the following el
   
 ![](images/createvm.png)
 
-- Set *Virtual Cloud Network Compartment* to **CTDOKE**.
+- Make sure the *Virtual Cloud Network Compartment* is set to **CTDOKE**.
 - In the **Virtual cloud Network** dropdown,  select the **CTDVMVCN** network.
-- Set *Subnet Compartment* to **CTDOKE**. 
+- Make sure the *Subnet Compartment* is set to **CTDOKE**. 
 - Leave all the other settings in the section as they are in the boot volume section
   - Check the **Assign a public IP address** option is selected
 - Scroll down to the **Add SSH Key** section
