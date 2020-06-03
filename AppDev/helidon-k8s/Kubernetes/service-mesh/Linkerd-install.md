@@ -453,7 +453,7 @@ kubectl will pick them up and apply them, Kubernetes will restart the linkerd-we
 
 ### Create a TLS secret
 
-Curiously the linkerd-web ingress does not use a TLS certificate to ensure that the connection to it is encrypted, as we will be sending passwords we want to ensure it is encrypted, to do which we need to create a TLS secret in Kubernetes that the ingress controller can use.
+Curiously the linkerd-web ingress does not by default use a TLS certificate to ensure that the connection to it is encrypted, as we will be sending passwords we want to ensure it is encrypted, to do which we need to create a TLS secret in Kubernetes that the ingress controller can use.
 
 Change to the directory for the service mesh scripts
 

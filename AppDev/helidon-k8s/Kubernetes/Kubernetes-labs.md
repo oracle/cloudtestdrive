@@ -108,7 +108,7 @@ This optional module shows how you can use fluentd to capture the log data, and 
 
 ### Optional labs group 3 Service meshes
 
-These labs are semi-independent, You must do the 3a Service mesh install and setup module, but after that you can do any of the Service mesh modules in any order, though we recommend you do them in the sequence they are presented here.
+These labs are semi-independent, You must do the 3a Service mesh install and setup module, but after that you can do any of the Service mesh modules in any order, though we recommend you do them in the sequence they are presented here. If you decide to uninstall the linkerd service mesh then obviously (I hope !) do that once you have completed the servcie mesh labs !
 
 A service mesh is two parts, a control plane that manages the mesh, and a data layer that is automatically added to your Kubernetes deployments by the control plane (usually by what's known as a sidecar container.) The data plane sits between your micro-service implementations and the underlying network, and manages your network activities. Depending on the implementation the data plane can even cross multiple Kubernetes clusters, making them appear as one. 
 
@@ -145,9 +145,19 @@ This modules uses a simulated "broken" implementation of the stockmanager servic
 
 You must have done the service mesh install and setup module before this one.
 
-This module looks at the traffic split capability in the service mesh implementations to see how it can be used for testing purposes, and also for injecting faults to test out the overall environment.
+This module looks at the traffic split capability in the service mesh implementations to see how it can be used for testing purposes, for example injecting faults to do some chaos engineering and test out the overall environment.
+
+This module also used the traffic split capability of the service mesh to show how you can do a canary deployment
 
 [Exploring what you can do with a service mesh traffic splits](service-mesh/Linkerd-exploring-traffic-splits.md)
+
+##### Optional 3e Uninstall the service mesh
+
+**Only** do this after you have comple4ted the service mesh lab modules you want to do.
+
+You do not have to uninstall the service mesh, but can if you wish.
+
+[Uninstalling the linkerd service mesh](service-mesh/Linkerd-uninstall.md)
 
 
 ### Additional optional modules in development.
