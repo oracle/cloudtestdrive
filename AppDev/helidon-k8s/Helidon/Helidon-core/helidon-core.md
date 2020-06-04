@@ -989,11 +989,11 @@ To use a constructor that is not the default no args constructor then you need t
 
 Fortunately for us Helidon can get values to use for a constructor from the configuration, using the `@ConfigProperty` annotation on a constructors arguments
 
+---
+
 </p>
 
 </details>
-
----
 
 
 
@@ -1029,6 +1029,9 @@ The result should look like :
 
 The `@Inject` on  constructor means to use this constructor when creating instances for use with `@Inject` annotation on a field (Yes it would have been nicer if the two uses had different names).  The syntax `@ConfigProperty(name = "app.minimumchange")` tells Helidon to locate the property `app.minimumchange` in the Helidon configuration system.
 
+
+
+
 - **Save** this change and **restart** the program
 - Request the value for minimum change,  we'll see that it has a value of 3
   -  `curl -i -X GET http://localhost:8080/minimumChange`
@@ -1050,7 +1053,7 @@ content-length: 1
 
 Helidon by default looks for a file called `META-INF/microprofile-config.properties` in it's classpath. You can find this in Eclipse by opening the src/main/resources folder.
 
-By convention the `microprofile-config.properties` is the place where you put default values that you want your program to use so you can guarentee that a property has at least one value set. Amongst other content has a line 
+By convention the `microprofile-config.properties` is the place where you put default values that you want your program to use so you can guarentee that a property has at least one value set (although as we will see later there are other mechanisms to do this.) Amongst other content has a line 
 
 ```
 app.minimumchange=3
@@ -1064,11 +1067,36 @@ Well Helidon has a quite powerful properties inheritance model based on differen
 
 Let's go an add a new config file to the list !
 
+---
+
 </p>
 
 </details>
 
+<details><summary><b>What if there is no value available ?</b></summary>
+<p>
+
+If there is no value in the configuration files or default specified then the program will error when Helidon asked the content injection to wire things together (remember this is lazy initialization, so that might not be immediately)
+
+This is a perfectly reasonable thing to do in **some** situations, for example if you must have a value for your database password, clearly in this situation there is no default value that would make sense, and even if there was (say your development DB password is "password") that default would have no meaning externally.
+
+Where you deliberately do not want a default value it's far better to fail at the point when you try to get the value as that will make the specifics of the problem a lot more obvious. Looking at the database password if the failure is that the config property is not available then it's pretty clear what the problem is, that's far better than getting a null pointer when you try to access the database and have to determine if it's a password value issue, or perhaps somewhere in your code there is an invalid assignment that wipes out the password.
+
 ---
+
+</p></details>
+
+<details><summary><b>Setting a default using @ConfigProperty</b></summary>
+<p>
+
+In some situations the `@ConfigProperty` annotation is intended to provide a mechanism to override a reasonable in the code. That default can be specified in a developer provide config file, but in some cases (for example the size of a buffer) you might reasonably want to have a guaranteed value that is always there as it's very unlikely to need to be overridden.
+
+To allow this the  `@ConfigProperty` annotation supports an additional option called defaultValue, for example `@ConfigProperty(name = "app.minimumchange", defaultValue = "4")` The value is provided as a string, but the runtime will try and convert the string to whatever the actual object type is.
+
+---
+
+</p></details>
+
 
 
 
@@ -1223,7 +1251,22 @@ Note that the name is now what you changed it to ("Tims Shop" in this case)
 (It may take a short while for the modified file to be recognized and loaded, Helidon checks for config modifications in the background, it seems in my testing to recognize changes within 30 seconds, but usually it's faster)
 
 
+<details><summary><b>Injecting values into an objects fields using @ConfigProperty</b></summary>
+<p>
 
+We've seen the use of `@ConfigProperty` with constructors (it also works the same way with methods) but we can use the same approach to set a field in a class. Simply place `@Inject` and `@ConfigProperty` annotations before the field is declared.
+
+```Java
+	@Inject
+	@ConfigProperty(name = "service.name", defaultValue = "Storefront")
+	private String serviceName ;
+```
+
+This is done **after** the classes constructor has been run, so if the constructor does set the field then the `@ConfigProperty` will override that. This also means that you cannot refer to that value in the constructor,
+
+---
+
+</p></details>
 
 ### Separating functionality by port
 Helidon can deliver service using multiple ports, for example separating out the administration functions (e.g. metrics, health etc.) from the operational functions.

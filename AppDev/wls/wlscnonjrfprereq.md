@@ -1,9 +1,9 @@
-# WebLogic Cloud - non JRF
+# WebLogic for OCI - non JRF
 
 ## prerequisites
 
 
-If you want go through the Hands on Lab (*non JRF type of WebLogic Cloud Instance - using Oracle Cloud Marketplace*) using your cloud environment, follow this guide to setup some prerequisites. If you will use the provided Cloud Test Drive environment, skip this Lab.
+If you want go through the Hands on Lab (*non JRF type of WebLogic for OCI Instance - using Oracle Cloud Marketplace*) using your cloud environment, follow this guide to setup some prerequisites. If you will use the provided Cloud Test Drive environment, skip this Lab.
 
 
 ### Step 1. Prepare OCI Compartment
@@ -22,13 +22,53 @@ The Compartment name is referred as **CTDOKE** in the Hands on Lab.
 
 
 
-### Step 2. Encrypt WebLogic Admin password
+##### Required root level policies for WebLogic for OCI
 
-When you provision WebLogic for you need to pass the WebLogic Admin password encrypted. An OCI Key is required for this.  
+You must be an Oracle Cloud Infrastructure <u>administrator</u>, or <u>be granted some root-level permissions</u>, in order to create domains with Oracle WebLogic Server for Oracle Cloud Infrastructure.
+
+When you create a domain, Oracle WebLogic Server for Oracle Cloud Infrastructure creates a dynamic group and root-level policies that allow the compute instances in the domain to:
+
+- Access keys and secrets in Oracle Cloud Infrastructure Vault
+- Access the database wallet if you're using Oracle Autonomous Transaction Processing (JRF-enabled domains)
 
 
 
-##### Create a Key Vault
+In case <u>you are not an OCI administrator</u> and you cannot create dynamic-groups or you cannot create policies at root compartment level, please contact your OCI administrator and request that one  of the groups your OCI user is part of to have the following grants in place:
+
+> Allow group MyGroup to manage dynamic-groups in tenancy
+> Allow group MyGroup to manage policies in tenancy
+> Allow group MyGroup to use tag-namespaces in tenancy
+
+
+
+##### Required compartment level policies for WebLogic for OCI
+
+If <u>you are not an Oracle Cloud Infrastructure administrator</u>, you must be given management access to resources in the compartment in which you want to create a domain.
+
+Your Oracle Cloud Infrastructure user must have management access for Marketplace applications, Resource Manager stacks and jobs, compute instances, and block storage volumes. If you want Oracle WebLogic Server for Oracle Cloud Infrastructure to create resources for a domain like networks and load balancers, you must also have management access for these resources.
+
+A policy that entitles your OCI user to have the minimum management access for your compartment, needs to have the following grants in place:
+
+> Allow group MyGroup to manage instance-family in compartment MyCompartment
+> Allow group MyGroup to manage virtual-network-family in compartment MyCompartment
+> Allow group MyGroup to manage volume-family in compartment MyCompartment
+> Allow group MyGroup to manage load-balancers in compartment MyCompartment
+> Allow group MyGroup to manage orm-family in compartment MyCompartment
+> Allow group MyGroup to manage app-catalog-listing in compartment MyCompartment
+> Allow group MyGroup to manage vaults in compartment MyCompartment
+> Allow group MyGroup to manage keys in compartment MyCompartment
+> Allow group MyGroup to manage secret-family in compartment MyCompartment
+> Allow group MyGroup to read metrics in compartment MyCompartment
+
+
+
+### Step 2. Create OCI Secret for WebLogic Admin password
+
+When you provision WebLogic for you need to pass the WebLogic Admin password. An OCI Secret is required for this.  
+
+
+
+##### Create a Security Vault
 
 Go to *Governance and Administration* > *Security* > *Key Management*:
 
@@ -36,7 +76,7 @@ Go to *Governance and Administration* > *Security* > *Key Management*:
 
 
 
-Create a new Shared Vault:
+Create a new Shared Vault (leave the *Make it a Virtual Private Vault* option unchecked):
 
 ![](images/wlscnonjrfwithenvprereq/image020.png)
 
@@ -48,13 +88,15 @@ The new Vault should be listed as Active:
 
 
 
-Take a look at the Vault Information and note the  **Cryptographic Endpoint**:
+Take a look at the Vault Information:
 
 ![](images/wlscnonjrfwithenvprereq/image035.png)
 
 
 
-Create an new Key:
+##### Create an Encryption Key
+
+Go to *Master Encryption Keys* submenu of the Vault Information page and create an new Key:
 
 ![](images/wlscnonjrfwithenvprereq/image040.png)
 
@@ -72,114 +114,35 @@ The new key should be listed as *Enabled*:
 
 
 
-Click on the key and note the key's **OCID**:
+##### Create an OCI Secret
 
-![](images/wlscnonjrfwithenvprereq/image056.png)
+Go to *Secrets* submenu of the Vault Information page and create an new Secret:
 
+![](images/wlscnonjrfwithenvprereq/image700.png)
 
 
-##### Encrypt WebLogic Admin password
 
-User OCI Cloud shell:
+Setup a name for the OCI Secret; choose previously created Encryption Key (**WLSKey**) in the *Encryption Key* dropdown. If you leave default value for *Secret Type Template* (**Plain-Text**), you have to enter the plain WebLogic Admin password in the *Secret Contents* aria. If you switch to **Base64** template, you need to provide the password pre-encoded in base64.
 
-![](images/wlscnonjrfwithenvprereq/image110.png)
+> The password must start with a letter, should be between 8 and 30 characters long, should contain at least one number, and, optionally, any number of the special characters ($ # _).
 
+![image-20200526091220470](images/wlscnonjrfwithenvprereq/image710.png)
 
 
-Shell appears in the bottom of the screen:
 
-![](images/wlscnonjrfwithenvprereq/image120.png)
+Shortly, the Secret should be listed as *Active*:
 
+![image-20200526091948283](images/wlscnonjrfwithenvprereq/image720.png)
 
 
-First, we need to encode the WebLogic Admin password in base64 format:
 
-![](images/wlscnonjrfwithenvprereq/image022.png)
+Click on the Secret name and take note of its **OCID**. We need to provide this value in the WebLogic for OCI Stack configuration form:
 
+![image-20200526092054260](images/wlscnonjrfwithenvprereq/image730.png)
 
 
-Command:
 
-> echo -n 'WebLogic Admin password' | base64
-
-
-
-Then, we'll use the Vault Key to encrypt the base64 encoded password:
-
-![](images/wlscnonjrfwithenvprereq/image124.png)
-
-
-
-Command:
-
-> oci kms crypto encrypt --key-id Key_OCID --endpoint Vault_Cryptographic_Endpoint --plaintext Base64_Encoded_Password
-
-
-
-The *ciphertext* value from the response represents the encrypted password. Use this value instead of the provided sample from the Hand on Lab given in **weblogic_password_encrypted.txt** text file.
-
-
-
-Use your Key OCID and Vault Cryptographic Endpoint values as the **Key Management Service Key Id**
-and **Key Management Service Cryptographic Endpoint** parameters instead of sample values mentioned in the Hands on Lab.
-
-
-
-### Step 3.  Create required policy for accessing the Vault Key
-
-##### Create a Dynamic Group
-
-We need to create a Dynamic Group that will group all instances in the compartment.
-
-Go to *Governance and Administration* -> *Identity* -> *Dynamic Groups*
-
-![](images/wlscnonjrfwithenvprereq/image560.png)
-
-
-
-Create a new Dynamic Group:
-
-![](images/wlscnonjrfwithenvprereq/image570.png)
-
-
-
-Give a meaningful name and description.
-
-For the matching rule use:
-
-> ALL {instance.compartment.id = 'your compartment ocid'}
-
-
-
-##### Create Policy for Dynamic Group
-
-We need to create a policy that will allow stack scripts to access the key vault and decrypt encrypted WebLogic Admin password.
-
-
-
-Go to *Governance and Administration* -> *Identity* -> *Policies*
-
-![](images/wlscnonjrfwithenvprereq/image580.png)
-
-
-
-![](images/wlscnonjrfwithenvprereq/image585.png)
-
-Create a new Policy:
-
-![](images/wlscnonjrfwithenvprereq/image590.png)
-
-Give a name and description.
-
-For the policy statement use:
-
-> Allow dynamic-group <dynamic group name> to use keys in compartment <compartment name>
-
-Specify Dynamic Group's name created earlier and your compartment name.
-
-
-
-### Step 4. Network Configuration
+### Step 3. Network Configuration
 
 The Hands on Lab guide uses an existing Virtual Cloud Network and pre-configured Subnets for the WebLogic compute nodes and for the Load Balancer.
 
@@ -205,7 +168,7 @@ Also for the Load Balancer:
 
 
 
-###  Step 5. Create ssh keys
+###  Step 4. Create ssh keys
 
 You need to generate a public and private ssh key pair. During provisioning using Marketplace, you have to specify the ssh public key that will be associated with each of the WebLogic VM nodes.
 
@@ -237,7 +200,7 @@ The public key filename is referred as **wls_ssh_public.key** in the Hands on La
 
 
 
-### Step 6. Load balancer SSL configuration
+### Step 5. Load balancer SSL configuration
 
 For security reasons it's a good practice - if not mandatory - to allow only secured traffic between clients and WebLogic Server applications. Therefore, after provisioning WebLogic for OCI by choosing to setup a Load Balancer, it's necessary to manually finish SSL configuration by adding a SSL certificate to the load balancer's listener.
 

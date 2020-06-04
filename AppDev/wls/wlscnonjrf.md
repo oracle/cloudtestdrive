@@ -79,12 +79,21 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 - Continue setting up:
 
   - **WebLogic Server Availability Domain**: choose one of the three ADs
+  
   - **WebLogic Server Node count**: *2* (we will create a WebLogic cluster with two nodes / managed servers)
+  
   - **Admin user name**: *weblogic*
-  - **Admin password**: enter the *encrypted* WebLogic Admin password;  see provided *weblogic_password_encrypted.txt* file; for obtaining this, a Virtual Vault Key was used for encrypting the base64 encoded password;
+  
+  - **Secrets OCID for WebLogic Server Admin Password**: 
+  
+    - if you are using the CTD (Cloud Test Drive) environment enter: 
+      - *ocid1.vaultsecret.oc1.eu-frankfurt-1.amaaaaaaqrgb7baabjve3m5xzqac5y7jeqwintdxsgmyxezuwjm35n3r55la*
+      - a bit of context: the WebLogic Server Admin Password it's stored in an OCI Vault as an OCI Secret (encrypted with an OCI Encryption Key); during WebLogic Domain creation, the provisioning scripts will setup the admin password by getting it from the OCI Secret instead of having it as a Terraform variable; in a similar way - if talking about an JRF enabled domains - the database admin password will be referred from an OCI Secret
+  
+    - if you are using your own environment and you have followed the *Prerequisites* lab, fill in the OCI Secret OCID that you have created at step *Create OCI Secret for WebLogic Admin password* > *Create OCI Secret*
 
 
-![](images/wlscnonjrfwithenv/image110.png)
+![image-20200526141855489](images/wlscnonjrfwithenv/image110.png)
 
 
 
@@ -119,23 +128,9 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 
 
-- Leave Identity Cloud Service Integration as default (no integration) and *No Database* for **Database Strategy**
+- Finally, leave Identity Cloud Service Integration as default (no integration) and *No Database* for **Database Strategy**
 
 ![](images/wlscnonjrfwithenv/image150.png)
-
-
-
-- Finally, configure Key Management Service; previously we have provided a pre-encrypted password for WebLogic admin user; for the Stack scripts being able to decrypt it on the fly (without storing anywhere the password in plain text mode), they needs the Vault Key Id used for encryption and the Key Management Service Cryptographic Endpoint:
-
-  - **Key Management Service Key Id**: use existing (copy & paste in one line):
-
-  > ocid1.key.oc1.eu-frankfurt-1.bfoz5szoaafak.abtheljsw5qx4fxv3kzeqx6ih6obdtwi7434qbgeom5h3vzmyejtgakgswha
-
-  - **Key Management Service Cryptographic Endpoint**: https://bfoz5szoaafak-crypto.kms.eu-frankfurt-1.oraclecloud.com
-
-- Click **Next**
-
-![](images/wlscnonjrfwithenv/image160.png)
 
 
 
