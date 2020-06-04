@@ -8,7 +8,6 @@ This lab will guide you through a practical example of how to train and apply a 
 
 There are many applications of regression in business. The main use cases are around forecasting and optimization. For example, predicting future demand for products, estimating the optimal price for a product and fine-tuning manufacturing and delivery processes. In other words, the principles that you learn with this exercise are applicable to those business scenarios as well.
 
-
 ## Objectives
 
 - Become familiar with Data Exploration, Data Preparation, Model training and Evaluation techniques.
@@ -92,8 +91,6 @@ We'll split this into train and test later. All these type of data operations ar
 alldata = pd.read_csv('./housesales.csv')
 ```
 
-.
-
 ### Check how much data we have
 
 Is the dataset large enough to train a model?
@@ -104,20 +101,32 @@ alldata.shape
 
 `Conclusion`: There are 1460 rows, which at first sight looks like a good enough to train an initial model. The data is not extensive enough for production use but would help establish a good baseline. We also see that there are 80 input features that we can potentially use to predict our target variable.
 
-.
-
 ### Review the target attribute: `SalePrice`
 
 Before we look at the input features, let's have a close look at our Target attribute: `SalePrice`.
+
 First, let's display some values. The `[:10]` selects only the first 10 rows.
 
 ```python
 alldata['SalePrice'][:10]
 ```
 
-`Conclusion:` *SalePrice* is an integer and has numbers in the range that we would expect from house prices. There are no empty values.
+Let's check if there are any empty values
 
-.
+```python
+alldata['SalePrice'].isnull().sum()
+```
+
+Let's check the price range:
+
+```python
+minPrice = alldata['SalePrice'].min()
+maxPrice = alldata['SalePrice'].max()
+
+print('Min Sales Price (%d) - Max Sales Price (%d)' % (minPrice,maxPrice))
+```
+
+`Conclusion:` *SalePrice* is an integer and has numbers in the range that we would expect from house prices. There are no empty values. We could see however that the price range is very wide from a 34900 up to 75500. This would require to scale the price to allow the algorithm to learn better.
 
 ### Which columns will we select as input features for our model?
 
@@ -127,9 +136,33 @@ Let's start by listing all the columns.
 alldata.columns
 ```
 
-`Conclusion`: There are many input features that we could potentially use. Some of these columns are self explanatory, others not so much. Have a look at [data_scription.txt](./data/data_description.txt) for background.
+As we can see there are too many, maybe more usefull will be to separate them and see only the numeric and the categorical one.
 
-.
+Let's get a list of all numeric features first.
+
+```python
+alldata.select_dtypes(include=np.number).columns.tolist()
+```
+
+Now that we see the numeric colums we could also show a sample to get some impression about the data.
+
+```python
+alldata.select_dtypes(include=[np.number])
+```
+
+We could do the same for all categorical variables, notice this time we use the property `exclude` in the `select_dtypes` function...
+
+```python
+alldata.select_dtypes(exclude=np.number).columns.tolist()
+```
+
+... and show some data for the categorical variables
+
+```python
+alldata.select_dtypes(exclude=[np.number])
+```
+
+`Conclusion`: There are many input features that we could potentially use. Some of these columns are self explanatory, others not so much. To understand what each column mean, have a look at [data_scription.txt](./data/data_description.txt) for background.
 
 ### Which columns would we select intuitively?
 
@@ -137,6 +170,7 @@ To start with, let's first take an intuitive approach. Ask yourself:
 
 - `"Which of these columns is likely of value to predict Sale Price?"`
 - `"Which factors of a house would I look at yourself when making a buying decision?"`
+- `"Is enough information available in these columns, are there any empty values?"`
 
 Imagine that we've decide that we believe the following features are relevant:
 
@@ -144,11 +178,9 @@ Imagine that we've decide that we believe the following features are relevant:
 - `TotalBsmtSF`: size of basement
 - `OverallQual`: overall quality category
 - `YearBuilt`: year house was built
-- `MSZoning`: A=Agriculture, C=Commercial, RH=Residential High Density, et cetera
+- `MSZoning`: A=Agriculture, C=Commercial, RH=Residential High Density, etc.
 
-.
-
-### Are the columns we selected intuitively also correlated with Sale Price?
+### Are the columns we selected intuitively also correlated with the Sale Price?
 
 Let's test our theories that these input features are correlated with Sale Price. We'll start with the numerical variables first: `GrLivArea`, `TotalBsmtSF`, `OverallQual` and `YearBuilt`.
 Because all of these are numerical continuous attributes, we can use scatter plots here.
@@ -175,13 +207,13 @@ plot.show()
 Conclusion:
 
 - `GrLivArea`: There is a linear correlation with `SalePrice`; We can draw a straight line from the bottom-left to the top-right.
-- `TotalBsmtSF`: There appears to be an exponential relationship between TotalBsmtSF and SalePrice. In other words, higher basement sizes lead to exponentially higher prices.
-- `OveralQual`: As expected, we see higher sales prices when overal quality perception is higher.
+- `TotalBsmtSF`: It appears to be an relationship between `TotalBsmtSF` and `SalePrice` too but not that obvious. It seems a higher basement sizes lead to higher prices but we could notice that there are some outliers.
+- `OveralQual`: As expected, there is a higher sales price when overal quality perception is higher. But that is not nessary for the entire price range. Probably the quality of the house is not enough and the price would depend on the location or the zoning as well.
 - `YearBuilt`: This relationship is a little less obvious, but there's a trend for higher prices for more recent construction.
 
-Therefore all of these attributes appear to be of predictive value and we want to keep them in our training set.
+These attributes appear to be of predictive value and we want to keep them in our training set.
 
-On another note: We see several `outliers`. In particular, the attribute `GrLivArea` shows that there are some houses with exceptionally large living areas given their price.
+On another note, we see several `outliers`. In particular, the attribute `GrLivArea` shows that there are some houses with exceptionally large living areas given their price. We could notice this also for the `TotalBsmtSF`. Generally it is recommended to build the initial model with all the available values first and then start removing outliers to see if this would improve the prediction and make the model generalize better.
 
 ### Is the categorical attribute `MSZoning` also correlated with `SalePrice`?
 
@@ -190,14 +222,24 @@ This attribute contains the type of property (`A=Agriculture`, `C=Commercial`, `
 ```python
 var = 'MSZoning'
 data = pd.concat([alldata['SalePrice'], alldata[var]], axis=1)
-f, ax = plot.subplots(figsize=(8, 6))
+f, ax = plot.subplots(figsize=(10, 7))
 fig = sns.boxplot(x=var, y="SalePrice", data=data)
-fig.axis(ymin=0, ymax=800000);
+fig.axis(ymin=0, ymax=800000)
 ```
 
-`Conclusion`: The boxplots for the various types of properties look very different. Therefore we can conclude that also this attribute appears to be of significance to predict Sale Price, and we will want to include it in our training set.
+`Conclusion`: The boxplots for the various types of properties look very different. From the plot we could see that the residential areas seems to be more expensive as expected than commercial but the price range is high.
 
-.
+Let's explore also the relationship of the Neighborhood to the price. We can plot the data using the same technique.
+
+```python
+var = 'Neighborhood'
+data = pd.concat([alldata['SalePrice'], alldata[var]], axis=1)
+f, ax = plot.subplots(figsize=(30, 10))
+fig = sns.boxplot(x=var, y="SalePrice", data=data)
+fig.axis(ymin=0, ymax=800000)
+```
+
+`Conclusion`: The plot is not nesserary conclusive but it appears that as expected some areas are more expensive than others. As such we should keep this columns and use it in the model. Notice that some areas shown very large range of prices and spikes like `NridgHt` or `StoneBr` or very large outliers like in `NoRidge` with prices more than double as the usual range for that neighborhood. After the initial model build you could try to remove these outliers and test if the model would have better performance.
 
 ### A different approach: Systematically checking for correlation between input features and our target
 
@@ -223,8 +265,6 @@ Here's an explanation of the features that are most correlated with our target:
 - `TotRmsAbvGrd`: Total rooms above grade (does not include bathrooms)
 - `YearBuilt`: Original construction date
 
-.
-
 ### What is the relationship between GarageCars and GarageArea?
 
 Of the top correlated attributes, two are related to the garage(s) of the house. It appears that GarageArea and GarageCars are very similar types of information. This phenomenon is called `colinearity`. Let's test if GarageArea and GarageCars are correlated.
@@ -237,9 +277,7 @@ fig = sns.boxplot(x=var, y="GarageArea", data=data)
 fig.axis(ymin=0, ymax=1500);
 ```
 
-Indeed, there's a clear pattern here. It's logical that a bigger size of garage (GarageArea) will allow for more cars to park (GarageCars) and maybe even suggest bigger house too. We will look at how to use this colinearity later on.
-
-.
+Indeed, there's a pattern here. It's logical that a bigger size of garage (GarageArea) will allow for more cars to park (GarageCars) and maybe even suggest bigger house too. However we could notice also a lot of outliers where houses with single or two cars garage are as expensive as the houses with three or four cars garage. This could mean that other features have stronger relationship to the price or we have outliers that we should try to remove later.
 
 ### How can we deal with Colinearity in a systematic way?
 
@@ -247,7 +285,7 @@ To do this, we would have the check the correlation between all attributes (!) T
 
 ```python
 corrmat = alldata.corr()
-f, ax = plot.subplots(figsize=(12, 9))
+f, ax = plot.subplots(figsize=(15, 15))
 sns.heatmap(corrmat, vmax=.8, square=True);
 ```
 
@@ -255,8 +293,6 @@ How do we interpret this chart?
 We see that all attributes are listed on the vertical and the horizontal axis. Bright colors (white) mean high correlation. The diagonal line shows the correlation of each attribute with itself, and hence is correlated. If you check the very bottom "line", you see the correlation of all input features with `SalePrice`. The other bright spots indicate attributes that might contain similar information. For example, we see the correlation between `GarageArea` and `GarageCars`.
 
 **Which other correlations do you see? Can you explain them?**
-
-.
 
 ### Do we have Missing Data?
 
@@ -274,8 +310,6 @@ missing_data.head(20)
 
 `Conclusion`: There are a lot of attributes with missing values. This is especially the case for attributes `PoolQC`, `MiscFeature`, `Alley`, `Fence` and `FireplaceQu`.
 
-.
-
 ### Let's investigate the attributes with most missing values in detail
 
 The description of the attribute `PoolQC` (pool quality) is as follows:
@@ -291,8 +325,6 @@ Similarly, we make a note to replace the missing values for `MiscFeature`, `Alle
 
 The next attribute with many hidden values is `LotFrontage`, which means `"Linear feet of street connected to property"`. This is a continuous measure, and we choose that we will replace missing values by with the mean of the existing values.
 
-.
-
 ### Check the distribution of the Target variable
 
 It's important that the target variable follows Normal Probability distribution. If it does not, this will negatively impact the model's performance. We can check for this using a histogram, and including a normal probability plot. The Seaborn library does this for us.
@@ -302,13 +334,11 @@ sns.distplot(alldata['SalePrice'], fit=norm);
 fig = plot.figure()
 ```
 
-`Conclusion`: This deviates from the Normal Distribution. You see that it is positively skewed. The regression algorithms that we will use later on has problems with such a distribution. We will have to address this problem.
+`Conclusion`: This deviates from the Normal Distribution. You see that it is left skewed. The regression algorithms that we will use later on has problems with such a distribution. We will have to address this problem.
 
-# Data Preparation
+## Data Preparation
 
-During Data Exploration, we have realized that several changes must be made to he dataset. Data Preparation is a logical result of Data Exploration; we will now take action based on the insights that we gained earlier.
-
-.
+During Data Exploration, we have realized that several changes must be made to the dataset. Data Preparation is a logical result of Data Exploration; we will now take action based on the insights that we gained earlier.
 
 ### Update missing values
 
@@ -328,12 +358,9 @@ alldata = alldata.fillna({"LotFrontage": meanlot})
 alldata = alldata.dropna()
 ```
 
-.
-
 ### Handling Outliers
 
-Do you remember that the scatter chart for `GrLivArea` showed several outliers?
-Let's remove these two outliers, by identifying the houses with the highest `GrLivArea`.
+Do you remember that the scatter chart for `GrLivArea` showed several outliers? Let's remove these two outliers, by identifying the houses with the highest `GrLivArea`.
 
 Show the IDs of the houses with the highest GrLivArea.
 
@@ -356,21 +383,20 @@ We could check for outliers in other attributes, but this is sufficient for our 
 
 ### Handling the skewed distribution of the Target variable
 
-Do you remember that the histogram of `SalePrice` showed a positive skew? We can solve this problem by converting the target variable. In case of positive skewness, use a -log- transformation to make the variable fit normal distribution. Let's make the log transformation and show the histogram again to check the result:
+Do you remember that the histogram of `SalePrice` showed a positive skew? We can solve this problem by converting the target variable. We use a `-log-` transformation to make the variable fit normal distribution. Let's make the log transformation and show the histogram again to check the result:
 
 ```python
-alldata['SalePrice'] = np.log(alldata['SalePrice'])
-sns.distplot(alldata['SalePrice'], fit=norm);
+y = np.log(alldata['SalePrice'])
+sns.distplot(y, fit=norm)
 fig = plot.figure()
 ```
 
-`Conclusion`: Now the sales price follows a normal distribution.
+`Conclusion`: Now the sales price follows a normal distribution. We will use the newly created `y` variable later to fit our model.
 
-.
 
 ### Removing irrelevant features
 
-In any case we will remove the ID column, which does not carry any predictive value. We will also remove the attributes that showed very low correlation with `SalePrice` during Data Exploration. Note that this is a fairly brute approach, but it is again sufficient for our exercise.
+In any case we will remove the ID column, which does not carry any predictive value. We will also remove the attributes that showed very low correlation with `SalePrice` during Data Exploration. Note that this is a fairly brute approach, but it is again sufficient for our exercise. After the first model build, you could start addining back some of the features and observe if the model will generalize better.
 
 ```python
 alldata.drop("Id", axis = 1, inplace = True)
@@ -390,6 +416,19 @@ alldata.drop("KitchenAbvGr", axis = 1, inplace = True)
 alldata.drop("EnclosedPorch", axis = 1, inplace = True)
 ```
 
+## Separating Target and Input Features
+
+Scikit Learn expects that we deliver the data for training in two parts:
+
+1. A dataset with a single column, the target, in this case `SalePrice`. We did this already earlier by taking the `log` of the `SalePrice` and storing it in `"y"` variable.
+2. A dataset with all the input columns, in this case all columns apart from `SalePrice`. We will place this in variable "X".
+
+Get all the data with the exception of the `SalePrice`:
+
+```python
+X = alldata.drop(['SalePrice'], axis=1)
+```
+
 ### Convert categorical values to numbers
 
 Most ML algorithms can only work with numbers. Therefore we should convert categories to numbers first.
@@ -397,8 +436,8 @@ Most ML algorithms can only work with numbers. Therefore we should convert categ
 For all attributes we will assume that they are Nominal (as opposed to Ordinal), meaning that there's no order/sequence in the values that it can take. The go-to method to encode Nominal categorical values is Onehot Encoding. This will convert each separate value of a category into its own column that can take a value of 1 or 0. The Pandas `get_dummies` function does OneHot encoding.
 
 ```python
-alldata = pd.get_dummies(alldata)
-alldata.head()
+X = pd.get_dummies(X)
+X.head()
 ```
 
 `Conclusion`: For example, see the `SaleType` column that has been converted into `SaleType_ConLw`, `SaleType_New`, et cetera. The dataset now only has numerical values.
@@ -407,23 +446,7 @@ alldata.head()
 
 We will build a simple Linear Regression model. We will use the Scikit-Learn library for this.
 
-## Separating Target and Input Features
-
-Scikit Learn expects that we deliver the data for training in two parts:
-
-1. A dataset with a single column, the target, in this case Sale Price. We will place this in variable "y".
-2. A dataset with all the input columns, in this case all columns apart from Sale Price. We will place this in variable "X".
-
-Prepare the data:
-
-```python
-y = np.log(alldata.SalePrice)
-X = alldata.drop(['SalePrice'], axis=1)
-```
-
-.
-
-## Separating Train and Test data so we can validate the model later
+## Split Train and Test data so we can validate the model later
 
 After building the model, we will want to test its performance against new data. It's important that this data has not been seen before during the model training. To achieve this we have to reserve part of our dataset for testing, which will be removed from the training phase.
 
@@ -455,19 +478,15 @@ model = lr.fit(X_train, y_train)
 
 How accurate is our model?
 
-We will use the Test dataset for this. First, apply the predictions on the Test dataset
+We will use the Test dataset for this. First, we will apply the predictions on the Test dataset...
 
 ```python
 y_predicted = model.predict(X_test)
 ```
 
-.
-
 ## An intuitive, visual approach to verification
 
-To verify the quality of the predictions, let's first use an intuitive visual approach.
-
-For this we will display in one graph:
+To verify the quality of the predictions, let's first use an intuitive visual approach, which works well for linear regression models. For this we will display in one plot:
 
 - The actual `SalePrice` (according to the original data in the Test dataset)
 - The predicted `SalePrice` (the value according to our model)
@@ -475,21 +494,20 @@ For this we will display in one graph:
 We're plotting this as a scatter.
 
 ```python
-actual_values = y_test
 plot.scatter(y_predicted, y_test)
 plot.xlabel('Predicted Sale Price')
 plot.ylabel('Actual Sale Price')
 plot.title('Comparing Predicted and Actual Sale Prices')
+plot.plot(range(11, 15), range(11, 15), color="red")
 plot.show()
 ```
 
-`Conclusion`: In ideal circumstances we'd like to see a perfectly straight line. A straight line would mean that Predicted and Actual Sale Prices are the same. In our case we do see an approximation of a straight line, with the exception of a few outliers.
+`Conclusion`: In ideal circumstances we'd like to see the predictions aling perfectly on the straight line. This would mean that Predicted and Actual Sale Prices are the same which practically is usually impossible or it is a sign for model overfitting.
 
-.
 
-## A measurable, mathematical approach to verification
+## A measurable approach to verification
 
-How can we express the accuracy of the model in a more mathematical way? For that we use a quality metric, in this case we use [RMSE](https://en.wikipedia.org/wiki/Root-mean-square_deviation).
+How can we express the accuracy of the model in a more mathematical way? For that we use a quality metric, in this case we could use [RMSE](https://en.wikipedia.org/wiki/Root-mean-square_deviation).
 
 In essence `RMSE` measures the distance between the predictions and the actual values. A lower value for RMSE means a higher accuracy.
 
@@ -499,15 +517,16 @@ RMSE by itself is not easy to interpret, but it can be used to compare different
 print('RMSE: ', mean_squared_error(y_test, y_predicted))
 ```
 
-# Bonus exercise (optional): Try to improve the model by engineering a new input feature
+<!-- ## Bonus exercise 01: Store and deploy the model -->
+<!-- ## Bonus exercise 02: Use AutoML -->
 
-Feature Engineering is the process of creating/updating input features using Domain Knowledge. The goal is to calculate / derive new features that have a higher predictive significance.
+## Bonus exercise (optional): Engineering a new input feature
 
-.
+Feature Engineering is the process of creating/updating input features using Domain Knowledge. The goal is to calculate / derive new features and explore if it has a higher predictive significance.
 
-## Investigate the garage attributes
+### Investigate the garage attributes
 
-Remember how we saw that there are a few very similar attributes for garage, namely GarageArea and GarageCars? We will try to remove the colinearity of these by combining them into one attribute. After this, we will check to see if the model accuracy has improved. Let's check the correlation of the two attributes with Sale Price.
+Remember how we saw that there are a few very similar attributes for garage, namely GarageArea and GarageCars? We will try to remove the colinearity of these by combining them into one attribute and see if this improves the model. Let's check the relationship of the two attributes to the `SalePrice`.
 
 ```python
 plot.scatter(alldata.GarageArea, alldata.SalePrice)
@@ -515,6 +534,7 @@ plot.xlabel("GarageArea")
 plot.ylabel("SalePrice")
 plot.show()
 print ('Correlation of GarageArea with SalePrice: ', alldata['GarageArea'].corr(alldata['SalePrice']))
+
 plot.scatter(alldata.GarageCars, alldata.SalePrice)
 plot.xlabel("GarageCars")
 plot.ylabel("SalePrice")
@@ -522,18 +542,13 @@ plot.show()
 print ('Correlation of GarageCars with SalePrice: ', alldata['GarageCars'].corr(alldata['SalePrice']))
 ```
 
-These correlations give us a baseline for a new metric that we could create.
+The plots give us some basic understanding about the data distribution. We can see that the price of a house increases with higher `GarageArea` but it is not nessery the case if we compare it with the relation between `GarageCars` to `SalePrice`. This means that the two features are relevant to keep but not conclusive enough, other factors like the garage quality, interior finish and more could play importnat role.
 
-Ask yourself, how can you best express the quality/availability of parking?
-
-- Is it the number of parking places
-- Is it the total parking space
-- Is it the space per parking place
-
-We'll try to come up with a single metric for parking by -multiplying- `GarageArea` and `GarageCars`.
+Since the correlation matrix shown high collinearity, let's come up with a single metric for parking by -multiplying- `GarageArea` and `GarageCars` and try this new feature in our model.
 
 ```python
-alldata['GarageArea_x_Car'] = alldata.GarageArea*alldata.GarageCars
+alldata['GarageArea_x_Car'] = alldata.GarageArea * alldata.GarageCars
+
 plot.scatter(alldata.GarageArea_x_Car, alldata.SalePrice)
 plot.xlabel("GarageArea_x_Car")
 plot.ylabel("SalePrice")
@@ -541,19 +556,16 @@ plot.show()
 print ('Correlation of GarageArea_x_Car with SalePrice: ', alldata['GarageArea_x_Car'].corr(alldata['SalePrice']))
 ```
 
-`Conclusion`: The newly engineered feature seems to delivers a higher correlation than `GarageArea` or `GarageCars` alone.
+`Conclusion`: The newly engineered feature does not appear to delivers better relationship to the sale price than `GarageArea` or `GarageCars` alone, at least it is not visiable from the plot.
 
-.
+### Remove the original garage attributes, rebuild the model and compare
 
-## Remove the original garage attributes, rebuild the model and compare
-
-With the new attribute in place, let's train the model again, and compare its performance with the original model.
-<!--alldata.drop("GarageArea", axis = 1, inplace = True)
-alldata.drop("GarageCars", axis = 1, inplace = True)-->
+With the new attribute in place, let's train the model again, and compare its performance with the original model. We will remove `GarageArea` and `GarageCars` and use only the newly calculation feature, which is called `GarageArea_x_Car`. The column is already presented in the data, so we don't have to add it again.
 
 ```python
-y = np.log(alldata.SalePrice)
-X = alldata.drop(['SalePrice'], axis=1)
+X.drop("GarageArea", axis = 1, inplace = True)
+X.drop("GarageCars", axis = 1, inplace = True)
+
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=63, test_size=.20)
 lr = linear_model.LinearRegression()
 model = lr.fit(X_train, y_train)
@@ -561,7 +573,9 @@ y_predicted = model.predict(X_test)
 print('RMSE: ', mean_squared_error(y_test, y_predicted))
 ```
 
-**We have managed to improve the RMSE. Our model is performing better with our new garage feature.**
+We could see that the new RMSE value does not show any signinficant improvement, the result is even worst. Remember **collinearity does not necessary mean causality!**
+
+In our case it seems that `GarageArea` and `GarageCars` are better predictors used separatly than combined. Part of the daily data scientist job will be to analyse the features and search for predictors that could help the model generalize better and improve the model scores like the RMSE.
 
 <!--
 # Bonus Exercise (optional)
