@@ -168,10 +168,10 @@ configmap "sm-config-map" deleted
 configmap/sm-config-map created
 ```
 
-Now we can apply the update, we'll use the Kubernetes rolling upgrade process (as we're going to wan't to revert this one !)
+Now we can apply the update, we'll use the Kubernetes rolling upgrade process (as we're going to want to revert this one !)
 
 - In the OCI Cloud shell type
-  - `kubectl apply -f $HOME/helidon-kubernetes/service-mesh/stockmanager-deployment-v0.0.2.yaml`
+  - `kubectl apply -f $HOME/helidon-kubernetes/service-mesh/stockmanager-deployment-broken.yaml`
 
 ```
 deployment.extensions/stockmanager configured
