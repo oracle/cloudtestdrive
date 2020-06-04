@@ -14,7 +14,6 @@ In this workshop you'll learn how to provision an Oracle Autonomous Transaction 
 * Geospatial functionality
 * Machine learning
 * Security
-* Analytics
 
 ### Let's Get Started!
 

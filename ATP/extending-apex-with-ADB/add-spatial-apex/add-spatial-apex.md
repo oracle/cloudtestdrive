@@ -94,6 +94,8 @@ In our (simplified) example we will only look at the first row, and ignore any a
 
 1. Open the page "Drone Flight Request - Details" for editing.
 
+  ![](images/drone-flights-details.png " ")
+
 2. Right-click **Items** and select **Create Page Item** to add a new field that will hold the concatenated value of various address fields.
 
   ![](./images/geocoding_00_create_field_for_concatenation.png " ")
@@ -176,7 +178,7 @@ In our (simplified) example we will only look at the first row, and ignore any a
 
   ![](./images/geocoding_01_addplsql.png " ")
 
-13. On the Action tab:
+15. On the Action tab:
 
     - **Action**: "Execute PL/SQL Code".
     - Add the following PL/SQL:
@@ -218,17 +220,17 @@ In our (simplified) example we will only look at the first row, and ignore any a
 
   ![](./images/geocode_return_permit.png " ")
 
-14. Click **Save** and double-check that everything is correct by going to the "Dynamic Actions" tab. It should look similar to this:
+16. Click **Save** and double-check that everything is correct by going to the "Dynamic Actions" tab. It should look similar to this:
 
   ![](./images/summary_dynamic_actions.png " ")
 
   You see one Click event that will a) construct the concatenated address and b) call the webservice. You see the elocator "success" event that is called to process the results of the geocoder service.
 
-15. Go to the "Drone Flight Requests - Interactive Report" page and run it.
+17. Go to the "Drone Flight Requests - Interactive Report" page and run it.
 
   ![](./images/select-page-5.png " ")
 
-16. Edit any request, and click **Obtain Fly Zone Info**.
+18. Edit any request, and click **Obtain Fly Zone Info**.
 
   You should now see either "Address Found" with the long-lat combination or "Address Not Found".
 

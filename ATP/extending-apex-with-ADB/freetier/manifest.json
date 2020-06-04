@@ -23,10 +23,6 @@
 		    {
           "title": "Lab 4: Adding Security to your APEX application",
           "filename": "../add-security/add-security.md"
-        },
-        {
-          "title": "Lab 5: Adding Analytics to your APEX application",
-          "filename": "../add-analytics/add-analytics.md"
         }
     ]
 }

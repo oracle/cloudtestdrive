@@ -7,7 +7,7 @@ You will expand an existing application to add Oracle Analytics functionality. I
 
 ### Objectives
 - Create a connection from Oracle Analytics Cloud to Autonomous Database.
-- Create Visualizations to analyse the data.
+- Create Visualizations to analyze the data.
 - Add Analytics functionality to your application.
 
 ### What Do You Need?
@@ -244,7 +244,7 @@ Imagine we have the question "Does a higher hourly rate also mean higher total e
 ## STEP 8: Add Training History Data
 Imagine we ask ourselves "What is the secret of these high earners? Does a particular training for communication of these employees have something to do with their high earnings?"
 
-The training information is not stored in our APEX Time and Labor application. Instead, this data will be provided to the end user by Human Resources, by means of an Excel file.
+The training information is not stored in our APEX Time and Labour application. Instead, this data will be provided to the end user by Human Resources, by means of an Excel file.
 
 1. Download the training file from [here](./files/traininghistory.xlsx).
 
@@ -304,11 +304,11 @@ The training information is not stored in our APEX Time and Labor application. I
 
   You've seen how an end user can answer their own questions by combining data from the APEX application with external data.
 
-12. Save the project as "Labor".
+12. Save the project as "Labour".
 
 ## STEP 9: Embed the OAC Data Visualization project into APEX
 
-Our goal is to integrate the "Labor" DV project inside of our APEX application. The project should automatically filter using the context of the customer of the APEX screen.
+Our goal is to integrate the "Labour" DV project inside of our APEX application. The project should automatically filter using the context of the customer of the APEX screen.
 
 1. Still in the OAC Data Visualization project, select the **Developer** option:
 
@@ -374,12 +374,12 @@ Our goal is to integrate the "Labor" DV project inside of our APEX application. 
     And set its Source to:
 
     ```
-    <div style="height: 600px; width: 100%;">
+    <copy>&ltdiv style="height: 600px; width: 100%;"&gt
 
-    <oracle-dv project-path="{{projectPath}}" filters="{{filters}}">
-    </oracle-dv>
+    &ltoracle-dv project-path="{{projectPath}}" filters="{{filters}}"&gt
+    &lt/oracle-dv&gt
 
-    </div>
+    &lt/div&gt</copy>
     ```
 
     The result should look like this:
