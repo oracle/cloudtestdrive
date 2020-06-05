@@ -116,7 +116,7 @@ Download the model from the Model Catalog using the OCI CLI.
 oci data-science model get-artifact-content --model-id <MODEL_OCID> --file model1.0.zip
 ```
 
-Replace the **MODEL_OCID** with the one you copy from the previous step. The command below will download the model into the ZIP file called **model1.0.zip**. `Notice that all the files in the Cloud Shell will be persistet across regions. To download the model however you have to be within the same region where the model was build.`
+Replace the **MODEL_OCID** with the one you copy from the previous step. The command below will download the model into the ZIP file called **model1.0.zip**. `Notice that all the files in the Cloud Shell will be persisted across regions. To download the model however you have to be within the same region where the model was build.`
 
 Unzip the file and go into the `fn-model` folder.
 
@@ -162,11 +162,11 @@ fn update context oracle.compartment-id ocid1.compartment.oc1..aaaaaaaauz6brmxna
 Current context updated oracle.compartment-id with ocid1.compartment.oc1..aaaaaaaauz6brmxnajpmwvdwupt53uhrb2szkockrbhuruq7pgp3ptl4btdq
 ```
 
-`<COMPARTMENT_OCID>` - the OCID of your current compartment, which you can find under `Identity->Compartments` and select the name of the compartment you are using. `Notice` the compartment could be a sub-compartment.
+`<COMPARTMENT_OCID>` - the OCID of your current compartment, which you can find under `Identity -> Compartments` and select the name of the compartment you are using. `Notice` your compartment could within another compartment.
 
 ### Update the context registry
 
-The registry will be created if not available and it will be the location to store our function.
+The registry will be created if not available, it will be the location to store our function.
 
 ```shell
 fn update context registry <regionid>.ocir.io/<tenancy>/<repo_name>
@@ -362,3 +362,15 @@ curl -X "POST" -H "Content-Type: application/json" -d '{"input":[[67.0,10656.0,8
 ```
 
 As you can see the REST API returns the same sales price value of `12.423844821926073`
+
+# Summary
+
+- You have learned how to store a model build in ODS into the Model Catalog
+- You have learned how to use Cloud Shell to download, build and deploy the model as function
+- You have learned how to expose the model as REST Endpoint using Oracle API Gatewat.  
+
+# Follow-up questions
+
+![Lyudmil Pelov](../commonimages/lyudmil.png)
+
+[lyudmil.x.pelov@oracle.com](mailto:lyudmil.x.pelov@oracle.com)

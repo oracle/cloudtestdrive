@@ -582,7 +582,7 @@ In our case it seems that `GarageArea` and `GarageCars` are better predictors us
 Pick another algorithm to train on this data, and compare its performance with the LinearRegression algorithm.
 -->
 
-# Conclusion
+# Summary
 
 - You have made your first steps with Data Exploration, Data Preparation, Model training and Evaluation.
 - You have learned the basics of Python and Scikit Learn.
