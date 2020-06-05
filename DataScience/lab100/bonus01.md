@@ -10,7 +10,7 @@ This bonus lab will guide you through the steps required to store a model in Ora
 
 In `LAB100` we build a linear regression model. To be able to use the model, we have to store it in a way that it is deployable. Currently Oracle Data Science Service uses Oracle Functions to deploy the models. Oracle Data Science Service stores the serialized weights of the model as pickle file, which does not require any proprietary software to be read and can be used or deployed to any cloud vendor, compute instance or service you prefer.
 
-**To store the model continue to work in the notebook yo used for the LAB100.**
+**To store the model continue to work in the notebook you used for LAB100.**
 
 The last step was that you used the RMSE to validated the performance of the model. Let's now store the model. To do so we need to initialize the ADS (Oracle Accelerated Data Science) library. Before we could use the library you have to make sure that you generated your OCI private key.
 
@@ -18,14 +18,14 @@ The last step was that you used the RMSE to validated the performance of the mod
 
 After you finish the registration and validate that the ADS works, we are going to initialize the library now in **the notebook we used for LAB100**.
 
-The first step when saving models to the model catalog is to create a model artifact for each model. First we will initiate the ADSMolde using the model we build from the linear regression lab. Notice the **`model`** variable is the model you build as you executed `model = lr.fit(X_train, y_train)`
+The first step when saving models to the model catalog is to create a model artifact for each model. We will initiate the ADSModel by using the model we build from the linear regression lab. Notice the **`model`** variable is the model you build as you executed `model = lr.fit(X_train, y_train)`
 
 ```python
 from ads.common.model import ADSModel
 adsModel = ADSModel.from_estimator(model)
 ```
 
-Now let's load the model catalog and prepare the model for deployment.
+Now let's load into the model catalog and prepare the model for deployment.
 
 ```python
 %load_ext autoreload
@@ -41,7 +41,7 @@ model_artifact_fn = adsModel.prepare("/home/datascience/lab100", force_overwrite
 
 When you prepare the artifact using the `prepare()` method, you can also create the files that are necessary for `Function` deployment by setting the optional parameter ```fn_artifact_files_included=True```. You may also set the function name in `fn_name` parameter. `fn_name` will set the name of your function in `func.yaml`.
 
-Executing `prepare()` now created a new folder called `LAB100` and because we set ```fn_artifact_files_included=True```, within the `LAB100` you can notice that there is additional folder called `fn-model` which contains all the file required to build and deploy the model as function. You `fn-model` folder should have following structure:
+Executing `prepare()` now created a new folder called `LAB100` and because we set ```fn_artifact_files_included=True```, within the `LAB100` you can notice that there is additional folder called `fn-model` which contains all the file required to build and deploy the model as function. Your `fn-model` folder should have following structure:
 
 <pre>fn-model/
    + func.py
@@ -60,7 +60,7 @@ A few remarks on the files in `fn-model/` :
 
 ## Adjust func.yaml file
 
-Depending on the Data Science Service version if you open the file, you may see a `triggers` configuration, that is no longer needed to deploy the model as function and has to be remove. If you have that option please remove it now from the YAML file. You `**func.yaml**` file should look like this:
+Depending on the Data Science Service version if you open the file, you may see a `triggers` configuration, that is no longer needed to deploy the model as function and has to be removed. If you have that option please remove it now from the YAML file. Your `**func.yaml**` file should look like this:
 
 ```yaml
 entrypoint: /python/bin/fdk /function/func.py handler
@@ -73,7 +73,7 @@ version: 0.0.1
 
 ## Store the model to the Model Catalog
 
-We initialized already the libraries required to store the model, now put following code:
+We initialized already the libraries required to store the model, now execute the following code in your notebook:
 
 ```python
 import os
@@ -87,15 +87,15 @@ mc_model
 
 If the process was successful, you should see a confirmation table that has a row with `lifecycle_state` `ACTIVE`.
 
-Go back to your OCI Console in the browser and identify again the ODS Project you created. On the left side under `Resources` there is a `Models` link. Click on it and you should see the model stored in table, it should look like this:
+Go back to your OCI Console in the browser and identify again your Data Science Project. On the left side under `Resources` there is a `Models` link. Click it to see all your stored models:
 
 ![Model Catalog Housemarket](../commonimages/modelcataloghousemarket.png)
 
-**Click on the model name `housemarket` to see the model details. `Copy` the model `OCID` as we would use it later!**
+**Click on the model name `housemarket` to see the model details. `Copy` the model `OCID` as we would need it later!**
 
 ## Build the function and deploy using Cloud Shell
 
-To build the function we will use the Oracle OCI Cloud Shell. To open it, click on the Cloud Shell icon on the top right side as shown on the screen shot below and the `Cloud Shell` should open at the bottom:
+To build the function we will use the Oracle OCI Cloud Shell. To open it, click on the Cloud Shell icon on the top right side as shown on the screen-shot below and the `Cloud Shell` should open at the bottom:
 
 ![Cloud Shell Terminal](../commonimages/cloudshellstart.png)
 
@@ -116,7 +116,7 @@ Download the model from the Model Catalog using the OCI CLI.
 oci data-science model get-artifact-content --model-id <MODEL_OCID> --file model1.0.zip
 ```
 
-Replace the **MODEL_OCID** with the one you copy from the previous step. You can find it under your Data Science Projects, Resources and then Models on the left side. The command below will download the model into the ZIP file called **model1.0.zip**. `Notice that all the files in the Cloud Shell will be persistet across regions but you have to be in the same reagon where the model was build to execute the CLI below!`
+Replace the **MODEL_OCID** with the one you copy from the previous step. The command below will download the model into the ZIP file called **model1.0.zip**. `Notice that all the files in the Cloud Shell will be persistet across regions. To download the model however you have to be within the same region where the model was build.`
 
 Unzip the file and go into the `fn-model` folder.
 
