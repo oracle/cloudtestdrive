@@ -108,13 +108,15 @@ This optional module shows how you can use fluentd to capture the log data, and 
 
 ### Optional labs group 3 Service meshes
 
-These labs are semi-independent, You must do the 3a Service mesh install and setup module, but after that you can do any of the Service mesh modules in any order, though we recommend you do them in the sequence they are presented here. If you decide to uninstall the linkerd service mesh then obviously (I hope !) do that once you have completed the servcie mesh labs !
+These labs are semi-independent, You must do the 3a Service mesh install and setup module, but after that you can do most of the Service mesh modules in any order order listed, the exception is if you want to do the traffic split module you must have done the troubleshooting module. If you don't want to do all of them you can stop at any point. If you decide to uninstall the linkerd service mesh then obviously (I hope !) do that once you have completed the all service mesh labs you want to do!
 
 A service mesh is two parts, a control plane that manages the mesh, and a data layer that is automatically added to your Kubernetes deployments by the control plane (usually by what's known as a sidecar container.) The data plane sits between your micro-service implementations and the underlying network, and manages your network activities. Depending on the implementation the data plane can even cross multiple Kubernetes clusters, making them appear as one. 
 
 The data plane provides support for things like automatically encrypting traffic exiting your micro-service implementation and decrypt it on arrival at the next (whilst automatically handling certificate management for you.) It can also do things like traffic management functions where it implements the service balancing (again this can be cross cluster for some service mesh implementations) and traffic balancing where a portion of the traffic is diverted to a test instance, perhaps for automated A/B testing or for a canary rollout where a CI/CD toolkit triggers a deployment, and the tooling in conjunction with the service mesh tests it out on a small subset of the traffic, automatically canceling the rollout if there are problems.
 
 Service meshes can also monitor the traffic flowing throughout your clusters, enabling the gathering of detailed request / response statistics, for example what the failure rate is of requests to a particular endpoint.
+
+As they are part of the network they can also split the network traffic, enabling activities like canary rollouts and testing the system by injecting faults.
 
 
 ##### Optional 3a Service mesh install and setup
@@ -143,7 +145,7 @@ This modules uses a simulated "broken" implementation of the stockmanager servic
 
 ##### Optional 3d. Using the traffic split facility of the service mesh
 
-You must have done the service mesh install and setup module before this one.
+You must have done the service mesh install and setup module, and the service mesh troubleshooting module before this one.
 
 This module looks at the traffic split capability in the service mesh implementations to see how it can be used for testing purposes, for example injecting faults to do some chaos engineering and test out the overall environment.
 

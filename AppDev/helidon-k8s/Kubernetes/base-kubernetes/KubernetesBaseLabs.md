@@ -564,6 +564,17 @@ This opens a new tab / window with the log data which can be very useful when de
 
 There is also the ability to use the dashboard to connect to a running container in a pod. This could be useful for debugging, and later on we'll use this to trigger a simulated pod failure when we explore service availability.
 
+---
+
+</p></details>
+
+<details><summary><b>Other management tools</b></summary>
+<p>
+
+There are a lot of other management tools available, some community, for example [K8-Dash](https://github.com/indeedeng/k8dash), and [Kubernetor](https://github.com/smpio/kubernator), and some Open source, but with commercial support, e.g. [Rancher](https://rancher.com/products/rancher/), but they are not part of the official Kubernetes offering, and often require the deployment of additional components to operate, which would mean more work in the initial stages of the lab, so for this lab we're going to use the Kubernetes Dashboard.
+
+Outside a lab environment you may well want to take a little longer to configure these management tools and their dependencies.
+
 </p></details>
 
 ---
