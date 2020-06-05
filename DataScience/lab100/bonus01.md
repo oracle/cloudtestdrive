@@ -103,16 +103,20 @@ Oracle Cloud Infrastructure Cloud (OCI) Shell is a web browser-based terminal ac
 
 ### Get the model
 
+We will create a folder in the cloud shell and will download the model into it.
+
 ```shell
 mkdir model
 cd model
 ```
 
-Download the model from the Model Catalog using the OCI CLI. Replace the **MODEL_OCID** with the one you copy from the previous step. You can find it under your Data Science Projects, Resources and then Models on the left side. The command below will download the model into the ZIP file called **model1.0.zip**. `Notice that all the files in the Cloud Shell will be persistet across regions but you have to be in the same reagon where the model was build to execute the CLI below!`
+Download the model from the Model Catalog using the OCI CLI.
 
 ```shell
 oci data-science model get-artifact-content --model-id <MODEL_OCID> --file model1.0.zip
 ```
+
+Replace the **MODEL_OCID** with the one you copy from the previous step. You can find it under your Data Science Projects, Resources and then Models on the left side. The command below will download the model into the ZIP file called **model1.0.zip**. `Notice that all the files in the Cloud Shell will be persistet across regions but you have to be in the same reagon where the model was build to execute the CLI below!`
 
 Unzip the file and go into the `fn-model` folder.
 
@@ -123,7 +127,7 @@ cd fn-model
 
 ### Set the Fn context
 
-We need to make sure that our current `Functions` context is in the same region. Check the context and if it's not in the same region, change it as shown below.
+We need to make sure that our current `Fn` context is in the same region.
 
 ```shell
 fn list context
@@ -145,6 +149,8 @@ fn use context uk-london-1
 
 ### Update the context
 
+To get access to the Fn apps configured, we have to update the context.
+
 ```shell
 fn update context oracle.compartment-id <COMPARTMENT_OCID>
 ```
@@ -160,8 +166,10 @@ Current context updated oracle.compartment-id with ocid1.compartment.oc1..aaaaaa
 
 ### Update the context registry
 
+The registry will be created if not available and it will be the location to store our function.
+
 ```shell
-fn update context registry <regionid>.ocir.io/<tenantcy>/<nameOfTheRepo>
+fn update context registry <regionid>.ocir.io/<tenancy>/<repo_name>
 ```
 
 ***Example***
@@ -170,12 +178,12 @@ fn update context registry <regionid>.ocir.io/<tenantcy>/<nameOfTheRepo>
 fn update context registry lhr.ocir.io/ociateam/lab100
 ```
 
-`<regionid>.ocir.io/<tenantcy>` - you can get this information from the previous command `fn list context` on the right side you will see the `REGISTRY` for this context
-`<nameOfTheRepo>` - free name, you could use `lab100` for example.
+`<regionid>.ocir.io/<tenancy>` - you can get this information from the previous command `fn list context` on the right side you will see the `REGISTRY` for this context
+`<repo_name>` - free name, you could use `lab100` for example
 
 ### List Fn Apps
 
-Make sure that at least one app appears. Make a note of the name to use later during the deployment.
+Make sure that at least one app exist, as the Function will be deployed into it. Make a note of the name to use it later.
 
 ```shell
 fn list apps
@@ -191,7 +199,7 @@ DataScienceApp  ocid1.fnapp.oc1.uk-london-1.aaaaaaaaah6lnfurqyoe7x6aqvaarzpdzogm
 
 ### Build the function
 
-Make sure you are still within the `fn-model` folder.
+Run the build within the `fn-model` folder. On every build the function version will auto-increment.
 
 ```shell
 fn build
@@ -211,7 +219,7 @@ Function lhr.ocir.io/ociateam/housemarket:0.0.1 built successfully.
 fn deploy --app <name-of-func-application>
 ```
 
-`<name-of-func-application>` - this is the name of the app you want to deploy into, you can see get the name from `fn list apps` section
+`<name-of-func-application>` - the name of the function app to deploy into, you can see get the name again using `fn list apps`, in case you don't remember it.
 
 If the deployment process was successful, you should see output similar to this.
 
@@ -237,6 +245,8 @@ Updating function housemarket using image lhr.ocir.io/ociateam/lab100/housemarke
 ```
 
 ### Inspect the Function
+
+Let's check if the function was deployed successfully.
 
 ```shell
 fn inspect function <name-of-func-application> <name-of-function>
@@ -266,9 +276,9 @@ fn inspect function DataScienceApp housemarket
 
 ### Create a payload file to test the function
 
-We want to check if the function works properly. To do so we will execute it with a payload that represents a single house data. To be able to do that we would need to create a JSON file in the Cloud Shell console and use to invoke the Fn.
+Let's check if the function works properly. To do so invoke it with a payload that represents a single house data. To be able to do that we would need to create a JSON file in the Cloud Shell console and use to invoke the Fn.
 
-Copy the entire content below including the brakets:
+**Copy** the entire content below including the brackets:
 
 <p>
 
@@ -278,11 +288,11 @@ Copy the entire content below including the brakets:
 
 Go back to the Cloud Shell and create a new file:
 
-```bin
+```shell
 vi hm.json
 ```
 
-Hit the `i` key on your keyboard, you should see that you are now in `INSERT` mode
+Hit the **`i`** key on your keyboard, you should see that you are now in `INSERT` mode
 
 ![Cloud Shell Insert](../commonimages/cloudshellinsert.png)
 
@@ -290,30 +300,32 @@ Hit the `i` key on your keyboard, you should see that you are now in `INSERT` mo
 
 ![Cloud Shell Past](../commonimages/cloudshellinsertpaste.png)
 
-... hit the `ESC` key on the keyborad and then type `:wq` as shown below to save and exit the file:
+... hit the **`ESC`** key on the keyborad and then type **`:wq`** as shown below to save and exit the file:
 
 ![Cloud Shell Save](../commonimages/cloudshellinsertsave.png)
 
-Now we can invoke the Function with the payload to make sure it works. **Notice** that on first time function invokation, it takes a little bit longer for the function to response. This is expected, as we have have cold start.
+Now we can invoke the Function with the payload. **Notice** that the first time function invokation takes a little bit longer.
 
 ```shell
 cat hm.json | fn invoke DataScienceApp housemarket --content-type application/json
 ```
+
+***Example***
 
 ```console
 cat hm.json | fn invoke DataScienceApp housemarket --content-type application/json
 {"prediction": [12.423844821926073]}
 ```
 
-**You may notice that the predicted price looks strange and it shows a very small value!** If you remember in LAB100 we scale the Sale Price by using the `log` values to allow the algorithm to learn easier. To know what the real price of the house is we would need to revert the value to the actual one using the `Exp` function. If you copy the value and go back to your notebook of LAB100 and create new sell, you can test that:
+**Notice that the predicted price looks strange and it shows a very small value!** If you remember in LAB100 we scale the Sale Price by using the `np.log` to allow the algorithm to learn better. To get the real price of the house, use the `np.exp` function. Copy the value and go back to your notebook of LAB100 and test it like this:
 
 ![npexp](../commonimages/npexp.png)
 
-The real house prices is 248660$
+***The house prices is 248660$***
 
 ## Expose the model as REST API with API Gateway
 
-Now that we have the function ready, we could also use the Oracle API Gateway to expose the model as REST API. To do so we would need to go the `Developer Services->API Gateway`.
+Now that we have the model deployed as a function, we could also use the Oracle API Gateway to expose the model as REST API. Go to `Developer Services->API Gateway`.
 
 ![apigateway](../commonimages/apigateway.png)
 
@@ -331,19 +343,22 @@ Review the settings and click on `Create` to confirm. The creation process may t
 
 ## Test the REST API
 
-Under the API Gatewat copy the `Hostname` of the service, which you need to use to execute the REST API.
+Under the API Gatewat copy the `Hostname` of the service.
 
 ![apigatewayroutes](../commonimages/apihostname.png)
 
 With the hostname we could execute the REST API now from outside, for example from our computer:
 
 <p>
-curl -X "POST" -H "Content-Type: application/json" -d '{"input":[[67.0,10656.0,8.0,2006.0,2007.0,274.0,0.0,1638.0,1646.0,0.0,1646.0,0.0,2.0,0.0,3.0,6.0,1.0,2007.0,3.0,870.0,192.0,80.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,1.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0]]}' https://d5e7lbynwc6bsatb7dbyyeafge.apigateway.uk-london-1.oci.customer-oci.com/lab100/hm
+
+curl -X "POST" -H "Content-Type: application/json" -d '{"input":[[67.0,10656.0,8.0,2006.0,2007.0,274.0,0.0,1638.0,1646.0,0.0,1646.0,0.0,2.0,0.0,3.0,6.0,1.0,2007.0,3.0,870.0,192.0,80.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,1.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0]]}' https://hostname/lab100/hm
+
 </p>
 
-**`Notice`** the URL on the end, it is the `<hostname>`/`lab100`/`hm` where the `lab100` and the `hm` where the context we specify in the API Gateway configuration. The result should be the same as before:
+**`Notice`** the URL on the end, it is the `<hostname>`/`lab100`/`hm` where the `lab100` and the `hm` are the context paths we setup in the API Gateway configuration. You have to **replace** the `hostname` with the value you copy from the the `Gateway Information` in the previous step. The result should be:
 
 ```console
-curl -X "POST" -H "Content-Type: application/json" -d '{"input":[[67.0,10656.0,8.0,2006.0,2007.0,274.0,0.0,1638.0,1646.0,0.0,1646.0,0.0,2.0,0.0,3.0,6.0,1.0,2007.0,3.0,870.0,192.0,80.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,1.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0]]}' https://d5e7lbynwc6bsatb7dbyyeafge.apigateway.uk-london-1.oci.customer-oci.com/lab100/hm
-{"prediction": [12.423844821926073]}% 
+{"prediction": [12.423844821926073]}%
 ```
+
+As you can see the REST API returns the same sales price value of `12.423844821926073`
