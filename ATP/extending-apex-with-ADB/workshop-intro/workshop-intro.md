@@ -9,7 +9,7 @@ In this workshop, you'll get first-hand experience of using Oracle Autonomous Da
 Oracle Application Express (APEX) is a low-code development platform that enables you to build scalable, secure enterprise apps, with world-class features, that can be deployed anywhere.
 
 ### Objectives
-In this workshop you'll learn how to provision an Oracle Autonomous Transaction Processing (ATP) instance and create an APEX workspace and APEX application, and then add the following features to your application:
+In this workshop you'll learn how to provision an Oracle Autonomous Transaction Processing (ATP) instance and create an APEX workspace and APEX application, and then add the following features to your APEX application:
 
 * Geospatial functionality
 * Machine learning
@@ -21,6 +21,6 @@ In this workshop you'll learn how to provision an Oracle Autonomous Transaction 
 
 ## Acknowledgements
 * **Author** - Juan Cabrera Eisman, Senior Technology Solution Engineer, Oracle Digital and Jeroen Kloosterman, Technology Product Strategy Manager
-* **Last Updated By/Date** - Tom McGinn, Learning Architect, Database User Assistance, May 2020
+* **Last Updated By/Date** - Tom McGinn, Learning Architect, Database User Assistance, June 2020
 
 See an issue?  Please open up a request [here](https://github.com/oracle/learning-library/issues).   Please include the workshop name and lab in your request.
