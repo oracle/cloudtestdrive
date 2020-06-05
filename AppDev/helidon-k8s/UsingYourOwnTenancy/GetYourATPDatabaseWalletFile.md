@@ -6,11 +6,15 @@
 
 The database wallet file contains the access information, you need the this information for your database to access it.
 
-You need an existing database with a user. See the [Creating an ATP database document](CreateATPDatabaseAndSetupUser.md) If you don't already have this.
+You need an existing database with a user. See the [Creating an ATP database document](CreateATPDatabaseAndSetupUser.md) If you don't already have this. In some lab situations your instructor will have an existing database and will advise you if you can skip that step.
 
 **IMPORTANT** Do the following steps *inside* the virtual machine. This will let you easily place the wallet into the right location.
 
 # Getting the Wallet file
+
+In some instructor led labs your instructor may provide the database Wallet file themselves, in that case they will advise how to access it, and you will just need to install it (See the Using the wallet section below.) 
+
+Otherwise please follow the instructions below to get the Wallet and then follow the instructions to install it
 
 The easiest way to get the database Wallet file into your virtual machine is to use the cloud console to download it.
 
@@ -92,9 +96,9 @@ tg_tpurgent = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tc
 - Edit the database configuration file to specify the database name. This file is `$HOME/workspace/helidon-labs-stockmanager/confsecure/stockmanager-database.yaml`
   - Locate the javax.sql.DataSource.stockLevelDataSourceOraATPJTA.datasource.url line. This will look something like 
     ```
-    url: jdbc:oracle:thin:@jleoow_high?TNS_ADMIN=./Wallet_ATP
+    url: jdbc:oracle:thin:@<connection name>?TNS_ADMIN=./Wallet_ATP
     ```
-  - update the name of the connection (here it's shown as `jleoow_high`) and replace it with the name from the tnsnames.ora file, in this case `tg_high` In this particular case the resulting line will look like. ** Yours will need to reflect your connection name, not tg_high**
+  - update the name of the connection (here it's shown as `<connection name>`) and replace it with the name from the tnsnames.ora file, in this case `tg_high` In this particular case the resulting line will look like. ** Yours will need to reflect your connection name, not tg_high**
     ```
     url: jdbc:oracle:thin:@tg_high?TNS_ADMIN=./Wallet_ATP
     ```
