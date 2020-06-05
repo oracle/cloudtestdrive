@@ -47,6 +47,14 @@ This will open the **Create Compute Instance** wizard.  Fill in the following el
 
 - Enter a meaningfull **name** for your instance: `helidonlabVm-yourInitials`, using your initials to distinguish from other participants.
 - Click the **Change Image Source** button.
+- In the popup click the `Change Compartment link
+
+![](images/Change-custom-image.png)
+
+- Click the selector to get a dropdown, chose `Admin` from the list
+
+![](images/Change-custom-image-import-compartment.png) 
+
   - In the resulting page click the **Custom Images** tab
   - Select the image called H-K8S-Lab-A-Helidon-\<YYYY-MM-DD\> where the YYYY-MM-DD is a date
     - If there is more than one image starting H-K8S-Lab-A-Helidon chose the one with the most recent date. 
@@ -57,9 +65,10 @@ This will open the **Create Compute Instance** wizard.  Fill in the following el
   
 ![](images/createvm.png)
 
-- The *Virtual Cloud Network Compartment* should already be set to **CTDOKE**.
-- In the **Virtual cloud Network** dropdown,  select the **CTDVMVCN** network. 
-- Leave all the other setings in the section as they are in the boot volume section
+- Make sure the *Virtual Cloud Network Compartment* is set to **CTDOKE**.
+- In the **Virtual cloud Network** dropdown,  select the **CTDVMVCN** network.
+- Make sure the *Subnet Compartment* is set to **CTDOKE**. 
+- Leave all the other settings in the section as they are in the boot volume section
   - Check the **Assign a public IP address** option is selected
 - Scroll down to the **Add SSH Key** section
   - In a separate window, download the public key file provided by your instructor onto your laptop. 
