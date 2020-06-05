@@ -6,7 +6,7 @@ This bonus lab will guide you through the steps required to store a model in Ora
 
 **This lab is based on LAB100 which you have to finish to be able to proceed.**
 
-## Store the model
+## Prepare the model artifacts
 
 In `LAB100` we build a linear regression model. To be able to use the model, we have to store it in a way that it is deployable. Currently Oracle Data Science Service uses Oracle Functions to deploy the models. Oracle Data Science Service stores the serialized weights of the model as pickle file, which does not require any proprietary software to be read and can be used or deployed to any cloud vendor, compute instance or service you prefer.
 
@@ -18,3 +18,332 @@ The last step was that you used the RMSE to validated the performance of the mod
 
 After you finish the registration and validate that the ADS works, we are going to initialize the library now in **the notebook we used for LAB100**.
 
+The first step when saving models to the model catalog is to create a model artifact for each model. First we will initiate the ADSMolde using the model we build from the linear regression lab. Notice the **`model`** variable is the model you build as you executed `model = lr.fit(X_train, y_train)`
+
+```python
+from ads.common.model import ADSModel
+adsModel = ADSModel.from_estimator(model)
+```
+
+Now let's load the model catalog and prepare the model for deployment.
+
+```python
+%load_ext autoreload
+%autoreload 2
+from ads.catalog.model import ModelSummaryList, ModelCatalog
+from ads.catalog.project import ProjectSummaryList, ProjectCatalog
+from ads.catalog.summary import SummaryList
+from ads.common.model_artifact import ModelArtifact
+
+model_artifact_fn = adsModel.prepare("/home/datascience/lab100", force_overwrite=True, 
+                                     fn_artifact_files_included=True, fn_name="housemarket")
+```
+
+When you prepare the artifact using the `prepare()` method, you can also create the files that are necessary for `Function` deployment by setting the optional parameter ```fn_artifact_files_included=True```. You may also set the function name in `fn_name` parameter. `fn_name` will set the name of your function in `func.yaml`.
+
+Executing `prepare()` now created a new folder called `LAB100` and because we set ```fn_artifact_files_included=True```, within the `LAB100` you can notice that there is additional folder called `fn-model` which contains all the file required to build and deploy the model as function. You `fn-model` folder should have following structure:
+
+<pre>fn-model/
+   + func.py
+   + func.yaml
+   + model-fn.pkl
+   + requirements.txt
+   + scorefn.py</pre>
+
+A few remarks on the files in `fn-model/` :
+
+* `model-fn.pkl` under `fn-model` is different from the `model.pkl` file created in the parent folder. `model-fn.pkl` is serialized from core estimator that was used to build the model. For example, if the core model used for creating the model was `sklearn.linear_model.LogisticRegression` then the `type` of `model-fn.pkl` would be `sklearn.linear_model.LogisticRegression`. **This lets you package your model without a runtime dependency on `ADS`.**
+
+* the `requirements.txt` file will contain the libraries required by the core estimator. The version number provided will be the ones that are compatible with the notebook session environment.
+
+* `func.py` and `func.yaml` are templatized and pre-written on your behalf. In principle, you do not need to modify these files unless you want to include additional data transformations steps before passing the data to the estimator object.
+
+## Adjust func.yaml file
+
+Depending on the Data Science Service version if you open the file, you may see a `triggers` configuration, that is no longer needed to deploy the model as function and has to be remove. If you have that option please remove it now from the YAML file. You `**func.yaml**` file should look like this:
+
+```yaml
+entrypoint: /python/bin/fdk /function/func.py handler
+memory: 1024
+name: housemarket
+runtime: python3.6
+schema_version: 20180708
+version: 0.0.1
+```
+
+## Store the model to the Model Catalog
+
+We initialized already the libraries required to store the model, now put following code:
+
+```python
+import os
+compartment_id = os.environ['NB_SESSION_COMPARTMENT_OCID']
+project_id = os.environ["PROJECT_OCID"]
+
+mc_model = model_artifact_fn.save(project_id=project_id, compartment_id=compartment_id, display_name="housemarket",
+                                 description="test house market model", training_script_path="LAB100.ipynb", ignore_pending_changes=True)
+mc_model
+```
+
+If the process was successful, you should see a confirmation table that has a row with `lifecycle_state` `ACTIVE`.
+
+Go back to your OCI Console in the browser and identify again the ODS Project you created. On the left side under `Resources` there is a `Models` link. Click on it and you should see the model stored in table, it should look like this:
+
+![Model Catalog Housemarket](../commonimages/modelcataloghousemarket.png)
+
+**Click on the model name `housemarket` to see the model details. `Copy` the model `OCID` as we would use it later!**
+
+## Build the function and deploy using Cloud Shell
+
+To build the function we will use the Oracle OCI Cloud Shell. To open it, click on the Cloud Shell icon on the top right side as shown on the screen shot below and the `Cloud Shell` should open at the bottom:
+
+![Cloud Shell Terminal](../commonimages/cloudshellstart.png)
+
+Oracle Cloud Infrastructure Cloud (OCI) Shell is a web browser-based terminal accessible from the Oracle Cloud Console. Cloud Shell is free to use (within monthly tenancy limits), and provides access to a Linux shell, with a pre-authenticated Oracle Cloud Infrastructure CLI, a pre-authenticated Ansible installation, and other useful tools for following Oracle Cloud Infrastructure service tutorials and labs. Cloud Shell is a feature available to all OCI users, accessible from the Console. Your Cloud Shell will appear in the Oracle Cloud Console as a persistent frame of the Console, and will stay active as you navigate to different pages of the Console. For more information visit the official documentation under [Cloud Shell Documentation](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cloudshellintro.htm)
+
+### Get the model
+
+```shell
+mkdir model
+cd model
+```
+
+Download the model from the Model Catalog using the OCI CLI. Replace the **MODEL_OCID** with the one you copy from the previous step. You can find it under your Data Science Projects, Resources and then Models on the left side. The command below will download the model into the ZIP file called **model1.0.zip**. `Notice that all the files in the Cloud Shell will be persistet across regions but you have to be in the same reagon where the model was build to execute the CLI below!`
+
+```shell
+oci data-science model get-artifact-content --model-id <MODEL_OCID> --file model1.0.zip
+```
+
+Unzip the file and go into the `fn-model` folder.
+
+```shell
+unzip model1.0.zip
+cd fn-model
+```
+
+### Set the Fn context
+
+We need to make sure that our current `Functions` context is in the same region. Check the context and if it's not in the same region, change it as shown below.
+
+```shell
+fn list context
+```
+
+```console
+(uk-london-1)$ fn list context
+CURRENT NAME            PROVIDER        API URL                                         REGISTRY
+        default         oracle-cs
+*       uk-london-1     oracle-cs       https://functions.uk-london-1.oraclecloud.com   lhr.ocir.io/ociateam
+        us-ashburn-1    oracle-cs       https://functions.us-ashburn-1.oraclecloud.com
+```
+
+**Context Change** If the `CURRENT` (shown by the asterix) is not in the same place as the region you currently work on, you can change it with:
+
+```shell
+fn use context uk-london-1
+```
+
+### Update the context
+
+```shell
+fn update context oracle.compartment-id <COMPARTMENT_OCID>
+```
+
+***Example***
+
+```console
+fn update context oracle.compartment-id ocid1.compartment.oc1..aaaaaaaauz6brmxnajpmwvdwupt53uhrb2szkockrbhuruq7pgp3ptl4btdq
+Current context updated oracle.compartment-id with ocid1.compartment.oc1..aaaaaaaauz6brmxnajpmwvdwupt53uhrb2szkockrbhuruq7pgp3ptl4btdq
+```
+
+`<COMPARTMENT_OCID>` - the OCID of your current compartment, which you can find under `Identity->Compartments` and select the name of the compartment you are using. `Notice` the compartment could be a sub-compartment.
+
+### Update the context registry
+
+```shell
+fn update context registry <regionid>.ocir.io/<tenantcy>/<nameOfTheRepo>
+```
+
+***Example***
+
+```console
+fn update context registry lhr.ocir.io/ociateam/lab100
+```
+
+`<regionid>.ocir.io/<tenantcy>` - you can get this information from the previous command `fn list context` on the right side you will see the `REGISTRY` for this context
+`<nameOfTheRepo>` - free name, you could use `lab100` for example.
+
+### List Fn Apps
+
+Make sure that at least one app appears. Make a note of the name to use later during the deployment.
+
+```shell
+fn list apps
+```
+
+***Example***
+
+```console
+fn list apps
+NAME            ID
+DataScienceApp  ocid1.fnapp.oc1.uk-london-1.aaaaaaaaah6lnfurqyoe7x6aqvaarzpdzogmads54qdejr2c4uys5wxtmadq
+```
+
+### Build the function
+
+Make sure you are still within the `fn-model` folder.
+
+```shell
+fn build
+```
+
+***Example***
+
+```console
+fn build
+Building image lhr.ocir.io/ociateam/housemarket:0.0.1 .................................................................................
+Function lhr.ocir.io/ociateam/housemarket:0.0.1 built successfully.
+```
+
+### Deploy the function
+
+```shell
+fn deploy --app <name-of-func-application>
+```
+
+`<name-of-func-application>` - this is the name of the app you want to deploy into, you can see get the name from `fn list apps` section
+
+If the deployment process was successful, you should see output similar to this.
+
+```console
+fn deploy --app DataScienceApp
+Deploying housemarket to app: DataScienceApp
+Bumped to version 0.0.3
+Building image lhr.ocir.io/ociateam/lab100/housemarket:0.0.3 .......
+Parts:  [lhr.ocir.io ociateam lab100 housemarket:0.0.3]
+Pushing lhr.ocir.io/ociateam/lab100/housemarket:0.0.3 to docker registry...The push refers to repository [lhr.ocir.io/ociateam/lab100/housemarket]
+ab9cd4e4c4bb: Pushed 
+84e67d0f38b8: Pushed 
+a1447b19f0f0: Pushed 
+5c435e8ccbdf: Pushed 
+4a9b804f2ebc: Pushed 
+580503d21cbd: Pushed 
+634699d804a4: Pushed 
+d749eea1a4aa: Pushed 
+d9947aec7289: Pushed 
+83b43189420d: Pushed 
+0.0.3: digest: sha256:1357de3ae8f32cdd73a413d4dd2161001d47ffe13e761a807058db3ba6019ccb size: 2417
+Updating function housemarket using image lhr.ocir.io/ociateam/lab100/housemarket:0.0.3...
+```
+
+### Inspect the Function
+
+```shell
+fn inspect function <name-of-func-application> <name-of-function>
+```
+
+***Example***
+
+```console
+fn inspect function DataScienceApp housemarket
+{
+        "annotations": {
+                "fnproject.io/fn/invokeEndpoint": "https://uys5wxtmadq.uk-london-1.functions.oci.oraclecloud.com/20181201/functions/ocid1.fnfunc.oc1.uk-london-1.aaaaaaaaadqzhzosm2plcp4ogtsctuor3jzhxe34yftxquqwqlxcl6slxnpq/actions/invoke",
+                "oracle.com/oci/compartmentId": "ocid1.compartment.oc1..aaaaaaaauz6brmxnajpmwvdwupt53uhrb2szkockrbhuruq7pgp3ptl4btdq",
+                "oracle.com/oci/imageDigest": "sha256:1357de3ae8f32cdd73a413d4dd2161001d47ffe13e761a807058db3ba6019ccb"
+        },
+        "app_id": "ocid1.fnapp.oc1.uk-london-1.aaaaaaaaah6lnfurqyoe7x6aqvaarzpdzogmads54qdejr2c4uys5wxtmadq",
+        "created_at": "2020-06-05T09:42:11.369Z",
+        "id": "ocid1.fnfunc.oc1.uk-london-1.aaaaaaaaadqzhzosm2plcp4ogtsctuor3jzhxe34yftxquqwqlxcl6slxnpq",
+        "idle_timeout": 30,
+        "image": "lhr.ocir.io/ociateam/lab100/housemarket:0.0.3",
+        "memory": 1024,
+        "name": "housemarket",
+        "timeout": 30,
+        "updated_at": "2020-06-05T09:43:32.377Z"
+}
+```
+
+### Create a payload file to test the function
+
+We want to check if the function works properly. To do so we will execute it with a payload that represents a single house data. To be able to do that we would need to create a JSON file in the Cloud Shell console and use to invoke the Fn.
+
+Copy the entire content below including the brakets:
+
+<p>
+
+{"input":[[67.0,10656.0,8.0,2006.0,2007.0,274.0,0.0,1638.0,1646.0,0.0,1646.0,0.0,2.0,0.0,3.0,6.0,1.0,2007.0,3.0,870.0,192.0,80.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,1.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0]]}
+
+</p>
+
+Go back to the Cloud Shell and create a new file:
+
+```bin
+vi hm.json
+```
+
+Hit the `i` key on your keyboard, you should see that you are now in `INSERT` mode
+
+![Cloud Shell Insert](../commonimages/cloudshellinsert.png)
+
+... and paste the content into that file, it should look like this:
+
+![Cloud Shell Past](../commonimages/cloudshellinsertpaste.png)
+
+... hit the `ESC` key on the keyborad and then type `:wq` as shown below to save and exit the file:
+
+![Cloud Shell Save](../commonimages/cloudshellinsertsave.png)
+
+Now we can invoke the Function with the payload to make sure it works. **Notice** that on first time function invokation, it takes a little bit longer for the function to response. This is expected, as we have have cold start.
+
+```shell
+cat hm.json | fn invoke DataScienceApp housemarket --content-type application/json
+```
+
+```console
+cat hm.json | fn invoke DataScienceApp housemarket --content-type application/json
+{"prediction": [12.423844821926073]}
+```
+
+**You may notice that the predicted price looks strange and it shows a very small value!** If you remember in LAB100 we scale the Sale Price by using the `log` values to allow the algorithm to learn easier. To know what the real price of the house is we would need to revert the value to the actual one using the `Exp` function. If you copy the value and go back to your notebook of LAB100 and create new sell, you can test that:
+
+![npexp](../commonimages/npexp.png)
+
+The real house prices is 248660$
+
+## Expose the model as REST API with API Gateway
+
+Now that we have the function ready, we could also use the Oracle API Gateway to expose the model as REST API. To do so we would need to go the `Developer Services->API Gateway`.
+
+![apigateway](../commonimages/apigateway.png)
+
+Click on the available Gateway and then from the left side `Resources` menu select `Deployments`.
+
+Click on the `Create Deployment` button to start create API Gateway deployment. In the first screen put a name and prefix for the gateway:
+
+![apigatewaywz1](../commonimages/apigatewaywz1.png)
+
+... then set context path, method to be `POST` as we need to send data, in our case the single house information, to receive any result. The type is `Oracle Functions`, then select the name of the Fn App and the Function itself.
+
+![apigatewayroutes](../commonimages/apigatewayroutes.png)
+
+Review the settings and click on `Create` to confirm. The creation process may take a few seconds to complete.
+
+## Test the REST API
+
+Under the API Gatewat copy the `Hostname` of the service, which you need to use to execute the REST API.
+
+![apigatewayroutes](../commonimages/apihostname.png)
+
+With the hostname we could execute the REST API now from outside, for example from our computer:
+
+<p>
+curl -X "POST" -H "Content-Type: application/json" -d '{"input":[[67.0,10656.0,8.0,2006.0,2007.0,274.0,0.0,1638.0,1646.0,0.0,1646.0,0.0,2.0,0.0,3.0,6.0,1.0,2007.0,3.0,870.0,192.0,80.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,1.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0]]}' https://d5e7lbynwc6bsatb7dbyyeafge.apigateway.uk-london-1.oci.customer-oci.com/lab100/hm
+</p>
+
+**`Notice`** the URL on the end, it is the `<hostname>`/`lab100`/`hm` where the `lab100` and the `hm` where the context we specify in the API Gateway configuration. The result should be the same as before:
+
+```console
+curl -X "POST" -H "Content-Type: application/json" -d '{"input":[[67.0,10656.0,8.0,2006.0,2007.0,274.0,0.0,1638.0,1646.0,0.0,1646.0,0.0,2.0,0.0,3.0,6.0,1.0,2007.0,3.0,870.0,192.0,80.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,1.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0]]}' https://d5e7lbynwc6bsatb7dbyyeafge.apigateway.uk-london-1.oci.customer-oci.com/lab100/hm
+{"prediction": [12.423844821926073]}% 
+```
