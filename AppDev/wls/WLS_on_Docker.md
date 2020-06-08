@@ -4,7 +4,7 @@
 
 # Running WebLogic on Docker
 
-### Introduction
+## Introduction
 
 This lab will showcase the use of the Oracle provided WebLogic Docker image to spin up an instance of a WebLogic server on a local machine.  Via the WebLogic management console you will install a demo app, and validate it is working correctly via a browser. 
 

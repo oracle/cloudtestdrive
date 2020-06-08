@@ -4,7 +4,7 @@
 
 # Running WebLogic on Kubernetes
 
-### Introduction
+## Introduction
 This lab will showcase running WebLogic on a Kubernetes cluster, using the Operator to manage the WebLogic domains.  This tutorial is based on the [Quick Start Guide](https://oracle.github.io/weblogic-kubernetes-operator/quickstart/) that is part of the official WebLogic Kubernetes Operator page, but now using the **Cloud Shell** , allowing you to run this lab using just a browser and your Oracle Cloud account.
 
 ## Prerequisites
