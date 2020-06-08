@@ -4,11 +4,11 @@
 
 # Running WebLogic on Docker
 
-## Introduction
+### Introduction
 
 This lab will showcase the use of the Oracle provided WebLogic Docker image to spin up an instance of a WebLogic server on a local machine.  Via the WebLogic management console you will install a demo app, and validate it is working correctly via a browser. 
 
-### Prerequisites
+## Prerequisites
 
 To run this lab, you need following elements : 
 
@@ -17,7 +17,7 @@ To run this lab, you need following elements :
   - If you are following this lab as part of an Oracle physical event, your instructor might provide you with a Linux Virtual machine, in which case you can simply access the desktop of that environment via a VNC viewer.  Docker will already be running on that environment.
   - Install instructions for docker can be found [here](https://www.docker.com/products/docker-desktop)
 
-### Downloading the WebLogic Docker image:
+## Downloading the WebLogic Docker image:
 
 - Navigate to the Oracle Container Registry
   
@@ -65,7 +65,7 @@ To run this lab, you need following elements :
 
   
 
-### Starting up a WebLogic container
+## Starting up a WebLogic container
 
 - Create a local file called **domain.properties** with following content :
 
@@ -94,7 +94,7 @@ docker run -d -p 7001:7001 -p 9002:9002 \
 
 
 
-### Run a Sample application
+## Run a Sample application
 
 Now let's deploy a very simple sample app.
 
