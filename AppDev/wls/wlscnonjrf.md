@@ -1,14 +1,16 @@
 # WebLogic for OCI - non JRF
 
-## with provided cloud environment
+### Steps for using Cloud Test Drive (CTD) environment
 
 
+
+## Objective
 
 This Hands on Lab will go through the process of creating a non JRF type of WebLogic for OCI Instance - using Oracle Cloud Marketplace - and through the steps of deploying a simple application. A provided and partially preconfigured (lab) cloud environment will be used.
 
 
 
-### Step 1. Create WebLogic for OCI Stack
+## Step 1. Create WebLogic for OCI Stack
 
 - Go to https://console.eu-frankfurt-1.oraclecloud.com/ and login to the lab cloud environment
 - Choose **oractdemeabdmnative** as Cloud Tenant:
@@ -196,7 +198,7 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 
 
-### Step 2. Configure SSL Load Balancer
+## Step 2. Configure SSL Load Balancer
 
 - We need to do some additional configurations to the created Load Balancer in order to support SSL traffic; From the main menu, go to *Core Infrastructure* -> *Networking* -> *Load Balancers*:
 
@@ -301,7 +303,7 @@ Now, choose *Certificates* from *Resources* sub menu:
 
 
 
-### Step 3. Deploy custom sample application
+## Step 3. Deploy custom sample application
 
 - Let's go back to the WebLogic Server admin console to deploy our sample web application:
 
