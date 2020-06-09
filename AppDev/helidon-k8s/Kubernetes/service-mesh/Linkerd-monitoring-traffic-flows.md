@@ -56,7 +56,7 @@ look at the `ingress-nginx-nginx-ingress-controller` row, IP address inthe `EXTE
 </p></details>
 
 
-- In the OCI Cloud shell type (remember to replace <external IP> with the IP address of your ingress service
+- In the OCI Cloud shell type (remember to replace `<external IP>` with the IP address of your ingress service
   - `bash generate-service-mesh-load.sh <external IP> 2 > /dev/null &`
   
  ```

@@ -527,7 +527,7 @@ Now you can go to the ingress ip address for the linkerd UI
 
 - In your laptop web browser go to `https://<external IP>`
 
-<details><summary><b>If you need to remind yourself of the ingress controller IP address</b></summary>
+<details><summary><b>If you need to remind yourself of the external IP if your ingress controller</b></summary>
 <p>
 
 - In the OCI Cloud Shell type :
@@ -1137,7 +1137,7 @@ The address is in the EXTERNAL-IP column, in this case it's 130.61.195.102 **but
 </p></details>
 
 
-- In the OCI Cloud Shell terminal type the following, be prepared for an error (remember to replace <external IP> with the IP address for your ingress controller)
+- In the OCI Cloud Shell terminal type the following, be prepared for an error (remember to replace `<external IP>` with the IP address for your ingress controller)
   - `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
   
 ```
@@ -1156,7 +1156,7 @@ As you have restarted the services you may get 424 failed dependency errors as t
 
 Let's go and look at the dashboards again
 
-- In your laptop web browser go to `https://<external IP>` (replace <external IP> with the IP address of your ingress controller)
+- In your laptop web browser go to `https://<external IP>` (replace `<external IP>` with the IP address of your ingress controller)
 
 You may get a certificate warning again, in which case follow the procedures for your browser to accept the self signed certificate
 

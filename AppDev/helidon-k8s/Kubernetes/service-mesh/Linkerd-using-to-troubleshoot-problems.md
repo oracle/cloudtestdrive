@@ -68,7 +68,7 @@ look at the `ingress-nginx-nginx-ingress-controller` row, IP address inthe `EXTE
 </p></details>
 
 
-- In the OCI Cloud shell type (remember to replace <external IP> with the I address of your ingress service
+- In the OCI Cloud shell type (remember to replace `<external IP>` with the IP address of your ingress service
   - `bash generate-service-mesh-load.sh <external IP> 2 > /dev/null &`
   
  ```
@@ -181,7 +181,7 @@ Wait a short while for the update to be applied.
   
 Now let's check that the change has applied by going direct to the stockmanager and seeing how it behaves, remember that we said that 0.5 (so 50%) of the requests should generate an error.
 
-- In the OCI Cloud shell type the following (remember to replace <external IP> )
+- In the OCI Cloud shell type the following (remember to replace `<external IP>` )
   - `curl -i -k -X GET -u jack:password https://<external IP>/sm/stocklevel`
  
 (As usual the first response may take a short while)
@@ -217,7 +217,7 @@ Repeat the request several times and you should see that approximately half the 
 
 Now try making the request a few times to the storefront service
 
-- In the OCI Cloud shell type the following (remember to replace <external IP> )
+- In the OCI Cloud shell type the following (remember to replace `<external IP>` )
   - `curl -i -k -X GET -u jack:password https://<EXTERNAL IP>/store/stocklevel`
   
 You will get either error messages like this
@@ -254,7 +254,7 @@ As before repeat this a few times, approximately half the time it will succeed a
 
 We'll open the LinkerdUI and see what it's reporting.
 
-- In your web browser go to `https://<external IP>` (replace <external IP of course) If asked login with the user name admin and the password you chose when setting up the Linkerd ingress
+- In your web browser go to `https://<external IP>` (replace `<external IP>` of course) If asked login with the user name admin and the password you chose when setting up the Linkerd ingress
 
 Locate the HTTP metrics entry for your namespace (mine is tg-helidon, yours will have a different name)
 

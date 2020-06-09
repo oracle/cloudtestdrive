@@ -128,7 +128,7 @@ zipkin-7db7558998-c5b5j          2/2     Running   0          22h
 
 Let's make sure our service is still running
 
-- In the OCI Cloud shell type the following (as usual replacing <external IP> with the IP address of the ingress controller service)
+- In the OCI Cloud shell type the following (as usual replacing `<external IP>` with the IP address of the ingress controller service)
   - `curl -i -k  -u jack:password https://<external IP>/store/stocklevel`
 
 ```
@@ -326,7 +326,7 @@ If you do this a few times you will find that about half of the requests succeed
 
 Now we've seen that the services are behaving as expected let's start up the load generator
 
-- In the OCI Cloud shell type (remember to replace <external IP> with the IP address of your ingress service
+- In the OCI Cloud shell type (remember to replace `<external IP>` with the IP address of your ingress service
   - `bash generate-service-mesh-load.sh <external IP> 1 > /dev/null &`
   
  ```
@@ -343,7 +343,7 @@ We can use the Linkerd web UI to see how the traffic is working
 
 If needed accept that it's a self signed certificate and login as `admin` with password you set when installing linkerd
 
-<details><summary><b>If you need to remind yourself of the ingress controller external IP address</b></summary>
+<details><summary><b>If you need to remind yourself of your ingress controller external IP address</b></summary>
 <p>
 
 - In the OCI Cloud Shell type :
@@ -586,7 +586,7 @@ ingress.extensions/fault-injector created
 
 Test the fault injection returns the right value
 
-- In the OCI Cloud shell type (replace <external IP> with **your** ingress controller IP address)
+- In the OCI Cloud shell type (replace `<external IP>` with **your** ingress controller IP address)
 
   - `curl -i  http://<external IP>/fault`
 
@@ -722,8 +722,8 @@ This will generate reports from any deployment to the `zipkin` deployment (it is
 
 - Click the `Start` button
 
-- Make multiple curl requests 
-curl -i -k  -u jack:password https://<external ip>/store/stocklevel
+- Make multiple curl requests of the form 
+  - `curl -i -k  -u jack:password https://<external ip>/store/stocklevel`
 
 ![](images/Linkerd-traffic-split-route-results.png)
 
