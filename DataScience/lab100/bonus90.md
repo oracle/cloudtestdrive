@@ -4,7 +4,7 @@
 
 Feature Engineering is the process of creating/updating input features using Domain Knowledge. The goal is to calculate / derive new features and explore if it has a higher predictive significance.
 
-### Investigate the garage attributes
+## Investigate the garage attributes
 
 Remember how we saw that there are a few very similar attributes for garage, namely GarageArea and GarageCars? We will try to remove the colinearity of these by combining them into one attribute and see if this improves the model. Let's check the relationship of the two attributes to the `SalePrice`.
 
@@ -38,7 +38,7 @@ print ('Correlation of GarageArea_x_Car with SalePrice: ', alldata['GarageArea_x
 
 `Conclusion`: The newly engineered feature does not appear to delivers better relationship to the sale price than `GarageArea` or `GarageCars` alone, at least it is not visiable from the plot.
 
-### Remove the original garage attributes, rebuild the model and compare
+## Remove the original garage attributes, rebuild the model and compare
 
 With the new attribute in place, let's train the model again, and compare its performance with the original model. We will remove `GarageArea` and `GarageCars` and use only the newly calculation feature, which is called `GarageArea_x_Car`. The column is already presented in the data, so we don't have to add it again.
 

@@ -1,6 +1,6 @@
-![Workshop Data Science](../commonimages/workshop_logo.png)
-
 # Lab: Predict house sales prices through Regression
+
+![Workshop Data Science](../commonimages/workshop_logo.png)
 
 Video recording of the solution for this lab: [https://youtu.be/raFODMMBJ4s](https://youtu.be/raFODMMBJ4s)
 
@@ -566,7 +566,7 @@ array([12.42384482])
 You would notice that the price is strage, it shows a number that doesn't seem to be a normal house Sales Price. If you remember we scale the SalePrice by using `np.log(SalePrice)` to get the prices in smaller range and help the algorithm generalize and learn better. To get the real price now we need to revert back this scale. To do so we have to use `np.exp(PredictedSalePrice)`, example:
 
 ```python
-np.exp(12.423844821926073)
+np.exp(12.42384482)
 ```
 
 ... and the predicted sale price is 248660$
@@ -575,13 +575,12 @@ np.exp(12.423844821926073)
 248660.7558014956
 ```
 
-In case you want to save yourself all this steps and execute the model directly against a house data in the test set, you could also access it directly from the test set array. Notice we use the second house data from the test set:
+In case you want to save yourself all this steps and execute the model directly against a house data in the test set, you could also access it directly from the test set array. Notice we used the third house data from the test set:
 
 ```python
 signle_predicted = model.predict(X_test[2:3])
 signle_predicted
 ```
-
 
 <!-- ## Bonus exercise 01: Store and deploy the model -->
 <!-- ## Bonus exercise 02: Use AutoML -->
@@ -601,9 +600,11 @@ Pick another algorithm to train on this data, and compare its performance with t
 # BONUS LABS
 
 If you want to learn how to deploy the model you just built follow the bonus lab 100-10
+
 [LAB 100-10: Deploy a Model using the Model Catalog](./bonus10.md)
 
 In case you are interested how to engineer and try new features and explore if it has a better predictive relevance
+
 [LAB 100-90 (Optional): Engineering a new input feature](./bonus90.md)
 
 ## Follow-up questions
