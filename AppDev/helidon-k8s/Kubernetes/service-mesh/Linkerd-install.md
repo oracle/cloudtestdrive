@@ -458,7 +458,7 @@ Curiously the linkerd-web ingress does not by default use a TLS certificate to e
 Change to the directory for the service mesh scripts
 
 - In the OCI Cloud shell type
-  - `cd $HOME/helidon-kubernetes/management/servicemesh`
+  - `cd $HOME/helidon-kubernetes/service-mesh`
 
 Create a TLS Secret in the linkerd namespace to use to secure the connection (do anyway)
 

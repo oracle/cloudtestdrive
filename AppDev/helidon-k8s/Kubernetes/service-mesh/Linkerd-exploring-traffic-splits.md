@@ -60,6 +60,11 @@ More importantly we are going to do this while keeping the stockmanager service 
 
 The order here is important, this is because the basic stockmanager service is only looking for deployments which match the selector of `app: stockmanager`, so if we were to just roll out the new version then the service would match the old and new versions.
 
+Let's switch to the right directory
+
+- In the OCI Cloud Shell type :
+  - `cd $HOME/helidon-kubernetes/service-mesh`
+
 First we need to make a small change to our existing stock manager deployment, adding  the version number to the deployment, this will let us differentiate it from the newer version we are about to deploy.
 
 - In the OCI Cloud shell type
