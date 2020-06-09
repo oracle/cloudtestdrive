@@ -90,7 +90,7 @@ zipkin         1/1     1            1           14d
 
 We can see in this case we have deployments for stockmanager, storefront and zipkin. Depending on which other optional modules you've done there may be additional deployments in the list.
 
-Sadly there doesn't seem to be a way to restart all of the deployments in a namespace (maybe that will be added in a future Kubernetes release) so we have to restart each one individually.
+Sadly there doesn't seem to be a way to restart all of the deployments in a namespace (maybe that will be added in a future Kubernetes release) so we have to restart each one by it's individual name.
 
 - In the OCI Cloud shell type the following, if you have additional deployments add them to the list
 
@@ -105,7 +105,7 @@ deployment.extensions/zipkin restarted
 
 Let's do the same process for the ingress controller  namespace
 
-First update the ingress-nginix namespace
+First update the ingress-nginix namespace to remove the linkerd annotation
 
 - In the OCI Cloud shell type the following 
   - `kubectl get namespace ingress-nginx -o yaml | linkerd uninject - | kubectl replace -f -`
@@ -127,7 +127,7 @@ ingress-nginx-nginx-ingress-controller        1/1     1            1           3
 ingress-nginx-nginx-ingress-default-backend   1/1     1            1           35d
 ```
 
-And next update them so the proxy will be added.
+And next update them so the proxy will be removed.
 
 
 - In the OCI Cloud shell type :
@@ -139,7 +139,7 @@ deployment.extensions/ingress-nginx-nginx-ingress-controller restarted
 deployment.extensions/ingress-nginx-nginx-ingress-default-backend restarted
 ```
 
-Now the data plane elements have been removed let's remove the linkerd control plane
+Now the data plane elements have been removed let's remove the linkerd control plane (Yes, I know that the linkerd command is install, but the kubectl command is delete, so what happens is the linkerd command generates what it woudl to to install, but the kubectl command takes this input as sequence ot things to delete)
 
 - In the OCI Cloud shell type :
 

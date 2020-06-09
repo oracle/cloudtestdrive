@@ -52,7 +52,7 @@ Historically canaries were used in mines as they were far more sensitive to dang
 
 ### What are we going to do ?
 
-In this lab we are going to go through the process of **manually** performing a canary deployment, along with recovering it. We're doing this manually so you get the full details of what's happening, however normally you would use automated tools like [Flagger](https://flagger.app) to actually perform the steps for you (and at a much finer granularity)
+In this lab we are going to go through the process of **manually** performing a canary deployment, along with recovering it. We're doing this manually so you get the full details of what's happening, however normally you would use automated tools like [Flagger](https://flagger.app) or [Spinaker](https://www.spinnaker.io/) to actually perform the steps for you (and at a much finer granularity)
 
 We are going to deploy a our version of the stockmanager service that deliberately breaks sometimes, from this you can gather than we will not be completing the deployment, but rolling it back !
 
@@ -64,7 +64,7 @@ First we need to make a small change to our existing stock manager deployment, a
 
 - In the OCI Cloud shell type
 
-  - `kubectl edit dsployment stockmanager` 
+  - `kubectl edit deployment stockmanager` 
 
 - Scroll down until you find the matchLabels section in the selector (this is the spec.selector.matchLabels)
 
@@ -525,7 +525,7 @@ Switch to the service mesh directory
 
 Let's setup the fault injector, this is basically a simple nginx based web server that returns a HTTP 504 error status (Gateway timeout) each time it's accessed.
 
-First setup the config map for nginx, it defines a config rule for nginx that will always return a 504 error
+First we need to setup the config map for nginx, below is the contents of nginx-fault-injector-configmap.yaml. It defines a config rule for nginx that will always return a 504 error
 
 ```
 apiVersion: v1
@@ -609,7 +609,7 @@ OK, the 504 / Gateway Time-out response is generated as we expect.
 
 So far all we've done is to create a service that generates 504 errors, we need to look at the traffic split to redirect some of the traffic for the original service to this new one.
 
-Let's look at the traffic split
+Let's look at the traffic split, below is the contents of fault-injector-traffic-split.yaml
 
 ```
 apiVersion: split.smi-spec.io/v1alpha1
@@ -867,6 +867,6 @@ You have reached the end of this lab module !!
 
 In the next module we will look at how you can use linkerd and grafana to see the traffic flows in your cluster.
 
-Acknowledgements. I'd like to thank Charles Pretzer of Bouyant, Inc for reviewing and sanity checking parts of this document.
+Acknowledgments. I'd like to thank Charles Pretzer of Bouyant, Inc for reviewing and sanity checking parts of this document.
 
 Use your **back** button to return to the lab sequence document to access further service mesh modules.

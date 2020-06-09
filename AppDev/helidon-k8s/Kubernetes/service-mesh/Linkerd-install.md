@@ -74,7 +74,7 @@ Linkerd is installed in two parts, the linkerd command which runs local to your 
 
 These instructions are based on the [Getting started](https://linkerd.io/2/getting-started/) page at Linkerd.io
 
-It's worth noting that Linkerd can also be installed using its [helm chart](https://linkerd.io/2/tasks/install-helm/).
+It's worth noting that Linkerd can also be installed using its [helm chart](https://linkerd.io/2/tasks/install-helm/) but today we're going to do it manually step by step.
 
 ### Installing the linkerd CLI
 
@@ -484,7 +484,7 @@ secret/tls-linkerd-secret created
 
 ### Create a login password to secure the connection
 
-The default configuration for the linkerd-web service includes a password of admin/admin. Obviously this is for demo purposed, we want to use something more secure (and of course you **must** to this in a production environment !)
+The default configuration for the linkerd-web service includes a password of admin/admin. Obviously this is for demo purposes, but we should use something more secure (and of course you **must** use a strong password kubectl get namespace ingress-nginx -o yaml | linkerd inject - | kubectl replace -f -in a production environment !)
 
 First let's create a password file for the admin user. In the example below I'm using `ZaphodBeeblebrox` as the password, but please feel free to change this if you like
 
@@ -498,7 +498,7 @@ Adding password for user admin
 Now having create the password file we need to add it to Kuberntes as a secret so the ingress controller can use it.
 
 - In the OCI Cloud Shell type
-  - `kubectl create secret generic web-ingress-auth -n linkerd --from-file=auth`
+  - `kubectl create secret generic linkerd-web-ingress-auth -n linkerd --from-file=auth`
 
 ```
 secret/web-ingress-auth created
@@ -685,7 +685,7 @@ namespace "tg-helidon" injected
 namespace/tg-helidon configured
 ```
 
-The forst line of the output is from the linkerd command telling us that its added the annotation, the second is from the kubectl replace command telling us that the previous configuration has been replaced with the new one.
+The first line of the output is from the linkerd command telling us that its added the annotation, the second is from the kubectl replace command telling us that the previous configuration has been replaced with the new one.
 
 Let's have a look at the web page again, refresh the main web page in the browser
 
@@ -742,7 +742,7 @@ stockmanager-654f44d59d-bjn2v   2/2     Running   0          7m55s
 storefront-8ddc6db75-nxlnm      2/2     Running   0          7m55s
 zipkin-84466dc99f-w5hhc         2/2     Running   0          7m55s
 
-Note that pods have 2/2 in the READY column, this means that thee are **two** copntainers running in the pod, previously would have seen 1/1 meaning only one container was running, (the application)
+Note that pods have 2/2 in the READY column, this means that there are **two** containers running in the pod, previously would have seen 1/1 meaning only one container was running, (the application)
 
 Let's see what's in those pods, here we're going to use the jsonpath ooption to kubectl to reduce the amount of output
 
@@ -1198,6 +1198,6 @@ You have reached the end of this lab module !!
 
 In the next module we will look at how you can use linkerd and grafana to see the traffic flows in your cluster.
 
-Acknowledgements. I'd like to thank Charles Pretzer of Bouyant, Inc for reviewing and sanity checking parts of this document.
+Acknowledgments. I'd like to thank Charles Pretzer of Bouyant, Inc for reviewing and sanity checking parts of this document.
 
 Use your **back** button to return to the lab sequence document to access further service mesh modules.

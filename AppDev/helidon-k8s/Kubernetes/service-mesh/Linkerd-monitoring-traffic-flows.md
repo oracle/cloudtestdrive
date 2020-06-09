@@ -89,7 +89,7 @@ You'll be presented with the linkerd-web main page, unlike when you saw this pre
 
 You can see that in both the HTTP metrics and TCP metrics sections the namespace tg-hekidon (your namespace will be different of course) is showing a request rate.
 
-Unlike the Kubernetes dashboard the linkerd UI is very much about providing you with data abut what's happening. The data is captured by the linkerd-proxies that form the data plane of the servcie mesh and then made available via the Promtheus implementaiton the linkerd install process created. The UI doesn't really offer options for configuring linkerd
+Unlike the Kubernetes dashboard the linkerd UI is very much about providing you with data about what's happening. The data is captured by the linkerd-proxies that form the data plane of the service mesh and then made available via the Promtheus implementation the linkerd install process created. The UI doesn't really offer options for configuring linkerd
 
 A key point here is that this UI is showing you the **current** load (well actually data collated and processed over the very recent history. To see historical data we can use the Grafana instance that the linkerd install process setup. We'll get to that later in the module, for now we're just going to look at the Linkerd UI
 
@@ -104,7 +104,7 @@ In the HTTP Metrics section the columns are :
 
 `Meshed` - the number of deployments in the namespace that are part of the service mesh, in this case it's all of the ones in your namespace and the ingress-nginx namespace, but it is possible that in some cases a deployment may not be included (perhaps a deployment has not been restarted, or a deployment has annotations that explicitly disable the use of the service mesh)
 
-`Success Rate` - How often a request made by a deployment within the namespace succeeds, this can be the start iof diagnosint problems
+`Success Rate` - How often a request made by a deployment within the namespace succeeds, this can be the start of diagnosing problems
 
 `RPS` - The number of requests per second
 
@@ -124,7 +124,7 @@ In the TCP Metrics section the columns are :
 
 `Connections` - The number of active connections (I believe this has some averaging applied)
 
-`Read Bytes/sec` and `Write Bytes/sec` - The data volumes beinf written and read int he namespace
+`Read Bytes/sec` and `Write Bytes/sec` - The data volumes being written and read in the namespace
 
 `Grafana` - If the namespace is in the mesh a little Garafana logo will appear here
 
@@ -284,7 +284,7 @@ There is more information on control plan failure in [the linkerd FAQ](https://l
 
 The data we've seen so far is the live view, but if we wanted to understand what was happening over a longer period of time (say to understand how the request breakdown changes over the day) we want to look at historical data. To do that we will use the Grafana visualizations that the linkerd install setup for us. 
 
-We could of course go direct to the Grafana page for a specific item (all the tables have a little Grafana icon ![](images/linkerd-grafana-icon.png) which woudl take us there directly) but let's start out looking at the Grafana overview
+We could of course go direct to the Grafana page for a specific item (all the tables have a little Grafana icon ![](images/linkerd-grafana-icon.png) which would take us there directly) but let's start out looking at the Grafana overview
 
 - In your laptop web browser go to `https://<external IP>/grafana`
 
@@ -351,7 +351,7 @@ Feel free to explore the dashboards if you like.
 [1]+  Running                 bash generate-service-mesh-load.sh 130.61.195.102 2 > /dev/null &
 ```
 
-We can see that our load generator is running, and at the begining of the line we see `[1]` which tells us it's job id is 1 (in the []) It's possible that you may have additional lines, if you have other jobs running, in which case look for the job that's running the `generate-service-mesh-load.sh` line and get it's job id
+We can see that our load generator is running, and at the beginning of the line we see `[1]` which tells us it's job id is 1 (in the []) It's possible that you may have additional lines, if you have other jobs running, in which case look for the job that's running the `generate-service-mesh-load.sh` line and get it's job id
 
 We can now get the OCI Cloud Shell to stop the job
 
@@ -369,6 +369,6 @@ You have reached the end of this lab module !!
 
 In the next module we will look at how you can use linkerd and grafana to diagnose problems.
 
-Acknowledgements. I'd like to thank Charles Pretzer of Bouyant, Inc for reviewing and sanity checking parts of this document.
+Acknowledgments. I'd like to thank Charles Pretzer of Bouyant, Inc for reviewing and sanity checking parts of this document.
 
 Use your **back** button to return to the lab sequence document to access further service mesh modules.

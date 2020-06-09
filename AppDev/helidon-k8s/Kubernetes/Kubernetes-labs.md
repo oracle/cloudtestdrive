@@ -155,7 +155,7 @@ This module also used the traffic split capability of the service mesh to show h
 
 ##### Optional 3e Uninstall the service mesh
 
-**Only** do this after you have comple4ted the service mesh lab modules you want to do.
+**Only** do this after you have completed the service mesh lab modules you want to do.
 
 You do not have to uninstall the service mesh, but can if you wish.
 

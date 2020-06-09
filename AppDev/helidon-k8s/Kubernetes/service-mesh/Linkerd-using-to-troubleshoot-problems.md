@@ -87,7 +87,7 @@ If that happens while you are doing the service mesh labs the solution is to con
 
 Let's just check that the load is running fine
 
-- In your laptop web browser go to `https://<external IP>`
+- In your web browser go to `https://<external IP>`
 
 You may be challenged as you have a self signed certificate. Follow the normal procedures in your browser to accept the connection and proceed.
 
@@ -116,7 +116,7 @@ For now let's stop the load generator while we deploy our "broken" service
 [1]+  Running                 bash generate-service-mesh-load.sh 130.61.195.102 2 > /dev/null &
 ```
 
-We can see that our load generator is running, and at the begining of the line we see `[1]` which tells us it's job id is 1 (in the []) It's possible that you may have additional lines, if you have other jobs running, in which case look for the job that's running the `generate-service-mesh-load.sh` line and get it's job id
+We can see that our load generator is running, and at the beginning of the line we see `[1]` which tells us it's job id is 1 (in the []) It's possible that you may have additional lines, if you have other jobs running, in which case look for the job that's running the `generate-service-mesh-load.sh` line and get it's job id
 
 We can now get the OCI Cloud Shell to stop the job
 
@@ -130,9 +130,9 @@ We can now get the OCI Cloud Shell to stop the job
 
 ### Deploying our broken service
 
-We are going to edit one of the configurations for the stock manager to specify that we want a 50% failure rate on requests to the stock manager. The deliberately "brokwn" stockmanager will pay attention to this, but the normal one will not.
+We are going to edit one of the configurations for the stock manager to specify that we want a 50% failure rate on requests to the stock manager. The deliberately "broken" stockmanager will pay attention to this, but the normal one will not.
 
-- In the OCI Cloud Shell use your prefered editor (vi, nano etc.) to edit `$HOME/helidon-kubernetes/configurations/stockmanagerconf/conf/stockmanager-config.yaml`
+- In the OCI Cloud Shell use your preferred editor (vi, nano etc.) to edit `$HOME/helidon-kubernetes/configurations/stockmanagerconf/conf/stockmanager-config.yaml`
 
 - Add the following to the end of the file on a line of it's own, not that this is **not** indented `errorgenerationrate: 0.5`
 
@@ -319,7 +319,7 @@ Of course this is only showing us the network part of the troubleshooting proces
 [1]+  Running                 bash generate-service-mesh-load.sh 130.61.195.102 2 > /dev/null &
 ```
 
-We can see that our load generator is running, and at the begining of the line we see `[1]` which tells us it's job id is 1 (in the []) It's possible that you may have additional lines, if you have other jobs running, in which case look for the job that's running the `generate-service-mesh-load.sh` line and get it's job id
+We can see that our load generator is running, and at the beginning of the line we see `[1]` which tells us it's job id is 1 (in the []) It's possible that you may have additional lines, if you have other jobs running, in which case look for the job that's running the `generate-service-mesh-load.sh` line and get it's job id
 
 We can now get the OCI Cloud Shell to stop the job
 
@@ -348,6 +348,6 @@ You have reached the end of this lab module !!
 
 In the next module we will look at how you can use linkerd and grafana to see the traffic flows in your cluster.
 
-Acknowledgements. I'd like to thank Charles Pretzer of Bouyant, Inc for reviewing and sanity checking parts of this document.
+Acknowledgments. I'd like to thank Charles Pretzer of Bouyant, Inc for reviewing and sanity checking parts of this document.
 
 Use your **back** button to return to the lab sequence document to access further service mesh modules.
