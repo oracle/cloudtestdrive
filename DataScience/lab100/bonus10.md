@@ -1,22 +1,24 @@
-# Bonus Lab 01: Deploy Oracle Data Science Module
+# LAB 100-10: Deploy Module using the Model Catalog
 
 ![Workshop Data Science](../commonimages/workshop_logo.png)
 
-This bonus lab will guide you through the steps required to store a model in Oracle Data Science Platform and deploy the model to Oracle Functions, which is the current preffered deployment process. We will also utilize Oracle API Gateway to define a REST API to access our model.
+This lab will guide you through the steps required to store a model in Model Catalog from the Oracle Data Science Platform and deploy the model to Oracle Functions, which is one of the current preffered deployment process. Once deployed, we will utilize Oracle API Gateway to define a REST API to access the model.
 
 **This lab is based on LAB100 which you have to finish to be able to proceed.**
 
-## Prepare the model artifacts
-
-In `LAB100` we build a linear regression model. To be able to use the model, we have to store it in a way that it is deployable. Currently Oracle Data Science Service uses Oracle Functions to deploy the models. Oracle Data Science Service stores the serialized weights of the model as pickle file, which does not require any proprietary software to be read and can be used or deployed to any cloud vendor, compute instance or service you prefer.
+In `LAB100` we build a linear regression model. To be able to use the model, we have to store it in a way that it is deployable. One way to do model deployment is using Oracle Functions. Oracle Data Science Service stores the serialized weights of the model as pickle file, which does not require any proprietary software to be read and can be used or deployed to any cloud vendor, compute instance or service you prefer.
 
 **To store the model continue to work in the notebook you used for LAB100.**
 
-The last step was that you used the RMSE to validated the performance of the model. Let's now store the model. To do so we need to initialize the ADS (Oracle Accelerated Data Science) library. Before we could use the library you have to make sure that you generated your OCI private key.
+## Finish Getting Started Guide
+
+The last step in LAB100 was to used RMSE to validated the performance of the model. Let's now store the model. To do so we need to initialize the ADS (Oracle Accelerated Data Science Library). Before we could use the library you have to make sure that you generated your OCI private key.
 
 **Please follow the steps in the `getting-started.ipynb` file to register your account and generate a key that would allow you to use the ADS library.**
 
 After you finish the registration and validate that the ADS works, we are going to initialize the library now in **the notebook we used for LAB100**.
+
+## Prepare the model artifacts
 
 The first step when saving models to the model catalog is to create a model artifact for each model. We will initiate the ADSModel by using the model we build from the linear regression lab. Notice the **`model`** variable is the model you build as you executed `model = lr.fit(X_train, y_train)`
 
@@ -60,7 +62,7 @@ A few remarks on the files in `fn-model/` :
 
 ## Adjust func.yaml file
 
-Depending on the Data Science Service version if you open the file, you may see a `triggers` configuration, that is no longer needed to deploy the model as function and has to be removed. If you have that option please remove it now from the YAML file. Your `**func.yaml**` file should look like this:
+Depending on the Data Science Service version if you open the file, you may see a `triggers` configuration, that is no longer needed to deploy the model as function and has to be removed. If you have that option please remove it now from the YAML file. Your `func.yaml` file should look like this:
 
 ```yaml
 entrypoint: /python/bin/fdk /function/func.py handler
@@ -85,38 +87,38 @@ mc_model = model_artifact_fn.save(project_id=project_id, compartment_id=compartm
 mc_model
 ```
 
-If the process was successful, you should see a confirmation table that has a row with `lifecycle_state` `ACTIVE`.
+This code should get the model generated in your LAB100 folder and store it into the Model Catalog. If the process was successful, you should see a confirmation table that has a row with `lifecycle_state` `ACTIVE`.
 
 Go back to your OCI Console in the browser and identify again your Data Science Project. On the left side under `Resources` there is a `Models` link. Click it to see all your stored models:
 
 ![Model Catalog Housemarket](../commonimages/modelcataloghousemarket.png)
 
-**Click on the model name `housemarket` to see the model details. `Copy` the model `OCID` as we would need it later!**
+**Click on the model name `housemarket` to see the model details. `Copy` the model `OCID` and store it, as we would need it later in the lab!**
 
-## Build the function and deploy using Cloud Shell
+## Build and deploy using Cloud Shell
 
 To build the function we will use the Oracle OCI Cloud Shell. To open it, click on the Cloud Shell icon on the top right side as shown on the screen-shot below and the `Cloud Shell` should open at the bottom:
 
 ![Cloud Shell Terminal](../commonimages/cloudshellstart.png)
 
-Oracle Cloud Infrastructure Cloud (OCI) Shell is a web browser-based terminal accessible from the Oracle Cloud Console. Cloud Shell is free to use (within monthly tenancy limits), and provides access to a Linux shell, with a pre-authenticated Oracle Cloud Infrastructure CLI, a pre-authenticated Ansible installation, and other useful tools for following Oracle Cloud Infrastructure service tutorials and labs. Cloud Shell is a feature available to all OCI users, accessible from the Console. Your Cloud Shell will appear in the Oracle Cloud Console as a persistent frame of the Console, and will stay active as you navigate to different pages of the Console. For more information visit the official documentation under [Cloud Shell Documentation](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cloudshellintro.htm)
+Oracle Cloud Infrastructure Cloud (OCI) Shell is a web browser-based terminal accessible from the Oracle Cloud Console. Cloud Shell is free to use (within monthly tenancy limits), and provides access to a Linux shell, with a pre-authenticated Oracle Cloud Infrastructure CLI, a pre-authenticated Ansible installation, and other useful tools for following Oracle Cloud Infrastructure service tutorials and labs, including Functions CLI and Docker. Cloud Shell is a feature available to all OCI users, accessible from the Console. Your Cloud Shell will appear in the Oracle Cloud Console as a persistent frame of the Console, and will stay active as you navigate to different pages of the Console. For more information visit the official documentation under [Cloud Shell Documentation](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cloudshellintro.htm)
 
 ### Get the model
 
-We will create a folder in the cloud shell and will download the model into it.
+We will create a folder in the `Cloud Shell` and will download the model into it.
 
 ```shell
 mkdir model
 cd model
 ```
 
-Download the model from the Model Catalog using the OCI CLI.
+Download the model from your Data Science Project Model Catalog using the OCI CLI.
 
 ```shell
 oci data-science model get-artifact-content --model-id <MODEL_OCID> --file model1.0.zip
 ```
 
-Replace the **MODEL_OCID** with the one you copy from the previous step. The command below will download the model into the ZIP file called **model1.0.zip**. `Notice that all the files in the Cloud Shell will be persisted across regions. To download the model however you have to be within the same region where the model was build.`
+Replace the **MODEL_OCID** with the one you copied from the previous step. The OCI command will download the model and store it into a ZIP file called **model1.0.zip**. `Notice that all the files in the Cloud Shell will be persisted across regions. To download the model however you have to be within the same region where the model was build.`
 
 Unzip the file and go into the `fn-model` folder.
 
@@ -147,6 +149,8 @@ CURRENT NAME            PROVIDER        API URL                                 
 fn use context uk-london-1
 ```
 
+`Notice` that `uk-london-1` is the region used to build this lab, your region may differ. You can get the region identifier from the following page: [Oracle Regions](https://docs.cloud.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm)
+
 ### Update the context
 
 To get access to the Fn apps configured, we have to update the context.
@@ -162,11 +166,11 @@ fn update context oracle.compartment-id ocid1.compartment.oc1..aaaaaaaauz6brmxna
 Current context updated oracle.compartment-id with ocid1.compartment.oc1..aaaaaaaauz6brmxnajpmwvdwupt53uhrb2szkockrbhuruq7pgp3ptl4btdq
 ```
 
-`<COMPARTMENT_OCID>` - the OCID of your current compartment, which you can find under `Identity -> Compartments` and select the name of the compartment you are using. `Notice` your compartment could within another compartment.
+`<COMPARTMENT_OCID>` - the OCID of your current compartment, which you can find under `Identity -> Compartments` and select the name of the compartment you are using. `Notice` your compartment could be within another compartment.
 
 ### Update the context registry
 
-The registry will be created if not available, it will be the location to store our function.
+The registry will be created if not available, it will be the location to store the function.
 
 ```shell
 fn update context registry <regionid>.ocir.io/<tenancy>/<repo_name>
@@ -178,8 +182,8 @@ fn update context registry <regionid>.ocir.io/<tenancy>/<repo_name>
 fn update context registry lhr.ocir.io/ociateam/lab100
 ```
 
-`<regionid>.ocir.io/<tenancy>` - you can get this information from the previous command `fn list context` on the right side you will see the `REGISTRY` for this context
-`<repo_name>` - free name, you could use `lab100` for example
+`<regionid>.ocir.io/<tenancy>` - you can get this information from the previous command `fn list context` on the right side you will see the default root `REGISTRY` for the current context
+`<repo_name>` - name that you can set, you could use `lab100` for example
 
 ### List Fn Apps
 
@@ -274,6 +278,9 @@ fn inspect function DataScienceApp housemarket
 }
 ```
 
+`DataScienceApp` - is the name of the Function app
+`housemarket` - is the name of the deployed function
+
 ### Create a payload file to test the function
 
 Let's check if the function works properly. To do so invoke it with a payload that represents a single house data. To be able to do that we would need to create a JSON file in the Cloud Shell console and use to invoke the Fn.
@@ -361,16 +368,22 @@ curl -X "POST" -H "Content-Type: application/json" -d '{"input":[[67.0,10656.0,8
 {"prediction": [12.423844821926073]}%
 ```
 
-As you can see the REST API returns the same sales price value of `12.423844821926073`
+As you can see the REST API returns the same sales price value of `12.423844821926073`. If we revert the scale using `np.exp(12.423844821926073)`, we will get the real price.
 
-# Summary
+## Conclusion
 
-- You have learned how to store a model build in ODS into the Model Catalog
-- You have learned how to use Cloud Shell to download, build and deploy the model as function
-- You have learned how to expose the model as REST Endpoint using Oracle API Gatewat.  
+There were the steps required to install a model as Functions built with Oracle Data Science Service and stored into the Model Catalog. Notice that most of the configrations have to be done only once. If you have the function app and the API Gateway setup, as well as the current Fn context and registry, you don't need to updated them again for next time deployment, but only download the latest model, build and the deploy directly
 
-# Follow-up questions
+## Summary
+
+* You have learned how to store a model build in ODS into the Model Catalog
+* You have learned how to use Cloud Shell to download, build and deploy the model as function
+* You have learned how to expose the model as REST Endpoint using Oracle API Gatewat
+
+## Follow-up questions
 
 ![Lyudmil Pelov](../commonimages/lyudmil.png)
-
 [lyudmil.x.pelov@oracle.com](mailto:lyudmil.x.pelov@oracle.com)
+
+![Jeroen Klosterman](../commonimages/jeroen.png)
+[jeroen.kloosterman@oracle.com](mailto:jeroen.kloosterman@oracle.com)

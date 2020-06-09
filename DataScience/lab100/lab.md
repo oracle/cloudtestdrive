@@ -504,7 +504,6 @@ plot.show()
 
 `Conclusion`: In ideal circumstances we'd like to see the predictions aling perfectly on the straight line. This would mean that Predicted and Actual Sale Prices are the same which practically is usually impossible or it is a sign for model overfitting.
 
-
 ## A measurable approach to verification
 
 How can we express the accuracy of the model in a more mathematical way? For that we use a quality metric, in this case we could use [RMSE](https://en.wikipedia.org/wiki/Root-mean-square_deviation).
@@ -517,84 +516,100 @@ RMSE by itself is not easy to interpret, but it can be used to compare different
 print('RMSE: ', mean_squared_error(y_test, y_predicted))
 ```
 
+## Single house SalesPrice prediction
+
+Let's use now the model and try to predict the SalesPrice for a house. From the given test set we would get the data from one house, to see how this works and to have this as reference example later if you want to deploy the model and use it as REST Services for example.
+
+Let's get one house data from the test set and see how it looks in JSON format:
+
+```python
+r = X_test.iloc[2]
+r.to_json()
+```
+
+You should see something like this
+
+![single house data](../commonimages/singlehousedata.png)
+
+This is the information from the test set for a single house, however we only need the data and not the names of each of the columns/features to pass to the model for prediction.
+
+Let's get the data into a form that would allow us to store it as array. If you execute following in your notebook:
+
+```python
+r.to_csv(index=False, line_terminator=',')
+```
+
+... you should get as result:
+
+<p>
+'67.0,10656.0,8.0,2006.0,2007.0,274.0,0.0,1638.0,1646.0,0.0,1646.0,0.0,2.0,0.0,3.0,6.0,1.0,2007.0,3.0,870.0,192.0,80.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,1.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,'
+</p>
+... which is the data only representation. We could copy now this and create a new array variable in our notebook and store this data into that variable, like this:
+
+```python
+input = [[67.0,10656.0,8.0,2006.0,2007.0,274.0,0.0,1638.0,1646.0,0.0,1646.0,0.0,2.0,0.0,3.0,6.0,1.0,2007.0,3.0,870.0,192.0,80.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,1.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0]]
+```
+
+**`Notice`** that we removed the last comma `(,)` from the array. Now this is a single house information which we could send to our model and get SalePrice prediction. Let's try it:
+
+```python
+s_predicted = model.predict(input)
+s_predicted
+```
+
+The result should be
+
+```console
+array([12.42384482])
+```
+
+You would notice that the price is strage, it shows a number that doesn't seem to be a normal house Sales Price. If you remember we scale the SalePrice by using `np.log(SalePrice)` to get the prices in smaller range and help the algorithm generalize and learn better. To get the real price now we need to revert back this scale. To do so we have to use `np.exp(PredictedSalePrice)`, example:
+
+```python
+np.exp(12.423844821926073)
+```
+
+... and the predicted sale price is 248660$
+
+```console
+248660.7558014956
+```
+
+In case you want to save yourself all this steps and execute the model directly against a house data in the test set, you could also access it directly from the test set array. Notice we use the second house data from the test set:
+
+```python
+signle_predicted = model.predict(X_test[2:3])
+signle_predicted
+```
+
+
 <!-- ## Bonus exercise 01: Store and deploy the model -->
 <!-- ## Bonus exercise 02: Use AutoML -->
-
-## Bonus exercise (optional): Engineering a new input feature
-
-Feature Engineering is the process of creating/updating input features using Domain Knowledge. The goal is to calculate / derive new features and explore if it has a higher predictive significance.
-
-### Investigate the garage attributes
-
-Remember how we saw that there are a few very similar attributes for garage, namely GarageArea and GarageCars? We will try to remove the colinearity of these by combining them into one attribute and see if this improves the model. Let's check the relationship of the two attributes to the `SalePrice`.
-
-```python
-plot.scatter(alldata.GarageArea, alldata.SalePrice)
-plot.xlabel("GarageArea")
-plot.ylabel("SalePrice")
-plot.show()
-print ('Correlation of GarageArea with SalePrice: ', alldata['GarageArea'].corr(alldata['SalePrice']))
-
-plot.scatter(alldata.GarageCars, alldata.SalePrice)
-plot.xlabel("GarageCars")
-plot.ylabel("SalePrice")
-plot.show()
-print ('Correlation of GarageCars with SalePrice: ', alldata['GarageCars'].corr(alldata['SalePrice']))
-```
-
-The plots give us some basic understanding about the data distribution. We can see that the price of a house increases with higher `GarageArea` but it is not nessery the case if we compare it with the relation between `GarageCars` to `SalePrice`. This means that the two features are relevant to keep but not conclusive enough, other factors like the garage quality, interior finish and more could play importnat role.
-
-Since the correlation matrix shown high collinearity, let's come up with a single metric for parking by -multiplying- `GarageArea` and `GarageCars` and try this new feature in our model.
-
-```python
-alldata['GarageArea_x_Car'] = alldata.GarageArea * alldata.GarageCars
-
-plot.scatter(alldata.GarageArea_x_Car, alldata.SalePrice)
-plot.xlabel("GarageArea_x_Car")
-plot.ylabel("SalePrice")
-plot.show()
-print ('Correlation of GarageArea_x_Car with SalePrice: ', alldata['GarageArea_x_Car'].corr(alldata['SalePrice']))
-```
-
-`Conclusion`: The newly engineered feature does not appear to delivers better relationship to the sale price than `GarageArea` or `GarageCars` alone, at least it is not visiable from the plot.
-
-### Remove the original garage attributes, rebuild the model and compare
-
-With the new attribute in place, let's train the model again, and compare its performance with the original model. We will remove `GarageArea` and `GarageCars` and use only the newly calculation feature, which is called `GarageArea_x_Car`. The column is already presented in the data, so we don't have to add it again.
-
-```python
-X.drop("GarageArea", axis = 1, inplace = True)
-X.drop("GarageCars", axis = 1, inplace = True)
-
-X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=63, test_size=.20)
-lr = linear_model.LinearRegression()
-model = lr.fit(X_train, y_train)
-y_predicted = model.predict(X_test)
-print('RMSE: ', mean_squared_error(y_test, y_predicted))
-```
-
-We could see that the new RMSE value does not show any signinficant improvement, the result is even worst. Remember **collinearity does not necessary mean causality!**
-
-In our case it seems that `GarageArea` and `GarageCars` are better predictors used separatly than combined. Part of the daily data scientist job will be to analyse the features and search for predictors that could help the model generalize better and improve the model scores like the RMSE.
 
 <!--
 # Bonus Exercise (optional)
 Pick another algorithm to train on this data, and compare its performance with the LinearRegression algorithm.
 -->
 
-# Summary
+## Summary
 
-- You have made your first steps with Data Exploration, Data Preparation, Model training and Evaluation.
-- You have learned the basics of Python and Scikit Learn.
-- You have learned how to provision and work with the Oracle Data Science cloud service.  
-- And, hopefully, you have been inspired to apply Machine Learning to many more situations!
+* You have made your first steps with Data Exploration, Data Preparation, Model training and Evaluation
+* You have learned the basics of Python and Scikit Learn
+* You have learned how to provision and work with the Oracle Data Science cloud service
+* And, hopefully, you have been inspired to apply Machine Learning to many more situations
 
-# Follow-up questions
+# BONUS LABS
+
+If you want to learn how to deploy the model you just built follow the bonus lab 100-10
+[LAB 100-10: Deploy Module using the Model Catalog](./bonus10.md)
+
+In case you are interested how to engineer and try new features and explore if it has a better predictive relevance
+[LAB 100-90 (Optional): Engineering a new input feature](./bonus90.md)
+
+## Follow-up questions
 
 ![Lyudmil Pelov](../commonimages/lyudmil.png)
-
 [lyudmil.x.pelov@oracle.com](mailto:lyudmil.x.pelov@oracle.com)
 
 ![Jeroen Klosterman](../commonimages/jeroen.png)
-
 [jeroen.kloosterman@oracle.com](mailto:jeroen.kloosterman@oracle.com)
