@@ -1,4 +1,4 @@
-# LAB 100-10: Deploy Module using the Model Catalog
+# LAB 100-10: Deploy a Model using the Model Catalog
 
 ![Workshop Data Science](../commonimages/workshop_logo.png)
 

@@ -601,7 +601,7 @@ Pick another algorithm to train on this data, and compare its performance with t
 # BONUS LABS
 
 If you want to learn how to deploy the model you just built follow the bonus lab 100-10
-[LAB 100-10: Deploy Module using the Model Catalog](./bonus10.md)
+[LAB 100-10: Deploy a Model using the Model Catalog](./bonus10.md)
 
 In case you are interested how to engineer and try new features and explore if it has a better predictive relevance
 [LAB 100-90 (Optional): Engineering a new input feature](./bonus90.md)
