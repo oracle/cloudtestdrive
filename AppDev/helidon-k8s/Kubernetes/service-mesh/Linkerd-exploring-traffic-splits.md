@@ -54,7 +54,7 @@ Historically canaries were used in mines as they were far more sensitive to dang
 
 In this lab we are going to go through the process of **manually** performing a canary deployment, along with recovering it. We're doing this manually so you get the full details of what's happening, however normally you would use automated tools like [Flagger](https://flagger.app) or [Spinaker](https://www.spinnaker.io/) to actually perform the steps for you (and at a much finer granularity)
 
-We are going to deploy a our version of the stockmanager service that deliberately breaks sometimes, from this you can gather than we will not be completing the deployment, but rolling it back !
+We are going to deploy a version of the stockmanager service that deliberately breaks sometimes, from this you can gather than we will not be completing the deployment, but rolling it back !
 
 More importantly we are going to do this while keeping the stockmanager service online all the time.
 
@@ -113,7 +113,7 @@ This shows part section of the file with the new lines added
 deployment/stockmanager: updated
 ```
 
-If we have a look at the pods we'll see that the stockmanager pod has been restarted
+If we have a look at the pods we'll see that the stockmanager deployment has been restarted, and we have a new pod
 
 - In the OCI Cloud shell type
   - ` kubectl get pods`
@@ -199,7 +199,7 @@ Accessing the 0.0.1 version the ingress connects to the 0.0.1 service which has 
 Now let's try the 0.0.2 version
 
 - In the OCI Cloud shell type the following
-  - `curl -i -k  -u jack:password https://<external IP>/stockmanagerv0-0-1/stocklevel`
+  - `curl -i -k  -u jack:password https://<external IP>/stockmanagerv0-0-2/stocklevel`
 
 ```
 HTTP/2 503 
@@ -220,7 +220,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 For the 0.0.2 version we get a 502 - Service Unavailable response. The ingress controller can map to the 0.0.2 service, but the 0.0.2 service has a selector which is looking for pods with a label `version: 0.0.2` and so far we haven't created any of those.
 
-Now we have to create the traffic split. We need to do this before creating the 0.0.2 deployment because the original (un-versioned) stockmanager service is still running and being used by the storefront (and ingresses.) The origional service has a selector that will match on **any** pod with the label `app: stockmanager` **regardless*** of what the version it is. 
+Now we have to create the traffic split. We need to do this before creating the 0.0.2 deployment because the original (un-versioned) stockmanager service is still running and being used by the storefront (and ingresses.) The original service has a selector that will match on **any** pod with the label `app: stockmanager` **regardless*** of what the version it is. 
 
 Looking at the spec the split is deployed on the service `stockmanager` (This is known as the `Apex Service` as it's the actual top level service) The traffic split will split the traffic sent to the `stockmanager` service between the two backend services (also known as `Leaf services`) the `stockmanagerv0-0-1` service and the `stockmanagerv0-0-2` service. In this case there are two backends, but more are possible.
 
@@ -266,8 +266,8 @@ As the traffic split is now in place and it's intercepting requests to the origi
 
 We can confirm this by making a few requests
 
-- In the OCI Cloud shell type 
-  - `curl -i -k  -u jack:password https://130.61.195.102/store/stocklevel`
+- In the OCI Cloud shell type (remember to replace `<external IP>`
+  - `curl -i -k  -u jack:password https://<external IP>/store/stocklevel`
   
 ```
 HTTP/2 200 
@@ -355,7 +355,7 @@ ingress-nginx-nginx-ingress-controller        LoadBalancer   10.96.196.6    130.
 ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.17.121   <none>           80/TCP                       3h
 ```
 
-look at the `ingress-nginx-nginx-ingress-controller` row, IP address inthe `EXTERNAL-IP` column is the one you want, in this case that's `130.61.195.102` **but yours will vary**
+look at the `ingress-nginx-nginx-ingress-controller` row, IP address in the `EXTERNAL-IP` column is the one you want, in this case that's `130.61.195.102` **but yours will vary**
 
 ---
 </p></details>
@@ -403,7 +403,7 @@ Go back to the traffic split on the linkerd browser page
 
 You will see that the split is now 90 to the v0.0.1 stockmanager and 10% to the v0.0.2 stock manager
 
-The success rate colunn for the v0.0.1 is still 100%, but in this case the success rate for the 0.0.2 version is 33.33% Of course the exact number will vary depending on how many requests have been sent to it and the random behavior of it it generates an error or not.
+The success rate column for the v0.0.1 is still 100%, but in this case the success rate for the 0.0.2 version is 33.33% Of course the exact number will vary depending on how many requests have been sent to it and the random behavior of it it generates an error or not.
 
 - Click on `Namespaces` 
 
