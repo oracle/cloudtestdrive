@@ -13,6 +13,8 @@ A drone flight will be allowed when its location is not within an urban area.
 * An Oracle Autonomous Transaction Process instance
 * An APEX Workspace
 
+### Estimated Time: 60 minutes
+
 ## **STEP 1**: Import the APEX application
 
 Our starting point is an unfinished APEX application.
@@ -132,7 +134,7 @@ In our (simplified) example we will only look at the first row, and ignore any a
     $v("P6_CITY").replace(",", " ")</copy>
     ```
     - **Affected Elements, Items**: `P6_CONCATENATED_ADDRESS`
-    - **Fire on Initialization**: No
+    - **Fire on Initialization**: Off
 
   The result should look like:
 
@@ -154,7 +156,7 @@ In our (simplified) example we will only look at the first row, and ignore any a
     - **Item contains Country Code**: `P6_COUNTRY`
     - **Item containing address lines**: `P6_CONCATENATED ADDRESS` (This is the Page Item we created earlier)
     - **Separator for address elements**: ","
-    - **Fire on Initialization**: No
+    - **Fire on Initialization**: Off
 
   The resulting configuration should look like this:
 
@@ -215,7 +217,7 @@ In our (simplified) example we will only look at the first row, and ignore any a
       end;</copy>
       ```
 
-     - **Fire on Initialization**: "No".
+     - **Fire on Initialization**: Off.
      - **Items to Return**: "P6_PERMIT".
 
   ![](./images/geocode_return_permit.png " ")
