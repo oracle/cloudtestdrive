@@ -10,13 +10,13 @@ This folder contains a series of labs for running WebLogic on the Oracle Cloud, 
 
 ## WebLogic Labs
 
-+ [WebLogic for OCI - VM Image via Marketplace](https://oracle.github.io/cloudtestdrive/AppDev/wls/?page=wlscnonjrf.md) 
++ [WebLogic for OCI - VM Image via Marketplace](https://oracle.github.io/cloudtestdrive/AppDev/wls/index.html?lab=weblogic-for-oci-as-vm)
   Launch WebLogic on OCI Virtual machines, using the pre-configured image provided by Oracle in the Marketplace
 
-+ [Running WebLogic on Docker](https://oracle.github.io/cloudtestdrive/AppDev/wls/?page=WLS_on_Docker.md)
++ [Running WebLogic on Docker](https://oracle.github.io/cloudtestdrive/AppDev/wls/index.html?lab=weblogic-on-docker)
   Spin up the official Oracle Docker Image for Weblogic and deploy a simple demo application on the server.
 
-+ [Running WebLogic on Kubernetes](https://oracle.github.io/cloudtestdrive/AppDev/wls/?page=WLS_on_OKE.md)
++ [Running WebLogic on Kubernetes](https://oracle.github.io/cloudtestdrive/AppDev/wls/index.html?lab=weblogic-on-kubernetes)
   Launch WebLogic on a Kubernetes cluster, using the WebLogic Operator to control your WebLogic environment
 
   

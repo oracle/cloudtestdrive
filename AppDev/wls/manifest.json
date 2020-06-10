@@ -1,33 +1,23 @@
 {
-    "workshop": {
-        "title": "Weblogic Cloud Workshop",
-        "description": "Weblogic Cloud Workshop",
-        "theme": "default",
-        "labs": [
-			{
-                "number": "00",
-                "filename": "wlscnonjrfprereq.md",
-                "title": "WebLogic for OCI as a VM - prereq",
-                "description": "WebLogic for OCI as a VM - non JRF - prerequisites"
-            },
-			{
-                "number": "01",
-                "filename": "wlscnonjrf.md",
-                "title": "WebLogic for OCI as a VM",
-                "description": "WebLogic for OCI as a VM - non JRF"
-            },
-      {
-                "number": "02",
-                "filename": "WLS_on_Docker.md",
-                "title": "WebLogic on Docker",
-                "description": "WebLogic on Docker"
-            },
-      {
-                "number": "03",
-                "filename": "WLS_on_OKE.md",
-                "title": "WebLogic on Kubernetes",
-                "description": "WebLogic on Kubernetes"
-            }
-      ]
-    }
+    "tutorials": [
+        {            
+            "title": "WebLogic for OCI as a VM - prerequisites",
+            "filename": "./wlscnonjrfprereq.md"
+        },
+
+        {            
+            "title": "WebLogic for OCI as a VM",
+            "filename": "./wlscnonjrf.md"
+        },
+		
+        {            
+            "title": "WebLogic on Docker",
+            "filename": "./WLS_on_Docker.md"
+        },
+
+        {            
+            "title": "WebLogic on Kubernetes",
+            "filename": "./WLS_on_OKE.md"
+        }		
+    ]
 }

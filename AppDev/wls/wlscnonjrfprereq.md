@@ -1,12 +1,16 @@
-# WebLogic for OCI - non JRF
+# WebLogic for OCI - non JRF prerequisites
 
-## prerequisites
+### Prerequisites for using own environment
 
+
+
+## Objective
 
 If you want go through the Hands on Lab (*non JRF type of WebLogic for OCI Instance - using Oracle Cloud Marketplace*) using your cloud environment, follow this guide to setup some prerequisites. If you will use the provided Cloud Test Drive environment, skip this Lab.
 
 
-### Step 1. Prepare OCI Compartment
+
+## Step 1. Prepare OCI Compartment
 
 When provisioning WebLogic for OCI through Marketplace, you need to specify an OCI Compartment where all resources will be created.
 
@@ -22,7 +26,7 @@ The Compartment name is referred as **CTDOKE** in the Hands on Lab.
 
 
 
-##### Required root level policies for WebLogic for OCI
+### 1.1 Required root level policies for WebLogic for OCI
 
 You must be an Oracle Cloud Infrastructure <u>administrator</u>, or <u>be granted some root-level permissions</u>, in order to create domains with Oracle WebLogic Server for Oracle Cloud Infrastructure.
 
@@ -35,13 +39,15 @@ When you create a domain, Oracle WebLogic Server for Oracle Cloud Infrastructure
 
 In case <u>you are not an OCI administrator</u> and you cannot create dynamic-groups or you cannot create policies at root compartment level, please contact your OCI administrator and request that one  of the groups your OCI user is part of to have the following grants in place:
 
-> Allow group MyGroup to manage dynamic-groups in tenancy
-> Allow group MyGroup to manage policies in tenancy
-> Allow group MyGroup to use tag-namespaces in tenancy
+```
+Allow group MyGroup to manage dynamic-groups in tenancy
+Allow group MyGroup to manage policies in tenancy
+Allow group MyGroup to use tag-namespaces in tenancy
+```
 
 
 
-##### Required compartment level policies for WebLogic for OCI
+### 1.2 Required compartment level policies for WebLogic for OCI
 
 If <u>you are not an Oracle Cloud Infrastructure administrator</u>, you must be given management access to resources in the compartment in which you want to create a domain.
 
@@ -49,26 +55,28 @@ Your Oracle Cloud Infrastructure user must have management access for Marketplac
 
 A policy that entitles your OCI user to have the minimum management access for your compartment, needs to have the following grants in place:
 
-> Allow group MyGroup to manage instance-family in compartment MyCompartment
-> Allow group MyGroup to manage virtual-network-family in compartment MyCompartment
-> Allow group MyGroup to manage volume-family in compartment MyCompartment
-> Allow group MyGroup to manage load-balancers in compartment MyCompartment
-> Allow group MyGroup to manage orm-family in compartment MyCompartment
-> Allow group MyGroup to manage app-catalog-listing in compartment MyCompartment
-> Allow group MyGroup to manage vaults in compartment MyCompartment
-> Allow group MyGroup to manage keys in compartment MyCompartment
-> Allow group MyGroup to manage secret-family in compartment MyCompartment
-> Allow group MyGroup to read metrics in compartment MyCompartment
+```
+Allow group MyGroup to manage instance-family in compartment MyCompartment
+Allow group MyGroup to manage virtual-network-family in compartment MyCompartment
+Allow group MyGroup to manage volume-family in compartment MyCompartment
+Allow group MyGroup to manage load-balancers in compartment MyCompartment
+Allow group MyGroup to manage orm-family in compartment MyCompartment
+Allow group MyGroup to manage app-catalog-listing in compartment MyCompartment
+Allow group MyGroup to manage vaults in compartment MyCompartment
+Allow group MyGroup to manage keys in compartment MyCompartment
+Allow group MyGroup to manage secret-family in compartment MyCompartment
+Allow group MyGroup to read metrics in compartment MyCompartment
+```
 
 
 
-### Step 2. Create OCI Secret for WebLogic Admin password
+## Step 2. Create OCI Secret for WebLogic Admin password
 
 When you provision WebLogic for you need to pass the WebLogic Admin password. An OCI Secret is required for this.  
 
 
 
-##### Create a Security Vault
+### 2.1 Create a Security Vault
 
 Go to *Governance and Administration* > *Security* > *Key Management*:
 
@@ -94,7 +102,7 @@ Take a look at the Vault Information:
 
 
 
-##### Create an Encryption Key
+### 2.2 Create an Encryption Key
 
 Go to *Master Encryption Keys* submenu of the Vault Information page and create an new Key:
 
@@ -114,7 +122,7 @@ The new key should be listed as *Enabled*:
 
 
 
-##### Create an OCI Secret
+### 2.3 Create an OCI Secret
 
 Go to *Secrets* submenu of the Vault Information page and create an new Secret:
 
@@ -142,7 +150,7 @@ Click on the Secret name and take note of its **OCID**. We need to provide this 
 
 
 
-### Step 3. Network Configuration
+## Step 3. Network Configuration
 
 The Hands on Lab guide uses an existing Virtual Cloud Network and pre-configured Subnets for the WebLogic compute nodes and for the Load Balancer.
 
@@ -168,13 +176,13 @@ Also for the Load Balancer:
 
 
 
-###  Step 4. Create ssh keys
+##  Step 4. Create ssh keys
 
 You need to generate a public and private ssh key pair. During provisioning using Marketplace, you have to specify the ssh public key that will be associated with each of the WebLogic VM nodes.
 
 You can choose one of the options below:
 
-###### Using ssh-keygen
+### A) Using ssh-keygen
 
 > ssh-keygen -t rsa -b 4096
 
@@ -182,7 +190,7 @@ You'll be asked to specify the filename to save the private key. The public key 
 
 
 
-###### Using PuTTYgen
+### B) Using PuTTYgen
 
 Launch the PuTTYgen tool and use the *Generate* button to generate a new private/public key pair.
 
@@ -200,13 +208,13 @@ The public key filename is referred as **wls_ssh_public.key** in the Hands on La
 
 
 
-### Step 5. Load balancer SSL configuration
+## Step 5. Load balancer SSL configuration
 
 For security reasons it's a good practice - if not mandatory - to allow only secured traffic between clients and WebLogic Server applications. Therefore, after provisioning WebLogic for OCI by choosing to setup a Load Balancer, it's necessary to manually finish SSL configuration by adding a SSL certificate to the load balancer's listener.
 
 
 
-##### Create Self Signed certificate
+### Create Self Signed certificate
 
 We can use Openssl tool to generate a Self Signed certificate:
 
