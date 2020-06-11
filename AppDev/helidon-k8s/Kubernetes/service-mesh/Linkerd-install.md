@@ -111,7 +111,7 @@ Now run:
 Looking for more? Visit https://linkerd.io/2/next-steps
 ```
   
-Warning, this may take a while to run, in my case about 20 mins because the OCI Cloud shell system does not provide huge throughput as it's designed for management activities, not running applications !
+Warning, this may take a while to run, in my case about 20 mins as for dome reason the download was not fast.
   
 Now we need to add the linkerd command to our path
 
@@ -520,7 +520,7 @@ Though these are not perfect they do ensure that users need to be authenticated 
   - `kubectl apply -f linkerd-ingress.yaml`
   
 ```
-ingress.extensions/web-ingress created
+ingress.networking.k8s.io/web-ingress created
 ```
 
 Now you can go to the ingress ip address for the linkerd UI
@@ -726,9 +726,9 @@ Sadly there doesn't seem to be a way to restart all of the deployments in a name
   - `kubectl rollout restart deployments storefront stockmanager zipkin`
 
 ```
-deployment.extensions/storefront restarted
-deployment.extensions/stockmanager restarted
-deployment.extensions/zipkin restarted
+deployment.apps/storefront restarted
+deployment.apps/stockmanager restarted
+deployment.apps/zipkin restarted
 ```
 <details><summary><b>What has actually been done to my pod ?</b></summary>
 <p>
@@ -1110,8 +1110,8 @@ And next update them so the proxy will be added.
   - `kubectl rollout restart deployments -n ingress-nginx ingress-nginx-nginx-ingress-controller ingress-nginx-nginx-ingress-default-backend`
 
 ```
-deployment.extensions/ingress-nginx-nginx-ingress-controller restarted
-deployment.extensions/ingress-nginx-nginx-ingress-default-backend restarted
+deployment.apps/ingress-nginx-nginx-ingress-controller restarted
+deployment.apps/ingress-nginx-nginx-ingress-default-backend restarted
 ```
 
 Now let's make a few calls to the service to check it's all working fine (you may want to wait a few mins for the ingress controller to restart)

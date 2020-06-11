@@ -97,9 +97,9 @@ Sadly there doesn't seem to be a way to restart all of the deployments in a name
   - `kubectl rollout restart deployments storefront stockmanager zipkin`
 
 ```
-deployment.extensions/storefront restarted
-deployment.extensions/stockmanager restarted
-deployment.extensions/zipkin restarted
+deployment.apps/storefront restarted
+deployment.apps/stockmanager restarted
+deployment.apps/zipkin restarted
 ```
 
 
@@ -135,8 +135,8 @@ And next update them so the proxy will be removed.
   - `kubectl rollout restart deployments -n ingress-nginx ingress-nginx-nginx-ingress-controller ingress-nginx-nginx-ingress-default-backend`
 
 ```
-deployment.extensions/ingress-nginx-nginx-ingress-controller restarted
-deployment.extensions/ingress-nginx-nginx-ingress-default-backend restarted
+deployment.apps/ingress-nginx-nginx-ingress-controller restarted
+deployment.apps/ingress-nginx-nginx-ingress-default-backend restarted
 ```
 
 Now the data plane elements have been removed let's remove the linkerd control plane (Yes, I know that the linkerd command is install, but the kubectl command is delete, so what happens is the linkerd command generates what it woudl to to install, but the kubectl command takes this input as sequence ot things to delete)

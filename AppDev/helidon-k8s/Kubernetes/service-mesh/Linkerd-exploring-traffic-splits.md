@@ -172,8 +172,8 @@ service/stockmanagerv0-0-2 created
   - `kubectl apply -f stockmanager-canary-ingress.yaml`
 
 ```
-ingress.extensions/stockmanager-v0-0-1 created
-ingress.extensions/stockmanager-v0-0-2 created
+ingress.networking.k8s.io/stockmanager-v0-0-1 created
+ingress.networking.k8s.io/stockmanager-v0-0-2 created
 ```
 
 These ingresses connect to the versioned services, not the original stockmanager which does not have a version in it's selector
@@ -288,7 +288,7 @@ Now we have confirmed that the original setup is working as it should be we can 
   - `kubectl apply -f stockmanager-deployment-v0.0.2.yaml`
 
 ```
-deployment.extensions/stockmanagerv0-0-2 created
+deployment.apps/stockmanagerv0-0-2 created
 ```
 
 After waiting a short while for the new deployment to start we can check that the new version is configured using the 0.0.2 ingress. We are using the "broken" version of the stockmanager service we saw in the troubleshooting module, so expect some errors
@@ -505,10 +505,10 @@ I've put a small a script in place to do this for us
   - `bash stop-canary.sh`
 
 ```
-deployment.extensions "stockmanagerv0-0-2" deleted
+deployment.apps "stockmanagerv0-0-2" deleted
 trafficsplit.split.smi-spec.io "stockmanager-canary" deleted
-ingress.extensions "stockmanager-v0-0-1" deleted
-ingress.extensions "stockmanager-v0-0-2" deleted
+ingress.networking.k8s.io "stockmanager-v0-0-1" deleted
+ingress.networking.k8s.io "stockmanager-v0-0-2" deleted
 service "stockmanagerv0-0-2" deleted
 service "stockmanagerv0-0-1" deleted
 ```
@@ -581,7 +581,7 @@ For testing purposes we'll run an ingress, normally you wouldn't need to do this
   - `kubectl apply -f fault-injector-ingress.yaml`
 
 ```
-ingress.extensions/fault-injector created
+ingress.networking.k8s.io/fault-injector created
 ```
 
 Test the fault injection returns the right value
@@ -846,7 +846,7 @@ For now let's remove the Traffic split and the fault-injector components we crea
 
 ```
 trafficsplit.split.smi-spec.io "fault-injector" deleted
-ingress.extensions "fault-injector" deleted
+ingress.networking.k8s.io "fault-injector" deleted
 service "fault-injector" deleted
 deployment.apps "fault-injector" deleted
 configmap "fault-injector-configmap" deleted

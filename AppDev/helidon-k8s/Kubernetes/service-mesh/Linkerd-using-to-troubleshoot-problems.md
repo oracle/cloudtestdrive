@@ -174,7 +174,7 @@ Now we can apply the update, we'll use the Kubernetes rolling upgrade process (a
   - `kubectl apply -f $HOME/helidon-kubernetes/service-mesh/stockmanager-deployment-broken.yaml`
 
 ```
-deployment.extensions/stockmanager configured
+deployment.apps/stockmanager configured
 ```
 
 Wait a short while for the update to be applied.
@@ -338,7 +338,7 @@ Let's use the Kubernetes rollout mechanism to reverse our "upgrade"
   - `kubectl rollout undo deployment stockmanager`
 
 ```
-deployment.extensions/stockmanager rolled back
+deployment.apps/stockmanager rolled back
 ```
 
 
