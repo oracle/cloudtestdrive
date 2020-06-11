@@ -123,7 +123,7 @@ Normally you wouldn't do this as the elastic search is an internal service that'
   - `kubectl apply -f ingressElasticSearch.yaml`
 
 ```
-ingress.extensions/elasticsearch created
+ingress.networking.k8s.io/elasticsearch created
 ```
 
 <details><summary><b>If you need to remind yourself of the ingress controller IP address</b></summary>

@@ -16,6 +16,8 @@ We will use [Apache Zeppelin](http://www.oracle.com/technetwork/database/options
 * An Oracle Cloud paid account or free trial. To sign up for a trial account with $300 in credits for 30 days, click [here](http://oracle.com/cloud/free).
 * An Oracle Autonomous Transaction Process instance
 * An APEX Workspace
+ 
+### Estimated Time: 60 minutes
 
 ## **STEP 1**: Import the APEX application
 
@@ -75,7 +77,7 @@ Our starting point is an existing CRM application used by a fictional company. T
 
 ## **STEP 3**: Create an Oracle Machine Learning user
 
-We will develop the machine learning model using Zeppelin, which comes included in the autonomous database. Zeppelin is a web-based notebook environment that allows us to analyse and experiment with data. In our case we will be using it to build a machine learning model.
+We will develop the machine learning model using Zeppelin, which comes included in the autonomous database. Zeppelin is a web-based notebook environment that allows us to analyze and experiment with data. In our case we will be using it to build a machine learning model.
 First we will set up a user for Zeppelin.
 
 1. Go to the Service Console of ATP.
@@ -90,13 +92,14 @@ First we will set up a user for Zeppelin.
 
     - Username: mluser1
     - First Name: Zeppelin
+    - Last Name: User
     - Email Address: `your e-mail`
     - Uncheck: Generate password and e-mail account details to user.
     - Password: `SecretPassw0rd`
 
   ![](./images/create_ml_user.png " ")
 
-4. Click on the tab for the Service Console, then Development, then ML SQL Notebooks.
+4. Click on the tab for the Service Console, then Development, then Oracle Machine Learning Notebooks.
 
   ![](./images/open_notebook.png " ")
 

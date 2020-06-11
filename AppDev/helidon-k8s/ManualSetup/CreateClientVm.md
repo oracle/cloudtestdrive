@@ -9,7 +9,7 @@ This page will guide you on how to set up a Compute instance on the Oracle Cloud
 Your instructor will inform you if the VM's have already been created for you or not.  
 
 - In case you need create the VM yourself, follow all instructions below.
-- If the VMs has already been created by your instructor, **Scroll down** to section **Installing a VNC Viewer**.
+- If the VMs has already been created by your instructor, **Scroll down** to section **Installing a VNC Viewer** and continue from that section.
 
 ---
 
@@ -115,3 +115,9 @@ Use your VNC client to connect to the VM desktop on display 1. The precise forma
 When you connect you will get warnings about an insecure connection, as this lab does not process any confidential data and is only running for a short time that's OK
 
 You will need to enter a password for the VNC session. The instructor will provide you with this.
+
+
+### Configuring the database credentials in the VM
+If you have not setup the database configuration in the VM yourself as part of the tenancy setup then you will need to configure the database credentials. (In some instructor led labs this may been done for you, in those situations your instructor will advise you)
+
+Please follow the instructions to [get and install the ATP database wallet](../UsingYourOwnTenancy/GetYourATPDatabaseWalletFile.md)

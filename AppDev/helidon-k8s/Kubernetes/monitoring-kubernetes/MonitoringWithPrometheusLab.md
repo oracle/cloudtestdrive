@@ -294,11 +294,11 @@ Be **very** careful to only remove the # character and **no other whitespace**.
 
 ``` 
 Deleting storefront deployment
-deployment.extensions "storefront" deleted
+deployment.apps "storefront" deleted
 Deleting stockmanager deployment
-deployment.extensions "stockmanager" deleted
+deployment.apps "stockmanager" deleted
 Deleting zipkin deployment
-deployment.extensions "zipkin" deleted
+deployment.apps "zipkin" deleted
 Kubenetes config is
 NAME                               READY   STATUS    RESTARTS   AGE
 pod/stockmanager-bd44bbbb7-qk6g9   1/1     Running   0          8h
@@ -322,11 +322,11 @@ This script just does a kubectl delete -f on each of the deployments.
 
 ```
 Creating zipkin deployment
-deployment.extensions/zipkin created
+deployment.apps/zipkin created
 Creating stockmanager deployment
-deployment.extensions/stockmanager created
+deployment.apps/stockmanager created
 Creating storefront deployment
-deployment.extensions/storefront created
+deployment.apps/storefront created
 Kubenetes config is
 NAME                               READY   STATUS              RESTARTS   AGE
 pod/stockmanager-d6cc5c9b7-f9dnf   0/1     ContainerCreating   0          1s

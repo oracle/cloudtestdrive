@@ -7,7 +7,7 @@
 ## Introduction
 This lab will showcase running WebLogic on a Kubernetes cluster, using the Operator to manage the WebLogic domains.  This tutorial is based on the [Quick Start Guide](https://oracle.github.io/weblogic-kubernetes-operator/quickstart/) that is part of the official WebLogic Kubernetes Operator page, but now using the **Cloud Shell** , allowing you to run this lab using just a browser and your Oracle Cloud account.
 
-### Prerequisites
+## Prerequisites
 
 To run these labs you will need access to an Oracle Cloud Tenancy, either via a **Free Tier**, using a **Pay-as-you-Go** account, or using the **Corporate account** of your organization. 
 
@@ -16,7 +16,7 @@ If you do not have an account yet, you can obtain an Oracle Free Tier account by
 
 
 
-### 1. Preparing your environment
+## 1. Preparing your environment
 
 - Open the [OCI console](https://console.eu-frankfurt-1.oraclecloud.com), log in using the **Single Sign On** menu on the **left** 
 
@@ -85,7 +85,7 @@ Create a token for your user (will be used to login to the docker repository):
 
 
 
-### 2. Setting up a Kubernetes cluster
+## 2. Setting up a Kubernetes cluster
 
 We will be using an Oracle Cloud Managed Kubernetes cluster to deploy weblogic.
 
@@ -139,7 +139,7 @@ oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.a
 
 
 
-### 3. Configuring the WebLogic Operator
+## 3. Configuring the WebLogic Operator
 
 - Clone the repository containing the Kubernetes operator to your Cloud Shell :
 
@@ -340,7 +340,7 @@ EOF
     
 
 
-### 4. Configuring WebLogic
+## 4. Configuring WebLogic
 
 We'll now start configuring the WebLogic setup itself.  For this we will use the **create-domain** utility, which will generate a custom WLS image based on the starard image you previously downloaded.
 
@@ -437,7 +437,7 @@ Lets take a look at the artifacts generated :
 
 
 
-#### Launching your WLS instance
+### Launching your WLS instance
 
 First we need to push the generated docker image to the private registry of our tenancy.  Execute following operations to achieve this.
 
@@ -505,7 +505,7 @@ This definition will be picked up by the operator, who will try to activate the 
 
 
 
-#### Setting up an Ingress
+### Setting up an Ingress
 
 Before we can access the WLS environment, we need to set up an Ingress using the traefik loadbalancer we already prepared.
 

@@ -15,7 +15,9 @@ In this lab, we will take a walkthrough around some of the improvements that the
 - Create an schema on the database on SQL Developer Web with data redaction to be leveraged by an APEX application.
 - Create an application on APEX that leverages the Advanced Security option to protect credit card information.
 
-## STEP 1: Accesing our Performance Hub
+### Estimated Time: 45 minutes
+
+## **STEP 1**: Accessing our Performance Hub
 The Performance Hub is a great tool to monitor our ATP status and activity. It is accessible from the Service Console.
 
 1. Open the Autonomous Database Details page and click **Performance Hub**.
@@ -24,12 +26,12 @@ The Performance Hub is a great tool to monitor our ATP status and activity. It i
 2. In the upper part we will see the consumption of resources and waits of our sessions along time. In the lower part, we will be able to check the ASH (Active Session History) analysis, access the SQL Monitoring to analyze individual queries or even submit a session kill command.
 	![](./images/PerfHub.png " ")
 
-## STEP 2: Checking our data encryption
+## **STEP 2**: Checking our data encryption
 Another immediate consequence of choosing the ATP as our database is that our database will be in the Cloud and, thus, our data will be encrypted everywhere: SQLNet Traffic, tablespaces, backups... everything. Even if an attacker achieved to get into the physical machine, the data would still be secure.
 
 The Transparent Data Encryption (TDE) option takes care of all the details. To prevent unauthorized decryption, TDE stores the encryption keys in a security module external to the database, called a keystore.
 
-1. Open SQL Developer Web. If you have don't have the direct link, go to the Service Console of the autonomous database, then Developer, then SQL Developer Web. You will need to input "ADMIN" as your user name and the password (`SecretPassw0rd`) we provided when we provisioned the instance.
+1. Open SQL Developer Web. If you have don't have the direct link, go to the Service Console of the autonomous database, then Developer, then SQL Developer Web. You will need to use "ADMIN" as your user name and the password (`SecretPassw0rd`) we provided when we provisioned the instance.
 
   ![](./images/click-tools.png " ")
 
@@ -52,7 +54,7 @@ The Transparent Data Encryption (TDE) option takes care of all the details. To p
 
 	It is even more important to know that this status cannot change: any attempt to change their encrypted status in the Cloud will result in failure.
 
-## STEP 3: Securing our sensitive information using data redaction
+## **STEP 3**: Securing our sensitive information using data redaction
 Even if the access to our application stays internal in our organization, sometimes data is allowed to be obtained only partially, with restrictions or even transformed. Data redaction is a powerful tool to enhance data governance security at the user level. Now we will create a new schema, configure it and populate it with the data we need to leverage data redaction in an APEX application.
 
 1. Execute the following script (be sure to click **Run Script**):
@@ -78,7 +80,7 @@ Even if the access to our application stays internal in our organization, someti
   	```
 	![](./images/creditcarddata.png " ")
 
-## STEP 4: Create Secure APEX Application
+## **STEP 4**: Create Secure APEX Application
 
 1. We are ready to create our application on APEX. Open APEX from the Service Console of the autonomous database, then Developer, then APEX.
 
@@ -98,36 +100,44 @@ Even if the access to our application stays internal in our organization, someti
 
 	![](./images/selectRedactApexWS.png " ")
 
-6. Click **Set APEX Account Password**.
+6. Click the **REDACT** link to sign out of Administration Services and sign into REDACT.
 
-	![](./images/welcome-to-apex.png " ")
+	![](images/sign-out-admin.png " ")
 
-7. On the Edit Profile screen, enter your e-mail address and click **Apply Changes**. The password will remain unchanged.
-
-	![](./images/edit-profile.png " ")
-
-8. Sign out and in again with the REDACT user in APEX. Use `4P3X%ATP_sec_1` again as the account password, when prompted:
+7. Sign in with the REDACT user in APEX. Use `4P3X%ATP_sec_1` as the account password, when prompted:
 
 	![](./images/APEX_Account.png " ")
 
-9. Now we will create our application. Click on the **App Builder** icon, then **Create** and finally **New Application**.
+8. Click **Set APEX Account Password**.
+
+	![](./images/welcome-to-apex.png " ")
+
+9. On the Edit Profile screen, enter your e-mail address, enter `4P3X%ATP_sec_1` as the password and click **Apply Changes**.
+
+	![](./images/edit-profile.png " ")
+
+10. Now we will create our application. Click on the **App Builder** icon, then **Create** and finally **New Application**.
 
 	![](./images/appBuilder.png " ")
 
-10. Add "RedactApp" as the name of our new Application and click on Add Page. Select **Interactive Report** in the list of available options.
+11. Enter "RedactApp" as the name of our new Application and click **Add Page**.
+
+	![](images/addPage.png " ")
+
+12. Select **Interactive Report** in the list of available options.
 
 	![](./images/selectReportPage.png " ")
 
-11. Enter "Credit Card" as the name of the new page and click on the List icon to the right of "Table or View". Select the CREDIT\_CARD table from the list. Under Advanced, select "Set as Home Page" and click **Add Page**.
+13. Enter "Credit Card" as the name of the new page and click on the List icon to the right of "Table or View". Select the CREDIT\_CARD table from the list. Under Advanced, select "Set as Home Page" and click **Add Page**.
 
 	![](./images/addReportPage.png " ")
 	![](./images/apexPageReady.png " ")
 
-12. The configuration is ready and now we can create our app. Click **Create Application** at the bottom of the window. When the app is ready, click **Run Application** to see the result!
+14. The configuration is ready and now we can create our app. Click **Create Application** at the bottom of the window. When the app is ready.
 
 	![](./images/finalizeAppApex.png " ")
 
-13. Authenticate in our new application with the REDACT user and the password we chose (e.g. `4P3X%ATP_sec_1`). We will see our application with the values from the CREDIT\_CARD table.
+15. Click **Run Application** and authenticate in our new application with the REDACT user and the password we chose (e.g. `4P3X%ATP_sec_1`). We will see our application with the values from the CREDIT\_CARD table.
 
 	![](./images/authenticateApp.png " ")
 
@@ -135,7 +145,7 @@ Even if the access to our application stays internal in our organization, someti
 
 	![](./images/RedactApp.png " ")
 
-14.  Go back to SQL Developer Web and run the following PL/SQL snippet to create the proper policy on it:
+16. Go back to SQL Developer Web and run the following PL/SQL snippet to create the proper policy on it:
 
   	```
   	<copy>BEGIN
@@ -152,7 +162,7 @@ Even if the access to our application stays internal in our organization, someti
   	END;
   	/</copy>
   	```
-15. Once the snippet has been executed successfully, refresh the page in our application. The credit card numbers now will be protected by the data redaction. They will not leave our database in a vulnerable condition anymore.
+17. Once the snippet has been executed successfully, refresh the page in our application. The credit card numbers now will be protected by the data redaction. They will not leave our database in a vulnerable condition anymore.
 
 ![](./images/RedactAppRedacted.png " ")
 

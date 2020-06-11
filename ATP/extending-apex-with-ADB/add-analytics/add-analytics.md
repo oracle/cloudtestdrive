@@ -7,7 +7,7 @@ You will expand an existing application to add Oracle Analytics functionality. I
 
 ### Objectives
 - Create a connection from Oracle Analytics Cloud to Autonomous Database.
-- Create Visualizations to analyse the data.
+- Create Visualizations to analyze the data.
 - Add Analytics functionality to your application.
 
 ### What Do You Need?
@@ -17,7 +17,7 @@ You will expand an existing application to add Oracle Analytics functionality. I
 * An APEX Workspace
 * *Please note:* Your free trial must have credits remaining for this lab.
 
-## STEP 1: Review existing APEX application
+## **STEP 1**: Review existing APEX application
 
 Our starting point is an existing time entry application used by a fictional IT consulting company. It contains basic time and rates of their consultants.
 
@@ -54,7 +54,7 @@ Our starting point is an existing time entry application used by a fictional IT 
   ![](./images/01_import_03B.png " ")
 
 
-## STEP 2: Review the APEX application (situation before ML)
+## **STEP 2**: Review the APEX application
 
 1. Open the existing application by click **Run Application**.
 
@@ -70,7 +70,7 @@ Our starting point is an existing time entry application used by a fictional IT 
 
   Later on in this workshop we will come back to the Customers page and embed an OAC Data Visualization into it.
 
-## STEP 3: Create an Oracle Analytics Cloud (OAC) instance
+## **STEP 3**: Create an Oracle Analytics Cloud (OAC) instance
 
 Imagine that the end user of the application has analytical questions about the billing data. We could provide some default charts prebuilt in APEX, however, that would not allow the end user to create entirely new analysis. Instead, we are going to create an Oracle Analytics Cloud instance, and give our end users a self service approach to analytics.
 
@@ -78,7 +78,7 @@ Imagine that the end user of the application has analytical questions about the 
 
   ![](./images/create_oac0.png " ")
 
-2. Navigate to Solutions and Platforms -> Analytics -> Analytics Cloud.
+2. Navigate to **Solutions and Platforms** -> **Analytics** -> **Analytics Cloud**.
 
   ![](./images/create_oac1.png " ")
 
@@ -90,29 +90,32 @@ Imagine that the end user of the application has analytical questions about the 
 
     - **Instance Name**: WORKSHOPATP
     - **License Type**: "Subscribe to a new Analytics Cloud software license and the Analytics Cloud." (You will use this service as part of the Oracle Cloud Free Tier account that you requested for this workshop)
-    - **Edition**: "Oracle Analytics Cloud - Professional" (important)
-    - **Feature Set**: "Professional Edition Feature Set" (important)
+    - **Feature Set**: "Enterprise Analytics" (important)
     - **Number of OCPUs**: "1 - Non Production"
 
   ![](./images/create_oac6.png " ")
 
 5. Wait until the service has been created. This will take about 30 minutes.
 
-## STEP 4: Create a connection from Oracle Analytics Cloud to our ATP database
+## **STEP 4**: Create a connection from Oracle Analytics Cloud to our ATP database
 
 For any SQL client to make a connection to ATP it requires a *wallet*. A wallet is a ZIP file that contains the connection information for the ATP instance. For example, a wallet can be used to connect a local SQL Developer client to ATP. In our case, we will use this same wallet mechanism to make a connection from OAC to ATP.
 
-1. First download the wallet from ATP as follows.
-  Go to the Service Console of your ATP instance, then choose Administration, and click **Download Client Credentials (Wallet)**.
+1. Go to the Service Console of your ATP instance and click **DBConnection**.
 
   ![](./images/download_atp_wallet.png " ")
 
-2. You'll be asked to provide a password. Please make a note of this. Click **Download**.
+2. Click **Download Wallet**.
+
   ![](./images/download_atp_wallet_2.png " ")
 
-3. Save the wallet file (ZIP) locally.
+3. You'll be asked to provide a password. Please make a note of this. Click **Download**.
 
-4. Open your OAC. Remember you can reach it from the cloud console by going to Solutions and Platforms -> Analytics -> Analytics Cloud
+  ![](./images/download_atp_wallet_3.png " ")
+
+3. Save the wallet file (ZIP) locally and click **Close**.
+
+4. Open your OAC. Remember you can reach it from the cloud console by going to **Solutions and Platforms** -> **Analytics** -> **Analytics Cloud**
 
   Then open the cloud analytics URL as follows:
 
@@ -126,17 +129,17 @@ For any SQL client to make a connection to ATP it requires a *wallet*. A wallet 
 
   ![](./images/screenshot5.png " ")
 
-7. Configure the connection as follows:
+7. Configure the connection as follows and click **Save**:
 
     - **Connection Name**: WORKSHOPATP
     - **Client Credentials**: Upload the wallet file (the ZIP file) that you download earlier from ATP
+    - **Service Name**: Choose the name of your database followed by the \_high suffix
     - **Username**: WORKSHOPATP
     - **Password**: The password that you used when you created the workspace at the beginning of the workshop
-    - **Service Name**: Choose the name of your database followed by the \_high suffix
 
   ![](./images/screenshot6.png " ")
 
-## STEP 5: Prepare the dataset
+## **STEP 5**: Prepare the dataset
 
 1. Click **Create**, select **Data Set**.
 
@@ -172,29 +175,33 @@ For any SQL client to make a connection to ATP it requires a *wallet*. A wallet 
 
   ![](./images/create_dataset9.png " ")
 
-## STEP 6: Create Self Service analysis
+## **STEP 6**: Create Self Service analysis
 
 The following is for you to experience how an end user can use OAC to create self service analytics on APEX application data.
 Imagine we ask ourselves "Which employees work the most hours as a consultant and at which company"?
 
-1. Create the following visualization. You can do this by dragging the fields from the left onto the canvas.
+1. Click **Visualizations**.
 
-  The following fields are required: `NUMBER_OF_HOURS`, `EMPLOYEE` and `CUSTOMER`.
+  ![](images/click-visualizations.png " ")
+
+2. Drag **Stacked Bar** to the Visualizations pane.
+
+  ![](images/drag-stackedbar-visualizations.png " ")
+
+3. Click Data and drag `CUSTOMER` to Color, `NUMBER_OF_HOURS` to Values (Y-Axis), and `EMPLOYEE` to Category (X-axis).
 
   ![](./images/11_create_visualization_1.png " ")
 
-2. Select the "Stacked Bar" chart type. Imagine we ask ourselves "Are the employees that work the most hours also the ones that earn most money for our company?"
+  Imagine we ask ourselves "Are the employees that work the most hours also the ones that earn most money for our company?"
 
-3. First of all we will create a Revenue field. Right-click **Calculations** and select **Add Calculation**.
+4. Create a Revenue field. Right-click **My Calculations** and select **Add Calculation**.
   ![](./images/12_create_calculation_1.png " ")
 
-4. Drag the `NUMBER_OF_HOURS` and `HOURLY_RATE` fields into the formula space.
+5. Drag the `NUMBER_OF_HOURS` and `HOURLY_RATE` fields into the formula space.
   ![](./images/12_create_calculation_2.png " ")
 
-5. Create the following formula: `HOURLY_RATE * NUMBER_OF_HOURS` and name the new field `Revenue`.
+6. Create the following formula: `HOURLY_RATE * NUMBER_OF_HOURS` and name the new field `Revenue`. Click **Save**.
   ![](./images/12_create_calculation_3.png " ")
-
-6. Click **Save**.
 
 7. Now duplicate the original chart, by right selecting it, then click **Edit** and select **Duplicate Visualization**.
   ![](./images/13_duplicate_visualization_1.png " ")
@@ -216,11 +223,17 @@ Imagine we ask ourselves "Which employees work the most hours as a consultant an
     - Lisa Jones bills a lot of hours, but is not one of the highest earners for our company.
     - Other employees, such as Cindy Cochran, earn more for our company with less billable hours.
 
-  Imagine we have the question "Does a higher hourly rate also mean higher total earnings per employee"?
+## **STEP 7**: Create a Scatter Plot
 
-10. Create a *Scatter* chart using Revenue, `HOURLY_RATE` and `EMPLOYEE`.
+Imagine we have the question "Does a higher hourly rate also mean higher total earnings per employee"?
 
-11. For the `HOURLY_RATE`, set the Aggregation Method to "Average" and By to "Id". For the Revenue, set the Aggregation Method to "Sum".
+1. Click Add Canvas (at the bottom).
+
+  ![](images/new-canvas.png " ")
+
+2. Drag a *Scatter* chart to the Visualizations pane and use `Sum Revenue` for the Y-Axis, `HOURLY_RATE` for the X-axis and `EMPLOYEE` for the Category.
+
+3. For the `HOURLY_RATE`, set the Aggregation Method to "Average" and By to "Id". For the Revenue, set the Aggregation Method to "Sum" (Remove the By Id attribute.)
 
   The result should like as follows:
   ![](./images/scatter.png " ")
@@ -228,49 +241,62 @@ Imagine we ask ourselves "Which employees work the most hours as a consultant an
   What can we conclude?
     - There is a group of employees that work a relatively low amount of hours, but still they succeed in earning the highest amount for our company.
 
-  Imagine we ask ourselves "What is the secret of these high earners? Does a particular training for communication of these employees have something to do with their high earnings?"
+## **STEP 8**: Add Training History Data
+Imagine we ask ourselves "What is the secret of these high earners? Does a particular training for communication of these employees have something to do with their high earnings?"
 
-  The training information is not stored in our APEX Time and Labour application. Instead, this data will be provided to the end user by Human Resources, by means of an Excel file.
+The training information is not stored in our APEX Time and Labour application. Instead, this data will be provided to the end user by Human Resources, by means of an Excel file.
 
-12. Download the training file from [here](./files/traininghistory.xlsx).
+1. Download the training file from [here](./files/traininghistory.xlsx).
 
-13. Add the dataset by clicking the "+" icon in the top left.
+2. Add the dataset by clicking the "+" icon in the top left.
 
   ![](./images/16_add_dataset.png " ")
 
-14. Click **Create Data Set**
+3. Click **Create Data Set**
   ![](./images/16_add_dataset_2.png " ")
 
-15. Drag the training Excel file on top of the icon.
+4. Drag the training Excel file on top of the icon.
   ![](./images/16_add_dataset_3.png " ")
 
   You see that the file contains information on which employee has start/finished the training.
 
-16. Click **Add**.
   ![](./images/16_add_dataset_4.png " ")
 
   To be able to link this new Data Set with our own, we need to link the employee names. However, our original Data Set (from the database) has the full name, including First and Last Name.
-  Therefore we will create the same concatenation on the new training Data Set. On the Data Preparation screen you see several suggestions on the right hand side.
+  Therefore we will create the same concatenation on the new training Data Set.
 
-17. Click **Concatenate** `First Name and Last Name to first_last_name`.
+5. Right-click on **First Name** and select **Concatenate**.
 
-  ![](./images/16_add_dataset_5.png " ")
+  ![](./images/concatenate-first-last.png " ")
 
-18. Rename the newly created column to "Trainee Name", then click **Save**.
-  ![](./images/16_add_dataset_6.png " ")
+6. Rename the newly created column to "Trainee Name", click on **First Name** in the With section and select **Last Name**.
+  ![](./images/concatenate-first-last-2.png " ")
+
+7. Click **Save**.
 
   ![](./images/16_add_dataset_7.png " ")
 
-19. Apply the change to the Data Set.
+8. Apply the change to the Data Set.
   ![](./images/16_add_dataset_20.png " ")
 
-20. Now we will link the two Data Sets. Click **Data Diagram** in the bottom.
+9. Now we will link the two Data Sets. Click **Data Diagram** in the bottom.
   ![](./images/16_add_dataset_8.png " ")
 
-21. Create a new relationship by clicking on **0**. Then **Add Another Match** and select the two columns that contain the full employee name.
+10. Create a new relationship by clicking on **0**.
+
+  ![](images/click-on-zero.png " ")
+
+11. Click  **Add Another Match** and select `Trainee Name `from **traininghistory** and `EMPLOYEE` from **DEM\_PROJECT_HOUR** and click **OK**.
   ![](./images/16_add_dataset_21.png " ")
 
-22. Now add the training Status as the Shape of the Scatter chart. You can do this by dragging the Status field to the Shape of the Scatter chart.
+12. Click **Visualize** in the upper right.
+
+13. Now add the training Status as the Shape of the Scatter chart. You can do this by dragging the Status field to the Shape of the Scatter chart.
+
+  ![](images/drag-status-to-shape.png " ")
+
+  This is the result:
+
   ![](./images/conclusion_scatter.png " ")
 
   What can we conclude?
@@ -278,9 +304,9 @@ Imagine we ask ourselves "Which employees work the most hours as a consultant an
 
   You've seen how an end user can answer their own questions by combining data from the APEX application with external data.
 
-23. Save the project as "Labour".
+12. Save the project as "Labour".
 
-## STEP 7: Embed the OAC Data Visualization project into APEX
+## **STEP 9**: Embed the OAC Data Visualization project into APEX
 
 Our goal is to integrate the "Labour" DV project inside of our APEX application. The project should automatically filter using the context of the customer of the APEX screen.
 
@@ -290,7 +316,7 @@ Our goal is to integrate the "Labour" DV project inside of our APEX application.
 
 2. Click **Embed**.
 
-3. Make a note of the HTML "Embedding Script To Include" and "Default" that you see here, as you will need them later.
+3. Copy the HTML "Embedding Script To Include" and "Default" that you see here, as you will need them later. Click **OK**.
 
   ![](./images/developer_embed.png " ")
 
@@ -303,6 +329,8 @@ Our goal is to integrate the "Labour" DV project inside of our APEX application.
   ![](./images/19_safe_domains.png " ")
 
 6. To locate the correct URL to add to this page, open a browser to the **Service Console** for your Autonomous Database.
+
+  ![](/images/open_service_console.png " ")
 
 7. Select the **Development** link in the left-hand menu. In the region **RESTful Services and SODA**  copy this link.  You need to remove the /ords at the end of the link before adding it to your list of Safe Domains.
 
@@ -341,26 +369,25 @@ Our goal is to integrate the "Labour" DV project inside of our APEX application.
 
 15. Name it "OAC Region" of type "Static Content".
 
+  ![](images/name-oac-region.png " ")
+
     And set its Source to:
 
     ```
-    <div style="height: 600px; width: 100%;">
+    <copy>&ltdiv style="height: 600px; width: 100%;"&gt
 
-    <oracle-dv project-path="{{projectPath}}" filters="{{filters}}">
-    </oracle-dv>
+    &ltoracle-dv project-path="{{projectPath}}" filters="{{filters}}"&gt
+    &lt/oracle-dv&gt
 
-    </div>
+    &lt/div&gt</copy>
     ```
 
     The result should look like this:
     ![](./images/new_region.png " ")
 
 16. On the top level of the page (named "Page 7: Customer Form"), in the property JavaScript File URLs, add the HTML that you found in Developer - Embed - Embedding Script To Include. The URL will be specific for your environment.
-    Change the embeddingMode to "standalone".
+    Change `<embeddingMode>` to `standalone`.
 
-    ```
-    https://workshopatp-odca.analytics.ocp.oraclecloud.com/dv/ui/api/v1/plugins/embedding/standalone/embedding.js
-    ```
 
     ![](./images/screenshot8.png " ")
 
@@ -388,6 +415,8 @@ Our goal is to integrate the "Labour" DV project inside of our APEX application.
     ```
 
   ![](./images/screenshot9.png " ")
+
+  Click **Save**.
 
 18. Test the result. Go back to the application page overview, and run the page "Customer Report".
   ![](./images/run_customer_report.png " ")

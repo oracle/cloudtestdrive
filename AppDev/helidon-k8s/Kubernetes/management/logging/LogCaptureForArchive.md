@@ -364,7 +364,7 @@ Finally let's start the daemonset itself
 serviceaccount/fluentd-to-ooss created
 clusterrole.rbac.authorization.k8s.io/fluentd-to-ooss created
 clusterrolebinding.rbac.authorization.k8s.io/fluentd-to-ooss created
-daemonset.extensions/fluentd-to-ooss created
+daemonset.apps/fluentd-to-ooss created
 ```
 Let's make sure that everything has started
 

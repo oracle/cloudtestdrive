@@ -895,7 +895,7 @@ An ingress rule defines a URL path that is looked for, when it's discovered the 
 There are ***many*** possible types of rules that we could define, but here we're just going to look at two types: Rules that are plain in that the recognize part of a path, and just pass the whole URL along to the actual service, and rules that re-write the URL before passing it on. Let's look at the simpler case first, that of the forwarding.
 
 ```
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: zipkin
@@ -914,7 +914,7 @@ spec:
           servicePort: 9411
 ```
 
-Firstly note that the api here is the extensions/v1beta1 API. In more recent versions of Kubernetes this has been changed to networking.k8s.io/v1beta1 to indicate that Ingress configuration is part of the Kubernetes networking features.
+Firstly note that the api here is the networking.k8s.io/v1beta1 API. In recent versions of Kubernetes this was been changed from extensions/v1beta1 to indicate that Ingress configuration is part of the Kubernetes networking features.
 
 The metadata specifies the name of the ingress (in this case zipkin) and also the annotations. Annotations are a way of specifying name / value pairs that can be monitored for my other services. In this case we are specifying that this ingress Ingress rule has a label of Kubernetes.io/ingress.class and a value of nginx. The nginx ingress controller will have setup a request in the Kubernetes infrastructure so it will detect any ingress rules with that annotation as being targeted to be processed by it. This allows us to define rules as standalone items, without having to setup and define a configuration for each rule in the ingress controller configuration itself. This annotation based approach is a simple way for services written to be cloud native to identify other Kubernetes objects and determine how to hendle them, as we will see when we look at monitoring in kubenteres.
 
@@ -923,7 +923,7 @@ The spec section basically defined the certificate for the TLS connection and th
 In some cases we don't want the entire URL to be forwarded however, what if we were using the initial part of the URL to identify a different service, perhaps for the health or metrics capabilities of the microservices which are on a different port (http://storefront:9081/health for example) In this case we want to re-write the incomming URL as it's passed to the target
 
 ```
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: stockmanager-management
@@ -970,14 +970,14 @@ One simple solution however is to modify the load balancer settings to block non
   -  `kubectl apply -f ingressConfig.yaml`
 
 ```
-ingress.extensions/zipkin created
-ingress.extensions/storefront created
-ingress.extensions/stockmanager created
-ingress.extensions/storefront-status created
-ingress.extensions/stockmanager-status created
-ingress.extensions/stockmanager-management created
-ingress.extensions/storefront-management created
-ingress.extensions/storefront-openapi created
+ingress.networking.k8s.io/zipkin created
+ingress.networking.k8s.io/storefront created
+ingress.networking.k8s.io/stockmanager created
+ingress.networking.k8s.io/storefront-status created
+ingress.networking.k8s.io/stockmanager-status created
+ingress.networking.k8s.io/stockmanager-management created
+ingress.networking.k8s.io/storefront-management created
+ingress.networking.k8s.io/storefront-openapi created
 ```
 
 We can see the resulting ingresses using kubectl
@@ -1086,7 +1086,7 @@ For see the doc more information on how the regular expressions with with see th
 
 ### Secrets and external configuration
 
-<details><summary><b>Introduction on secrets for Kubernetes</b></summary>
+<details><summary><b>Introduction to Kubernetes secrets</b></summary>
 <p>
 
 As when running the docker images we need to specify the external configuration for Kubernetes. This is different from when running with docker though, in docker we just reference the local file system, however in Kubernetes we don't even know what node a pod will be running on, which makes it a little difficult to provide a docker volume there, so we need something different.
@@ -1256,7 +1256,7 @@ The dashboard is actually a lot easier in this case.
 
 ### Config Maps
 
-<details><summary><b>Intro on Config Maps</b></summary>
+<details><summary><b>Intro to Kubernetes Config Maps</b></summary>
 <p>
 
 Secrets are great for holding information that you don't want written visibly in your cluster, and you need to keep secret. But the problem with them is that if all the cluster management goes down then the secrets are lost and will need to be recreated. Note that some Kubernetes implementations (the docker / Kubernetes single node cluster on my laptop for example) do actually persist the secrets somewhere.
@@ -1372,7 +1372,7 @@ Pods are monitored by services so that a service will direct traffic to pod(s_ t
 The stockmanager-deployment.yaml, storefront-deployment.yaml and zipkin-deployment.yaml files contain the deployments. These files are in the helidon-kubernetes folder (***not*** the base-kubernetes folder) The following is the core contents of storefront-deployment.yaml file (actually the file has substantial amounts of additional content that is commented out, but we'll get to that when we look at other parts of the lab later on, If you do look at the file itself for now ignore everything that's commented out with #)
 
 ```
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: storefront
@@ -1453,7 +1453,7 @@ We define what each volume is based on, in this case we're saying that the volum
       - name: my-docker-reg
 ```
 
-We need to tell Kubernetes what secret to use when retrieving the docker images from the repository, the imagePullSecrets key allows us to pass this information on. 
+We need to tell Kubernetes what secret to use when retrieving the docker images from the repository, the imagePullSecrets key allows us to pass this information on. Note that if you are using the pre-build image we provided this does not require a secret and this line would have been deleted during the setup.
 
 
 To deploy the config file we would just use kubectl to apply it with a command that looks like  `$ kubectl apply -f mydeployment.yaml` ' (**example, don't type it**)
@@ -1492,11 +1492,11 @@ The config files of the storefront and stockmanager refer to the location in the
 
 ```
 Creating zipkin deployment
-deployment.extensions/zipkin created
+deployment.apps/zipkin created
 Creating stockmanager deployment
-deployment.extensions/stockmanager created
+deployment.apps/stockmanager created
 Creating storefront deployment
-deployment.extensions/storefront created
+deployment.apps/storefront created
 Kubenetes config is
 NAME                               READY   STATUS              RESTARTS   AGE
 pod/stockmanager-d6cc5c9b7-bbjdp   0/1     ContainerCreating   0          0s
@@ -1730,7 +1730,7 @@ Using the logs function on the dashboard we'd see the same output, but you'd pro
 
 
 
-As we are runnig zipkin and have an ingress setup to let us access the zipkin pod let's look at just to show it working. 
+As we are running zipkin and have an ingress setup to let us access the zipkin pod let's look at just to show it working. 
 
 - Open your browser
 - Go to the ingress end point for your cluster, for example http://132.145.232.69/zipkin (replace with *your* Load balancer IP address)

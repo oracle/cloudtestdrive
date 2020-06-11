@@ -13,20 +13,16 @@
           "filename": "../create-atp-apex/create-atp-apex.md"
         },
 		    {
-          "title": "Lab 2: Add Spatial to your APEX application",
+          "title": "Lab 2: Add Spatial to APEX",
           "filename": "../add-spatial-apex/add-spatial-apex.md"
         },
 		    {
-          "title": "Lab 3: Adding Machine Learning to your APEX application",
+          "title": "Lab 3: Add Machine Learning to APEX",
           "filename": "../add-ml-apex/add-ml-apex.md"
         },
 		    {
-          "title": "Lab 4: Adding Security to your APEX application",
+          "title": "Lab 4: Add Security to APEX",
           "filename": "../add-security/add-security.md"
-        },
-        {
-          "title": "Lab 5: Adding Analytics to your APEX application",
-          "filename": "../add-analytics/add-analytics.md"
         }
     ]
 }

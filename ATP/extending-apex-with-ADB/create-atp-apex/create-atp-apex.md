@@ -14,6 +14,8 @@ An APEX Workspace is a logical domain where you define APEX applications. Each w
 
 * An Oracle Cloud paid account or free trial. To sign up for a trial account with $300 in credits for 30 days, click [here](http://oracle.com/cloud/free).
 
+### Estimated Time: 15 minutes
+
 ## **STEP 1**: Provision an Autonomous Transaction Processing instance
 
 From within your Oracle Cloud environment, you will create an instance of the Autonomous Transaction Processing database service.
@@ -70,7 +72,8 @@ Within your new database, APEX is not yet configured. Therefore, when you first 
     | Password | **`SecretPassw0rd`** |
     | Workspace Name | WORKSHOPATP |
 
-    Click **Create Workspace**.
+    Click **Create Workspace**.
+
     ![](images/create_workspace_02.png " ")
 
 5. In the APEX Instance Administration page, click the **WORKSHOPATP** link in the success message.         
