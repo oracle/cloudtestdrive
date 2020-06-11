@@ -16,6 +16,8 @@ We will use [Apache Zeppelin](http://www.oracle.com/technetwork/database/options
 * An Oracle Cloud paid account or free trial. To sign up for a trial account with $300 in credits for 30 days, click [here](http://oracle.com/cloud/free).
 * An Oracle Autonomous Transaction Process instance
 * An APEX Workspace
+ 
+### Estimated Time: 60 minutes
 
 ## **STEP 1**: Import the APEX application
 
@@ -90,6 +92,7 @@ First we will set up a user for Zeppelin.
 
     - Username: mluser1
     - First Name: Zeppelin
+    - Last Name: User
     - Email Address: `your e-mail`
     - Uncheck: Generate password and e-mail account details to user.
     - Password: `SecretPassw0rd`

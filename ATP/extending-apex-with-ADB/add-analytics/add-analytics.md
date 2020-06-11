@@ -17,7 +17,7 @@ You will expand an existing application to add Oracle Analytics functionality. I
 * An APEX Workspace
 * *Please note:* Your free trial must have credits remaining for this lab.
 
-## STEP 1: Review existing APEX application
+## **STEP 1**: Review existing APEX application
 
 Our starting point is an existing time entry application used by a fictional IT consulting company. It contains basic time and rates of their consultants.
 
@@ -54,7 +54,7 @@ Our starting point is an existing time entry application used by a fictional IT 
   ![](./images/01_import_03B.png " ")
 
 
-## STEP 2: Review the APEX application
+## **STEP 2**: Review the APEX application
 
 1. Open the existing application by click **Run Application**.
 
@@ -70,7 +70,7 @@ Our starting point is an existing time entry application used by a fictional IT 
 
   Later on in this workshop we will come back to the Customers page and embed an OAC Data Visualization into it.
 
-## STEP 3: Create an Oracle Analytics Cloud (OAC) instance
+## **STEP 3**: Create an Oracle Analytics Cloud (OAC) instance
 
 Imagine that the end user of the application has analytical questions about the billing data. We could provide some default charts prebuilt in APEX, however, that would not allow the end user to create entirely new analysis. Instead, we are going to create an Oracle Analytics Cloud instance, and give our end users a self service approach to analytics.
 
@@ -97,7 +97,7 @@ Imagine that the end user of the application has analytical questions about the 
 
 5. Wait until the service has been created. This will take about 30 minutes.
 
-## STEP 4: Create a connection from Oracle Analytics Cloud to our ATP database
+## **STEP 4**: Create a connection from Oracle Analytics Cloud to our ATP database
 
 For any SQL client to make a connection to ATP it requires a *wallet*. A wallet is a ZIP file that contains the connection information for the ATP instance. For example, a wallet can be used to connect a local SQL Developer client to ATP. In our case, we will use this same wallet mechanism to make a connection from OAC to ATP.
 
@@ -139,7 +139,7 @@ For any SQL client to make a connection to ATP it requires a *wallet*. A wallet 
 
   ![](./images/screenshot6.png " ")
 
-## STEP 5: Prepare the dataset
+## **STEP 5**: Prepare the dataset
 
 1. Click **Create**, select **Data Set**.
 
@@ -175,7 +175,7 @@ For any SQL client to make a connection to ATP it requires a *wallet*. A wallet 
 
   ![](./images/create_dataset9.png " ")
 
-## STEP 6: Create Self Service analysis
+## **STEP 6**: Create Self Service analysis
 
 The following is for you to experience how an end user can use OAC to create self service analytics on APEX application data.
 Imagine we ask ourselves "Which employees work the most hours as a consultant and at which company"?
@@ -223,7 +223,7 @@ Imagine we ask ourselves "Which employees work the most hours as a consultant an
     - Lisa Jones bills a lot of hours, but is not one of the highest earners for our company.
     - Other employees, such as Cindy Cochran, earn more for our company with less billable hours.
 
-## STEP 7: Create a Scatter Plot
+## **STEP 7**: Create a Scatter Plot
 
 Imagine we have the question "Does a higher hourly rate also mean higher total earnings per employee"?
 
@@ -241,7 +241,7 @@ Imagine we have the question "Does a higher hourly rate also mean higher total e
   What can we conclude?
     - There is a group of employees that work a relatively low amount of hours, but still they succeed in earning the highest amount for our company.
 
-## STEP 8: Add Training History Data
+## **STEP 8**: Add Training History Data
 Imagine we ask ourselves "What is the secret of these high earners? Does a particular training for communication of these employees have something to do with their high earnings?"
 
 The training information is not stored in our APEX Time and Labour application. Instead, this data will be provided to the end user by Human Resources, by means of an Excel file.
@@ -306,7 +306,7 @@ The training information is not stored in our APEX Time and Labour application. 
 
 12. Save the project as "Labour".
 
-## STEP 9: Embed the OAC Data Visualization project into APEX
+## **STEP 9**: Embed the OAC Data Visualization project into APEX
 
 Our goal is to integrate the "Labour" DV project inside of our APEX application. The project should automatically filter using the context of the customer of the APEX screen.
 

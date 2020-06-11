@@ -15,7 +15,9 @@ In this lab, we will take a walkthrough around some of the improvements that the
 - Create an schema on the database on SQL Developer Web with data redaction to be leveraged by an APEX application.
 - Create an application on APEX that leverages the Advanced Security option to protect credit card information.
 
-## STEP 1: Accessing our Performance Hub
+### Estimated Time: 45 minutes
+
+## **STEP 1**: Accessing our Performance Hub
 The Performance Hub is a great tool to monitor our ATP status and activity. It is accessible from the Service Console.
 
 1. Open the Autonomous Database Details page and click **Performance Hub**.
@@ -24,7 +26,7 @@ The Performance Hub is a great tool to monitor our ATP status and activity. It i
 2. In the upper part we will see the consumption of resources and waits of our sessions along time. In the lower part, we will be able to check the ASH (Active Session History) analysis, access the SQL Monitoring to analyze individual queries or even submit a session kill command.
 	![](./images/PerfHub.png " ")
 
-## STEP 2: Checking our data encryption
+## **STEP 2**: Checking our data encryption
 Another immediate consequence of choosing the ATP as our database is that our database will be in the Cloud and, thus, our data will be encrypted everywhere: SQLNet Traffic, tablespaces, backups... everything. Even if an attacker achieved to get into the physical machine, the data would still be secure.
 
 The Transparent Data Encryption (TDE) option takes care of all the details. To prevent unauthorized decryption, TDE stores the encryption keys in a security module external to the database, called a keystore.
@@ -52,7 +54,7 @@ The Transparent Data Encryption (TDE) option takes care of all the details. To p
 
 	It is even more important to know that this status cannot change: any attempt to change their encrypted status in the Cloud will result in failure.
 
-## STEP 3: Securing our sensitive information using data redaction
+## **STEP 3**: Securing our sensitive information using data redaction
 Even if the access to our application stays internal in our organization, sometimes data is allowed to be obtained only partially, with restrictions or even transformed. Data redaction is a powerful tool to enhance data governance security at the user level. Now we will create a new schema, configure it and populate it with the data we need to leverage data redaction in an APEX application.
 
 1. Execute the following script (be sure to click **Run Script**):
@@ -78,7 +80,7 @@ Even if the access to our application stays internal in our organization, someti
   	```
 	![](./images/creditcarddata.png " ")
 
-## STEP 4: Create Secure APEX Application
+## **STEP 4**: Create Secure APEX Application
 
 1. We are ready to create our application on APEX. Open APEX from the Service Console of the autonomous database, then Developer, then APEX.
 
