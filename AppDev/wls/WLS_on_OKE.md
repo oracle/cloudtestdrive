@@ -325,11 +325,11 @@ Setting up the WebLogic Operator
     - Example command:
 
       ```bash
-  kubectl create secret docker-registry jle-ocirsecret \
+      kubectl create secret docker-registry jle-ocirsecret \
       --docker-server=fra.ocir.io \
-    --docker-username='frpqldntjs/oracleidentitycloudservice/ppan' \
+      --docker-username='frpqldntjs/oracleidentitycloudservice/ppan' \
       --docker-password='k]j64r{1sJSSF-;)K8' \
---docker-email='jdoe@acme.com' \
+      --docker-email='jdoe@acme.com' \
       -n sample-domain1-ns
       ```
       
