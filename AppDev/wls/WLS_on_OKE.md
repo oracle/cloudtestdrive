@@ -22,9 +22,9 @@ If you do not have an account yet, you can obtain an Oracle Free Tier account by
 
 Create a token for your user (will be used to login to the docker repository):
 
-- Click on the **Magnifying glass** on the top of your console, and enter your username.  For example, if your name was **ppan** : 
+- Locate the **Search bar** on the top of your console, and enter your username.  For example, if your name was **ppan** : 
 
-  ![](images/ppan.png)
+  ![](images/ppan3.png)
 
 - Select the user **that looks like :  oracleidentitycloudservice/(your_name)**
 
@@ -44,7 +44,7 @@ Create a token for your user (will be used to login to the docker repository):
 
   - Navigate to the "Tenancy Details" screen:
 
-    - Selecting in the menu **Administration**, then **Tenancy Details**
+    - Scroll down in the menu to the section **Governance and Administration**, then expand **Administration**, then select **Tenancy Details**
 
   - Note down the name of your Object Storage Namespace:
 
@@ -102,10 +102,10 @@ We will be using an Oracle Cloud Managed Kubernetes cluster to deploy weblogic.
   - Select version 15.7
   - Select **Public** worker nodes
   - Choose the shape VM_Standard2.1
-  - Activate the Add-ons (Dashboard and Tiller)
+  - Activate the Add-on (Dashboard)
     
 
-  ![image-20191220180903279](images/wls_oke4.png)
+  ![image-20191220180903279](images/wls_oke5.png)
 
 
 
@@ -195,63 +195,65 @@ EOF
 
 
 
-- Setting up a Traefik loadbalancer
+Setting up a Traefik loadbalancer
 
-  - First cd into the wls operator directory
+- First cd into the wls operator directory
 
-    ```
-    cd weblogic-kubernetes-operator/
-    ```
+  ```
+  cd weblogic-kubernetes-operator/
+  ```
 
-  - Set up Helm:
+- Set up Helm:
 
-    `helm repo add stable https://kubernetes-charts.storage.googleapis.com/`
+  `helm repo add stable https://kubernetes-charts.storage.googleapis.com/`
 
-  - Create a namespace for the traefik loadbalancer:
+- Create a namespace for the traefik loadbalancer:
 
-    `kubectl create namespace traefik`
+  `kubectl create namespace traefik`
 
-  - Then execute the Helm chart:
+- Then execute the Helm chart:
 
-    ```
-    helm install traefik-operator stable/traefik \
-        --namespace traefik \
-        --values kubernetes/samples/charts/traefik/values.yaml \
-        --set "kubernetes.namespaces={traefik}" \
-        --wait
-    ```
-    
-  - Validate the Traefik service is up and running
-
-    ```
-    kubectl get services -n traefik
-    ```
-
-- Setting up the WebLogic Operator
-
-  - Create a namespace for the operator:
-
-    ```bash
-    $ kubectl create namespace sample-weblogic-operator-ns
-    ```
-
-  - Create a service account for the operator in the operator’s namespace:
-
-    ```bash
-    $ kubectl create serviceaccount -n sample-weblogic-operator-ns sample-weblogic-operator-sa
-    ```
-
-  - Use `helm` to install and start the operator from the directory you just cloned:
-
-    ```bash
-    $ helm install sample-weblogic-operator kubernetes/charts/weblogic-operator \
-      --namespace sample-weblogic-operator-ns \
-      --set image=oracle/weblogic-kubernetes-operator:2.5.0 \
-      --set serviceAccount=sample-weblogic-operator-sa \
-      --set "domainNamespaces={}" \
+  ```
+  helm install traefik-operator stable/traefik \
+      --namespace traefik \
+      --values kubernetes/samples/charts/traefik/values.yaml \
+      --set "kubernetes.namespaces={traefik}" \
       --wait
-    ```
+  ```
   
+- Validate the Traefik service is up and running
+
+  ```
+  kubectl get services -n traefik
+  ```
+
+
+
+Setting up the WebLogic Operator
+
+- Create a namespace for the operator:
+
+  ```bash
+  $ kubectl create namespace sample-weblogic-operator-ns
+  ```
+
+- Create a service account for the operator in the operator’s namespace:
+
+  ```bash
+  $ kubectl create serviceaccount -n sample-weblogic-operator-ns sample-weblogic-operator-sa
+  ```
+
+- Use `helm` to install and start the operator from the directory you just cloned:
+
+  ```bash
+  $ helm install sample-weblogic-operator kubernetes/charts/weblogic-operator \
+    --namespace sample-weblogic-operator-ns \
+    --set image=oracle/weblogic-kubernetes-operator:2.5.0 \
+    --set serviceAccount=sample-weblogic-operator-sa \
+    --set "domainNamespaces={}" \
+    --wait
+  ```
+
 - Verify that the operator’s pod is running, by listing the pods in the operator’s namespace. You should see one for the operator.
   
   ```bash
@@ -301,9 +303,9 @@ EOF
       kubectl create secret docker-registry <your-initials>-ocirsecret \
       --docker-server=<region-code>.ocir.io \
       --docker-username='<Object-Storage-Namespace>/<oci-username>' \
-  --docker-password='<oci-auth-token>' \
+      --docker-password='<oci-auth-token>' \
       --docker-email='<email-address>' \
-  -n sample-domain1-ns
+      -n sample-domain1-ns
       ```
 
       - **your-initials** as part of the name of the secret so this is your individual secret in case you are working in a shared environment
