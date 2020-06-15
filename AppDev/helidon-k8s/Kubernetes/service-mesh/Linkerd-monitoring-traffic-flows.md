@@ -9,14 +9,12 @@
 ## Optional 3b. Monitoring traffic flows with a Service mesh
 
 
-# NEED INTRO VIDEO 
-
 <details><summary><b>Self guided student - video introduction</b></summary>
 <p>
 
 This video is an introduction to the monitoring traffic with a Service mesh lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
-[![Kubernetes core features lab only setup Introduction Video](https://img.youtube.com/vi/kc1SvmTbvZ8/0.jpg)](https://youtu.be/kc1SvmTbvZ8 "Kubernetes core features lab introduction video")
+[![Using the service mesh to monitor traffic Introduction Video](https://img.youtube.com/vi/sLOM1FUcPwE/0.jpg)](https://youtu.be/sLOM1FUcPwE "Using the service mesh to monitor traffic introduction video")
 
 </p>
 </details>

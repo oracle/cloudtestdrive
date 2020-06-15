@@ -8,16 +8,13 @@
 
 ## Optional 3d. Exploring traffic splits with a Service mesh.
 
-# IN DEVElOPMENT
-
-# NEED INTRO VIDEO 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 <p>
 
 This video is an introduction to the Service mesh traffic splits lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
-[![Kubernetes core features lab only setup Introduction Video](https://img.youtube.com/vi/kc1SvmTbvZ8/0.jpg)](https://youtu.be/kc1SvmTbvZ8 "Kubernetes core features lab introduction video")
+[![Using the service mesh traffic split capability Introduction Video](https://img.youtube.com/vi/ghANv-uM7Ec/0.jpg)](https://youtu.be/ghANv-uM7Ec "Using the service mesh traffic split capability introduction video")
 
 </p>
 </details>

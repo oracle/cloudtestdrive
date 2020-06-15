@@ -9,14 +9,12 @@
 ## Optional 3a. Service mesh install and setup
 
 
-# NEED INTRO VIDEO 
-
 <details><summary><b>Self guided student - video introduction</b></summary>
 <p>
 
 This video is an introduction to the Service mesh basics lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
-[![Kubernetes core features lab only setup Introduction Video](https://img.youtube.com/vi/kc1SvmTbvZ8/0.jpg)](https://youtu.be/kc1SvmTbvZ8 "Kubernetes core features lab introduction video")
+[![Service mesh setup Introduction Video](https://img.youtube.com/vi/jfNp6VEfFEk/0.jpg)](https://youtu.be/jfNp6VEfFEk "Service mesh setup lab introduction video")
 
 </p>
 </details>
