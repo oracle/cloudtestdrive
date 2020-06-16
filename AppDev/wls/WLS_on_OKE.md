@@ -102,9 +102,11 @@ We will be using an Oracle Cloud Managed Kubernetes cluster to deploy weblogic.
   - Select version 15.7
   - Select **Public** worker nodes
   - Choose the shape VM_Standard2.1
-  - Activate the Add-on (Dashboard)
+    *Remark*: you might have to check available compute shapes on your tenancy.  You can do this by visualizing the **Service Limits** on the "Administration" , "Tenancy Details" page.
+  - Select a **Number of nodes** that corresponds to the number of *Availability Domains* in the *Region* you have selected.  For example in Frankfurt this is **3**, in Amsterdam this is **1**.
+- Activate the Add-on (Dashboard)
     
-
+  
   ![image-20191220180903279](images/wls_oke5.png)
 
 
