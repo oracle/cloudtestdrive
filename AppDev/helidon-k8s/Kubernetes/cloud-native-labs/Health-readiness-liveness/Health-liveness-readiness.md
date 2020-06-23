@@ -164,7 +164,7 @@ You may recall in the Helidon labs (if you did them) we created a liveness probe
 #             path: /health/live
 #             port: health-port
 #          # Give it a few seconds to make sure it's had a chance to start up
-#          initialDelaySeconds: 60
+#          initialDelaySeconds: 120
 #          # Let it have a 5 second timeout to wait for a response
 #          timeoutSeconds: 5
 #          # Check every 5 seconds (default is 1)
@@ -195,7 +195,7 @@ The resulting section should look like this:
              path: /health/live
              port: health-port
           # Give it a few seconds to make sure it's had a chance to start up
-          initialDelaySeconds: 60
+          initialDelaySeconds: 120
           # Let it have a 5 second timeout to wait for a response
           timeoutSeconds: 5
           # Check every 5 seconds (default is 1)
@@ -212,7 +212,7 @@ The first thing to say is that whatever steps your actual liveness test does it 
 
 Let's look at some of these values.
 
-As it may take a while to start up the container, we specify and initialDelaySeconds of 60, Kubernetes won't start checking if the pod is live until that period is elapsed. If we made that to short then we may never start the container as Kubernetes would always determine it was not alive before the container had a chance to start up properly. 
+As it may take a while to start up the container, we specify and initialDelaySeconds of 120, Kubernetes won't start checking if the pod is live until that period is elapsed. If we made that to short then we may never start the container as Kubernetes would always determine it was not alive before the container had a chance to start up properly. 
 
 The parameter **timeoutSeconds** specifies that for the http request  to have failed it could not have responded in 5 seconds. As many http service implementations are initialized on first access we need to chose a value that is long enough for the framework to do it's lazy initialization.
 
