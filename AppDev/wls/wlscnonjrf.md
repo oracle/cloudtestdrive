@@ -59,7 +59,7 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 
 - Fill in Stack information:
-  - **Name**: *WLSCNN* - where **NN** is your unique suffix given by the instructor
+  - **Name**: *WLSNN* - where **NN** is your unique suffix given by the instructor
   - **Description**: Any meaningful description, maybe type in your name/initials
 - Click **Next**
 
@@ -69,13 +69,24 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 - Start to fill in details:
 
-  - **Resource Name Prefix**: *WLSCNN* - where **NN** your unique suffix
+  - **Resource Name Prefix**: *WLSNN* - where **NN** your unique suffix
   - **WebLogic Server Shape**: *VM.Standard2.1*
-  - **SSH Public Key**: copy and paste the content from the provided **wls_ssh_public.key** file; it contains the public key in RSA format; be sure to include the whole content in one line, including *ssh-rsa* part at the beginning
+  - **SSH Public Key**: copy and paste the content from the provided **weblogic_ssh_key.pub** file; it contains the public key in RSA format; be sure to include the whole content in one line, including *ssh-rsa* part at the beginning
 
 
 ![](images/wlscnonjrfwithenv/image100.png)
 
+
+
+---
+
+- Note: if you are using your own environment and you have used the Cloud Shell to generate the weblogic ssh key, you can use the `cat` command to display its contents:
+
+![](images/wlscnonjrfwithenv/image105.png)
+
+- Use `Ctrl+INSERT` to copy the highlighted aria as in the above example.
+
+---
 
 
 - Continue setting up:
@@ -95,7 +106,7 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
     - if you are using your own environment and you have followed the *Prerequisites* lab, fill in the OCI Secret OCID that you have created at step *Create OCI Secret for WebLogic Admin password* > *Create OCI Secret*
 
 
-![image-20200526141855489](images/wlscnonjrfwithenv/image110.png)
+![](images/wlscnonjrfwithenv/image110.png)
 
 
 
@@ -142,7 +153,7 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 
 
-- A Stack Job is being run and our WebLogic Server is being provisioned:
+- A Stack Job is being kicked off and our WebLogic Domain starts to be provisioned. Console context moves to Stack's details page (*Solutions and Platform* > *Resource Manager* > *Stacks*):
 
 ![](images/wlscnonjrfwithenv/image180.png)
 
@@ -154,7 +165,7 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 
 
-- After a while, the Job should complete with success:
+- After approx. 15 minutes, the Job should complete with success:
 
 ![](images/wlscnonjrfwithenv/image200.png)
 
@@ -170,7 +181,7 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 - Let's check the WLS admin console of the newly created WebLogic Server; as we have chosen a Public Subnet for the WLS network, both Compute instances that have been created have public IPs associated 
 - Instead of *http://< public IP >:7001/console*, open *https://< public IP >:7002/console*; we'll prevent sending the WebLogic admin credentials in plain text mode, insecurely; (change *http* with **https** and *7001* port with **7002** port)
-- Login with **weblogic** username and the plain text provided password; check the *weblogic_password_plaintext.txt* file
+- Login with **weblogic** username and the provided password; check the *weblogic_password.txt* file
 
 ![](images/wlscnonjrfwithenv/image220.png)
 
@@ -206,7 +217,7 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 
 
-- Identify the Load Balancer that has your unique WLSC*NN* prefix:
+- Identify the Load Balancer that has your unique *WLSNN* prefix:
 
 ![](images/wlscnonjrfwithenv/image270.png)
 
@@ -225,8 +236,8 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 
 - Fill in:
-  - **Name**: *wlschostname*
-  - **Hostname**: *weblogiccloud*
+  - **Name**: *weblogic-hostname*
+  - **Hostname**: *weblogic*
 
 ![](images/wlscnonjrfwithenv/image300.png)
 
@@ -245,17 +256,33 @@ Now, choose *Certificates* from *Resources* sub menu:
 
 
 - Here, we'll add a Load Balancer certificate that it's required for our SSL listener; configure as following:
-  - **Certificate Name**: *weblogiccloud-cert*
-  - **SSL Certificate File**: upload provided *weblogiccloud_cert.pem* file (don't confuse with the *_key.pem* file that contains the private key)
+  - **Certificate Name**: *weblogic-cert*
+  - **SSL Certificate File**: upload provided *weblogic_cert.pem* file (don't confuse with the *_key.pem* file that contains the private key)
   - Tick **Specify CA Certificate**:
 
 ![](images/wlscnonjrfwithenv/image330.png)
 
 
 
-- As we use a demo self signed certificate, upload the same *weblogiccloud_cert.pem* file for **CA Certificate File**;
-- For **Private Key File**, upload the *weblogiccloud_dec_key.pem* file (this file contains the decrypted private key)
-- Enter the provided key passphrase for **Private Key Passphrase**; check *weblogiccloud_key_passphrase.txt* file content
+---
+
+- Note: if you are running this on your own environment and you have used the Cloud Shell to generate the weblogic_cert.pem file, you can use the `cat` command to display its contents:
+
+![](images/wlscnonjrfwithenv/image333.png)
+
+
+
+- Select the output and use `Ctrl+INSERT` to copy.  Use the *Paste SSL Certificate* option instead of file upload:
+
+![](images/wlscnonjrfwithenv/image335.png)
+
+---
+
+
+
+- As we use a demo self signed certificate, upload the same *weblogic_cert.pem* file for **CA Certificate File**;
+- For **Private Key File**, upload the *weblogic_cert_key_dec.pem* file (this file contains the decrypted private key)
+- Enter the provided key passphrase for **Private Key Passphrase**; check *weblogic_cert_key_passphrase.txt* file content
 - Click **Add Certificate**:
 
 ![](images/wlscnonjrfwithenv/image340.png)
@@ -275,9 +302,9 @@ Now, choose *Certificates* from *Resources* sub menu:
 
 
 - Configure as following and Save Changes:
-  - **Name**: choose existing *wlschostname* hostname
+  - **Name**: choose existing *weblogic-hostname* hostname
   - Tick **USE SSL** checkbox
-  - **Certificate Name**: choose *weblogiccloud-cert*
+  - **Certificate Name**: choose *weblogic-cert*
   - leave default backend set
 
 ![](images/wlscnonjrfwithenv/image370.png)
@@ -382,3 +409,29 @@ Follow **Upload your files** link and upload provided [SampleWebApp.war](resourc
 
 
 - This is just another sample application, but you can deploy any other application; Congratulations!
+
+
+
+## Step 4. Destroy resources
+
+If you don't plan to use the WebLogic Domain anymore, to spare tenancy resources, the quickest way to delete the resources created during this lab is to run *Terraform Destroy*  on the Stack.
+
+Navigate to *Solutions and Platform* > *Resource Manager* > *Stacks*, identify and click on the Stack name you have created at the beginning of this lab.
+
+By running the *Destroy* action, a Terraform job will kick off and delete all created resources.
+
+![](images/wlscnonjrfwithenv/image600.png)
+
+
+
+When the job ends, you should see a similar log output:
+
+![](images/wlscnonjrfwithenv/image610.png)
+
+
+
+You can check that the Compute Instances and the Block Volumes have been terminated.
+
+At the end you can also delete the Stack:
+
+![](images/wlscnonjrfwithenv/image620.png)
