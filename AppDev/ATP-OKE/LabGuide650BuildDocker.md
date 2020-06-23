@@ -5,7 +5,7 @@
 
 #### **Introduction**
 
-In this lab, you’ll learn how to build a Docker image for a Node.js REST service on Oracle Developer Cloud Service (DevCS), using an ATP database as it's data source.
+In this lab, you’ll learn how to build a Docker image for a Node.js REST service on Visual Builder Studio, using an ATP database as it's data source.
 
 Let’s get started! 
 
@@ -13,7 +13,7 @@ Let’s get started!
 
 ### Step 1: Configure the connection to your OCIR Docker Repository
 
-Open your project in Developer Cloud, and follow the steps below:
+Open your project in Visual Builder Studio, and follow the steps below:
 
 - Click **Docker** in the left navigation bar, then click **Link External Repository**.
 
@@ -125,7 +125,7 @@ Open your project in Developer Cloud, and follow the steps below:
 
 Before we can run the Build Job we just created, we need to parametrize some scripts to be pointing to your specific environment.
 
-- Navigate to the **Git** page of your Developer project
+- Navigate to the **Git** page of your Visual Builder Studio project
 
 - You need to ensure the docker image has the right connection information for connecting to the database.  Navigate to the folder **aone/scripts**, and locate the file called **dbconfig.js**
 

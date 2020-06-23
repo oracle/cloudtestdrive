@@ -109,7 +109,7 @@ Lets connect to the database you just created using the build-in **SQL Developer
 
   ![](images/400/DB_console.png)
 
-- You can now visualize the tables in the database, and execute queries.  Of course this is an empty database for now, we will reuse this tool later to check you have deployed objects into the database via Developer Cloud.
+- You can now visualize the tables in the database, and execute queries.  Of course this is an empty database for now, we will reuse this tool later to check you have deployed objects into the database via Visual Builder Studio.
 
 
 

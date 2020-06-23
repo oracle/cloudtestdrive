@@ -1,13 +1,13 @@
 ![](../../common/images/customer.logo2.png)
 # Microservices on ATP #
 
-## Part 1 - Setting up your Developer Cloud Project ##
+## Part 1 - Setting up your Visual Builder Studio Project ##
 
 ## Introduction ##
 
-In this lab, you’ll learn how to set up a new Developer project, based on a Github repository, and start modifying and automating the CI/CD steps for your environment.
+In this lab, you’ll learn how to set up a new Visual Builder Studio project, based on a Github repository, and start modifying and automating the CI/CD steps for your environment.
 
-You will work with DevCS and learn about some of its most important features.  
+You will work with Visual Builder Studio and learn about some of its most important features.  
 
 Let’s get started! 
 
@@ -15,13 +15,13 @@ Let’s get started!
 
 ### Step 1: Create a project environment for your team
 
-In this section, you’ll provision a complete development platform for your team by leveraging DevCS’s web interface.
+In this section, you’ll provision a complete development platform for your team by leveraging the Visual Builder Studio web interface.
 
-- Access your Developer Cloud Instance by following the link provided to you in the access document
+- Access your Visual Builder Studio Instance by following the link provided to you in the access document
 
   
 
-We pre-created a Developer Cloud project environment for you to use.  In order to access this environment, perform following steps : 
+We pre-created a Visual Builder Studio project environment for you to use.  In order to access this environment, perform following steps : 
 
 - On the Welcome page, click **All** to see all projects in the environment.
 
@@ -68,7 +68,7 @@ Let’s take a look at this page (you may need to scroll to see the whole thing)
 
 - Click **Create**.
 
-  You should now be on the Code tab, which shows that you have a new DevCS git repository, NodeJSDocker.git.  This new repository contains imported code from the GitHub repository you specified.
+  You should now be on the Code tab, which shows that you have a new git repository, called NodeJSDocker.git.  This new repository contains imported code from the GitHub repository you specified.
 
   ![](images/150/image011-3.png)
 
