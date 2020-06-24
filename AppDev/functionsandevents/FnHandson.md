@@ -40,7 +40,7 @@ Please refer to [Appendix B](AppendixB.md) if you would prefer to use the Chrome
 
 Run the following command to install the Fn project CLI on your VM
 
-curl -LSs https://raw.githubusercontent.com/fnproject/cli/master/install | sh
+*curl -LSs https://raw.githubusercontent.com/fnproject/cli/master/install | sh*
 
 Once installed you’ll see the Fn CLI version printed out.
 
@@ -127,11 +127,14 @@ Issue the following command
 
 **NOTE** In the following command:
 
-You will need to replace the _NN_ with **your** student number (01 - 10)
+- You will need to replace the _NN_ with **your** student number (01 - 10)
 
-You will need to replace _tenancyname_ with the tenancy name given at the start of the lab in the student handout
+- You will need to replace _tenancyname_ with the tenancy name given at the start of the lab in the student handout
 
-> $ fn update context registry fra.ocir.io/*tenancyname*/fnworkshop*NN*
+
+```
+$ fn update context registry fra.ocir.io/*tenancyname*/fnworkshop*NN*
+```
 
 Finally we need to allow the Fn context for oci to utilise the oci configuration you edited earlier. To do this issue the following command:
 
@@ -204,7 +207,9 @@ Then perform the following command:
 
 You will need to replace _tenancyname_ with the tenancy name given at the start of the lab in the student handout
 
-> $ docker login fra.ocir.io/**_tenancyname_**
+```
+$ docker login fra.ocir.io/**_tenancyname_**
+```
 
 When prompted enter your _tenancyname_/apiuser 
 
@@ -464,19 +469,14 @@ Copy this file to the source code tree of your new function you created.
 $ cp ~/HelloFunction.java ~/fnwork/imagecatalogfunction/src/main/java/com/example/fn/HelloFunction.java
 ```
 
-### Alter Tests
+### Remove Tests
 
-We don't have a mock service for the ATP ORDS REST API so we will comment out the test as we don't want test executions to add rows to our table.
+We don't have a mock service for the ATP ORDS REST API so we will delete the test as we don't want test executions to add rows to our table.
 
-Open the test java file at \~/fnwork/imagecatalogfunction/src/test/java/com/example/fn/HelloFunctionTest.java and comment out the body (using //) of the shouldReturnGreeting method. It should now look like this:
+Remove the test java file at \~/fnwork/imagecatalogfunction/src/test/java/com/example/fn/HelloFunctionTest.java.
 
-``` java
-@Test public void shouldReturnGreeting() { 
-    //testing.givenEvent().enqueue(); 
-    //testing.thenRun(HelloFunction.class, "handleRequest"); 
-    //FnResult result = testing.getOnlyResult(); 
-    //assertEquals("Hello, world!", result.getBodyAsString()); 
-}
+``` bash
+$ ~/fnwork/imagecatalogfunction/src/test/java/com/example/fn/HelloFunctionTest.java
 ```
 
 Obviously this is not best TDD (Test Driven Development) practice! In a real world situation you would write your tests first and use them to ensure no bugs appear in your code. This shortcut will allow us to build and deploy our function without putting all the testing infrastructure in place.
