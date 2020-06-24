@@ -133,7 +133,7 @@ Issue the following command
 
 
 ```
-$ fn update context registry fra.ocir.io/*tenancyname*/fnworkshop*NN*
+$ fn update context registry fra.ocir.io/tenancyname/fnworkshopNN
 ```
 
 Finally we need to allow the Fn context for oci to utilise the oci configuration you edited earlier. To do this issue the following command:
@@ -208,7 +208,7 @@ Then perform the following command:
 You will need to replace _tenancyname_ with the tenancy name given at the start of the lab in the student handout
 
 ```
-$ docker login fra.ocir.io/**_tenancyname_**
+$ docker login fra.ocir.io/tenancyname
 ```
 
 When prompted enter your _tenancyname_/apiuser 
@@ -485,14 +485,15 @@ Obviously this is not best TDD (Test Driven Development) practice! In a real wor
 
 Ensure you are in the imagecatalogfunction directory
 
-```
+```bash
 $ cd ~/fnwork/imagecatalogfunction
 ```
 
 Deploy the function to OCI. Issue the following command **again replacing *NN* with your student number**:
 
-
-> $ fn --verbose deploy --app imagecatalogapp***NN***
+```bash
+$ fn --verbose deploy --app imagecatalogappNN
+```
 
 
 You should see the familiar Docker and Maven build output and finally a message that the function has updated with a new image.
