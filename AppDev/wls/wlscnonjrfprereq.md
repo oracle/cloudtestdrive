@@ -6,7 +6,7 @@
 
 ## Objective
 
-If you want go through the Hands on Lab (*non JRF type of WebLogic for OCI Instance - using Oracle Cloud Marketplace*) using your cloud environment, follow this guide to setup some prerequisites. If you will use the provided Cloud Test Drive environment, skip this Lab.
+If you want go through the Hands on Lab (*WebLogic for OCI Instance - non JRF using Oracle Cloud Marketplace*) using your cloud environment, follow this guide to setup some prerequisites. If you are going to use the Cloud Test Drive environment (CTD), skip this Lab.
 
 
 
@@ -37,12 +37,19 @@ When you create a domain, Oracle WebLogic Server for Oracle Cloud Infrastructure
 
 
 
-In case <u>you are not an OCI administrator</u> and you cannot create dynamic-groups or you cannot create policies at root compartment level, please contact your OCI administrator and request that one  of the groups your OCI user is part of to have the following grants in place:
+In case <u>you are not an OCI administrator</u> and you cannot create dynamic-groups or you cannot create policies at root compartment level, please contact your OCI administrator and request that one  of the groups your cloud user is part of to have the following grants in place:
 
 ```
 Allow group MyGroup to manage dynamic-groups in tenancy
 Allow group MyGroup to manage policies in tenancy
 Allow group MyGroup to use tag-namespaces in tenancy
+Allow group MyGroup to inspect tenancies in tenancy
+```
+
+Also, to be able to use the Cloud Shell you need also:
+
+```
+Allow group MyGroup to use cloud-shell in tenancy
 ```
 
 
@@ -67,6 +74,27 @@ Allow group MyGroup to manage keys in compartment MyCompartment
 Allow group MyGroup to manage secret-family in compartment MyCompartment
 Allow group MyGroup to read metrics in compartment MyCompartment
 ```
+
+
+
+### 1.3 Service limits
+
+Going through the hands on lab you will create the following main components in your tenancy:
+
+- two Compute instances
+- one Virtual Cloud Network (VCN)
+- one Load Balancer
+- one Vault
+- reserve two Public IPs
+
+Check your tenancy Service limits, current usage (*Governance and Administration* > *Governance* > *Limits, Quotas and Usage*) and make sure you have enough room for: 
+
+- Compute Service: VM.Standard2.1 (you may consider choosing a specific AD)
+- Virtual Cloud Network Service: Virtual Cloud Networks
+- Virtual Cloud Network Service: Reserved Public IP
+- LbaaS Service: 100Mbps Load Balancer
+
+If you don't have visibility and/or you don't have admin rights for your tenancy, reach out to your administrator.
 
 
 
@@ -170,7 +198,7 @@ You can leave default options for Subnet configuration:
 
 
 
-Also for the Load Balancer:
+Also for the Load Balancer (make sure to select **100Mbps** for the *Load Balancer Shape* as instructed in the lab):
 
 ![](images/wlscnonjrfwithenvprereq/image620.png)
 
@@ -184,9 +212,13 @@ You can choose one of the options below:
 
 ### A) Using ssh-keygen
 
-> ssh-keygen -t rsa -b 4096
+> ssh-keygen -t rsa -b 4096 -f weblogic_ssh_key
 
-You'll be asked to specify the filename to save the private key. The public key will be saved at the same location, with the extension .pub added to the private key filename.
+This will create the **weblogic_ssh_key** containing the private key. The public key will be saved at the same location, with the .pub extension added to the private key filename (**weblogic_ssh_key.pub**).
+
+If you don't have `ssh-keygen` installed, you can use the Cloud Shell:
+
+![](images/wlscnonjrfwithenvprereq/image520.png)
 
 
 
@@ -204,7 +236,7 @@ After key generation, don't forget to save the public and private key. If not us
 
 
 
-The public key filename is referred as **wls_ssh_public.key** in the Hands on Lab.
+The public key filename is referred as **weblogic_ssh_key.pub** in the Hands on Lab.
 
 
 
@@ -216,23 +248,29 @@ For security reasons it's a good practice - if not mandatory - to allow only sec
 
 ### Create Self Signed certificate
 
-We can use Openssl tool to generate a Self Signed certificate:
+We can use Openssl tool (and Cloud Shell!) to generate a Self Signed certificate:
 
-> openssl req -x509 -newkey rsa:4096 -keyout weblogiccloud_key.pem -out weblogiccloud_cert.pem -days 365
+> openssl req -x509 -newkey rsa:4096 -keyout weblogic_cert_key.pem -out weblogic_cert.pem -days 365
 
-The openssl dialog will request setting up a PEM pass phrase and several fields for certificate information.
-
-You can choose any PEM pass phrase, the one used by the Hands on Lab is referred from the **weblogiccloud_key_passphrase.txt** text file.
+![](images/wlscnonjrfwithenvprereq/image530.png)
 
 
 
-Then, we need to decrypt the private key:
+The openssl dialog will request setting up a PEM pass phrase and several fields for certificate information. You may setup **weblogic** as the value for *Common Name (e.g. server FQDN or YOUR name)* field.
 
-> openssl rsa -in weblogiccloud_key.pem -out weblogiccloud_dec_key.pem
+You may setup any pass phrase, don't forget it. In the Hands on Lab it's mentioned to be provided in the **weblogic_cert_key_passphrase.txt** text file.
+
+![](images/wlscnonjrfwithenvprereq/image540.png)
 
 
 
-Note that above examples use the same names for the certificate and private key as in the Hands on Lab: **weblogiccloud_cert.pem** and **weblogiccloud_dec_key.pem**.
+Next, we need to decrypt the private key:
+
+> openssl rsa -in weblogic_cert_key.pem -out weblogic_cert_key_dec.pem
+
+
+
+Note: that above examples generate the same file names for the certificate and private key as in the Hands on Lab: **weblogic_cert.pem** and **weblogic_cert_key_dec.pem**.
 
 
 
