@@ -139,12 +139,17 @@ The OCI Cloud Shell has helm already installed for you, however it does not know
     ```
     "stable" has been added to your repositories
     ```
+  - `helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/`
+    ```
+    "kubernetes-dashboard" has been added to your repositories
+    ```
 You can get the current list of repositories    
 - Run the following command :
   - `helm repo list`
-    ```
-    NAME    URL                                              
-    stable  https://kubernetes-charts.storage.googleapis.com/
+    ```                                            
+    NAME                    URL                                              
+    stable                  https://kubernetes-charts.storage.googleapis.com/
+    kubernetes-dashboard    https://kubernetes.github.io/dashboard/    
     ```
 
 ## Introduction to the lab
@@ -183,7 +188,7 @@ Access to the cluster is managed via a config file that by default is located in
 
 You will be presented with a page with details for downloading the kubeconfig file. Make sure the **OCI Cloud Shell Access** is the selected option.
 
-Look for the line like shown below :
+Look for a line similar to this :
 
 ```
 oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaa<lots of stuff>aaa --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0
@@ -213,9 +218,11 @@ Your Kubernetes config file is now downloaded into the .kube/config file
 
 ```
 NAME        STATUS   ROLES   AGE     VERSION
-10.0.10.2   Ready    node    9m16s   v1.15.7
-10.0.10.3   Ready    node    9m2s    v1.15.7
+10.0.10.2   Ready    node    9m16s   v1.16.8
+10.0.10.3   Ready    node    9m2s    v1.16.8
 ```
+
+If the kubectl command returns `No resources found.` and you have only just created the cluster it may still be initializing. Wait a short time and try again until you get the nodes list.
 
  (The details and number of nodes will vary depending on the settings you chose when you created the cluster, it may also take a few mins for the nodes to be up and running)
 
@@ -239,11 +246,11 @@ If you are using the OCI Cloud shell for **this** section of the lab (either in 
 
 - Run the following command : 
   
-  -  `helm install kubernetes-dashboard  stable/kubernetes-dashboard   --namespace kube-system --set service.type=LoadBalancer`
+  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard   --namespace kube-system --set service.type=LoadBalancer`
 
 ```
 NAME: kubernetes-dashboard
-LAST DEPLOYED: Tue Dec 24 13:51:24 2019
+LAST DEPLOYED: Tue Jun 30 13:07:36 2020
 NAMESPACE: kube-system
 STATUS: deployed
 REVISION: 1
@@ -252,10 +259,13 @@ NOTES:
 *********************************************************************************
 *** PLEASE BE PATIENT: kubernetes-dashboard may take a few minutes to install ***
 *********************************************************************************
+
+  NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+        Watch the status with: 'kubectl get svc -n kube-system -w kubernetes-dashboard'
+
 Get the Kubernetes Dashboard URL by running:
-  export POD_NAME=$(kubectl get pods -n kube-system -l "app=kubernetes-dashboard,release=kubernetes-dashboard" -o jsonpath="{.items[0].metadata.name}")
-  echo https://127.0.0.1:8443/
-  kubectl -n kube-system port-forward $POD_NAME 8443:8443
+  export SERVICE_IP=$(kubectl get svc -n kube-system kubernetes-dashboard -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+  echo https://$SERVICE_IP/
 ```
 
 <details><summary><b>Explaining the helm options</b></summary>
@@ -268,7 +278,7 @@ The helm options are :
 
 - `stable/kubernetes-dashboard` is the name of the *chart* to install. Helm will download the char from the repo and then execute it. if you had needed a specific chart version they you could have added a version specifier, for example `--version=1.2.3`
 
-- `--namespace kube-system` This tells helm to install the dashboard into the kube-system namespace. Namespaces are ways of partitioning the cluster to help you manage related resources
+- `--namespace kube-system` This tells helm to install the dashboard into the kube-system namespace. Namespaces are ways of partitioning the cluster to help you manage related resources, they are similar to the way you organize files using folders on your computer.
 
 - `--set service.type=LoadBalancer` This tells help to configure the Kubernetes service associated with the dashboard as being immediately accessible via a load balancer. Normally you wouldn't do this for a range of reasons (more on these later) but as this is an overview lab we're doing this to avoid having to wait for DNS name propogation getting certificates. In a production environment you would of course do that.
 
@@ -290,60 +300,68 @@ We've seen it's been deployed by Helm, this doesn't however mean that the pods a
   -  `kubectl get all --namespace kube-system`
 
 ```
-NAME                                         READY   STATUS    RESTARTS   AGE
-pod/coredns-6dcc67dcbc-hpqx8                 1/1     Running   0          49m
-pod/coredns-6dcc67dcbc-xnbr8                 1/1     Running   0          49m
-pod/etcd-docker-desktop                      1/1     Running   0          48m
-pod/kube-apiserver-docker-desktop            1/1     Running   0          48m
-pod/kube-controller-manager-docker-desktop   1/1     Running   0          48m
-pod/kube-proxy-5mt6m                         1/1     Running   0          49m
-pod/kube-scheduler-docker-desktop            1/1     Running   0          48m
-pod/kubernetes-dashboard-58d96f69b8-tlhgx    1/1     Running   0          8m5s
+NAME                                       READY   STATUS    RESTARTS   AGE
+pod/coredns-78f8cf49d4-8pq5c               1/1     Running   0          3d23h
+pod/kube-dns-autoscaler-9f6b6c9c9-76tw5    1/1     Running   0          3d23h
+pod/kube-flannel-ds-5kn8m                  1/1     Running   1          3d23h
+pod/kube-flannel-ds-bqmct                  1/1     Running   1          3d23h
+pod/kube-proxy-dlpln                       1/1     Running   0          3d23h
+pod/kube-proxy-tzgzp                       1/1     Running   0          3d23h
+pod/kubernetes-dashboard-bfdf5fc85-djnvb   1/1     Running   0          66s
+pod/proxymux-client-b8cdk                  1/1     Running   0          3d23h
+pod/proxymux-client-dnzv8                  1/1     Running   0          3d23h
 
-NAME                           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                  AGE
-service/kube-dns               ClusterIP   10.96.0.10       <none>        53/UDP,53/TCP,9153/TCP   49m
-service/kubernetes-dashboard   ClusterIP   10.110.174.155   <none>        443/TCP                  8m5s
 
-NAME                        DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
-daemonset.apps/kube-proxy   1         1         1       1            1           <none>          49m
+NAME                           TYPE           CLUSTER-IP     EXTERNAL-IP       PORT(S)                  AGE
+service/kube-dns               ClusterIP      10.96.5.5      <none>            53/UDP,53/TCP,9153/TCP   3d23h
+service/kubernetes-dashboard   LoadBalancer   10.96.104.87   158.101.177.127   443:32169/TCP            66s
+
+NAME                                          DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR                       AGE
+daemonset.apps/kube-flannel-ds                2         2         2       2            2           beta.kubernetes.io/arch=amd64       3d23h
+daemonset.apps/kube-proxy                     2         2         2       2            2           beta.kubernetes.io/os=linux         3d23h
+daemonset.apps/nvidia-gpu-device-plugin       0         0         0       0            0           <none>                              3d23h
+daemonset.apps/nvidia-gpu-device-plugin-1-8   0         0         0       0            0           <none>                              3d23h
+daemonset.apps/proxymux-client                2         2         2       2            2           node.info.ds_proxymux_client=true   3d23h
 
 NAME                                   READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/coredns                2/2     2            2           49m
-deployment.apps/kubernetes-dashboard   1/1     1            1           8m5s
+deployment.apps/coredns                1/1     1            1           3d23h
+deployment.apps/kube-dns-autoscaler    1/1     1            1           3d23h
+deployment.apps/kubernetes-dashboard   1/1     1            1           66s
 
-NAME                                              DESIRED   CURRENT   READY   AGE
-replicaset.apps/coredns-6dcc67dcbc                2         2         2       49m
-replicaset.apps/kubernetes-dashboard-58d96f69b8   1         1         1       8m5s
+NAME                                             DESIRED   CURRENT   READY   AGE
+replicaset.apps/coredns-78f8cf49d4               1         1         1       3d23h
+replicaset.apps/kube-dns-autoscaler-9f6b6c9c9    1         1         1       3d23h
+replicaset.apps/kubernetes-dashboard-bfdf5fc85   1         1         1       66s
 ```
 We see all the elements of the dashboard: a pod, a replica set, a deployment and a service.(
 
 If you want more detailed information then you can extract it, for example to get the details on the pods do the following
 
 -  Execute below command, replacing the ID with the ID of your pod:
-  -  `kubectl get pod kubernetes-dashboard-58d96f69b8-tlhgx  -n kube-system -o yaml`
+  -  `kubectl get pod kubernetes-dashboard-bfdf5fc85-djnvb  -n kube-system -o yaml`
 
-```
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
-  creationTimestamp: "2019-12-24T16:16:48Z"
-  generateName: kubernetes-dashboard-58d96f69b8-
+  creationTimestamp: "2020-06-30T13:07:36Z"
+  generateName: kubernetes-dashboard-bfdf5fc85-
   labels:
     app: kubernetes-dashboard
-    pod-template-hash: 58d96f69b8
+    pod-template-hash: bfdf5fc85
     release: kubernetes-dashboard
-  name: kubernetes-dashboard-58d96f69b8-tlhgx
+  name: kubernetes-dashboard-bfdf5fc85-djnvb
   namespace: kube-system
   ownerReferences:
   - apiVersion: apps/v1
     blockOwnerDeletion: true
     controller: true
     kind: ReplicaSet
-    name: kubernetes-dashboard-58d96f69b8
-    uid: c93ec88c-2668-11ea-a75b-025000000001
-  resourceVersion: "3519"
-  selfLink: /api/v1/namespaces/kube-system/pods/kubernetes-dashboard-58d96f69b8-tlhgx
-  uid: c93fbdbd-2668-11ea-a75b-025000000001
+    name: kubernetes-dashboard-bfdf5fc85
+    uid: e5db9335-a245-4fba-bba4-ad56eeb2ac90
+  resourceVersion: "865504"
+  selfLink: /api/v1/namespaces/kube-system/pods/kubernetes-dashboard-bfdf5fc85-djnvb
+  uid: 1f1bd308-b317-4046-8972-87242149721a
 spec:
   containers:
   - args:
@@ -356,7 +374,7 @@ If you want the output in json then replace the -o yaml with -o json.
 If you're using JSON and want to focuse in on just one section of the data structure you can use the JSONPath printer in kubectl to do this, in this case we're going to look at the image that's used for the pod
 
 - Get a specific element from a configuration:
-  -  `kubectl get pod kubernetes-dashboard-58d96f69b8-tlhgx  -n kube-system -o=jsonpath='{.spec.containers[0].image}'`
+  -  `kubectl get pod kubernetes-dashboard-bfdf5fc85-djnvb  -n kube-system -o=jsonpath='{.spec.containers[0].image}'`
 
 ```
 k8s.gcr.io/kubernetes-dashboard-amd64:v1.10.1
@@ -378,7 +396,7 @@ Tells us that any thing with label app matching kubernetes-dashboard and label r
 
 ```
 NAME                                    READY   STATUS    RESTARTS   AGE
-kubernetes-dashboard-58d96f69b8-tlhgx   1/1     Running   0          43m
+kubernetes-dashboard-bfdf5fc85-djnvb   1/1     Running   0          43m
 ```
 
 ### Accessing the Kubernetes dashboard
@@ -386,7 +404,7 @@ kubernetes-dashboard-58d96f69b8-tlhgx   1/1     Running   0          43m
 First we're going to need create a user to access the dashboard. This involves creating the user, then giving it the kubernetes-dashbaord role that helm created for us when it installed the dashbaord chart.
 
 - Go to the helidon-kubernetes project folder, then the base-kubernetes directory
-  -  `cd  helidon-kubernetes/base-kubernetes`
+  -  `cd  $HOME/helidon-kubernetes/base-kubernetes`
 - Create the user and role
   -  `kubectl apply -f dashboard-user.yaml`
 
@@ -451,7 +469,7 @@ In practice this means that when the kubernetes-dashboard asks the RBAC service 
 
 **A Note on YAML**
 
-kubectl can also take JSON input as well as YAML. Personally I think that using any data format (including YAML) where whitespace is sensitive and defines the structure is just asking for trouble (get an extra space to many or too few and you'de completely changed what you're trying to do) so my preference would be to use JSON. However (to be fair) JSON is a lot more verbose compared to YAML and the syntax can also lead to problems (though I think that a reasonable JSON editor will be a lot better than a YAML editor at finding problems and helping you fix them)
+kubectl can also take JSON input as well as YAML. Personally I think that using any data format (including YAML) where whitespace is sensitive and defines the structure is just asking for trouble (get an extra space to many or too few and you've completely changed what you're trying to do) so my preference would be to use JSON. However (to be fair) JSON is a lot more verbose compared to YAML and the syntax can also lead to problems (though I think that a reasonable JSON editor will be a lot better than a YAML editor at finding problems and helping you fix them)
 
 Sadly (for me at least) YAML has been pretty widely adopted for use with Kubernetes, so for the configuration files we're using here I've used YAML, if you'd like to convert them to JSON however please feel free :-)
 
@@ -525,11 +543,22 @@ You'll now be presented with the login screen for the dashboard.
 
 ![dashboard-login-completed](images/dashboard-login-completed.png)
 
-**Important** The kubernetes dashboard will only beep the login session open for a short time, after which you will be logged out. Unfortunately when your login session expires the kubernetes dashboard doesn't always return you to the login screen. If you find that you are making changes and the dashboard doesn't reflect them, or that you can see something using kubectl - but not in the dashboard, or you trigger an action on the dashboard (e.g. switching to a different a namespace) but the content doesn't update it's probable that the session has expired. In this case **reload** the web page or go to the login URL (above), this will reset the pages state and present you with the login screen again, login using your token as previously (the token does not change, so you don't have to extract it again)
+**Important** The kubernetes dashboard will only keep the login session open for a short time, after which you will be logged out. Unfortunately when your login session expires the kubernetes dashboard doesn't always return you to the login screen. If you find that you are making changes and the dashboard doesn't reflect them, or that you can see something using kubectl - but not in the dashboard, or you trigger an action on the dashboard (e.g. switching to a different a namespace) but the content doesn't update it's probable that the session has expired. In this case **reload** the web page or go to the login URL (above), this will reset the pages state and present you with the login screen again, login using your token as previously (the token does not change, so you don't have to extract it again)
 
 You now should see the **Overview** dashboard :
 
 ![dashboard-overview](images/dashboard-overview.png)
+
+Note that some options on the left menu have a little N by them (if you hover your mouse it becomes "Namespaced") This is a reminder that this menu item (or in the case of Workloads, Service, and Config and storage) will display / allow you to manage stuff that is namespace specific. 
+
+To select a namespace use the dropdown on the upper right of the web page.
+
+![dashboard-namespace-selector](images/dashboard-namespace-selector.png)
+
+Initially it will probably say default, if you click on it you will get a choice of namespaces.
+
+![dashboard-namespace-selector-chose](images/dashboard-namespace-selector-chose.png)
+
 
 
 
@@ -542,19 +571,35 @@ The Kubernetes dashboard gives you a visual interface to many the features that 
 
 If you do not have the menu on the left click the three bars to open the menu up.
 
-The first thing to remember with the dashboard is that (like kubectl) you need to select a namespace to operate in, or you can chose to extract data from all namespaces. The namespace selection is on the left side, initially it may well be set to "default" in the Namespace section on the left menu click the dropdown to select the kube-system namespace
+The first thing to remember with the dashboard is that (like kubectl) you need to select a namespace to operate in, or you can chose to extract data from all namespaces. The namespace selection is on the top left by the Kubernetes logo, initially it may well be set to "default".
+
+ In the Namespace section on the click the dropdown to select the kube-system namespace
+ 
+![dashboard-namespace-selector-select-kube-system](images/dashboard-namespace-selector-select-kube-system.png)
+
+Select kube-system, precisely which page you'll go to will depend on what was selected in the left menu when you switched namespaces, but in my case it took me to an overview page.
 
 ![dashboard-overview-kube-system](images/dashboard-overview-kube-system.png)
 
-You can use the Kubernetes dashboard to navigate the relationships between the resources. If you scroll down the page to services you'll see the kubentes-dashboard service listed, 
+Let's switch to see the details of the workspace, Click `Workloads` on the left menu
+
+![dashboard-overview-kube-system-workloads](images/dashboard-overview-kube-system-workloads.png)
+
+You can use the Kubernetes dashboard to navigate the relationships between the resources. Let's start by looking at the services in the kube-system namespace
+
+Click `Services in the `Service` section on the left menu
+
+If you scroll down the page to services you'll see the kubentes-dashboard service listed, 
 
 ![dashboard-overview-kube-system-services](images/dashboard-overview-kube-system-services.png)
 
-click on it to get the details of the service, including the pods it's running on.
+Click on the service name `kubernetes-dashboard` to get the details of the service, including the pods it's running on.
 
 ![dashboard-service-dashboard](images/dashboard-service-dashboard.png)
 
-If you click the deployments in the left menu you'll see the deployments list (the dashboard and coredns services) 
+(You may have to scroll down to see the pods list and some other details)
+
+If you click the `Deployments` in the `Workloads` section of the left menu you'll see the deployments list (the dashboard, coredns and auto-scaler services) 
 
 ![dashboard-deployments-list](images/dashboard-deployments-list.png)
 
@@ -562,18 +607,27 @@ click on the kubernetes-dashboard deployment to look into the detail of the depl
 
 ![dashboard-deployment-dashboard](images/dashboard-deployment-dashboard.png)
 
-Click on the replica set (something like kubernetes-dashboard-58d96f69b8) to see the pods in the replica set. 
+Scroll down until you can see the replica set section
+
+![dashboard-deployment-dashboard-replica-sets-list](images/dashboard-deployment-dashboard-replica-sets-list.png)
+
+Click on the replica set name (kubernetes-dashboard-699cc9f655 in this case) then scroll down a bit to see the pods in the replica set. 
 
 ![dashboard-replicaset-dashboard](images/dashboard-replicaset-dashboard.png)
 
-In this case there's only one pod (kubernetes-dashboard-58d96f69b8-tlhgx in this case, yours will vary) so click on that to see the details of the pod. 
+In this case there's only one pod (kubernetes-dashboard-699cc9f655-jz4ph in this case, yours will vary) so click on that to see the details of the pod. 
 
 ![dashboard-pod-dashboard](images/dashboard-pod-dashboard.png)
 
-Using kubernetes-dashboard to look at a pod provides several useful features, we can look at any log data it's generated (output the pod has written to stderr or stdout) by clicking the Logs button on the upper right.
+Using kubernetes-dashboard to look at a pod provides several useful features, we can look at any log data it's generated (output the pod has written to stderr or stdout) 
+
+Click the Logs button on the upper right - ![dashboard-logs-icon](images/dashboard-logs-icon.png)
+
+That displays the logs for the dashboard pod
+
 ![dashboard-logs-dashboard](images/dashboard-logs-dashboard.png)
 
-This opens a new tab / window with the log data which can be very useful when debugging.  Of course it's also possible to use kubectl to download logs info if you wanted to rather than just displaying it in the browser.
+This displays the log data which can be very useful when debugging.  Of course it's also possible to use kubectl to download logs info if you wanted to rather than just displaying it in the browser.
 
 There is also the ability to use the dashboard to connect to a running container in a pod. This could be useful for debugging, and later on we'll use this to trigger a simulated pod failure when we explore service availability.
 
@@ -608,7 +662,7 @@ Though an Ingress itself is a Kubernetes concept Kubernetes does not itself prov
 
 <details><summary><b>Why not use an Ingress for the dashboard ?</b></summary>
 <p>
-Normally in a production environment you would use an ingress for the dashboard rather than setting up (and paying for) a separate load balancer. For this lab however we are using a load balancer because the dashboard uses certificates, and while it is possible to create the required DNS entries, wait for them to propogate and then create and install the certificates that takes time (especially if using real, not self-signed certificates)
+Normally in a production environment you would use an ingress for the dashboard rather than setting up (and paying for) a separate load balancer. For this lab however we are using a load balancer because the dashboard uses certificates, and while it is possible to create the required DNS entries for the certificate, wait for them to propogate and then create and install the certificates that takes time (especially if using real, not self-signed certificates)
 </p></details>
 
 ---
@@ -667,7 +721,7 @@ Kubernetes supports the concept of namespaces, these logically split the cluster
 In a production cluster where you may have many applications running composed of many microservices having separate namespaces is basically essential to avoid mistakes and misunderstandings that could impact the service operation.
 
 - Create a namespace for your projects and setup the environment to make it the default, to make it easier we have created a script called create-namespace.sh that does this for you. You must use **your initials** as a parameter (for example in my case that's `tg-helidon`)
-  -  `cd helidon-kubernetes/base-kubernetes`
+  -  `cd $HOME/helidon-kubernetes/base-kubernetes`
   -  `bash create-namespace.sh <your-initials>-helidon`
   
 ```
@@ -1043,8 +1097,9 @@ ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <no
 
 The external-ip will be the public ip address of the load balancer setup for the ingress controller.
 
-Or look up the ingress service in the namespace *'default'* in the dashboard, that will provide links to the ingress (though not the url's).
- The image below was captured from the services page of the Discovery and Load Balancing section of the dashboard. Note that it's on the default dashboard (that being the one the Ingress ***controller*** is running in)
+Or look up the ingress service in the namespace *'ingress-nginx'* in the dashboard, that will provide links to the ingress (though not the url's).
+
+The image below was going to the ingress-nginx namespace (that being the one the Ingress ***controller*** is running in) and on the left menu selecting `Services` in the `Service` section of the dashboard. 
 
 ![Ingress controller service endpoints](images/ingress-controller-service-endpoints.png)
 
@@ -1135,7 +1190,7 @@ To help you setup the image pull secrets and the others used as configuration vo
 
 **You** need to edit the script to provide the details of the OCIR you used and your identity information
 
-- Make sure you are in the **helidon-kubernetes/base-kubernetes** directory
+- Make sure you are in the **$HOME/helidon-kubernetes/base-kubernetes** directory
 
 - **Edit** the create-secrets.sh script
 
@@ -1237,7 +1292,7 @@ type: Opaque
 
 ```
 
-The contents of the secret is base64 encoded, to see the actual content we need to use a base64 decoder : 
+The contents of the secret is base64 encoded, to see the actual content we need to use a base64 decoder, in the following replace <your secret payload> with the stockmanager-security.yaml data in result from above, (it starts c2VjdXJpdHk in this example) : 
 
 -  `echo <your secret payload> | base64 -d -i -`
 
@@ -1261,11 +1316,13 @@ security:
 ```
 The dashboard is actually a lot easier in this case. 
 
-- In the dashboard click on the secrets page in the Config and Store section of the left hand menu.
+In the dashboard UI
+- Chose **your** namespace in the namespace selector (upper left) tg-helidon in my case, but yours may differ
+- Click on the `Secrets` choice in the `Config and Store` section of the left hand menu.
 - Select the sf-conf entry to see the list of files in the secret
 - Click on the eye icon next to the storefront-security.yaml to see the contents of the secret.
 
-
+![dashboard-secrets-stockmanager-security](images/dashboard-secrets-stockmanager-security.png)
 
 ### Config Maps
 
@@ -1640,8 +1697,8 @@ ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <no
 
 The External_IP column displays the external address. 
 
-- Let's try to get some data - **you might get an error**
-  -  `curl -i -k -X GET -u jack:password https://132.145.232.69/store/stocklevel`
+- Let's try to get some data - **you might get an error** (replace <external IP> with the ingress controllers load ballancer you got earlier)
+  -  `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
 
 ```
 HTTP/2 200 
@@ -1657,7 +1714,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 - If you get **424 failed dependency** or timeouts it's because the services are doing their lazy initialization, 
   - Wait a minute or so and retry the request
   
-<details><summary><b>How to find out what pods are connected to a servcie</b></summary>
+<details><summary><b>How to find out what pods are connected to a service</b></summary>
 <p>
 
 The service definition maps onto the actual pods in the dpeloyments using the selector as seen above. To find out exactly what pods match the selectors for a service 
@@ -1676,7 +1733,7 @@ Your database does not have the information that was uploaded in the Helidon par
 All is not lost, you can create the information easily
 
 - Run the following command, using the external IP address you used above
-  - `bash create-test-data.sh external_ip_address`
+  - `bash create-test-data.sh <external ip>`
     ```
     Service IP address is 130.61.11.184
     HTTP/1.1 200 OK
@@ -1746,7 +1803,7 @@ Using the logs function on the dashboard we'd see the same output, but you'd pro
 As we are running zipkin and have an ingress setup to let us access the zipkin pod let's look at just to show it working. 
 
 - Open your browser
-- Go to the ingress end point for your cluster, for example http://132.145.232.69/zipkin (replace with *your* Load balancer IP address)
+- Go to the ingress end point for your cluster, for example http://<external IP>/zipkin (replace with *your* ingress controllers Load balancer IP address)
 
 ![List of traces in Zipkin](images/zipkin-traces-list.png)
 
@@ -1756,8 +1813,8 @@ As we are running zipkin and have an ingress setup to let us access the zipkin p
 
 Of course the other services are also available, for example we can get the minimum change using the re-writer rules
 
-- Consult minimum change
-  -  `curl -i -k -X GET https://132.145.232.69/sf/minimumChange`
+- Consult minimum change (replace <external IP> with your address)
+  -  `curl -i -k -X GET https://<external IP>/sf/minimumChange`
 
 ```
 HTTP/2 200 
@@ -1772,7 +1829,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 And in this case we are going to look at data on the admin port for the stock management service and get it's readiness data
 
-- Readiness call: `curl -i -k -X GET https://132.145.232.69/smmgt/health/ready`
+- Readiness call: `curl -i -k -X GET https://<external IP>/smmgt/health/ready`
 
 ```
 HTTP/2 200 
@@ -1789,7 +1846,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 We saw in the helidon labs that it's possible to have the helidon framework monitor the configuration files and triger a refresh of the configuration data if something changed. Let's see how that works in Kubernetes.
 
 - Get the status resource data :
-  -  `curl -i -k -X GET https://132.145.232.69/sf/status`
+  -  `curl -i -k -X GET https://<external IP>/sf/status`
 
 ```
 HTTP/2 200 
@@ -1816,9 +1873,9 @@ We've mounted the sf-config-map (which contains the contents of storefront-confi
       storename: "My Shop"
       minimumdecrement: 3
 
-    #tracing:
-    #  service: "storefront"
-    #  host: "zipkin"
+    tracing:
+      service: "storefront"
+      host: "zipkin"
     ```
     
     -  Exit the pod :  `exit`
@@ -1878,7 +1935,7 @@ The storefront-config.yaml file has now changed to reflect the modifications you
 
 If we now get the status resource data again it's also updated
 
-- Query the status: `curl -i -k -X GET https://132.145.232.69/sf/status`
+- Query the status: `curl -i -k -X GET https://<external IP>/sf/status`
 
 ```bash
 HTTP/2 200 
