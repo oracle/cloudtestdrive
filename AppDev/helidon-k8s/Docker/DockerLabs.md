@@ -598,12 +598,10 @@ When you do the Kubernetes labs you will test out performing a rolling upgrade. 
 - In Eclipse, navigate to the **helidon-labs-storefront** project
   - Then navigate to **src/main/java**, then open the **com.oracle.labs.helidon.storefront.resources package**
   - Open the file **StatusResource.java** 
-  - Change the version in the returned to **0.0.2** (updated version shown below)
+  - Change the VERSION constant to **0.0.2** (updated version shown below)
 
   ```
-	  public JsonObject isAlive() throws InterruptedException {
-		  return JSON.createObjectBuilder().add("name", storename).add("alive", true).add("version", "0.0.2").build();
-	  }
+	  public final static String VERSION = "0.0.2") ;
   ```
 
   - Save the changes
