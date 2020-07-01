@@ -441,8 +441,9 @@ Lets take a look at the artifacts generated :
 
 - ATTENTION : Recently a small issue popped up in the script, generating an API version that is incompatible with the rest of the environment.
   - Edit the domain.yaml file
-  - Change the line `apiVersion: "weblogic.oracle/v7"`
-    - to `apiVersion: "weblogic.oracle/v6"`
+  - Change the line containing **apiVersion:** to reference **v6**
+    - WRONG version:  `apiVersion: "weblogic.oracle/v7"`
+    - CORRECT version:  `apiVersion: "weblogic.oracle/v6"`
   - Be sure to save the file.
 
 ### Launching your WLS instance
