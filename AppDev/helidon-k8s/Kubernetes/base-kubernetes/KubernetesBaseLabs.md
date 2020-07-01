@@ -143,15 +143,32 @@ The OCI Cloud Shell has helm already installed for you, however it does not know
     ```
     "kubernetes-dashboard" has been added to your repositories
     ```
+  - `helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx`
+    ```
+    "ingress-nginx" has been added to your repositories
+    ```
 You can get the current list of repositories    
 - Run the following command :
   - `helm repo list`
     ```                                            
     NAME                    URL                                              
     stable                  https://kubernetes-charts.storage.googleapis.com/
-    kubernetes-dashboard    https://kubernetes.github.io/dashboard/    
+    kubernetes-dashboard    https://kubernetes.github.io/dashboard/  
+    ingress-nginx           https://kubernetes.github.io/ingress-nginx
     ```
+    
+Lastly let's update the helm cache
 
+- Run the following command :
+  - `helm repo update`
+    ```
+    Hang tight while we grab the latest from your chart repositories...
+    ...Successfully got an update from the "ingress-nginx" chart repository
+    ...Successfully got an update from the "kubernetes-dashboard" chart repository
+    ...Successfully got an update from the "stable" chart repository
+    Update Complete. ⎈ Happy Helming!⎈ 
+    ```
+The stable is the location 
 ## Introduction to the lab
 
 ### Kubernetes
@@ -246,7 +263,7 @@ If you are using the OCI Cloud shell for **this** section of the lab (either in 
 
 - Run the following command : 
   
-  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard   --namespace kube-system --set service.type=LoadBalancer`
+  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set service.type=LoadBalancer`
 
 ```
 NAME: kubernetes-dashboard
@@ -276,7 +293,7 @@ The helm options are :
 
 - `kubernetes-dashboard` This is the "human" name to give the installation, it's easier to use that later on than using a machine generated one.
 
-- `stable/kubernetes-dashboard` is the name of the *chart* to install. Helm will download the char from the repo and then execute it. if you had needed a specific chart version they you could have added a version specifier, for example `--version=1.2.3`
+- `kubernetes-dashboard/kubernetes-dashboard` is the name of the *chart* to install. Helm will download the char from the repo kubernetes-dashboard and then execute it. if you had needed a specific chart version they you could have added a version specifier, for example `--version=1.2.3`
 
 - `--namespace kube-system` This tells helm to install the dashboard into the kube-system namespace. Namespaces are ways of partitioning the cluster to help you manage related resources, they are similar to the way you organize files using folders on your computer.
 
@@ -662,7 +679,7 @@ Though an Ingress itself is a Kubernetes concept Kubernetes does not itself prov
 
 <details><summary><b>Why not use an Ingress for the dashboard ?</b></summary>
 <p>
-Normally in a production environment you would use an ingress for the dashboard rather than setting up (and paying for) a separate load balancer. For this lab however we are using a load balancer because the dashboard uses certificates, and while it is possible to create the required DNS entries for the certificate, wait for them to propogate and then create and install the certificates that takes time (especially if using real, not self-signed certificates)
+Normally in a production environment you would use an ingress for the dashboard rather than setting up (and paying for) a separate load balancer. For this lab however we are using a load balancer because the dashboard uses certificates, and while it is possible to create the required DNS entries for the certificate, wait for them to propagate and then create and install the certificates that takes time (especially if using real, not self-signed certificates)
 </p></details>
 
 ---
@@ -681,7 +698,7 @@ Firstly we need to create a namespace for the ingress controller.
 - Run the following command : 
 
 - Install **ingress-nginx** using Helm 3:
-  -  `helm install ingress-nginx stable/nginx-ingress  -n ingress-nginx --set rbac.create=true`
+  -  `helm install ingress-nginx ingress-nginx/ingress-nginx  -n ingress-nginx --set rbac.create=true`
 
 
 ```
