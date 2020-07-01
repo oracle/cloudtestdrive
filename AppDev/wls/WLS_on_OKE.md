@@ -105,7 +105,7 @@ We will be using an Oracle Cloud Managed Kubernetes cluster to deploy weblogic.
     *Remark*: you might have to check available compute shapes on your tenancy.  You can do this by visualizing the **Service Limits** on the "Administration" , "Tenancy Details" page.
   - Select a **Number of nodes** that corresponds to the number of *Availability Domains* in the *Region* you have selected.  For example in Frankfurt this is **3**, in Amsterdam this is **1**.
 - Activate the Add-on (Dashboard)
-    
+  
   
   ![image-20191220180903279](images/wls_oke5.png)
 
@@ -439,7 +439,12 @@ Lets take a look at the artifacts generated :
   
   ```
 
-
+- ATTENTION : Recently a small issue popped up in the script, generating an API version that is incompatible with the rest of the environment.
+  - Edit the domain.yaml file
+  - Change the line containing **apiVersion:** to reference **v6**
+    - WRONG version:  `apiVersion: "weblogic.oracle/v7"`
+    - CORRECT version:  `apiVersion: "weblogic.oracle/v6"`
+  - Be sure to save the file.
 
 ### Launching your WLS instance
 
