@@ -43,7 +43,20 @@ To access the OCI Cloud Shell, you can use the native browser on your laptop (no
 
 Note, in some steps you may want to minimize the OCI Cloud Shell so you can get information from the GUI. Click the arrows icon again [](images/cloud-console-shrink.png) to minimize the OCI Cloud Shell and see the Oracle Cloud GUI again. Alternatively you can open a second browser window or tab onto the Oracle Cloud GUI.
 
-In some steps you are asked to edit files. The OCI Cloud Shell supports typical Linux editors such at `vi`, `emacs` and `nano` Use the editor you prefer to make changes to files.
+In some steps you are asked to edit files. The OCI Cloud Shell supports typical Linux editors such at `vi`, `emacs` and `nano` Use the editor you prefer to make changes to files. When you use kubectl to edit configuration directly however it uses a vi style editor.
+
+<details><summary><b>Not familiar with vi ?</b></summary>
+<p>
+If you are not familiar with vi this is a very short intro
+
+vi is a modal editor, there are two modes, navigating around (done using the cursor keys on your keyboard) and editing
+
+To edit navigate to the place you want to change, the `x` key on the keyboard will delete the character under the cursor, and the `i` key will switch to editing mode and start to insert in front of the cursor (you can use delete etc.) To switch back to the navigation mode then press the `Escape` key on your keyboard.
+
+When you have finished changing the file then press the `Escape` key on your keyboard then press `ZZ` (that's capital Z twice) to save the file and exit
+
+For more details on vi there is a [guide here](http://heather.cs.ucdavis.edu/~matloff/UnixAndC/Editors/ViIntro.html)
+</p></details>
 
 <details><summary><b>Permissions problem accessing the OCI Cloud Shell ?</b></summary>
 <p>
@@ -105,7 +118,7 @@ We will use the OCI Cloud Shell to download the database wallet file.
 - Edit the database configuration file to specify the database name. This file is `$HOME/helidon-kubernetes/configurations/stockmanagerconf/confsecure/stockmanager-database.yaml`
   - Locate the javax.sql.DataSource.stockLevelDataSourceOraATPJTA.datasource.url line. This will look something like 
     ```
-    url: jdbc:oracle:thin:@jleoow_high?TNS_ADMIN=./Wallet_ATP
+    url: jdbc:oracle:thin:@<connection name>?TNS_ADMIN=./Wallet_ATP
     ```
   - update the name of the connection (shown here as `<connection name>`) and replace `<connection name>` with the name from the tnsnames.ora file, for example `tg_high`.  In this particular case the resulting line will look like  
     ```
