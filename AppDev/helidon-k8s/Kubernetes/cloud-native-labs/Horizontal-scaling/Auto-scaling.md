@@ -34,7 +34,6 @@ For now we are going to use the simplest approach of the metrics server.
 
 ### Installing the metrics server
 
-
 - In the OCI Cloud Shell type
   - `helm install metrics-server stable/metrics-server --namespace kube-system`
 
@@ -81,7 +80,7 @@ NAME        CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%
 10.0.10.4   157m         7%     1232Mi          18%       
  ```
   
-Note that this was from a cluster with three nodes, depending on the side of the cluster you will see a differend number of lines output.
+Note that this was from a cluster with three nodes, depending on the size of your cluster you will see a different number of nodes output.
   
 We can also see the status of the pods in terms of what they are using
 
@@ -124,7 +123,7 @@ proxymux-client-lr7ft                   1m           8Mi
 <details><summary><b>Kubernetes dashboard and the metrics-server</b></summary>
 <p>
 
-The metrics server provides information on the current use of the cluster, the kubernetes dashboard is being updated to version 2, then it will be able to pull data from the metrics server and you'll be able to see the CPU and Memory utilization in the dashboard. At the time of writing (Feb 2020) the v2 dashboard had just started it's beta process
+The metrics server provides information on the current use of resources in the cluster, the kubernetes dashboard has just been updated to version 2, at some point the plan is that the dashboard will be able to connect to the metrics-server and you will be able to see the pod CPU and memory usage in the dashboard
 
 </p></details>
 
@@ -275,7 +274,7 @@ Events:           <none>
 Now restart the load generator program. Note that you may need to change the sleep time from 0.1 to a different value if the load generated is not high enough to trigger an autoscale operation, but don't set it to low !
 
 - In the OCI Cloud Shell (substitute the IP address for the ingress for your cluster)
-  -  `bash generate-load.sh 132.145.253.186 0.1`
+  -  `bash generate-load.sh <external IP> 0.1`
 
 
 ```

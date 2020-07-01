@@ -143,7 +143,7 @@ The OCI Cloud Shell has helm already installed for you, however it does not know
     ```
     "kubernetes-dashboard" has been added to your repositories
     ```
-  - `helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx`
+  - `helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx/`
     ```
     "ingress-nginx" has been added to your repositories
     ```
