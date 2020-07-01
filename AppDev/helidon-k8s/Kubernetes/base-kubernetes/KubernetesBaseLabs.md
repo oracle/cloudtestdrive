@@ -1663,7 +1663,7 @@ Is we look at the Kubernetes dashboard we will see similar information. There is
 
 
 
-- Now lets look at the logs of the pods you have launched (replace the ID by the exact ID of your pod)
+- Now lets look at the logs of the pods you have launched (replace the ID shown here with the exact ID of your pod)
   -  `kubectl logs  --follow storefront-68bbb5dbd8-vp578`
 
 ```
@@ -1871,7 +1871,7 @@ We've mounted the sf-config-map (which contains the contents of storefront-confi
     ```
     app:
       storename: "My Shop"
-      minimumdecrement: 3
+      minimumdecrement: 4
 
     tracing:
       service: "storefront"
@@ -1885,8 +1885,8 @@ We've mounted the sf-config-map (which contains the contents of storefront-confi
 As expected we see the contents of our config file. Let's use the dashboard to modify that data
 
 - Open the dashboard
-- Select your namespace
-- Click on Config Maps in the Config and Storage section of the left menu
+- Select your namespace in the selector on the upper left
+- Click on `Config Maps` in the `Config and Storage` section of the left menu
 
 ![Config Maps list in namespace](images/config-maps-list.png)
 
@@ -1896,14 +1896,13 @@ As expected we see the contents of our config file. Let's use the dashboard to m
 
 As we'd expect it has our contents (You may have a different storename than `My Shop` if you changed the storefront-config.yaml file before creating the config map)
 
-- Click the **Edit button** (upper right) to get an on-screen editor where we can change the yaml that represents the map. 
+- Click the **Edit icon** (upper right) ![dashboard-edit-icon](images/dashboard-edit-icon.png) to get an on-screen editor where we can change the yaml that represents the map. 
 
 ![Config Maps in editor](images/config-map-editor-initial.png)
 
-- Locate the **storename** attribute at the bottom of the file. 
+- Locate the **storename** attribute in the data.storefront-config.yaml section. 
 
-- Now edit the text and **change** the text `My Shop` to something else. Be sure to change only the `My Shop` text, not the quote characters or other things (you don't want to create corrupt YAML which will be rejected).
-
+- Now edit the text and **change** the text `My Shop` to something else, here I've changed it to `Tims shop` . Be sure to change only the `My Shop` text, not the quote characters or other things (you don't want to create corrupt YAML which will be rejected).
 
 
 ![Config Maps changed in editor](images/config-map-editor-updated.png)
@@ -1931,7 +1930,7 @@ Now let's return to the pod and see what's happened
 
   - Exit the pod :   `exit`
 
-The storefront-config.yaml file has now changed to reflect the modifications you made to the config map. Note that it usually seems to take between 30 - 60  seconds for the change to propogate into the pod.
+The storefront-config.yaml file has now changed to reflect the modifications you made to the config map. Note that it usually seems to take between 30 - 60  seconds for the change to propogate into the pod, so if you don't see the change immediately wait a short time then retry.
 
 If we now get the status resource data again it's also updated
 
@@ -1945,10 +1944,12 @@ content-type: application/json
 content-length: 51
 strict-transport-security: max-age=15724800; includeSubDomains
 
-{"name":"Tims Shop","alive":true,"version":"0.0.1"}
+{"name":"Tims Shop","alive":true,"version":"0.0.1","timestamp":"2020-07-01 11:35:43.940"}
 ```
+
 Of course there is time delay from the change being visible in the pod to the Helidon framework doing it's scan to detect the change and reloading the config, so you may have to issue the curl command a few times to see when the change has fully propogated.
-We've shown how to change the config in helidon using config maps, but the same principle would apply if you were using secrets and modified those (though there isn't really a usable secret editor in the dashboard)
+
+We've shown how to change the config in helidon using config maps, but the same principle would apply if you were using secrets and modified those (though unless you can edit base64 directly there isn't really a usable secret editor in the dashboard)
 
 
 
