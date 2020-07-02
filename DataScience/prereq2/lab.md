@@ -18,9 +18,6 @@ There are two ways to do this:
 
 This is the recommend approach in case you are working in an Oracle Cloud tenancy that is "empty", e.g. you have just created your Cloud (Trial) tenancy. This is the fastest way to provision these resources.
 
-- Download the stack from [here](./scripts/provision_data_science.zip), save it on your local harddrive. The result should be a ZIP file.
-  A stack contains the instructions for all the required components / configurations.
-
 - In your Oracle Cloud console, open the menu.
 
 ![](./images/openmenu.png)
@@ -41,37 +38,41 @@ This is the recommend approach in case you are working in an Oracle Cloud tenanc
 
 ![](./images/resourcemanager.png)
 
-- Choose the compartment in which you wish to install. This can be a subcompartment you've created or  the root compartment in your Oracle trial.
-
 <!--![](./images/changecompartment.png)-->
 
 - Click the "Create Stack" button.
 
 ![](./images/createstackbutton.png)
 
-- Upload the ZIP file (that you downloaded earlier), e.g. by dragging it over to the indicated box.
+- Now we are going to choose a predefined Stack for the Data Science service and all its prerequisites. Choose "Sample Solution" and click the button "Select Solution".
 
-![](./images/uploadzip.png)
+![](./images/newimage1.png)
 
-<!--- **Important** - Change the compartment to "data-science-work". Leave the other values at their defaults and click Next.
+- Check the "Data Science" solution and click "Select Solution".
 
-![](./images/choosecompartment.png)-->
-- Set the compartment to where you wish to provision the services. Click Next.
-![](./images/next.png)
+![](./images/newimage2.png)
 
-- Now configure the variables for this stack. We recommend that you keep the default compute shape VM.Standard.E2.2 as it is more than enough for the workshop, and it will allow you to use the services for longer.
-Also please keep the Functions option UNchecked, we wil not be using Functions in this workshop, and it makes the configuration much easier. Click Next.
+- Choose a compartment that you've created or use Root.
 
-<!--Again, choose the subcompartment that you created earlier.-->
+![](./images/newimage3.png)
 
-<!--![](./images/choosecompartmentvariable.png)-->
+- Click "Next".
 
-<!--![](./images/configurestack.png)-->
+![](./images/newimage4.png)
 
-- The configuration you've entered is shown for verification. Click Create.
+- Configure the Stack. We recommend you choose VM.Standard2.2 as the shape. 
+
+![](./images/newimage5.png)
+
+- Disable the option "Enable Vault Support". Then click "Next".
+
+![](./images/newimage6.png)
+![](./images/newimage7.png)
+
+
+- The screen shows a summary. Now click "Create".
 
 ![](./images/create.png)
-
 
 - Run the job by going to "Terraform Actions" and choosing "Apply".
 
