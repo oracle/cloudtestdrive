@@ -55,13 +55,13 @@ To separate the monitoring services from the  other services we're going to put 
 
 ### Prometheus
 
-<details><summary><b>Older versions of Kubernetes than 1.15.7</b></summary>
+<details><summary><b>Older versions of Kubernetes than 1.16.8</b></summary>
 <p>
-We assume you are using Kubernetes 1.15.7 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the latest version of the helm charts ( 9.7.4 at the time of writing) are supported. If you were using an older version of Kubernetes you may need to specify a particular version of the helm chart as follows :
+We assume you are using Kubernetes 1.16.8 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the version of the prometheus helm charts (11.6.0 at the time of writing) were found to work. If you were using an older version of Kubernetes you may need to specify a particular version of the helm chart as follows :
 
-Kubernetes 1.14 Prometheus helm chart 9.7.1 worked for us
+Kubernetes 1.15.7 Prometheus helm chart 9.7.4 worked for us
 
-Kubernetes 1.13 Prometheus helm chart 9.1.0 worked for us
+Kubernetes 1.14.8 Prometheus helm chart 9.7.1 worked for us
 
 To specify a specific older version use the version keyword in your help command, e.g. `--version 9.1.0`
 
@@ -77,7 +77,7 @@ Installing Prometheus is simple, we just use helm.
 
 ```
 NAME: prometheus
-LAST DEPLOYED: Mon Dec 30 13:25:23 2019
+LAST DEPLOYED: Wed Jul  1 18:18:10 2020
 NAMESPACE: monitoring
 STATUS: deployed
 REVISION: 1
@@ -88,8 +88,11 @@ prometheus-server.monitoring.svc.cluster.local
 
 
 Get the Prometheus server URL by running these commands in the same shell:
-  export POD_NAME=$(kubectl get pods --namespace monitoring -l "app=prometheus,component=server" -o jsonpath="{.items[0].metadata.name}")
-  kubectl --namespace monitoring port-forward $POD_NAME 9090
+  NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+        You can watch the status of by running 'kubectl get svc --namespace monitoring -w prometheus-server'
+
+  export SERVICE_IP=$(kubectl get svc --namespace monitoring prometheus-server -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+  echo http://$SERVICE_IP:80
 
 
 The Prometheus alertmanager can be accessed via port 80 on the following DNS name from within your cluster:
@@ -144,7 +147,7 @@ On the `prometheus-server` line you can see the external IP address the load bal
 If the external IP is <pending> then Kubernetes is still starting the Prometheus environment. Wait a short while (a few mins) and try again.
 
 Let's go to the service web page
-  - In your web browser open up (replace <Ip address> with the external IP you got)
+  - In your web browser open up (replace <Ip address> with the IP you got **for the prometheus server**)
     - `http://<ip address>/graph`
  
 You'll see the Initial prometheus graph page as below.
@@ -377,7 +380,7 @@ replicaset.apps/storefront-588b4d69db    1         1         1       79s
 replicaset.apps/zipkin-88c48d8b9         1         1         1       79s
 ```
 
-Note we are doing an undeploy and deploy to avoid confusion with different replica sets. If we'd just re-done the deploy only, Kubernetes would have acted like it was an upgrade of the deployments and we'd have seen pods terminating, while new ones were being created and additional replica sets. We'll look into how this actually works in detail in a later lab.
+Note we are doing an undeploy and deploy to ensure we have a known state. If we'd just re-done the deploy only, Kubernetes would have acted like it was an upgrade of the deployments and we'd have seen pods terminating, while new ones were being created and additional replica sets. We saw how this actually works in the rolling upgrade lab.
 
 - Return to the browser and reload the Prometheus page
 
