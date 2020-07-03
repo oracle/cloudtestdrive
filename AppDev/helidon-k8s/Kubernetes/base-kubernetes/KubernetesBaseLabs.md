@@ -143,10 +143,6 @@ The OCI Cloud Shell has helm already installed for you, however it does not know
     ```
     "kubernetes-dashboard" has been added to your repositories
     ```
-  - `helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx/`
-    ```
-    "ingress-nginx" has been added to your repositories
-    ```
 You can get the current list of repositories    
 - Run the following command :
   - `helm repo list`
@@ -154,7 +150,6 @@ You can get the current list of repositories
     NAME                    URL                                              
     stable                  https://kubernetes-charts.storage.googleapis.com/
     kubernetes-dashboard    https://kubernetes.github.io/dashboard/  
-    ingress-nginx           https://kubernetes.github.io/ingress-nginx
     ```
     
 Lastly let's update the helm cache
@@ -163,12 +158,11 @@ Lastly let's update the helm cache
   - `helm repo update`
     ```
     Hang tight while we grab the latest from your chart repositories...
-    ...Successfully got an update from the "ingress-nginx" chart repository
     ...Successfully got an update from the "kubernetes-dashboard" chart repository
     ...Successfully got an update from the "stable" chart repository
     Update Complete. ⎈ Happy Helming!⎈ 
     ```
-The stable is the location 
+
 ## Introduction to the lab
 
 ### Kubernetes
@@ -695,15 +689,42 @@ Firstly we need to create a namespace for the ingress controller.
     namespace/ingress-nginx created
     ```
 
+As we will be providing a secure TLS protected connection we need to create a certificate to protect the connection. In a **production** environment this would be accomplished by going to a certificate authority and having them issue a certificate. This however can take time as certificates are (usually) based on a DNS name and a commercial provider may well require that you prove your organizations identity before issuing a certificate.
+
+To enable the lab to complete in a reasonable time we will therefore be generating our own self-signed certificate. For a lab environment that's fine, but in a production environment you wouldn't do this.
+
+- Run the following command to generate a certificate.
+
+  - `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=nginxsvc/O=nginxsvc"`
+
+```
+Generating a 2048 bit RSA private key
+............................+++
+............................................................................................+++
+writing new private key to 'tls.key'
+-----
+```
+ 
+The certificate needs to be in a Kubernetes secret, we'll look at these in more detail, but for now :
+
+- Run the following command to save the certificate as a secret in the ingress-nginx namespace
+
+  - `kubectl create secret tls tls-secret --key tls.key --cert tls.crt -n ingress-nginx`
+ 
+```
+secret/tls-secret created
+```
+
+
 - Run the following command : 
 
 - Install **ingress-nginx** using Helm 3:
-  -  `helm install ingress-nginx ingress-nginx/ingress-nginx  -n ingress-nginx --set rbac.create=true`
+  -  `helm install ingress-nginx stable/nginx-ingress -n ingress-nginx --set rbac.create=true --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-tls-secret"=tls-secret --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-ssl-ports"=443`
 
 
 ```
 NAME: ingress-nginx
-LAST DEPLOYED: Fri Mar 20 14:33:47 2020
+LAST DEPLOYED: Fri Jul  3 12:06:33 2020
 NAMESPACE: ingress-nginx
 STATUS: deployed
 REVISION: 1
@@ -724,10 +745,77 @@ Because the Ingress controller is a service, to make it externally available it 
 
 ```
 NAME                                     TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)                      AGE   SELECTOR
-ingress-nginx-nginx-ingress-controller   LoadBalancer   10.111.0.168   136.23.44.21 80:31934/TCP,443:31827/TCP   61s   app=nginx-ingress,component=controller,release=ingress-nginx
+ingress-nginx-nginx-ingress-controller   LoadBalancer   10.111.0.168   130.61.15.77 80:31934/TCP,443:31827/TCP   61s   app=nginx-ingress,component=controller,release=ingress-nginx
 ```
-In this case we can see that the load balancer has been created and the external-IP address is available. If the External IP address is listed as `<pending>` then the load balancer is still being created, wait a short while then try the command again
+In this case we can see that the load balancer has been created and the external-IP address is available. If the External IP address is listed as `<pending>` then the load balancer is still being created, wait a short while then try the command again.
 
+In the helm command you'll have seen a couple of `--set`` options.  These are oci specific annotations (more on annotations later) which tell Kubernetes to setup the load balancer using the TLS secret we created earlier and to use port 443 for encrypted connections (the standard https port)
+
+**Make a note of this external IP address, you'll be using it a lot !**
+
+As we are having the load balancer act as the encryption termination point, and internal to the cluster we are not using encryption we need to update the load balancer to tell is that once is has terminated the secure connection is should pass on the request internally using an http, not https.
+
+Open up the OCI Cloud UI in your web browser, using the "hamburger: menu navigate to `Core Infrastructure` section then `Networking then select `Load Balancers`
+
+![hamburger-menu-select-loadbalancer](images/hamburger-menu-select-loadbalancer.png)
+
+Locate the row for **your** load balancer with the IP address you got above, in this case that's for a load balancer named `5da95ea3-6993-4e3b-8d09-a6da655b3eae` but it **will** be different for you !
+
+Click on the load balancer name to open it's details
+
+![load-balancer-overview](images/load-balancer-overview.png)
+
+Locate the resources section on the lower left side
+
+![load-balancer-resources](images/load-balancer-resources.png)
+
+Click on the `Listeners` option
+
+![load-balancer-listeners](images/load-balancer-listeners.png)
+
+In the list of listeners look at the line TCP-443, notice that it is set to uses SSL (right hand column) and that it's backend set (where it sends traffic to) is set to TCP-443, we need to change that.
+
+Click on the three dots on the right hand side of the **TCP-443** row
+
+![load-balancer-listeners-edit](images/load-balancer-listeners-edit.png)
+
+Click the `Edit` option in the resulting menu
+
+![load-balancer-edit-listener-chose-backend-set](images/load-balancer-edit-listener-chose-backend-set.png)
+
+In the popup locate the BackendSet option, click on it and select the `TCP-80` option
+
+Click the `Update Listener`
+
+![load-balancer-update-in-progress])images/load-balancer-update-in-progress.png)
+
+You'll be presented with a `Work in progress` menu, for now just click the `Close` button and the update will continue in the background
+
+<details><summary><b>Scripting the listener change</b></summary>
+<p>
+While the configuration of the load balancer is outside kubernetes I just wanted to show you how you might go about scripting this rather than doing it through the browser interface.
+
+The following commands do absolutely no error checking, or waiting for the load balancer IP address to be assigned, so before you used them in a script for automation you'd probably want to put some decent error correction in place.
+
+The [oci command](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cliconcepts.htm) used here allows you to manage aspects of the oci environment, you can also run it in your laptop if you want (follow the instructions at the link to download anc configure it.) The oci command is **very** powerful and has a lot of options (on the OCI shell type `oci --help` to see them) The script also uses the [jq command](https://stedolan.github.io/jq) which is in the OCI Cloud shell, you can download it from the jq site
+
+```bash
+echo Getting the Load balancer IP address from Kubernetes
+LB_IP=`kubectl get service ingress-nginx-nginx-ingress-controller -n ingress-nginx -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'`
+echo Load balancer IP is $LB_IP
+echo Getting the CTDOKE compartment ocid from oci
+COMPARTMENT_OCID=`oci iam compartment list --name CTDOKE | jq -j '.data[0].id'`
+echo CTKOKE compartment ocid is $COMPARTMENT_OCID
+echo Getting the Load balancer ocid
+LB_OCID=`oci lb load-balancer list --all --compartment-id=$COMPARTMENT_OCID | jq -j ".data[] | select (.\"ip-addresses\"[].\"ip-address\"  == \"$LB_IP\")  | .id"`
+echo Load balancer ocid is $LB_OCID
+echo Running the update
+echo y | oci lb listener update  --load-balancer-id=$LB_OCID --listener-name=TCP-443  --default-backend-set-name=TCP-80 --protocol=TCP --port=443 --ssl-certificate-name=tls-secret  --wait-for-state SUCCEEDED --wait-for-state FAILED
+```
+
+</p></details>
+
+Note that in a production environment you might want to extend the encryption by encrypting traffic between the load balancer and the ingress controller, and also between the microservices using a servcie mesh (which is a later optional lab.)
 
 ### Running your containers in Kubernetes
 
@@ -812,8 +900,6 @@ Of course the Kubernetes dashboard also understands namespaces. If you go to the
 ---
 
 
-
-
 ### Creating Services
 
 The next step is to create services:  a description of a set of microservice instances and the port(s) they listen on. 
@@ -890,7 +976,7 @@ We can of course also use the kuberntes dashboard. Open the dashboard and make s
 
 If however you click on the service name in the services list in the dashboard you'll see that there are no endpoints, or pods associated with the service. This is because we haven't (yet) started any pods with labels that match those specified in the selector of the services.
 
-### Accessing your services using an ingress
+### Accessing your services using an ingress rule
 
 <details><summary><b>Introduction</b></summary>
 <p>
@@ -917,14 +1003,13 @@ PS I know in this lab we've used a load balancer for the dashboard (and will do 
 ---
 
 
-
-We have already installed the Ingress controller which actually operates the ingress service. You can see this by looking at the services.  The ingress service is in this case cluster-wide so it's in the default namespace, so we have to specify that :
+We have already installed the Ingress controller which actually operates the ingress service and configured the associated load balancer. You can see this by looking at the services.  The ingress service is in the ingress-nginx namespace, so we have to specify that :
 
 -  `kubectl get services -n ingress-nginx`
 
 ```
 NAME                                          TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
-ingress-nginx-nginx-ingress-controller        LoadBalancer   10.111.0.168    132.18.12.23  80:31934/TCP,443:31827/TCP   4h9m
+ingress-nginx-nginx-ingress-controller        LoadBalancer   10.111.0.168    130.61.15.77  80:31934/TCP,443:31827/TCP   4h9m
 ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <none>        80/TCP                       4h9m
 ```
 
@@ -939,32 +1024,6 @@ For the moment there are no actual ingress rules defined yet, we can see this us
 
 ```
 No resources found in tg-helidon namespace.
-```
-
-As we will be providing a secure TLS protected connection we need to create a certificate to protect the connection. In a **production** environment this would be accomplished by going to a certificate authority and having them issue a certificate. This however can take time as certificates are (usually) based on a DNS name and a commercial provider may well require that you prove your organizations identity before issuing a certificate.
-
-To enable the lab to complete in a reasonable time we will therefore be generating our own self-signed certificate. For a lab environment that's fine, but in a production environment you wouldn't do this.
-
-- Run the following command to generate a certificate.
-
-  - `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=nginxsvc/O=nginxsvc"`
-
-```
-Generating a 2048 bit RSA private key
-............................+++
-............................................................................................+++
-writing new private key to 'tls.key'
------
-```
- 
-The certificate needs to be in a Kubernetes secret, we'll look at these in more detail, but for now :
-
-- Run the following command to save the certificate as a secret
-
-  - `kubectl create secret tls tls-secret --key tls.key --cert tls.crt`
- 
-```
-secret/tls-secret created
 ```
 
 <details><summary><b>More on Ingress rules</b></summary>
@@ -987,8 +1046,6 @@ metadata:
     # use the shared ingress-nginx
     kubernetes.io/ingress.class: "nginx"
 spec:
-  tls:
-  - secretName: tls-secret
   rules:
   - http:
       paths:
@@ -1002,7 +1059,7 @@ Firstly note that the api here is the networking.k8s.io/v1beta1 API. In recent v
 
 The metadata specifies the name of the ingress (in this case zipkin) and also the annotations. Annotations are a way of specifying name / value pairs that can be monitored for my other services. In this case we are specifying that this ingress Ingress rule has a label of Kubernetes.io/ingress.class and a value of nginx. The nginx ingress controller will have setup a request in the Kubernetes infrastructure so it will detect any ingress rules with that annotation as being targeted to be processed by it. This allows us to define rules as standalone items, without having to setup and define a configuration for each rule in the ingress controller configuration itself. This annotation based approach is a simple way for services written to be cloud native to identify other Kubernetes objects and determine how to hendle them, as we will see when we look at monitoring in kubenteres.
 
-The spec section basically defined the certificate for the TLS connection and the rules to do the processing, basically if there's an connection coming in with a url that starts with /zipkin then the connection will be proxied to the zikin service on port 9411. The entire URL will be forwarded including the /zipkin.
+The spec section basically defines the rules to do the processing, basically if there's an connection coming in with a url that starts with /zipkin then the connection will be proxied to the zikin service on port 9411. The entire URL will be forwarded including the /zipkin. (Note that you could in the spec section also specify a certificate for that connection, but in our case we did that in the load balancer.)
 
 In some cases we don't want the entire URL to be forwarded however, what if we were using the initial part of the URL to identify a different service, perhaps for the health or metrics capabilities of the microservices which are on a different port (http://storefront:9081/health for example) In this case we want to re-write the incomming URL as it's passed to the target
 
@@ -1015,8 +1072,6 @@ metadata:
     # use a re-writer
     nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
-  tls:
-  - secretName: tls-secret
   rules:
   - http:
       paths:
