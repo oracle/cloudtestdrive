@@ -1,22 +1,14 @@
 ![](../commonimages/workshop_logo.png)
 
-## Prerequisite 2: Provision the Data Science service and its required network resources
-
-This consists of the following:
-- Create a user group for your data scientists.
-- Create a compartment for your data science work.
-- Create the VCN and subnet necessary to give your data scientists egress access to the public internet from a notebook session.
-- Create the proper policies to give your data scientists access to the data science service.
-- Provision the Data Science service (Project and Notebook)
+## Prerequisite 2: Provision the Data Science service and its dependencies
 
 There are two ways to do this:
-1) If you are working in an Oracle Cloud tenancy that is "empty", e.g. you have just created your Cloud Free Tier account, then we recommend you use the automated approach. 
-
-2) In case you have already provisioned several services or you have already performed configurations in your Oracle Cloud tenancy before, we recommend you provision these resources manually. In this case, follow the manual instructions so that you can control and review each step of the process as you go along and, if necessary, adapt it to your unique situation.
+- Option 1 (Recommended): Automated provisioning, recommended if you are doing this in a new Oracle Cloud tenancy that is "empty", e.g. you have just created your trial. Please go [here](../prereq1/lab.md) first in case you don't have an Oracle Cloud Trial yet.
+- Option 2: In all other cases we recommend manual step-by-step provisioning of the Data Science service and its dependencies. In this case, follow the manual instructions so that you can control and review each step of the process as you go along and, if necessary, adapt it to your unique situation.
 
 ### Option 1: Automated provisioning of network resources and the Data Science service
 
-This is the recommend approach in case you are working in an Oracle Cloud tenancy that is "empty", e.g. you have just created your Cloud (Trial) tenancy. This is the fastest way to provision these resources.
+This is the recommend approach in case you are working in an Oracle Cloud tenancy that is "empty", e.g. you have just created your Cloud Trial. This is the fastest way to provision these resources.
 
 - In your Oracle Cloud console, open the menu.
 
@@ -87,6 +79,13 @@ Provisioning should take about 10 minutes after which the status of the Job shou
 ### Option 2: Manual installation steps to provision network resources and the Data Science service
 
 This approach is recommended if you already have other services / configurations made in your Oracle Cloud tenancy. 
+
+This consists of the following:
+- Create a user group for your data scientists.
+- Create a compartment for your data science work.
+- Create the VCN and subnet necessary to give your data scientists egress access to the public internet from a notebook session.
+- Create the proper policies to give your data scientists access to the data science service.
+- Provision the Data Science service (Project and Notebook)
 
 If this is the case, please follow the detailed provisioning steps [here](https://docs.cloud.oracle.com/en-us/iaas/data-science/data-science-tutorial/tutorial/get-started.htm#concept_tpd_33q_zkb).
 
