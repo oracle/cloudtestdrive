@@ -29,8 +29,8 @@ In real life, you would want to set up a more sophisticated logic to manage your
 In the ATP Connection step of this lab, you downloaded the ATP Connection wallet zip file into the Downloads folder.  We will now unizp the file and copy both the wallet zip file and the folder into the git repository folder.
 
 ```bash
-# Position yourself in the git repo
-cd dev/ATPDocker
+# Position yourself in the git repo.  dev will change depending on your repo name
+cd dev/ATPnodeapp
 
 # Download the file via the OCI CLI, replacing the database OCID with the OCID of your database
 oci db autonomous-database generate-wallet --file Wallet.zip --password 'Pa$$w0rd' --autonomous-database-id ocid1.autonomousdatabase.oc1.eu-frankfurt-1.abtheljtn3slgmzqr2benreqkrs55gwg3v3tz6lgwhgfgzaccrb
