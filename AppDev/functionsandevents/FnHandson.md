@@ -24,7 +24,7 @@ We have created for you an Oracle Linux 7 based virtual machine within the Oracl
 Use the SSH client of your choice to SSH to your lab virtual machine which will have been assigned at the start of the workshop. SSH as the **opc** user and use the id\_rsa private key. For example on Mac or Linux use the following commands:
 
 ```
-$ chomd 600 /path/to/id_rsa
+$ chmod 600 /path/to/id_rsa
 $ ssh -i /path/to/id_rsa opc@your.vm.ip.address
 ```
 
@@ -38,9 +38,11 @@ Please refer to [Appendix B](AppendixB.md) if you would prefer to use the Chrome
 
 ### Download & Install the Fn project CLI
 
+The Fn project CLI will allow you to develop Functions code locally on your VM and then package it and push it to your OCI tenancy.
+
 Run the following command to install the Fn project CLI on your VM
 
-curl -LSs https://raw.githubusercontent.com/fnproject/cli/master/install | sh
+*curl -LSs https://raw.githubusercontent.com/fnproject/cli/master/install | sh*
 
 Once installed you’ll see the Fn CLI version printed out.
 
@@ -86,7 +88,7 @@ We will return to the OCI console to configure the Functions and Events services
 
 ### Create a new Fn context for OCI
 
-Fn installs with a default context but now we need to create a second to allow the Fn CLI to interact with the Oracle Functions service.
+Fn installs with a default context but now we need to create a second to allow the Fn CLI to interact with the Oracle Functions service on OCI.
 
 On your lab virtual machine SSH session issue the following commands:
 
@@ -104,8 +106,7 @@ CURRENT	NAME	PROVIDER	API URL			REGISTRY
 ```
 
 We now need to add the specific compartment within OCI to where you will create a new Oracle Functions application. 
-We do this by providing the compartment OCID. 
-For this lab it will be the same compartment for every student. The following Fn command needs to be executed in order to set this up.
+We do this by providing the compartment OCID, a unique identifier. For this lab it will be the same compartment for every student which is already set as an environment variable in your VM. The following Fn command needs to be executed in order to set this up.
 
 The OCID has been pre-defined as an environment variable in you lab vm to make this simpler.
 
@@ -121,19 +122,20 @@ Issue the following command to do this.
 $ fn update context api-url https://functions.eu-frankfurt-1.oraclecloud.com
 ```
 
-We need to configure the appropriate Oracle Cloud registry to be utilised for the applications and functions that will be deployed.
+We need to configure the appropriate Oracle Cloud docker registry (OCIR) which will be used to push the packaged Functions docker image to.
 
-Issue the following command 
+Issue the following command. **NOTE**:
 
-**NOTE** In the following command:
+- You will need to replace the _NN_ with **your** student number (01 - 10)
 
-You will need to replace the _NN_ with **your** student number (01 - 10)
+- You will need to replace _tenancyname_ with the tenancy name given at the start of the lab in the student handout
 
-You will need to replace _tenancyname_ with the tenancy name given at the start of the lab in the student handout
 
-> $ fn update context registry fra.ocir.io/*tenancyname*/fnworkshop*NN*
+```
+$ fn update context registry fra.ocir.io/tenancyname/fnworkshopNN
+```
 
-Finally we need to allow the Fn context for oci to utilise the oci configuration you edited earlier. To do this issue the following command:
+Finally we need to allow the Fn context for oci to utilise the oci cli configuration located in ~/.oci/config. This OCI config file has been set up automatically in your VM and this simply tells the Fn context to use that configuration. To do this issue the following command:
 
 ``` $ fn update context oracle.profile fnworkshop_profile ```
 
@@ -188,7 +190,7 @@ If you get errors please let the organisers of the workshop know.
 Before we can use Fn to deploy functions to Oracle Functions, we need to ensure Docker that is running locally on the VM you are using can access the OCI image registry (OCIR) configured in the new context just created. 
 To do this we need to have Docker login and thus store the credentials locally.
 
-A user named *apiuser* will be used to login to OCIR. The apiuser password is store in an environment variable in the VM named API_AUTH_TOKEN. 
+A user named *apiuser* will be used to login to OCIR. The apiuser password is stored in an environment variable in the VM named API_AUTH_TOKEN. 
 
 Display the password:
 
@@ -204,11 +206,14 @@ Then perform the following command:
 
 You will need to replace _tenancyname_ with the tenancy name given at the start of the lab in the student handout
 
-> $ docker login fra.ocir.io/**_tenancyname_**
+```
+$ docker login fra.ocir.io/tenancyname
+```
 
 When prompted enter your _tenancyname_/apiuser 
 
 **NOTE** The user will be apiuser but the _tenancyname_ will be the one you are using and were assigned at the start of the lab
+
 ```
 tenancyname/apiuser
 eg: oractdemeaoci/apiuser
@@ -239,9 +244,9 @@ Press your mouse on 'Object Storage'
 
 ![Select Object Storage](chooseobjectstorage.png)
 
-Ensure that you are in the fnworkshopstudent compartment in the compartment picker.
+All the assets you will create during this workshop will be in a compartment named fnstudentworkshop in your tenancy. A compartment is a logical container that can be used to isolate workloads in OCI, all students in this workshop will be working in the same compartment.  Ensure that you are in the **fnworkshopstudent** compartment in the compartment picker. You can type the compartment name and this will filter the entries to allow you to find the **fnworkshopstudent** compartment quickly.
 
-See the delegate handout for instructions on finding the **fnworkshopstudent** compartment from the compartment picker.
+![image-20200703105636476](image-20200703105636476.png)
 
 You should see a list of buckets , one for each user. 
 
@@ -464,19 +469,14 @@ Copy this file to the source code tree of your new function you created.
 $ cp ~/HelloFunction.java ~/fnwork/imagecatalogfunction/src/main/java/com/example/fn/HelloFunction.java
 ```
 
-### Alter Tests
+### Remove Tests
 
-We don't have a mock service for the ATP ORDS REST API so we will comment out the test as we don't want test executions to add rows to our table.
+We don't have a mock service for the ATP ORDS REST API so we will delete the test as we don't want test executions to add rows to our table.
 
-Open the test java file at \~/fnwork/imagecatalogfunction/src/test/java/com/example/fn/HelloFunctionTest.java and comment out the body (using //) of the shouldReturnGreeting method. It should now look like this:
+Remove the test java file at \~/fnwork/imagecatalogfunction/src/test/java/com/example/fn/HelloFunctionTest.java.
 
-``` java
-@Test public void shouldReturnGreeting() { 
-    //testing.givenEvent().enqueue(); 
-    //testing.thenRun(HelloFunction.class, "handleRequest"); 
-    //FnResult result = testing.getOnlyResult(); 
-    //assertEquals("Hello, world!", result.getBodyAsString()); 
-}
+``` bash
+$ ~/fnwork/imagecatalogfunction/src/test/java/com/example/fn/HelloFunctionTest.java
 ```
 
 Obviously this is not best TDD (Test Driven Development) practice! In a real world situation you would write your tests first and use them to ensure no bugs appear in your code. This shortcut will allow us to build and deploy our function without putting all the testing infrastructure in place.
@@ -485,14 +485,15 @@ Obviously this is not best TDD (Test Driven Development) practice! In a real wor
 
 Ensure you are in the imagecatalogfunction directory
 
-```
+```bash
 $ cd ~/fnwork/imagecatalogfunction
 ```
 
 Deploy the function to OCI. Issue the following command **again replacing *NN* with your student number**:
 
-
-> $ fn --verbose deploy --app imagecatalogapp***NN***
+```bash
+$ fn --verbose deploy --app imagecatalogappNN
+```
 
 
 You should see the familiar Docker and Maven build output and finally a message that the function has updated with a new image.
