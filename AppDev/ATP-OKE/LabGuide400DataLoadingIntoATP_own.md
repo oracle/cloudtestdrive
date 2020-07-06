@@ -100,7 +100,6 @@ git push
 - Fill in the parameters:
   - username of the ATP instance : **admin**
   - password of the ATP instance
-  - your wallet .zip file
   - your connect string, for example **jleoow_high**, where *jleoow* is the name of the database.
     Check out your **tnsnames.ora** file inside the wallet folder for a list of available connections.
   - the sql file containing the create script: **aone/create_schema.sql**
