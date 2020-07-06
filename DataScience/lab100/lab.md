@@ -126,7 +126,7 @@ maxPrice = alldata['SalePrice'].max()
 print('Min Sales Price (%d) - Max Sales Price (%d)' % (minPrice,maxPrice))
 ```
 
-`Conclusion:` *SalePrice* is an integer and has numbers in the range that we would expect from house prices. There are no empty values. We could see however that the price range is very wide from a 34900 up to 75500. This would require to scale the price to allow the algorithm to learn better.
+`Conclusion:` *SalePrice* is an integer and has numbers in the range that we would expect from house prices. There are no empty values. We could see however that the price range is very wide from a 34900 up to 755000. This would require to scale the price to allow the algorithm to learn better.
 
 ### Which columns will we select as input features for our model?
 
