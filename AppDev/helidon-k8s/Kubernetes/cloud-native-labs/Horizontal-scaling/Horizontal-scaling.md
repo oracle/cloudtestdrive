@@ -112,7 +112,7 @@ Then you'd modify the number of replicas in the deployment, in this case to 2 re
 
 ```
 $ kubectl scale --replicas=2 deployment storefront
-deployment.extensions/storefront scaled
+deployment.apps/storefront scaled
 ```
 
 Then you'd see how the upgrade was going

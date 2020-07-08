@@ -51,7 +51,7 @@ We are going to once again edit the storefront-deployment.yaml file to give Kube
 The current contents of the section of the file looks like this:
 
 ```
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: storefront
@@ -95,7 +95,7 @@ Note that unless you have very specific reasons don't change the default setting
 The section of the file after the changes will look like this
 
 ```
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: storefront
@@ -126,7 +126,7 @@ To do the roll out we're just going to apply the new file. Kubernetes will compa
   -  `kubectl apply -f storefront-deployment-v0.0.1.yaml`
 
 ```
-deployment.extensions/storefront configured
+deployment.apps/storefront configured
 ```
 
 -  We can have a look at the status of the rollout
@@ -141,7 +141,7 @@ All went well, and let's also look at the history of this and previous roll outs
 -  `kubectl rollout history  deployment storefront`
 
 ```
-deployment.extensions/storefront 
+deployment.apps/storefront 
 REVISION  CHANGE-CAUSE
 1         kubectl apply --filename=storefront-deployment.yaml --record=true
 ```
@@ -167,7 +167,7 @@ However ... for the purpose of showing how this can be done using kubectl we are
   -  `kubectl set image deployment storefront storefront=fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:0.0.2`
 
 ```
-deployment.extensions/storefront image updated
+deployment.apps/storefront image updated
 ```
 
 - Let's look at the status of our setup during the roll out
@@ -293,7 +293,7 @@ One important point is that you'll see that the **old** replica set is still aro
   -  `kubectl rollout history deployment storefront`
 
 ```
-deployment.extensions/storefront 
+deployment.apps/storefront 
 REVISION  CHANGE-CAUSE
 1         kubectl apply --filename=storefront-deployment.yaml --record=true
 2         <none>
@@ -311,7 +311,7 @@ CreationTimestamp:      Fri, 03 Jan 2020 11:58:05 +0000
 Labels:                 app=storefront
 Annotations:            deployment.kubernetes.io/revision: 2
                         kubectl.kubernetes.io/last-applied-configuration:
-                          {"apiVersion":"extensions/v1beta1","kind":"Deployment","metadata":{"annotations":{},"name":"storefront","namespace":"tg-helidon"},"spec":{...
+                          {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"storefront","namespace":"tg-helidon"},"spec":{...
 Selector:               app=storefront
 Replicas:               4 desired | 4 updated | 4 total | 4 available | 0 unavailable
 StrategyType:           RollingUpdate
@@ -519,7 +519,7 @@ If we undo the rollout Kubernetes will revert to the previous version
   -  `kubectl rollout undo deployment storefront`
 
 ```
-deployment.extensions/storefront rolled back
+deployment.apps/storefront rolled back
 ```
 
 The rollback process follows the same process as the update process, gradually moving resources between the replica sets by creating pods in one and once they are ready deleting in the other.

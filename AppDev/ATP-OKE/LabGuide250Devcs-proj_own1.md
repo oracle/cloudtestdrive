@@ -3,14 +3,14 @@
 ![](../../common/images/customer.logo2.png)
 # Microservices on ATP #
 
-## Setting up your Developer Cloud Project ##
+## Setting up your Visual Builder Studio Project ##
 
 
 ## Introduction ##
 
-In this lab, you’ll learn how to set up a new Developer project, based on a Github repository, and start modifying and automating the CI/CD steps for your environment.
+In this lab, you’ll learn how to set up a new Visual Builder Studio project, based on a Github repository, and start modifying and automating the CI/CD steps for your environment.
 
-You will work with DevCS and learn about some of its most important features.  
+You will work with Visual Builder Studio and learn about some of its most important features.  
 
 Let’s get started! 
 
@@ -18,9 +18,9 @@ Let’s get started!
 
 ### Step 1: Create a project environment for your team
 
-In this section, you’ll provision a complete development platform for your team by leveraging DevCS’s web interface.
+In this section, you’ll provision a complete development platform for your team by leveraging the Visual Builder Studio web interface.
 
-- Access your Developer Cloud Instance : Use the URL to your Developer Cloud Console you saved during the setup of your environment 
+- Access your Visual Builder Studio Instance : Use the URL to your Visual Builder Studio Console you saved during the setup of your environment 
 - On the Welcome page, click **+ Create**.
 
 ![](images/150/create.png)
@@ -95,7 +95,7 @@ In this section, you’ll provision a complete development platform for your tea
 
 - Click **Create**.
 
-  You should now be on the **Git** tab, which shows that you have a new DevCS git repository.  This new repository contains imported code from the GitHub repository you specified.
+  You should now be on the **Git** tab, which shows that you have a new git repository.  This new repository contains imported code from the GitHub repository you specified.
 
   ![](images/150/image011-3.png)
 
@@ -105,7 +105,7 @@ In this section, you’ll provision a complete development platform for your tea
 
 ### Cloning your repository locally
 
-We want to upload some larger files (e.g. libraries) to the Developr Cloud git Repository.  The easiest way to do this consists of making a local branch of the repository on your machine.  For this lab, to avoid having to install software on your local machine (git, kubectl, terraform), we will be using the **Oracle Cloud Shell**, a Linux environment that is part of your **Oracle Cloud Console** in the browser.
+We want to upload some larger files (e.g. libraries) to the Visual Builder Studio git Repository.  The easiest way to do this consists of making a local branch of the repository on your machine.  For this lab, to avoid having to install software on your local machine (git, kubectl, terraform), we will be using the **Oracle Cloud Shell**, a Linux environment that is part of your **Oracle Cloud Console** in the browser.
 
 To open the **Cloud Shell**, use the button **">_"** in the upper right of the console.
 
@@ -119,7 +119,7 @@ cd dev
 
 
 
-- Copy the URL of your newly created repository in Developer cloud, by navigating to the "Project Home" page on the left, then selecting the **Clone** button of your repository on the right.  Select **Clone with HTTPS** and the URL will be copied.
+- Copy the URL of your newly created repository in Visual Builder Studio, by navigating to the "Project Home" page on the left, then selecting the **Clone** button of your repository on the right.  Select **Clone with HTTPS** and the URL will be copied.
 
 ![](images/150/image013.png)
 
@@ -132,7 +132,7 @@ The result should look like:
 
 `git clone https://<user_name>@ctddevcs-<instance_name>.developer.ocp.oraclecloud.com/ctddevcs-<instance_name>/s/ctddevcs-<instance_name>_atpdocker_1741/scm/ATPDocker.git`
 
-You will be asked for the password of the user you used to login to the DevCS environment.
+You will be asked for the password of the user you used to login to the Visual Builder Studio environment.
 
 This will result in following output:
 

@@ -6,7 +6,7 @@
 ## Part 2: Data Loading into ATP
 #### **Introduction**
 
-In this lab, you will be creating a few tables and inserting data into the ATP database using the CI/CD features of Developer Cloud.  We'll use the Build engine of DevCS to set up a flow that will create the necessary objects in the database, and insert data into the tables.  In case these elements are changed in the repository, the script will trigger again and re-create the database elements.
+In this lab, you will be creating a few tables and inserting data into the ATP database using the CI/CD features of Visual Builder Studio.  We'll use the Build engine of Visual Builder Studio to set up a flow that will create the necessary objects in the database, and insert data into the tables.  In case these elements are changed in the repository, the script will trigger again and re-create the database elements.
 
 In real life, you would want to set up a more sophisticated logic to manage your database objects, see [these blogs on the topic by Shay Schmeltzer](https://blogs.oracle.com/shay/devcs).
 
@@ -28,7 +28,7 @@ In real life, you would want to set up a more sophisticated logic to manage your
 
 As all participants will be using the same ATP database, we will first personalize the database table creation script so you can see your table in the database after running the build job.
 
-- Go to the Developer Cloud web interface, 
+- Go to the Visual Builder Studio web interface, 
 - Navigate to the **aone** folder
 - Open the file **create_schema_simple.sql**, hit the Edit pencil 
 - Replace all occurences of "ITEMS_CTD" by "ITEMS_<your_initials>".
@@ -38,7 +38,7 @@ As all participants will be using the same ATP database, we will first personali
 
 ### **STEP 2: Create and load your data in the database**
 
-- In Developer Cloud, navigate to the "Builds" tab and select **+Create Job**.
+- In Visual Builder Studio, navigate to the "Builds" tab and select **+Create Job**.
   - Enter a name : **CreateDBObjects**
   - Select the Software Template **OKE2**
   - Hit **Create Job**

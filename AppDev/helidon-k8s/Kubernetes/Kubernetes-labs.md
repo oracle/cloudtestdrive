@@ -106,9 +106,65 @@ This optional module shows how you can use fluentd to capture the log data, and 
 
 [Log capture for processing lab](management/logging/LogCaptureForArchive.md)
 
+### Optional labs group 3 Service meshes
+
+These labs are semi-independent, You must do the 3a Service mesh install and setup module, but after that you can do most of the Service mesh modules in any order order listed, the exception is if you want to do the traffic split module you must have done the troubleshooting module. If you don't want to do all of them you can stop at any point. If you decide to uninstall the linkerd service mesh then obviously (I hope !) do that once you have completed the all service mesh labs you want to do!
+
+A service mesh is two parts, a control plane that manages the mesh, and a data layer that is automatically added to your Kubernetes deployments by the control plane (usually by what's known as a sidecar container.) The data plane sits between your micro-service implementations and the underlying network, and manages your network activities. Depending on the implementation the data plane can even cross multiple Kubernetes clusters, making them appear as one. 
+
+The data plane provides support for things like automatically encrypting traffic exiting your micro-service implementation and decrypt it on arrival at the next (whilst automatically handling certificate management for you.) It can also do things like traffic management functions where it implements the service balancing (again this can be cross cluster for some service mesh implementations) and traffic balancing where a portion of the traffic is diverted to a test instance, perhaps for automated A/B testing or for a canary rollout where a CI/CD toolkit triggers a deployment, and the tooling in conjunction with the service mesh tests it out on a small subset of the traffic, automatically canceling the rollout if there are problems.
+
+Service meshes can also monitor the traffic flowing throughout your clusters, enabling the gathering of detailed request / response statistics, for example what the failure rate is of requests to a particular endpoint.
+
+As they are part of the network they can also split the network traffic, enabling activities like canary rollouts and testing the system by injecting faults.
+
+
+##### Optional 3a Service mesh install and setup
+
+You must do this module before you can do any of the other service mesh modules
+
+This module shows how to install the Linkerd service mesh, and enable it on the micro-servcies we have been using for this lab.
+
+[Installing the Linkerd service mesh.](service-mesh/Linkerd-install.md)
+
+##### Optional 3b. Monitoring traffic with the service mesh
+
+You must have done the service mesh install and setup module before this one.
+
+This module shows how to use the service mesh we installed in Optional lab 3a to report on the traffic between the micro-services in our application on the cluster.
+
+[Traffic monitoring with the service mesh](service-mesh/Linkerd-monitoring-traffic-flows.md)
+
+##### Optional 3c. Using the service mesh to troubleshoot problems
+
+You must have done the service mesh install and setup module before this one.
+
+This modules uses a simulated "broken" implementation of the stockmanager service to generate errors, then we use the servcie mesh monitoring capabilities to see where the error is and the conditions around it.
+
+[Troubleshooting with the service mesh](service-mesh/Linkerd-using-to-troubleshoot-problems.md)
+
+##### Optional 3d. Using the traffic split facility of the service mesh
+
+You must have done the service mesh install and setup module, and the service mesh troubleshooting module before this one.
+
+This module looks at the traffic split capability in the service mesh implementations to see how it can be used for testing purposes, for example injecting faults to do some chaos engineering and test out the overall environment.
+
+This module also used the traffic split capability of the service mesh to show how you can do a canary deployment
+
+[Exploring what you can do with a service mesh traffic splits](service-mesh/Linkerd-exploring-traffic-splits.md)
+
+##### Optional 3e Uninstall the service mesh
+
+**Only** do this after you have completed the service mesh lab modules you want to do.
+
+You do not have to uninstall the service mesh, but can if you wish.
+
+[Uninstalling the linkerd service mesh](service-mesh/Linkerd-uninstall.md)
+
+
 ### Additional optional modules in development.
 
-We are working on a number of additional optional modules, these include installing and using a service mesh, capturing log data, using an API Gateway, Building simple web front ends for your service. As these (and other) are completed they modules will be added here. If you have an interest in further additional modules please let us know.
+We are working on or exploring the posibility of a number of additional optional modules, these include integrating micro-services and serveless as part of your overall architecture, using an API Gateway, accessing your service with a chatbot, and building simple web front ends for your service. As these (and other) are completed they modules will be added here. If you have an interest in further additional modules please let us know and we'll see what we can do.
 
 ---
 

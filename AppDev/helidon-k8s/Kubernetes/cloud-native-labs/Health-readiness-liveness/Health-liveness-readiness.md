@@ -138,7 +138,7 @@ Kubernetes has identified that the container exited and within the pod restarted
 2020.01.02 14:10:04 INFO com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[hystrix-io.helidon.microprofile.faulttolerance-1,5,server]: Found 5 items
 ```
 
-The reason it took a bit longer than usual when accessing the service is that the code was doing the on-demand setup of the web services.
+The reason it took a bit longer than usual when accessing the service is that the code was doing the on-demand setup of the web services. This of course is only done once when the services are first accessed.
 
 ### Liveness
 We now have mechanisms in place to restart a container if it fails, but it may be that the container does not actually fail, just that the program running in it ceases to behave properly, for example there is some kind of non fatal resource starvation such as a deadlock. In this case the pod cannot recognize the problem as the container is still running.
@@ -164,7 +164,7 @@ You may recall in the Helidon labs (if you did them) we created a liveness probe
 #             path: /health/live
 #             port: health-port
 #          # Give it a few seconds to make sure it's had a chance to start up
-#          initialDelaySeconds: 60
+#          initialDelaySeconds: 120
 #          # Let it have a 5 second timeout to wait for a response
 #          timeoutSeconds: 5
 #          # Check every 5 seconds (default is 1)
@@ -195,7 +195,7 @@ The resulting section should look like this:
              path: /health/live
              port: health-port
           # Give it a few seconds to make sure it's had a chance to start up
-          initialDelaySeconds: 60
+          initialDelaySeconds: 120
           # Let it have a 5 second timeout to wait for a response
           timeoutSeconds: 5
           # Check every 5 seconds (default is 1)
@@ -212,7 +212,7 @@ The first thing to say is that whatever steps your actual liveness test does it 
 
 Let's look at some of these values.
 
-As it may take a while to start up the container, we specify and initialDelaySeconds of 60, Kubernetes won't start checking if the pod is live until that period is elapsed. If we made that to short then we may never start the container as Kubernetes would always determine it was not alive before the container had a chance to start up properly. 
+As it may take a while to start up the container, we specify and initialDelaySeconds of 120, Kubernetes won't start checking if the pod is live until that period is elapsed. If we made that to short then we may never start the container as Kubernetes would always determine it was not alive before the container had a chance to start up properly. 
 
 The parameter **timeoutSeconds** specifies that for the http request  to have failed it could not have responded in 5 seconds. As many http service implementations are initialized on first access we need to chose a value that is long enough for the framework to do it's lazy initialization.
 
@@ -230,11 +230,11 @@ Let's apply the changes we made in the deployment :
 
 ```
 Deleting storefront deployment
-deployment.extensions "storefront" deleted
+deployment.apps "storefront" deleted
 Deleting stockmanager deployment
-deployment.extensions "stockmanager" deleted
+deployment.apps "stockmanager" deleted
 Deleting zipkin deployment
-deployment.extensions "zipkin" deleted
+deployment.apps "zipkin" deleted
 Kubenetes config is
 NAME                                READY   STATUS    RESTARTS   AGE
 pod/stockmanager-6456cfd8b6-j6vf9   1/1     Running   0          66m
@@ -257,11 +257,11 @@ replicaset.apps/zipkin-88c48d8b9          1         1         1       66m
 
 ```
 Creating zipkin deployment
-deployment.extensions/zipkin created
+deployment.apps/zipkin created
 Creating stockmanager deployment
-deployment.extensions/stockmanager created
+deployment.apps/stockmanager created
 Creating storefront deployment
-deployment.extensions/storefront created
+deployment.apps/storefront created
 Kubenetes config is
 NAME                                READY   STATUS              RESTARTS   AGE
 pod/stockmanager-6456cfd8b6-29lmk   0/1     ContainerCreating   0          0s
@@ -545,11 +545,11 @@ In the OCI Cloud Shell
 
 ```
 Deleting storefront deployment
-deployment.extensions "storefront" deleted
+deployment.apps "storefront" deleted
 Deleting stockmanager deployment
-deployment.extensions "stockmanager" deleted
+deployment.apps "stockmanager" deleted
 Deleting zipkin deployment
-deployment.extensions "zipkin" deleted
+deployment.apps "zipkin" deleted
 Kubenetes config is
 NAME                                READY   STATUS    RESTARTS   AGE
 pod/stockmanager-6456cfd8b6-29lmk   1/1     Running   0          46m
@@ -585,11 +585,11 @@ Now let's deploy them again, run the deploy.sh script, be prepared to run kubect
 
 ```
 Creating zipkin deployment
-deployment.extensions/zipkin created
+deployment.apps/zipkin created
 Creating stockmanager deployment
-deployment.extensions/stockmanager created
+deployment.apps/stockmanager created
 Creating storefront deployment
-deployment.extensions/storefront created
+deployment.apps/storefront created
 Kubenetes config is
 NAME                                READY   STATUS              RESTARTS   AGE
 pod/stockmanager-6456cfd8b6-vqq7c   0/1     ContainerCreating   0          0s
@@ -691,7 +691,7 @@ Connection: keep-alive
   -  `kubectl delete -f stockmanager-deployment.yaml`
 
 ```
-deployment.extensions "stockmanager" deleted
+deployment.apps "stockmanager" deleted
 ```
 - Let's check the pods status
   -  `kubectl get pods`
@@ -753,7 +753,7 @@ The service is giving us a 503 Service Temporarily Unavailable message. Well to 
   -  `kubectl apply -f stockmanager-deployment.yaml`
 
 ```
-deployment.extensions/stockmanager created
+deployment.apps/stockmanager created
 ```
 
 - Now let's see what's happening with our deployments 

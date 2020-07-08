@@ -388,7 +388,7 @@ To return to the numbers of replicas originally defined we'll use kubectl
   - `kubectl scale --replicas=1 deployment storefront`
 
 ```
-deployment.extensions/storefront scaled
+deployment.apps/storefront scaled
 ```
 
 Now let's check what's happening

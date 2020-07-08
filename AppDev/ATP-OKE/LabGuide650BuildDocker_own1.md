@@ -11,9 +11,9 @@ Because you are working in your own Cloud Tenancy, you need to perform a few ext
 
 ## Steps
 
-- In the **Cloud Shell**, navigate to the directory where you cloned your **Git** repository
+- In the **Cloud Shell**, navigate to the directory where you cloned your **Git** repository (Probably **$HOME/dev/ATPDocker**)
 
-- Navigate into your database wallet folder, and edit the file **sqlnet.ora** 
+- Navigate into your database wallet folder (probabaly Waller in that directory), and edit the file **sqlnet.ora** 
 
   - In this file, replace the default line below:
 

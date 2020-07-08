@@ -13,13 +13,13 @@ This page will guide you through the following activities :
 - Part A : Set up your Cloud Infrastructure
   - Step 1: Create a compartment called CTDOKE which we will use in this lab
   - Step 2: Add a certificate and a token to your user
-- Part B : Set up Developer Cloud Service
+- Part B : Set up Visual Builder Studio Service
   - Step 3 : Create an Instance
-  - Step 4 : Configure the new DevCS instance
+  - Step 4 : Configure the new Visual Builder Studio instance
 
 
 
-**ATTENTION** : if you are running this lab in a **Instructor-provided environment**, your Developer Cloud instance has already been created, **you can skip the steps on this page**.  A link to the instance will be provided by your instructor.
+**ATTENTION** : if you are running this lab in a **Instructor-provided environment**, your Visual Builder Studio instance has already been created, **you can skip the steps on this page**.  A link to the instance will be provided by your instructor.
 
 
 
@@ -125,27 +125,28 @@ First you need to locate your user using the Search functionality of the console
 
 
 
-## Part B : Set up your Developer environment
+## Part B : Set up your Visual Builder Studio environment
 
 
 
-### Step 3 : Setting up Developer Cloud Service ###
+### Step 3 : Setting up Visual Builder Studio ###
 
-This step will guide you through the setup of a new Developer Cloud instance :
+This step will guide you through the setup of a new Visual Builder Studio instance:
 
-- Go to DevCS on your Dashboard
-- Creating a Developer Cloud instance
-- Configuring the Storage and Build parameters for your DevCS instance
+- Navigate to your PaaS services Dashboard
+- Create a Visual Builder Studio instance
+- Configuring the Storage and Build parameters for your Visual Builder Studio instance
+
+Note : The *Visual Builder Studio* service was previously named *Developer Cloud Service*, but all the key screens have remained unchanged.  A few new menus have been added for increased integration with the Visual Builder Low Code development environment.
 
 
 
-#### Go to DevCS on your dashboard ####
+#### Go to Visual Builder Studio on your dashboard ####
 
-- Login to your cloud account and find DevCS service:
+- Login to your cloud account using the SSO login screen of the **oracleidentitycloudservice**.  See the very beginning of this lab for details.
+- Locate the **Platform Services** menu and select **Developer**
 
 ![alt text](images/devcs/dashboard_new.png)
-
-- Open DevCS service
 
 
 
@@ -157,7 +158,7 @@ This step will guide you through the setup of a new Developer Cloud instance :
 
 
 
-- Use the "Create Instance" button to create a new Developer Cloud instance
+- Use the "Create Instance" button to create a new Visual Builder Studio instance
 
 ![alt text](images/devcs/create_new.png)
 
@@ -179,22 +180,22 @@ Note: You should match the region selected with your home region.
 
 
 
-#### Access your DevCS Environment ####
+#### Access your Visual Builder Studio Environment ####
 
-To access your Developer Cloud Instance, refresh the page and use the hamburger menu on the right to access the menu item **Access Service Instance**. 
-
-
+To access your Visual Builder Studio Instance, refresh the page and use the hamburger menu on the right to access the menu item **Access Service Instance**. 
 
 
 
 
-### Step 4 : Configure DevCS Compute & Storage using OCI credentials
 
-To configure DevCS to use the OCI Compute resources for its build engines, we need to manually provide the OCI credentials in the DevCSD setup menu.
+
+### Step 4 : Configure Visual Builder Studio Compute & Storage using OCI credentials
+
+To configure Visual Builder Studio to use the OCI Compute resources for its build engines, we need to manually provide the OCI credentials in the setup menu.
 
 **Attention !!** 
 
-In the following section you will need to switch repeatedly between the DevCS console (on the left in the below screenshot, the "OCI Credentials" screen) and the OCI Cloud Interface where you need to collect a number of parameters of your instance (on the right in the below screenshot)
+In the following section you will need to switch repeatedly between the Visual Builder Studio console (on the left in the below screenshot, the "OCI Credentials" menu) and the OCI Cloud Interface where you need to collect a number of parameters of your instance (on the right in the below screenshot)
 
 **Take a minute to set up 2 browser windows that allow easy switching between these 2 screens** to cut and paste parameters between them ! 
 
@@ -204,7 +205,7 @@ In the following section you will need to switch repeatedly between the DevCS co
 
 
 
-- In DevCS, on the left-side menu, select the top level **Organization** menu, then click on **OCI Account** in the top menu.  Next you can hit the **Connect** button.
+- In Visual Builder Studio, on the left-side menu, select the top level **Organization** menu, then click on **OCI Account** in the top menu.  Next you can hit the **Connect** button.
 
 ![alt text](images/devcs/Connect_OCIaccount_new.png)
 
@@ -234,7 +235,7 @@ In the following section you will need to switch repeatedly between the DevCS co
 
 
 
-- Now that you have collected all the required data, you can fill in your OCI Credentials screen in the Developer Console : 
+- Now that you have collected all the required data, you can fill in your OCI Credentials screen in the Visual Builder Studio Console : 
 
   ![alt text](images/devcs/oci_cred2.png)
 
@@ -284,7 +285,7 @@ In the following section you will need to switch repeatedly between the DevCS co
   
     ![alt text](images/devcs/im08-2.png)
 
-You finished all the steps of the Developer Cloud setup.  
+You finished all the steps of the Visual Builder Studio setup.  
 
 
 

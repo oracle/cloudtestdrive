@@ -6,17 +6,15 @@
 
 ## C. Deploying to Kubernetes
 
-## 7a. Service mesh basics
+## Optional 3a. Service mesh install and setup
 
-
-# NEED INTRO VIDEO 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 <p>
 
 This video is an introduction to the Service mesh basics lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
-[![Kubernetes core features lab only setup Introduction Video](https://img.youtube.com/vi/kc1SvmTbvZ8/0.jpg)](https://youtu.be/kc1SvmTbvZ8 "Kubernetes core features lab introduction video")
+[![Service mesh setup Introduction Video](https://img.youtube.com/vi/jfNp6VEfFEk/0.jpg)](https://youtu.be/jfNp6VEfFEk "Service mesh setup lab introduction video")
 
 </p>
 </details>
@@ -36,6 +34,8 @@ The control plans does what it says on the box, it provides control functions to
 
 The mechanisms to do this are relatively simple to the user, though the internal implementation details of a service mash can be very complex !
 
+Service meshes can also provide functionality across multiple clusters, in these modules we will be using Linkerd, and that provides the capability to extend the service discovery across multiple Kubernetes clusters, that means a service in a different cluster can appear as if it was a local part of the data plane, enabling things like automatic connection to a service in a different cluster and automatic connection encryption between services in different clusters.
+
 ### What service meshes are there ?
 
 There are multiple service mesh implementations available, a non exclusive list (there are others) includes Linkerd, Istio, Consul, Kuma, Maesh, Aspen Mesh, and Grey Matter. 
@@ -52,7 +52,7 @@ Well the short version is that you need to be careful in choosing the right serv
 
 The longer version is that at least some of your concerns about managing networking within Kubernetes deployments have gone away. In addition, you will gain insight into the traffic and overall health of your applications running in Kubernetes.
 
-Installing a service mesh adds an additional layer of abstraction to your cluster. This is not unlike the network overlay that runs on your cluster.
+Installing a service mesh adds an additional layer of abstraction to your cluster. This is not unlike the network overlay that runs on your cluster. There is a processing overhead to this, but it's pretty small. 
 
 Ultimately, the way to think about a service mesh as a cluster operator is to consider that adding this layer will result in better observability and security for your applications.
 
@@ -66,13 +66,13 @@ The important thing is to define your requirements before selecting a service me
 
 ## How to install a a service mesh ?
 
-For the purposes of this lab we've chosen to use Linkerd as it's a long standing service mesh implementation and is the only CNCF supported service mesh project (at the time of writing.) It also has a reputation for being simple to install and use.
+For the purposes of this lab we've chosen to use Linkerd as it's a long standing service mesh implementation and is the only CNCF supported service mesh project (at the time of writing.) It also has a reputation for being simple to install and use. The Linkerd website has an [FAQ on the differences](https://linkerd.io/2/faq/#whats-the-difference-between-linkerd-and-istio) and open source implications
 
 Linkerd is installed in two parts, the linkerd command which runs local to your environment (similar to the kubectl command) and the linkerd control pane which runs in your Kubernetes cluster (similar to the Kubernetes cluster management elements) and manages the data plane.
 
 These instructions are based on the [Getting started](https://linkerd.io/2/getting-started/) page at Linkerd.io
 
-It's worth noting that Linkerd can also be installed using its [helm chart](https://linkerd.io/2/tasks/install-helm/).
+It's worth noting that Linkerd can also be installed using its [helm chart](https://linkerd.io/2/tasks/install-helm/) but today we're going to do it manually step by step.
 
 ### Installing the linkerd CLI
 
@@ -109,7 +109,7 @@ Now run:
 Looking for more? Visit https://linkerd.io/2/next-steps
 ```
   
-Warning, this may take a while to run, in my case about 20 mins because the OCI Cloud shell system does not provide huge throughput as it's designed for management activities, not running applications !
+Warning, this may take a while to run, in my case about 20 mins as for dome reason the download was not fast.
   
 Now we need to add the linkerd command to our path
 
@@ -451,12 +451,12 @@ kubectl will pick them up and apply them, Kubernetes will restart the linkerd-we
 
 ### Create a TLS secret
 
-Curiously the linkerd-web ingress does not use a TLS certificate to ensure that the connection to it is encrypted, as we will be sending passwords we want to ensure it is encrypted, to do which we need to create a TLS secret in Kubernetes that the ingress controller can use.
+Curiously the linkerd-web ingress does not by default use a TLS certificate to ensure that the connection to it is encrypted, as we will be sending passwords we want to ensure it is encrypted, to do which we need to create a TLS secret in Kubernetes that the ingress controller can use.
 
 Change to the directory for the service mesh scripts
 
 - In the OCI Cloud shell type
-  - `cd $HOME/helidon-kubernetes/management/servicemesh`
+  - `cd $HOME/helidon-kubernetes/service-mesh`
 
 Create a TLS Secret in the linkerd namespace to use to secure the connection (do anyway)
 
@@ -482,7 +482,7 @@ secret/tls-linkerd-secret created
 
 ### Create a login password to secure the connection
 
-The default configuration for the linkerd-web service includes a password of admin/admin. Obviously this is for demo purposed, we want to use something more secure (and of course you **must** to this in a production environment !)
+The default configuration for the linkerd-web service includes a password of admin/admin. Obviously this is for demo purposes, but we should use something more secure (and of course you **must** use a strong password kubectl get namespace ingress-nginx -o yaml | linkerd inject - | kubectl replace -f -in a production environment !)
 
 First let's create a password file for the admin user. In the example below I'm using `ZaphodBeeblebrox` as the password, but please feel free to change this if you like
 
@@ -496,7 +496,7 @@ Adding password for user admin
 Now having create the password file we need to add it to Kuberntes as a secret so the ingress controller can use it.
 
 - In the OCI Cloud Shell type
-  - `kubectl create secret generic web-ingress-auth -n linkerd --from-file=auth`
+  - `kubectl create secret generic linkerd-web-ingress-auth -n linkerd --from-file=auth`
 
 ```
 secret/web-ingress-auth created
@@ -518,14 +518,14 @@ Though these are not perfect they do ensure that users need to be authenticated 
   - `kubectl apply -f linkerd-ingress.yaml`
   
 ```
-ingress.extensions/web-ingress created
+ingress.networking.k8s.io/web-ingress created
 ```
 
-Now you can go to the ingress ip address 
+Now you can go to the ingress ip address for the linkerd UI
 
 - In your laptop web browser go to `https://<external IP>`
 
-<details><summary><b>If you need to remind yourself of the ingress controller IP address</b></summary>
+<details><summary><b>If you need to remind yourself of the external IP if your ingress controller</b></summary>
 <p>
 
 - In the OCI Cloud Shell type :
@@ -556,7 +556,7 @@ You'll be presented with the linkerd-web main page
 
 Let's also check you can access the grafana dashboard that's been installed by linkerd
 
-- In your web browser go to `https://<externalIP>/grafana` Note if you dod not save the username / password details you may be prompted to re-enter tham
+- In your web browser go to `https://<externalIP>/grafana` Note if you did not save the username / password details you may be prompted to re-enter them
 
 ![](images/linkerd-grafana-initial-topline.png)
 
@@ -683,7 +683,7 @@ namespace "tg-helidon" injected
 namespace/tg-helidon configured
 ```
 
-The forst line of the output is from the linkerd command telling us that its added the annotation, the second is from the kubectl replace command telling us that the previous configuration has been replaced with the new one.
+The first line of the output is from the linkerd command telling us that its added the annotation, the second is from the kubectl replace command telling us that the previous configuration has been replaced with the new one.
 
 Let's have a look at the web page again, refresh the main web page in the browser
 
@@ -724,9 +724,9 @@ Sadly there doesn't seem to be a way to restart all of the deployments in a name
   - `kubectl rollout restart deployments storefront stockmanager zipkin`
 
 ```
-deployment.extensions/storefront restarted
-deployment.extensions/stockmanager restarted
-deployment.extensions/zipkin restarted
+deployment.apps/storefront restarted
+deployment.apps/stockmanager restarted
+deployment.apps/zipkin restarted
 ```
 <details><summary><b>What has actually been done to my pod ?</b></summary>
 <p>
@@ -740,7 +740,7 @@ stockmanager-654f44d59d-bjn2v   2/2     Running   0          7m55s
 storefront-8ddc6db75-nxlnm      2/2     Running   0          7m55s
 zipkin-84466dc99f-w5hhc         2/2     Running   0          7m55s
 
-Note that pods have 2/2 in the READY column, this means that thee are **two** copntainers running in the pod, previously would have seen 1/1 meaning only one container was running, (the application)
+Note that pods have 2/2 in the READY column, this means that there are **two** containers running in the pod, previously would have seen 1/1 meaning only one container was running, (the application)
 
 Let's see what's in those pods, here we're going to use the jsonpath ooption to kubectl to reduce the amount of output
 
@@ -1108,8 +1108,8 @@ And next update them so the proxy will be added.
   - `kubectl rollout restart deployments -n ingress-nginx ingress-nginx-nginx-ingress-controller ingress-nginx-nginx-ingress-default-backend`
 
 ```
-deployment.extensions/ingress-nginx-nginx-ingress-controller restarted
-deployment.extensions/ingress-nginx-nginx-ingress-default-backend restarted
+deployment.apps/ingress-nginx-nginx-ingress-controller restarted
+deployment.apps/ingress-nginx-nginx-ingress-default-backend restarted
 ```
 
 Now let's make a few calls to the service to check it's all working fine (you may want to wait a few mins for the ingress controller to restart)
@@ -1135,7 +1135,7 @@ The address is in the EXTERNAL-IP column, in this case it's 130.61.195.102 **but
 </p></details>
 
 
-- In the OCI Cloud Shell terminal type the following, be prepared for an error (remember to replace <external IP> with the IP address for your ingress controller)
+- In the OCI Cloud Shell terminal type the following, be prepared for an error (remember to replace `<external IP>` with the IP address for your ingress controller)
   - `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
   
 ```
@@ -1154,7 +1154,7 @@ As you have restarted the services you may get 424 failed dependency errors as t
 
 Let's go and look at the dashboards again
 
-- In your laptop web browser go to `https://<external IP>` (replace <external IP> with the IP address of your ingress controller)
+- In your laptop web browser go to `https://<external IP>` (replace `<external IP>` with the IP address of your ingress controller)
 
 You may get a certificate warning again, in which case follow the procedures for your browser to accept the self signed certificate
 
@@ -1194,8 +1194,8 @@ We can see that there are three namespaces being monitored and 14 deployments. Y
 
 You have reached the end of this lab module !!
 
-In the next module we will look at how you can use linkerd and grafana to see the traffic flows in your cluster and to diagnose problems.
+In the next module we will look at how you can use linkerd and grafana to see the traffic flows in your cluster.
 
-Acknowledgements. I'd like to thank Charles Pretzer of Bouyant, Inc for reviewing and sanity checking parts of this document.
+Acknowledgments. I'd like to thank Charles Pretzer of Bouyant, Inc for reviewing and sanity checking parts of this document.
 
 Use your **back** button to return to the lab sequence document to access further service mesh modules.

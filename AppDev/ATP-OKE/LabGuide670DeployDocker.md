@@ -73,7 +73,7 @@ Let’s get started!
 
 - Upload the kubeconfig file into the repository.  During the creation of the cluster, a **kubeconfig** file was generated.  This file is required to connect to your cluster from within the build job.  In case you are using a common Kubernetes cluster, your instructor will provide you with the appropriate **kubeconfig** file.
 
-  - In Developer Cloud, navigate to the top level of your git repository, and hit the **+ File** button:
+  - In Visual Builder Studio, navigate to the top level of your git repository, and hit the **+ File** button:
 
     ![](images/670/im51.png)
 
@@ -109,7 +109,7 @@ Let’s get started!
 
 <u>In case you are sharing a Kubernetes instance with other participants</u>, you need to make sure your deployment can be distinguished from the ones belonging to your colleagues.  You can perform the below steps to achieve this:
 
-- In the **Git** tab of Developer Cloud, re-open the file **atp2.yaml**.  You need to make following changes:
+- In the **Git** tab of Visual Builder Studio, re-open the file **atp2.yaml**.  You need to make following changes:
 
   - Line 4, 8, 13, 16, 27 and 35 : replace the string **atp2** with a string containing your initials, for example for "jle" : **atp2jle**
   
@@ -122,7 +122,7 @@ Let’s get started!
   
 
   
-- In the **Git** tab of Developer Cloud, open the file **kubescript.sh** by clicking on it, and go into editing mode by clicking on the small pencil in the upper right
+- In the **Git** tab of Visual Builder Studio, open the file **kubescript.sh** by clicking on it, and go into editing mode by clicking on the small pencil in the upper right
 
   - On line 4 and 6, add your initials in front of the strings beginning with **atp2**
   
