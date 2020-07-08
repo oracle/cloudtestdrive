@@ -1,15 +1,16 @@
-# Extending APEX Applications with Autonomous Database
-## Introduction and Overview
+# Introduction
+
+## Oracle Application Express and Oracle Autonomous Database
 
 In this workshop, you'll get first-hand experience of using Oracle Autonomous Database (ADB) and Oracle Application Express (APEX). Oracle Autonomous Database (ADB) delivers a self-driving, self-securing, self-repairing database service that can instantly scale to meet demands. The service supports two workload types:
 
 * Oracle Autonomous Data Warehouse (ADW) provides an autonomous warehousing environment, associated with fast query performance.
 * Oracle Autonomous Transaction Processing (ATP) provides an autonomous online transaction processing and mixed workload environment.
 
-Oracle Application Express (APEX) is a low-code development platform that enables you to build scalable, secure enterprise apps, with world-class features, that can be deployed anywhere.
+APEX is a low-code development platform that enables you to build scalable, secure enterprise apps, with world-class features, that can be deployed anywhere.
 
 ### Objectives
-In this workshop you'll learn how to provision an Oracle Autonomous Transaction Processing (ATP) instance and create an APEX workspace and APEX application, and then add the following features to your APEX application:
+In this workshop you'll learn how to provision an ATP instance and create an APEX workspace and APEX application, and then add the following features to your APEX application:
 
 * Geospatial functionality
 * Machine learning
