@@ -26,11 +26,11 @@ In real life, you would want to set up a more sophisticated logic to manage your
 
 ### STEP 1: Set up your ATP Database Wallet in Visual Builder Studio
 
-In the ATP Connection step of this lab, you downloaded the ATP Connection wallet zip file into the Downloads folder.  We will now unizp the file and copy both the wallet zip file and the folder into the git repository folder.
+We need to extract the ATP Database wallet file into the OCI Cloud shell. Open the OCI Cloud shell.
 
 ```bash
-# Position yourself in the git repo.  dev will change depending on your repo name
-cd dev/ATPnodeapp
+# Position yourself in the git repo, replace ATPDocker with your repo name if you used a different one
+cd $HOME/dev/ATPDocker
 
 # Download the file via the OCI CLI, replacing the database OCID with the OCID of your database
 oci db autonomous-database generate-wallet --file Wallet.zip --password 'Pa$$w0rd' --autonomous-database-id ocid1.autonomousdatabase.oc1.eu-frankfurt-1.abtheljtn3slgmzqr2benreqkrs55gwg3v3tz6lgwhgfgzaccrb
@@ -100,7 +100,7 @@ git push
 - Fill in the parameters:
   - username of the ATP instance : **admin**
   - password of the ATP instance
-  - your wallet .zip file
+  - The location of the credentials file incide the repo. E.g. **Wallet.zip**
   - your connect string, for example **jleoow_high**, where *jleoow* is the name of the database.
     Check out your **tnsnames.ora** file inside the wallet folder for a list of available connections.
   - the sql file containing the create script: **aone/create_schema.sql**

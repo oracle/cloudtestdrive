@@ -10,7 +10,7 @@ This Lab describes how to instantiate an **Oracle Managed Kubernetes cluster usi
 
 In this lab we will perform the steps described below : 
 
-- Use the Cloud Shell Open a command prompt and navigate to the **terraform_0.12** folder in the ATPDocker git repository folder
+- Use the Cloud Shell Open a command prompt and navigate to the **terraform_0.12** folder in the main git repository folder you cloned previously
 - Edit the file terraform.tfvars and enter your instance OCID's on the first lines
 - run ```terraform init``` , `terraform plan` and `terraform apply` to spin up your infrastructure
 - validate the resulting K8S infrastructure via `kubectl`, using the file **mykubeconfig** that was created 
@@ -21,11 +21,11 @@ Below you find a detailed description of these steps, with screendumps and expla
 
 ### Step 1: Collect Infrastructure Info for your environment: ###
 
-You need to collect a series of OCID's from your instance in order for Terraform to access your instance:
+You need to collect a series of OCID's from your instance in order for Terraform to access your instance, you may have previously collected some of this information when you were configuring the Visual Builder Studio:
 - Tenancy OCID
 - Region name
 - Object Storage Namespace
-- Compartiment OCID
+- Compartment OCID
 
 
 
@@ -46,7 +46,7 @@ Screen shots of the various locations to find this information
 
 ### Step 2: Set the Terraform parameters and run the script ###
 
-- In your **Cloud Shell**,  navigate to the **terraform_0.12** folder in the **ATPDocker** git repository folder
+- In your **Cloud Shell**,  navigate to the **terraform_0.12** folder in the **$HOME/dev/ATPDocker** git repository folder
 
 - Edit the file terraform.tfvars using your preferred editor: vi or nano.
 
