@@ -29,15 +29,13 @@ Important: Don't forget to **install the open source Machine Learning packages**
 
 4. In the configuration screen, do the following:
 - Instance name: Any name you choose
-- Feature Set: Self Service Analytics
+- Feature Set: Enterprise Analytics
 - OCPU: 2
 - Network access: Public
 - License type: "Subscribe to a new Analytics Cloud...". Note that you are in a free trial.
 
 Click Next.
   
-![](./images/oac5.png)
-
 - Click "Create". The status changes to "Creating...". Provisioning can take up to 30min.
 ![](./images/oac8.png)
 
