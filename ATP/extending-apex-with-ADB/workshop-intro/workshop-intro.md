@@ -22,6 +22,6 @@ In this workshop you'll learn how to provision an ATP instance and create an APE
 
 ## Acknowledgements
 * **Author** - Juan Cabrera Eisman, Senior Technology Solution Engineer, Oracle Digital and Jeroen Kloosterman, Technology Product Strategy Manager
-* **Last Updated By/Date** - Tom McGinn, Learning Architect, Database User Assistance, June 2020
+* **Last Updated By/Date** - Tom McGinn, Database Innovations Architect, Database Product Management, July 2020
 
 See an issue?  Please open up a request [here](https://github.com/oracle/learning-library/issues).   Please include the workshop name and lab in your request.
