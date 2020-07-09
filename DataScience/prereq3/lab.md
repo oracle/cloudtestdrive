@@ -39,7 +39,7 @@ Click Next.
 ![](./images/oac5.png)
 
 - Click "Create". The status changes to "Creating...". Provisioning can take up to 30min.
-![](./images/oac7.png)
+![](./images/oac8.png)
 
 
 ## Next
