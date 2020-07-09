@@ -2,7 +2,7 @@
 
 This lab can be executed using either Oracle Analytics Desktop (local installation) or Oracle Analytics Cloud (cloud environment). 
 
-**Option 1: Install Oracle Analytics Desktop **and Machine Learning packages**
+**Option 1: Install Oracle Analytics Desktop and Machine Learning packages**
 
 Important: Don't forget to **install the open source Machine Learning packages** after you've installed Oracle Analytics Desktop.
 
@@ -30,7 +30,7 @@ Important: Don't forget to **install the open source Machine Learning packages**
 4. In the configuration screen, do the following:
 - Instance name: Any name you choose
 - Feature Set: Self Service Analytics
-- OCPU: 1 - non production
+- OCPU: 2
 - Network access: Public
 - License type: "Subscribe to a new Analytics Cloud...". Note that you are in a free trial.
 
@@ -38,7 +38,7 @@ Click Next.
   
 ![](./images/oac5.png)
 
-- Click "Create". The status changes to "Creating service...". Provisioning should take between 5 and 20 minutes.
+- Click "Create". The status changes to "Creating...". Provisioning can take up to 30min.
 ![](./images/oac6.png)
 
 
