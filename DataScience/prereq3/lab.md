@@ -1,16 +1,46 @@
 ![](../commonimages/workshop_logo.png)
 
-Below you find the instructions for installing Oracle Analytics Desktop. Note that the labs can be executed using either Oracle Analytics Cloud or Oracle Analytics Desktop. So if you already have an OAC instance, feel free to use that instead.
+This lab can be executed using either Oracle Analytics Desktop (local installation) or Oracle Analytics Cloud (cloud environment). 
 
-Note that apart from the Oracle Analytics Desktop installation, you also have to **install the open source Machine Learning packages**.
+**Option 1: Install Oracle Analytics Desktop **and Machine Learning packages**
 
-## Prerequisite 3: Install Oracle Analytics Desktop **and Machine Learning packages**
+Important: Don't forget to **install the open source Machine Learning packages** after you've installed Oracle Analytics Desktop.
 
 1. Download DVD by clicking [here](https://www.oracle.com/middleware/technologies/oracle-data-visualization-desktop.html#) and follow the instructions. 
 2. Install DVD locally on your computer. 
 3. The Machine Learning in DVD relies on open source packages that are -not- installed by default. To install these packages, go to the Windows Start menu, browse to Oracle (or type "install DVML") and click Install DVML. **You need a non-proxy connection to the internet for this to work.**
 4. The installer starts on completion of the download. Simply follow the instructions.
 5. If Oracle Analytics Desktop was running during the installation, then restart it for the changes to take effect.
+
+
+**Option 2: Provision Oracle Analytics Cloud**
+
+1. Click the "hamburger" menu on the top left.
+
+![](./images/oac1.png)
+
+2. Select Analytics from the menu.
+
+![](./images/oac2.png)
+
+3. Choose a compartment.
+
+![](./images/oac3.png)
+
+4. In the configuration screen, do the following:
+- Instance name: Any name you choose
+- Feature Set: Self Service Analytics
+- OCPU: 1 - non production
+- Network access: Public
+- License type: "Subscribe to a new Analytics Cloud...". Note that you are in a free trial.
+
+Click Next.
+  
+![](./images/oac5.png)
+
+- Click "Create". The status changes to "Creating service...". Provisioning should take between 5 and 20 minutes.
+![](./images/oac6.png)
+
 
 ## Next
 
