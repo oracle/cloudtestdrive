@@ -27,11 +27,9 @@ You require the following:
 
   ![](./images/open_service_console.png)
   
-  - Go to Development and open APEX.
-  
-  ![](./images/open_APEX.png)
-  
-  -  You will see the login page fof APEX Administration Services. Use the ADMIN password that you entered when you provisioned ATP.
+  - There's a section called "Oracle Application Express". Click on "Open APEX".
+ 
+  - You will see the login page fof APEX Administration Services. Use the ADMIN password that you entered when you provisioned ATP.
 
   ![](./images/open_apex_2.png)
 
