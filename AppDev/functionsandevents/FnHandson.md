@@ -476,7 +476,7 @@ We don't have a mock service for the ATP ORDS REST API so we will delete the tes
 Remove the test java file at \~/fnwork/imagecatalogfunction/src/test/java/com/example/fn/HelloFunctionTest.java.
 
 ``` bash
-$ ~/fnwork/imagecatalogfunction/src/test/java/com/example/fn/HelloFunctionTest.java
+$ rm ~/fnwork/imagecatalogfunction/src/test/java/com/example/fn/HelloFunctionTest.java
 ```
 
 Obviously this is not best TDD (Test Driven Development) practice! In a real world situation you would write your tests first and use them to ensure no bugs appear in your code. This shortcut will allow us to build and deploy our function without putting all the testing infrastructure in place.
