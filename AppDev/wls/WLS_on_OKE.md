@@ -368,14 +368,14 @@ We'll now start configuring the WebLogic setup itself.  For this we will use the
     - `image`: this line is commented out in the example, please remove the `#` .
       Just in case you might be sharing your tenancy repository with colleagues, we will add your initials to the image name you will be using.  
       The format to use is : 
-      -  \<**region code**\>.ocir.io/\<**Object-Storage-Namespace**\>\<your_initials\>-wls/weblogic:12.2.1.3"
+      -  `<region code>.ocir.io/<Object-Storage-Namespace>/<your_initials>-wls/weblogic:12.2.1.3`
       - Example : `fra.ocir.io/frpqldntjs/ppa-wls/weblogic:12.2.1.3`
     - `imagePullSecretName`: `<your initials>-ocirsecret` 
       Note this line is commented out in the example, please remove the `#` . 
     - `weblogicCredentialsSecretName`: `sample-domain1-weblogic-credentials`
+    - `exposeAdminNodePort: true` 
     - `namespace`: `sample-domain1-ns`
     - `domainHomeImageBase`: `container-registry.oracle.com/middleware/weblogic:12.2.1.3`
-    - `exposeAdminNodePort: true` 
 
   - The creation script will generate output, we'll create a directory for this
 
@@ -404,7 +404,7 @@ Lets take a look at the artifacts generated :
 
   you should see a line containing something like : 
 
-   `fra.ocir.io/frpqldntjs/ppa-wls/weblogic    12.2.1.3`
+   	`fra.ocir.io/frpqldntjs/ppa-wls/weblogic    12.2.1.3`
 
   
 
@@ -450,7 +450,7 @@ Lets take a look at the artifacts generated :
 
 First we need to push the generated docker image to the private registry of our tenancy.  Execute following operations to achieve this.
 
-- Execute a "docker login" into the registry.
+- Execute a "docker login" into your private registry on Oracle OCI.
 
   ```
   docker login <region-code>.ocir.io/<storage namespace>
@@ -458,7 +458,7 @@ First we need to push the generated docker image to the private registry of our 
 
   For example : `docker login fra.ocir.io/frpqldntjs`
 
-  - username to use : \<storage namespace\>/\<full_username\>
+  - username to use : `<storage namespace>/<full_username>`
 
     - For example:  `frpqldntjs/oracleidentitycloudservice/ppan`
 
