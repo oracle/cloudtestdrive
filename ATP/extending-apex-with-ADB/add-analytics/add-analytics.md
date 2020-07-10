@@ -3,25 +3,26 @@
 ## Introduction
 Oracle Analytics Cloud provides the industry’s most comprehensive cloud analytics in a single unified platform, including everything from self-service visualization and powerful inline data preparation to enterprise reporting, advanced analytics, and self-learning analytics that deliver proactive insights.
 
-You will expand an existing application to add Oracle Analytics functionality. Imagine that the end user of your application has questions about the billing data. You could provide them with some fixed, prebuilt charts built into the APEX application, however that would not allow the end user to create entirely new analysis. You are going to use an Oracle Analytics Cloud instance to give our end users a self-service approach to analysing the data.
+You will expand an existing application to add Oracle Analytics functionality. Imagine that the end user of your application has questions about the billing data. You could provide them with some fixed, prebuilt charts built into the APEX application, however that would not allow the end user to create entirely new analysis. You are going to use an Oracle Analytics Cloud instance to give our end users a self-service approach to analyzing the data.
 
 ### Objectives
 - Create a connection from Oracle Analytics Cloud to Autonomous Database.
 - Create Visualizations to analyze the data.
 - Add Analytics functionality to your application.
 
-### What Do You Need?
+### Prerequisites
 
 * An Oracle Cloud paid account or free trial. To sign up for a trial account with $300 in credits for 30 days, click [here](http://oracle.com/cloud/free).
 * An Oracle Autonomous Transaction Process instance
 * An APEX Workspace
 * *Please note:* Your free trial must have credits remaining for this lab.
+* The user you use to login must be a federated user (prefixed with oraclecloudidentityservice)
 
 ## **STEP 1**: Review existing APEX application
 
 Our starting point is an existing time entry application used by a fictional IT consulting company. It contains basic time and rates of their consultants.
 
-1. First download the application that we will install from [here](./files/f109.sql).
+1. First, click this link to [**download the application**](./files/f109.sql) that we will install.
 
   *If you are already logged into your APEX Workspace, skip to Step 4.*
 
@@ -246,7 +247,7 @@ Imagine we ask ourselves "What is the secret of these high earners? Does a parti
 
 The training information is not stored in our APEX Time and Labour application. Instead, this data will be provided to the end user by Human Resources, by means of an Excel file.
 
-1. Download the training file from [here](./files/traininghistory.xlsx).
+1. Click this link to [**download the training file**](./files/traininghistory.xlsx).
 
 2. Add the dataset by clicking the "+" icon in the top left.
 
@@ -434,6 +435,6 @@ Our goal is to integrate the "Labour" DV project inside of our APEX application.
 
 ## Acknowledgements
 * **Author** - Juan Cabrera Eisman, Senior Technology Solution Engineer, Oracle Digital
-* **Last Updated By/Date** - Tom McGinn, Learning Architect, Database User Assistance, May 2020
+* **Last Updated By/Date** - Tom McGinn, Database Innovations Architect, Database Product Management, July 2020
 
 See an issue?  Please open up a request [here](https://github.com/oracle/learning-library/issues).   Please include the workshop name and lab in your request.

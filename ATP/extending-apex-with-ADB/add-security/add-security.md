@@ -8,14 +8,20 @@ Transparent Data Encryption and Data Redaction are two very powerful features to
 
 In this lab, we will take a walkthrough around some of the improvements that the ATP provides to APEX developers, in areas such as performance, monitoring and security.
 
+Estimated Time: 45 minutes
+
 ### Objectives
 - Configure auto-scaling in our ATP instance and access the Performance Hub and learn how to monitor your ATP running your APEX applications.
 - Learn what the how our application data will be secured in the ATP.
 - Check the encryption of our data in our database.
-- Create an schema on the database on SQL Developer Web with data redaction to be leveraged by an APEX application.
+- Create a schema on the database on SQL Developer Web with data redaction to be leveraged by an APEX application.
 - Create an application on APEX that leverages the Advanced Security option to protect credit card information.
 
-### Estimated Time: 45 minutes
+### Prerequisites
+
+* An Oracle Cloud paid account or free trial. To sign up for a trial account with $300 in credits for 30 days, click [here](http://oracle.com/cloud/free).
+* An Oracle Autonomous Transaction Process instance
+* An APEX Workspace
 
 ## **STEP 1**: Accessing our Performance Hub
 The Performance Hub is a great tool to monitor our ATP status and activity. It is accessible from the Service Console.
@@ -173,6 +179,6 @@ Even if the access to our application stays internal in our organization, someti
 
 ## Acknowledgements
 * **Author** - Juan Cabrera Eisman, Senior Technology Solution Engineer, Oracle Digital
-* **Last Updated By/Date** - Tom McGinn, Learning Architect, Database User Assistance, May 2020
+* **Last Updated By/Date** - Tom McGinn, Database Innovations Architect, Database Product Management, July 2020
 
 See an issue?  Please open up a request [here](https://github.com/oracle/learning-library/issues).   Please include the workshop name and lab in your request.

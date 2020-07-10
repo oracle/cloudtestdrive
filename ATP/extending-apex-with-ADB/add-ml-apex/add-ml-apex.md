@@ -6,24 +6,25 @@ The product is called "Y Box Games". Our fictional company has been moderately s
 
 We will use [Apache Zeppelin](http://www.oracle.com/technetwork/database/options/oml/overview/index.html), which comes pre-installed with the autonomous database. This will be our frontend for the Machine Learning algorithms in the database. For more background on machine learning in the database see [Oracle Advanced Analytics documentation](https://docs.oracle.com/en/database/oracle/oracle-database/12.2/dmapi/mining-fuctions.html#GUID-3BC8FD92-9B6A-4612-A458-7E5FFDDC5EA7).
 
+Estimated Time: 60 minutes
+
 ### Objectives
 - Understand the components involved to add machine learning to APEX.
 - Become familiar with machine learning algorithms.
 - Create a machine learning model to identify customers that are likely to buy a certain product.
 
-### What Do You Need?
+### Prerequisites
 
 * An Oracle Cloud paid account or free trial. To sign up for a trial account with $300 in credits for 30 days, click [here](http://oracle.com/cloud/free).
 * An Oracle Autonomous Transaction Process instance
 * An APEX Workspace
- 
-### Estimated Time: 60 minutes
+
 
 ## **STEP 1**: Import the APEX application
 
 Our starting point is an existing CRM application used by a fictional company. This contains basic information about our company's customers. The application is used by the sales/service employees of our company to look up details whenever a customer calls them.
 
-1. Download the application [here](./files/f100.sql).
+1. Click this link to [**download the application**](./files/f100.sql).
 
    *If you are already logged into your APEX Workspace, skip to Step 4.*
 
@@ -154,7 +155,7 @@ First we will set up a user for Zeppelin.
 
     ![](./images/split_dataset.png " ")
 
-4. The model will contain the defintion of the relationship between the driving attributes and the target attribute (Y Box Games).
+4. The model will contain the definition of the relationship between the driving attributes and the target attribute (Y Box Games).
   Creating those relationships is done during the training phase.
   Defining a model requires several parameters. We first store those parameters in a table. This table can have any name.
   In our case the only parameter is the type of algorithm, in this case a decision tree model.
@@ -317,7 +318,7 @@ First we will set up a user for Zeppelin.
 
 7. We will extend the view by adding a "RECOMMENDATION" column to it.
 
-  Open the new view definition from [here](./files/customers_v_new_SQL.sql).
+  Open the [new view definition](./files/customers_v_new_SQL.sql).
 
   ![](./images/sql.png " ")
 
@@ -366,6 +367,6 @@ First we will set up a user for Zeppelin.
 
 ## Acknowledgements
 * **Author** - Jeroen Kloosterman, Technology Product Strategy Manager
-* **Last Updated By/Date** - Tom McGinn, Learning Architect, Database User Assistance, May 2020
+* **Last Updated By/Date** - Tom McGinn, Database Innovations Architect, Database Product Management, July 2020
 
 See an issue?  Please open up a request [here](https://github.com/oracle/learning-library/issues).   Please include the workshop name and lab in your request.
