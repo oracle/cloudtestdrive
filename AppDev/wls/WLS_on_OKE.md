@@ -367,8 +367,7 @@ We'll now start configuring the WebLogic setup itself.  For this we will use the
     - `domainUID`: `sample-domain1`
     - `image`: this line is commented out in the example, please remove the `#` .
       Just in case you might be sharing your tenancy repository with colleagues, we will add your initials to the image name you will be using.  
-      The format to use is : 
-      -  `<region code>.ocir.io/<Object-Storage-Namespace>/<your_initials>-wls/weblogic:12.2.1.3`
+      The format to use is : `<region code>.ocir.io/<Object-Storage-Namespace>/<your_initials>-wls/weblogic:12.2.1.3`
       - Example : `fra.ocir.io/frpqldntjs/ppa-wls/weblogic:12.2.1.3`
     - `imagePullSecretName`: `<your initials>-ocirsecret` 
       Note this line is commented out in the example, please remove the `#` . 
@@ -376,15 +375,15 @@ We'll now start configuring the WebLogic setup itself.  For this we will use the
     - `exposeAdminNodePort: true` 
     - `namespace`: `sample-domain1-ns`
     - `domainHomeImageBase`: `container-registry.oracle.com/middleware/weblogic:12.2.1.3`
-
-  - The creation script will generate output, we'll create a directory for this
-
-    ```
+    
+- The creation script will generate output, we'll create a directory for this
+  
+  ```
     mkdir out_dir
     ```
-
-    
-
+  
+  
+  
 - Now launch the build, using the file you just edited as the paramater file : 
 
   ```
