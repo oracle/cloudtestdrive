@@ -2,7 +2,7 @@
     "tutorials": [
         {
           "title": "Introduction and overview of the steps",
-          "filename":"../README.md"
+          "filename":"../README_livelabs.md"
         },
         {
           "title": "Preparing your Tenancy for the lab",
