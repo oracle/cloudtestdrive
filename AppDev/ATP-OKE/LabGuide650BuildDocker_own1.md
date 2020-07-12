@@ -65,7 +65,7 @@ Because you are working in your own Cloud Tenancy, you need to perform a few ext
 
       Example : 
 
-    ​              `kubectl create secret generic jle-wallet --from-file=./Wallet_JLEOOW/`
+    ​              `kubectl create secret generic db-wallet --from-file=./Wallet_JLEOOW/`
 
     
 

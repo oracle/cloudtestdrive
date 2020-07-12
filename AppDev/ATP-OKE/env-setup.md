@@ -1,5 +1,3 @@
-[Go to Overview Page](README.md)
-
 ![](../../common/images/customer.logo2.png)
 # Microservices on ATP #
 ## Preparing your Oracle Cloud Tenancy for the lab ##
@@ -29,13 +27,13 @@ This page will guide you through the following activities :
 
 In this lab you will be using the PaaS services that are linked with the **Identity Management Service** called IDCS.  In order to be able to manage these services you need to login using the option shown below:
 
-![image-20200422220552977](images/100/login.png) 
+<img src="images/100/login.png" alt="image-20200422220552977" style="zoom:33%;" /> 
 
 ### **STEP 1: Create a Compartment**
 
 - In the Cloud Infrastructure Console, click on the hamburger menu on the top left of the screen. From the pull-out menu, under Identity, click Compartments.
 
-![](images/100/Compartments.jpeg)
+<img src="images/100/Compartments.jpeg" style="zoom:33%;" />
 
 
 
