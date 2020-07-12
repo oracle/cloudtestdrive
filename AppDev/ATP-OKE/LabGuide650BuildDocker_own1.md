@@ -17,15 +17,13 @@ Because you are working in your own Cloud Tenancy, you need to perform a few ext
 
   - In this file, replace the default line below:
 
-  - ```
+    ```
     WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY="?/network/admin")))
     ```
 
-    
-
   - by this line:
 
-  - ```
+    ```
     WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY=$TNS_ADMIN)))
     ```
 
@@ -36,22 +34,18 @@ Because you are working in your own Cloud Tenancy, you need to perform a few ext
 
 - Make sure the **KUBECONFIG** variable is still set correctly, as you might be in a different cloud shell session as compared to when you set up the cluster:
 
-  
 - Check the value of the variable: 
   `echo $KUBECONFIG`
-    
+  
   
     - This command should show something like : 
     
-      
-    - ```
-    /home/jan_1_dema/dev/ATPDocker/terraform_0.12/mykubeconfig_0
-        ```
+      `/home/jan_1_dema/dev/ATPDocker/terraform_0.12/mykubeconfig_0`
     
   - To set the variable correctly, go to your terraform folder and re-define it:
-
   
-    - ```
+
+      ```
       cd dev/ATPDocker/terraform_0.12
       export KUBECONFIG=$PWD/mykubeconfig_0
       ```
@@ -63,22 +57,17 @@ Because you are working in your own Cloud Tenancy, you need to perform a few ext
     ```
     #First move up one level
     cd ..
-  
     # Now create a second secret
-  kubectl create secret generic db-wallet --from-file=<wallet_directory>
+    kubectl create secret generic db-wallet --from-file=<wallet_directory>
     ```
 
     - <wallet_directory> is the location of your wallet folder.  This can be a relative or a full path, finishing with a "/"
-  
-  - Example command:
 
-    ```
-    kubectl create secret generic jle-wallet --from-file=./Wallet_JLEOOW/
-    ```
-  
+      Example : 
+
+    ​              `kubectl create secret generic jle-wallet --from-file=./Wallet_JLEOOW/`
+
     
-
-
 
 
 
