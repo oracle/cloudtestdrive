@@ -1,9 +1,8 @@
-# JAM Workshop (Journey of App Modernization)
+# OIC Integration – for application integration
+
+### JAM Workshop (Journey of App Modernization)
 This hands-on, instructor-led workshop supplements live presentations and demos in order to cover both technical architecture and innovation use cases, strategies when taking application networks to the cloud and introduce you the tools required for successful implementation.
 No expertise or previous experience is required.
-
-
-## Introduction
 
 This set of labs covers the following Oracle Integration Services –
 -	Apiary – for API Design
@@ -12,19 +11,19 @@ This set of labs covers the following Oracle Integration Services –
 -	OIC Integration – for process automation and low-code apps extension
 
 
-## OIC Integration – for application integration
+
+## Objective
 
 The use case is very simple – we need to be able to expose an API that allows us to create new organizations in Oracle Service Cloud (fka. Right Now).
 
-#### Contents
-
+Contents
 -	Oracle Integration Cloud Overview
 -	Create the Connections - REST and Service Cloud
 -	Create the Integration
 -	Activate the Integration
 -	Test using Postman
 
-### **STEP 1:** Oracle Integration Cloud Overview
+## **STEP 1:** Oracle Integration Cloud Overview
 
 -	Login to Oracle Integration Cloud (OIC)
 
@@ -52,7 +51,7 @@ The Integration Designer allows us to do the following –
 -	Enhance your integrations with JavaScript libraries
 
 
-### **STEP 2.1:** Create the Connections - REST
+## **STEP 2.1:** Create the Connections - REST
 
 We will create a REST Connection which will trigger our integration, and a Service Cloud connection to communicate with, you&#39;ve guessed it, Oracle Service Cloud.
 
@@ -80,7 +79,7 @@ We will create a REST Connection which will trigger our integration, and a Servi
 
 ![](images/lab01/img0090.png)
 
-### **STEP 2.2:** Create the Connections - Service Cloud
+## **STEP 2.2:** Create the Connections - Service Cloud
 
 -	Now **Create** the Service Cloud Connection, you can search to filter away the other adapters.
 
@@ -94,7 +93,7 @@ We will create a REST Connection which will trigger our integration, and a Servi
 
 -	**Configure** with the following WSDL URL :
     ```
-	https://gsefmwr11.rightnowdemo.com/cgi-bin/integration_test.cfg/services/soap?wsdl
+	https://rnowgse11070.rightnowdemo.com/services/soap/connect/soap?wsdl
     ```
 
     * Click **Configure Connectivity**
@@ -115,7 +114,7 @@ You should now be able to see your new connection at the top of the list.
 ![](images/lab01/img0160.png)
 
 
-### **STEP 3.1:** Create the Integration - Create App Driven Orchestration
+## **STEP 3.1:** Create the Integration - Create App Driven Orchestration
 
 -	Open the main menu and click on **Integrations**
 
@@ -139,7 +138,7 @@ You should now be able to see your new connection at the top of the list.
 ![](images/lab01/img0200.png)
 
 
-### **STEP 3.2:** Create the Integration - Configure REST Trigger
+## **STEP 3.2:** Create the Integration - Configure REST Trigger
 
 -	Click on the start node, **search for** and **select your REST Connection**: REST-Trigger-NN
 
@@ -148,10 +147,16 @@ You should now be able to see your new connection at the top of the list.
 -	**Configure** the REST-Trigger as follows
     * Name: CreateOrgService
     * Description: Your name or initials
+    * Multiple resources or verbs: not checked (leave default)
+
+![](images/lab01/img0215.png)
+    
+-	Click **Next**
+   
     * Endpoint&#39;s relative resource URI: /createOrg
     * Action to perform on endpoint: POST
     * Make sure &quot;_Configure a request payload for this endpoint_&quot; and &quot;_Configure this endpoint to receive the response_&quot; are **selected**
-
+    
 -	Click **Next**
 
 ![](images/lab01/img0220.png)
@@ -205,7 +210,7 @@ Your Integration should now look something like this:
 ![](images/lab01/img0290.png)
 
 
-### **STEP 3.3:** Create the Integration - Check if Organization exists
+## **STEP 3.3:** Create the Integration - Check if Organization exists
 
 Before creating a new organization, the first thing we will do is to check whether the organization already exists.
 For this we will use the Service Cloud Connection.
@@ -232,14 +237,14 @@ For this we will use the Service Cloud Connection.
         ```
 
     * **Click** on Parameter Bindings
-    * Enter **orgName**: HOTD
+    * Enter **orgName**: Initech
 	* **Click** _Test My Query_
     
     
   
   ![](images/lab01/img0320.png)
 
-You should have 10 results found, with a response that looks like this:
+You should have 1 result found, with a response that looks like this:
 
 ![](images/lab01/img0330.png)
 
@@ -284,7 +289,7 @@ If the Organization does not already exist, then we will create it and return th
 ![](images/lab01/img0390.png)
 
 
-### **STEP 3.4:** Create the Integration - Case Organization exists
+## **STEP 3.4:** Create the Integration - Case Organization exists
 
 -	**Edit** path 1 by clicking on the pencil-icon:
 
@@ -320,16 +325,15 @@ Now, in Path 1, we simply add a MAP to assign the return variable.
 
 To manually set the status to a text – do as follows
 
--	**Click** on the status link
+-	**Right-Click** on the status element and select **Create Target Node**:
 
 ![](images/lab01/img0450.png)
 
--	**Enter** statement: Organization already exists
+-	In the Expression aria at the bottom **enter** statement: Organization already exists
 -	**Click** Save
 
 ![](images/lab01/img0460.png)
 
--	**Click** Close
 -	**Verify** the mapping
 
 ![](images/lab01/img0470.png)
@@ -342,7 +346,7 @@ Your integration should now look like this:
 ![](images/lab01/img0480.png)
 
 
-### **STEP 3.5:** Create the Integration - Case New Organization
+## **STEP 3.5:** Create the Integration - Case New Organization
 
 Now to configure Path 2 – Otherwise
 
@@ -386,13 +390,12 @@ Your integration is almost done! Now, in Path 2, we just need to add a final MAP
 
 To manually set the status to a text – do as follows
 
--	**Click** on the status link
+-	**Right-Click** on the status element and select **Create Target Node**:
 
 ![](images/lab01/img0550.png)
 
--	**Enter** statement: Organization Created
+-	In the Expression aria at the bottom **enter** statement: Organization Created
 -	**Click** Save
--	**Click** Close
 
 ![](images/lab01/img0560.png)
 
@@ -420,7 +423,7 @@ The completed integration!
 ![](images/lab01/img0600.png)
 
 
-### **STEP 3.6:** Create the Integration - Setup tracking
+## **STEP 3.6:** Create the Integration - Setup tracking
 
 Before we activate and publish, we still need to set a tracking field, for auditing/monitoring purposes
 
@@ -436,14 +439,14 @@ Before we activate and publish, we still need to set a tracking field, for audit
 -	**Save** and **Close** the Integration
 
 
-### **STEP 4:** Activate the Integration
+## **STEP 4:** Activate the Integration
 
 It&#39;s finally time to activate and publish your integration!
 
 From the Integrations-list
 
 -	**Identify** _your_ Integration – CreateServiceOrg-NN (you can search to filter the results)
--	Activate the Integration – **Activate** - by clicking on the switch
+-	Activate the Integration – **Activate** - by clicking on the turn on button
 
 ![](images/lab01/img0630.png)
 
@@ -452,11 +455,11 @@ From the Integrations-list
 ![](images/lab01/img0641.png)
 
 
-### **STEP 5:** Test using Postman
+## **STEP 5:** Test using Postman
 
 You will need to have Postman (or a similar program) installed for this step
 
--	Click on the **URL** to get the _REST Endpoint_
+-	Click on the **URL** from the activation notification to get the _REST Endpoint_
 
 ![](images/lab01/img0660.png)
 
