@@ -1,12 +1,12 @@
 {
     "tutorials": [
         {
-          "title": "Workshop Overview",
-          "filename":"../../workshop-intro/workshop-intro.md"
+          "title": "Prerequisites",
+          "filename": "https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/cloud-login/cloud-login-livelabs2.md"
         },
         {
-          "title": "Sign Up for Free Trial",
-          "filename": "https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/cloud-login/cloud-login-livelabs20.md"
+          "title": "Introduction",
+          "filename":"../../workshop-intro/workshop-intro.md"
         },
         {
           "title": "Lab 1: Create an APEX Workspace",
