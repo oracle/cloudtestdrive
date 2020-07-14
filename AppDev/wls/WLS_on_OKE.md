@@ -99,7 +99,7 @@ We will be using an Oracle Cloud Managed Kubernetes cluster to deploy weblogic.
 
   - Name : the name of your cluster.  We will be using the name *WlsOkeLab_(your_initials)* in this tutorial.  Please replace (your_initials) by a 3-letter code, for example Abc
   - Choose the CTDOKE compartment if it is available in the tenancy.
-  - Select version 15.7
+  - ***ATTENTION !!*** Select version 15.7 (**Not** the default version 16.8).
   - Select **Public** worker nodes
   - Choose the shape VM_Standard2.1
     *Remark*: you might have to check available compute shapes on your tenancy.  You can do this by visualizing the **Service Limits** on the "Administration" , "Tenancy Details" page.
@@ -381,8 +381,6 @@ We'll now start configuring the WebLogic setup itself.  For this we will use the
   ```
   mkdir out_dir
   ```
-  
-  
   
 - Now launch the build, using the file you just edited as the paramater file : 
 
