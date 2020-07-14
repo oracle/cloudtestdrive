@@ -379,7 +379,7 @@ We'll now start configuring the WebLogic setup itself.  For this we will use the
 - The creation script will generate output, we'll create a directory for this
   
   ```
-    mkdir out_dir
+  mkdir out_dir
   ```
   
   
