@@ -11,7 +11,7 @@ This lab will showcase running WebLogic on a Kubernetes cluster, using the Opera
 
 To run these labs you will need access to an Oracle Cloud Tenancy, either via a **Free Tier**, using a **Pay-as-you-Go** account, or using the **Corporate account** of your organization. 
 
-If you do not have an account yet, you can obtain an Oracle Free Tier account by [clicking here.](https://myservices.us.oraclecloud.com/mycloud/signup?sourceType=:em:lw:rce:cpo:RC_EMMK200131P00052:WLLabApril)
+If you do not have an account yet, you can obtain an Oracle Free Tier account by [clicking here.](https://myservices.us.oraclecloud.com/mycloud/signup?sourceType=:ow:wb:sh:em::RC_WWMK200517P00003:Vlab_Weblogic_July&intcmp=:ow:wb:sh:em::RC_WWMK200517P00003:Vlab_Weblogic_July)
 
 
 
@@ -375,12 +375,12 @@ We'll now start configuring the WebLogic setup itself.  For this we will use the
     - `exposeAdminNodePort: true` 
     - `namespace`: `sample-domain1-ns`
     - `domainHomeImageBase`: `container-registry.oracle.com/middleware/weblogic:12.2.1.3`
-    
+  
 - The creation script will generate output, we'll create a directory for this
   
   ```
     mkdir out_dir
-    ```
+  ```
   
   
   
