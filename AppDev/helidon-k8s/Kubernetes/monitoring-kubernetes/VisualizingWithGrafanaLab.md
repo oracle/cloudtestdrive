@@ -88,6 +88,8 @@ If the external IP address says <pending> then Kubernetes hasn't finished starti
 
 - Open a web page (replace `<external IP>`) with the one you just got for the grafana service.
   - `http://<external ip>`
+  
+I have found that for some versions of Firefox that grafana complains about reverse-proxy settings. You may find that you need to use chrome or safari to access the grafana page.
 
 You'll be presented with the Grafana login window
 ![grafana-login](images/grafana-login.png)
