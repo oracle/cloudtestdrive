@@ -99,7 +99,7 @@ To be honest this is a bit of inside knowledge, docker images run the command th
 
 Within a second or two of the process being killed the connection to the container in the pod is terminated as the container exits.
 
-If we now try getting the data again it still responds  (replace <External IP> with the one for your service)
+If we now try getting the data again it still responds  (replace <External IP> with the one for your service) If you get a 503 error that just means that the pod is still restarting, wait a few seconds and try again.
 
 - `curl -i -k -X GET -u jack:password https://<External IP>/store/stocklevel`
 
