@@ -72,7 +72,7 @@ To specify a specific older version use the version keyword in your help command
 Installing Prometheus is simple, we just use helm.
 
 - In the OCI Cloud Shell type
-  -  `helm install prometheus stable/prometheus --namespace monitoring --set server.service.type=LoadBalancer`
+  -  `helm install prometheus stable/prometheus --namespace monitoring --set server.service.type=LoadBalancer --version 11.6.0`
   
 
 ```
