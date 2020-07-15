@@ -49,7 +49,7 @@ You finished the setup part of your environment, and you can now start with the 
 
 
 
-#### [License](../../LICENSE)
+## License
 
 Copyright (c) 2014, 2020 Oracle and/or its affiliates
 The Universal Permissive License (UPL), Version 1.0
