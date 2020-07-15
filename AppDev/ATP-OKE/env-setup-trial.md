@@ -8,20 +8,19 @@ In case you are using a personal instance, either obtained via the Oracle Cloud 
 
 This page will guide you through the following activities :
 
-- Part A : Set up your Cloud Infrastructure
-  - Step 1: Create a compartment called CTDOKE which we will use in this lab
-  - Step 2: Add a certificate and a token to your user
-- Part B : Set up Visual Builder Studio Service
-  - Step 3 : Create an Instance
-  - Step 4 : Configure the new Visual Builder Studio instance
+- Step 1: Create a compartment called CTDOKE which we will use in this lab
+- Step 2: Add a certificate and a token to your user
+- Step 3 : Create an Instance of Visual Builder Studio Service
+- Step 4 : Configure the new Visual Builder Studio instance
+- Step 5 : Create a new Autonomous Database instance
 
 
 
-**ATTENTION** : if you are running this lab in a **Instructor-provided environment**, your Visual Builder Studio instance has already been created, **you can skip the steps on this page**.  A link to the instance will be provided by your instructor.
+**ATTENTION** : if you are running this lab in a **Instructor-provided environment**, most of this setup has already been done, **you can skip the steps on this page**.  A link to the instance will be provided by your instructor.
 
 
 
-## Part A : Set up your Cloud Infrastructure
+## Step 1: Create a compartment called CTDOKE
 
 ### Log in to your cloud account
 
@@ -29,9 +28,15 @@ In this lab you will be using the PaaS services that are linked with the **Ident
 
 <img src="images/100/login.png" alt="image-20200422220552977" style="zoom:33%;" /> 
 
-### **STEP 1: Create a Compartment**
+Once you are logged in you will find yourself on the Oracle Cloud Infrastructure console page as shown below:
 
-- In the Cloud Infrastructure Console, click on the hamburger menu on the top left of the screen. From the pull-out menu, under Identity, click Compartments.
+<img src="images/100/console.png" style="zoom:33%;" />
+
+
+
+### Creating a Compartment
+
+- Click on the hamburger menu on the top left of the screen. From the pull-out menu, scroll down to the **Identity** section, and click **Compartments**.
 
 <img src="images/100/Compartments.jpeg" style="zoom:33%;" />
 
@@ -59,7 +64,11 @@ After you successfully created the compartment, note down the **Compartment OCID
 
 
 
-### STEP 2: Create a user certificate and token
+## STEP 2: Create a user certificate and token
+
+In order to interact with the various Cloud Services in a secure way, we will be using a **password token** and a **API Key**.
+
+### Locate your User Details
 
 First you need to locate your user using the Search functionality of the console:
 
@@ -69,7 +78,9 @@ First you need to locate your user using the Search functionality of the console
 
 - Select the user **that looks like :  oracleidentitycloudservice/(your_name)**
 
-  ![](../wls/images/token1.png)
+### Create a Token
+
+![](../wls/images/token1.png)
 
 - Select **Token** in the right-hand menu, then click the button **Create Token**.
 
@@ -79,7 +90,8 @@ First you need to locate your user using the Search functionality of the console
 
     ![](../wls/images/token2.png)
 
-    
+
+### Create an API Key
 
 - Add an API key:
 
@@ -119,15 +131,7 @@ First you need to locate your user using the Search functionality of the console
 
 
 
-
-
-
-
-## Part B : Set up your Visual Builder Studio environment
-
-
-
-### Step 3 : Setting up Visual Builder Studio ###
+## Step 3 : Setting up Visual Builder Studio
 
 This step will guide you through the setup of a new Visual Builder Studio instance:
 
@@ -135,11 +139,11 @@ This step will guide you through the setup of a new Visual Builder Studio instan
 - Create a Visual Builder Studio instance
 - Configuring the Storage and Build parameters for your Visual Builder Studio instance
 
-Note : The *Visual Builder Studio* service was previously named *Developer Cloud Service*, but all the key screens have remained unchanged.  A few new menus have been added for increased integration with the Visual Builder Low Code development environment.
+Note : The *Visual Builder Studio* service was previously named *Developer Cloud Service*, but all the key screens have remained unchanged.
 
 
 
-#### Go to Visual Builder Studio on your dashboard ####
+### Navigate to the Visual Builder Studio Service page ###
 
 - Login to your cloud account using the SSO login screen of the **oracleidentitycloudservice**.  See the very beginning of this lab for details.
 - Locate the **Platform Services** menu and select **Developer**
@@ -148,7 +152,7 @@ Note : The *Visual Builder Studio* service was previously named *Developer Cloud
 
 
 
-#### Create an instance ####
+### Create an instance ###
 
 -  You should have no existing instances.  If you have, you can skip the following steps and just validate you have a build engine witht the correct libraries included.
 
@@ -178,22 +182,26 @@ Note: You should match the region selected with your home region.
 
 
 
-#### Access your Visual Builder Studio Environment ####
+### Access your Visual Builder Studio Environment ###
 
 To access your Visual Builder Studio Instance, refresh the page and use the hamburger menu on the right to access the menu item **Access Service Instance**. 
 
+Be sure to **bookmark** this link for future use.
+
+![alt text](images/devcs/access-devcs.png)
 
 
 
 
 
-### Step 4 : Configure Visual Builder Studio Compute & Storage using OCI credentials
+
+## Step 4 : Configure Visual Builder Studio
 
 To configure Visual Builder Studio to use the OCI Compute resources for its build engines, we need to manually provide the OCI credentials in the setup menu.
 
 **Attention !!** 
 
-In the following section you will need to switch repeatedly between the Visual Builder Studio console (on the left in the below screenshot, the "OCI Credentials" menu) and the OCI Cloud Interface where you need to collect a number of parameters of your instance (on the right in the below screenshot)
+In the following section you will need to switch repeatedly between the Visual Builder Studio console (on the left in the below screenshot) and the OCI Cloud Interface,  where you need to collect a number of parameters of your instance (on the right in the below screenshot)
 
 **Take a minute to set up 2 browser windows that allow easy switching between these 2 screens** to cut and paste parameters between them ! 
 
@@ -201,7 +209,7 @@ In the following section you will need to switch repeatedly between the Visual B
 
 
 
-
+### Configure the OCI Account
 
 - In Visual Builder Studio, on the left-side menu, select the top level **Organization** menu, then click on **OCI Account** in the top menu.  Next you can hit the **Connect** button.
 
@@ -239,7 +247,7 @@ In the following section you will need to switch repeatedly between the Visual B
 
 
 
-#### Create a Virtual Machine
+### Create a Virtual Machine
 
 - On the left-side menu, select the top level **Organization** menu, then click on **Virtual Machines Templates** in the top menu.  Next you can hit the **Create Template** button.
 
@@ -283,11 +291,115 @@ In the following section you will need to switch repeatedly between the Visual B
   
     ![alt text](images/devcs/im08-2.png)
 
-You finished all the steps of the Visual Builder Studio setup.  
 
 
+
+## Step 5 : Provisioning an Autonomous Transaction Processing Database
+
+
+#### **Introduction**
+
+This lab walks you through the steps to get started using the Oracle Autonomous Transaction Processing Database on Oracle Cloud Infrastructure (OCI). You will provision a new database, and connect to it using SQL Developer
+
+### **Create an ATP Instance**
+
+-  Click on the hamburger menu icon on the top left of the screen
+
+![](./images/100/Picture100-20.jpeg)
+
+-  Click on **Autonomous Transaction Processing** from the menu
+
+![](./images/100/Picture100-21.jpeg)
+
+
+
+- Select the compartment you created previously 
+- Click on **Create Autonomous Database** button to start the instance creation process
+
+![](./images/100/DemoComp-1.png)
+
+
+
+-  This will bring up Create Autonomous Database screen where you specify the configurations of the instance
+   -  Verify your compartment is selected
+   -  Specify a name for the instance, for example containing your initials for easy reference
+   -  Select **Transaction Processing**
+   -  Select **Shared Infrastructure**
+
+![](./images/100/Picture100-24-2.png)
+
+
+
+- Select a OCPU Count of 1
+- Select 1 TB of storage
+- Specify the password for the instance, for example : 
+
+```
+WElcome_123#
+```
+
+
+
+![](./images/100/Picture100-28-2.png)
+
+
+
+- Choose a license type: You will see 2 options.   
+  - **Bring Your Own License (BYOL)** :  Oracle allows you to bring your unused on-prem licenses to the cloud and your instances are billed at a discounted rate. This is the default option so ensure you have the right license type for this subscription.
+  - If you do not have available on-premise Licenses, select the option **License Included**, in this case License fees will be included in the hourly rate of your database.
+
+![](./images/100/Picture100-34.png)
+
+
+
+
+
+- Click on **Create Autonomous Database** to start provisioning the instance
+
+
+
+
+
+
+- Once you create ATP Database it would take 2-3 minutes for the instance to be provisioned.
+
+![](./images/100/Picture100-32.jpeg)
+
+-  Once it finishes provisioning, you can click on the instance name to see details of it
+
+![](./images/100/Picture100-33.jpeg)
+
+You now have created your first Autonomous Transaction Processing Cloud instance.
+
+
+
+### Connect to the ATP instance with SQL Developer** Web
+
+Lets connect to the database you just created using the build-in **SQL Developer Web** tool.
+
+- Navigate to your OCI console, and select the ATP database you are using
+
+  ![](images/400/db_select.png)
+
+  
+
+- On the Database Details page, navigate to the **Service Console**, 
+
+  ![](images/400/service_console.png)
+
+  
+
+- Then select **Development** in the left-hand menu, and then the tile labeled **SQL Developer Web** 
+
+  ![](images/400/DB_console.png)
+
+- You can now visualize the tables in the database, and execute queries.  Of course this is an empty database for now, we will reuse this tool later to check you have deployed objects into the database via Visual Builder Studio
 
 ---
 
-[Go to Overview Page](README.md)
+
+
+
+
+You finished all the steps of the Visual Builder Studio setup.   Use the menu to navigate to the next chapter.
 

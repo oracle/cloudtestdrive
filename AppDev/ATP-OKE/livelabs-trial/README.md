@@ -1,6 +1,6 @@
 
 
-![](../../common/images/customer.logo2.png)
+![](../../../common/images/customer.logo2.png)
 
 # Microservices on Kubernetes and Autonomous Database
 
@@ -30,8 +30,7 @@ Next, follow the steps described below.
 
 This lab is composed of the steps outlined below.  Please walk through the various labs in a sequential order, as the different steps depend on each other:
 
-- [Preparing your Tenancy for the lab](?lab=introduction-overview-steps) .
-- [Provisioning an Autonomous Transaction Processing Database Instance](?lab=provision-autonomous-database)  using the OCI Console (manual).
+- [Preparing your Tenancy for the lab](?lab=introduction-overview-steps)
 
   
 

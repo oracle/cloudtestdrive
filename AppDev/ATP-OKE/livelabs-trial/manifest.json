@@ -2,15 +2,11 @@
     "tutorials": [
         {
           "title": "Introduction and overview of the steps",
-          "filename":"../README_livelabs.md"
+          "filename":"README.md"
         },
         {
           "title": "Preparing your Tenancy for the lab",
-          "filename":"../env-setup.md"
-        },
-        {
-          "title": "Provision an Autonomous Database",
-          "filename": "../LabGuide100ProvisionAnATPDatabase.md"
+          "filename":"../env-setup-trial.md"
         },
         {
           "title": "Part 1: Setting up your Visual Builder Studio project",
