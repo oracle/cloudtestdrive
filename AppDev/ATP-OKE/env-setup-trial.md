@@ -43,10 +43,10 @@ Once you are logged in you will find yourself on the Oracle Cloud Infrastructure
 
 
 - You will see the list of compartments currently available in your instance, which will include at least the root compartment of your tenancy (with has the tenancy name). 
-  - ![](images/100/ListCompartmentsCTDOKE.png)
+  - <img src="images/100/ListCompartmentsCTDOKE.png" style="zoom: 67%;" />
 - Click on **Create Compartment** button to start the compartment creation process
 
-![](images/100/CreateCompartment4.png)
+<img src="images/100/CreateCompartment4.png" style="zoom: 33%;" />
 
 Enter the following in create Compartment window
 
@@ -60,11 +60,11 @@ Enter the following in create Compartment window
 
 After you successfully created the compartment, note down the **Compartment OCID**, you will need it later in the lab :
 
-![](images/100/comp_ocid.png)
+<img src="images/100/comp_ocid.png" style="zoom: 50%;" />
 
 
 
-## STEP 2: Create a user certificate and token
+## Step 2: Create a user certificate and token
 
 In order to interact with the various Cloud Services in a secure way, we will be using a **password token** and a **API Key**.
 
@@ -80,7 +80,7 @@ First you need to locate your user using the Search functionality of the console
 
 ### Create a Token
 
-![](../wls/images/token1.png)
+<img src="../wls/images/token1.png" style="zoom: 50%;" />
 
 - Select **Token** in the right-hand menu, then click the button **Create Token**.
 
@@ -126,7 +126,7 @@ First you need to locate your user using the Search functionality of the console
   
   - Copy the OCID of this user in a temporary file
   
-  ![alt text](images/devcs/OCI_user_details_new.png)
+  <img src="images/devcs/OCI_user_details_new.png" alt="alt text" style="zoom: 33%;" />
 
 
 
@@ -148,7 +148,7 @@ Note : The *Visual Builder Studio* service was previously named *Developer Cloud
 - Login to your cloud account using the SSO login screen of the **oracleidentitycloudservice**.  See the very beginning of this lab for details.
 - Locate the **Platform Services** menu and select **Developer**
 
-![alt text](images/devcs/dashboard_new.png)
+<img src="images/devcs/dashboard_new.png" alt="alt text" style="zoom:33%;" />
 
 
 
@@ -156,29 +156,29 @@ Note : The *Visual Builder Studio* service was previously named *Developer Cloud
 
 -  You should have no existing instances.  If you have, you can skip the following steps and just validate you have a build engine witht the correct libraries included.
 
-![alt text](images/devcs/DevCS_create_instance_new.png)
+<img src="images/devcs/DevCS_create_instance_new.png" alt="alt text" style="zoom: 25%;" />
 
 
 
 - Use the "Create Instance" button to create a new Visual Builder Studio instance
 
-![alt text](images/devcs/create_new.png)
+<img src="images/devcs/create_new.png" alt="alt text" style="zoom: 25%;" />
 
 Note: You should match the region selected with your home region.
 
-![alt text](images/devcs/region_match_new.png)
+<img src="images/devcs/region_match_new.png" alt="alt text" style="zoom: 50%;" />
 
 
 
 - Hit the "Next" button and then "Create"
 
-![alt text](images/devcs/confirm_new.png)
+<img src="images/devcs/confirm_new.png" alt="alt text" style="zoom: 25%;" />
 
 
 
 - Now the instance is being created.  This will take a few minutes, you can hit the small arrow to requery the status.
 
-![alt text](images/devcs/creating_new.png)
+<img src="images/devcs/creating_new.png" alt="alt text" style="zoom:25%;" />
 
 
 
@@ -188,7 +188,7 @@ To access your Visual Builder Studio Instance, refresh the page and use the hamb
 
 Be sure to **bookmark** this link for future use.
 
-![alt text](images/devcs/access-devcs.png)
+<img src="images/devcs/link-devcs.png" alt="alt text" style="zoom:33%;" />
 
 
 
@@ -205,7 +205,7 @@ In the following section you will need to switch repeatedly between the Visual B
 
 **Take a minute to set up 2 browser windows that allow easy switching between these 2 screens** to cut and paste parameters between them ! 
 
-![alt text](images/devcs/dualscreen.png)
+<img src="images/devcs/dualscreen.png" alt="alt text" style="zoom: 25%;" />
 
 
 
@@ -213,31 +213,31 @@ In the following section you will need to switch repeatedly between the Visual B
 
 - In Visual Builder Studio, on the left-side menu, select the top level **Organization** menu, then click on **OCI Account** in the top menu.  Next you can hit the **Connect** button.
 
-![alt text](images/devcs/Connect_OCIaccount_new.png)
+<img src="images/devcs/Connect_OCIaccount_new.png" alt="alt text" style="zoom: 33%;" />
 
-![alt text](images/devcs/Configure_OCIaccount_new.png)
+<img src="images/devcs/Configure_OCIaccount_new.png" alt="alt text" style="zoom: 50%;" />
 
 - The OCI credentials can be found in your main cloud dasboard / Administration / Tenancy details
 
-![alt text](images/devcs/OCI_Tenancy_details_new.png)
+<img src="images/devcs/OCI_Tenancy_details_new.png" alt="alt text" style="zoom:33%;" />
 
-![alt text](images/devcs/OCI_tenancy_details_new_2.png)
+<img src="images/devcs/OCI_tenancy_details_new_2.png" alt="alt text" style="zoom: 33%;" />
 
 - The user details can be found in your main cloud dasboard / Identity/ Users / click on api.user
 
-![alt text](images/devcs/OCI_user_details_new.png)
+<img src="images/devcs/OCI_user_details_new.png" alt="alt text" style="zoom:33%;" />
 
 - You should have noted the OCID of the **CTDOKE** Compartment earlier in this section just after the creation.
 
 - The **Home Region** can be found by simply selecting the name of your region in the top menu bar, and clicking on **Manage Regions**
 
-  ![alt text](images/devcs/region1.png)
+  <img src="images/devcs/region1.png" alt="alt text" style="zoom: 25%;" />
 
   
 
   - On the resulting screen you can see the **Region Identifier**, in this example ***eu-frankfurt-1***
 
-    ![alt text](images/devcs/region2.png)
+    <img src="images/devcs/region2.png" alt="alt text" style="zoom:25%;" />
 
 
 
@@ -251,7 +251,7 @@ In the following section you will need to switch repeatedly between the Visual B
 
 - On the left-side menu, select the top level **Organization** menu, then click on **Virtual Machines Templates** in the top menu.  Next you can hit the **Create Template** button.
 
-![alt text](images/devcs/NewTemplate2.png)
+<img src="images/devcs/NewTemplate2.png" alt="alt text" style="zoom:50%;" />
 
 
 - In the dialog box, specify a name, for example **OKE2**  and use the default **Oracle Linux 7** image.  Then hit the **Create** button.
@@ -261,7 +261,7 @@ In the following section you will need to switch repeatedly between the Visual B
 
 - Now select the template you just created (OKE2), and add the required software packages by clicking on the **Configure Software** button.
 
-![alt text](images/devcs/im05-3.png)
+<img src="images/devcs/im05-3.png" alt="alt text" style="zoom:50%;" />
 
 - Select the following packages:
   - Docker 17.12
@@ -269,13 +269,13 @@ In the following section you will need to switch repeatedly between the Visual B
   - OCIcli ==> this will prompt you to also install Python3
   - SQLcl 18
 
-![alt text](images/devcs/im06-2.png)
+<img src="images/devcs/im06-2.png" alt="alt text" style="zoom: 50%;" />
 
 
 
 - Finally, navigate to the **Build Virtual Machines** menu on the top menu, and hit the **+ Create VM** button.
 
-  ![alt text](images/devcs/im07-2.png)
+  <img src="images/devcs/im07-2.png" alt="alt text" style="zoom:50%;" />
 
   
   
@@ -294,7 +294,7 @@ In the following section you will need to switch repeatedly between the Visual B
 
 
 
-## Step 5 : Provisioning an Autonomous Transaction Processing Database
+## Step 5 : Provisioning an ATP Database
 
 
 #### **Introduction**
@@ -305,18 +305,18 @@ This lab walks you through the steps to get started using the Oracle Autonomous 
 
 -  Click on the hamburger menu icon on the top left of the screen
 
-![](./images/100/Picture100-20.jpeg)
+<img src="./images/100/Picture100-20.jpeg" style="zoom: 25%;" />
 
 -  Click on **Autonomous Transaction Processing** from the menu
 
-![](./images/100/Picture100-21.jpeg)
+<img src="./images/100/Picture100-21.jpeg" style="zoom: 25%;" />
 
 
 
 - Select the compartment you created previously 
 - Click on **Create Autonomous Database** button to start the instance creation process
 
-![](./images/100/DemoComp-1.png)
+<img src="./images/100/DemoComp-1.png" style="zoom: 50%;" />
 
 
 
@@ -326,7 +326,7 @@ This lab walks you through the steps to get started using the Oracle Autonomous 
    -  Select **Transaction Processing**
    -  Select **Shared Infrastructure**
 
-![](./images/100/Picture100-24-2.png)
+<img src="./images/100/Picture100-24-2.png" style="zoom:33%;" />
 
 
 
@@ -340,7 +340,7 @@ WElcome_123#
 
 
 
-![](./images/100/Picture100-28-2.png)
+<img src="./images/100/Picture100-28-2.png" style="zoom: 50%;" />
 
 
 
@@ -363,11 +363,11 @@ WElcome_123#
 
 - Once you create ATP Database it would take 2-3 minutes for the instance to be provisioned.
 
-![](./images/100/Picture100-32.jpeg)
+<img src="./images/100/Picture100-32.jpeg" style="zoom:33%;" />
 
 -  Once it finishes provisioning, you can click on the instance name to see details of it
 
-![](./images/100/Picture100-33.jpeg)
+<img src="./images/100/Picture100-33.jpeg" style="zoom:33%;" />
 
 You now have created your first Autonomous Transaction Processing Cloud instance.
 
@@ -379,19 +379,19 @@ Lets connect to the database you just created using the build-in **SQL Developer
 
 - Navigate to your OCI console, and select the ATP database you are using
 
-  ![](images/400/db_select.png)
+  <img src="images/400/db_select.png" style="zoom: 25%;" />
 
   
 
 - On the Database Details page, navigate to the **Service Console**, 
 
-  ![](images/400/service_console.png)
+  <img src="images/400/service_console.png" style="zoom:50%;" />
 
   
 
 - Then select **Development** in the left-hand menu, and then the tile labeled **SQL Developer Web** 
 
-  ![](images/400/DB_console.png)
+  <img src="images/400/DB_console.png" style="zoom: 25%;" />
 
 - You can now visualize the tables in the database, and execute queries.  Of course this is an empty database for now, we will reuse this tool later to check you have deployed objects into the database via Visual Builder Studio
 
