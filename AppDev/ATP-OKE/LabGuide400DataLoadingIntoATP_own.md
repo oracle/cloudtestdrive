@@ -32,14 +32,37 @@ We need to extract the ATP Database wallet file into the OCI Cloud shell. Open t
 # Position yourself in the git repo, replace ATPDocker with your repo name if you used a different one
 cd $HOME/dev/ATPDocker
 
-# Download the file via the OCI CLI, replacing the database OCID with the OCID of your database
+# Download the file via the OCI CLI, replacing the database OCID with the OCID of your database and the password with the one of the admin user
 oci db autonomous-database generate-wallet --file Wallet.zip --password 'Pa$$w0rd' --autonomous-database-id ocid1.autonomousdatabase.oc1.eu-frankfurt-1.abtheljtn3slgmzqr2benreqkrs55gwg3v3tz6lgwhgfgzaccrb
 
 # Unzip the file
 unzip Wallet.zip -d Wallet
 ```
 
+- Note you need to replace the database OCID with the correct OCID of the database you are using.
 - In the  above sequence of commands, we used the "OCI CLI", or the **Oracle Cloud Command Line Interface**  to interact with elements in the infrastructure, in this case the database.  For more information on how this works, you can look at the [documentation](https://docs.cloud.oracle.com/en-us/iaas/tools/oci-cli/2.9.9/oci_cli_docs/cmdref/db/autonomous-database/generate-wallet.html).
+
+- Navigate into your database wallet folder, and edit the file **sqlnet.ora**, using your favorite editor (vi or nano)
+
+  - In this file, replace the default line below:
+
+    ```
+    WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY="?/network/admin")))
+    ```
+
+  - by this line:
+
+    ```
+    WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY=$TNS_ADMIN)))
+    ```
+
+  - This will allow us to simply set the environment variable $TNS_ADMIN to the correct path.
+
+- Reposition yourself in the root directory of your project
+
+  ```
+  cd ..
+  ```
 
 - On the command line, add the new files to the git repository, commit them and push them to Visual Builder Studio with the following commands:
 

@@ -1,0 +1,28 @@
+{
+    "tutorials": [
+        {
+          "title": "Prerequisites",
+          "filename": "https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/cloud-login/cloud-login-livelabs2.md"
+        },
+        {
+          "title": "Introduction",
+          "filename":"../../workshop-intro/workshop-intro.md"
+        },
+        {
+          "title": "Lab 1: Create an APEX Workspace",
+          "filename": "../../create-atp-apex/create-atp-apex.md"
+        },
+		    {
+          "title": "Lab 2: Add Spatial to APEX",
+          "filename": "../../add-spatial-apex/add-spatial-apex.md"
+        },
+		    {
+          "title": "Lab 3: Add Machine Learning to APEX",
+          "filename": "../../add-ml-apex/add-ml-apex.md"
+        },
+		    {
+          "title": "Lab 4: Add Security to APEX",
+          "filename": "../../add-security/add-security.md"
+        }
+    ]
+}

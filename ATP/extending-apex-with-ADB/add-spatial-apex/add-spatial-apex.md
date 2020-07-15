@@ -3,23 +3,23 @@
 In this lab we will extend an existing APEX application with geospatial functionality. Imagine a fictional use case where citizens that wish to fly a drone have to formally request this. The APEX application will be used by an institution to process these requests and decide whether the drone-flight is allowed.
 A drone flight will be allowed when its location is not within an urban area.
 
+Estimated Time: 60 minutes
+
 ### Objectives
 - Understand how to geocode an address with APEX.
 - Understand how to perform geospatial calculations by using Spatial SQL functions from within APEX.
 
-### What Do You Need?
+### Prerequisites
 
 * An Oracle Cloud paid account or free trial. To sign up for a trial account with $300 in credits for 30 days, click [here](http://oracle.com/cloud/free).
 * An Oracle Autonomous Transaction Process instance
 * An APEX Workspace
 
-### Estimated Time: 60 minutes
-
 ## **STEP 1**: Import the APEX application
 
 Our starting point is an unfinished APEX application.
 
-1. First download the application that we will install from [here](files/f105.sql).
+1. First, click this link to [**download the application**](files/f105.sql) that we will install.
 
   *If you are already logged into your APEX Workspace, skip to Step 4.*
 
@@ -330,6 +330,6 @@ In our case we will verify that the coordinate of the proposed drone flight is n
 
 ## Acknowledgements
 * **Author** - Jeroen Kloosterman, Technology Product Strategy Manager
-* **Last Updated By/Date** - Tom McGinn, Learning Architect, Database User Assistance, May 2020
+* **Last Updated By/Date** - Tom McGinn, Database Innovations Architect, Database Product Management, July 2020
 
 See an issue?  Please open up a request [here](https://github.com/oracle/learning-library/issues).   Please include the workshop name and lab in your request.

@@ -20,7 +20,7 @@ Let’s get started!
 
 In this section, you’ll provision a complete development platform for your team by leveraging the Visual Builder Studio web interface.
 
-- Access your Visual Builder Studio Instance : Use the URL to your Visual Builder Studio Console you saved during the setup of your environment 
+- Access your Visual Builder Studio Instance : use the URL to your Visual Builder Studio Console you saved during the setup of your environment (Remark: if you are using the Oracle CTD tenancy, see your access document for the URL)
 - On the Welcome page, click **+ Create**.
 
 ![](images/150/create.png)

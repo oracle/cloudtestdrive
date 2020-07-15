@@ -11,7 +11,7 @@ This lab will showcase running WebLogic on a Kubernetes cluster, using the Opera
 
 To run these labs you will need access to an Oracle Cloud Tenancy, either via a **Free Tier**, using a **Pay-as-you-Go** account, or using the **Corporate account** of your organization. 
 
-If you do not have an account yet, you can obtain an Oracle Free Tier account by [clicking here.](https://myservices.us.oraclecloud.com/mycloud/signup?sourceType=:em:lw:rce:cpo:RC_EMMK200131P00052:WLLabApril)
+If you do not have an account yet, you can obtain an Oracle Free Tier account by [clicking here.](https://myservices.us.oraclecloud.com/mycloud/signup?sourceType=:ow:wb:sh:em::RC_WWMK200517P00003:Vlab_Weblogic_July&intcmp=:ow:wb:sh:em::RC_WWMK200517P00003:Vlab_Weblogic_July)
 
 
 
@@ -99,7 +99,7 @@ We will be using an Oracle Cloud Managed Kubernetes cluster to deploy weblogic.
 
   - Name : the name of your cluster.  We will be using the name *WlsOkeLab_(your_initials)* in this tutorial.  Please replace (your_initials) by a 3-letter code, for example Abc
   - Choose the CTDOKE compartment if it is available in the tenancy.
-  - Select version 15.7
+  - ***ATTENTION !!*** Select version 15.7 (**Not** the default version 16.8).
   - Select **Public** worker nodes
   - Choose the shape VM_Standard2.1
     *Remark*: you might have to check available compute shapes on your tenancy.  You can do this by visualizing the **Service Limits** on the "Administration" , "Tenancy Details" page.
@@ -367,24 +367,21 @@ We'll now start configuring the WebLogic setup itself.  For this we will use the
     - `domainUID`: `sample-domain1`
     - `image`: this line is commented out in the example, please remove the `#` .
       Just in case you might be sharing your tenancy repository with colleagues, we will add your initials to the image name you will be using.  
-      The format to use is : 
-      -  \<**region code**\>.ocir.io/\<**Object-Storage-Namespace**\>\<your_initials\>-wls/weblogic:12.2.1.3"
+      The format to use is : `<region code>.ocir.io/<Object-Storage-Namespace>/<your_initials>-wls/weblogic:12.2.1.3`
       - Example : `fra.ocir.io/frpqldntjs/ppa-wls/weblogic:12.2.1.3`
     - `imagePullSecretName`: `<your initials>-ocirsecret` 
       Note this line is commented out in the example, please remove the `#` . 
     - `weblogicCredentialsSecretName`: `sample-domain1-weblogic-credentials`
+    - `exposeAdminNodePort: true` 
     - `namespace`: `sample-domain1-ns`
     - `domainHomeImageBase`: `container-registry.oracle.com/middleware/weblogic:12.2.1.3`
-    - `exposeAdminNodePort: true` 
-
-  - The creation script will generate output, we'll create a directory for this
-
-    ```
-    mkdir out_dir
-    ```
-
-    
-
+  
+- The creation script will generate output, we'll create a directory for this
+  
+  ```
+  mkdir out_dir
+  ```
+  
 - Now launch the build, using the file you just edited as the paramater file : 
 
   ```
@@ -404,7 +401,7 @@ Lets take a look at the artifacts generated :
 
   you should see a line containing something like : 
 
-   `fra.ocir.io/frpqldntjs/ppa-wls/weblogic    12.2.1.3`
+   	`fra.ocir.io/frpqldntjs/ppa-wls/weblogic    12.2.1.3`
 
   
 
@@ -450,7 +447,7 @@ Lets take a look at the artifacts generated :
 
 First we need to push the generated docker image to the private registry of our tenancy.  Execute following operations to achieve this.
 
-- Execute a "docker login" into the registry.
+- Execute a "docker login" into your private registry on Oracle OCI.
 
   ```
   docker login <region-code>.ocir.io/<storage namespace>
@@ -458,7 +455,7 @@ First we need to push the generated docker image to the private registry of our 
 
   For example : `docker login fra.ocir.io/frpqldntjs`
 
-  - username to use : \<storage namespace\>/\<full_username\>
+  - username to use : `<storage namespace>/<full_username>`
 
     - For example:  `frpqldntjs/oracleidentitycloudservice/ppan`
 

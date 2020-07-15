@@ -97,11 +97,11 @@ Open your project in Visual Builder Studio, and follow the steps below:
 
   - Select the **MyOCIR** registry from the dropdown field of the  **Registry Host** field (should be pre-filled in)
 
-  - The **Image Name** is composed as follows: my_tenancy_storage_namespace/your_repo_name/image_name
+  - The **Image Name** is composed as follows: MyTenancyStorageNamespace/YourRepoName/ImageName
 
-    - my_tenancy_storage_namespace: this is the name of your storage namespace you collected earlier
-    - your_repo_name: a name you can choose, for example including your initials in case you are sharing a tenancy with other participants
-    - image_name: name of the image you want to create
+    - MyTenancyStorageNamespace: this is the name of your storage namespace you collected earlier
+    - YourRepoName: a name you can choose, for example including your initials in case you are sharing a tenancy with other participants
+    - ImageName: name of the image you want to create
 
   - Example : oractdemeabdmnative/jle_repo/atp01
 
@@ -132,11 +132,6 @@ Before we can run the Build Job we just created, we need to parametrize some scr
   - In this file, enter the username, password and connect string of your ATP database.  This is just a crude way of simply setting up connectivity, this should be parametrized in a real-world deployment!
   - The connect string is composed as **\<db_name\>_high**, for example :   **jleoow_high**, where jleoow is your database name.
   - Hit the **Commit** button to save the modifications.
-
-
-
-
-- **ATTENTION !!!!! ....   Running on your personal Trial instance** ?  Then you have [two more steps](LabGuide650BuildDocker_own1.md) to perform.
 
 
 

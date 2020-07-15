@@ -16,7 +16,6 @@ During this day you will be able to experience the various cloud services hands-
   A simple lab spinning up a Kubernetes container and deploying a hello-world application 
 - [Microservices using Autonomous ATP and Managed Containers](AppDev/ATP-OKE/README.md)
   This lab will cover the complete setup of Developer Cloud, a Kubernetes Cluster and an Autonomous Database, and then build the CI/CD flow to deploy a Node-based microservice onto this infrastructure.
-- Using **Wercker** CI/CD pipelines to [deploy an Angular Node application](AppDev/K8S/readme.md)
 
 + Run your first **serverless Functions** [using the Opensource FnProject](AppDev/functions/function2_lab.md) or by using the Oracle Managed service called [Oracle Functions](https://www.oracle.com/webfolder/technetwork/tutorials/infographics/oci_faas_gettingstarted_quickview/functions_quickview_top/functions_quickview/index.html#).  Or optionally [create a function from an exiting Docker](https://github.com/shaunsmith/functionslab-codeone19/blob/master/6-Container-as-Function.md) container.
 + [Functions and Events](AppDev/functionsandevents/FnHandson.md): showcasing event-driven serverless functions and an Autonomous database. 
@@ -28,12 +27,9 @@ During this day you will be able to experience the various cloud services hands-
 
 ## WebLogic Labs   -- ***New*** ! --
 
-+ **WebLogic Cloud - VM Image via Marketplace**
-  Launch WebLogic on OCI Virtual machines, using the pre-configured image provided by Oracle in the Marketplace:
-  
-  - [Instructor-led](https://oracle.github.io/cloudtestdrive/AppDev/wls/?page=wlscnonjrf.md) version
-  - [Free-Tier](https://github.com/oracle/cloudtestdrive/tree/master/AppDev/wls/free_tier) version including setup of OCI environment
-  
++ **[WebLogic for OCI - VM Image](https://oracle.github.io/cloudtestdrive/AppDev/wls/?page=wlscnonjrf.md) via Marketplace**
+  Launch WebLogic on OCI Virtual machines, using the pre-configured image provided by Oracle in the Marketplace.
+
 + [Running WebLogic on Docker](AppDev/wls/WLS_on_Docker.md)
   Spin up the official Oracle Docker Image for Weblogic and deploy a simple demo application on the server.
 
