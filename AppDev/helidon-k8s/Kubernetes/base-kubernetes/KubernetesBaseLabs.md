@@ -257,7 +257,7 @@ If you are using the OCI Cloud shell for **this** section of the lab (either in 
 
 - Run the following command : 
   
-  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set service.type=LoadBalancer`
+  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set service.type=LoadBalancer --version 2.2.0`
 
 ```
 NAME: kubernetes-dashboard
@@ -291,8 +291,21 @@ The helm options are :
 
 - `--namespace kube-system` This tells helm to install the dashboard into the kube-system namespace. Namespaces are ways of partitioning the cluster to help you manage related resources, they are similar to the way you organize files using folders on your computer.
 
-- `--set service.type=LoadBalancer` This tells help to configure the Kubernetes service associated with the dashboard as being immediately accessible via a load balancer. Normally you wouldn't do this for a range of reasons (more on these later) but as this is an overview lab we're doing this to avoid having to wait for DNS name propogation getting certificates. In a production environment you would of course do that.
+- `--set service.type=LoadBalancer` This tells helm to configure the Kubernetes service associated with the dashboard as being immediately accessible via a load balancer. Normally you wouldn't do this for a range of reasons (more on these later) but as this is an overview lab we're doing this to avoid having to wait for DNS name propogation getting certificates. In a production environment you would of course do that.
 
+- `--version 2.2.0` This tells helm to use a specific version of the helm chart.
+
+</p></details>
+
+<details><summary><b>Why are we specifying a particular chart version ?</b></summary>
+<p>
+Helm is a great tool for installing software for us, but you don't always want to install the absolute latest version of the software (which is what would happen if you didn't specify a version.) There are several reasons for this :
+
+- You may only have tested a particular version in your environment, and you don't want a later version being installed by accident which might not be compatible with other software in your environment (for example your ingress controller may not have been updated, but a helm chart might be looking to use specific annotations on the ingress controller that are not supported in that version of the ingress controller.)
+
+- Not all versions of a helm chart (and the SW it installs) are compatible with all versions of Kubernetes, this is especially true in a production environment where you may not be running the absolutely leading edge version of Kuberntes, but are focused on a version you know works for you. For example over time the `apiVersion` defined in a yaml file might switch from beta to release, and the helm chart might be updated to reflect that. If you're still running an older version of Kubernetes the new version or the chart might try and use an `apiVersion` that is not yet available in your cluster.
+
+- You may be in a very regulated industry, for example aviation, medical or banking that have legally binding regulations which require you to maintain very tight version control of your environment.
 </p></details>
 
 Note that Helm does all the work needed here, it creates the service, deployment, replica set and pods for us and starts things running. Unless you need a very highly customised configuration using helm is **way** simpler than setting each of these individual elements up yourself.
@@ -719,7 +732,7 @@ secret/tls-secret created
 - Run the following command : 
 
 - Install **ingress-nginx** using Helm 3:
-  -  `helm install ingress-nginx stable/nginx-ingress -n ingress-nginx --set rbac.create=true --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-tls-secret"=tls-secret --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-ssl-ports"=443`
+  -  `helm install ingress-nginx stable/nginx-ingress -n ingress-nginx --version 1.40.2 --set rbac.create=true --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-tls-secret"=tls-secret --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-ssl-ports"=443`
 
 
 ```
