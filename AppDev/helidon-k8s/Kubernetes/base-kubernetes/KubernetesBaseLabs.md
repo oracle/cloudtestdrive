@@ -532,7 +532,9 @@ In several of the labs we're going to be using the dashboard, so let's look arou
 - In the browser, accept a self signed certificate.
   - In Safari you will be presented with a page saying "This Connection Is Not Private" Click the "Show details" button, then you will see a link titled `visit this website` click that, then click the `Visit Website` button on the confirmation pop-up. To update the security settings you may need to enter a password, use Touch ID or confirm using your Apple Watch.
   - In Firefox once the security risk page is displayed click on the "Advanced" button, then on the "Accept Risk and Continue" button
-  - In Chrome once the "Your connection is not private" page is displayed click the advanced button, then you should see a link titled `Proceed to ....(unsafe)` click that. We have had reports that some versions of Chrome will not allow you to do this, in which case you will need to use a different browser.
+  - In Chrome once the "Your connection is not private" page is displayed click the advanced button, then you may see a link titled `Proceed to ....(unsafe)` click that. 
+  
+We have had reports that some versions of Chrome will not allow you to override the page like this, for Chrome 83 at least one solution is to click in the browser window and type the words `thisisunsafe` (copy and past doesn't seem to work, you need to actually type it.) Alternatively use a different browser.
 
 You'll now be presented with the login screen for the dashboard.
 
@@ -662,7 +664,7 @@ Though an Ingress itself is a Kubernetes concept Kubernetes does not itself prov
 
 <details><summary><b>Why not use an Ingress for the dashboard ?</b></summary>
 <p>
-Normally in a production environment you would use an ingress for the dashboard rather than setting up (and paying for) a separate load balancer. For this lab however we are using a load balancer because the dashboard uses certificates, and while it is possible to create the required DNS entries for the certificate, wait for them to propogate and then create and install the certificates that takes time (especially if using real, not self-signed certificates)
+Normally in a production environment you would use an ingress for the dashboard rather than setting up (and paying for) a separate load balancer. For this lab however we are using a load balancer because the dashboard uses certificates, and while it is possible to create the required DNS entries for the certificate, wait for them to propagate and then create and install the certificates that takes time (especially if using real, not self-signed certificates)
 </p></details>
 
 ---

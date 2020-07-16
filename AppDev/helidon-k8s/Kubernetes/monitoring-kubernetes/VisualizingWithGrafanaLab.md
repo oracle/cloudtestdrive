@@ -89,6 +89,14 @@ If the external IP address says <pending> then Kubernetes hasn't finished starti
 - Open a web page (replace `<external IP>`) with the one you just got for the grafana service.
   - `http://<external ip>`
 
+- If the browser prompts you about using a self signed certificate accept it.
+  - In Safari you will be presented with a page saying "This Connection Is Not Private" Click the "Show details" button, then you will see a link titled `visit this website` click that, then click the `Visit Website` button on the confirmation pop-up. To update the security settings you may need to enter a password, use Touch ID or confirm using your Apple Watch.
+  - In Firefox once the security risk page is displayed click on the "Advanced" button, then on the "Accept Risk and Continue" button
+  - In Chrome once the "Your connection is not private" page is displayed click the advanced button, then you may see a link titled `Proceed to ....(unsafe)` click that. 
+  
+We have had reports that some versions of Chrome will not allow you to override the page like this, for Chrome 83 at least one solution is to click in the browser window and type the words `thisisunsafe` (copy and past doesn't seem to work, you need to actually type it.) Alternatively use a different browser.
+
+
 You'll be presented with the Grafana login window
 ![grafana-login](images/grafana-login.png)
 
