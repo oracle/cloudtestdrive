@@ -82,17 +82,17 @@ As linkerd is not a core Kubernetes component it's not included in the Oracle OC
   - `curl -sL https://run.linkerd.io/install | sh`
   
 ```
-Downloading linkerd2-cli-stable-2.7.1-linux...
+Downloading linkerd2-cli-stable-2.8.1-linux...
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-100   644  100   644    0     0   1531      0 --:--:-- --:--:-- --:--:--  1529
-100 34.3M  100 34.3M    0     0  30384      0  0:19:46  0:19:46 --:--:-- 34918
+100   644  100   644    0     0   1556      0 --:--:-- --:--:-- --:--:--  1559
+100 37.0M  100 37.0M    0     0  13.5M      0  0:00:02  0:00:02 --:--:-- 21.1M
 Download complete!
 
 Validating checksum...
 Checksum valid.
 
-Linkerd stable-2.7.1 was successfully installed 🎉
+Linkerd stable-2.8.1 was successfully installed 🎉
 
 
 Add the linkerd CLI to your path with:
@@ -109,7 +109,7 @@ Now run:
 Looking for more? Visit https://linkerd.io/2/next-steps
 ```
   
-Warning, this may take a while to run, in my case about 20 mins as for dome reason the download was not fast.
+Warning, this may take a while to run, in my case it usually takes around 30 seconds, but sometimes has taken as long as 20 mins if for some reason the download was not fast.
   
 Now we need to add the linkerd command to our path
 
@@ -128,7 +128,7 @@ Lastly let's check the status of the linkerd installation
   - `linkerd version`
 
 ```
-Client version: stable-2.7.1
+Client version: stable-2.8.1
 Server version: unavailable
 ```
 
@@ -166,12 +166,17 @@ pre-kubernetes-setup
 √ can create ConfigMaps
 √ can create Secrets
 √ can read Secrets
+√ can read extension-apiserver-authentication configmap
 √ no clock skew detected
 
 pre-kubernetes-capability
 -------------------------
-√ has NET_ADMIN capability
-√ has NET_RAW capability
+‼ has NET_ADMIN capability
+    found 2 PodSecurityPolicies, but none provide NET_ADMIN, proxy injection will fail if the PSP admission controller is running
+    see https://linkerd.io/checks/#pre-k8s-cluster-net-admin for hints
+‼ has NET_RAW capability
+    found 2 PodSecurityPolicies, but none provide NET_RAW, proxy injection will fail if the PSP admission controller is running
+    see https://linkerd.io/checks/#pre-k8s-cluster-net-raw for hints
 
 linkerd-version
 ---------------
@@ -197,9 +202,19 @@ serviceaccount/linkerd-identity created
 clusterrole.rbac.authorization.k8s.io/linkerd-linkerd-controller created
 clusterrolebinding.rbac.authorization.k8s.io/linkerd-linkerd-controller created
 serviceaccount/linkerd-controller created
-... lots more created messages...
-service/linkerd-tap created
+clusterrole.rbac.authorization.k8s.io/linkerd-linkerd-destination created
+clusterrolebinding.rbac.authorization.k8s.io/linkerd-linkerd-destination created
+
+...
+
+Lots of messages about resources being created
+...
 deployment.apps/linkerd-tap created
+configmap/linkerd-config-addons created
+serviceaccount/linkerd-grafana created
+configmap/linkerd-grafana-config created
+service/linkerd-grafana created
+deployment.apps/linkerd-grafana created
 ```
   
 <details><summary><b>If you want to see exactly what is being done</b></summary>
@@ -230,6 +245,7 @@ metadata:
   labels:
     linkerd.io/is-control-plane: "true"
     config.linkerd.io/admission-webhooks: disabled
+    linkerd.io/control-plane-ns: linkerd
 ---
 ###
 ### Identity Controller Service RBAC
@@ -243,7 +259,7 @@ metadata:
     linkerd.io/control-plane-component: identity
     linkerd.io/control-plane-ns: linkerd
 
-... lots more yaml output...
+... lots and lots more yaml output...
 ```
 
 There is a lot of output here, we've only seen the beginning of it above
@@ -258,8 +274,8 @@ Let's check that the linkerd command can talk to the control plane
   - `linkerd version`
 
 ```
-Client version: stable-2.7.1
-Server version: stable-2.7.1
+Client version: stable-2.8.1
+Server version: stable-2.8.1
 ```
 
 Expect a short delay while the linkerd command contacts the control plane servers.
@@ -284,63 +300,65 @@ monitoring        Active   27d
 tg-helidon        Active   27d
 ```
 
+(Depending on what lab modules you've done, and the name you gave your namespace the list will vary)
+
 And we can see what's in the linkerd namespace
 
 - In the OCI Cloud shell type
   - `kubectl get all -n linkerd`
 
 ```
-NAME                                          READY   STATUS    RESTARTS   AGE
-pod/linkerd-controller-5747df4f94-qxx9s       2/2     Running   0          2m18s
-pod/linkerd-destination-554b6cc765-wmwkt      2/2     Running   0          2m18s
-pod/linkerd-grafana-cdffd746f-f4jgb           2/2     Running   0          2m18s
-pod/linkerd-identity-7b8c5df854-cf6b2         2/2     Running   0          2m18s
-pod/linkerd-prometheus-699c66d6b6-2scsz       2/2     Running   0          2m18s
-pod/linkerd-proxy-injector-64658cb549-jshdz   2/2     Running   0          2m18s
-pod/linkerd-sp-validator-67b765dc6d-n9wzg     2/2     Running   0          2m17s
-pod/linkerd-tap-7479dc4777-z7nxs              2/2     Running   0          2m17s
-pod/linkerd-web-86d9856cff-ph7ct              2/2     Running   0          2m18s
+NAME                                         READY   STATUS    RESTARTS   AGE
+pod/linkerd-controller-78fffbdb88-97fhv      2/2     Running   0          18m
+pod/linkerd-destination-7cc99c9b7c-hzpwv     2/2     Running   0          18m
+pod/linkerd-grafana-69d75b8b74-vzvkh         2/2     Running   0          18m
+pod/linkerd-identity-845f9b5d76-r5jk5        2/2     Running   0          18m
+pod/linkerd-prometheus-65f5758466-p7wwp      2/2     Running   0          18m
+pod/linkerd-proxy-injector-f9f4786c7-hk6g9   2/2     Running   0          18m
+pod/linkerd-sp-validator-c498bbd46-fqjfc     2/2     Running   0          18m
+pod/linkerd-tap-b9dbc4959-t57b8              2/2     Running   0          18m
+pod/linkerd-web-7968b5667-dgl6j              2/2     Running   0          18m
 
 
 NAME                             TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
-service/linkerd-controller-api   ClusterIP   10.96.119.245   <none>        8085/TCP            2m18s
-service/linkerd-dst              ClusterIP   10.96.14.26     <none>        8086/TCP            2m18s
-service/linkerd-grafana          ClusterIP   10.96.183.225   <none>        3000/TCP            2m18s
-service/linkerd-identity         ClusterIP   10.96.130.48    <none>        8080/TCP            2m18s
-service/linkerd-prometheus       ClusterIP   10.96.133.113   <none>        9090/TCP            2m18s
-service/linkerd-proxy-injector   ClusterIP   10.96.190.92    <none>        443/TCP             2m18s
-service/linkerd-sp-validator     ClusterIP   10.96.0.227     <none>        443/TCP             2m17s
-service/linkerd-tap              ClusterIP   10.96.196.4     <none>        8088/TCP,443/TCP    2m17s
-service/linkerd-web              ClusterIP   10.96.182.13    <none>        8084/TCP,9994/TCP   2m18s
+service/linkerd-controller-api   ClusterIP   10.96.225.56    <none>        8085/TCP            18m
+service/linkerd-dst              ClusterIP   10.96.92.177    <none>        8086/TCP            18m
+service/linkerd-grafana          ClusterIP   10.96.170.182   <none>        3000/TCP            18m
+service/linkerd-identity         ClusterIP   10.96.74.202    <none>        8080/TCP            18m
+service/linkerd-prometheus       ClusterIP   10.96.42.237    <none>        9090/TCP            18m
+service/linkerd-proxy-injector   ClusterIP   10.96.198.234   <none>        443/TCP             18m
+service/linkerd-sp-validator     ClusterIP   10.96.40.228    <none>        443/TCP             18m
+service/linkerd-tap              ClusterIP   10.96.101.170   <none>        8088/TCP,443/TCP    18m
+service/linkerd-web              ClusterIP   10.96.135.227   <none>        8084/TCP,9994/TCP   18m
 
 
 NAME                                     READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/linkerd-controller       1/1     1            1           2m18s
-deployment.apps/linkerd-destination      1/1     1            1           2m18s
-deployment.apps/linkerd-grafana          1/1     1            1           2m18s
-deployment.apps/linkerd-identity         1/1     1            1           2m18s
-deployment.apps/linkerd-prometheus       1/1     1            1           2m18s
-deployment.apps/linkerd-proxy-injector   1/1     1            1           2m18s
-deployment.apps/linkerd-sp-validator     1/1     1            1           2m17s
-deployment.apps/linkerd-tap              1/1     1            1           2m17s
-deployment.apps/linkerd-web              1/1     1            1           2m18s
+deployment.apps/linkerd-controller       1/1     1            1           18m
+deployment.apps/linkerd-destination      1/1     1            1           18m
+deployment.apps/linkerd-grafana          1/1     1            1           18m
+deployment.apps/linkerd-identity         1/1     1            1           18m
+deployment.apps/linkerd-prometheus       1/1     1            1           18m
+deployment.apps/linkerd-proxy-injector   1/1     1            1           18m
+deployment.apps/linkerd-sp-validator     1/1     1            1           18m
+deployment.apps/linkerd-tap              1/1     1            1           18m
+deployment.apps/linkerd-web              1/1     1            1           18m
 
-NAME                                                DESIRED   CURRENT   READY   AGE
-replicaset.apps/linkerd-controller-5747df4f94       1         1         1       2m18s
-replicaset.apps/linkerd-destination-554b6cc765      1         1         1       2m18s
-replicaset.apps/linkerd-grafana-cdffd746f           1         1         1       2m18s
-replicaset.apps/linkerd-identity-7b8c5df854         1         1         1       2m18s
-replicaset.apps/linkerd-prometheus-699c66d6b6       1         1         1       2m18s
-replicaset.apps/linkerd-proxy-injector-64658cb549   1         1         1       2m18s
-replicaset.apps/linkerd-sp-validator-67b765dc6d     1         1         1       2m17s
-replicaset.apps/linkerd-tap-7479dc4777              1         1         1       2m17s
-replicaset.apps/linkerd-web-86d9856cff              1         1         1       2m18s
+NAME                                               DESIRED   CURRENT   READY   AGE
+replicaset.apps/linkerd-controller-78fffbdb88      1         1         1       18m
+replicaset.apps/linkerd-destination-7cc99c9b7c     1         1         1       18m
+replicaset.apps/linkerd-grafana-69d75b8b74         1         1         1       18m
+replicaset.apps/linkerd-identity-845f9b5d76        1         1         1       18m
+replicaset.apps/linkerd-prometheus-65f5758466      1         1         1       18m
+replicaset.apps/linkerd-proxy-injector-f9f4786c7   1         1         1       18m
+replicaset.apps/linkerd-sp-validator-c498bbd46     1         1         1       18m
+replicaset.apps/linkerd-tap-b9dbc4959              1         1         1       18m
+replicaset.apps/linkerd-web-7968b5667              1         1         1       18m
 
 
 
 
 NAME                              SCHEDULE       SUSPEND   ACTIVE   LAST SCHEDULE   AGE
-cronjob.batch/linkerd-heartbeat   14 14 * * *    False     0        <none>          2m18s
+cronjob.batch/linkerd-heartbeat   29 17 * * *    False     0        8m43s           18m
 ```
 
 Linkerd has created a number of items, but note that all of the pods have 2 instances (for high availability) and that among other services linkerd has created it's own Prometheus and Grafana instalations.
@@ -385,13 +403,13 @@ linkerd-config
 linkerd-identity
 ----------------
 √ certificate config is valid
-√ trust roots are using supported crypto algorithm
-√ trust roots are within their validity period
-√ trust roots are valid for at least 60 days
+√ trust anchors are using supported crypto algorithm
+√ trust anchors are within their validity period
+√ trust anchors are valid for at least 60 days
 √ issuer cert is using supported crypto algorithm
 √ issuer cert is within its validity period
 √ issuer cert is valid for at least 60 days
-√ issuer cert is issued by the trust root
+√ issuer cert is issued by the trust anchor
 
 linkerd-api
 -----------
@@ -410,6 +428,16 @@ control-plane-version
 ---------------------
 √ control plane is up-to-date
 √ control plane and cli versions match
+
+linkerd-addons
+--------------
+√ 'linkerd-config-addons' config map exists
+
+linkerd-grafana
+---------------
+√ grafana add-on service account exists
+√ grafana add-on config map exists
+√ grafana pod is running
 
 Status check results are √
 ```
@@ -449,36 +477,11 @@ edit the linkerd web deployment yaml normally would not do
 kubectl will pick them up and apply them, Kubernetes will restart the linkerd-web deployment with the new arguments and linkerd-web will no longer enforce the check on the hostnames.
 
 
-### Create a TLS secret
+### Securing the connection to the linkerdui
 
 Curiously the linkerd-web ingress does not by default use a TLS certificate to ensure that the connection to it is encrypted, as we will be sending passwords we want to ensure it is encrypted, to do which we need to create a TLS secret in Kubernetes that the ingress controller can use.
 
-Change to the directory for the service mesh scripts
-
-- In the OCI Cloud shell type
-  - `cd $HOME/helidon-kubernetes/service-mesh`
-
-Create a TLS Secret in the linkerd namespace to use to secure the connection (do anyway)
-
-- In the OCI CLoud shell type
-  - `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls-linkerd.key -out tls-linkerd.crt -subj "/CN=nginxsvc/O=nginxsvc"`
-
-```
-Generating a 2048 bit RSA private key
-.....................................+++
-...+++
-writing new private key to 'tls-linkerd.key'
------
-```
-
-Now create a Kubernetes TLS secret from the key and certificate
-
-- In the OCI CLoud shell type
-  - `kubectl create secret tls tls-linkerd-secret --key tls-linkerd.key --cert tls-linkerd.crt -n linkerd`
-
-```
-secret/tls-linkerd-secret created
-```
+Fortunately for us when we first setup our ingress controller and load balancer we installed a certificate in the load balancer for SSL / TLS connections, so we can just use that for the linkerd SSL/TLS endpoint as well. 
 
 ### Create a login password to secure the connection
 
@@ -565,6 +568,8 @@ You'll be presented with the linkerd-web main page
 Let's also check you can access the grafana dashboard that's been installed by linkerd
 
 - In your web browser go to `https://<externalIP>/grafana` Note if you did not save the username / password details you may be prompted to re-enter them
+
+I have found that for some versions of Firefox that grafana complains about reverse-proxy settings. You may find that you need to use chrome or safari to access the grafana page.
 
 ![](images/linkerd-grafana-initial-topline.png)
 
@@ -739,7 +744,7 @@ deployment.apps/zipkin restarted
 <details><summary><b>What has actually been done to my pod ?</b></summary>
 <p>
 
-Restarting the pods triggered linkerd to do it's automatic update of the pod adding the proxy. It actually also added somethign called an `init container` which is a container that is run as the pod starts up. The init container actually re-writes the networking configuration in the main application pod to send all connections to the the proxy. 
+Restarting the pods triggered linkerd to do it's automatic update of the pod adding the proxy. It actually also added something called an `init container` which is a container that is run as the pod starts up. The init container actually re-writes the networking configuration in the main application pod to send all connections to the the proxy. 
 
 - In the OCI Cloud shell type the following, if you have additional deployments add them to the list
   - ` kubectl get pods
