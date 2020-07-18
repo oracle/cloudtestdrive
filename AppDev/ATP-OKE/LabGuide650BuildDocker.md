@@ -81,15 +81,19 @@ Open your project in Visual Builder Studio, and follow the steps below:
 
 - Use the **Add Step** button and add a step of type **Docker -> Docker login**. 
 
-- ![](images/650/image038-1.png)
+- <img src="images/650/image038-1.png" style="zoom: 25%;" />
 
+  
+
+  
+  
   - Use the dropdown of the field **Registry Host** to select the Repository configuration you just ceated (named **MyOCIR**.  The username and password field are automatically filled in now.
-
-    ![](images/650/image038-2.png)
+  
+    <img src="images/650/image038-2.png" style="zoom: 33%;" />
 
 - Using the **Add Step** drop-down, select **Docker->Docker build**. 
 
-  ![](images/650/image038-3.png)
+  <img src="images/650/image038-3.png" style="zoom:33%;" />
 
   - Select the **MyOCIR** registry from the dropdown field of the  **Registry Host** field (should be pre-filled in)
 
