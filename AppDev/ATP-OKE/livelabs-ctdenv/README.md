@@ -14,15 +14,17 @@ This lab will walk you through the steps to set up a CI/CD environment for devel
 
 
 
-## Prerequisites
+## Prerequisites ##
 
-To run these labs you will need access to an Oracle Cloud Account.  
+- To run these labs you will need access to an Oracle Cloud Account.  Your instructor will provide you a URL that allows to perform **Self Registration**, where you will be asked to provide a username and a password of your choosing.  **Please note down this username and password, you will need this info later in the labs!**
+       
 
-<u>We assume you are using your own Oracle Cloud Tenancy,</u> either via a **Free Tier**, using a **Pay-as-you-Go** account, or using the **Corporate account** of your organization.  
+- **USING A PERSONAL TRIAL ACCOUNT ?** 
 
-==> If you do not have an account yet, you can obtain  an Oracle Free Tier account by [clicking here.](https://myservices.us.oraclecloud.com/mycloud/signup?sourceType=:ow:wb:sh:em::RC_WWMK200517P00005:Vlab_Ku8_ATP_July&intcmp=:ow:wb:sh:em::RC_WWMK200517P00005:Vlab_Ku8_ATP_July)
+  In case you are using a personal Cloud Trial Account, you will need to prepare your Cloud Environment to be able to execute these labs.  See [instructions on this page](../AppDev/ATP-OKE/README.md) for all details.
 
-Next, follow the steps described below.
+  
+
 
 
 

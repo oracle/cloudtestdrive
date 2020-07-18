@@ -14,9 +14,7 @@ You will work with Visual Builder Studio and learn about some of its most import
 
 Let’s get started! 
 
-## Steps
-
-### Step 1: Create a project environment for your team
+## Step 1: Create a project environment for your team
 
 In this section, you’ll provision a complete development platform for your team by leveraging the Visual Builder Studio web interface.
 
@@ -76,7 +74,7 @@ In this section, you’ll provision a complete development platform for your tea
 
 
 
-### Step 2:  Fetch and review code from the Git repository
+## Step 2:  Fetch and review code from the Git repository
 
 - With the **Project Home** selected on the left menu, look to the right and select **Repositories**, then click **+ Create** button.
 
@@ -103,7 +101,7 @@ In this section, you’ll provision a complete development platform for your tea
 
 
 
-### Cloning your repository locally
+## Step 3: Cloning your repository
 
 We want to upload some larger files (e.g. libraries) to the Visual Builder Studio git Repository.  The easiest way to do this consists of making a local branch of the repository on your machine.  For this lab, to avoid having to install software on your local machine (git, kubectl, terraform), we will be using the **Oracle Cloud Shell**, a Linux environment that is part of your **Oracle Cloud Console** in the browser.
 

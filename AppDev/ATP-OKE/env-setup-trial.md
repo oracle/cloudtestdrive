@@ -401,5 +401,5 @@ Lets connect to the database you just created using the build-in **SQL Developer
 
 
 
-You finished all the steps of the Visual Builder Studio setup.   Use the menu to navigate to the next chapter.
+You finished all the steps of the setup.   Use the menu to navigate to the next chapter.
 
