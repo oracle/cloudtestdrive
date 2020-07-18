@@ -1,7 +1,7 @@
 ![](../../common/images/customer.logo2.png)
-# Microservices on ATP #
+# Microservices on ATP - Part 1 #
 
-## Part 1 - Setting up your Visual Builder Studio Project ##
+## Setting up your Visual Builder Studio Project ##
 
 ## Introduction ##
 
@@ -11,9 +11,7 @@ You will work with Visual Builder Studio and learn about some of its most import
 
 Let’s get started! 
 
-## Steps
-
-### Step 1: Create a project environment for your team
+## Step 1: Create a project environment for your team
 
 In this section, you’ll provision a complete development platform for your team by leveraging the Visual Builder Studio web interface.
 
@@ -49,11 +47,11 @@ Let’s take a look at this page (you may need to scroll to see the whole thing)
 
 
 
-### Step 2:  Fetch and review code from the Git repository
+## Step 2:  Fetch and review code from the Git repository
 
 - With the **Project Home** selected on the left menu, look to the right and select **Repositories**, then click **+ Create** button.
 
-  ![](images/150/image006-2.png)
+  <img src="images/150/image006-2.png" style="zoom:25%;" />
 
 - In the New Repository dialog, enter these details: 
   - Type **ATPDocker** in the **Name** field.  In case you are sharing a repository with other participants, add your initials at the end of the name, like for example **ATPDocker_JLE**
@@ -64,13 +62,52 @@ Let’s take a look at this page (you may need to scroll to see the whole thing)
 
   - Enter https://github.com/CloudTestDrive/ATPDocker.git in the text box: 
 
-    ![](images/150/image010-3.png)
+    <img src="images/150/image010-3.png" style="zoom:50%;" />
 
 - Click **Create**.
 
   You should now be on the Code tab, which shows that you have a new git repository, called NodeJSDocker.git.  This new repository contains imported code from the GitHub repository you specified.
 
   ![](images/150/image011-3.png)
+
+
+
+
+
+## Step 3: Cloning your repository
+
+We want to upload some larger files (e.g. libraries) to the Visual Builder Studio git Repository.  The easiest way to do this consists of making a local branch of the repository on your machine.  For this lab, to avoid having to install software on your local machine (git, kubectl, terraform), we will be using the **Oracle Cloud Shell**, a Linux environment that is part of your **Oracle Cloud Console** in the browser.
+
+To open the **Cloud Shell**, use the button **">_"** in the upper right of the console.
+
+- In the home directory, create a directory where you will clone the repository, and move into this directory:
+
+```
+mkdir dev
+
+cd dev
+```
+
+
+
+- Copy the URL of your newly created repository in Visual Builder Studio, by navigating to the "Project Home" page on the left, then selecting the **Clone** button of your repository on the right.  Select **Clone with HTTPS** and the URL will be copied.
+
+<img src="images/150/image013.png" style="zoom:25%;" />
+
+Now you can enter a command similar to the one below to clone your repository
+
+- Type in the command **git clone** followed by a space
+- paste the URL you just copied into the terminal
+
+The result should look like:
+
+`git clone https://<user_name>@ctddevcs-<instance_name>.developer.ocp.oraclecloud.com/ctddevcs-<instance_name>/s/ctddevcs-<instance_name>_atpdocker_1741/scm/ATPDocker.git`
+
+You will be asked for the password of the user you used to login to the Visual Builder Studio environment.
+
+This will result in following output:
+
+![](images/150/image014.png)
 
 
 
@@ -85,8 +122,3 @@ You are now ready to start configuring your CI/CD flows in this project!
 ---
 
 You finished all the steps of Part 1.   Use the menu to navigate to the next chapter.
-
-
-
-
-

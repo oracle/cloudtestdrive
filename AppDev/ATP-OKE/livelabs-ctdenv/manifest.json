@@ -14,7 +14,7 @@
         },
 		    {
           "title": "Part 2: Create and populate the Database objects",
-          "filename": "../LabGuide400DataLoadingIntoATP_own.md"
+          "filename": "../LabGuide400DataLoadingIntoATP_ctdenv.md"
         },
 		    {
           "title": "Part 3: Spin up a Managed Kubernetes environment with Terraform",

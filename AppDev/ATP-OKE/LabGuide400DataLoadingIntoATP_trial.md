@@ -1,9 +1,9 @@
 ![](../../common/images/customer.logo2.png)
 
-# Microservices on ATP
+# Microservices on ATP - Part 2
 
 
-## Part 2: Data Loading into ATP
+## Data Loading into ATP
 #### **Introduction**
 
 In this lab, you will be creating a few tables and inserting data into the ATP database using the CI/CD features of Visual Builder Studio.  We'll use the Build engine of Visual Builder Studio to set up a flow that will create the necessary objects in the database, and insert data into the tables.  In case these elements are changed in the repository, the script will trigger again and re-create the database elements.
@@ -20,11 +20,7 @@ In real life, you would want to set up a more sophisticated logic to manage your
 
 
 
-## Steps
-
-
-
-### STEP 1: Set up your ATP Database Wallet in Visual Builder Studio
+## STEP 1: Set up your ATP Database Wallet
 
 We need to extract the ATP Database wallet file into the OCI Cloud shell. Open the OCI Cloud shell.
 
@@ -90,7 +86,7 @@ git push
 
 
 
-### **STEP 2: Create and load your data in the database**
+## STEP 2: Create and load your data in the database
 
 - In Visual Builder Studio, navigate to the "Builds" tab and select **+Create Job**.
   - Enter a name : **CreateDBObjects**
@@ -142,6 +138,8 @@ In case this is the first build job in your environment, the startup of the Buil
 
 
 
+## Step 3: Verify the results
+
 You can visualize the log file of your virtual machine, to check any errors you might encounter on this level: ![](./images/400/logs.png)
 
 
@@ -172,7 +170,5 @@ To execute the query, hit the green arrow "Run Statement" icon
 
 ---
 
-**Congratulations**, You are now ready to move to the next lab.
-
-Use the **Back Button** of your browser to go back to the overview page and select the next lab step to continue.
+**Congratulations**, You are now ready to move to the next step of the lab!
 
