@@ -28,14 +28,80 @@ As all participants will be using the same ATP database, we will first personali
 - Navigate to the **aone** folder
 - Open the file `create_schema_simple.sql`
   - Hit the Edit pencil 
-  - Replace all occurences of 'ITEMS_CTD' by 'ITEMS_<your_initials>'.
+  - Replace all occurences of  `ITEMS_CTD`  by  `ITEMS_<your_initials>`
 - Safe the changes 
 
 ![](./images/400/Edit-sql.png)
 
 
 
-## Step 2: Create and load your data in the database
+## Step 2: Set up your ATP Database Wallet
+
+We need to extract the ATP Database wallet file into the OCI Cloud shell. Open the OCI Cloud shell.
+
+```bash
+# Position yourself in the git repo, replace ATPDocker with your repo name if you used a different one
+cd $HOME/dev/ATPDocker
+
+# Download the file via the OCI CLI, replacing the database OCID with the OCID of your database and the password with the one of the admin user
+oci db autonomous-database generate-wallet --file Wallet.zip --password 'Pa$$w0rd' --autonomous-database-id ocid1.autonomousdatabase.oc1.eu-frankfurt-1.abtheljtn3slgmzqr2benreqkrs55gwg3v3tz6lgwhgfgzaccrb
+
+# Unzip the file
+unzip Wallet.zip -d Wallet
+```
+
+- Note you need to replace the database OCID with the correct OCID of the database you are using.
+- In the  above sequence of commands, we used the "OCI CLI", or the **Oracle Cloud Command Line Interface**  to interact with elements in the infrastructure, in this case the database.  For more information on how this works, you can look at the [documentation](https://docs.cloud.oracle.com/en-us/iaas/tools/oci-cli/2.9.9/oci_cli_docs/cmdref/db/autonomous-database/generate-wallet.html).
+
+- Navigate into your database wallet folder, and edit the file **sqlnet.ora**, using your favorite editor (vi or nano)
+
+  - In this file, replace the default line below:
+
+    ```
+    WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY="?/network/admin")))
+    ```
+
+  - by this line:
+
+    ```
+    WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY=$TNS_ADMIN)))
+    ```
+
+  - This will allow us to simply set the environment variable $TNS_ADMIN to the correct path.
+
+- Reposition yourself in the root directory of your project
+
+  ```
+  cd ..
+  ```
+
+- On the command line, add the new files to the git repository, commit them and push them to Visual Builder Studio with the following commands:
+
+```bash
+# add the new files to the git repository
+git add .
+
+# Setup git to be able to commit changes
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+git config --global push.default simple
+
+# Commit the change with the appropriate comment
+git commit -m "Add wallet"
+
+# Push the change from your laptop back into the repository
+git push
+```
+
+
+
+- Your wallet is now visible in Visual Builder Studio - you might have to refresh your browser window to see the changes
+
+<img src="images/400/wallet_added.png" style="zoom:50%;" />
+
+
+
+## Step 3: Create and load your data in the database
 
 - In Visual Builder Studio, navigate to the "Builds" tab and select **+Create Job**.
   - Enter a name : **CreateDBObjects**
@@ -86,7 +152,7 @@ In case this is the first build job in your environment, the startup of the Buil
 
 
 
-## Step 3: Verify the results
+## Step 4: Verify the results
 
 You can visualize the log file of your virtual machine, to check any errors you might encounter on this level: <img src="./images/400/logs.png" style="zoom:25%;" />
 
