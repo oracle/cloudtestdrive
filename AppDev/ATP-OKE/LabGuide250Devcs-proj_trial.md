@@ -1,7 +1,5 @@
-[Go to ATP Overview Page](../../ATP/readme.md)
-
 ![](../../common/images/customer.logo2.png)
-# Microservices on ATP #
+# Microservices on ATP - Part 1 #
 
 ## Setting up your Visual Builder Studio Project ##
 
@@ -78,7 +76,7 @@ In this section, you’ll provision a complete development platform for your tea
 
 - With the **Project Home** selected on the left menu, look to the right and select **Repositories**, then click **+ Create** button.
 
-  ![](images/150/image006-2.png)
+  <img src="images/150/image006-2.png" style="zoom: 25%;" />
 
 - In the New Repository dialog, enter these details: 
   - Type **ATPDocker** in the **Name** field.  In case you are sharing a repository with other participants, add your initials at the end of the name, like for example **ATPDocker_JLE**
@@ -89,7 +87,7 @@ In this section, you’ll provision a complete development platform for your tea
 
   - Enter https://github.com/CloudTestDrive/ATPDocker.git in the text box: 
 
-    ![](images/150/image010-3.png)
+    <img src="images/150/image010-3.png" style="zoom:50%;" />
 
 - Click **Create**.
 
@@ -119,7 +117,7 @@ cd dev
 
 - Copy the URL of your newly created repository in Visual Builder Studio, by navigating to the "Project Home" page on the left, then selecting the **Clone** button of your repository on the right.  Select **Clone with HTTPS** and the URL will be copied.
 
-![](images/150/image013.png)
+<img src="images/150/image013.png" style="zoom:25%;" />
 
 Now you can enter a command similar to the one below to clone your repository
 
@@ -144,6 +142,8 @@ You are now ready to start configuring your CI/CD flows in this project!
 - build your application Docker Container
 - deploy the container to a Kubernetes cluster
 
+
+
 ---
 
-Use the **Back Button** of your browser to go back to the overview page and select the next lab step to continue.
+You finished all the steps of Part 1.   Use the menu to navigate to the next chapter.

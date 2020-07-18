@@ -80,9 +80,13 @@ You are now ready to start configuring your CI/CD flows in this project!
 - build your application Docker Container
 - deploy the container to a Kubernetes cluster
 
+
+
 ---
 
-Use the **Back Button** of your browser to go back to the overview page and select the next lab step to continue.
+You finished all the steps of Part 1.   Use the menu to navigate to the next chapter.
+
+
 
 
 
