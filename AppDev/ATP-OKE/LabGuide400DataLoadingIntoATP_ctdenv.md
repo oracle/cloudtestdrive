@@ -20,28 +20,29 @@ In real life, you would want to set up a more sophisticated logic to manage your
 
 
 
-## STEP 1: Personalize the table creation script
+## Step 1: Personalize the table creation script
 
 As all participants will be using the same ATP database, we will first personalize the database table creation script so you can see your table in the database after running the build job.
 
 - Go to the Visual Builder Studio web interface, 
 - Navigate to the **aone** folder
-- Open the file **create_schema_simple.sql**, hit the Edit pencil 
-- Replace all occurences of "ITEMS_CTD" by "ITEMS_<your_initials>".
+- Open the file `create_schema_simple.sql`
+  - Hit the Edit pencil 
+  - Replace all occurences of 'ITEMS_CTD' by 'ITEMS_<your_initials>'.
 - Safe the changes 
 
 ![](./images/400/Edit-sql.png)
 
 
 
-## STEP 2: Create and load your data in the database
+## Step 2: Create and load your data in the database
 
 - In Visual Builder Studio, navigate to the "Builds" tab and select **+Create Job**.
   - Enter a name : **CreateDBObjects**
   - Select the Software Template **OKE2**
   - Hit **Create Job**
 
-![](./images/400/new_job-1.png)
+<img src="./images/400/new_job-1.png" style="zoom: 67%;" />
 
 
 
@@ -87,7 +88,7 @@ In case this is the first build job in your environment, the startup of the Buil
 
 ## Step 3: Verify the results
 
-You can visualize the log file of your virtual machine, to check any errors you might encounter on this level: ![](./images/400/logs.png)
+You can visualize the log file of your virtual machine, to check any errors you might encounter on this level: <img src="./images/400/logs.png" style="zoom:25%;" />
 
 
 
@@ -107,11 +108,11 @@ Now validate the table was created successfully using the build in SQL Developer
 
 - Navigate to your OCI console, and select the ATP database you are using
 
-![](./images/400/db_select.png)
+<img src="./images/400/db_select.png" style="zoom:33%;" />
 
 - On the Database Details page, navigate to the **Service Console**, then select **SQL Developer Web**
 
-![](./images/400/DB_Console.png)
+<img src="images/400/DB_console.png" style="zoom: 25%;" />
 
 - You can now visualize the tables in the database, and execute a query against the table you just created:
 
@@ -119,7 +120,7 @@ Now validate the table was created successfully using the build in SQL Developer
 
   To execute the query, hit the green arrow "Run Statement" icon
 
-  ![](./images/400/sql_select.png)
+  <img src="./images/400/sql_select.png" style="zoom: 25%;" />
 
 
 
