@@ -1,6 +1,6 @@
 
 
-![](../../common/images/customer.logo2.png)
+![](../../../common/images/customer.logo2.png)
 
 # Microservices on Kubernetes and Autonomous Database
 
@@ -21,22 +21,24 @@ This lab will walk you through the steps to set up a CI/CD environment for devel
 
 - **USING A PERSONAL TRIAL ACCOUNT ?** 
 
-  In case you are using a personal Cloud Trial Account, you will need to prepare your Cloud Environment to be able to execute these labs.  See [instructions on this page](../AppDev/ATP-OKE/README.md) for all details.
+  In case you are using a personal Cloud Trial Account, you will need to prepare your Cloud Environment to be able to execute these labs, and some steps will be different.  Please switch to [this version of the lab](../livelabs-trial/) if this is the case.
 
   
-
-
 
 
 ## Components of this lab
 
 This lab is composed of the steps outlined below.  Please walk through the various labs in a sequential order, as the different steps depend on each other:
 
-- **Part 1:** [Setting up your Visual Builder Studio project](?lab=part-1-setting-up-visual-builder-studio)
-- **Part 2:** [Create and populate the Database objects](?lab=part-2-create-populate-database-objects) in your ATP database with Visual Builder Studio
-- **Part 3:** [Spin up a Managed Kubernetes environment with Terraform](?lab=part-3-spin-up-managed-kubernetes-environment)
-- **Part 4:** [Build a Container image with the aone application running on ATP](?lab=part-4-build-container-image-aone-appl)
-- **Part 5:** [Deploy your container on top of your Kubernetes Cluster](?lab=part-5-deploy-container-on-top-kuber)
+- Preparing your Tenancy for the lab
+
+- **Part 1:** Setting up your Visual Builder Studio project
+- **Part 2:** Create and populate the Database objects in your ATP database with Visual Builder Studio
+- **Part 3:** Spin up a Managed Kubernetes environment with Terraform
+- **Part 4:** Build a Container image with the aone application running on ATP
+- **Part 5:** Deploy your container on top of your Kubernetes Cluster
+
+Use the menu on the right side of the screen to navigate to the various chapters of this lab.
 
 ---
 

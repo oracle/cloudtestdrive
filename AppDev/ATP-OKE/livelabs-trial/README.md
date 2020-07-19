@@ -30,17 +30,15 @@ Next, follow the steps described below.
 
 This lab is composed of the steps outlined below.  Please walk through the various labs in a sequential order, as the different steps depend on each other:
 
-- [Preparing your Tenancy for the lab](?lab=introduction-overview-steps)
+- Preparing your Tenancy for the lab
 
-  
+- **Part 1:** Setting up your Visual Builder Studio project
+- **Part 2:** Create and populate the Database objects in your ATP database with Visual Builder Studio
+- **Part 3:** Spin up a Managed Kubernetes environment with Terraform
+- **Part 4:** Build a Container image with the aone application running on ATP
+- **Part 5:** Deploy your container on top of your Kubernetes Cluster
 
-You finished the setup part of your environment, and you can now start with the creation of your CI/CD flows in Visual Builder Studio:
-
-- **Part 1:** [Setting up your Visual Builder Studio project](?lab=part-1-setting-up-visual-builder-studio)
-- **Part 2:** [Create and populate the Database objects](?lab=part-2-create-populate-database-objects) in your ATP database with Visual Builder Studio
-- **Part 3:** [Spin up a Managed Kubernetes environment with Terraform](?lab=part-3-spin-up-managed-kubernetes-environment)
-- **Part 4:** [Build a Container image with the aone application running on ATP](?lab=part-4-build-container-image-aone-appl)
-- **Part 5:** [Deploy your container on top of your Kubernetes Cluster](?lab=part-5-deploy-container-on-top-kuber)
+Use the menu on the right side of the screen to navigate to the various chapters of this lab.
 
 ---
 
