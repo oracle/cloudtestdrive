@@ -1,6 +1,6 @@
 ![](../../common/images/customer.logo2.png)
 
-# Microservices on ATP
+# Microservices on ATP - Part 3
 
 ## Setup your Managed Kubernetes Instance
 
@@ -19,7 +19,7 @@ Below you find a detailed description of these steps, with screendumps and expla
 
 
 
-### Step 1: Collect Infrastructure Info for your environment: ###
+## Step 1: Collect Infrastructure Info for your environment: ##
 
 You need to collect a series of OCID's from your instance in order for Terraform to access your instance, you may have previously collected some of this information when you were configuring the Visual Builder Studio:
 - Tenancy OCID
@@ -44,7 +44,7 @@ Screen shots of the various locations to find this information
   
   
 
-### Step 2: Set the Terraform parameters and run the script ###
+## Step 2: Set the Terraform parameters and run the script ##
 
 - In your **Cloud Shell**,  navigate to the **terraform_0.12** folder in the **$HOME/dev/ATPDocker** git repository folder
 
@@ -79,7 +79,7 @@ Screen shots of the various locations to find this information
    - **terraform.tfstate**: this file contains the details of the created elements.  Terraform will require this file when you do an update to your configuration file and you want top apply this change to the infrastructure.
    -  **mykubeconfig_0**: this is the config file that allows you to connect to your newly created Kubernetes cluster.  You will need it in the next steps to access the kubernetes management console.
 
-### Step 3: Validate and connect to the Kubernetes cluster
+## Step 3: Validate and connect to the Kubernetes cluster
 
 - validate the resulting K8S infrastructure :
 
@@ -163,4 +163,4 @@ Screen shots of the various locations to find this information
 
 ---
 
-Use the **Back Button** of your browser to go back to the overview page and select the next lab step to continue.
+**Congratulations**, You are now ready to move to the next step of the lab!

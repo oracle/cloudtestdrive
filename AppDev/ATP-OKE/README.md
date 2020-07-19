@@ -30,10 +30,7 @@ Next, follow the steps described below.
 
 This lab is composed of the steps outlined below.  Please walk through the various labs in a sequential order, as the different steps depend on each other:
 
-- [Preparing your Tenancy for the lab](env-setup.md) .
-- [Provisioning an Autonomous Transaction Processing Database Instance](LabGuide100ProvisionAnATPDatabase.md)  using the OCI Console (manual).
-
-  
+- [Preparing your Tenancy for the lab](env-setup-trial.md)
 
 You finished the setup part of your environment, and you can now start with the creation of your CI/CD flows in Visual Builder Studio:
 
