@@ -126,7 +126,7 @@ Let’s get started!
 
 In order to see the application you just deployed, we need to construct the URL where the container is listening.  You can do this via the command line and kubectl.
 
-- ```
+  ```
   kubectl get nodes -o wide
   
   NAME        STATUS   ROLES   AGE   VERSION   INTERNAL-IP   EXTERNAL-IP     OS-IMAGE                  KERNEL-VERSION                   CONTAINER-RUNTIME
@@ -137,7 +137,7 @@ In order to see the application you just deployed, we need to construct the URL 
 
   
 
-- ```
+  ```
   kubectl get services
   
   NAME         TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)          AGE
