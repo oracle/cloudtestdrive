@@ -152,7 +152,7 @@ Screen shots of the various locations to find this information
     kubectl create secret generic db-wallet --from-file=<wallet_directory>
     ```
 
-    - <wallet_directory> is the location of your wallet folder.  This can be a relative or a full path, finishing with a "/"
+    - `<wallet_directory>` is the location of your wallet folder.  This can be a relative or a full path, finishing with a "/"
 
       Example : 
       `kubectl create secret generic db-wallet --from-file=./Wallet_JLEOOW/`
