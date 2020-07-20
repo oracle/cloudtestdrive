@@ -128,8 +128,6 @@ In order to see the application you just deployed, we need to construct the URL 
 
 - command : `kubectl get nodes -o wide`
 
-- Result:
-
 ```
 NAME        STATUS   ROLES   AGE   VERSION   INTERNAL-IP   EXTERNAL-IP     OS-IMAGE                  KERNEL-VERSION                   CONTAINER-RUNTIME
 10.0.10.2   Ready    node    16h   v1.12.6   10.0.10.2     130.61.56.185   Oracle Linux Server 7.5   4.14.35-1818.3.3.el7uek.x86_64   docker://18.9.1
@@ -140,7 +138,7 @@ NAME        STATUS   ROLES   AGE   VERSION   INTERNAL-IP   EXTERNAL-IP     OS-IM
 And next: 
 
 - Command : `kubectl get service`
-- Result:
+
 ```
 NAME         TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)          AGE
 atp2jle      NodePort    10.96.6.240   <none>        3050:31056/TCP   15h
@@ -149,7 +147,8 @@ kubernetes   ClusterIP   10.96.0.1     <none>        443/TCP          16h
 
  
 
-- Now select any of the external IP addresses of the nodes, and combine it with the external port of your service : in the above example : 130.61.56.185:31056
+- Now select any of the **external IP** addresses of the nodes, and combine it with the **external port** of your service - this is the second port number on the line of the atp2 service.  
+  In the above example : 130.61.56.185:31056
 
 
 
