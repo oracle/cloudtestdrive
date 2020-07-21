@@ -109,7 +109,7 @@ You need to be sure that the Virtual Cloud Network supports remote access using 
 
 - Leave the `SOURCE TYPE` as CIDR
 
-- In the `SOURCE CIDR` enter `0.@0.0.0/0` (basically the entire internet, in a production you might limit to your organizations address range)
+- In the `SOURCE CIDR` enter `0.0.0.0/0` (basically the entire internet, in a production you might limit to your organizations address range)
 
 - Leave the `protocol` as `TCP`
 
