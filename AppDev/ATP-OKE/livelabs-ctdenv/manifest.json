@@ -2,23 +2,19 @@
     "tutorials": [
         {
           "title": "Introduction and overview of the steps",
-          "filename":"../README_livelabs.md"
+          "filename":"README.md"
         },
         {
           "title": "Preparing your Tenancy for the lab",
-          "filename":"../env-setup.md"
-        },
-        {
-          "title": "Provision an Autonomous Database",
-          "filename": "../LabGuide100ProvisionAnATPDatabase.md"
+          "filename":"../env-setup-ctdenv.md"
         },
         {
           "title": "Part 1: Setting up your Visual Builder Studio project",
-          "filename": "../LabGuide250Devcs-proj_own1.md"
+          "filename": "../LabGuide250Devcs-proj_ctdenv.md"
         },
 		    {
           "title": "Part 2: Create and populate the Database objects",
-          "filename": "../LabGuide400DataLoadingIntoATP_own.md"
+          "filename": "../LabGuide400DataLoadingIntoATP_ctdenv.md"
         },
 		    {
           "title": "Part 3: Spin up a Managed Kubernetes environment with Terraform",

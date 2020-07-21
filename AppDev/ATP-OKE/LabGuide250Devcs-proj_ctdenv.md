@@ -1,10 +1,7 @@
-[Go to ATP Overview Page](../../ATP/readme.md)
-
 ![](../../common/images/customer.logo2.png)
-# Microservices on ATP #
+# Microservices on ATP - Part 1 #
 
 ## Setting up your Visual Builder Studio Project ##
-
 
 ## Introduction ##
 
@@ -14,73 +11,47 @@ You will work with Visual Builder Studio and learn about some of its most import
 
 Let’s get started! 
 
-## Steps
-
-### Step 1: Create a project environment for your team
+## Step 1: Create a project environment for your team
 
 In this section, you’ll provision a complete development platform for your team by leveraging the Visual Builder Studio web interface.
 
-- Access your Visual Builder Studio Instance : use the URL to your Visual Builder Studio Console you saved during the setup of your environment (Remark: if you are using the Oracle CTD tenancy, see your access document for the URL)
-- On the Welcome page, click **+ Create**.
-
-![](images/150/create.png)
-
-
-
-
-- Give your project a name that begins with your own name, such as **JohnDunbarATPLab**, to make your project unique.  Then: 
-
-  - Enter a **Description**, such as **ATP Lab Project**.
-
-  - Leave the Security setting specified as **Private**.
-
-  - Click **Next**
-
-    ![](images/150/image002-1.png)
-    
-    
-
-- Click **Empty Project**, then click **Next**.
-
-  ![](images/150/image003-1.png)
+- Access your Visual Builder Studio Instance by following the link provided to you in the access document
 
   
 
-- Select your preferred wiki markup language, then click **Finish**
+We pre-created a Visual Builder Studio project environment for you to use.  In order to access this environment, perform following steps : 
 
-  ![](images/150/image004-1.png)
+- On the Welcome page, click **All** to see all projects in the environment.
 
-  
+  ![](images/150/image001-3c.png)
 
-- Wait while the project modules are provisioned, which can take a minute or two. You can see the indicators turn green as the associated modules are provisioned.
+- Locate the project you have been assigned to according to the **Number** your instructor will have assigned to you : for example if you are **participant 09**, and your event is called **my_event**, please use project **09_myevent**.
 
-  ![](images/150/image005-1.png)
+- Now click on the hamburger icon on the right of your project, and select the option **Assign me as Owner**.
 
-  
+![](images/150/assign.png)
 
-- When everything is provisioned, the project Home page opens, which contains details about your newly created project:
 
-  ![](images/150/image006-1.png)
 
-  
-  
-  Let’s take a look at this page (you may need to scroll to see the whole thing): 
-  - On the left side is an activity feed. 
-  
-  - Tabs on the right side show you where the Git source code and Maven repositories are located.
-  
-  - Also on the right you can see project statistics, as well as the UI where you can manage team members.  Let’s take a look at that UI now. 
-  
-    
+- You can now access your project and are ready to start the exercise.
+
+
+
+![](images/150/image006-1.png)
+
+Let’s take a look at this page (you may need to scroll to see the whole thing): 
+- On the left side is an activity feed. 
+- Tabs on the right side show you where the Git source code and Maven repositories are located.
+- Also on the right you can see project statistics, as well as the UI where you can manage team members.  Let’s take a look at that UI now. 
 
 
 
 
-### Step 2:  Fetch and review code from the Git repository
+## Step 2:  Fetch and review code from the Git repository
 
 - With the **Project Home** selected on the left menu, look to the right and select **Repositories**, then click **+ Create** button.
 
-  ![](images/150/image006-2.png)
+  <img src="images/150/image006-2.png" style="zoom:25%;" />
 
 - In the New Repository dialog, enter these details: 
   - Type **ATPDocker** in the **Name** field.  In case you are sharing a repository with other participants, add your initials at the end of the name, like for example **ATPDocker_JLE**
@@ -91,11 +62,11 @@ In this section, you’ll provision a complete development platform for your tea
 
   - Enter https://github.com/CloudTestDrive/ATPDocker.git in the text box: 
 
-    ![](images/150/image010-3.png)
+    <img src="images/150/image010-3.png" style="zoom:50%;" />
 
 - Click **Create**.
 
-  You should now be on the **Git** tab, which shows that you have a new git repository.  This new repository contains imported code from the GitHub repository you specified.
+  You should now be on the Code tab, which shows that you have a new git repository, called NodeJSDocker.git.  This new repository contains imported code from the GitHub repository you specified.
 
   ![](images/150/image011-3.png)
 
@@ -103,7 +74,7 @@ In this section, you’ll provision a complete development platform for your tea
 
 
 
-### Cloning your repository locally
+## Step 3: Cloning your repository
 
 We want to upload some larger files (e.g. libraries) to the Visual Builder Studio git Repository.  The easiest way to do this consists of making a local branch of the repository on your machine.  For this lab, to avoid having to install software on your local machine (git, kubectl, terraform), we will be using the **Oracle Cloud Shell**, a Linux environment that is part of your **Oracle Cloud Console** in the browser.
 
@@ -121,7 +92,7 @@ cd dev
 
 - Copy the URL of your newly created repository in Visual Builder Studio, by navigating to the "Project Home" page on the left, then selecting the **Clone** button of your repository on the right.  Select **Clone with HTTPS** and the URL will be copied.
 
-![](images/150/image013.png)
+<img src="images/150/image013.png" style="zoom:25%;" />
 
 Now you can enter a command similar to the one below to clone your repository
 
@@ -146,6 +117,8 @@ You are now ready to start configuring your CI/CD flows in this project!
 - build your application Docker Container
 - deploy the container to a Kubernetes cluster
 
+
+
 ---
 
-Use the **Back Button** of your browser to go back to the overview page and select the next lab step to continue.
+You finished all the steps of Part 1.   Use the menu to navigate to the next chapter.

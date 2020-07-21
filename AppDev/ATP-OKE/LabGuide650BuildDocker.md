@@ -1,5 +1,5 @@
 ![](../../common/images/customer.logo2.png)
-# Microservices on ATP
+# Microservices on ATP - Part 4
 
 ## Build a Container image with the aone application runing on ATP
 
@@ -9,9 +9,7 @@ In this lab, you’ll learn how to build a Docker image for a Node.js REST servi
 
 Let’s get started! 
 
-## Steps
-
-### Step 1: Configure the connection to your OCIR Docker Repository
+## Step 1: Configure the connection to your OCIR Docker Repository
 
 Open your project in Visual Builder Studio, and follow the steps below:
 
@@ -45,7 +43,9 @@ Open your project in Visual Builder Studio, and follow the steps below:
 
   - ![](images/650/im02-1.png)
 
-### Step 2: Configure the Docker build job for building your container - create the job and get required libraries
+
+
+## Step 2: Configure the Docker build job
 
 - Click **Build** in the left nav bar, then click Create Job**. 
 
@@ -77,23 +77,23 @@ Open your project in Visual Builder Studio, and follow the steps below:
   
 
 
-### Step 3: Add steps to the build: Execute the Docker commands
+## Step 3: Add steps to the build: Execute the Docker commands
 
 - Use the **Add Step** button and add a step of type **Docker -> Docker login**. 
 
-- ![](images/650/image038-1.png)
+- <img src="images/650/image038-1.png" style="zoom: 25%;" />
 
+  
+
+  
+  
   - Use the dropdown of the field **Registry Host** to select the Repository configuration you just ceated (named **MyOCIR**.  The username and password field are automatically filled in now.
-
-    ![](images/650/image038-2.png)
-
-
-
-
+  
+    <img src="images/650/image038-2.png" style="zoom: 33%;" />
 
 - Using the **Add Step** drop-down, select **Docker->Docker build**. 
 
-  ![](images/650/image038-3.png)
+  <img src="images/650/image038-3.png" style="zoom:33%;" />
 
   - Select the **MyOCIR** registry from the dropdown field of the  **Registry Host** field (should be pre-filled in)
 
@@ -121,7 +121,9 @@ Open your project in Visual Builder Studio, and follow the steps below:
   ![](images/650/image040.png)
 
 
-### Step 4: Configure some scripts to point to your environment
+
+
+## Step 4: Configure some scripts to point to your environment
 
 Before we can run the Build Job we just created, we need to parametrize some scripts to be pointing to your specific environment.
 
@@ -139,7 +141,7 @@ You are now ready to try out your Build Job in the next step!
 
 
 
-### Step 5: Run the Build Job
+## Step 5: Run the Build Job
 
 Before we move on, we want to ensure the job we just created works correctly. 
 
@@ -167,9 +169,12 @@ Once the job finished successfully, you should see something like this :
 
 
 
-You have finished this part of the lab, navigate to the next step to continue!
+
 
 
 
 ---
-Use the **Back Button** of your browser to go back to the overview page and select the next lab step to continue.
+
+You have finished this part of the lab, navigate to the next step to continue!
+
+
