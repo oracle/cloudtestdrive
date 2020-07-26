@@ -260,7 +260,7 @@ We completed part 2,
 good job!
 
 
-Continue to part 3 [Install Wordpress app from Rancher catalog and manage it](https://github.com/deton57/oke-labs/blob/master/oke-rancher/wp.md) 
+Continue to part 3 [Install Wordpress app from Rancher catalog and manage it](wp.md) 
 
-If you want to return to the lab homepage, click [Back to the general lab section](https://github.com/deton57/oke-labs/blob/master/oke-rancher/readme.md)
+If you want to return to the lab homepage, click [Back to the general lab section](readme.md)
 
