@@ -184,9 +184,9 @@ We have done with part 3.
 
 It's time to continue to our final part for this intro lab. 
 
-[Continue to part 4 Monitoring the cluster and the app](https://github.com/deton57/oke-labs/blob/master/oke-rancher/mon.md) 
+[Continue to part 4 Monitoring the cluster and the app](mon.md) 
 
-If you want to return to the lab homepage, click here: [Back to the general lab section](https://github.com/deton57/oke-labs/blob/master/oke-rancher/readme.md)
+If you want to return to the lab homepage, click here: [Back to the general lab section](readme.md)
 
 
 
