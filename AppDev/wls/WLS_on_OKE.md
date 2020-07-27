@@ -158,14 +158,17 @@ oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.a
 
     <img src="images/wls-im.png" alt="image-20191221114142137" style="zoom: 33%;" />
 
-  - Sign in to Oracle
+  - Sign in to the Oracle Website
 
-    - ATTENTION: you are logging into the Oracle website to download the docker image, and you need to use your **Oracle Account**, so ***not*** your **Oracle Cloud Tenancy** credentials !
+    - ATTENTION: you are logging into the Oracle website to download the docker image, and you need to use your **Oracle Account**, so ***not*** your **Oracle Cloud Tenancy** credentials !  This is the account you also use to register for Oracle events and seminars for example.
+      In case you don't have an Oracle account yet, please do so via the "Create Account" button on the login screen.
+
+      <img src="images/new-account.png" alt="image-20191221114142137" style="zoom: 33%;" />
 
   - Accept the T&C.
 
   - You are now ready to download the image :
-  
+
     ```
     docker login container-registry.oracle.com
     
@@ -545,8 +548,11 @@ $ helm install sample-domain1-ingress kubernetes/samples/charts/ingress-per-doma
       
    - Now use curl on this IP address: 
 
+      `curl -v -H 'host: sample-domain1.org' http://130.61.34.87:30305/weblogic/ready`
+      
+   - Result:
+
    ```
-   $ curl -v -H 'host: sample-domain1.org' http://130.61.34.87:30305/weblogic/ready
      About to connect() to localhost port 30305 (#0)
        Trying 10.196.1.64...
        Connected to localhost (10.196.1.64) port 30305 (#0)
@@ -566,7 +572,12 @@ $ helm install sample-domain1-ingress kubernetes/samples/charts/ingress-per-doma
 
 - To access the WLS Administration Console:
 
-   Open a browser to `http://130.61.34.87:30701/console/`, **and replace the address with your IP address**.
+   Open a browser and navigate to the WebLogic Console :
+   
+   - Use the IP address you obtained in the previous step
+   - Use port 30701
+   - Path:  /console/
+   - Example : `http://130.61.34.87:30701/console/`
    
    You will be asked for the username and password, remember we set this to **weblogic/welcome1** as tradition requires ;-)
    
