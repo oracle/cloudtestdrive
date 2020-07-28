@@ -18,12 +18,9 @@ Finally we look at **monitoring and graphing** to extract data on how the system
 
 Finally we look at **horizontal scaling** the number of microservice instances to handle changes in load and also how multiple instances can be used to support a **rolling upgrade.**
 
-There are also several optional lab sections you can do which cover development activities such as extracting information from the REST request (e.g. the name of the user making the request) and how to have the Helidon framework automatically generate Open API documentation (previously known as Swagger) to ensure that the REST API documentation reflects exactly the service currently in use. Optional sections also cover deployment activities such as capturing log data and sending it to a data store for analysis.
+There are also several optional lab sections you can do which cover development activities such as extracting information from the REST request (e.g. the name of the user making the request) and how to have the Helidon framework automatically generate Open API documentation (previously known as Swagger) to ensure that the REST API documentation reflects exactly the service currently in use. Optional sections also cover deployment activities such as capturing log data and sending it to a data store for analysis, installing and using a service mesh for monitoring, troubleshooting and canary deployments.
 
-
-In the future the labs will include sections on the use of a Service Mesh, and other Kubernetes based cloud native capabilities such as A/B testing of new releases etc.
-
-For reference, this is the architecture you'll be building
+For reference, this is the architecture you'll be building (if you do all of the modules)
 
 ![](images/Architecture-overview.png)
 
