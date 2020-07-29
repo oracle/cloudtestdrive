@@ -34,10 +34,11 @@ and enter the following values:
 
 <details><summary><b>If you are not familiar with compartments: </b></summary>
 <p>
-Compartment is a sub tenant, that gives you the ability to manage your cloud,
+A compartment is a collection of related resources, that gives you the ability to manage your cloud,
 more efficiently. Usually, when you have multiple teams/departments or project in your organization.
 The use case of the compartments is to split your Cloud tenancy as per your organization divisions. 
 You can read more about compartments, here: 
+    
 https://docs.cloud.oracle.com/en-us/iaas/Content/Identity/Tasks/managingcompartments.htm 
 
 </p></details>
