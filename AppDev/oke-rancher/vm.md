@@ -260,7 +260,7 @@ If you got this output, you rock!
 We just finished creating our Rancher. 
 Let's continue to our next step.
 
-Click here to go to part 2: 
+Click on the link below, to go to part 2: 
 
 [Create an OKE cluster using Rancher](cluster.md) 
 
