@@ -31,6 +31,17 @@ and enter the following values:
 
 1.	Name: "oke-rancher-lab"
 2.	Compartment name: select your compartment name
+
+<details><summary><b>If you are not familiar with compartments: </b></summary>
+<p>
+Compartment is a sub tenant, that gives you the ability to manage your cloud,
+more efficiently. Usually, when you have multiple teams/departments or project in your organization.
+The use case of the compartments is to split your Cloud tenancy as per your organization divisions. 
+You can read more about compartments, here: 
+https://docs.cloud.oracle.com/en-us/iaas/Content/Identity/Tasks/managingcompartments.htm 
+
+</p></details>
+
 3.	CIDR BLOCK: you can select any private subnet you use. For example: "10.0.0.0/16"
 •	Comment: Make sure it's not overlapping with other subnets you have
 4.	Click on Create VCN button on the bottom
