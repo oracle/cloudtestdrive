@@ -52,6 +52,7 @@ we don't see the green bars:
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/part4/monitoring%20API%20not%20ready.PNG)
 
 If you wait a while, usually 2-5 minutes, so let's wait and refresh the page.
+It is not a must to refresh the page, but if it won't appear for you, you can try to refresh. 
 
 After it has been deployed, you will see the bars and the Grafana icon: 
 
