@@ -29,6 +29,9 @@ Click on Virtual Cloud Networks.
 Click on Create VCN button,
 and enter the following values:
 
+![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/create-vcn2.PNG)  
+
+
 1.	Name: "oke-rancher-lab"
 2.	Compartment name: select your compartment name
 
@@ -36,7 +39,7 @@ and enter the following values:
 <p>
 A compartment is a collection of related resources, that gives you the ability to manage your cloud,
 more efficiently. Usually, when you have multiple teams/departments or project in your organization.
-The use case of the compartments is to split your Cloud tenancy as per your organization divisions. 
+The use case of the compartments is to split your Cloud tenancy as per your organizational divisions. 
 You can read more about compartments, here: 
     
 https://docs.cloud.oracle.com/en-us/iaas/Content/Identity/Tasks/managingcompartments.htm 
@@ -47,8 +50,6 @@ https://docs.cloud.oracle.com/en-us/iaas/Content/Identity/Tasks/managingcompartm
 •	Comment: Make sure it's not overlapping with other subnets you have
 4.	Click on Create VCN button on the bottom
 
-
-![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/create-vcn2.PNG)  
 
 Done. your VCN is created.
 
