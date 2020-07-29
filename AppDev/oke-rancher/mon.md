@@ -54,7 +54,7 @@ we don't see the green bars:
 If you wait a while, usually 2-5 minutes, so let's wait and refresh the page.
 It is not a must to refresh the page, but if it won't appear for you, you can try to refresh. 
 
-After it has been deployed, you will see the bars and the Grafana icon: 
+After it has been deployed, you will see the bars and the Grafana icon (Don't click on it yet): 
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/part4/monitoring-.PNG)
 
@@ -64,6 +64,8 @@ Now monitoring is up!
 
 Next we are going to run a load test. 
 
+
+
 1. Now go to Resources > Workloads:
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/part4/workloads-menu.PNG) 
@@ -72,13 +74,19 @@ And choose the Wordpress workload:
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/part4/select-workload.PNG)
 
-2. Leave 2 tabs open:
+2. Leave 2 menu's open:
 1. Pods
 2. WorkLoads Metrics
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/part4/open-tabs.PNG)
 
-2. You can scale out easily, some pods, by click on the "+" button above: 
+2. You can scale out easily, some pods, by click on the "+" button above:
+
+After clicking the + to scale nothing will happen for a while.
+It will increase the pods, but it is not instant. It will take some time for 
+the pod to come online, and it will be displayed as "Unavailable". 
+The pod is currently initializing, after a few seconds it should finish, 
+and become available.
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/part4/deployment-increase-pods.PNG)
 
@@ -93,14 +101,19 @@ For this you will need your Wordpress endpoint IP Address.
 ** In case you forgot it, from the Rancher menu, go to Apps > click on wordpress and copy one of the endpoints URL ** 
 Open Mobaxterm and SSH to your machine.
 
-from the terminal, run the following command: 
+
+We are going to run a load test command, 
+it's an Apache benchmarking tool. 
+* Note - this may take a few minutes, until you will see the requests that they are made. 
+
+From the terminal, run the following command: 
 
 ```ab -c 100 -n 10000 https://<your-wordpress-endpoint-ip-address>/```
 
 -c = Number of multiple requests to make at a time
 -n = Total number of requests. 
 
-if you run the command successfully, you should see the following output: 
+If you run the command successfully, you should see the following output: 
 
 ```
 This is ApacheBench, Version 2.3 <$Revision: 1430300 $>
@@ -203,12 +216,15 @@ click on the Home dashboard (Top left corner):
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/part4/home-grafana.PNG) 
 
-Change it to Deployment.
+Change it to Deployment. 
+(If not already on deployment ,upper left. click Home and choose deployment)
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/part4/deployment.PNG) 
 
+
 Change the namespace to Wordpress and 
 Change the time on the top right corner to 30 minutes: 
+(If not on Wordpress) 
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/part4/grafana-deployment.PNG) 
 
@@ -230,6 +246,7 @@ change the name space to Wordpress, and change the time to 30 minutes:
 Now you will see some metrics regarding Pods, 
 hover over the metrics, to see what happened during the load test.
 
+After you finish, you scale down the pods from the Rancher screen. 
 
 Congratulations, you finished the lab. 
 Now you know how to deploy and operate a cluster from Rancher.
