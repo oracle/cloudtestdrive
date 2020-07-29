@@ -15,8 +15,11 @@ they are default as this is a new cluster and nothing is created.
 
 ## Creating a project ##
 
-Let's start by creating a new project. 
-Click on the "Add Project" button. 
+Let's start by creating a new project.
+
+Click the "Projects /  Namespaces" tab
+
+Then, click on the "Add Project" button. 
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/part3/Projects%20and%20namespaces.PNG)
 
@@ -25,7 +28,8 @@ Name it "wordpress", and click on the "Create" button.
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/part3/project-creation.PNG)
 
 Now let's access the project from the top menu. 
-
+Click <cluster name> -> wordpress
+ 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/part3/access-project.PNG)
 
 ## Creating your first app ##
@@ -108,7 +112,16 @@ When the Cloud Shell comes up, copy and paste the command:
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/part3/copy-paste-cloud-shell.PNG) 
 
 If you did it correctly, you should get the following response:
-```Existing Kubeconfig file found at /home/account/.kube/config and new config merged into it```
+
+```
+New config written to the Kubeconfig file /home/tim_graves/.kube/config
+```
+Or, if you have an existing cluster:
+
+```
+Existing Kubeconfig file found at /home/account/.kube/config and new config merged into it
+```
+
 
 Now, from your Cloud Shell, run the following command:
 
@@ -157,6 +170,12 @@ statefulset.apps/wordpress-mariadb   1/1     21m
 ```
 
 Note as I mentioned before - you have a Loadbalancer created, with External-IP.
+Rancher will set up Load Balancers with backend sets for us, because it uses the power that is provided by Cloud.
+When you are deploying services on Cloud, you have the flexability to set up cloud resources, such as: Storage classes,
+and Load Balancers. 
+In this case the installation got the 3 backends which represent the nodes in 
+the cluster (and thus can access the pods running Wordpress).
+
 This is the power of running Kubernetes on the Cloud, cause it can provision different resources. 
 Let's check our cloud account to see if it's actually created. 
 
