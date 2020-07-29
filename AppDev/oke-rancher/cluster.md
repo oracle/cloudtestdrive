@@ -45,6 +45,16 @@ and you are in. You can now see the Rancher dashboard.
 The OKE Driver allows Rancher to work with OCI-OKE API 
 and to create and manage the cluster on Oracle.
 
+<details><summary><b>More details about the Driver:</b></summary>
+<p>
+The driver is based on the following git project: 
+https://github.com/rancher-plugins/kontainer-engine-driver-oke
+
+It is written in GO language, connecting to OKE API in OCI and running commands, 
+in order to create a Kubernetes cluster and configure it, based on the parameters we will pass through Rancher. 
+
+</p></details>
+
 1. Click on Tools menu and select Drivers:
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/Rancher-Drivers.PNG)
@@ -217,12 +227,15 @@ scroll down the left menu, and click on identity.
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/part2/compartments.PNG)
 
-Then, on compartments, choose your compartment. 
-Copy the OCID of your compartment to Rancher cluster configuration screen, 
-under "Compartment OCID".
+Then, on compartments, choose your compartment name. 
+you'll see the OCID field, click copy to get the compartments OCID into your clipboard, 
+then paste it into the compartment OCID field in the rancher window, under "Compartment OCID".
+
 
 11.	Once all parameters are configured, 
 click on "Next Authenticate..." button
+this is to check that the values have been correctly 
+entered and find any problems.
 
 12.	Leave the parameters as is, with 1 node per AD. 
 This will tell Rancher to create the OKE cluster with 1 node per AD, 
@@ -239,9 +252,15 @@ Final result:
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/part2/all-params.PNG)
 
-Now, you can click on "Create"
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/part2/create-cluster-final.PNG)
+
+Now, you can click on "Create"
+
+Now the Kubernetes cluster will actually start to provision on the OCI side,
+
+(I've found in general it can take a few mins at least, 
+often as many at 20 to get the nodes in place).
 
 If you followed all the steps correctly and accurately, 
 the cluster should be created. Congratulations!
@@ -255,6 +274,9 @@ go to the left menu > Developer Services > OKE > select the cluster you created,
 and check the following details: 
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/part2/cluster-Active-OCI.PNG)
+
+* Note - the cluster name on the Rancher side, might not be the same name on the OCI side,
+so nothing to worry about. 
 
 We completed part 2, 
 good job!
