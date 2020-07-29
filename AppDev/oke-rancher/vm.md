@@ -250,6 +250,12 @@ You should see something like the following:
 
 90c3ff917b57        rancher/rancher:latest   "entrypoint.sh"     2 hours ago         Up 2 hours          0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp   focused_beaver
 
+Let's test the connection to Rancher: 
+
+If you completed this part successfully, you should be able to open the Rancher from your web browser, entering:
+
+https://{{public-ip}}:433
+
 If you got this output, you rock! 
 We just finished creating our Rancher. 
 Let's continue to our next step.
