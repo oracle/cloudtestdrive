@@ -36,7 +36,7 @@ Review the datasets. The column names are explained [here](./data/data_descripti
 - Open the notebook (in OCI) that you created in the prerequisites
 
 ![Open Notebook](./images/opennotebook2.png)
-  
+
 - Upload the dataset by dragging it to the left panel
 
 ![Upload Dataset](./images/uploaddataset.png)
@@ -84,9 +84,9 @@ The goals of this are to:
   `This should execute without errors.`
 
 ## Load the training data
-  
+
 We'll split this into train and test later. All these type of data operations are handled by the Pandas library (named `"pd"` here)
-  
+
 ```python
 alldata = pd.read_csv('./housesales.csv')
 ```
@@ -126,7 +126,7 @@ maxPrice = alldata['SalePrice'].max()
 print('Min Sales Price (%d) - Max Sales Price (%d)' % (minPrice,maxPrice))
 ```
 
-`Conclusion:` *SalePrice* is an integer and has numbers in the range that we would expect from house prices. There are no empty values. We could see however that the price range is very wide from a 34900 up to 75500. This would require to scale the price to allow the algorithm to learn better.
+`Conclusion:` *SalePrice* is an integer and has numbers in the range that we would expect from house prices. There are no empty values. We could see however that the price range is very wide from a 34900 up to 755000. This would require to scale the price to allow the algorithm to learn better.
 
 ### Which columns will we select as input features for our model?
 
