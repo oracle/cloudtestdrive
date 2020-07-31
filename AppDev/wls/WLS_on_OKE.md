@@ -65,7 +65,7 @@ Create a token for your user (will be used to login to the docker repository):
   - If you already see the **CTDOKE** compartment in this list, 
     **==> no need to create a new compartment !!**
 
-  - If you are using a new **Free Tier** account, you will probably only have the root compartment, in that case : 
+  - If you are using a new **Free Tier** account, you will probably only have the root compartment, in that case: 
 
     - Click on **Create Compartment** button to start the compartment creation process
 
@@ -109,9 +109,9 @@ We will be using an Oracle Cloud Managed Kubernetes cluster to deploy weblogic.
 
 
 
-Once the cluster is created (the nodes will continue to be created), you can access the button ![image-20191220181646639](images/kubeconfigbutton2.png), and copy the commands to download the kubeconfig file of your cluster.
+Once the cluster is created (the nodes will continue to be created), you can access the button ![image-20191220181646639](images/kubeconfigbutton2.png), and copy the command to download the kubeconfig file of your cluster.
 
-These commands will look like: 
+This command will look like: 
 
 ```
 oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaaaaymqyweojygcqwinbwg4yw --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0
@@ -121,16 +121,19 @@ oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.a
 
 - Open the **Cloud Shell** using the button **">_"** in the upper right of the console.
 
-- execute the commands you copied.  Example :
+- execute the command you copied.  Example :
 
   ```
-  $ oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaaaaaaae4wmmjvmzobzmojqmy3dqz4ggntbgcrtqzrvmy4d --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0 
+  EXAMPLE ONLY : oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaaaaaaae4wmmjvmzobzmojqmy3dqz4ggntbgcrtqzrvmy4d --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0 
   ```
   
 - Validate you are able to access the cluster with kubectl, and see the nodes that are up and running
 
   ```
-  [oracle@jle-for-wls ~]$ kubectl get nodes
+  kubectl get nodes
+  ```
+  
+  ```
   NAME        STATUS   ROLES   AGE   VERSION
   10.0.10.2   Ready    node    15h   v1.16.8
   10.0.10.3   Ready    node    15h   v1.16.8
@@ -180,7 +183,7 @@ oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.a
 - Setting up the necessary Roles for the Helm service:
 
 ```
-$ cat <<EOF | kubectl apply -f -
+cat <<EOF | kubectl apply -f -
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -237,19 +240,19 @@ Setting up the WebLogic Operator
 - Create a namespace for the operator:
 
   ```bash
-  $ kubectl create namespace sample-weblogic-operator-ns
+  kubectl create namespace sample-weblogic-operator-ns
   ```
 
 - Create a service account for the operator in the operator’s namespace:
 
   ```bash
-  $ kubectl create serviceaccount -n sample-weblogic-operator-ns sample-weblogic-operator-sa
+  kubectl create serviceaccount -n sample-weblogic-operator-ns sample-weblogic-operator-sa
   ```
 
 - Use `helm` to install and start the operator from the directory you just cloned:
 
   ```bash
-  $ helm install sample-weblogic-operator kubernetes/charts/weblogic-operator \
+  helm install sample-weblogic-operator kubernetes/charts/weblogic-operator \
     --namespace sample-weblogic-operator-ns \
     --set image=oracle/weblogic-kubernetes-operator:3.0.0 \
     --set serviceAccount=sample-weblogic-operator-sa \
@@ -260,7 +263,7 @@ Setting up the WebLogic Operator
 - Verify that the operator’s pod is running, by listing the pods in the operator’s namespace. You should see one for the operator.
   
   ```bash
-    $ kubectl get pods -n sample-weblogic-operator-ns
+    kubectl get pods -n sample-weblogic-operator-ns
   ```
   
 - Create namespace where your WebLogic will run
@@ -268,13 +271,13 @@ Setting up the WebLogic Operator
   - Create a namespace that can host one or more domains:
 
     ```bash
-    $ kubectl create namespace sample-domain1-ns
+    kubectl create namespace sample-domain1-ns
     ```
 
   - Use `helm` to configure the operator to manage domains in this namespace:
 
     ```bash
-    $ helm upgrade sample-weblogic-operator  kubernetes/charts/weblogic-operator \
+    helm upgrade sample-weblogic-operator  kubernetes/charts/weblogic-operator \
         --namespace sample-weblogic-operator-ns \
         --reuse-values \
         --set "domainNamespaces={sample-domain1-ns}" \
@@ -284,7 +287,7 @@ Setting up the WebLogic Operator
   - Configure Traefik to manage Ingresses created in this namespace:
 
     ```bash
-    $ helm upgrade traefik-operator stable/traefik \
+    helm upgrade traefik-operator stable/traefik \
         --namespace traefik \
         --reuse-values \
         --set "kubernetes.namespaces={traefik,sample-domain1-ns}" \
@@ -294,7 +297,7 @@ Setting up the WebLogic Operator
   - Create a Kubernetes secret for the WebLogic administrator credentials containing the `username` and `password` for the domain, using the [create-weblogic-credentials](http://github.com/oracle/weblogic-kubernetes-operator/blob/master/kubernetes/samples/scripts/create-weblogic-domain-credentials/create-weblogic-credentials.sh) script:
 
     ```bash
-    $ kubernetes/samples/scripts/create-weblogic-domain-credentials/create-weblogic-credentials.sh \
+    kubernetes/samples/scripts/create-weblogic-domain-credentials/create-weblogic-credentials.sh \
       -u weblogic -p welcome1 -n sample-domain1-ns -d sample-domain1
     ```
     
@@ -489,7 +492,7 @@ This definition will be picked up by the operator, who will try to activate the 
 - Use `kubectl` to show that the domain resource was created:
 
   ```bash
-  $ kubectl describe domain sample-domain1 -n sample-domain1-ns
+  kubectl describe domain sample-domain1 -n sample-domain1-ns
   ```
 
 
@@ -497,13 +500,13 @@ This definition will be picked up by the operator, who will try to activate the 
 - After a short time, you will see the Administration Server and Managed Servers running.
 
   ```bash
-  $ kubectl get pods -n sample-domain1-ns
+  kubectl get pods -n sample-domain1-ns
   ```
 
 - You should also see all the Kubernetes services for the domain.
 
   ```bash
-  $ kubectl get services -n sample-domain1-ns
+  kubectl get services -n sample-domain1-ns
   ```
 
 
@@ -523,7 +526,7 @@ Before we can access the WLS environment, we need to set up an Ingress using the
 - Create an Ingress for the domain, in the domain namespace, by using a Helm chart:
 
 ```bash
-$ helm install sample-domain1-ingress kubernetes/samples/charts/ingress-per-domain \
+helm install sample-domain1-ingress kubernetes/samples/charts/ingress-per-domain \
   --namespace sample-domain1-ns \
   --set wlsDomain.domainUID=sample-domain1 \
   --set traefik.hostname=sample-domain1.org
@@ -533,7 +536,9 @@ $ helm install sample-domain1-ingress kubernetes/samples/charts/ingress-per-doma
 
    - First obtain the external IP address of one of the nodes of your kubernetes cluster:
 
-      `kubectl get nodes -o wide`
+      ```
+      kubectl get nodes -o wide
+      ```
       
       This should give a result looking like : 
       
@@ -548,7 +553,11 @@ $ helm install sample-domain1-ingress kubernetes/samples/charts/ingress-per-doma
       
    - Now use curl on this IP address: 
 
-      `curl -v -H 'host: sample-domain1.org' http://130.61.34.87:30305/weblogic/ready`
+      ```
+      curl -v -H 'host: sample-domain1.org' http://130.61.34.87:30305/weblogic/ready
+      ```
+      
+      
       
    - Result:
 
@@ -573,14 +582,23 @@ $ helm install sample-domain1-ingress kubernetes/samples/charts/ingress-per-doma
 - To access the WLS Administration Console:
 
    Open a browser and navigate to the WebLogic Console :
-   
+
    - Use the IP address you obtained in the previous step
+
    - Use port 30701
+
    - Path:  /console/
-   - Example : `http://130.61.34.87:30701/console/`
-   
+
+   - Example :
+
+     ```
+     http://130.61.34.87:30701/console/
+     ```
+
+     
+
    You will be asked for the username and password, remember we set this to **weblogic/welcome1** as tradition requires ;-)
-   
+
    
 
 
