@@ -139,9 +139,14 @@ And click on Create Internet Gateway button.
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/internet-gateway4.PNG)
 
+Then click on the Add Route Rules button.
+
 5. Add the following route to the Internet Gateway:
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/internet-gateway5.PNG)
+
+Click on Add Route Rules button.
+
 
 Now the traffic is routed to the Internet, 
 and we have access to port 443. 
