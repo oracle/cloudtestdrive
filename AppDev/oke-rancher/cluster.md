@@ -238,10 +238,13 @@ click on "Next Authenticate..." button
 this is to check that the values have been correctly 
 entered and find any problems.
 
-12.	Leave the parameters as is, with 1 node per AD. 
+12.	Leave the parameters as is, with version: "1.15.7" as the current latest version,
+that was supported with OKE Driver, when it was written. 
+Other parameters: with 1 node per AD. 
 This will tell Rancher to create the OKE cluster with 1 node per AD, 
 which will eventually result in total of 3 nodes, 
 in case you are running on a region with 3 ADs.
+
 
 13.	Click "Next Virtual Cloud Network" and select "Quick Create"
 
