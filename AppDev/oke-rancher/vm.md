@@ -110,6 +110,12 @@ Now click on Add Ingress Rule button
 Once the Ingress Rule is created, 
 we shall create an Internet Gateway, to enable routing traffic through the Internet.
 
+Open the side menu and go to Networking:
+
+![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/menu-networking.PNG)
+  
+Go to Virtual Cloud Networks. 
+
 1.	On your network side menu go to Internet Gateway:
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/internet-gateway.PNG)
