@@ -34,6 +34,7 @@ I would use: OKERancher123! but you may set any value as your own password.
 Once the password is set, check the checkbox 
 "I agree to the Terms and Conditions for using Rancher" 
 and click Continue. 
+** If a password has already been set, use "admin" at the Current Password field. ** 
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/rancher-login.PNG)
 
