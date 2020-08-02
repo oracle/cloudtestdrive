@@ -93,6 +93,9 @@ Click on the default security list.
 
 Click on Add Ingress Rule. 
 
+![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/security-list-result.PNG)  
+
+
 Now we are going to add HTTPS access to our network, 
 so, we can access the web page of Rancher. 
 
@@ -102,9 +105,6 @@ First we must add HTTPS access to our network, to let us access the Rancher web 
 2.	DESTINATION PORT RANGE: "443"
 
 Now click on Add Ingress Rule button
-
-
-![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/security-list-result.PNG)  
 
 
 Once the Ingress Rule is created, 
