@@ -84,7 +84,7 @@ I suggest to open 3 screens, out of which 2 are Web Browser’s and 1 is Mobaxte
 
 Now, let's start.
 
-1. On your Rancher click on "Add Cluster"
+1. On your Rancher click on Clusters on the top menu, and then click on "Add Cluster"
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/part2/rancher-add-cluster.PNG)
 
