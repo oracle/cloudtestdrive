@@ -81,6 +81,8 @@ Open the side menu and go to Networking:
   
 Go to Virtual Cloud Networks. 
 
+Choose: "oke-rancher-lab"
+
 Select the Virtual Cloud Network created in the previous step.
 
 And now navigate to Security Lists.
@@ -115,6 +117,8 @@ Open the side menu and go to Networking:
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/menu-networking.PNG)
   
 Go to Virtual Cloud Networks. 
+
+Choose: "oke-rancher-lab"
 
 1.	On your network side menu go to Internet Gateway:
 
