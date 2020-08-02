@@ -129,6 +129,7 @@ Choose: "oke-rancher-lab"
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/internet-gateway2.PNG)
 
 Name it "ig".
+And click on Create Internet Gateway button.
 
 3. On the left menu, go to Route Tables, to set the traffic route to the Internet Gateway:
 
