@@ -89,6 +89,8 @@ And now navigate to Security Lists.
 
 Click on the default security list. 
 
+![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/security-list2.PNG)
+
 Click on Add Ingress Rule. 
 
 Now we are going to add HTTPS access to our network, 
@@ -101,9 +103,6 @@ First we must add HTTPS access to our network, to let us access the Rancher web 
 
 Now click on Add Ingress Rule button
 
-
-
-![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/security-list2.PNG)
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/security-list-result.PNG)  
 
