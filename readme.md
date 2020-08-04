@@ -14,14 +14,15 @@ During this day you will be able to experience the various cloud services hands-
 ## Application Development ##
 - [Getting started with Kubernetes Clusters on OCI](AppDev/Simple-OKE/README.md)
   A simple lab spinning up a Kubernetes container and deploying a hello-world application 
-- [Microservices using Autonomous ATP and Managed Containers](AppDev/ATP-OKE/README.md)
-  This lab will cover the complete setup of Developer Cloud, a Kubernetes Cluster and an Autonomous Database, and then build the CI/CD flow to deploy a Node-based microservice onto this infrastructure.
+- [Microservices using Autonomous ATP and Managed Containers](https://oracle.github.io/cloudtestdrive/AppDev/ATP-OKE/livelabs-trial/)
+  This lab will cover the complete setup of Developer Cloud, a Kubernetes Cluster and an Autonomous Database, and then build the CI/CD flow to deploy a Node-based microservice onto this infrastructure, starting from a fresh Cloud Free Trial.  If you are joining an instructor-led Cloud Test Drive lab, your instructor might ask you to follow [this](https://oracle.github.io/cloudtestdrive/AppDev/ATP-OKE/livelabs-ctdenv) alternative version of the lab.
 
 + Run your first **serverless Functions** [using the Opensource FnProject](AppDev/functions/function2_lab.md) or by using the Oracle Managed service called [Oracle Functions](https://www.oracle.com/webfolder/technetwork/tutorials/infographics/oci_faas_gettingstarted_quickview/functions_quickview_top/functions_quickview/index.html#).  Or optionally [create a function from an exiting Docker](https://github.com/shaunsmith/functionslab-codeone19/blob/master/6-Container-as-Function.md) container.
 + [Functions and Events](AppDev/functionsandevents/FnHandson.md): showcasing event-driven serverless functions and an Autonomous database. 
 + Discover the **Helidon Microservices framework for Java** by running through the 2 Getting Started [Quickstarts](https://helidon.io/docs/latest/#/guides/01_overview) for the SE and MP flavour, and then continue with more advanced features like Metrics and Healthchecks in [this tutorial](https://github.com/tomas-langer/helidon-conference/blob/master/README.md)
-+ ***NEW*** !!   [Building Multi-Cloud Apps on Microsoft Azure and Oracle Cloud Infrastructure](AppDev/OCI-Azure-Interconnection/README.md)
++ [Building Multi-Cloud Apps on Microsoft Azure and Oracle Cloud Infrastructure](AppDev/OCI-Azure-Interconnection/README.md)
   Develop .NET web application hosted on Azure and connect it to Oracle Autonomous Database on OCI through a private cross-cloud interconnection link
++ ***New!***  [Use Rancher to monitor your OKE deployments](https://github.com/oracle/cloudtestdrive/blob/master/AppDev/oke-rancher/readme.md)
 
 
 
@@ -33,7 +34,7 @@ During this day you will be able to experience the various cloud services hands-
 + [Running WebLogic on Docker](AppDev/wls/WLS_on_Docker.md)
   Spin up the official Oracle Docker Image for Weblogic and deploy a simple demo application on the server.
 
-+ [Running WebLogic on Kubernetes](AppDev/wls/WLS_on_OKE.md)
++ [Running WebLogic on Kubernetes](https://oracle.github.io/cloudtestdrive/AppDev/wls/?lab=weblogic-on-kubernetes)
   Launch WebLogic on a Kubernetes cluster, using the WebLogic Operator to control your WebLogic environment
   
 + [Migrating Java EE "Monolith" application libraries to Microservices using Helidon](AppDev/helidon-k8s/README.md)
@@ -45,7 +46,6 @@ During this day you will be able to experience the various cloud services hands-
 
 ## Autonomous Databases
 
-- [Autonomous Transaction Processing for Developers](ATP/readme.md) - This lab you will give you a first-hand impression of using Oracle’s Autonomous (ATP) database  from a Developers perspective, deploying a Node application onto a Kubernetes cluster leveraging the ATP Database.
 - [Develop APEX applications](ATP/APEX/readme.md) running on top of the Autonomous Transaction Processing Database.
 
 

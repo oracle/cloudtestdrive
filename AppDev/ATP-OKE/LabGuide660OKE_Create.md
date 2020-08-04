@@ -1,6 +1,6 @@
 ![](../../common/images/customer.logo2.png)
 
-# Microservices on ATP
+# Microservices on ATP - Part 3
 
 ## Setup your Managed Kubernetes Instance
 
@@ -19,7 +19,7 @@ Below you find a detailed description of these steps, with screendumps and expla
 
 
 
-### Step 1: Collect Infrastructure Info for your environment: ###
+## Step 1: Collect Infrastructure Info for your environment: ##
 
 You need to collect a series of OCID's from your instance in order for Terraform to access your instance, you may have previously collected some of this information when you were configuring the Visual Builder Studio:
 - Tenancy OCID
@@ -44,7 +44,7 @@ Screen shots of the various locations to find this information
   
   
 
-### Step 2: Set the Terraform parameters and run the script ###
+## Step 2: Set the Terraform parameters and run the script ##
 
 - In your **Cloud Shell**,  navigate to the **terraform_0.12** folder in the **$HOME/dev/ATPDocker** git repository folder
 
@@ -79,7 +79,7 @@ Screen shots of the various locations to find this information
    - **terraform.tfstate**: this file contains the details of the created elements.  Terraform will require this file when you do an update to your configuration file and you want top apply this change to the infrastructure.
    -  **mykubeconfig_0**: this is the config file that allows you to connect to your newly created Kubernetes cluster.  You will need it in the next steps to access the kubernetes management console.
 
-### Step 3: Validate and connect to the Kubernetes cluster
+## Step 3: Validate and connect to the Kubernetes cluster
 
 - validate the resulting K8S infrastructure :
 
@@ -112,11 +112,11 @@ Screen shots of the various locations to find this information
   - Run the following command, where you need to insert your specific parameters:
 
     ```bash
-    kubectl create secret docker-registry <your-initials>-ocirsecret
-    --docker-server=<region-code>.ocir.io --docker-username='<Object-Storage-Namespace>/oracleidentitycloudservice/<oci-username>' --docker-password='<oci-auth-token>' --docker-email='<email-address>'
+    kubectl create secret docker-registry <your-initials>-ocirsecret --docker-server=<region-code>.ocir.io --docker-username='<Object-Storage-Namespace>/oracleidentitycloudservice/<oci-username>' --docker-password='<oci-auth-token>' --docker-email='<email-address>'
     ```
-
-    - **your-initials** as part of the name of the secret so this is your individual secret in case you are working in a shared environment
+  
+- **your-initials** as part of the name of the secret so this is your individual secret in case you are working in a shared environment
+  
     - **region-code** is for example **fra** for Frankfurt, **iad** for Ashburn, etc.  See [here](https://docs.cloud.oracle.com/iaas/Content/Registry/Concepts/registryprerequisites.htm#Availab) for details.
     - **Object-Storage-Namespace** is the name of Object Storage Namespace you noted down.
     - **oci-username** is the name of the user you used to log into the console
@@ -138,8 +138,29 @@ Screen shots of the various locations to find this information
     secret/jle-ocirsecret created
     ```
   
-  
+
+
+
+- Create a secret for making the database wallet available as a mounted volume inside your pods
+
+  - Run the following command :
+
+    ```
+    #First move up one level to the root of your repository
+    cd ..
+    # Now create a second secret
+    kubectl create secret generic db-wallet --from-file=<wallet_directory>
+    ```
+
+    - `<wallet_directory>` is the location of your wallet folder.  This can be a relative or a full path, finishing with a "/"
+
+      Example : 
+      `kubectl create secret generic db-wallet --from-file=./Wallet_JLEOOW/`
+
+
+
+
 
 ---
 
-Use the **Back Button** of your browser to go back to the overview page and select the next lab step to continue.
+**Congratulations**, You are now ready to move to the next step of the lab!

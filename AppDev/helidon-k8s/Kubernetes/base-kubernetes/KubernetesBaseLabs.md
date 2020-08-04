@@ -149,7 +149,18 @@ You can get the current list of repositories
     ```                                            
     NAME                    URL                                              
     stable                  https://kubernetes-charts.storage.googleapis.com/
-    kubernetes-dashboard    https://kubernetes.github.io/dashboard/    
+    kubernetes-dashboard    https://kubernetes.github.io/dashboard/  
+    ```
+    
+Lastly let's update the helm cache
+
+- Run the following command :
+  - `helm repo update`
+    ```
+    Hang tight while we grab the latest from your chart repositories...
+    ...Successfully got an update from the "kubernetes-dashboard" chart repository
+    ...Successfully got an update from the "stable" chart repository
+    Update Complete. ⎈ Happy Helming!⎈ 
     ```
 
 ## Introduction to the lab
@@ -246,7 +257,7 @@ If you are using the OCI Cloud shell for **this** section of the lab (either in 
 
 - Run the following command : 
   
-  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard   --namespace kube-system --set service.type=LoadBalancer`
+  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set service.type=LoadBalancer --version 2.2.0`
 
 ```
 NAME: kubernetes-dashboard
@@ -276,12 +287,25 @@ The helm options are :
 
 - `kubernetes-dashboard` This is the "human" name to give the installation, it's easier to use that later on than using a machine generated one.
 
-- `stable/kubernetes-dashboard` is the name of the *chart* to install. Helm will download the char from the repo and then execute it. if you had needed a specific chart version they you could have added a version specifier, for example `--version=1.2.3`
+- `kubernetes-dashboard/kubernetes-dashboard` is the name of the *chart* to install. Helm will download the char from the repo kubernetes-dashboard and then execute it. if you had needed a specific chart version they you could have added a version specifier, for example `--version=1.2.3`
 
-- `--namespace kube-system` This tells helm to install the dashboard into the kube-system namespace. Namespaces are ways of partitioning the cluster to help you manage related resources, they are similar to the way you organize files using folders on your computer.
+- `--namespace kube-system` This tells helm to install the dashboard into the kube-system namespace. Namespaces are ways of partitioning the cluster to help you manage related resources, they are similar to the way you organize files using folders on your computer, but can also restrict resource usage like memory and cpu.
 
-- `--set service.type=LoadBalancer` This tells help to configure the Kubernetes service associated with the dashboard as being immediately accessible via a load balancer. Normally you wouldn't do this for a range of reasons (more on these later) but as this is an overview lab we're doing this to avoid having to wait for DNS name propogation getting certificates. In a production environment you would of course do that.
+- `--set service.type=LoadBalancer` This tells helm to configure the Kubernetes service associated with the dashboard as being immediately accessible via a load balancer. Normally you wouldn't do this for a range of reasons (more on these later) but as this is an overview lab we're doing this to avoid having to wait for DNS name propogation getting certificates. In a production environment you would of course do that.
 
+- `--version 2.2.0` This tells helm to use a specific version of the helm chart.
+
+</p></details>
+
+<details><summary><b>Why are we specifying a particular chart version ?</b></summary>
+<p>
+Helm is a great tool for installing software for us, but you don't always want to install the absolute latest version of the software (which is what would happen if you didn't specify a version.) There are several reasons for this :
+
+- You may only have tested a particular version in your environment, and you don't want a later version being installed by accident which might not be compatible with other software in your environment (for example your ingress controller may not have been updated, but a helm chart might be looking to use specific annotations on the ingress controller that are not supported in that version of the ingress controller.)
+
+- Not all versions of a helm chart (and the SW it installs) are compatible with all versions of Kubernetes, this is especially true in a production environment where you may not be running the absolutely leading edge version of Kuberntes, but are focused on a version you know works for you. For example over time the `apiVersion` defined in a yaml file might switch from beta to release, and the helm chart might be updated to reflect that. If you're still running an older version of Kubernetes the new version or the chart might try and use an `apiVersion` that is not yet available in your cluster.
+
+- You may be in a very regulated industry, for example aviation, medical or banking that have legally binding regulations which require you to maintain very tight version control of your environment.
 </p></details>
 
 Note that Helm does all the work needed here, it creates the service, deployment, replica set and pods for us and starts things running. Unless you need a very highly customised configuration using helm is **way** simpler than setting each of these individual elements up yourself.
@@ -532,7 +556,9 @@ In several of the labs we're going to be using the dashboard, so let's look arou
 - In the browser, accept a self signed certificate.
   - In Safari you will be presented with a page saying "This Connection Is Not Private" Click the "Show details" button, then you will see a link titled `visit this website` click that, then click the `Visit Website` button on the confirmation pop-up. To update the security settings you may need to enter a password, use Touch ID or confirm using your Apple Watch.
   - In Firefox once the security risk page is displayed click on the "Advanced" button, then on the "Accept Risk and Continue" button
-  - In Chrome once the "Your connection is not private" page is displayed click the advanced button, then you should see a link titled `Proceed to ....(unsafe)` click that. We have had reports that some versions of Chrome will not allow you to do this, in which case you will need to use a different browser.
+  - In Chrome once the "Your connection is not private" page is displayed click the advanced button, then you may see a link titled `Proceed to ....(unsafe)` click that. 
+  
+We have had reports that some versions of Chrome will not allow you to override the page like this, for Chrome 83 at least one solution is to click in the browser window and type the words `thisisunsafe` (copy and past doesn't seem to work, you need to actually type it.) Alternatively use a different browser.
 
 You'll now be presented with the login screen for the dashboard.
 
@@ -662,7 +688,7 @@ Though an Ingress itself is a Kubernetes concept Kubernetes does not itself prov
 
 <details><summary><b>Why not use an Ingress for the dashboard ?</b></summary>
 <p>
-Normally in a production environment you would use an ingress for the dashboard rather than setting up (and paying for) a separate load balancer. For this lab however we are using a load balancer because the dashboard uses certificates, and while it is possible to create the required DNS entries for the certificate, wait for them to propogate and then create and install the certificates that takes time (especially if using real, not self-signed certificates)
+Normally in a production environment you would use an ingress for the dashboard rather than setting up (and paying for) a separate load balancer. For this lab however we are using a load balancer because the dashboard uses certificates, and while it is possible to create the required DNS entries for the certificate, wait for them to propagate and then create and install the certificates that takes time (especially if using real, not self-signed certificates)
 </p></details>
 
 ---
@@ -678,15 +704,42 @@ Firstly we need to create a namespace for the ingress controller.
     namespace/ingress-nginx created
     ```
 
+As we will be providing a secure TLS protected connection we need to create a certificate to protect the connection. In a **production** environment this would be accomplished by going to a certificate authority and having them issue a certificate. This however can take time as certificates are (usually) based on a DNS name and a commercial provider may well require that you prove your organizations identity before issuing a certificate.
+
+To enable the lab to complete in a reasonable time we will therefore be generating our own self-signed certificate. For a lab environment that's fine, but in a production environment you wouldn't do this.
+
+- Run the following command to generate a certificate.
+
+  - `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=nginxsvc/O=nginxsvc"`
+
+```
+Generating a 2048 bit RSA private key
+............................+++
+............................................................................................+++
+writing new private key to 'tls.key'
+-----
+```
+ 
+The certificate needs to be in a Kubernetes secret, we'll look at these in more detail, but for now :
+
+- Run the following command to save the certificate as a secret in the ingress-nginx namespace
+
+  - `kubectl create secret tls tls-secret --key tls.key --cert tls.crt -n ingress-nginx`
+ 
+```
+secret/tls-secret created
+```
+
+
 - Run the following command : 
 
 - Install **ingress-nginx** using Helm 3:
-  -  `helm install ingress-nginx stable/nginx-ingress  -n ingress-nginx --set rbac.create=true`
+  -  `helm install ingress-nginx stable/nginx-ingress -n ingress-nginx --version 1.40.2 --set rbac.create=true --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-tls-secret"=tls-secret --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-ssl-ports"=443`
 
 
 ```
 NAME: ingress-nginx
-LAST DEPLOYED: Fri Mar 20 14:33:47 2020
+LAST DEPLOYED: Fri Jul  3 12:06:33 2020
 NAMESPACE: ingress-nginx
 STATUS: deployed
 REVISION: 1
@@ -694,6 +747,7 @@ TEST SUITE: None
 NOTES:
 The nginx-ingress controller has been installed.
 It may take a few minutes for the LoadBalancer IP to be available.
+
 You can watch the status by running 'kubectl --namespace ingress-nginx get services -o wide -w ingress-nginx-nginx-ingress-controller'
 
 <Additional output removed for ease of reading>
@@ -707,16 +761,83 @@ Because the Ingress controller is a service, to make it externally available it 
 
 ```
 NAME                                     TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)                      AGE   SELECTOR
-ingress-nginx-nginx-ingress-controller   LoadBalancer   10.111.0.168   136.23.44.21 80:31934/TCP,443:31827/TCP   61s   app=nginx-ingress,component=controller,release=ingress-nginx
+ingress-nginx-nginx-ingress-controller   LoadBalancer   10.111.0.168   130.61.15.77 80:31934/TCP,443:31827/TCP   61s   app=nginx-ingress,component=controller,release=ingress-nginx
 ```
-In this case we can see that the load balancer has been created and the external-IP address is available. If the External IP address is listed as `<pending>` then the load balancer is still being created, wait a short while then try the command again
+In this case we can see that the load balancer has been created and the external-IP address is available. If the External IP address is listed as `<pending>` then the load balancer is still being created, wait a short while then try the command again.
 
+In the helm command you'll have seen a couple of `--set`` options.  These are oci specific annotations (more on annotations later) which tell Kubernetes to setup the load balancer using the TLS secret we created earlier and to use port 443 for encrypted connections (the standard https port)
+
+**Make a note of this external IP address, you'll be using it a lot !**
+
+As we are having the load balancer act as the encryption termination point, and internal to the cluster we are not using encryption we need to update the load balancer to tell is that once is has terminated the secure connection is should pass on the request internally using an http, not https.
+
+Open up the OCI Cloud UI in your web browser, using the "hamburger: menu navigate to `Core Infrastructure` section then `Networking then select `Load Balancers`
+
+![hamburger-menu-select-loadbalancer](images/hamburger-menu-select-loadbalancer.png)
+
+Locate the row for **your** load balancer with the IP address you got above, in this case that's for a load balancer named `5da95ea3-6993-4e3b-8d09-a6da655b3eae` but it **will** be different for you !
+
+Click on the load balancer name to open it's details
+
+![load-balancer-overview](images/load-balancer-overview.png)
+
+Locate the resources section on the lower left side
+
+![load-balancer-resources](images/load-balancer-resources.png)
+
+Click on the `Listeners` option
+
+![load-balancer-listeners](images/load-balancer-listeners.png)
+
+In the list of listeners look at the line TCP-443, notice that it is set to uses SSL (right hand column) and that it's backend set (where it sends traffic to) is set to TCP-443, we need to change that.
+
+Click on the three dots on the right hand side of the **TCP-443** row
+
+![load-balancer-listeners-edit](images/load-balancer-listeners-edit.png)
+
+Click the `Edit` option in the resulting menu
+
+![load-balancer-edit-listener-chose-backend-set](images/load-balancer-edit-listener-chose-backend-set.png)
+
+In the popup locate the BackendSet option, click on it and select the `TCP-80` option
+
+Click the `Update Listener`
+
+![load-balancer-update-in-progress])images/load-balancer-update-in-progress.png)
+
+You'll be presented with a `Work in progress` menu, for now just click the `Close` button and the update will continue in the background
+
+<details><summary><b>Scripting the listener change</b></summary>
+<p>
+While the configuration of the load balancer is outside kubernetes I just wanted to show you how you might go about scripting this rather than doing it through the browser interface.
+
+The following commands do absolutely no error checking, or waiting for the load balancer IP address to be assigned, so before you used them in a script for automation you'd probably want to put some decent error correction in place.
+
+The [oci command](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cliconcepts.htm) used here allows you to manage aspects of the oci environment, you can also run it in your laptop if you want (follow the instructions at the link to download anc configure it.) The oci command is **very** powerful and has a lot of options (on the OCI shell type `oci --help` to see them) The script also uses the [jq command](https://stedolan.github.io/jq) which is in the OCI Cloud shell, you can download it from the jq site
+
+```bash
+echo Getting the Load balancer IP address from Kubernetes
+LB_IP=`kubectl get service ingress-nginx-nginx-ingress-controller -n ingress-nginx -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'`
+echo Load balancer IP is $LB_IP
+echo Getting the CTDOKE compartment ocid from oci
+COMPARTMENT_OCID=`oci iam compartment list --name CTDOKE | jq -j '.data[0].id'`
+echo CTKOKE compartment ocid is $COMPARTMENT_OCID
+echo Getting the Load balancer ocid
+LB_OCID=`oci lb load-balancer list --all --compartment-id=$COMPARTMENT_OCID | jq -j ".data[] | select (.\"ip-addresses\"[].\"ip-address\"  == \"$LB_IP\")  | .id"`
+echo Load balancer ocid is $LB_OCID
+echo Running the update
+echo y | oci lb listener update  --load-balancer-id=$LB_OCID --listener-name=TCP-443  --default-backend-set-name=TCP-80 --protocol=TCP --port=443 --ssl-certificate-name=tls-secret  --wait-for-state SUCCEEDED --wait-for-state FAILED
+```
+
+</p></details>
+
+Note that in a production environment you might want to extend the encryption by encrypting traffic between the load balancer and the ingress controller, and also between the microservices using a servcie mesh (which is a later optional lab.)
 
 ### Running your containers in Kubernetes
 
 You now have the basic environment to deploy services, and we've looked at how to use the Kubernetes dashboard and the kubectl command line.
 
-Kubernetes supports the concept of namespaces, these logically split the cluster up, it's similar to having different directories to store documents for different projects. In this case you are going to be using your own cluster, but having a separate namespace splits your work from the system functions (those are in a namespace called kube-system.)
+Kubernetes supports the concept of namespaces, these logically split the cluster up, it's similar to having different directories to store documents for different projects, and like directories you can have multiple namespaces. In this case you are going to be using your own cluster, but having a separate namespace splits your work from the system functions (those are in a namespace called kube-system.) We're not going to be using it in this lab, but namespaces can also be used to manage resource usage in Kubernetes enabling you to limit the usage of resources used by the pods in a namespace (memory, CPU etc.) It's also possible to restrict resources on individual pods and we'll look at that later.
 
 In a production cluster where you may have many applications running composed of many microservices having separate namespaces is basically essential to avoid mistakes and misunderstandings that could impact the service operation.
 
@@ -795,8 +916,6 @@ Of course the Kubernetes dashboard also understands namespaces. If you go to the
 ---
 
 
-
-
 ### Creating Services
 
 The next step is to create services:  a description of a set of microservice instances and the port(s) they listen on. 
@@ -873,7 +992,7 @@ We can of course also use the kuberntes dashboard. Open the dashboard and make s
 
 If however you click on the service name in the services list in the dashboard you'll see that there are no endpoints, or pods associated with the service. This is because we haven't (yet) started any pods with labels that match those specified in the selector of the services.
 
-### Accessing your services using an ingress
+### Accessing your services using an ingress rule
 
 <details><summary><b>Introduction</b></summary>
 <p>
@@ -900,14 +1019,13 @@ PS I know in this lab we've used a load balancer for the dashboard (and will do 
 ---
 
 
-
-We have already installed the Ingress controller which actually operates the ingress service. You can see this by looking at the services.  The ingress service is in this case cluster-wide so it's in the default namespace, so we have to specify that :
+We have already installed the Ingress controller which actually operates the ingress service and configured the associated load balancer. You can see this by looking at the services.  The ingress service is in the ingress-nginx namespace, so we have to specify that :
 
 -  `kubectl get services -n ingress-nginx`
 
 ```
 NAME                                          TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
-ingress-nginx-nginx-ingress-controller        LoadBalancer   10.111.0.168    132.18.12.23  80:31934/TCP,443:31827/TCP   4h9m
+ingress-nginx-nginx-ingress-controller        LoadBalancer   10.111.0.168    130.61.15.77  80:31934/TCP,443:31827/TCP   4h9m
 ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <none>        80/TCP                       4h9m
 ```
 
@@ -922,32 +1040,6 @@ For the moment there are no actual ingress rules defined yet, we can see this us
 
 ```
 No resources found in tg-helidon namespace.
-```
-
-As we will be providing a secure TLS protected connection we need to create a certificate to protect the connection. In a **production** environment this would be accomplished by going to a certificate authority and having them issue a certificate. This however can take time as certificates are (usually) based on a DNS name and a commercial provider may well require that you prove your organizations identity before issuing a certificate.
-
-To enable the lab to complete in a reasonable time we will therefore be generating our own self-signed certificate. For a lab environment that's fine, but in a production environment you wouldn't do this.
-
-- Run the following command to generate a certificate.
-
-  - `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=nginxsvc/O=nginxsvc"`
-
-```
-Generating a 2048 bit RSA private key
-............................+++
-............................................................................................+++
-writing new private key to 'tls.key'
------
-```
- 
-The certificate needs to be in a Kubernetes secret, we'll look at these in more detail, but for now :
-
-- Run the following command to save the certificate as a secret
-
-  - `kubectl create secret tls tls-secret --key tls.key --cert tls.crt`
- 
-```
-secret/tls-secret created
 ```
 
 <details><summary><b>More on Ingress rules</b></summary>
@@ -970,8 +1062,6 @@ metadata:
     # use the shared ingress-nginx
     kubernetes.io/ingress.class: "nginx"
 spec:
-  tls:
-  - secretName: tls-secret
   rules:
   - http:
       paths:
@@ -985,7 +1075,7 @@ Firstly note that the api here is the networking.k8s.io/v1beta1 API. In recent v
 
 The metadata specifies the name of the ingress (in this case zipkin) and also the annotations. Annotations are a way of specifying name / value pairs that can be monitored for my other services. In this case we are specifying that this ingress Ingress rule has a label of Kubernetes.io/ingress.class and a value of nginx. The nginx ingress controller will have setup a request in the Kubernetes infrastructure so it will detect any ingress rules with that annotation as being targeted to be processed by it. This allows us to define rules as standalone items, without having to setup and define a configuration for each rule in the ingress controller configuration itself. This annotation based approach is a simple way for services written to be cloud native to identify other Kubernetes objects and determine how to hendle them, as we will see when we look at monitoring in kubenteres.
 
-The spec section basically defined the certificate for the TLS connection and the rules to do the processing, basically if there's an connection coming in with a url that starts with /zipkin then the connection will be proxied to the zikin service on port 9411. The entire URL will be forwarded including the /zipkin.
+The spec section basically defines the rules to do the processing, basically if there's an connection coming in with a url that starts with /zipkin then the connection will be proxied to the zikin service on port 9411. The entire URL will be forwarded including the /zipkin. (Note that you could in the spec section also specify a certificate for that connection, but in our case we did that in the load balancer.)
 
 In some cases we don't want the entire URL to be forwarded however, what if we were using the initial part of the URL to identify a different service, perhaps for the health or metrics capabilities of the microservices which are on a different port (http://storefront:9081/health for example) In this case we want to re-write the incomming URL as it's passed to the target
 
@@ -998,8 +1088,6 @@ metadata:
     # use a re-writer
     nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
-  tls:
-  - secretName: tls-secret
   rules:
   - http:
       paths:
@@ -1663,7 +1751,7 @@ Is we look at the Kubernetes dashboard we will see similar information. There is
 
 
 
-- Now lets look at the logs of the pods you have launched (replace the ID by the exact ID of your pod)
+- Now lets look at the logs of the pods you have launched (replace the ID shown here with the exact ID of your pod)
   -  `kubectl logs  --follow storefront-68bbb5dbd8-vp578`
 
 ```
@@ -1871,7 +1959,7 @@ We've mounted the sf-config-map (which contains the contents of storefront-confi
     ```
     app:
       storename: "My Shop"
-      minimumdecrement: 3
+      minimumdecrement: 4
 
     tracing:
       service: "storefront"
@@ -1885,8 +1973,8 @@ We've mounted the sf-config-map (which contains the contents of storefront-confi
 As expected we see the contents of our config file. Let's use the dashboard to modify that data
 
 - Open the dashboard
-- Select your namespace
-- Click on Config Maps in the Config and Storage section of the left menu
+- Select your namespace in the selector on the upper left
+- Click on `Config Maps` in the `Config and Storage` section of the left menu
 
 ![Config Maps list in namespace](images/config-maps-list.png)
 
@@ -1896,14 +1984,13 @@ As expected we see the contents of our config file. Let's use the dashboard to m
 
 As we'd expect it has our contents (You may have a different storename than `My Shop` if you changed the storefront-config.yaml file before creating the config map)
 
-- Click the **Edit button** (upper right) to get an on-screen editor where we can change the yaml that represents the map. 
+- Click the **Edit icon** (upper right) ![dashboard-edit-icon](images/dashboard-edit-icon.png) to get an on-screen editor where we can change the yaml that represents the map. 
 
 ![Config Maps in editor](images/config-map-editor-initial.png)
 
-- Locate the **storename** attribute at the bottom of the file. 
+- Locate the **storename** attribute in the data.storefront-config.yaml section. 
 
-- Now edit the text and **change** the text `My Shop` to something else. Be sure to change only the `My Shop` text, not the quote characters or other things (you don't want to create corrupt YAML which will be rejected).
-
+- Now edit the text and **change** the text `My Shop` to something else, here I've changed it to `Tims shop` . Be sure to change only the `My Shop` text, not the quote characters or other things (you don't want to create corrupt YAML which will be rejected).
 
 
 ![Config Maps changed in editor](images/config-map-editor-updated.png)
@@ -1931,7 +2018,7 @@ Now let's return to the pod and see what's happened
 
   - Exit the pod :   `exit`
 
-The storefront-config.yaml file has now changed to reflect the modifications you made to the config map. Note that it usually seems to take between 30 - 60  seconds for the change to propogate into the pod.
+The storefront-config.yaml file has now changed to reflect the modifications you made to the config map. Note that it usually seems to take between 30 - 60  seconds for the change to propogate into the pod, so if you don't see the change immediately wait a short time then retry.
 
 If we now get the status resource data again it's also updated
 
@@ -1945,10 +2032,12 @@ content-type: application/json
 content-length: 51
 strict-transport-security: max-age=15724800; includeSubDomains
 
-{"name":"Tims Shop","alive":true,"version":"0.0.1"}
+{"name":"Tims Shop","alive":true,"version":"0.0.1","timestamp":"2020-07-01 11:35:43.940"}
 ```
+
 Of course there is time delay from the change being visible in the pod to the Helidon framework doing it's scan to detect the change and reloading the config, so you may have to issue the curl command a few times to see when the change has fully propogated.
-We've shown how to change the config in helidon using config maps, but the same principle would apply if you were using secrets and modified those (though there isn't really a usable secret editor in the dashboard)
+
+We've shown how to change the config in helidon using config maps, but the same principle would apply if you were using secrets and modified those (though unless you can edit base64 directly there isn't really a usable secret editor in the dashboard)
 
 
 

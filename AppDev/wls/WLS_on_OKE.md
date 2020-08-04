@@ -11,7 +11,7 @@ This lab will showcase running WebLogic on a Kubernetes cluster, using the Opera
 
 To run these labs you will need access to an Oracle Cloud Tenancy, either via a **Free Tier**, using a **Pay-as-you-Go** account, or using the **Corporate account** of your organization. 
 
-If you do not have an account yet, you can obtain an Oracle Free Tier account by [clicking here.](https://myservices.us.oraclecloud.com/mycloud/signup?sourceType=:em:lw:rce:cpo:RC_EMMK200131P00052:WLLabApril)
+If you do not have an account yet, you can obtain an Oracle Free Tier account by [clicking here.](https://myservices.us.oraclecloud.com/mycloud/signup?sourceType=:ow:wb:sh:em::RC_WWMK200517P00003:Vlab_Weblogic_July&intcmp=:ow:wb:sh:em::RC_WWMK200517P00003:Vlab_Weblogic_July)
 
 
 
@@ -22,11 +22,9 @@ If you do not have an account yet, you can obtain an Oracle Free Tier account by
 
 Create a token for your user (will be used to login to the docker repository):
 
-- Locate the **Search bar** on the top of your console, and enter your username.  For example, if your name was **ppan** : 
+- Open your **User Settings** by clicking on the icon on the top right of the console, then select *User Settings* ![](images/ppan4.png)
 
-  ![](images/ppan3.png)
-
-- Select the user **that looks like :  oracleidentitycloudservice/(your_name)**
+- You can now see the details of your user account:
 
   ![](images/token1.png)
 
@@ -67,7 +65,7 @@ Create a token for your user (will be used to login to the docker repository):
   - If you already see the **CTDOKE** compartment in this list, 
     **==> no need to create a new compartment !!**
 
-  - If you are using a new **Free Tier** account, you will probably only have the root compartment, in that case : 
+  - If you are using a new **Free Tier** account, you will probably only have the root compartment, in that case: 
 
     - Click on **Create Compartment** button to start the compartment creation process
 
@@ -99,21 +97,21 @@ We will be using an Oracle Cloud Managed Kubernetes cluster to deploy weblogic.
 
   - Name : the name of your cluster.  We will be using the name *WlsOkeLab_(your_initials)* in this tutorial.  Please replace (your_initials) by a 3-letter code, for example Abc
   - Choose the CTDOKE compartment if it is available in the tenancy.
-  - Select version 15.7
   - Select **Public** worker nodes
   - Choose the shape VM_Standard2.1
     *Remark*: you might have to check available compute shapes on your tenancy.  You can do this by visualizing the **Service Limits** on the "Administration" , "Tenancy Details" page.
   - Select a **Number of nodes** that corresponds to the number of *Availability Domains* in the *Region* you have selected.  For example in Frankfurt this is **3**, in Amsterdam this is **1**.
-- Activate the Add-on (Dashboard)
   
   
-  ![image-20191220180903279](images/wls_oke5.png)
+  
+  
+  ![image-20191220180903279](images/wls_oke6.png)
 
 
 
-Once the cluster is created (the nodes will continue to be created), you can access the button ![image-20191220181646639](images/kubeconfigbutton2.png), and copy the commands to download the kubeconfig file of your cluster.
+Once the cluster is created (the nodes will continue to be created), you can access the button ![image-20191220181646639](images/kubeconfigbutton2.png), and copy the command to download the kubeconfig file of your cluster.
 
-These commands will look like: 
+This command will look like: 
 
 ```
 oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaaaaymqyweojygcqwinbwg4yw --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0
@@ -123,20 +121,23 @@ oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.a
 
 - Open the **Cloud Shell** using the button **">_"** in the upper right of the console.
 
-- execute the commands you copied.  Example :
+- execute the command you copied.  Example :
 
   ```
-  $ oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaaaaaaae4wmmjvmzobzmojqmy3dqz4ggntbgcrtqzrvmy4d --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0 
+  EXAMPLE ONLY : oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaaaaaaae4wmmjvmzobzmojqmy3dqz4ggntbgcrtqzrvmy4d --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0 
   ```
   
 - Validate you are able to access the cluster with kubectl, and see the nodes that are up and running
 
   ```
-  [oracle@jle-for-wls ~]$ kubectl get nodes
+  kubectl get nodes
+  ```
+  
+  ```
   NAME        STATUS   ROLES   AGE   VERSION
-  10.0.10.2   Ready    node    15h   v1.14.8
-  10.0.10.3   Ready    node    15h   v1.14.8
-  10.0.10.4   Ready    node    15h   v1.14.8
+  10.0.10.2   Ready    node    15h   v1.16.8
+  10.0.10.3   Ready    node    15h   v1.16.8
+  10.0.10.4   Ready    node    15h   v1.16.8
   ```
 
 
@@ -160,18 +161,21 @@ oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.a
 
     <img src="images/wls-im.png" alt="image-20191221114142137" style="zoom: 33%;" />
 
-  - Sign in to Oracle
+  - Sign in to the Oracle Website
 
-    - ATTENTION: you are logging into the Oracle website to download the docker image, and you need to use your **Oracle Account**, so ***not*** your **Oracle Cloud Tenancy** credentials !
+    - ATTENTION: you are logging into the Oracle website to download the docker image, and you need to use your **Oracle Account**, so ***not*** your **Oracle Cloud Tenancy** credentials !  This is the account you also use to register for Oracle events and seminars for example.
+      In case you don't have an Oracle account yet, please do so via the "Create Account" button on the login screen.
+
+      <img src="images/new-account.png" alt="image-20191221114142137" style="zoom: 33%;" />
 
   - Accept the T&C.
 
   - You are now ready to download the image :
-  
+
     ```
     docker login container-registry.oracle.com
     
-    docker pull container-registry.oracle.com/middleware/weblogic:12.2.1.3
+    docker pull container-registry.oracle.com/middleware/weblogic:12.2.1.4
     ```
 
 
@@ -179,7 +183,7 @@ oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.a
 - Setting up the necessary Roles for the Helm service:
 
 ```
-$ cat <<EOF | kubectl apply -f -
+cat <<EOF | kubectl apply -f -
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -236,21 +240,21 @@ Setting up the WebLogic Operator
 - Create a namespace for the operator:
 
   ```bash
-  $ kubectl create namespace sample-weblogic-operator-ns
+  kubectl create namespace sample-weblogic-operator-ns
   ```
 
 - Create a service account for the operator in the operator’s namespace:
 
   ```bash
-  $ kubectl create serviceaccount -n sample-weblogic-operator-ns sample-weblogic-operator-sa
+  kubectl create serviceaccount -n sample-weblogic-operator-ns sample-weblogic-operator-sa
   ```
 
 - Use `helm` to install and start the operator from the directory you just cloned:
 
   ```bash
-  $ helm install sample-weblogic-operator kubernetes/charts/weblogic-operator \
+  helm install sample-weblogic-operator kubernetes/charts/weblogic-operator \
     --namespace sample-weblogic-operator-ns \
-    --set image=oracle/weblogic-kubernetes-operator:2.5.0 \
+    --set image=oracle/weblogic-kubernetes-operator:3.0.0 \
     --set serviceAccount=sample-weblogic-operator-sa \
     --set "domainNamespaces={}" \
     --wait
@@ -259,7 +263,7 @@ Setting up the WebLogic Operator
 - Verify that the operator’s pod is running, by listing the pods in the operator’s namespace. You should see one for the operator.
   
   ```bash
-    $ kubectl get pods -n sample-weblogic-operator-ns
+    kubectl get pods -n sample-weblogic-operator-ns
   ```
   
 - Create namespace where your WebLogic will run
@@ -267,13 +271,13 @@ Setting up the WebLogic Operator
   - Create a namespace that can host one or more domains:
 
     ```bash
-    $ kubectl create namespace sample-domain1-ns
+    kubectl create namespace sample-domain1-ns
     ```
 
   - Use `helm` to configure the operator to manage domains in this namespace:
 
     ```bash
-    $ helm upgrade sample-weblogic-operator  kubernetes/charts/weblogic-operator \
+    helm upgrade sample-weblogic-operator  kubernetes/charts/weblogic-operator \
         --namespace sample-weblogic-operator-ns \
         --reuse-values \
         --set "domainNamespaces={sample-domain1-ns}" \
@@ -283,7 +287,7 @@ Setting up the WebLogic Operator
   - Configure Traefik to manage Ingresses created in this namespace:
 
     ```bash
-    $ helm upgrade traefik-operator stable/traefik \
+    helm upgrade traefik-operator stable/traefik \
         --namespace traefik \
         --reuse-values \
         --set "kubernetes.namespaces={traefik,sample-domain1-ns}" \
@@ -293,7 +297,7 @@ Setting up the WebLogic Operator
   - Create a Kubernetes secret for the WebLogic administrator credentials containing the `username` and `password` for the domain, using the [create-weblogic-credentials](http://github.com/oracle/weblogic-kubernetes-operator/blob/master/kubernetes/samples/scripts/create-weblogic-domain-credentials/create-weblogic-credentials.sh) script:
 
     ```bash
-    $ kubernetes/samples/scripts/create-weblogic-domain-credentials/create-weblogic-credentials.sh \
+    kubernetes/samples/scripts/create-weblogic-domain-credentials/create-weblogic-credentials.sh \
       -u weblogic -p welcome1 -n sample-domain1-ns -d sample-domain1
     ```
     
@@ -367,22 +371,20 @@ We'll now start configuring the WebLogic setup itself.  For this we will use the
     - `domainUID`: `sample-domain1`
     - `image`: this line is commented out in the example, please remove the `#` .
       Just in case you might be sharing your tenancy repository with colleagues, we will add your initials to the image name you will be using.  
-      The format to use is : `<region code>.ocir.io/<Object-Storage-Namespace>/<your_initials>-wls/weblogic:12.2.1.3`
-      - Example : `fra.ocir.io/frpqldntjs/ppa-wls/weblogic:12.2.1.3`
+      The format to use is : `<region code>.ocir.io/<Object-Storage-Namespace>/<your_initials>-wls/weblogic:12.2.1.4`
+      - Example : `fra.ocir.io/frpqldntjs/ppa-wls/weblogic:12.2.1.4`
     - `imagePullSecretName`: `<your initials>-ocirsecret` 
       Note this line is commented out in the example, please remove the `#` . 
     - `weblogicCredentialsSecretName`: `sample-domain1-weblogic-credentials`
     - `exposeAdminNodePort: true` 
     - `namespace`: `sample-domain1-ns`
-    - `domainHomeImageBase`: `container-registry.oracle.com/middleware/weblogic:12.2.1.3`
-    
+    - `domainHomeImageBase`: `container-registry.oracle.com/middleware/weblogic:12.2.1.4`
+  
 - The creation script will generate output, we'll create a directory for this
   
   ```
-    mkdir out_dir
-    ```
-  
-  
+  mkdir out_dir
+  ```
   
 - Now launch the build, using the file you just edited as the paramater file : 
 
@@ -403,7 +405,7 @@ Lets take a look at the artifacts generated :
 
   you should see a line containing something like : 
 
-   	`fra.ocir.io/frpqldntjs/ppa-wls/weblogic    12.2.1.3`
+   	`fra.ocir.io/frpqldntjs/ppa-wls/weblogic    12.2.1.4`
 
   
 
@@ -419,7 +421,7 @@ Lets take a look at the artifacts generated :
   #
   # This is an example of how to define a Domain resource.
   #
-  apiVersion: "weblogic.oracle/v6"
+  apiVersion: "weblogic.oracle/v8"
   kind: Domain
   metadata:
     name: sample-domain1
@@ -438,18 +440,14 @@ Lets take a look at the artifacts generated :
   
   ```
 
-- ATTENTION : Recently a small issue popped up in the script, generating an API version that is incompatible with the rest of the environment.
-  - Edit the domain.yaml file
-  - Change the line containing **apiVersion:** to reference **v6**
-    - WRONG version:  `apiVersion: "weblogic.oracle/v7"`
-    - CORRECT version:  `apiVersion: "weblogic.oracle/v6"`
-  - Be sure to save the file.
+  
+
 
 ### Launching your WLS instance
 
 First we need to push the generated docker image to the private registry of our tenancy.  Execute following operations to achieve this.
 
-- Execute a "docker login" into your private registry on Oracle OCI.
+- Execute a "docker login" into your **private registry on Oracle OCI**.
 
   ```
   docker login <region-code>.ocir.io/<storage namespace>
@@ -470,11 +468,11 @@ First we need to push the generated docker image to the private registry of our 
 - Now you can push the image : *pay attention to replace (your_initials)*
 
   ```
-  docker push <region-code>.ocir.io/<storage namespace>/<your_initials>-wls/weblogic:12.2.1.3
+  docker push <region-code>.ocir.io/<storage namespace>/<your_initials>-wls/weblogic:12.2.1.4
   ```
 
   For example :
-   `docker push fra.ocir.io/frpqldntjs/ppa-wls/weblogic:12.2.1.3`
+   `docker push fra.ocir.io/frpqldntjs/ppa-wls/weblogic:12.2.1.4`
 
   - Remark: if you are not the administrator of the Cloud Tenancy, you need to ask your administrator to allow you the use of the registry service through a **policy**:
     - `allow group <your_group> to manage repos in tenancy `
@@ -494,7 +492,7 @@ This definition will be picked up by the operator, who will try to activate the 
 - Use `kubectl` to show that the domain resource was created:
 
   ```bash
-  $ kubectl describe domain sample-domain1 -n sample-domain1-ns
+  kubectl describe domain sample-domain1 -n sample-domain1-ns
   ```
 
 
@@ -502,13 +500,13 @@ This definition will be picked up by the operator, who will try to activate the 
 - After a short time, you will see the Administration Server and Managed Servers running.
 
   ```bash
-  $ kubectl get pods -n sample-domain1-ns
+  kubectl get pods -n sample-domain1-ns
   ```
 
 - You should also see all the Kubernetes services for the domain.
 
   ```bash
-  $ kubectl get services -n sample-domain1-ns
+  kubectl get services -n sample-domain1-ns
   ```
 
 
@@ -528,7 +526,7 @@ Before we can access the WLS environment, we need to set up an Ingress using the
 - Create an Ingress for the domain, in the domain namespace, by using a Helm chart:
 
 ```bash
-$ helm install sample-domain1-ingress kubernetes/samples/charts/ingress-per-domain \
+helm install sample-domain1-ingress kubernetes/samples/charts/ingress-per-domain \
   --namespace sample-domain1-ns \
   --set wlsDomain.domainUID=sample-domain1 \
   --set traefik.hostname=sample-domain1.org
@@ -538,7 +536,9 @@ $ helm install sample-domain1-ingress kubernetes/samples/charts/ingress-per-doma
 
    - First obtain the external IP address of one of the nodes of your kubernetes cluster:
 
-      `kubectl get nodes -o wide`
+      ```
+      kubectl get nodes -o wide
+      ```
       
       This should give a result looking like : 
       
@@ -553,8 +553,15 @@ $ helm install sample-domain1-ingress kubernetes/samples/charts/ingress-per-doma
       
    - Now use curl on this IP address: 
 
+      ```
+      curl -v -H 'host: sample-domain1.org' http://130.61.34.87:30305/weblogic/ready
+      ```
+      
+      
+      
+   - Result:
+
    ```
-   $ curl -v -H 'host: sample-domain1.org' http://130.61.34.87:30305/weblogic/ready
      About to connect() to localhost port 30305 (#0)
        Trying 10.196.1.64...
        Connected to localhost (10.196.1.64) port 30305 (#0)
@@ -574,19 +581,29 @@ $ helm install sample-domain1-ingress kubernetes/samples/charts/ingress-per-doma
 
 - To access the WLS Administration Console:
 
-   Open a browser to `http://130.61.34.87:30701/console/`, **and replace the address with your IP address**.
-   
+   Open a browser and navigate to the WebLogic Console :
+
+   - Use the IP address you obtained in the previous step
+
+   - Use port 30701
+
+   - Path:  /console/
+
+   - Example :
+
+     ```
+     http://130.61.34.87:30701/console/
+     ```
+
+     
+
    You will be asked for the username and password, remember we set this to **weblogic/welcome1** as tradition requires ;-)
-   
+
    
 
 
 
 Congratulations, your WebLogic is running on OKE !
-
-
-
-
 
 
 

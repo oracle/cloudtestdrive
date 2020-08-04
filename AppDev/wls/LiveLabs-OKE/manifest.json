@@ -1,0 +1,8 @@
+{
+    "tutorials": [
+        {
+            "title": "WebLogic on Kubernetes",
+            "filename": "../WLS_on_OKE.md"
+        }
+    ]
+}

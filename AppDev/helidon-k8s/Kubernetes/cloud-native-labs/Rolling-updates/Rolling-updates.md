@@ -42,7 +42,7 @@ Kubernetes aims to keep a service running during the rolling upgrade, it does th
 
 We are going to once again edit the storefront-deployment.yaml file to give Kubernetes some rules to follow when doing a rolling upgrade. Importantly however we're going to edit a *Copy* of the file so we have a history.
 
-- In the OCI Cloud Shell navigate to the folder **helidon-kubernetes**
+- In the OCI Cloud Shell navigate to the folder **$HOME/helidon-kubernetes**
 - Copy the storefront-deployment yaml file:
   -  `cp storefront-deployment.yaml storefront-deployment-v0.0.1.yaml`
 
@@ -83,7 +83,7 @@ Finally we're going to tell kubernetes what limits we want to place on the rolli
 - Under the type line above, and **at the same indent** add the following
 
   ```
-      rollingUdate:
+      rollingUpdate:
         maxSurge: 1
         maxUnavailable: 1
   ```
@@ -136,6 +136,8 @@ deployment.apps/storefront configured
 deployment "storefront" successfully rolled out
 ```
 
+If you get a message along the lines of `Waiting for deployment "storefront" rollout to finish: 3 of 4 updated replicas are available...` this just means that the roll out is still in progress, once it's complete you should see the sucess message
+
 All went well, and let's also look at the history of this and previous roll outs:
 
 -  `kubectl rollout history  deployment storefront`
@@ -148,13 +150,13 @@ REVISION  CHANGE-CAUSE
 
 We can see that the previous state of the deployment resulted from us doing the initial apply. Note that the filename is specified in the rollout, as long as we version our file names we will be able to know exactly what configuration was applied to different versions of the deployment.
 
-One point to note here, these changes *only* modified the deployment roll out configuration, so there was no need for Kubernetes to actually stop or start any pods as those were unchanged.
+One point to note here, these changes *only* modified the deployment roll out configuration, so there was no need for Kubernetes to actually restart any pods as those were unchanged, however additional pods may have needed to be started to meet the replica count.
 
 ### Making a change that updates the pods
 
 Of course normally you would make a change, test it and build it, then push to the registry, you would probably use some form of CI/CD tooling to manage the process, for example a pipeline built using the Oracle Developer Cloud Service (other options include the open source tools Jenkins / Hudson and Ansible). 
 
-For this lab we are focusing on Helidon and Kubernetes, not the entire CI/CD chain so like any good cooking program we're going to use the v0.0.2 image we created earlier, so we just need to deploy it.
+For this lab we are focusing on Helidon and Kubernetes, not the entire CI/CD chain so like any good cooking program we're going to use the v0.0.2 image we created earlier in the docker lab, so we just need to deploy it.
 
 
 ### Applying our new image
@@ -164,7 +166,7 @@ To apply the new v0.0.2 image we need to upgrade the configuration again. As dis
 However ... for the purpose of showing how this can be done using kubectl we are going to do this using the command line, not a configuration file change. This **might** be something you'd do in a test environment, but **don't** do it in a production environment or your change management processes will almost certainly end up damaged.
 
 - Execute the command (replacing the image details with your repo details of course) 
-  -  `kubectl set image deployment storefront storefront=fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:0.0.2`
+  -  `kubectl set image deployment storefront storefront=fra.ocir.io/oractdemeabdmnative/h-k8s_repo/storefront:0.0.2`
 
 ```
 deployment.apps/storefront image updated
@@ -257,6 +259,8 @@ deployment "storefront" successfully rolled out
 ```
 Kubectl provides us with a monitor which updates over time. Once all of the deployment is updated then kubectl returns.
 
+During the rollout if you had accessed the status page for the storefront (on /sf/status) you would sometimes have got a version 0.0.1 in the response, and other times 0.0.2 This is because during the rollout there are instances of both versions running.
+
 If we look at the setup now we can see that the storefront is running only the new pods, and that there are 4 pods providing the service.
 
 -  `kubectl get all`
@@ -321,7 +325,7 @@ Pod Template:
   Labels:  app=storefront
   Containers:
    storefront:
-    Image:       fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:0.0.2
+    Image:       fra.ocir.io/oractdemeabdmnative/h-k8s_repo/storefront:0.0.2
     Ports:       8080/TCP, 9080/TCP
     Host Ports:  0/TCP, 0/TCP
     Limits:
@@ -362,12 +366,12 @@ Events:
   Normal  ScalingReplicaSet  21m   deployment-controller  Scaled down replica set storefront-5f777cb4f5 to 0
 ```
 
-We see the usual deployment info, the Image is indeed the new one we specified, `fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:0.0.2` and the events log section shows us the various stages of rolling out the update.
+We see the usual deployment info, the Image is indeed the new one we specified (in this case `fra.ocir.io/oractdemeabdmnative/h-k8s_repo/storefront:0.0.2`) and the events log section shows us the various stages of rolling out the update.
 
 We should of course check that our update is correctly delivering a service (replace the IP address with one for your service)
 
 ```
-$ curl -i -k -X GET -u jack:password https://987.123.456.789/store/stocklevel
+$ curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel
 HTTP/2 200 
 server: nginx/1.17.8
 date: Fri, 27 Mar 2020 10:33:47 GMT
@@ -378,7 +382,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
 - Now let's check the output from the StausResource (again replace the IP address with the one for your service) :
-  -  `curl -i -k -X GET https://987.123.456.789/sf/status`
+  -  `curl -i -k -X GET https://<external IP>/sf/status`
 
 ```
 HTTP/2 200 
@@ -390,7 +394,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 {"name":"My Shop","alive":true,"version":"0.0.2"}
 ```
-As expected it's reporting version 0.0.2
+Now the rollout has completed and all the instances are runnign the updated image as expected it's reporting version 0.0.2
 
 ### Rolling back a update
 In this case the update worked, but what would happen if it had for some reason failed. Fortunately for us Kubernetes keeps the old replica set around, which includes the config for just this reason. 
@@ -400,8 +404,6 @@ In this case the update worked, but what would happen if it had for some reason 
 
 ```
 NAME                                                     DESIRED   CURRENT   READY   AGE
-ingress-nginx-nginx-ingress-controller-57747c8999        1         1         1       4m44s
-ingress-nginx-nginx-ingress-default-backend-54b9cdbd87   1         1         1       4m44s
 stockmanager-6759d989bf                                  1         1         1       61m
 storefront-5f777cb4f5                                    0         0         0       61m
 storefront-79d7d954d6                                    4         4         4       33m
@@ -428,7 +430,7 @@ Pod Template:
            pod-template-hash=79d7d954d6
   Containers:
    storefront:
-    Image:       fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:0.0.2
+    Image:       fra.ocir.io/oractdemeabdmnative/h-k8s_repo/storefront:0.0.2
     Ports:       8080/TCP, 9080/TCP
     Host Ports:  0/TCP, 0/TCP
     Limits:
@@ -480,7 +482,7 @@ Pod Template:
            pod-template-hash=5f777cb4f5
   Containers:
    storefront:
-    Image:       fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:0.0.1
+    Image:       fra.ocir.io/oractdemeabdmnative/h-k8s_repo/storefront:0.0.1
     Ports:       8080/TCP, 9080/TCP
     Host Ports:  0/TCP, 0/TCP
     Limits:

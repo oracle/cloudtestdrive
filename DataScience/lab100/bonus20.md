@@ -6,4 +6,3 @@ In LAB100, we shown how to predict a house sale price through regression. We app
 
 This lab will start from scratch, you don't need to complete previous labs to proceed but it would be a beneficial to complete LAB100 first, to be able to compare the difference in functionalities.
 
-

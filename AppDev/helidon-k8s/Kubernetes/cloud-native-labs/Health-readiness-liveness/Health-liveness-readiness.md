@@ -49,10 +49,10 @@ ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.67.181    <no
 The Column EXTERNAL-IP gives you the IP address, in this case the IP address for the ingress-controller load balancer is `132.145.253.186` ** but this of course will be different in your environment !**
 </p></details>
 
-First let's make sure that the service is running, (replace <ip address> with the external ip address of the ingress)
+First let's make sure that the service is running, (replace <External IP> with the external ip address of the ingress)
 
 - In the OCI Cloud Shell
-  - `curl -i -X GET -u jack:password http://<ip address>:80/store/stocklevel`
+  - `curl -i -X GET -u jack:password http://<External IP>:80/store/stocklevel`
 
 ```
 HTTP/1.1 200 OK
@@ -94,14 +94,14 @@ root@storefront-65bd698bb4-cq26l:/# command terminated with exit code 137
 
 <details><summary><b>How do you know it's process 1 ?</b></summary>
 <p>
-To be honest this is a bit of inside knowledge, docker images run the command they are given as process 1. The Graalvm image is pretty restricted in the commands it contains and sadly does not include the `ps` command, so sadly we can't check this.
+To be honest this is a bit of inside knowledge, docker images run the command they are given as process 1. The GraalVM image is pretty restricted in the commands it contains and unfortunately does not include the `ps` command, so sadly we can't check this.
 </p></details>
 
 Within a second or two of the process being killed the connection to the container in the pod is terminated as the container exits.
 
-If we now try getting the data again it still responds  (replace the IP address with the one for your service)
+If we now try getting the data again it still responds  (replace <External IP> with the one for your service) If you get a 503 error that just means that the pod is still restarting, wait a few seconds and try again.
 
-- `curl -i -k -X GET -u jack:password https://987.123.456.789/store/stocklevel`
+- `curl -i -k -X GET -u jack:password https://<External IP>/store/stocklevel`
 
 ```
 HTTP/2 200 
@@ -113,6 +113,8 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
+
+The reason it took a bit longer than usual when accessing the service is that because it was restarted the code had to do the on-demand setup of the web services. This of course is only done once when the services are first accessed after the container in the pod starts up.
 
 - Let's look at the pod details again:
   -  `kubectl get pods`
@@ -138,7 +140,6 @@ Kubernetes has identified that the container exited and within the pod restarted
 2020.01.02 14:10:04 INFO com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[hystrix-io.helidon.microprofile.faulttolerance-1,5,server]: Found 5 items
 ```
 
-The reason it took a bit longer than usual when accessing the service is that the code was doing the on-demand setup of the web services. This of course is only done once when the services are first accessed.
 
 ### Liveness
 We now have mechanisms in place to restart a container if it fails, but it may be that the container does not actually fail, just that the program running in it ceases to behave properly, for example there is some kind of non fatal resource starvation such as a deadlock. In this case the pod cannot recognize the problem as the container is still running.
@@ -147,8 +148,9 @@ Fortunately Kubernetes provides a mechanism to handle this as well. This mechani
 
 You may recall in the Helidon labs (if you did them) we created a liveness probe, this is an example of Helidon is designed to work in cloud native environments.
 
-- Navigate to the **helidon-kubernetes** folder
-- Open the file **storefront-deployment.yaml**
+- Navigate to the **$HOME/helidon-kubernetes** folder
+  - `cd $HOME/helidon-kubernetes`
+- Edit the file **storefront-deployment.yaml** using your prefered editor
 - Search for the Liveness probes section. This is under the spec.template.spec.containers section
 
 ```
@@ -214,7 +216,7 @@ Let's look at some of these values.
 
 As it may take a while to start up the container, we specify and initialDelaySeconds of 120, Kubernetes won't start checking if the pod is live until that period is elapsed. If we made that to short then we may never start the container as Kubernetes would always determine it was not alive before the container had a chance to start up properly. 
 
-The parameter **timeoutSeconds** specifies that for the http request  to have failed it could not have responded in 5 seconds. As many http service implementations are initialized on first access we need to chose a value that is long enough for the framework to do it's lazy initialization.
+The parameter **timeoutSeconds** specifies that for the http request to be considered failed it would not have responded in 5 seconds. As many http service implementations are initialized on first access we need to chose a value that is long enough for the framework to do it's lazy initialization.
 
 The parameter **periodSeconds** defines how often Kubernetes will check the container to see if it's alive and responding. This is a balance, especially if the liveness check involved significant resources (e.g. making a RDBMS call) You need to check often enough that a non responding container will be detected quickly, but not check so often that the checking process itself uses to many resources.
 
@@ -224,7 +226,7 @@ Whatever your actual implementation you need to carefully consider the values ab
 
 Let's apply the changes we made in the deployment :
 
-- Make sure you are in the folder **helidon-kubernetes**
+- Make sure you are in the folder **$HOME/helidon-kubernetes**
 
 -  `bash undeploy.sh`
 
@@ -295,9 +297,9 @@ storefront-b44457b4d-29jr7      1/1     Running   0          24s
 zipkin-88c48d8b9-bftvx          1/1     Running   0          24s
 ```
 
-Note that as we have undeployed and then deployed again there are new pods and so the RESTART count is back to zero.
+Note that as we have undeployed and then deployed again these are new pods and so the RESTART count is back to zero.
 
-If we look at the logs for the storefront **before** the liveness probe has started (so before the 60 seconds from container creation) we see that it starts as we expect it to. 
+If we look at the logs for the storefront **before** the liveness probe has started (so before the 120 seconds from container creation) we see that it starts as we expect it to. 
 
 - Visualize the logs :  `kubectl logs storefront-b44457b4d-29jr7`
 
@@ -307,7 +309,7 @@ If we look at the logs for the storefront **before** the liveness probe has star
 2020.01.02 16:19:07 INFO com.oracle.labs.helidon.storefront.Main Thread[main,5,main]: Running on http://localhost:8080/store
 ```
 
-If however the 60 seconds has passed and the liveness call has started we will see calls being made to the status resource,
+If however the 120 seconds has passed and the liveness call has started we will see calls being made to the status resource,
 
 - Run the kubectl command again: `kubectl logs storefront-b44457b4d-29jr7 `
 
@@ -400,7 +402,7 @@ In the logs we see the following
 Weld SE container 53fe34a2-0291-4b72-a00e-966bab7ab2ad shut down by shutdown hook
 ```
 
-Kubectl tells us there's been a problem and a pod has done a restart for us
+Kubectl tells us there's been a problem and a pod has done a restart for us (the kubectl connection to the pod will have terminated when the pod restsrted)
 
 - Check the pod status: `kubectl get pods`
 
@@ -431,6 +433,7 @@ Events:
 The pod became unhealthy, then the container was killed and a fresh new container restarted.
 
  (Leave the extra window open as you'll be using it again later)
+ 
 ### Readiness
 The first two probes determine if a pod is alive and running, but it doesn't actually report if it's able to process events. That can be a problem if for example a pod has a problem connecting to a backend service, perhaps there is a network configuration issue and the pods path to a back end service like a database is not available.
 
@@ -440,7 +443,7 @@ Kubernetes supports a readiness probe that we can call to see is the container i
 
 Unlike a liveness probe, if a container fails it's not killed off, and calls to the readiness probe continue to be made, if the probe starts reporting the service in the container is ready then it's added back to the list of containers that can deliver the servcie and requests will be routed to it once more.
 
-- Make sure you are in the folder **helidon-kubernetes**
+- Make sure you are in the folder **$HOME/helidon-kubernetes**
 - Edit the file **storefront-deployment.yaml**
 
 - Look for the section (just after the Liveness probe) where we define the **readiness probe**. 
@@ -539,7 +542,7 @@ That's all we're going to do with bash shell programming for now !
 Having made the changes let's undeploy the existing configuration and then deploy the new one
 
 In the OCI Cloud Shell
-- Navigate to the **helidon-kubernetes** folder
+- Navigate to the **$HOME/helidon-kubernetes** folder
 - Run the undeploy.sh script
   -  `bash undeploy.sh `
 
@@ -667,13 +670,13 @@ Now everything is ready, but why the delay ? What's caused it ? And why didn't i
 
 Well the answer is simple. If there is a readiness probe enabled a pod is not considered ready *until* the readiness probe reports success. Prior to that the pod is not in the set of pods that can deliver a service.
 
-As to why it didn't happen before if a pod does not have a readiness probe specified then it is automatically assumed to be in a ready state as soon as it's running
+As to why it didn't happen before, if a pod does not have a readiness probe specified then it is automatically assumed to be in a ready state as soon as it's running
 
 What happens if a request is made to the service while before the pod is ready ? Well if there are other pods in the service (the selector for the service matches the labels and the pods are ready to respond) then the service requests are sent to those pods. If there are **no** pods ab.e to service the requests than a 503 "Service Temporarily Unavailable" is generated back to the caller
 
 To see what happens if the readiness probe does not work we can simply undeploy the stock manager service.
 
-- First let's check it's running fine  (replace the IP address with the one for your service)
+- First let's check it's running fine  (replace the IP address with the one for your service, and be prepared for a short delay as we'd just restarted everything)
   -  `curl -i -k -X GET -u jack:password https://987.123.456.789/store/stocklevel
 
 ```
@@ -702,7 +705,7 @@ stockmanager-6456cfd8b6-vqq7c   0/1     Terminating   0          26m
 storefront-74cd999d8-dzl2n      1/1     Running       0          26m
 zipkin-88c48d8b9-vdn47          1/1     Running       0          26m
 ```
-The stock manager service is being stopped, after 60 seconds or so if we run kubectl again to get everything we see it's gone
+The stock manager service is being stopped (this is quite a fast process, so it may have completed before you ran the command.) After 60 seconds or so if we run kubectl to get everything we see it's gone (note this is `all`, not `pods` here)
 
 -  `kubectl get all`
 
@@ -783,7 +786,7 @@ replicaset.apps/zipkin-88c48d8b9          1         1         1       33m
 
 The stockmanager is running, but the storefront is still not ready, and it won't be until the readiness check is called again and determines that it's ready to work.
 
-- Looking at the kubectl output abut 90 seconds later:
+- Looking at the kubectl output about 120 seconds later:
   -  `kubectl get all`
 
 ```
@@ -828,11 +831,7 @@ You may have noticed above that we had to wait for the readiness probe to comple
 
 To solve this in Kubernetes 1.16 the concept of startup probes was introduced. A startup probe is a very simple probe that tests to see if the service has started running, usually at a basic level, and then starts up the liveness and readiness probes. Effectively the startupProbe means there is no longer any need for the initialDelaySeconds.
 
-Unfortunately however the startup probes are not supported in versions of Kubernetes prior to 1.16, and as our Kubernetes environment (and most other cloud providers) are not yet on that version we can't demo that. But there is example configuration in the storefront-deployment.yaml file to show how this would would be defined (the initialDeploymentSeconds would need to be removed from the liveness and readiness configurations.
-
-Once we have a 1.16 or later production deployment this section of the lab will be updated to cover the startup probes in more detail.
-
-
+Unfortunately however the startup probes are not supported in versions of Kubernetes prior to 1.16, and this lab is not yet fully updated for that. But there is example configuration in the storefront-deployment.yaml file to show how this would would be defined (the initialDeploymentSeconds would need to be removed from the liveness and readiness configurations.
 
 
 

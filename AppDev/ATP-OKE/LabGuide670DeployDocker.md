@@ -1,5 +1,5 @@
 ![](../../common/images/customer.logo2.png)
-# Microservices on ATP
+# Microservices on ATP - Part 5
 
 ## Deploy your container on top of your Kubernetes Cluster
 
@@ -9,7 +9,7 @@ In this section we will create a second build job to run the container we create
 
 Let’s get started! 
 
-### Step 1: Set up your Deploy Build Job
+## Step 1: Set up your Deploy Build Job
 
 - Navigate to the **Build** tab and hit the **New Job** button.
 
@@ -69,7 +69,7 @@ Let’s get started!
 
   
 
-### Step 2: Configure the environment to point to your cloud instance
+## Step 2: Configure the environment to point to your cloud instance
 
 - Upload the kubeconfig file into the repository.  During the creation of the cluster, a **kubeconfig** file was generated.  This file is required to connect to your cluster from within the build job.  In case you are using a common Kubernetes cluster, your instructor will provide you with the appropriate **kubeconfig** file.
 
@@ -105,38 +105,7 @@ Let’s get started!
   
   
 
-### Step 3:  Personalize the deployment on the cluster
-
-<u>In case you are sharing a Kubernetes instance with other participants</u>, you need to make sure your deployment can be distinguished from the ones belonging to your colleagues.  You can perform the below steps to achieve this:
-
-- In the **Git** tab of Visual Builder Studio, re-open the file **atp2.yaml**.  You need to make following changes:
-
-  - Line 4, 8, 13, 16, 27 and 35 : replace the string **atp2** with a string containing your initials, for example for "jle" : **atp2jle**
-  
-
-![](images/670/edit_yaml2_3.png)
-
-- 
-  
-- Hit **Commit** to save your changes.
-  
-
-  
-- In the **Git** tab of Visual Builder Studio, open the file **kubescript.sh** by clicking on it, and go into editing mode by clicking on the small pencil in the upper right
-
-  - On line 4 and 6, add your initials in front of the strings beginning with **atp2**
-  
-  - This should match exactly the personalization done in the previous step !
-  
-    
-  
-    ![](images/670/kubescript-1.png)
-  
-  - Hit **Commit** to save the changes
-  
-  - As you can see, this shell script refers to the actual Kubernetes deployment configuration file **atp2.yaml**.  
-
-### Step 4: Execute and validate your new job
+## Step 3: Execute and validate your new job
 
 - In the **Builds** menu, select the job you just created and hit the **Build Now** button.
 
@@ -153,30 +122,33 @@ Let’s get started!
 
 
 
-### Step 5: Visualize the Service to obtain the URL of your application
+## Step 4: Visualize the Service to obtain the URL of your application
 
 In order to see the application you just deployed, we need to construct the URL where the container is listening.  You can do this via the command line and kubectl.
 
-- ```
-  kubectl get nodes -o wide
-  
-  NAME        STATUS   ROLES   AGE   VERSION   INTERNAL-IP   EXTERNAL-IP     OS-IMAGE                  KERNEL-VERSION                   CONTAINER-RUNTIME
-  10.0.10.2   Ready    node    16h   v1.12.6   10.0.10.2     130.61.56.185   Oracle Linux Server 7.5   4.14.35-1818.3.3.el7uek.x86_64   docker://18.9.1
-  10.0.11.2   Ready    node    16h   v1.12.6   10.0.11.2     130.61.34.50    Oracle Linux Server 7.5   4.14.35-1818.3.3.el7uek.x86_64   docker://18.9.1
-  10.0.12.2   Ready    node    16h   v1.12.6   10.0.12.2     130.61.109.52   Oracle Linux Server 7.5   4.14.35-1818.3.3.el7uek.x86_64   docker://18.9.1
-  ```
+- command : `kubectl get nodes -o wide`
 
-  
+```
+NAME        STATUS   ROLES   AGE   VERSION   INTERNAL-IP   EXTERNAL-IP     OS-IMAGE                  KERNEL-VERSION                   CONTAINER-RUNTIME
+10.0.10.2   Ready    node    16h   v1.12.6   10.0.10.2     130.61.56.185   Oracle Linux Server 7.5   4.14.35-1818.3.3.el7uek.x86_64   docker://18.9.1
+10.0.11.2   Ready    node    16h   v1.12.6   10.0.11.2     130.61.34.50    Oracle Linux Server 7.5   4.14.35-1818.3.3.el7uek.x86_64   docker://18.9.1
+10.0.12.2   Ready    node    16h   v1.12.6   10.0.12.2     130.61.109.52   Oracle Linux Server 7.5   4.14.35-1818.3.3.el7uek.x86_64   docker://18.9.1
+```
 
-- ```
-  kubectl get services
-  
-  NAME         TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)          AGE
-  atp2jle      NodePort    10.96.6.240   <none>        3050:31056/TCP   15h
-  kubernetes   ClusterIP   10.96.0.1     <none>        443/TCP          16h
-  ```
+And next: 
 
-  Now select any of the external IP addresses of the nodes, and combine it with the external port of your service : in the above example : 130.61.56.185:31056
+- Command : `kubectl get service`
+
+```
+NAME         TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)          AGE
+atp2jle      NodePort    10.96.6.240   <none>        3050:31056/TCP   15h
+kubernetes   ClusterIP   10.96.0.1     <none>        443/TCP          16h
+```
+
+ 
+
+- Now select any of the **external IP** addresses of the nodes, and combine it with the **external port** of your service - this is the second port number on the line of the atp2 service.  
+  In the above example : 130.61.56.185:31056
 
 
 
@@ -197,7 +169,3 @@ Congratulations, you have finished this lab !!!!
 Because you did all this via a CI/CD chain, making a small change in the source code of your application will trigger the re-deployment and make your change immediately visible.
 
 
-
----
-
-Use the **Back Button** of your browser to go back to the overview page.

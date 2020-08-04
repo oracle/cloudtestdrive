@@ -1,0 +1,32 @@
+{
+    "tutorials": [
+        {
+          "title": "Introduction and overview of the steps",
+          "filename":"README.md"
+        },
+        {
+          "title": "Preparing your Tenancy for the lab",
+          "filename":"../env-setup-ctdenv.md"
+        },
+        {
+          "title": "Part 1: Setting up your Visual Builder Studio project",
+          "filename": "../LabGuide250Devcs-proj_ctdenv.md"
+        },
+		    {
+          "title": "Part 2: Create and populate the Database objects",
+          "filename": "../LabGuide400DataLoadingIntoATP_ctdenv.md"
+        },
+		    {
+          "title": "Part 3: Spin up a Managed Kubernetes environment with Terraform",
+          "filename": "../LabGuide660OKE_Create.md"
+        },
+        {
+          "title": "Part 4: Build a Container image with the aone application",
+          "filename": "../LabGuide650BuildDocker.md"
+        },
+        {
+          "title": "Part 5: Deploy your container on top of your Kubernetes Cluster",
+          "filename": "../LabGuide670DeployDocker.md"
+        }
+    ]
+}
