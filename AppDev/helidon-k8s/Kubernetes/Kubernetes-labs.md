@@ -102,7 +102,7 @@ This optional module shows how you can use fluentd to capture the log data, and 
 
 ##### Optional 2b. Log Capture for long term storage (archive)
 
-This optional module shows how you can use fluentd to capture the log data, and then write the output to a long term storage offering, In this case we will be writing to the S3 compatible Oracle Object Storage Service. The module is intended as an example to how to handle log data for people that need to retain log data for the long term (perhaps for legal reasons) but don;t need instant access, so can use the most cost effective long term storage.
+This optional module shows how you can use fluentd to capture the log data, and then write the output to a long term storage offering, In this case we will be writing to the S3 compatible Oracle Object Storage Service. The module is intended as an example to how to handle log data for people that need to retain log data for the long term (perhaps for legal reasons) but don't need instant access, so can use the most cost effective long term storage.
 
 [Log capture for processing lab](management/logging/LogCaptureForArchive.md)
 
