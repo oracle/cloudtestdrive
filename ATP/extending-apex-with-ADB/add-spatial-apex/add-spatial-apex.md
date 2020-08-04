@@ -329,7 +329,7 @@ In our case we will verify that the coordinate of the proposed drone flight is n
 * You learned how to perform spatial validations by using Spatial SQL operators.
 
 ## Acknowledgements
-* **Author** - Jeroen Kloosterman, Technology Product Strategy Manager
+* **Author** - Jeroen Kloosterman, Technology Product Strategy Manager, Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center
 * **Last Updated By/Date** - Tom McGinn, Database Innovations Architect, Database Product Management, July 2020
 
 See an issue?  Please open up a request [here](https://github.com/oracle/learning-library/issues).   Please include the workshop name and lab in your request.
