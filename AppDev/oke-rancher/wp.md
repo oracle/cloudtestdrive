@@ -114,7 +114,7 @@ When the Cloud Shell comes up, copy and paste the command:
 If you did it correctly, you should get the following response:
 
 ```
-New config written to the Kubeconfig file /home/tim_graves/.kube/config
+New config written to the Kubeconfig file /home/account/.kube/config
 ```
 Or, if you have an existing cluster:
 

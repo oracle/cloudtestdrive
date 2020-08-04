@@ -81,6 +81,8 @@ Open the side menu and go to Networking:
   
 Go to Virtual Cloud Networks. 
 
+Choose: "oke-rancher-lab"
+
 Select the Virtual Cloud Network created in the previous step.
 
 And now navigate to Security Lists.
@@ -89,7 +91,12 @@ And now navigate to Security Lists.
 
 Click on the default security list. 
 
+![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/security-list2.PNG)
+
 Click on Add Ingress Rule. 
+
+![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/security-list-result.PNG)  
+
 
 Now we are going to add HTTPS access to our network, 
 so, we can access the web page of Rancher. 
@@ -102,14 +109,16 @@ First we must add HTTPS access to our network, to let us access the Rancher web 
 Now click on Add Ingress Rule button
 
 
-
-![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/security-list2.PNG)
-
-![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/security-list-result.PNG)  
-
-
 Once the Ingress Rule is created, 
 we shall create an Internet Gateway, to enable routing traffic through the Internet.
+
+Open the side menu and go to Networking:
+
+![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/menu-networking.PNG)
+  
+Go to Virtual Cloud Networks. 
+
+Choose: "oke-rancher-lab"
 
 1.	On your network side menu go to Internet Gateway:
 
@@ -119,7 +128,10 @@ we shall create an Internet Gateway, to enable routing traffic through the Inter
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/internet-gateway2.PNG)
 
-3. Go to Route Tables, to set the traffic route to the Internet Gateway:
+Name it "ig".
+And click on Create Internet Gateway button.
+
+3. On the left menu, go to Route Tables, to set the traffic route to the Internet Gateway:
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/internet-gateway3.PNG)
 
@@ -127,9 +139,14 @@ we shall create an Internet Gateway, to enable routing traffic through the Inter
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/internet-gateway4.PNG)
 
+Then click on the Add Route Rules button.
+
 5. Add the following route to the Internet Gateway:
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/internet-gateway5.PNG)
+
+Click on Add Route Rules button.
+
 
 Now the traffic is routed to the Internet, 
 and we have access to port 443. 

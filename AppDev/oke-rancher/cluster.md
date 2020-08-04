@@ -34,6 +34,7 @@ I would use: OKERancher123! but you may set any value as your own password.
 Once the password is set, check the checkbox 
 "I agree to the Terms and Conditions for using Rancher" 
 and click Continue. 
+** If a password has already been set, use "admin" at the Current Password field. ** 
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/rancher-login.PNG)
 
@@ -83,7 +84,7 @@ I suggest to open 3 screens, out of which 2 are Web Browser’s and 1 is Mobaxte
 
 Now, let's start.
 
-1. On your Rancher click on "Add Cluster"
+1. On your Rancher click on Clusters on the top menu, and then click on "Add Cluster"
 
 ![image](https://github.com/deton57/oke-labs/blob/master/oke-rancher/screenshots/part2/rancher-add-cluster.PNG)
 
@@ -237,10 +238,13 @@ click on "Next Authenticate..." button
 this is to check that the values have been correctly 
 entered and find any problems.
 
-12.	Leave the parameters as is, with 1 node per AD. 
+12.	Leave the parameters as is, with version: "1.15.7" as the current latest version,
+that was supported with OKE Driver, when it was written. 
+Other parameters: with 1 node per AD. 
 This will tell Rancher to create the OKE cluster with 1 node per AD, 
 which will eventually result in total of 3 nodes, 
 in case you are running on a region with 3 ADs.
+
 
 13.	Click "Next Virtual Cloud Network" and select "Quick Create"
 
