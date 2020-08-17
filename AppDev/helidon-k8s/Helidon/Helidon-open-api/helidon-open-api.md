@@ -124,25 +124,35 @@ In the console tab you'll see output similar to the following
 
 ```
 [INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Detecting the operating system and CPU architecture
+[INFO] ------------------------------------------------------------------------
+[INFO] os.detected.name: osx
+[INFO] os.detected.arch: x86_64
+[INFO] os.detected.version: 10.15
+[INFO] os.detected.version.major: 10
+[INFO] os.detected.version.minor: 15
+[INFO] os.detected.classifier: osx-x86_64
 [INFO] 
 [INFO] -----------------< com.oracle.labs.helidon:storefront >-----------------
 [INFO] Building storefront 0.0.1
 [INFO] --------------------------------[ jar ]---------------------------------
 [INFO] 
-[INFO] --- maven-resources-plugin:3.0.2:resources (default-resources) @ storefront ---
+[INFO] --- maven-resources-plugin:2.7:resources (default-resources) @ storefront ---
 [INFO] Using 'UTF-8' encoding to copy filtered resources.
 [INFO] Copying 3 resources
 [INFO] 
 [INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ storefront ---
 [INFO] Nothing to compile - all classes are up to date
 [INFO] 
-[INFO] --- jandex-maven-plugin:1.0.7:jandex (make-index) @ storefront ---
+[INFO] --- jandex-maven-plugin:1.0.6:jandex (make-index) @ storefront ---
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  2.581 s
-[INFO] Finished at: 2020-03-11T14:47:58Z
+[INFO] Total time:  1.233 s
+[INFO] Finished at: 2020-08-17T18:40:22+01:00
 [INFO] ------------------------------------------------------------------------
+
 ```
 
 Note that the version numbers may differ.
@@ -250,7 +260,7 @@ paths:
 
 <details><summary><b>If you didn't see similar to the output above</b></summary>
 
-If you just saw the basic info that was returned when you initially did a curl to this URN the probability is that you hadn't completed the maven build on the process-class task before you re-started the storefront service. Stop the storefront service, make sure you've correctly run and finished the maven build and the console reports that the jandex has run and the build has been a success, then re-start the storefront application.
+If you just saw the basic info that was returned when you initially did a curl to this URN the probability is that you hadn't completed the maven build on the process-class goal before you re-started the storefront service. Stop the storefront service, make sure you've correctly run and finished the maven build on the process-class goal and the console reports that the jandex has run and the build has been a success, then re-start the storefront application.
 
 </p></details>
 ---

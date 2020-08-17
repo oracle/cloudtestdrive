@@ -37,24 +37,22 @@ The main class we will be using is **StorefrontResource.java**.   Locate it in t
 
 ---
 
-<details><summary><b>More on Lombok</b></summary>
+<details><summary><b>What are the @Slf4j and @NoArgsConstructor annotations ?</b></summary>
 <p>
 
 
-You see a couple of annotations already on place on the class definition (`@Slf4j` and `@NoArgsConstructor`) These are being processed by [Lombok](https://projectlombok.org/).  Lombok is a set of Java based tools tha use annotations to perform common tasks for us. In this case the `@Slf4j` annotation tells Lombok to automatically generate a Java logger (Actually we use the simple logging facade, which makes is easy to switch the logging engine) using the class name as the loggers name. The `@NoArgsConstructor` does what the name suggests and creates a constructor for us without any arguments. 
+You see a couple of annotations already on place on the class definition (`@Slf4j` and `@NoArgsConstructor`) These are being processed by [Lombok](https://projectlombok.org/).  Lombok is a set of Java based tools that use annotations to perform common tasks for us. In this case the `@Slf4j` annotation tells Lombok to automatically generate a Java logger (Actually we use the simple logging facade, which makes is easy to switch the logging engine) using the class name as the loggers name. The `@NoArgsConstructor` does what the name suggests and creates a constructor for us without any arguments. 
 
 Lombok provides a wide variety of other useful annotations to speed up development, for example rather than manually creating getters and setters, hash codes and equals we can just use the @Lombok `@Data` annotation to create them for us automatically. As Lombok is executed when a class if compiled as we change the class any new fields would have getters / setters automatically created for us and any fields that had been removed would no longer have getters / setters created.
 
 It's not required that people use Lombok for java development of course, but I'm using it here to as to not clutter up the code, and also I'm lazy when it comes to coding and Lombok is a great tool for lazy coders :-)
 
 Enough on Lombok. Let's get to the Helidon work !
-</p>
-</details>
 
 ---
 
-
-
+</p>
+</details>
 
 
 ### Make the list stock REST Service available
@@ -181,6 +179,7 @@ The com.oracle.labs.helidon.storefront.Main class starts the process. We're goin
 	}
 ```
 
+
 How does Helidon know what classes it needs to create REST endpoints for ?
 
 We need to create a new class to provide this information, and add an annotation to it so Helidon knows that's the new class provides this information.
@@ -205,7 +204,7 @@ public class StorefrontApplication extends Application {
 	public Set<Class<?>> getClasses() {
 		// here we have two classes to operate on, the store front, and the
 		// configuration manager
-		return CollectionsHelper.setOf(StorefrontResource.class);
+		return Set.Of(StorefrontResource.class);
 	}
 }
 ```
@@ -225,11 +224,23 @@ Note that in this case Application is not a Helidon annotation.
 
 When the Helidon server starts up it looks for classes with the @ApplicationPath path annotation and that extend the Application interface and then calls the getClasses method on those to get a set of classes that it will then examine in more detail for other annotations.
 
-</p>
+---
 
+</p>
 </details>
 
+<details><summary><b>Why do I need a main class ?</b></summary>
+<p>
+
+Helidon  does not require you to use a main class, you can if you want actually use a class thats part of the Context and Dependency Injection (CDI) framework (we will do more on CDI later) which will locate all `Application`  classes for you. 
+
+In this case the class is called Main, but that's really just so we can easily identify the class with the `main` method and can specify it in the packaging tools later on. As with any Java program the class with the `main` method could be called anything you want, you just need to know the class name so you can run it, and define it in any runnable .jar files. 
+
+The problem with using CDI to do this however is that you won't have the chance to configure things like logging, or other aspects of the configuration. For a very simple application that's not a problem, but in most cases you will want to setup your own configuration properties and so on, which is why we're using a class with a main method. (we will look at how we do that later.)
+
 ---
+
+</p></details>
 
 
 
@@ -1089,7 +1100,7 @@ Where you deliberately do not want a default value it's far better to fail at th
 <details><summary><b>Setting a default using @ConfigProperty</b></summary>
 <p>
 
-In some situations the `@ConfigProperty` annotation is intended to provide a mechanism to override a reasonable in the code. That default can be specified in a developer provide config file, but in some cases (for example the size of a buffer) you might reasonably want to have a guaranteed value that is always there as it's very unlikely to need to be overridden.
+In some situations the `@ConfigProperty` annotation is intended to provide a mechanism to override a reasonable default specified in the code. That default can be specified in a developer provide config file, but in some cases (for example the size of a buffer) you might reasonably want to have a guaranteed value that is always there as it's very unlikely to need to be overridden.
 
 To allow this the  `@ConfigProperty` annotation supports an additional option called defaultValue, for example `@ConfigProperty(name = "app.minimumchange", defaultValue = "4")` The value is provided as a string, but the runtime will try and convert the string to whatever the actual object type is.
 
@@ -1103,32 +1114,83 @@ To allow this the  `@ConfigProperty` annotation supports an additional option ca
 - Open the file **Main.java** in the *src/main/java* folder
 - Locate the **buildConfig** method at the end of the file
 - Add the **conf/storefront-config.yaml** source as the ***first element*** in the list of property sources to scan.
-  -  `ConfigSources.file("conf/storefront-config.yaml").optional());`
+  -  `configSourcesToScan.add(ConfigSources.file("conf/storefront-config.yaml").optional().build());`
 
 Result should look like : 
 
 ```
 	private static Config buildConfig() {
-		// Build up a list of config sources, as we will have 4 in the end we need to do
-		// it as a list as the source method only supports up to 3 args before requiring
-		// a list
-		List<Supplier<ConfigSource>> configSources = new LinkedList<>();
-		configSources.add(
-				ConfigSources.file("conf/storefront-config.yaml").optional());
-		configSources.add(ConfigSources.file("confsecure/storefront-security.yaml"));
-		configSources.add(ConfigSources.classpath("META-INF/microprofile-config.properties"));
-	
-		// create a config builder using these sources.
-		return Config.builder().sources(configSources).build();
+		// Build up a list of config sources, as we will have 4 in the end, we need to
+		// create a list of built config sources. if we were only creating 3 or less we
+		// could use them directly in the Config.builder.sources(source1, sources2)
+		// mechanism, but for reasons unclear sources does not use varargs
+		//
+		// Note that the ConfigSources.{sourcetype} methods produce a builder, so we
+		// need to
+		// build it before we can add it to the list. again if there were three or less
+		// we could pass the ConfigSource builder directly into the sources method of
+		// the
+		// config builder.
+		List<Supplier<? extends ConfigSource>> configSourcesToScan = new ArrayList<>(5);
+		configSourcesToScan.add(ConfigSources.file("conf/storefront-config.yaml").optional().build());
+		configSourcesToScan.add(ConfigSources.file("confsecure/storefront-security.yaml").build());
+		configSourcesToScan.add(ConfigSources.classpath("META-INF/microprofile-config.properties").build());
+		return Config.builder().sources(configSourcesToScan).build();
 	}
 ```
 
 ---
 
-<details><summary><b>Precedence of configuration values</b></summary>
+
+
+Note the `conf/storefront-config.yaml` config source is optional, if the file is not there no error, it's just skipped. if the configuration file is non optional (it **must** be there) leaving the .optional() out will generate an exception at start up. That may be harsh, but it's far better to know immediately there's a problem than to only find out a while later when your program seems to be using values you didn't expect !
+
+
+
+<details><summary><b>Other types configuration sources</b></summary>
 <p>
 
-Note it is optional, if the file is not there no error, it's just skipped. if the configuration file is non optional (it **must** be there) leaving the .optional() out will generate an exception at start up. That may be harsh, but it's far better to know immediately there's a problem than to only find out a while later when your program seems to be using values you didn't expect !
+Helidon allows you to bring in configuration from a file in the class path (in the resources part of the class path, but other sources are available as well :
+
+- A file in the local file system, this can be in several formats (a list is provided later)
+
+- A Java system property defined with -D for the Java command e.g. -Dapp.minimumchange=4 Note this is the JSON naming structure for the property here, and matches the name used in the code.
+
+- An environment variable with the same name as the property, the environment variable name is actually modified based on the property name, so app.minimumchange is checked against an environment variable APP_MINIMUMCHANGE (So converted to upper case and `.` replaced with `_` This is done to meet the rules of the various operating system shell names for environment variables.
+
+- A directory, the names of files in the directory are matched against the desired configuration property name, then if a match is found the contents of the file is used as the configuration property value, useful for very large properties (e.g. an html template file !)
+
+- A URL, it's retrieved then the contents treated as if they were a file
+
+You can even if you want have a meta configuration file that defines the actual configuration sources to use.
+
+Finally you can if you want use code to modify the condifguration dynamically.
+
+For more details on exactly how user defined sources (files, classpath, directories, and URL's) work see the [Helidon advanced configuration documentation](https://helidon.io/docs/latest/#/mp/guides/03_config#config/06_advanced-configuration.adoc)
+
+
+---
+
+</p></details>
+
+<details><summary><b>Precedence of configuration sources</b></summary>
+<p>
+
+The configuration code scans a number of locations to locate the value of any given configuration property. The first matching name it finds will return the associated value.
+
+The order is :
+
+- 1. Any Java system property (defined with -D for the Java command, so -Dapp.minimumchange=4) Note this is the JSON naming structure for the property here, and matches the name used in the code.
+
+- 2. Any environment variable with the same name as the property, the environment variable name is actually modified based on the property name, so app.minimumchange is checked against an environment variable APP_MINIMUMCHANGE (So converted to upper case and `.` replaced with `_` This is done to meet the rules of the various operating system shell names for environment variables.
+
+- 3. Any sources defined as in the class path **or** files, **or** directories, **or** URL's (**in the order they were defined**)
+
+Note that if you want to your code can expressly disable the system properties and environment based properties
+
+---
+
+</p></details>
 
 We'll see later in the Kubernetes labs why we're using configuration files in the conf and confsecure directories, but it does demonstrate that you don't need to have all of your config in the same place
 
@@ -1144,11 +1206,6 @@ It has two active properties, the minimumchange of 4 here will override the defa
 
 Configuration properties are stored as basic strings and Helidon will convert them automatically for numbers, booleans and the other basic Java types. If you need to have a configuration property converted into a different type (say an object representing an IP address) then you can create a converter that is given the String from the configuration properties and returns the new object type. This way you can place any type you have (or can write) a converted for as a property.
 
-</p>
-
-</details>
-
----
 
 - **Save** the changes to the files, **stop** and **restart** the program. 
 - Let's check that the minimum change value is now 4:
@@ -1163,8 +1220,21 @@ content-length: 1
 
 4
 ```
+<details><summary><b>What formats can the config parser process ?</b></summary>
+<p>
 
+The example the `conf/storefront-config.yaml` is in YAML format, but the onfiguration system can process other formats based on the files suffix
 
+ - JSON (.json)
+ - YAML (.yaml)
+ - Java Properties (.properties)
+ - HOCON (.conf)
+ 
+There is also a feature introduced in Helidon 2.0 that allows you to use program code to manipulate the configuration directly, including creating your own configuration tools (for example you could write a configuration module that read the properties from a database table.)
+
+---
+
+</p></details>
 
 ### Monitoring the configuration for changes
 <details><summary><b>How it works</b></summary>
@@ -1178,31 +1248,46 @@ Now as well as being optional it's also got a polling strategy. In this case the
 
 When allowing for changing the configuration consideration needs to be given to when the data is actually extracted from the configuration. If you look at the StatusResource class you'll see that it's RequestScoped. This means that a new instance is created per request, and the properties that are @Injected reflect the value of those properties at the time the instance was created. If it had been application scoped like the MinimumChange class this would have been true as well, but as application scoped means there is only one per application we would have got the value when it was created, and no updates when the configuration changed (which is actually the right behavior in that case, so all is fine :-)
 
+---
+
 </p>
 
 </details>
 
----
-
+Let's see how we can update the configuration when the file changes.
 
 
 - Open the Main.java file
 - Update the configuration for the storefront-config config file as follows:
-  -  `ConfigSources.file("conf/storefront-config.yaml").pollingStrategy(PollingStrategies::watch).optional());`
 
 ```java
-	private static Config buildConfig() {
-		// Build up a list of config sources, as we will have 4 in the end we need to do
-		// it as a list as the source method only supports up to 3 args before requiring
-		// a list
-		List<Supplier<ConfigSource>> configSources = new LinkedList<>();
-		configSources.add(
-				ConfigSources.file("conf/storefront-config.yaml").pollingStrategy(PollingStrategies::watch).optional());
-		configSources.add(ConfigSources.file("confsecure/storefront-security.yaml"));
-		configSources.add(ConfigSources.classpath("META-INF/microprofile-config.properties"));
-	
-		// create a config builder using these sources.
-		return Config.builder().sources(configSources).build();
+  configSourcesToScan.add(ConfigSources.file("conf/storefront-config.yaml")
+            .pollingStrategy(PollingStrategies.regular(Duration.ofSeconds(5))).optional().build());
+```
+
+Note here that we are specifying a check with a Duration of 5 seconds. That's great for a lab, but in reality you'd want to chose an interval that reflects the overhead of checking for a change vs the implications of not picking the change up immediately, and I suspect in most cases that would possibly be 5 mins rather than 5 seconds. 
+
+The resulting method will look like this
+
+```java
+private static Config buildConfig() {
+		// Build up a list of config sources, as we will have 4 in the end, we need to
+		// create a list of built config sources. if we were only creating 3 or less we
+		// could use them directly in the Config.builder.sources(source1, sources2)
+		// mechanism, but for reasons unclear sources does not use varargs
+		//
+		// Note that the ConfigSources.{sourcetype} methods produce a builder, so we
+		// need to
+		// build it before we can add it to the list. again if there were three or less
+		// we could pass the ConfigSource builder directly into the sources method of
+		// the
+		// config builder.
+		List<Supplier<? extends ConfigSource>> configSourcesToScan = new ArrayList<>(5);
+		configSourcesToScan.add(ConfigSources.file("conf/storefront-config.yaml")
+				.pollingStrategy(PollingStrategies.regular(Duration.ofSeconds(5))).optional().build());
+		configSourcesToScan.add(ConfigSources.file("confsecure/storefront-security.yaml").build());
+		configSourcesToScan.add(ConfigSources.classpath("META-INF/microprofile-config.properties").build());
+		return Config.builder().sources(configSourcesToScan).build();
 	}
 ```
 
@@ -1248,7 +1333,7 @@ content-length: 51
 
 Note that the name is now what you changed it to ("Tims Shop" in this case)
 
-(It may take a short while for the modified file to be recognized and loaded, Helidon checks for config modifications in the background, it seems in my testing to recognize changes within 30 seconds, but usually it's faster)
+(It may take a short while for the modified file to be recognized and loaded, Helidon checks for config modifications in the background, this us the 5 second duration we set earlier with the pollingStrategy)
 
 
 <details><summary><b>Injecting values into an objects fields using @ConfigProperty</b></summary>
@@ -1262,7 +1347,7 @@ We've seen the use of `@ConfigProperty` with constructors (it also works the sam
 	private String serviceName ;
 ```
 
-This is done **after** the classes constructor has been run, so if the constructor does set the field then the `@ConfigProperty` will override that. This also means that you cannot refer to that value in the constructor,
+The value is injected **after** the classes constructor has been run, so if the constructor does set the field then the `@ConfigProperty` will override that. This also means that you cannot refer to that value in the constructor,
 
 ---
 
@@ -1292,22 +1377,28 @@ You will see that it defines two network ports, the primary one on port 8080 and
 
 -  Open the file **Main.java**
 - Include the conf/storefront-network.yaml file into the config properties
-  -  `configSources.add(ConfigSources.file("conf/storefront-network.yaml").optional());`
+  -  `configSourcesToScan.add(ConfigSources.file("conf/storefront-network.yaml").optional().build());`
 
 ```
 	private static Config buildConfig() {
-		// Build up a list of config sources, as we will have 4 in the end we need to do
-		// it as a list as the source method only supports up to 3 args before requiring
-		// a list
-		List<Supplier<ConfigSource>> configSources = new LinkedList<>();
-		configSources.add(
-				ConfigSources.file("conf/storefront-config.yaml").pollingStrategy(PollingStrategies::watch).optional());
-		configSources.add(ConfigSources.file("conf/storefront-network.yaml").optional());
-		configSources.add(ConfigSources.file("confsecure/storefront-security.yaml"));
-		configSources.add(ConfigSources.classpath("META-INF/microprofile-config.properties"));
-	
-		// create a config builder using these sources.
-		return Config.builder().sources(configSources).build();
+		// Build up a list of config sources, as we will have 4 in the end, we need to
+		// create a list of built config sources. if we were only creating 3 or less we
+		// could use them directly in the Config.builder.sources(source1, sources2)
+		// mechanism, but for reasons unclear sources does not use varargs
+		//
+		// Note that the ConfigSources.{sourcetype} methods produce a builder, so we
+		// need to
+		// build it before we can add it to the list. again if there were three or less
+		// we could pass the ConfigSource builder directly into the sources method of
+		// the
+		// config builder.
+		List<Supplier<? extends ConfigSource>> configSourcesToScan = new ArrayList<>(5);
+		configSourcesToScan.add(ConfigSources.file("conf/storefront-config.yaml")
+				.pollingStrategy(PollingStrategies.regular(Duration.ofSeconds(5))).optional().build());
+		configSourcesToScan.add(ConfigSources.file("conf/storefront-network.yaml").optional().build());
+		configSourcesToScan.add(ConfigSources.file("confsecure/storefront-security.yaml").build());
+		configSourcesToScan.add(ConfigSources.classpath("META-INF/microprofile-config.properties").build());
+		return Config.builder().sources(configSourcesToScan).build();
 	}
 ```
 

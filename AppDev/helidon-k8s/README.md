@@ -29,7 +29,7 @@ For reference, this is the architecture you'll be building (if you do all of the
 
 This is a rather long lab, therefore we used a few layout tricks to make the reading of this tutorial more intuitive : 
 
-- If you see a "Bullet" sign, this means ***you*** need to perform some sort of **action**.  This can be 
+- If you see a "Bullet" sign, this means **you** need to perform some sort of **action**.  This can be 
   - Opening a window and navigating to some point in a file system
   - Executing some command on the command line of a terminal window :
     -  For example : `ls -al`
@@ -54,7 +54,7 @@ These labs were designed in part to be delivered in a classroom environment wher
 
 To support those who are doing the labs in a self-guided mode we have created an introduction video to the entire labs, and short videos for each lab section. If you are doing the labs with an instructor you don't need to review these, but for self guided students we **strongly** recommend that you review the videos.
 
-Each video is in a expandable section, see the one below. If you are a self guided student open it and click on the video image to be taken to the video streaming web site where you can play it. Once you've finished just click the back button to return to these instructions.
+Each video is in a expandable section, see the one below. If you are a self guided student (you are **not** part of an instructor led lab) expand it and click on the video image to be taken to the video streaming web site where you can play it. Once you've finished just click the back button to return to these instructions.
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 <p>
