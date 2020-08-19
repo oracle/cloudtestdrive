@@ -21,7 +21,7 @@ In this workshop you'll learn how to provision an ATP instance and create an APE
 - Click on **[Lab 1: Create an APEX Workspace](?lab=lab-1-create-apex-workspace)** to launch the first lab.
 
 ## Acknowledgements
-* **Author** - Juan Cabrera Eisman, Senior Technology Solution Engineer, Oracle Digital and Jeroen Kloosterman, Technology Product Strategy Manager
+* **Author** - Juan Cabrera Eisman, Senior Technology Solution Engineer, Oracle Digital and Jeroen Kloosterman, Technology Product Strategy Manager, Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center
 * **Last Updated By/Date** - Tom McGinn, Database Innovations Architect, Database Product Management, July 2020
 
 See an issue?  Please open up a request [here](https://github.com/oracle/learning-library/issues).   Please include the workshop name and lab in your request.
