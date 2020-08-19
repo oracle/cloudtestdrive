@@ -1062,21 +1062,25 @@ content-length: 1
 <details><summary><b>Where does that value come from?</b></summary>
 <p>
 
-Helidon by default looks for a file called `META-INF/microprofile-config.properties` in it's classpath. You can find this in Eclipse by opening the src/main/resources folder.
+Helidon by default looks for properties in the Java system properties (-D on the java command) then environment variables, then a resource called `META-INF/microprofile-config.properties` in it's classpath. You can override this, in which case it will look in the Java system properties, then environment variables, then the locations you specify in local files and the class path. Note that if you do specify locations then the `META-INF/microprofile-config.properties` is not included automatically.
 
-By convention the `microprofile-config.properties` is the place where you put default values that you want your program to use so you can guarentee that a property has at least one value set (although as we will see later there are other mechanisms to do this.) Amongst other content has a line 
+Here we will look at using config information in  `META-INF/microprofile-config.properties` 
+
+By convention the `microprofile-config.properties` is the place where you put default values that you want your program to use so you can guarantee that a property has at least one value set (although as we will see later there are other mechanisms to do this.) This is because `META-INF/microprofile-config.properties` is a classpath resource, so it's packaged up in your jar file, and will therefore be delivered along with your code. 
+
+You would use default property values for things that probably need to have a value, and there is a sensible default value that can be chosen, but in some situation would change. For example the minimum size of a password might have a default value (say 8 characters), but in some situations your users may want to override it (say requiring a minimum password of 12 characters.) There are of course some values that should **not** have a default value, for example a database password should be set for each deployment, the program should error immediately without a deployment specific DB password (rather than some random error part way through processing) and absolutely should not be packaged up where anyone can see it.
+
+Open the `META-INF/microprofile-config.properties` in Eclipse, this is in the src/main/resources folder.
+
+Amongst other content it has a line `microprofile-config.properties`
 
 ```
 app.minimumchange=3
 ```
 
-When packaging up the code into a jar file, docker container etc. most packaging tools will include the file as part of the jar, so you know your program will have default values.
-
 That's great of course, especially as we need those defaults (if they are not specified then your program won't be able to start and you'll get missing property exceptions) but how do we change that minimum value if we want to use a different value ?
 
-Well Helidon has a quite powerful properties inheritance model based on different levels overriding any properties of the same name that are at lower levels. The priority order is Java system properties (e.g. set with -D to the Java run command) then Operating System environment variables and then configuration files in the order they are specified.
-
-Let's go an add a new config file to the list !
+Well Helidon has a quite powerful properties inheritance model based on different levels overriding any properties of the same name that are at lower levels. The priority order is Java system properties (e.g. set with -D to the Java run command) then Operating System environment variables and then configuration files in the order they are specified. The Helidon config system will return the first value found based on that order.
 
 ---
 
@@ -1100,7 +1104,7 @@ Where you deliberately do not want a default value it's far better to fail at th
 <details><summary><b>Setting a default using @ConfigProperty</b></summary>
 <p>
 
-In some situations the `@ConfigProperty` annotation is intended to provide a mechanism to override a reasonable default specified in the code. That default can be specified in a developer provide config file, but in some cases (for example the size of a buffer) you might reasonably want to have a guaranteed value that is always there as it's very unlikely to need to be overridden.
+In some situations the `@ConfigProperty` annotation is intended to provide a mechanism to override a reasonable default specified in the code. That default can be specified in a developer provided config file, but in some cases (for example the size of a buffer) you might reasonably want to have a guaranteed value that is always there and could only be removed by code changes (presumabaly by a knowlegable person !)
 
 To allow this the  `@ConfigProperty` annotation supports an additional option called defaultValue, for example `@ConfigProperty(name = "app.minimumchange", defaultValue = "4")` The value is provided as a string, but the runtime will try and convert the string to whatever the actual object type is.
 
@@ -1109,6 +1113,7 @@ To allow this the  `@ConfigProperty` annotation supports an additional option ca
 </p></details>
 
 
+Let's go an add a new config file to the list !
 
 
 - Open the file **Main.java** in the *src/main/java* folder
@@ -1145,7 +1150,24 @@ Result should look like :
 
 Note the `conf/storefront-config.yaml` config source is optional, if the file is not there no error, it's just skipped. if the configuration file is non optional (it **must** be there) leaving the .optional() out will generate an exception at start up. That may be harsh, but it's far better to know immediately there's a problem than to only find out a while later when your program seems to be using values you didn't expect !
 
+Here we are using a file for configuration information, but later when we look at databases we will see how we can use other sources like environment variables or Java system properties. 
 
+
+<details><summary><b>What formats can the config parser process ?</b></summary>
+<p>
+
+The example the `conf/storefront-config.yaml` is in YAML format, but the onfiguration system can process other formats based on the files suffix
+
+ - JSON (.json)
+ - YAML (.yaml)
+ - Java Properties (.properties)
+ - HOCON (.conf)
+ 
+There is also a feature introduced in Helidon 2.0 that allows you to use program code to manipulate the configuration directly, including creating your own configuration tools (for example you could write a configuration module that read the properties from a database table.)
+
+---
+
+</p></details>
 
 <details><summary><b>Other types configuration sources</b></summary>
 <p>
@@ -1192,6 +1214,7 @@ Note that if you want to your code can expressly disable the system properties a
 
 </p></details>
 
+
 We'll see later in the Kubernetes labs why we're using configuration files in the conf and confsecure directories, but it does demonstrate that you don't need to have all of your config in the same place
 
 Look at the conf/storefront-config.yaml file, 
@@ -1220,21 +1243,7 @@ content-length: 1
 
 4
 ```
-<details><summary><b>What formats can the config parser process ?</b></summary>
-<p>
 
-The example the `conf/storefront-config.yaml` is in YAML format, but the onfiguration system can process other formats based on the files suffix
-
- - JSON (.json)
- - YAML (.yaml)
- - Java Properties (.properties)
- - HOCON (.conf)
- 
-There is also a feature introduced in Helidon 2.0 that allows you to use program code to manipulate the configuration directly, including creating your own configuration tools (for example you could write a configuration module that read the properties from a database table.)
-
----
-
-</p></details>
 
 ### Monitoring the configuration for changes
 <details><summary><b>How it works</b></summary>
