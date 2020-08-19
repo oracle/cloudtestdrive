@@ -176,18 +176,13 @@ The Java Persistence system at runtime looks for these annotations and will auto
 
 The entity manager represents the connection to the JPA system, it can be used to locate existing object and create new ones (see the StockResource.createStockLevel method) It can merge updates to existing data (see the StockResource.adjustStockLevel method) and delete objects in the database (see the StockResource.deleteStockItem method.)
 
-For this lab we've got a little bit of logic around those entity manager functions to act as s starting point to let us provide REST CRUD APIs.
+For this lab we've got a little bit of logic around those entity manager functions to act as a starting point to let us provide REST CRUD APIs.
 
 It is important to note that each item retrieved from or saved to the database using the entity manager is almost certainly a different instance of the object. Even if you save an object then look at the returned object that has "just been saved" ! So retrieving the same object twice is two separate objects, which contain the same data, not two references to the same object. This means that you need to think carefully if you're going to implement comparisons or equality (hence the benefits of Lombok generating this type of code automatically for us)
 
-**Configuring the database**
-Initially the database is setup to use the JPA / JTA (transaction system) to load in the configuration. The database settings are defined in the confsecure/stockmanager-database.yaml file and in the src/main/resources/META-INF/persistence.xml file. The latter is automatically read by the JPA and the config is processed using the Helidon configuration system and handed to the Java Persistence layers.
-
-The split between the files is more one of the stockmanager-database.yaml file contains things that are specific to a database instance, e.g. usernames, passwords, JDBC Urls. Wheras the persietence.xml file defines stuff that's not instance specific but is project specific, for example which classes are persisted.
+---
 
 </p></details>
-
----
 
 
 
@@ -217,6 +212,84 @@ Helidon does sanity checks here, it the itemCount wasn't a String version of an 
 Here (to make it clear what's happening) I've used the same name for the path and method param, but that's not required.
 
 Other possible sources for the params are @QueryParam and @FormsParam. Which one you chose will depend on what the URL you are expecting (or want) to get.
+
+
+### Configuring the database
+
+Helidon CDI configures the JPA / JTA (transaction system) for us and creates the Entity manager (more on this in a moment.) The JPA / JTA uses the classpath resource META-INF/persistence.xml to define what classes will be persisted, however we don't want to encode things like the database access details in something that's part of the jar file distribution, somewhat of a security risk !
+
+Normally you'd include the database settings in an external configuration file, but here I want to show another aspect of the Helidon configuration system, and we'll use the Java system properties to hold them (we could equally have used the environment variables, and in the Kubernetes lab we will do just that, with no code changes to handle that switch.)
+
+If you are using a database provided by an instructor then they will give you the values for the database connection, or may have already set this up in your virtual machine. If you setup your own database then you will have specified a username and password (if you used our example that will be a username of `HelidonLabs` and a password of `H3lid0n_Labs`) have downloaded the wallet file from which you will have got the connection name, for example `tg_high` **yours will be different unless your database is called `tg` !
+
+We are now going to configure the Eclipse run configuration to add the database connection properties every time the java command is called to run our Main class.
+
+- In the Eclipse navigator window on (on the left) select the stockmanager main class
+
+![](images/eclipse-select-stockmanager-main.png)
+
+- Now click the right mouse button and in the resulting menu navigate to `Run As`, then `Run configurations`
+
+![](images/eclipse-select-run-configurations.png)
+
+The run configurations popup appears
+
+- In the left side of the Run Configurations popup select `Java Applications`
+
+![](images/eclipse-run-configuration-select-java-application.png)
+
+- Click the new configuration button, this looks like a blank page at the top of the left hand list
+
+![](images/eclipse-run-configuration-new-config.png)
+
+The Run configurations popup will create and display a new configuration
+
+![](images/eclipse-run-configurations-new-config-initial.png)
+
+Note that in this case it is named `Main (2)` but that may vary
+
+- Click the name `Main (2)` in this case (but yours may vary) and name this configuration `stockmanager`
+
+![](images/eclipse-run-configurations-new-config-named.png)
+
+- Now click on the `args` tab (this is just below the name)
+
+The Run configurations popup will now switch to the args tab
+
+![](images/eclipse-run-configurations-new-config-args.png)
+
+- Copy the text below into a notepad or ASCII text editor you will need to make some changes to it before you use it. (Do **not** use a word processor like Microsoft Word or anything that makes the test "pretty" as they replaces the `-` characters automatically with a longer version - and that won't work) 
+
+Be careful not to add any newlines or extra spaces, tabs etc.
+
+```
+-Djavax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.url=jdbc:oracle:thin:@<database connection name>?TNS_ADMIN=./Wallet_ATP -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.user=HelidonLabs -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.password=H3lid0n_Labs -Dhibernate.dialect=org.hibernate.dialect.Oracle10gDialect -Dhibernate.hbm2ddl.auto=update
+```
+
+- In the test editor replace `<database connection name>` with the name of your database connection, in my case that's `tg_high`, **yours will be different** 
+
+- Make sure you replace the entire thing including `<` and `>`
+
+- If you created a database and used different names for the username and password than we suggested (or have been told by an instructor that there are different user names or passwords) you will need to replace those here as well.
+
+As an example for **my** database it looks like this, **but yours will vary**
+
+```
+-Djavax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.url=jdbc:oracle:thin:@tg_high?TNS_ADMIN=./Wallet_ATP -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.user=HelidonLabs -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.password=H3lid0n_Labs -Dhibernate.dialect=org.hibernate.dialect.Oracle10gDialect -Dhibernate.hbm2ddl.auto=update
+```
+
+- Copy the updated text
+
+- In the `VM Arguments` file of the Run configurations popup paste the **updated** text
+
+![](images/eclipse-run-configurations-new-config-args-with-vm.png)
+
+- Click the `Apply` button to save the changes
+
+- Click the `Close` button to exit the Run configurations popup.
+ 
+In case you wanted to see how to use the a config file for the database settings there is an example in example-config-data/stockmanager-database.yaml file. This isn't actually an imported part of the config files, but it shows you how it could be done using a config file.
+
 
 ### Getting an entity manager
 JPA requires an entity manager to do the work of interacting with the database for us. Historically however that would require code like the following which is in the StockResource constructor.
@@ -248,19 +321,27 @@ Also why write code when we don't have to ? With Helidon we have the context and
 	}
 ```
 - Scroll up to the **top** of the file, just below the class definition, and locate where the **EntityManager** is defined and add an annotation :
-  - `@PersistenceContext(unitName = "HelidonATPJTA")`
+  - `@PersistenceContext(unitName = "HelidonJTA")`
 
 ```
 public class StockResource {
-	@PersistenceContext(unitName = "HelidonATPJTA")
+	@PersistenceContext(unitName = "HelidonJTA")
 	private EntityManager entityManager; 
 ```
 
-Note that the name of the persistence context is defined as a hard coded String, and there is no mechanism for it to be injected via a config property. However, this is not as restrictive as it seems as the name just refers to entries in the persistence.xml file, so if we do want to change the database details we can achieve that by modifying the config, and that can be done without source code modifications.
+Note that the name of the persistence context is defined as a hard coded String, and there is no mechanism for it to be injected via a config property. However, this is not as restrictive as it seems, the name just refers to entries in the persistence.xml file, which itself uses configuration data from the Helidon configuration system, so if we do want to change the database details we can achieve that by modifying the config, and that can be done without source code modifications.
 
-Using Helidon to create our PersistenceContext will also ensure that the entity manager is correctly shutdown when the program exits so we won't have any resources hanging around in the database.
+### Specifying the database connection details
 
-- Run the **Main** class of the project (right-click on **Main.java**, *Run As*, then *Java Application*. 
+We need to provide the details of the database connection. Helidon has many ways to do this as you've seen earlier, and so show a different way than using a config file we're going to define them as part of the Java system properties. The Java system properties are the highest priority of configuration items (environment variables are the next level, then files, directories and URL's) These are defined on the java command line using the syntax `-Djavax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource` As we're using Elcipse to start our microservcies we need to configure the Eclipse to pass the properties along for us.
+
+If you are using a database provided by an instructor then they will give you the values for the database connection, or may have already set this up in your virtual machine. If you setup your own database then you will have specified a username and password (if you used our example that will be a username of `HelidonLabs` and a password of `H3lid0n_Labs`) have downloaded the wallet file from which you will have got the connection name, for example `tg_high` **yours will be different unless your database is called `tg` !
+
+
+
+Using Helidon to create our PersistenceContext will also ensure that the entity manager is correctly shutdown when the program exits so we won't have any unused resources hanging around in the database.
+
+- Run the **Main** class of the project (right-click on **Main.java**, *Run As*, then *Java Application*.)
 
 ---
 
@@ -294,6 +375,11 @@ The result should show the application listening on http://localhost:8081
 2020.01.05 18:30:33 INFO io.helidon.microprofile.server.ServerImpl Thread[nioEventLoopGroup-2-1,10,main]: Server started on http://localhost:8081 (and all other host addresses) in 69 milliseconds.
 2020.01.05 18:30:33 INFO com.oracle.labs.helidon.stockmanager.Main Thread[main,5,main]: http://localhost:8081
 ```
+
+
+- Use curl to see what's there (Expect an error)
+  -  `curl -i -X GET -u jack:password http://localhost:8081/stocklevel`
+
 
 <details><summary><b>What with the SQL in the output ?</b></summary>
 <p>

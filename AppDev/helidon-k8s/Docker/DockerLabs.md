@@ -82,23 +82,33 @@ Use the Maven package target (mvn package) to trigger jib to create the docker c
 ```
 [MVNVM] Using maven: 3.5.2
 [INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Detecting the operating system and CPU architecture
+[INFO] ------------------------------------------------------------------------
+[INFO] os.detected.name: osx
+[INFO] os.detected.arch: x86_64
+[INFO] os.detected.version: 10.15
+[INFO] os.detected.version.major: 10
+[INFO] os.detected.version.minor: 15
+[INFO] os.detected.classifier: osx-x86_64
 [INFO] 
 [INFO] ------------------------------------------------------------------------
-[INFO] Building storefront 0.0.1
+[INFO] Building storefront 2.0.1.0
 [INFO] ------------------------------------------------------------------------
 [INFO] 
-[INFO] --- maven-resources-plugin:3.0.2:resources (default-resources) @ storefront ---
+[INFO] --- maven-resources-plugin:2.7:resources (default-resources) @ storefront ---
 [INFO] Using 'UTF-8' encoding to copy filtered resources.
 [INFO] Copying 3 resources
+
+...
+...
 [INFO] 
-...
-...
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time: 41.430 s
-[INFO] Finished at: 2019-12-29T15:30:06Z
-[INFO] Final Memory: 39M/176M
+[INFO] Total time: 14.595 s
+[INFO] Finished at: 2020-08-17T19:02:38+01:00
+[INFO] Final Memory: 41M/200M
 [INFO] ------------------------------------------------------------------------
 ```
 
@@ -247,6 +257,53 @@ root@bc7d4ae0666b:/# ls Wallet_ATP
 cwallet.sso  ewallet.p12  keystore.jks	ojdbc.properties  sqlnet.ora  tnsnames.ora  truststore.jks
 ```
 - Exit the container: `exit`
+
+### What about the database configuration ?
+
+In the Helidon labs we specified the database configuration using Java system properties, e.g. entries like `-Djavax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource`
+
+We did that rather than a config file to show how the different levels of the Helidon config system, specifically that config properties could be automatically used from the Java system properties. Now we're going to show you a slightly different approach, we're going to bring the database connection details in via an the system environment variables **without changing the code** This will work because Helidon first looks at the Java system properties, then it looks at the OS environment variables, so it will automatically pickup the values from the new location (If we used both then then the Java system properties would override the environment variables) Basically we're trying to show you just how flexible the Helidon configuration system is !
+
+If you are using a database provided by an instructor then they will give you the values for the database connection, or may have already set this up in your virtual machine. If you setup your own database then you will have specified a username and password (if you used our example that will be a username of `HelidonLabs` and a password of `H3lid0n_Labs`) have downloaded the wallet file from which you will have got the connection name, for example `tg_high` **yours will be different unless your database is called `tg` !
+
+
+Docker provides several ways to do this, for example you can specify each individual variable on the command line using the --env flag, another way is to use the --env-file flag, this allows you to specify a file full of key/value pairs (like a Java properties file) and if you have multiple variables to set, or the variables or their names contain characters like `.` that have special meaning to the command shell this is the easiest way to do it. 
+
+For this lab the scripts that will run the stockmanager use the --env-file approach, so we need to make sure that the file reflects the database connection details.
+
+- Switch to **helidon-labs-stockmanager**
+
+- Edit the `database-env` file 
+
+It will look like the following
+
+```
+javax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource 
+javax.sql.DataSource.stockmanagerDataSource.dataSource.url=jdbc:oracle:thin:@<database connection name>?TNS_ADMIN=./Wallet_ATP 
+javax.sql.DataSource.stockmanagerDataSource.dataSource.user=HelidonLabs
+javax.sql.DataSource.stockmanagerDataSource.dataSource.password=H3lid0n_Labs
+hibernate.dialect=org.hibernate.dialect.Oracle10gDialect
+hibernate.hbm2ddl.auto=update
+```
+
+- On the line starting `javax.sql.DataSource.stockmanagerDataSource.dataSource.url` you need to replace `<database connection name>` with the name of your high connection, e.g. tg_high **Your** connection name will be different (unless your database is called tg)
+
+- If you created the database user with a different username and password you will need to replace those as well.
+
+- Save the changes 
+
+<details><summary><b>Why not use the Java system properties in the docker entry point ?</b></summary>
+<p>
+
+When you specified the Java system properties you did that using Eclipse, you can of course also do it using the `java` command, e.g. `java -Djavax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource .....`
+
+The problem is that the actual command a docker container runs is hard coded in the docker image, that would mean that your database security credentials would be visible in the image (always a bad thing) also it would mean that to change any of the database credentials (e.g. the password) you would need to create a new docker image.
+
+Of course if we did that it would also mean we couldn't show you how to use environment variables as well !
+
+</p></details>
+
+### Running the services
 
 To save having to copy and paste (or type !) each time there are scripts runStorefrontLocalExternalConfig.sh and runStockmanagerLocalExternalConfig.sh (one in each of the helidon-labs-storefront and helidon-labs-stockmanager directories.)
 

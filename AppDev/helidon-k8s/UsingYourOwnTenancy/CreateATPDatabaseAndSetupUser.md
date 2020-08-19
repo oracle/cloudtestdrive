@@ -43,7 +43,7 @@ Open up the SQLWebDeveloper console
 
 Login if required as admin, using the admin password you set when you setup the database. If you are using a already existing database (not one created for this lab) then you can either create the user (as described below) or you can use an existing user and adjust the Helidon database configuration file.
 
-Copy and paste the below, Note that the username (HelidonLabs) and password (H3lid0n_Labs) below can be changed if you like, **BUT** if you do change them you will also need to change the workspace/helidon-labs-stockmanager/confsecure/stockmanager-database.conf file  or you will be unable to connect to the database
+Copy and paste the below, Note that the username (HelidonLabs) and password (H3lid0n_Labs) below can be changed if you like, **BUT** if you do change them you will also need to change the database connection configurations you use (more on these later) with the any changes to the username or password or you will be unable to connect to the database
 
 CREATE USER HelidonLabs IDENTIFIED BY H3lid0n_Labs;
 GRANT CONNECT TO HelidonLabs;

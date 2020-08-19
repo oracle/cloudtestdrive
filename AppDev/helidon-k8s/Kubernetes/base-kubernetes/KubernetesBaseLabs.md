@@ -112,21 +112,7 @@ We will use the OCI Cloud Shell to download the database wallet file.
 
 - Locate the "high" connection type to your database and take a note of the full name, for example **jleoow_high**
 
-### Point your Application to the database
-
-
-- Edit the database configuration file to specify the database name. This file is `$HOME/helidon-kubernetes/configurations/stockmanagerconf/confsecure/stockmanager-database.yaml`
-  - Locate the javax.sql.DataSource.stockLevelDataSourceOraATPJTA.datasource.url line. This will look something like 
-    ```
-    url: jdbc:oracle:thin:@<connection name>?TNS_ADMIN=./Wallet_ATP
-    ```
-  - update the name of the connection (shown here as `<connection name>`) and replace `<connection name>` with the name from the tnsnames.ora file, for example `tg_high`.  In this particular case the resulting line will look like  
-    ```
-    url: jdbc:oracle:thin:@tg_high?TNS_ADMIN=./Wallet_ATP
-    ```
-(Of course you will put your connection name in it, not mine)  
-
-- Save the changes
+- Be sure to write down the database connection name you have just found, you will need it later
 
 ### Configure the Helm repository
 

@@ -93,13 +93,4 @@ tg_tpurgent = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tc
 
 - Locate the "high" connection and take a note of the name, in the example above this is tg_high **Your file will contain different names**
 
-- Edit the database configuration file to specify the database name. This file is `$HOME/workspace/helidon-labs-stockmanager/confsecure/stockmanager-database.yaml`
-  - Locate the javax.sql.DataSource.stockLevelDataSourceOraATPJTA.datasource.url line. This will look something like 
-    ```
-    url: jdbc:oracle:thin:@<connection name>?TNS_ADMIN=./Wallet_ATP
-    ```
-  - update the name of the connection (here it's shown as `<connection name>`) and replace it with the name from the tnsnames.ora file, in this case `tg_high` In this particular case the resulting line will look like. ** Yours will need to reflect your connection name, not tg_high**
-    ```
-    url: jdbc:oracle:thin:@tg_high?TNS_ADMIN=./Wallet_ATP
-    ```
-- Save the changes
+- Be sure to write down the database connection name you have just found, you will need it later
