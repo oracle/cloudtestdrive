@@ -118,6 +118,15 @@ Helidon will now REST enable the class, but it needs to know what specific metho
 
 It's pretty simple, when called it does some logging, then gets a Collection of ItemDetails and returns it, doing a bit of Exception handling as it does so. Hopefully this type of thing will be very familiar to you.
 
+<details><summary><b>Where is the logging configuration loaded ?</b></summary>
+<p>
+
+In a capability introduced in Helidon 2.0 the Helidon framework  will automatically locate a logging.propoerties if one exists in the classpath (or current working directory) and will use that to configure the logging for us, so we don't need to explicitly configure logging. Makes things a little easier.
+
+---
+
+</p></details>
+
 - Add the following annotations on the **listAllStock** method:
 
   - ```
@@ -170,8 +179,10 @@ The com.oracle.labs.helidon.storefront.Main class starts the process. We're goin
 
 ```
 	public static void main(final String[] args) throws IOException {
-		setupLogging();
-
+		// Helidon will automatically locate a logging.propoerties if one exists in the
+		// classpath or current working directory and will use that to configure the
+		// logging for us, so we don't need to explicitly configure logging
+		
 		log.info("Starting server");
 		Server server = Server.builder().config(buildConfig()).build().start();
 
@@ -236,7 +247,7 @@ Helidon  does not require you to use a main class, you can if you want actually 
 
 In this case the class is called Main, but that's really just so we can easily identify the class with the `main` method and can specify it in the packaging tools later on. As with any Java program the class with the `main` method could be called anything you want, you just need to know the class name so you can run it, and define it in any runnable .jar files. 
 
-The problem with using CDI to do this however is that you won't have the chance to configure things like logging, or other aspects of the configuration. For a very simple application that's not a problem, but in most cases you will want to setup your own configuration properties and so on, which is why we're using a class with a main method. (we will look at how we do that later.)
+The problem with using CDI to do this however is that you won't have the chance other aspects of the configuration, or override the loging setup process. For a very simple application that's not a problem, but in most cases you will want to setup your own configuration properties and so on, which is why we're using a class with a main method. (we will look at how we do that later.)
 
 ---
 
