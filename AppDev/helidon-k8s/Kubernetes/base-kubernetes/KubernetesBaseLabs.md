@@ -107,10 +107,27 @@ We will use the OCI Cloud Shell to download the database wallet file.
   
 - Look at the contents of the tnsnames.ora file to get the database connection names
   - `cat tnsnames.ora`
-  
+
+```
+jleoow_high = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_high.atp.oraclecloud.com))(security=(ssl_server
+_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
+
+jleoow_low = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_low.atp.oraclecloud.com))(security=(ssl_server_c
+ert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
+
+jleoow_medium = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_medium.atp.oraclecloud.com))(security=(ssl_se
+rver_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
+
+jleoow_tp = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_tp.atp.oraclecloud.com))(security=(ssl_server_cer
+t_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
+
+jleoow_tpurgent = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_tpurgent.atp.oraclecloud.com))(security=(ss
+l_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
+```
+
   You will see a list of the various connection types to your database.
 
-- Locate the "high" connection type to your database and take a note of the full name, for example **jleoow_high**
+- Locate the "high" connection type to your database and take a note of the full name, in the example above that's `jleoow_high` **but yours will differ**
 
 - Be sure to write down the database connection name you have just found, you will need it later
 
@@ -1256,6 +1273,55 @@ There are also more specific secrets used for TLS certificates and pulling docke
 
 ---
 
+#### Configuring the database connection details
+
+In The Helidon labs we provided the database details via Java system properties using the command line. We don't want to do that here as it we would have to place them in the image (making it insecure, and also hard to update) To get around that (and to show the flexibility of the Helidon framework here we will be specifying them using environment variables.
+
+We will of course be using a Kubernetes secret to hold them (they are sensitive) **You** need to update them with the setting for **your** database
+
+- Switch to the **$HOME/helidon-kubernetes/configurations/stockmanagerconf** directory
+
+- **Edit** the file `databaseConnectionSecret.yaml`
+
+- Locate the `url` (in the `stringData` section)
+
+```yaml
+  url: jdbc:oracle:thin:@<database connection name>?TNS_ADMIN=./Wallet_ATP
+```
+
+- Replace `<database connection name>` with the connection nme for **your** database you got from the `tnsnames.ora` file earlier. In my case that was `tg_high`, **but yours will be different**
+
+For **me** tha line looked like this, **YOURS WILL BE DIFFERENT**
+
+```yaml
+  url: jdbc:oracle:thin:@tg_high?TNS_ADMIN=./Wallet_ATP
+```
+
+If you used a different username or password then you will need to update those fields as well.
+
+- Save the changes to the file and exit the editor
+
+We will create the secret using a script later.
+
+<details><summary><b>How do these values get into the container ?</b></summary>
+<p>
+
+In the deployment (we'll see more on this later) the specification defines a section telling Kubernetes what environment variables to create in the pod, and where to get the values from. So for example in this case wherwe we're specifying the JDBC URL for the connection the dep0loyment has an entry of the form
+
+```yaml
+        - name: javax.sql.DataSource.stockmanagerDataSource.dataSource.url
+          valueFrom:
+            secretKeyRef:
+              name: stockmanagerdb
+              key: url
+```
+
+Here we're telling Kubernetes to look in the `stockmanagerdb` secret for a data value named `url` and within the pod create an environment variable named `javax.sql.DataSource.stockmanagerDataSource.dataSource.url` with that value.
+
+</p></details>
+
+#### Configuring the docker image pull secret
+
 To get the docker images you created into Kubernetes we need to pull them from the registry. As we did not place the images in a public repo we need to tell Kubernetes the secrets used to do this. 
 
 The Oracle Cloud Image Registry (OCIR) that we used to hold the images uses tokens rather than a password. You will have got this token when you did your docker login earlier on.
@@ -1264,7 +1330,7 @@ To help you setup the image pull secrets and the others used as configuration vo
 
 **You** need to edit the script to provide the details of the OCIR you used and your identity information
 
-- Make sure you are in the **$HOME/helidon-kubernetes/base-kubernetes** directory
+- Switch to the the **$HOME/helidon-kubernetes/base-kubernetes** directory
 
 - **Edit** the create-secrets.sh script
 
@@ -1515,15 +1581,16 @@ Pods are monitored by services so that a service will direct traffic to pod(s_ t
 
 The stockmanager-deployment.yaml, storefront-deployment.yaml and zipkin-deployment.yaml files contain the deployments. These files are in the helidon-kubernetes folder (***not*** the base-kubernetes folder) The following is the core contents of storefront-deployment.yaml file (actually the file has substantial amounts of additional content that is commented out, but we'll get to that when we look at other parts of the lab later on, If you do look at the file itself for now ignore everything that's commented out with #)
 
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: storefront
 ```
+
 As with most kubenetes config files there is a first section that defines what we are creating (in this case a deployment names storefront) The deployment actually contains elements defining the replica sets the deployment contains, and what the pods will look like. These can all be defined in separate config files if desired, but as they are very closely bound together it's easiest to define them all in a single file.
 
-```
+```yaml
 spec:
   replicas: 1 
   selector:
@@ -1532,7 +1599,7 @@ spec:
 ```
 The `spec:` section defines what we want created. Replicas means how many pods we want creating in the replica set, in this case 1 (we will look at scaling later) the selector match labels specifies that and pods with label app:storefront will be part of the deployment.
 
-```
+```yaml
   template:
     metadata:
       labels:
@@ -1541,7 +1608,7 @@ The `spec:` section defines what we want created. Replicas means how many pods w
 The template section defines what the pods will look like, it starts by specifying that they will all "app:storefront" as a label
 
 
-```
+```yaml
     spec:
       containers:
       - name: storefront
@@ -1554,11 +1621,23 @@ The template section defines what the pods will look like, it starts by specifyi
           containerPort: 9080
 ```
 The spec section in the template is the specification of the pods, it starts out by specifying the details of the pods and the details of the containers that comprise them, in this case the pod names, the location of the image and how to retrieve it. It also defines the ports that will be used giving them names (naming is not required, but it helps to make it clear what's what.)
-
+              
 *** IMPORTANT ***
-These service deployment description files refer to the location in the docker repo that *I* used when setting up the labs. You **are** to a different docker repo, so you'll need to edit the deployment files to reflect this diffrent image location !
+These service deployment description `image` entry refer to the location in the docker repo that *I* used when setting up the labs. You **are** using a different docker repo, so you'll need to edit the deployment files to reflect this diffrent image location !
 
-```       
+If you were looking at the stockmanager deployment you'd see entries like the below that tell Kubernetes to create environment variables **inside** the pods container, in this case it says the value of the variable comes from a secret names stockmanagerdb and named `dataSourceClassName` (there are actually multiple entries in the stockmanager deployment, but we're only showing one here so you can get the idea.
+
+```yaml
+        env:
+        - name: javax.sql.DataSource.stockmanagerDataSource.dataSourceClassName
+          valueFrom:
+            secretKeyRef:
+              name: stockmanagerdb
+              key: dataSourceClassName
+...
+```
+
+```yaml      
         resources:
           limits:
             # Set this to me a quarter CPU for now
@@ -1566,7 +1645,7 @@ These service deployment description files refer to the location in the docker r
 ```
 The resources provides a limit for how much CPU each instance of a pod can utilize, in this case 250 mili CPU's or 1/4 whole CPU (the exact definition of what comprises a CPU will vary between Kubernetes deployments and by provider.)
 
-```         
+```yaml         
         volumeMounts:
         - name: sf-conf-secure-vol
           mountPath: /confsecure
@@ -1581,7 +1660,7 @@ Both are mounted read only as there's no need for the programs to modify them, s
 
 
 
-```
+```yaml
       volumes:
       - name: sf-conf-secure-vol
         secret:
