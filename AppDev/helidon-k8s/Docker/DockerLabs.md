@@ -232,7 +232,7 @@ Let's use docker volumes (the docker --volume flag) to inject the configuration 
 
 Make sure you are in the **helidon-labs-stockmanager** directory
 
-- Run the container with a volumes attached:
+- Run the container with the volumes attached:
 
   - ```
     docker run --tty --interactive --volume `pwd`/Wallet_ATP:/Wallet_ATP --volume `pwd`/conf:/conf --volume `pwd`/confsecure:/confsecure  --rm --entrypoint=/bin/bash stockmanager
@@ -291,6 +291,45 @@ hibernate.hbm2ddl.auto=update
 - If you created the database user with a different username and password you will need to replace those as well.
 
 - Save the changes 
+
+To check that the environment variables are correctly set use the `runBashContainer.sh` script in the `helidon-labs-stockmanager` project. This basically does the docmer run command above, using the environment variables and volumes.
+
+Run the container with a the configuration attached:
+
+  - ```
+    $ bash runBashContainer.sh
+    executing in /Users/tg13456/Development/helidon-kubernetes-labs/helidon-labs-stockmanager
+    zipkin ip 172.17.0.2
+    bash-4.2# 
+    
+    ```
+    
+Once in the container look at the environment (we're going to sort the output to make it easier)
+
+In the container 
+
+  - ```
+    $ printenv | sort
+    hibernate.dialect=org.hibernate.dialect.Oracle10gDialect
+    hibernate.hbm2ddl.auto=update
+    HOME=/root
+    HOSTNAME=cb3784c88b1f
+    JAVA_HOME=/opt/graalvm-ce-java11-20.1.0/
+    javax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource 
+    javax.sql.DataSource.stockmanagerDataSource.dataSource.password=H3lid0n_Labs
+    javax.sql.DataSource.stockmanagerDataSource.dataSource.url=jdbc:oracle:thin:@jleoow_high?TNS_ADMIN=./Wallet_ATP 
+    javax.sql.DataSource.stockmanagerDataSource.dataSource.user=HelidonLabs
+    LANG=en_US.UTF-8
+    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    PWD=/
+    SHLVL=1
+    TERM=xterm
+    _=/usr/bin/printenv
+    ```
+
+You can see the environment variables we have set
+
+- Exit the container: `exit`
 
 <details><summary><b>Why not use the Java system properties in the docker entry point ?</b></summary>
 <p>
