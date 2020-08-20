@@ -317,7 +317,7 @@ In the container
     JAVA_HOME=/opt/graalvm-ce-java11-20.1.0/
     javax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource 
     javax.sql.DataSource.stockmanagerDataSource.dataSource.password=H3lid0n_Labs
-    javax.sql.DataSource.stockmanagerDataSource.dataSource.url=jdbc:oracle:thin:@jleoow_high?TNS_ADMIN=./Wallet_ATP 
+    javax.sql.DataSource.stockmanagerDataSource.dataSource.url=jdbc:oracle:thin:@tg_high?TNS_ADMIN=./Wallet_ATP 
     javax.sql.DataSource.stockmanagerDataSource.dataSource.user=HelidonLabs
     LANG=en_US.UTF-8
     PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
@@ -327,7 +327,7 @@ In the container
     _=/usr/bin/printenv
     ```
 
-You can see the environment variables we have set
+You can see the environment variables we have set (in this case it is of course using `tg_high` for the DB conneciton name in the URL, **yours will be different**
 
 - Exit the container: `exit`
 
