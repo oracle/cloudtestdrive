@@ -323,11 +323,6 @@ We've seen how simple it is to make a existing Java method REST enabled and how 
 		// make sure the change is within the minimum change allowed
 		// :-)
 		if (itemRequest.getRequestedCount() < minimumChange.getMinimumChange()) {
-			// didn't meet the minimum requirement, log the failed request and throw the log
-			// message as an error
-			String problemDetails = "The reservation of " + itemRequest.getRequestedCount() + " items of "
-					+ itemRequest.getRequestedItem() + " fails because it's less than the minimum delta of "
-					+ minimumChange.getMinimumChange();
 .....
 ```
 
@@ -599,18 +594,18 @@ A big application may have multiple sets of services, grouped into resources, so
 Let's look at the reserveStockItem method, you'll see that the code uses a minimumChange to ensure that at least a certain number of items are taken.
 
 ```
-if (itemRequest.getRequestedCount() <= minimumChange.getMinimumChange()) {
+if (itemRequest.getRequestedCount() < minimumChange.getMinimumChange()) {
 			// didn't meet the minimum requirement, log the failed request and throw the log
 			// message as an error
 			String problemDetails = "The reservation of " + itemRequest.getRequestedCount() + " items of "
-					+ itemRequest.getRequestedItem() + " fails because it's <= than the minimum delta of "
+					+ itemRequest.getRequestedItem() + " fails because it's less than the minimum delta of "
 					+ minimumChange.getMinimumChange();
 			log.warning(problemDetails);
 			throw new MinimumChangeException(problemDetails);
 		}
 ```
 
-We can test this by running the service (from now on we're going to assume that you remember to stop the old instance of the program before starting the new one) requesting the reservation of a single item (by default MinimumChange contains a value of 2, so lets see what happens when we request a single Pencil)
+We can test this by running the service (from now on we're going to assume that you remember to stop the old instance of the program before starting the new one) requesting the reservation of a single item (by default MinimumChange contains a value of 3, so lets see what happens when we request two Pencils)
 
 - Run a **curl** command, we **expect an error**
   - `curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":2}' http://localhost:8080/store/reserveStock`
@@ -629,7 +624,7 @@ The code has generated an error, if we look at the logs in the Console tab we'll
 2020.01.05 13:25:31 INFO com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[helidon-1,5,server]: Requesting the reservation of 2 items of Pencil
 2020.01.05 13:25:31 WARNING com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[helidon-1,5,server]: The reservation of 2 items of Pencil fails because it's less than the minimum delta of 2
 2020.01.05 13:25:31 WARNING io.helidon.microprofile.server.ServerImpl.jersey Thread[helidon-1,5,server]: Internal server error
-com.oracle.labs.helidon.storefront.exceptions.MinimumChangeException: The reservation of 2 items of Pencil fails because it's <= than the minimum delta of 2
+com.oracle.labs.helidon.storefront.exceptions.MinimumChangeException: The reservation of 2 items of Pencil fails because it's less than the minimum delta of 3
 	at com.oracle.labs.helidon.storefront.resources.StorefrontResource.reserveStockItem(StorefrontResource.java:153)
 	at com.oracle.labs.helidon.storefront.resources.StorefrontResource$Proxy$_$$_WeldClientProxy.reserveStockItem(Unknown Source)
 ```
@@ -694,13 +689,13 @@ Date: Sun, 5 Jan 2020 13:49:44 GMT
 connection: keep-alive
 content-length: 1
 
-2
+3
 ```
 
-The result is 2, this is the default defined in the MinimumChange class. There is no @Authenticated on the class or the get method, so no need to provide user details.
+The result is 3, this is the default defined in the MinimumChange class. There is no @Authenticated on the class or the get method, so no need to provide user details.
 
 - Now let's change the value - **expect an error**:
-  -  `curl -i -X POST -u jill:password -d "3"  -H "Content-type:application/json" http://localhost:8080/minimumChange`
+  -  `curl -i -X POST -u jill:password -d "4"  -H "Content-type:application/json" http://localhost:8080/minimumChange`
 
 Result:
 
@@ -715,7 +710,7 @@ connection: keep-alive
 Well, that's a new error message, we're forbidden to access the resource, even though we've provided a valid username and password. This is because of the `@RolesAllowed({ "admin" })`  annotation. User Jill is not one of the admins, to access a method with this annotation we need an admin, and that's jack. Let's try again using jack as the user
 
 - Retry the change, using **jack** as user:
-  -  `curl -i -X POST -u jack:password -d "3"  -H "Content-type:application/json" http://localhost:8080/minimumChange`
+  -  `curl -i -X POST -u jack:password -d "4"  -H "Content-type:application/json" http://localhost:8080/minimumChange`
 
 Result:
 
@@ -727,7 +722,7 @@ Date: Sun, 5 Jan 2020 13:58:08 GMT
 connection: keep-alive
 content-length: 1
 
-3
+4
 ```
 
 Success, we've changed it.
@@ -744,12 +739,12 @@ Date: Sun, 5 Jan 2020 14:02:05 GMT
 connection: keep-alive
 content-length: 1
 
-2
+3
 ```
 
-It's still 2 ! How come ?
+It's still 3 ! How come ?
 
-The answer relates to the **scope** of the ConfigurationResource class. We've set it to be `@RequestScoped`, so Helidon creates a new instance for each request, and the new instance creates a new instance of the MinimumChange with the default value of 2. That's a problem, we need to be able to make this change and not have it immediately revert the next time it's accessed !
+The answer relates to the **scope** of the ConfigurationResource class. We've set it to be `@RequestScoped`, so Helidon creates a new instance for each request, and the new instance creates a new instance of the MinimumChange with the default value of 3. That's a problem, we need to be able to make this change and not have it immediately revert the next time it's accessed !
 
 How do we fix this ? Simple, we just change the ConfigurationResource class form being `@RequestScoped` to `@ApplicationScoped` The Helidon framework will now create only a single instance of the ConfigurationResource class and re-use it whenever Helidon needs it.
 
@@ -767,7 +762,7 @@ public class ConfigurationResource {
 
 - Stop the current version of the program running, then re-start it which will use the updated versions of the code.
 
-- Let's just check the current value is 2 as we expect
+- Let's just check the current value is 3 as we expect
   -  `curl -i -X GET http://localhost:8080/minimumChange`
 
 ```
@@ -777,13 +772,13 @@ Date: Sun, 5 Jan 2020 14:11:40 GMT
 connection: keep-alive
 content-length: 1
 
-2
+3
 ```
 
-It is, we get 2 as a result, as expected.
+It is, we get 4 as a result, as expected.
 
 - Now let's make the change again
-  -   `curl -i -X POST -u jack:password -d 3  -H "Content-type:application/json" http://localhost:8080/minimumChange`
+  -   `curl -i -X POST -u jack:password -d 4  -H "Content-type:application/json" http://localhost:8080/minimumChange`
 
 ```
 HTTP/1.1 200 OK
@@ -792,7 +787,7 @@ Date: Sun, 5 Jan 2020 14:11:48 GMT
 connection: keep-alive
 content-length: 1
 
-3
+4
 ```
 
 - And check that the change has held across requests
@@ -805,7 +800,7 @@ Date: Sun, 5 Jan 2020 14:11:52 GMT
 connection: keep-alive
 content-length: 1
 
-3
+4
 ```
 
 Great, it's done what we want and maintained the new value.
@@ -895,7 +890,7 @@ This tells Helidon that when creating an instance of the Configuration resource 
 	  private MinimumChange minimumChange;
 	  ```
 
-As the Helidon framework knows that MinimumChange is ApplicationScoped this means that every tie a new StorefrontResource is created (once per request) the **same** instance of MinimumChange will be used (which is also the instance used in the ConfigurationResource)
+As the Helidon framework knows that MinimumChange is ApplicationScoped this means that every time a new StorefrontResource is created (once per request) the **same** instance of MinimumChange will be used (which is also the instance used in the ConfigurationResource)
 
 - **Save** all of the class files
 - **Stop** any previously running instance of the program 
@@ -916,7 +911,7 @@ As expected this generates a server error which we can also see in the console t
 
 ```
 2020.01.05 14:42:19 INFO com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[helidon-1,5,server]: Requesting the reservation of 2 items of Pencil
-2020.01.05 14:42:19 WARNING com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[helidon-1,5,server]: The reservation of 2 items of Pencil fails because it's <= than the minimum delta of 2
+2020.01.05 14:42:19 WARNING com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[helidon-1,5,server]: The reservation of 2 items of Pencil fails because it's less than the minimum delta of 3
 2020.01.05 14:42:19 WARNING io.helidon.microprofile.server.ServerImpl.jersey Thread[helidon-1,5,server]: Internal server error
 com.oracle.labs.helidon.storefront.exceptions.MinimumChangeException: The reservation of 2 items of Pencil fails because it's less than the minimum delta of 2
 	at com.oracle.labs.helidon.storefront.resources.StorefrontResource.reserveStockItem(StorefrontResource.java:154)
@@ -936,7 +931,7 @@ content-length: 35
 {"itemCount":9,"itemName":"Pencil"}
 ```
 
-And if we check the minimum change it is of course 2
+And if we check the minimum change it is of course 3
 
 -  `curl -i -X GET http://localhost:8080/minimumChange`
 
@@ -947,7 +942,7 @@ Date: Sun, 5 Jan 2020 14:44:54 GMT
 connection: keep-alive
 content-length: 1
 
-2
+3
 ```
 
 Let's use Jacks admin rights to change the minimum change to 1
@@ -1034,7 +1029,7 @@ The result should look like :
 ```
 ...
 	public MinimumChange() {
-		this.minimumChange.set(2);
+		this.minimumChange.set(3);
 	}
 	
 	@Inject
@@ -1055,7 +1050,7 @@ The `@Inject` on  constructor means to use this constructor when creating instan
 
 
 - **Save** this change and **restart** the program
-- Request the value for minimum change,  we'll see that it has a value of 3
+- Request the value for minimum change,  we'll see that it has a value of 2 (which comes from a config property)
   -  `curl -i -X GET http://localhost:8080/minimumChange`
 
 ```
@@ -1065,7 +1060,7 @@ Date: Sun, 5 Jan 2020 15:04:30 GMT
 connection: keep-alive
 content-length: 1
 
-3
+4
 ```
 
 ---
@@ -1086,7 +1081,7 @@ Open the `META-INF/microprofile-config.properties` in Eclipse, this is in the sr
 Amongst other content it has a line `microprofile-config.properties`
 
 ```
-app.minimumchange=3
+app.minimumchange=4
 ```
 
 That's great of course, especially as we need those defaults (if they are not specified then your program won't be able to start and you'll get missing property exceptions) but how do we change that minimum value if we want to use a different value ?
@@ -1233,16 +1228,16 @@ Look at the conf/storefront-config.yaml file,
 ```
 app:
   storename: "My Shop"
-  minimumchange: 4
+  minimumchange: 2
 ```
 
-It has two active properties, the minimumchange of 4 here will override the default of 3 specified in the microprofile-config.properties file, which (because we're using a different constructor) will override the default constructor of MinimumChange setting the value to 2.
+It has two active properties, the minimumchange of 2 here will override the default of 4 specified in the microprofile-config.properties file, which (because we're using a different constructor) will override the default constructor of MinimumChange setting the value to 3.
 
 Configuration properties are stored as basic strings and Helidon will convert them automatically for numbers, booleans and the other basic Java types. If you need to have a configuration property converted into a different type (say an object representing an IP address) then you can create a converter that is given the String from the configuration properties and returns the new object type. This way you can place any type you have (or can write) a converted for as a property.
 
 
 - **Save** the changes to the files, **stop** and **restart** the program. 
-- Let's check that the minimum change value is now 4:
+- Let's check that the minimum change value is now 2:
   -  `curl -i -X GET http://localhost:8080/minimumChange`
 
 ```
@@ -1252,7 +1247,7 @@ Date: Sun, 5 Jan 2020 15:19:09 GMT
 connection: keep-alive
 content-length: 1
 
-4
+2
 ```
 
 
