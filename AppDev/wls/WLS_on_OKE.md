@@ -91,14 +91,17 @@ We will be using an Oracle Cloud Managed Kubernetes cluster to deploy weblogic.
 
 - Use the **Create Cluster** button, and select the **Quick Create** type of installation
 
-- On the Create cluster screen, enter following parameters:
+  - Click the **Launch Workflow** button to start the configuration
+
+- On the **Create cluster** screen, enter following parameters:
 
   - Name : the name of your cluster.  We will be using the name *WlsOkeLab_(your_initials)* in this tutorial.  Please replace (your_initials) by a 3-letter code, for example Abc
   - Choose the CTDOKE compartment if it is available in the tenancy.
   - Select **Public** worker nodes
   - Choose the shape VM_Standard2.1
     *Remark*: you might have to check available compute shapes on your tenancy.  You can do this by visualizing the **Service Limits** on the "Administration" , "Tenancy Details" page.
-  - Select a **Number of nodes** that corresponds to the number of *Availability Domains* in the *Region* you have selected.  For example in Frankfurt this is **3**, in Amsterdam this is **1**.
+  - Select the **Number of nodes** you want to create in the node pool.  For example you could make this correspond to the number of *Availability Domains* in the *Region* you are using : in Frankfurt this is **3**, in Amsterdam this is **1**.  More details [here](https://docs.cloud.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm).
+  - Click the **Next** button to confirm the configuration, then **Create Cluster** to start the creation.
   
   
   
@@ -602,6 +605,24 @@ helm install sample-domain1-ingress kubernetes/samples/charts/ingress-per-domain
 
 
 Congratulations, your WebLogic is running on OKE !
+
+
+
+
+
+In case you want to remove the resources you created during this lab, please find below a quick summary : 
+
+- Delete your Kubernetes cluster :
+  - Navigate to **Developer Services**, then **Kubernetes Clusters**
+    - Click Hamburger Menu of your cluster
+    - Select **Delete**
+- Delete the images in your Docker repository :
+  - Navigate to **Developer Services** , then **Container Registry**
+  - Click the on the repository you created, probably starting with your initials-wls/weblogic
+  - Click **Actions**
+  - Select **Delete Repository**
+- In Cloud Shell
+  - Execute the command `rm -rf ~/weblogic-kubernetes-operator`
 
 
 
