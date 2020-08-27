@@ -1,12 +1,7 @@
 {
     "tutorials": [
         {
-            "title": "WebLogic on Kubernetes - Introduction",
-            "filename": "./README.md"
-        },
-
-        {
-            "title": "WebLogic on Kubernetes - Lab steps",
+            "title": "Running WebLogic on Kubernetes",
             "filename": "../WLS_on_OKE.md"
         }
     ]
