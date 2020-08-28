@@ -38,46 +38,54 @@ Create a token for your user (will be used to login to the docker repository):
 
 - Obtain the name of your Docker repository so you can reference it when pushing or pulling images:
 
-  - Navigate to the "Tenancy Details" screen:
+    - Navigate to the "Tenancy Details" screen by scrolingl down in the menu to the section **Governance and Administration**, then expand **Administration**, then select **Tenancy Details**
 
-    - Scroll down in the menu to the section **Governance and Administration**, then expand **Administration**, then select **Tenancy Details**
-
-  - Note down the name of your Object Storage Namespace:
+    - Note down the name of your Object Storage Namespace:
 
     ![](images/object-storage.png)
 
-    
 
-- Check if you already have the **CTDOKE** compartment
 
-  - In the Cloud Infrastructure Console, click on the hamburger menu on the top left of the screen. From the pull-out menu, under Identity, click Compartments.
+### Creating a Compartment
 
-  <img src="../../AppDev/ATP-OKE/images/100/Compartments.jpeg" style="zoom:50%;" />
+First check if you already have the **CTDOKE** compartment
 
-  
+- In the Cloud Infrastructure Console, click on the hamburger menu on the top left of the screen. From the pull-out menu, under Identity, click Compartments.
+
+<img src="../../AppDev/ATP-OKE/images/100/Compartments.jpeg" style="zoom:50%;" />
+
+
 
   - You will see the list of compartments currently available in your instance, which will include at least the root compartment of your tenancy (with has the tenancy name). 
 
-    - ![](../../AppDev/ATP-OKE/images/100/ListCompartmentsCTDOKE.png)
+    ![](../../AppDev/ATP-OKE/images/100/ListCompartmentsCTDOKE.png)
 
-  - If you already see the **CTDOKE** compartment in this list, 
-    **==> no need to create a new compartment !!**
+    
 
-  - If you are using a new **Free Tier** account, you will probably only have the root compartment, in that case: 
+- If you already see the **CTDOKE** compartment in this list, 
+  **==> no need to create a new compartment !!**
 
-    - Click on **Create Compartment** button to start the compartment creation process
+  You can move to the next step (2. Creating a Kubernetes cluster)
+  
+  
 
-      <img src="../../AppDev/ATP-OKE/images/100/CreateCompartment4.png" style="zoom:50%;" />
+If you are using a new **Free Tier** account, you will probably only have the root compartment, in that case: 
 
-      Enter the following in create Compartment window
+- Click on **Create Compartment** button to start the compartment creation process
 
-      - **Name**: Enter **CTDOKE**
-      - **Description**: Enter a description for the compartment
-      - **Parent Compartment**:  select the root compartment.
-      - Click on the **Create Compartment** link 
-      - You can verify the compartment created on Compartments page
+  <img src="../../AppDev/ATP-OKE/images/100/CreateCompartment4.png" style="zoom:50%;" />
 
   
+
+Enter the following in create Compartment window
+
+- **Name**: Enter **CTDOKE**
+- **Description**: Enter a description for the compartment
+- **Parent Compartment**:  select the root compartment.
+- Click on the **Create Compartment** link 
+- You can verify the compartment created on Compartments page
+
+
 
 
 
@@ -91,21 +99,21 @@ We will be using an Oracle Cloud Managed Kubernetes cluster to deploy weblogic.
 
 - Use the **Create Cluster** button, and select the **Quick Create** type of installation
 
-  - Click the **Launch Workflow** button to start the configuration
+- Click the **Launch Workflow** button to start the configuration
 
 - On the **Create cluster** screen, enter following parameters:
 
-  - Name : the name of your cluster.  We will be using the name *WlsOkeLab_(your_initials)* in this tutorial.  Please replace (your_initials) by a 3-letter code, for example Abc
-  - Choose the CTDOKE compartment if it is available in the tenancy.
-  - Select **Public** worker nodes
-  - Choose the shape VM_Standard2.1
+    - Name : the name of your cluster.  We will be using the name *WlsOkeLab_(your_initials)* in this tutorial.  Please replace (your_initials) by a 3-letter code, for example Abc
+    - Choose the CTDOKE compartment if it is available in the tenancy.
+    - Select **Public** worker nodes
+    - Choose the shape VM_Standard2.1
     - **Remark**: you might have to check available compute shapes on your tenancy.  You can do this by visualizing the **Service Limits** on the "Administration" , "Tenancy Details" page.
-  - Select the **Number of nodes** you want to create in the node pool.  For example you could make this correspond to the number of *Availability Domains* in the *Region* you are using : in Frankfurt this is **3**, in Amsterdam this is **1**.  More details [here](https://docs.cloud.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm).
-  - Click the **Next** button to confirm the configuration, then **Create Cluster** to start the creation.
+    - Select the **Number of nodes** you want to create in the node pool.  For example you could make this correspond to the number of *Availability Domains* in the *Region* you are using : in Frankfurt this is **3**, in Amsterdam this is **1**.  More details [here](https://docs.cloud.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm).
+    - Click the **Next** button to confirm the configuration, then **Create Cluster** to start the creation.
+
   
-  
-  
-  
+
+
   ![image-20191220180903279](images/wls_oke6.png)
 
 
