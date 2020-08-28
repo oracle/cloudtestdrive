@@ -311,7 +311,7 @@ helm upgrade sample-weblogic-operator  kubernetes/charts/weblogic-operator \
     - Run the following command, where you need to insert your specific parameters:
 
     ```bash
-  kubectl create secret docker-registry <your-initials>-ocirsecret \
+    kubectl create secret docker-registry <your-initials>-ocirsecret \
     --docker-server=<region-code>.ocir.io \
     --docker-username='<Object-Storage-Namespace>/<oci-username>' \
     --docker-password='<oci-auth-token>' \
@@ -633,4 +633,4 @@ In case you want to remove the resources you created during this lab, please fin
 
 ---
 
-Use the ***Back*** button of your browser to return to the home page of the tutorials.
+Use the ***Back*** button of your browser to return to the home page of the tutorials
