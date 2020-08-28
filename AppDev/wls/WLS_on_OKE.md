@@ -373,17 +373,17 @@ This build will be performed based on a config file you first need to set up for
 
 - Now edit the file with your favourite editor, either vi or nano, and perform the following updates:
 
-  - `domainUID`: `sample-domain1`
-  - `image`: this line is commented out in the example, please remove the `#` .
+    - `domainUID`: `sample-domain1`
+    - `image`: this line is commented out in the example, please remove the `#` .
     Just in case you might be sharing your tenancy repository with colleagues, we will add your initials to the image name you will be using.  
     The format to use is : `<region code>.ocir.io/<Object-Storage-Namespace>/<your_initials>-wls/weblogic:12.2.1.4`
-    - Example : `fra.ocir.io/frpqldntjs/ppa-wls/weblogic:12.2.1.4`
-  - `imagePullSecretName`: `<your initials>-ocirsecret` 
+      - Example : `fra.ocir.io/frpqldntjs/ppa-wls/weblogic:12.2.1.4`
+    - `imagePullSecretName`: `<your initials>-ocirsecret` 
     Note this line is commented out in the example, please remove the `#` . 
-  - `weblogicCredentialsSecretName`: `sample-domain1-weblogic-credentials`
-  - `exposeAdminNodePort: true` 
-  - `namespace`: `sample-domain1-ns`
-  - `domainHomeImageBase`: `container-registry.oracle.com/middleware/weblogic:12.2.1.4`
+    - `weblogicCredentialsSecretName`: `sample-domain1-weblogic-credentials`
+    - `exposeAdminNodePort: true` 
+    - `namespace`: `sample-domain1-ns`
+    - `domainHomeImageBase`: `container-registry.oracle.com/middleware/weblogic:12.2.1.4`
 
 - The creation script will generate output, we'll create a directory for this
   
@@ -633,4 +633,4 @@ In case you want to remove the resources you created during this lab, please fin
 
 ---
 
-Use the ***Back*** button of your browser to return to the home page of the tutorials
+Use the ***Back*** button of your browser to return to the home page of the tutorials.
