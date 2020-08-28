@@ -317,7 +317,7 @@ helm upgrade sample-weblogic-operator  kubernetes/charts/weblogic-operator \
     --docker-password='<oci-auth-token>' \
     --docker-email='<email-address>' \
     -n sample-domain1-ns
-  ```
+    ```
 
     - **your-initials** as part of the name of the secret so this is your individual secret in case you are working in a shared environment
 
