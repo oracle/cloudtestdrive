@@ -27,7 +27,9 @@ Create a token for your user (will be used to login to the docker repository):
   ![](images/token1.png)
 
 - Select **Auth Token** in the left-hand menu, then click the button **Generate Token**.
+
     - Enter a name for the token
+
     - Use the **Copy** button to copy the token in your buffer, and **immediately paste it** in a notebook of your choice, you will need this later.
 
     ![](images/token2.png)
