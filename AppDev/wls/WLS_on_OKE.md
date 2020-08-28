@@ -27,10 +27,8 @@ Create a token for your user (will be used to login to the docker repository):
   ![](images/token1.png)
 
 - Select **Auth Token** in the left-hand menu, then click the button **Generate Token**.
-
-  - Enter a name for the token
-
-  - Use the **Copy** button to copy the token in your buffer, and **immediately paste it** in a notebook of your choice, you will need this later.
+    - Enter a name for the token
+    - Use the **Copy** button to copy the token in your buffer, and **immediately paste it** in a notebook of your choice, you will need this later.
 
     ![](images/token2.png)
 
@@ -99,7 +97,7 @@ We will be using an Oracle Cloud Managed Kubernetes cluster to deploy weblogic.
   - Choose the CTDOKE compartment if it is available in the tenancy.
   - Select **Public** worker nodes
   - Choose the shape VM_Standard2.1
-    *Remark*: you might have to check available compute shapes on your tenancy.  You can do this by visualizing the **Service Limits** on the "Administration" , "Tenancy Details" page.
+    - **Remark**: you might have to check available compute shapes on your tenancy.  You can do this by visualizing the **Service Limits** on the "Administration" , "Tenancy Details" page.
   - Select the **Number of nodes** you want to create in the node pool.  For example you could make this correspond to the number of *Availability Domains* in the *Region* you are using : in Frankfurt this is **3**, in Amsterdam this is **1**.  More details [here](https://docs.cloud.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm).
   - Click the **Next** button to confirm the configuration, then **Create Cluster** to start the creation.
   
@@ -608,7 +606,7 @@ Congratulations, your WebLogic is running on OKE !
 
 
 
-
+### Cleaning up
 
 In case you want to remove the resources you created during this lab, please find below a quick summary : 
 

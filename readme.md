@@ -34,7 +34,7 @@ During this day you will be able to experience the various cloud services hands-
 + [Running WebLogic on Docker](AppDev/wls/WLS_on_Docker.md)
   Spin up the official Oracle Docker Image for Weblogic and deploy a simple demo application on the server.
 
-+ [Running WebLogic on Kubernetes](https://oracle.github.io/cloudtestdrive/AppDev/wls/?lab=weblogic-on-kubernetes)
++ [Running WebLogic on Kubernetes](https://oracle.github.io/cloudtestdrive/AppDev/wls/ll-oke/)
   Launch WebLogic on a Kubernetes cluster, using the WebLogic Operator to control your WebLogic environment
   
 + [Migrating Java EE "Monolith" application libraries to Microservices using Helidon](AppDev/helidon-k8s/README.md)
