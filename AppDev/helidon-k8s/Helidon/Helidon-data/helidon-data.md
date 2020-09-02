@@ -53,7 +53,7 @@ If you want to understand JPA and JTA in a lot of detail there are courses avail
 
 
 ### Configuring the project to be personal to you
-For this project all attendees will be operating on a shared database, updating the same table. To ensure that your work doesn't interfere with other peoples work you need to provide a unique identity for yourself
+For some version of this lab all attendees will are operating on a shared database, updating the same table. To ensure that your work doesn't interfere with other peoples work you need to provide a unique identity for yourself
 
 - In Eclipse, switch to the **helidon-labs-stockmanager** project.
 - Navigate into the folder **conf**
