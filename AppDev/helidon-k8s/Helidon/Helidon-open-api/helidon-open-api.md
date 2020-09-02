@@ -110,7 +110,25 @@ Unlike the server processing annotations the OpenAPI processing only operates ag
 
 Because of this the jandex index needs to be built to reflect the OpenAPI annotations. To do this you can manually run maven in Eclispe with the process-classes goal.
 
-- Click right on the **project** name (helidon-labs-storefront) in Eclipse, then chose "Run As" then "Maven build" 
+First we need to create a run configuration to create this goal
+
+Select the helidon-labs-storefront project, click right -> Run As -> Maven Build .... 
+
+![](images/maven-build-config-menu.png)
+
+Update the popup with the following
+
+- set the name to be `helidon-labs-storefront (process-classes)` (if you chose something else it's fine, just remember to use that later on)
+
+- In the goals enter `process-classes`
+
+- Click `Apply` then `Close`
+
+![](images/maven-build-config-process-classes.png)
+
+Now to run a build with this target.
+
+- Click right on the **project** name (helidon-labs-storefront) in Eclipse, then chose `Run As` then `Maven build`  (This is the version **without** the three dots !)
 
 ![](images/run-as-maven-build.png)
 
