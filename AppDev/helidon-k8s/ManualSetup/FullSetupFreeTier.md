@@ -8,7 +8,7 @@
 
 ### Introduction
 
-This page explains all the steps to set up your **Oracle Cloud Tenancy** so you are ready to run the labs.  Because participants can use different types of tenancies, not all steps need to be executed by everybody.  In case you are using a new **Oracle Free Tier** environment, you are starting from an "empty page" and will most likely have to execute all the steps below.
+This page explains all the steps to set up your **Oracle Cloud Tenancy** so you are ready to run the labs.  Because participants can use different types of tenancies, not all steps need to be executed by everybody.  In case you are using a new **Oracle Free Tier** or **Trial tenancy** environment, you are probably starting from an "empty page" and will most likely have to execute all the steps below. If you are using an existing **paid tenancy** then you may need to get the tenancy administrator to create a compartment, create security roles with the appropriate policies and to assign your user to that role.
 
 **If you are attending an instructor-led lab**, your instructor will detail steps you need to execute and which ones you can skip.
 
@@ -45,7 +45,7 @@ This video is an introduction to this section of the lab. Once you've watched it
 
 
 
-### 2. Import the image for the Client VM
+### 2. Import the image for the Development VM
 
 - Navigate to the **Compute** and **Custom Image** screen
 
@@ -105,7 +105,7 @@ You need to be sure that the Virtual Cloud Network supports remote access using 
 
 - In the list click the `Add Ingress Rules` button
 
-- Leave the `Stateless` option unchecked
+- Leave the `Stateless` option unchecked (This will provide for the returning traffic)
 
 - Leave the `SOURCE TYPE` as CIDR
 
@@ -125,7 +125,9 @@ You need to be sure that the Virtual Cloud Network supports remote access using 
 
 
 
-### 5. Create a database
+### 5. Setup the database.
+
+#### 5a. Create a database
 
 - Use the Hamburger menu, and select the Database section, **Autonomous Transaction Processing**
 - Click **Create DB**
@@ -150,7 +152,7 @@ Be sure to remember the **admin password**, save it in a notes document for late
 
 
 
-### 6. Setup your database user
+#### 5b. Setup your database user
 
 - On the details page for the database, click the **Service Console** button
 
@@ -175,10 +177,14 @@ GRANT UNLIMITED TABLESPACE TO HelidonLabs;
 ![](images/SQLDeveloper-button.png)
 
 
-### 7. Create a VM using the image you imported
+### 6. Create a Development VM using the image you imported
 
+If you are running in your tenancy
 - Return to the Custom Compute Images menu, and if you had to run the import, validate it is **Available** :
 - ![](images/image-available.png)
+
+If you are in an **instructor led** lab
+You instructor will provide you with the details to locate the Developer VM image to use
 
 - Click on the correct image name : If you are in a shared environment and there is more than one image starting H-K8S-Lab-A-Helidon chose the one with the most recent date. 
 - Now click the `Create Instance` button
@@ -193,12 +199,14 @@ GRANT UNLIMITED TABLESPACE TO HelidonLabs;
 - Leave all the other setings in the section as they are in the boot volume section
   - Check the **Assign a public IP address** option is selected
 - Scroll down to the **Add SSH Key** section
-  - In a separate browser window, download [this public key file](atpkey.pub) onto your laptop. 
-  - Use the **Choose File** button to select the downloaded public key file.
+  - Make sure the **Generate SSH Keys** option is selected
+  - If you wish you can download the ssh keys by clicking on the buttons (This is not required as we will be using VNC to access the instance)
 
 You have finished the wizard!
 
 - Click the **Create** button on the bottom of the wizard to initiate the creation.
+
+- If you get a **No SSH Access** warning you can ignore it, just click `Yes, Create Instance Anyway`
 
 Once the create button has been clicked you will see the Vm details page.  Initially the state will be provisioning but after a few minutes it will switch to **Running**, and you will see that a **public IP address** has been assigned.  Make a note of that IP address.
 
@@ -208,11 +216,11 @@ Once the create button has been clicked you will see the Vm details page.  Initi
 
 
 
- ### 8. Accessing the client VM
+### 7. Accessing the Developer VM
 
-You will be using VNC to access the client VM. There are multiple possible clients, chose from the list below or use another if you already have it. Note that the following may require you to have some level of admin rights on your machine.
+You will be using VNC to access the developer VM. There are multiple possible clients, chose from the list below or use another if you already have it. Note that the following may require you to have some level of admin rights on your machine.
 
- #### Installing a VNC viewer
+#### Installing a VNC viewer
 
 - For **macOS** we recommend realVNC which can be obtained from 
 
@@ -230,7 +238,9 @@ You will be using VNC to access the client VM. There are multiple possible clien
 
       When prompted, select to save the file.  Next, run the executable to install the program. This requires you have the privileges to install software on your machine
 
-#### Accessing using VNC
+#### Accessing Development VM using VNC
+
+We are using VNC to provide you with a remote desktop, this let's us use a Integrated Development Environment for the Helidon labs.
 
 You need to let your VM run for a couple of mins to fully boot and start the VNC server.
 
@@ -238,15 +248,283 @@ You need to let your VM run for a couple of mins to fully boot and start the VNC
 
 - Connect to the client VM. Depending on your client you may be asked to different information, but usually you'll be asked for a connect string. Thsi will typically look like 123.456.789.123:1 where the first part is the IP address and the :1 is the display number which is a constant (this is an example, the IP address won't work, you need to use your own.)
 
-- You VNC client may warn you that you're making an insecure connection, this is expected as we have not setup security certificates.
+- You VNC client may warn you that you're making an insecure connection, this is expected as we have not setup security certificates. For example for a real VNC client on a Mac this may look like 
 
-- You will be asked to enter a password to access the virtual screen. Your instructor will have provided this.
+![](images/01-vnc-security-warning.png)
 
+- You will be asked to enter a password to access the virtual screen. Your instructor will have provided this or it will have been in the file with the image import URL. This is an example showing this with the Real VNC client running on a Mac
 
+![](images/02-vnc-login.png)
 
+Once you have logged in you will see the Linux desktop, it will look like 
 
+![](images/03-desktop.png)
 
-### 9. Getting the Wallet file
+### 8. Installing Eclipse in the developer VM
+
+We have installed a developer configuration of Oracle Linux, and added tools like Maven, git and the Java development kit. To ensure that you have the latest integrated developer environments (IDE's) and starting point source code for the labs there are a couple of steps you need to take.
+
+There are many IDE's available. We have chosen Eclipse as it's open source licensed. As Eclipse requires the acceptance of a license we can't automate the process for you.
+
+We have installed the Eclipse installer.
+
+ - Double click on the `eclipse-installer` folder icon on the desktop. This will open the installer folder.
+
+ - Double click on the eclipse-installer executable
+
+![](images/04-eclipse-installer-folder.png)
+
+The Eclipse installer will start.
+
+ - Select the `Eclipse IDE for Enterprise Java Developers` option
+
+![](images/05-eclipse-installer-selection.png)
+
+The installer switched to the next page
+
+ - Select the `/usr/lib/jvm/java-11-openjdk` in the Java JVM dropdown
+
+![](images/06-eclipse-installer-jvm-selection.png)
+
+ - Set the install path to be `/home/opc`
+ 
+ - Then click the `Install` button
+ 
+![](images/06a-eclipse-installer-install-path.png)
+ 
+ - Assuming you agree with it click `Accept Now` on the license page. (If you don't agree with the license you can install your own IDE but all of the instructions are on the basis of ucing Eclispe.)
+ 
+![](images/07-eclipse-installer-license.png)
+ 
+The installer progress will be displayed
+ 
+![](images/08-eclipse-installer-progress.png)
+ 
+ - You **may** be presented with warnings about unsigned content, if you are click the `Accept` button
+ 
+![](images/09-eclipse-installer-unsigned-warning.png)
+ 
+ - You **may** be presented with warnings about certificates. If you are click the `Select All` button, then the `Accept Selected` button (this is not enabled until certifcates have been selected)
+  
+![](images/10-eclipse-installer-accept-unsigned.png)
+  
+ - On completion you can click the `Launch` button from the completion page Or you can double click the `Eclipse IDE For Enterprise Java Developers ....` icon on the desktop.
+ 
+![](images/11-eclipse-installer-finished-install-path.png)
+
+- If you chose to double click the icon on the desktop you may be presented with a Trust warning, if you are chose the `Trust and Launch` option
+
+![](images/11-eclipse-installer-finished-install-path.png)
+
+- As Eclipse starts you will be presented with a workspace selection option. Click the `use this as the default and do not ask again` option, then the `Launch` button
+
+![](images/20-eclipse-start-workspace-selection.png)
+
+You will be presented with the Eclipse starup. This may include a welcome page. You can close it by clicking the `x` as per normal with sub windows.
+
+![](images/21-eclipse-welcome-page.png)
+
+- You can close the `Donate`,  `Outline` and `Task list` tabs to get the most usage from the screen if you like
+
+![](images/22-eclipse-donate-page.png)
+
+This image shows you the empty Eclipse workspace with the non required tabs all closed
+
+![](images/23-empty-eclipse-workspace.png)
+
+We need to configure Eclipse to display the course files in a hierarchical manner (this is so it matches the images you will have in the lab instructions, if you prefer to use the Eclipse  "Flat" view then you can ignore this step"
+
+- Click on the Three dots in the Project Explorer panel, then take the `Package Presentation` menu option and click the radio button for `Hierarchical`
+
+![](images/24-eclipse-package-presentation-hierarchical.png)
+
+#### How to re-open Eclipse when you close it
+
+For reasons unclear the Eclipse installer does not seem to offer the option to create a desktop shortcut to open Eclipse. If you do accidentally close Eclipse, or in the unlikely situation that it crashes) then the following will let you re-open it.
+
+When you installed Eclipse you set the installation path to /home/opc, the installer will then have created a directory called eclipse and installed into that. You need to open that, and then start the Eclipse executable which is in that folder.
+
+- On the Oracle Linux desktop locate and double click the `Home` folder
+
+![](images/30-desktop-home-folder.png)
+
+This will display the home directory, double click the `Eclipse` folder
+
+![](images/31-eclipse-folder.png)
+
+This will open the actual eclipse instalation
+
+- To re-open eclipse double click on the eclipse executable (this is named just `eclipse`) **Do Not** click on the `icon.xpm` or the `eclipse.ini` files
+
+![](images/32-eclipse-executable.png)
+
+### 9. Downloading and importing the labs initial code
+
+To enable us to update the code used by the labs without having to update the Developer VM image each time we hold the primary copy of the code in a git repository (where we can update it as the lab is enhanced) You need to download this into your development VM and import it into Eclipse
+
+#### 9a. Downloading the code zip file.
+
+- Open the Firefox web browser - Click `Applications` then `Internet` then `Firefox`
+
+![](images/40-open-firefox-menu.png)
+
+- Go to the URL `https://github.com/CloudTestDrive/helidon-labs`
+
+- Click the `Code` button
+
+![](images/41-github-project-page.png)
+
+- Click the `Download ZIP` option
+
+![](images/42-github-download-code.png)
+
+A save options menu may be displayed
+
+- Click the `Save file` option, then `OK`
+
+![](images/43-github-download-save-file.png)
+
+When the download is complete the Firefox download icon will turn completely blue
+
+![](images/44-github-download-complete.png)
+
+#### 9b. Importing the downloaded zip file
+
+- Switch back to Eclipse
+
+- Click the `File` menu, then `Import`
+
+!()[images/50-eclipse-import-menu.png)
+
+- Open the `General` node, then chose the `Existing projects into Workspace` option. Click `Next`
+
+![](images/51-eclipse-import-types.png)
+
+- Chose the `Select archive file` radio button, then click `Browse` on that row
+
+![](images/52-eclipse-import-archive.png)
+
+- On the left menu chose `Downloads` then in the resulting list chose the download you just made (probably called `helidon-labs-master.zip`)
+
+- Click the `Open` button
+
+![](images/53-eclipse-import-file-selection.png)
+
+- Click `Select All` to make sure all the projects are imported, then click the `Finish` button
+
+![](images/54-eclipse-import-final-stage.png)
+
+Eclipse will import the projects and start importing the Maven dependencies
+
+![](images/55-eclipse-import-progress.png)
+
+This may take a few mins. **Do not worry if you see errors** these are to be expected as we haven't finished configuring the Eclipse environment yet
+
+Wait until the building indicator (lower right) has gone away.
+
+#### 9d. Configuring Lombok
+
+These labs use Lombok to do many of the "standard" functions like automatically creating constructors, getters and so on. Lombok will be covered later in the labs, but for now we need to install it into the Eclipse installation.
+
+- Expand the helidon-labs-stockmanager project (Click the little triangle to the left of the project name)
+
+- Expand the `Maven Dependencies` node
+
+- In the maven dependencies section locate the `lombok` jar file (it will have a version number after it, at the time of writing that was 1.18.10, but that may have changed as lombok updates often)
+
+![](images/60-lombok-locate-jar-file.png)
+
+- Click right on the lombok jar file, then chose the `Run As` manu option, then `Java Application`
+
+![](images/61-run-lombok-application.png)
+
+- If you get a warning about errors click the `Proceed` button (the point of what we're doing is to fix them !)
+
+![](images/62-run-lombok-error-warning.png)
+
+After a short while the lombok UI will be displayed.
+
+If you get a warning that Lombok cannot locate any IDE's you will have to locate it manually
+
+![](images/63-lombok-cant-locate-ide-warning.png)
+
+- Click the `OK` button in the warning popup
+
+If Lombok has located an IDE then skip the following two steps that locate the IDE
+
+- Click the `Specify location` button
+
+![](images/64-lombok-locate-ide-option.png)
+
+- In the file selector popup navigate to the IDE location you noted when you installed Eclipse if you set the install path in the earlier stage this is going to be `/home/opc/eclipse`
+
+- Select the `eclipse.ini` file
+
+- Click the `Select` button on the file chooser
+
+![](images/65-lombok-locate-eclipse.png)
+
+- Make sure that the eclipse installation has it's checkbox selected, then click the `Install / Update` button
+
+![](images/66-lombok-install-start.png)
+
+Lombok will do the install (this is very quick) and confirm success 
+
+- Click the `Quit Installer` button to close the Lombok installer
+
+![](images/67-lombok-install-completed.png)
+
+Once Lombok has been installed you need to exit and then start Eclipse to have it recognized (The eclipse restart process is not a full restart.)
+
+- Click the `File` menu then `Exit` (**do not chose restart**, that does not trigger the reload of the entire Eclipse environment) 
+
+- Re-start Eclipse using the method described above.
+
+We can check that Lombok has been installed
+
+- Click the `Help` Manu then the `About Eclipse IDE` option
+
+![](images/68-lombok-access-eclipse-about-menu.png)
+
+- You may need to scroll down in the `About` popup, but towards the end you should see the Lombok instalation confirmation (in this case 1.18.12)
+
+![](images/69-lombok-installed-version.png)
+
+- Click the `Close` button to get rid of the popup
+
+#### 9e. Updating the projects configuration.
+
+Restarting eclipse so it recognises Lombok does not cause a rebuild or Maven update to remove the flagged problems, so we need to do that. 
+
+- Select one of the the `helidon-labs-stockmanager` and `helidon-labs-storefront` projects in the project explorer. Click right on them then chose `Maven` from the menu then `Update project`
+
+![](images/70-maven-update-project-menu.png)
+
+- Click the `Select All` button, then click the `OK` button
+
+![](images/71-maven-update-all.png)
+
+Maven will go and do it's thing, that may take a while.
+
+When Maven finishes there may be warnings about problems (These relate to incomplete code you will be updating in the lab) but there shouldn't be any remaining errors.
+
+#### 9f. Building the helidon-labs-common project
+
+The `helidon-labs-common` project contains classes that are used by both the storefront and stockmanager projects. We need to build that project to the Maven repository so it can be used later on.
+
+- Click right on the `helidon-labs-common` project, then chose the `Run as` menu option, then `Maven install`
+
+![](images/80-helidon-labs-common-menu-maven-install.png)
+
+Eclipse will use Maven to build and install the project. The progress will be shown in the `Console` tab, and you'll be able to see the `Build Success` message when it finishes (usually after 5 - 10 seconds, but it may take longer.
+
+![](images/81-helidon-labs-common-menu-maven-install-completed.png)
+
+### 10. Handling the database Wallet file.
+
+The database Wallet file contains the details needed to connect to your database instance, it needs to be downloaded to the deveploment VM and placed in the right location.
+
+#### 10a. Getting the Wallet file into your Development VM
 
 The easiest way to get the database Wallet file into your virtual machine is to use the cloud console to download it.
 
@@ -267,9 +545,7 @@ The easiest way to get the database Wallet file into your virtual machine is to 
 
 
 
-
-
-### 10. Using the Wallet file
+#### 10b. Configuring to use the Wallet file
 
 The Wallet file will have been downloaded to $HOME/Downloads, we want to place it in the right location for the labs and with the right name. It is **very** important that you follow the exact instructions below to ensure you are in the right directory as otherwise you may delete the lab files !
 
@@ -295,19 +571,19 @@ We now need to locate the wallet connection details.
   - `cat tnsnames.ora`
 
   ```
-  tg_high = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_high.atp.oraclecloud.com))(security=(ssl_ser
+  tg_high = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_tg_high.atp.oraclecloud.com))(security=(ssl_ser
   ver_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
   
-  tg_low = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_low.atp.oraclecloud.com))(security=(ssl_serve
+  tg_low = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_tg_low.atp.oraclecloud.com))(security=(ssl_serve
   r_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
   
-  tg_medium = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_medium.atp.oraclecloud.com))(security=(ssl
+  tg_medium = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_tg_medium.atp.oraclecloud.com))(security=(ssl
   _server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
   
-  tg_tp = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_tp.atp.oraclecloud.com))(security=(ssl_server_
+  tg_tp = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_tg_tp.atp.oraclecloud.com))(security=(ssl_server_
   cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
   
-  tg_tpurgent = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_tpurgent.atp.oraclecloud.com))(security=
+  tg_tpurgent = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_tg_tpurgent.atp.oraclecloud.com))(security=
   (ssl_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
   ```
 
@@ -315,8 +591,9 @@ We now need to locate the wallet connection details.
 
 - Be sure to write down the database connection name you have just found, you will need it later
 
+## 10. Setting up your Development VM.
 
-
+- Use your VNC client to access gthe 
 
 
 ## End of the setup
