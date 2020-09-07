@@ -470,9 +470,7 @@ There are a few details (registry id, authentication tokens and the like) you wi
 
 - Please follow the instructions in this document for [getting your docker details](../ManualSetup/GetDockerDetailsForYourTenancy.md)
 
-As there are may be many attendees doing the lab going through the same tenancy we need to separate the different images out, so we're also going to use your initials / name / something unique 
-
-Your full repo will be a combination of the repository host name (e.g. fra.ocir.io for an Oracle Cloud Infrastructure Registry) the tenancy storage name (for example oractdemeabdmnative) and the  details you've chosen
+Your full login name will be a combination of the repository host name (e.g. fra.ocir.io for an Oracle Cloud Infrastructure Registry) the tenancy storage name (for example oractdemeabdmnative) and your username
 
 #### Docker login in to the Oracle Container Image Registry (OCIR)
 
@@ -512,7 +510,10 @@ If you can't find the scripts then you will edit the repoConfig.sh scripts, but 
 
 - Navigate to the Storefront project
 
-- Open file **repoStorefrontConfig.sh** and edit the repo name to reflect **your** initials
+
+As for some instructor labs there are may be many attendees doing the lab in the same tenancy, to allow for that we need to separate the different images out, so we're also going to use your initials / name / something unique 
+
+- Open file **repoStorefrontConfig.sh** and edit the repo name to reflect **your** region, tenancy and initials
 
   - Example for region `Frankfurt`, in the `oractdemeabdmnative` tenancy with initials `tg` you might have : 
 
