@@ -61,15 +61,14 @@ This video is an introduction to this section of the lab. Once you've watched it
 - If you do not have this image available, import it with following steps:
   - Click the `Import Image` button
   - Make sure the **CTDOKE** compartment is selected
-  - Name the image, probably best to have it match the name in the storage URL which will be something like H-Lab-A-Helidon-2020-03-23 as that way you will know what version of the lab you are using.
+  - Name the image, probably best to have it match the name in the storage URL which will be something like H-K8S-Lab-A-Helidon-2020-03-23 as that way you will know what version of the lab you are using.
   - Make sure the Operating System is set to **Linux**
   - Select the option `IMPORT FROM AN OBJECT STORAGE URL` 
   - Enter the **VM image URL** you received from your instructor
   - Set the image type to **OCI**
-  - Leave the launch mode unchanged
   - Click the `Import image` option - it can take 10 to 15 minutes to finish, you can navigate way from this screen and continue with the next setup actions
 
-
+![](images/import-custom-image-form.png)
 
 ### 3. Creating a Virtual Cloud Network (VCN)
 
@@ -77,9 +76,10 @@ You need to set up a Virtual Cloud Network to run the instances of this lab on.
 
 - Click the `hamburger` menu
 - In the `Core Infrastructure` section chose `Networking` and then `Virtual Cloud Networks`
-- Click the `Networking Quickstart` button
+- Make sure you are using the =`CTDOKE` compartment you created
+- Click the `Start VCN Wizzard`` button
 - Chose the `VCN with Internet Connectivity` option
-- Click the `Start Workflow` button
+- Click the `Start VCN Wizzard` button
 - Enter a name for the VCN : **CTDVMVCN**
 - Make sure that the compartment matches the compartment **CTDOKE** you just chose / created
 - Leave the fields in the Configure VCN and Subnets with their default values.
@@ -180,27 +180,44 @@ GRANT UNLIMITED TABLESPACE TO HelidonLabs;
 ### 6. Create a Development VM using the image you imported
 
 If you are running in your tenancy
-- Return to the Custom Compute Images menu, and if you had to run the import, validate it is **Available** :
-- ![](images/image-available.png)
+- Return to the Custom Compute Images menu (Hamburger menu -> Core Infrastructure section -> Compute -> Custom Images) 
 
-If you are in an **instructor led** lab
-You instructor will provide you with the details to locate the Developer VM image to use
+If you are in an **instructor led** lab, you instructor will provide you with the details to locate the Developer VM image to use
 
-- Click on the correct image name : If you are in a shared environment and there is more than one image starting H-K8S-Lab-A-Helidon chose the one with the most recent date. 
-- Now click the `Create Instance` button
+- Locate image to use which your instructor has provided or you have just imported : If you are in a shared environment and there is more than one image starting H-K8S-Lab-A-Helidon chose the one with the most recent date. (As we recommend naming the images using the date this will be the last part of the image name in the format `yyyy-mm-dd`and if you had to run the import
 
-- Name the instance based on the image version so you can track what version of the lab you are following. e.g. `H-K8S-Lab-A-Helidon-2020-03-23`
-- Expand the **Show Shap, Network and Storage Options** selection
-- Select an **Availability domain**
-- Select **Instance shape** : VM.Standard.2.1
+- Check that the image state is **Available** :
+
+Note sometimes the import image page does not refresh once the image is imported, so if it's is still displaying `Importing` then try refreshing the page.
+
+![](images/image-available.png)
+
+- Click on the three dots menu on the **right** of the row for your chosen image
+- Now click the `Create Instance` in the resulting menu
+
+![](images/create-instance-from-custom-image.png)
+
+- Name the instance based on the image version so you can track what version of the lab you are following. If multiple people are sharing the same tennacy you may want to put your initials in there as well e.g. `H-K8S-Lab-A-Helidon-2020-009-07-tg`
+- Expand the **Show Shape, Network and Storage Options** selection if it's not visible
+- Select an **Availability domain** (Which one doesn't matter)
+- If `VM.Standard.E3.Flex` with 1 OCPU and 16GB memory is not the selected instance shape click the `Change shape` button, select the Instance type to `Virtual machine`, the Processor to `AMD Rome` and the OCPU count to `1` (This will set the memory for you) Then click `Select shape` to use this shape. (You can chose other shapes if you prefer, just at the time of writing this was the most cost effective)
 - The *Virtual Cloud Network Compartment* should already be set to **CTDOKE**.
 
+![](images/create-instance-first-part.png)
+
+- Check the `Virtual Cloud Network Compartment` is set to `CTDOKE`
 - In the **Virtual cloud Network** dropdown,  select the **CTDVMVCN** network. 
-- Leave all the other setings in the section as they are in the boot volume section
+- Leave all the other settings in the network section as they are
   - Check the **Assign a public IP address** option is selected
+- Leave the boot volume settings unchanged
+
+![](images/create-instance-second-part.png)
+
 - Scroll down to the **Add SSH Key** section
-  - Make sure the **Generate SSH Keys** option is selected
+  - Make sure the **Generate SSH Key Pair** option is selected
   - If you wish you can download the ssh keys by clicking on the buttons (This is not required as we will be using VNC to access the instance)
+  
+![](images/create-instance-third-part.png)
 
 You have finished the wizard!
 
@@ -208,7 +225,9 @@ You have finished the wizard!
 
 - If you get a **No SSH Access** warning you can ignore it, just click `Yes, Create Instance Anyway`
 
-Once the create button has been clicked you will see the Vm details page.  Initially the state will be provisioning but after a few minutes it will switch to **Running**, and you will see that a **public IP address** has been assigned.  Make a note of that IP address.
+Once the create button has been clicked you will see the VM details page.  Initially the state will be **Provisioning** but after a few minutes it will switch to **Running**, and you will see that a **public IP address** has been assigned.  Make a note of that IP address (The copy link next to it will copy the address into your computers copy-and-paste buffer.)
+
+![](images/create-instance-public-ip-address.png)
 
 - Give the VM a few minutes to start up it's internal services.
 
@@ -246,7 +265,7 @@ You need to let your VM run for a couple of mins to fully boot and start the VNC
 
 - Open your VNC Client
 
-- Connect to the client VM. Depending on your client you may be asked to different information, but usually you'll be asked for a connect string. Thsi will typically look like 123.456.789.123:1 where the first part is the IP address and the :1 is the display number which is a constant (this is an example, the IP address won't work, you need to use your own.)
+- Connect to the client VM. Depending on your client you may be asked to different information, but usually you'll be asked for a connect string. Thsi will typically look like `123.456.789.123:1` where the ``123.456.789.123` is the IP address and the `:1` is the display number which is a constant (this is an example, the IP address won't work, you need to use your own.)
 
 - You VNC client may warn you that you're making an insecure connection, this is expected as we have not setup security certificates. For example for a real VNC client on a Mac this may look like 
 
@@ -269,7 +288,7 @@ There are many IDE's available. We have chosen Eclipse as it's open source licen
 We have installed the Eclipse installer.
 
  - Double click on the `eclipse-installer` folder icon on the desktop. This will open the installer folder.
-
+ 
  - Double click on the eclipse-installer executable
 
 ![](images/04-eclipse-installer-folder.png)
@@ -282,15 +301,13 @@ The Eclipse installer will start.
 
 The installer switched to the next page
 
- - Select the `/usr/lib/jvm/java-11-openjdk` in the Java JVM dropdown
-
-![](images/06-eclipse-installer-jvm-selection.png)
-
+ - Select the `/usr/lib/jvm/java-11-openjdk` in the Java JVM dropdown ** DO NOT PRESS INSTALL YET**
+ 
  - Set the install path to be `/home/opc`
+
+![](images/06-eclipse-installer-selections.png)
  
  - Then click the `Install` button
- 
-![](images/06a-eclipse-installer-install-path.png)
  
  - Assuming you agree with it click `Accept Now` on the license page. (If you don't agree with the license you can install your own IDE but all of the instructions are on the basis of ucing Eclispe.)
  
@@ -308,12 +325,8 @@ The installer progress will be displayed
   
 ![](images/10-eclipse-installer-accept-unsigned.png)
   
- - On completion you can click the `Launch` button from the completion page Or you can double click the `Eclipse IDE For Enterprise Java Developers ....` icon on the desktop.
+ - On completion you can click the `Launch` button from the completion page. There are instrucitons later for running Eclipse via the file manager.
  
-![](images/11-eclipse-installer-finished-install-path.png)
-
-- If you chose to double click the icon on the desktop you may be presented with a Trust warning, if you are chose the `Trust and Launch` option
-
 ![](images/11-eclipse-installer-finished-install-path.png)
 
 - As Eclipse starts you will be presented with a workspace selection option. Click the `use this as the default and do not ask again` option, then the `Launch` button
@@ -324,7 +337,7 @@ You will be presented with the Eclipse starup. This may include a welcome page. 
 
 ![](images/21-eclipse-welcome-page.png)
 
-- You can close the `Donate`,  `Outline` and `Task list` tabs to get the most usage from the screen if you like
+- You can close the `Donate` , `Outline` and `Task list` tabs to get the most usage from the screen.
 
 ![](images/22-eclipse-donate-page.png)
 
@@ -340,7 +353,7 @@ We need to configure Eclipse to display the course files in a hierarchical manne
 
 #### How to re-open Eclipse when you close it
 
-For reasons unclear the Eclipse installer does not seem to offer the option to create a desktop shortcut to open Eclipse. If you do accidentally close Eclipse, or in the unlikely situation that it crashes) then the following will let you re-open it.
+For reasons unclear the Eclipse installer for Linux does not seem to offer the option to create a desktop shortcut to open Eclipse. If you do accidentally close Eclipse, or in the unlikely situation that it crashes) then the following will let you re-open it.
 
 When you installed Eclipse you set the installation path to /home/opc, the installer will then have created a directory called eclipse and installed into that. You need to open that, and then start the Eclipse executable which is in that folder.
 
@@ -394,7 +407,7 @@ When the download is complete the Firefox download icon will turn completely blu
 
 - Click the `File` menu, then `Import`
 
-!()[images/50-eclipse-import-menu.png)
+![](images/50-eclipse-import-menu.png)
 
 - Open the `General` node, then chose the `Existing projects into Workspace` option. Click `Next`
 
@@ -414,7 +427,7 @@ When the download is complete the Firefox download icon will turn completely blu
 
 ![](images/54-eclipse-import-final-stage.png)
 
-Eclipse will import the projects and start importing the Maven dependencies
+Eclipse will import the projects and start importing the Maven dependencies. Expect to see errors listed on the Eclipse `Problems` tab, and projects marked as having errors (red indicators) in the Project Explorer. 
 
 ![](images/55-eclipse-import-progress.png)
 
@@ -474,19 +487,19 @@ Lombok will do the install (this is very quick) and confirm success
 
 ![](images/67-lombok-install-completed.png)
 
-Once Lombok has been installed you need to exit and then start Eclipse to have it recognized (The eclipse restart process is not a full restart.)
+Once Lombok has been installed you need to exit and then start Eclipse to have it recognized (The restart option in Eclipse is not sufficient.)
 
 - Click the `File` menu then `Exit` (**do not chose restart**, that does not trigger the reload of the entire Eclipse environment) 
 
-- Re-start Eclipse using the method described above.
+- Re-start Eclipse using the method described above, make sure it's Eclipse you are starting, not the installer.)
 
 We can check that Lombok has been installed
 
-- Click the `Help` Manu then the `About Eclipse IDE` option
+- Click the `Help` Menu then the `About Eclipse IDE` option
 
 ![](images/68-lombok-access-eclipse-about-menu.png)
 
-- You may need to scroll down in the `About` popup, but towards the end you should see the Lombok instalation confirmation (in this case 1.18.12)
+- You may need to scroll down in the `About` popup, but towards the end you should see the Lombok installation confirmation (in this case 1.18.12)
 
 ![](images/69-lombok-installed-version.png)
 
@@ -494,7 +507,7 @@ We can check that Lombok has been installed
 
 #### 9e. Updating the projects configuration.
 
-Restarting eclipse so it recognises Lombok does not cause a rebuild or Maven update to remove the flagged problems, so we need to do that. 
+Restarting eclipse so it recognises Lombok does not always trigger a rebuild or Maven update to remove the flagged problems, so we need to do that. 
 
 - Select one of the the `helidon-labs-stockmanager` and `helidon-labs-storefront` projects in the project explorer. Click right on them then chose `Maven` from the menu then `Update project`
 
@@ -532,12 +545,13 @@ The easiest way to get the database Wallet file into your virtual machine is to 
 - Login to the Oracle Cloud Console
 - Open the `hamburger` menu (three bars on the top left)
 - Scroll down (if needed) to the `Database` section. Click on the `Autonomous Transaction Processing` menu option
+- If you need to select the **CTDOKE** compartment you created earlier in the Comparment selector on the left side of the page.
 - Click on your database name in the list (it's a link)
 - On the database page click the `DB Connection` button
   - This will display a Database connection popup
 - Leave the `Wallet type` as `Instance connection`
 - Click the `Download Wallet` button
-- A password pop-up will be displayed. Enter and confirm a password, this is used to encrypt some of the details. if you have a password manager let it generate a password for you if you like
+- A password pop-up will be displayed. Enter and confirm a password, this is used to encrypt some of the details.
 - Once your password is accepted and confirmed click the `Download` button
 - If you are asked what to do with the file make sure you chose the `Save file` option
 - The wallet file will start to download and the password pop-up will disappear and you'll be returned to the `Database connection` pop-up
@@ -548,6 +562,14 @@ The easiest way to get the database Wallet file into your virtual machine is to 
 #### 10b. Configuring to use the Wallet file
 
 The Wallet file will have been downloaded to $HOME/Downloads, we want to place it in the right location for the labs and with the right name. It is **very** important that you follow the exact instructions below to ensure you are in the right directory as otherwise you may delete the lab files !
+
+You need to open a terminal window in the Development VM
+
+- Click **right** on the red background of the desktop in the development VM (you may need to shrink or move other windows to get this.
+
+- In the popup menu chose `Open Terminal`
+
+![](images/desktop-open-terminal.png)
 
 - Delete any existing wallet information
   - `rm -rf $HOME/workspace/helidon-labs-stockmanager/Wallet_ATP`
@@ -590,11 +612,6 @@ We now need to locate the wallet connection details.
 - Locate the "high" connection and take a note of the name, in the example above this is tg_high **Your file will contain different names**
 
 - Be sure to write down the database connection name you have just found, you will need it later
-
-## 10. Setting up your Development VM.
-
-- Use your VNC client to access gthe 
-
 
 ## End of the setup
 

@@ -292,7 +292,7 @@ The helm options are :
 
 - `kubernetes-dashboard/kubernetes-dashboard` is the name of the *chart* to install. Helm will download the char from the repo kubernetes-dashboard and then execute it. if you had needed a specific chart version they you could have added a version specifier, for example `--version=1.2.3`
 
-- `--namespace kube-system` This tells helm to install the dashboard into the kube-system namespace. Namespaces are ways of partitioning the cluster to help you manage related resources, they are similar to the way you organize files using folders on your computer, but can also restrict resource usage like memory and cpu.
+- `--namespace kube-system` This tells helm to install the dashboard into the kube-system namespace. Namespaces are ways of partitioning the physical cluster into a virtual cluster to help you manage related resources, they are similar to the way you organize files using folders on your computer, but can also restrict resource usage like memory and cpu and future versions of Kubernetes plan to support role based access controls based on namespaces.
 
 - `--set service.type=LoadBalancer` This tells helm to configure the Kubernetes service associated with the dashboard as being immediately accessible via a load balancer. Normally you wouldn't do this for a range of reasons (more on these later) but as this is an overview lab we're doing this to avoid having to wait for DNS name propogation getting certificates. In a production environment you would of course do that.
 
@@ -843,7 +843,7 @@ Note that in a production environment you might want to extend the encryption by
 
 You now have the basic environment to deploy services, and we've looked at how to use the Kubernetes dashboard and the kubectl command line.
 
-Kubernetes supports the concept of namespaces, these logically split the cluster up, it's similar to having different directories to store documents for different projects, and like directories you can have multiple namespaces. In this case you are going to be using your own cluster, but having a separate namespace splits your work from the system functions (those are in a namespace called kube-system.) We're not going to be using it in this lab, but namespaces can also be used to manage resource usage in Kubernetes enabling you to limit the usage of resources used by the pods in a namespace (memory, CPU etc.) It's also possible to restrict resources on individual pods and we'll look at that later.
+Kubernetes supports the concept of namespaces, these logically split the cluster up, effectively into multiple virtual clusters. It's similar to having different directories to store documents for different projects, and like directories you can have multiple namespaces. In this case you are going to be using your own cluster, but having a separate namespace splits your work from the system functions (those are in a namespace called kube-system.) We're not going to be using it in this lab, but namespaces can also be used to control management of the cluster by role based access control to specific namespaces, and to control resource usage in Kubernetes enabling you to limit the usage of resources used by the pods in a namespace (memory, CPU etc.) It's also possible to restrict resources on individual pods and we'll look at that later.
 
 In a production cluster where you may have many applications running composed of many microservices having separate namespaces is basically essential to avoid mistakes and misunderstandings that could impact the service operation.
 
