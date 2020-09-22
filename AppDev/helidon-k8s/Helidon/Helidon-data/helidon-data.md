@@ -63,9 +63,9 @@ For some version of this lab all attendees will are operating on a shared databa
 
 Example :
 
-```
+```yaml
 app:
-  persistenceUnit: "HelidonATPJTA"
+  persistenceUnit: "stockmanagerJTA"
   department: "just_a_name"
 ```
 
@@ -100,7 +100,7 @@ The classes in the com.oracle.labs.helidon.stockmanager.database package represe
 - Expand the folder **src/main/java**, then the folder **database**
 - Open the file **StockLevel.java**
 
-```
+```java
 @Data
 // setup the constructors for us
 @NoArgsConstructor
@@ -148,7 +148,7 @@ On our fields in the class
 
 Looking at the StockId class
 
-```
+```java
 @Embeddable
 @Data
 @AllArgsConstructor
@@ -197,7 +197,7 @@ Let's look at the StockResource.createStockLevel method to see how this works
 - Open file **StockResource.java**
 - Locate the method **createStockLevel** approximately in the middle of the file
 
-```
+```java
 @Path("/{itemName}/{itemCount}")
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
@@ -214,11 +214,56 @@ Here (to make it clear what's happening) I've used the same name for the path an
 Other possible sources for the params are @QueryParam and @FormsParam. Which one you chose will depend on what the URL you are expecting (or want) to get.
 
 
+
+### Getting an entity manager
+JPA requires an entity manager to do the work of interacting with the database for us. Historically however that would require code like the following which is in the StockResource constructor.
+
+```java
+	public StockResource(@ConfigProperty(name = "app.persistenceUnit") String persistenceUnitProvided,
+			DepartmentProvider departmentProviderProvided) {
+		persistenceUnit = persistenceUnitProvided;
+		EntityManagerFactory emfactory = Persistence.createEntityManagerFactory(persistenceUnit);
+		this.entityManager = emfactory.createEntityManager();
+		departmentProvider = departmentProviderProvided;
+	}
+```
+
+There are a several problems here. Firstly, we do this each time we create a new instance of the StockResource, and that happens every time we get a request. That's a potentially expensive set of method calls.
+
+Secondly we have to close the entity manager down when it's no longer needed, that can result in some complex code paths to follow, especially if there are exceptions being handled as well.
+
+Also why write code when we don't have to ? With Helidon we have the context and dependency injections capabilities, so we don't however need to setup the entity manager itself, we can have Helidon do that for us.
+
+- In file **StockResource.java**, scroll up to the constructor of the class **StockResource**
+- Remove the lines that set up the entity manager, it should now look like below:
+
+```java
+	public StockResource(@ConfigProperty(name = "app.persistenceUnit") String persistenceUnitProvided,
+			DepartmentProvider departmentProviderProvided) {
+		persistenceUnit = persistenceUnitProvided;
+		departmentProvider = departmentProviderProvided;
+	}
+```
+- Scroll up to the **top** of the file, just below the class definition, and locate where the **EntityManager** is defined and add an annotation :
+  - `@PersistenceContext(unitName = "stockmanagerJTA")`
+
+```java
+public class StockResource {
+	@PersistenceContext(unitName = "stockmanagerJTA")
+	private EntityManager entityManager; 
+```
+
+Note that the name of the persistence context is defined as a hard coded String, and there is no mechanism for it to be injected via a config property. However, this is not as restrictive as it seems, the name just refers to entries in the persistence.xml file, which itself uses configuration data from the Helidon configuration system, so if we do want to change the database details we can achieve that by modifying the config, and that can be done without source code modifications.
+
 ### Configuring the database
 
-Helidon CDI configures the JPA / JTA (transaction system) for us and creates the Entity manager (more on this in a moment.) The JPA / JTA uses the classpath resource META-INF/persistence.xml to define what classes will be persisted, however we don't want to encode things like the database access details in something that's part of the jar file distribution, somewhat of a security risk !
+Helidon CDI configures the JPA / JTA (transaction system) for us and creates the Entity manager. The JPA / JTA uses the classpath resource META-INF/persistence.xml to define what classes will be persisted, however we don't want to encode things like the database access details in something that's part of the jar file distribution, somewhat of a security risk !
 
 Normally you'd include the database settings in an external configuration file, but here I want to show another aspect of the Helidon configuration system, and we'll use the Java system properties to hold them (we could equally have used the environment variables, and in the Kubernetes lab we will do just that, with no code changes to handle that switch.)
+
+#### Specifying the database connection details
+
+We need to provide the details of the database connection. Helidon has many ways to do this as you've seen earlier, and so show a different way than using a config file we're going to define them as part of the Java system properties. The Java system properties are the highest priority of configuration items (environment variables are the next level, then files, directories and URL's) These are defined on the java command line using the syntax `-Djavax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource` As we're using Eclipse to start our microservices we need to configure the Eclipse to pass the properties along for us.
 
 If you are using a database provided by an instructor then they will give you the values for the database connection, or may have already set this up in your virtual machine. If you setup your own database then you will have specified a username and password (if you used our example that will be a username of `HelidonLabs` and a password of `H3lid0n_Labs`) have downloaded the wallet file from which you will have got the connection name, for example `tg_high` **yours will be different unless your database is called `tg` !
 
@@ -291,51 +336,6 @@ As an example for **my** database it looks like this, **but yours will vary**
 In case you wanted to see how to use the a config file for the database settings there is an example in example-config-data/stockmanager-database.yaml file. This isn't actually an imported part of the config files, but it shows you how it could be done using a config file.
 
 
-### Getting an entity manager
-JPA requires an entity manager to do the work of interacting with the database for us. Historically however that would require code like the following which is in the StockResource constructor.
-
-```
-	public StockResource(@ConfigProperty(name = "app.persistenceUnit") String persistenceUnitProvided,
-			DepartmentProvider departmentProviderProvided) {
-		persistenceUnit = persistenceUnitProvided;
-		EntityManagerFactory emfactory = Persistence.createEntityManagerFactory(persistenceUnit);
-		this.entityManager = emfactory.createEntityManager();
-		departmentProvider = departmentProviderProvided;
-	}
-```
-
-There are a several problems here. Firstly, we do this each time we create a new instance of the StockResource, and that happens every time we get a request. That's a potentially expensive set of method calls.
-
-Secondly we have to close the entity manager down when it's no longer needed, that can result in some complex code paths to follow, especially if there are exceptions being handled as well.
-
-Also why write code when we don't have to ? With Helidon we have the context and dependency injections capabilities, so we don't however need to setup the entity manager itself, we can have Helidon do that for us.
-
-- In file **StockResource.java**, scroll up to the constructor of the class **StockResource**
-- Remove the lines that set up the entity manager, it should now look like below:
-
-```
-	public StockResource(@ConfigProperty(name = "app.persistenceUnit") String persistenceUnitProvided,
-			DepartmentProvider departmentProviderProvided) {
-		persistenceUnit = persistenceUnitProvided;
-		departmentProvider = departmentProviderProvided;
-	}
-```
-- Scroll up to the **top** of the file, just below the class definition, and locate where the **EntityManager** is defined and add an annotation :
-  - `@PersistenceContext(unitName = "HelidonJTA")`
-
-```
-public class StockResource {
-	@PersistenceContext(unitName = "HelidonJTA")
-	private EntityManager entityManager; 
-```
-
-Note that the name of the persistence context is defined as a hard coded String, and there is no mechanism for it to be injected via a config property. However, this is not as restrictive as it seems, the name just refers to entries in the persistence.xml file, which itself uses configuration data from the Helidon configuration system, so if we do want to change the database details we can achieve that by modifying the config, and that can be done without source code modifications.
-
-### Specifying the database connection details
-
-We need to provide the details of the database connection. Helidon has many ways to do this as you've seen earlier, and so show a different way than using a config file we're going to define them as part of the Java system properties. The Java system properties are the highest priority of configuration items (environment variables are the next level, then files, directories and URL's) These are defined on the java command line using the syntax `-Djavax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource` As we're using Elcipse to start our microservcies we need to configure the Eclipse to pass the properties along for us.
-
-If you are using a database provided by an instructor then they will give you the values for the database connection, or may have already set this up in your virtual machine. If you setup your own database then you will have specified a username and password (if you used our example that will be a username of `HelidonLabs` and a password of `H3lid0n_Labs`) have downloaded the wallet file from which you will have got the connection name, for example `tg_high` **yours will be different unless your database is called `tg` !
 
 
 
@@ -377,21 +377,9 @@ The result should show the application listening on http://localhost:8081
 ```
 
 
-- Use curl to see what's there (Expect an error)
+- Use curl to see what's there
   -  `curl -i -X GET -u jack:password http://localhost:8081/stocklevel`
 
-
-<details><summary><b>What with the SQL in the output ?</b></summary>
-<p>
-You may have seen what looks like SQL in the output. The library we are using here to actually handle the database conneciton is a very commonly used package called Hibernate. One of it's nice features is that it can be set to create the database tables for you if needed. 
-
-You're probably running this against a nice new database that doesn't have the required tables in it yet, so Hibernate has looked at the classes it's been told to manage (These are specified in the persistence.xml file) and has created the tables for us. It can also modify the database scheme to match the classes if the classes have been changed.
-
-Of course in a production environment you wouldn't want the database changing under you as the classes are updated, so you'd turn that off (the `hibernate.hbm2ddl.auto` setting) but for a lab it makes things a lot easier for us. 
-</p></details>
-
-- Use curl to see what's there:
-  -  `curl -i -X GET -u jack:password http://localhost:8081/stocklevel`
 
 ```
 HTTP/1.1 200 OK
@@ -403,8 +391,20 @@ content-length: 2
 []
 ```
 
-There should be **nothing** returned, if there is it means that you didn't chose a unique department value ! Chose something that is unique, update the stockmanager-config.yaml file department attribute and restart the program.
 
+
+There should be just `[]` returned, if there are any item details it means that you didn't chose a unique department value ! Chose something that is unique, update the stockmanager-config.yaml file department attribute, restart the program and try again.
+
+
+<details><summary><b>What with the SQL in the console output ?</b></summary>
+<p>
+
+You may have seen what looks like SQL in the output. The library we are using here to actually handle the database connection is a very commonly used package called Hibernate. One of it's nice features is that it can be set to create the database tables for you if needed. 
+
+You're probably running this against a nice new database that doesn't have the required tables in it yet, so Hibernate has looked at the classes it's been told to manage (These are specified in the persistence.xml file) and has created the tables for us. It can also modify the database scheme to match the classes if the classes have been changed.
+
+Of course in a production environment you wouldn't want the database changing under you as the classes are updated, so you'd turn that off (the `hibernate.hbm2ddl.auto` setting) but for a lab it makes things a lot easier for us. 
+</p></details>
 - Let's try to create some stock items - **error expected**:
   -  `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pins/5000`
 
@@ -442,7 +442,7 @@ javax.persistence.TransactionRequiredException
 ### Automatic Transactions
 We could manually ask the entity manager to start and and transactions, but that's a load of extra code, and the possible paths if there are problems to do the rollback or commit are significant. Let's use the Java Transaction API (JTA) to do it for us.
 
-Fortunately for us all we need is an @Transactional annotation and Heliton will trigger the JTA to do the right things.
+Fortunately for us all we need is an @Transactional annotation and Heliton will trigger the JTA to manage the transactions for us.
 
 - Still in file **StockResource.java**, locate the StockResource class definition
 - Add the transaction annotation on the top:
@@ -476,14 +476,45 @@ In the current version of Helidon there is a conflict between the processing of 
 
 ---
 
+Let's try the POST again
 
+- `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pins/5000`
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Tue, 22 Sep 2020 18:57:53 GMT
+connection: keep-alive
+content-length: 36
+
+{"itemCount":5000,"itemName":"Pins"}
+```
+
+We've successfully called the creation API with no errors. On success the return is the newly created object
+
+Once the first operation has returned and the database connection is all setup the subsequent calls are much faster.
+
+Let's confirm if it's been committed to the DB. Here we're going to use the API to retrieve a specific item
+
+- `curl -i -X GElocalhost:8081/stocklevel/Pins`
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Tue, 22 Sep 2020 19:02:14 GMT
+connection: keep-alive
+content-length: 36
+
+{"itemCount":5000,"itemName":"Pins"}
+```
+
+It has been committed to the database.
 
 ### Creating some data and testing the stockmanager works
 - Restart the stockmanaer.Main 
 
 - Use curl to create some stock items (expect an error on the last one) :
   - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pin/5000`
-  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pins/5000`
   - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pencil/200`
   - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Eraser/50`
   - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Book/100`
@@ -496,14 +527,11 @@ Date: Sun, 5 Jan 2020 18:58:43 GMT
 connection: keep-alive
 content-length: 35
 
-{"itemCount":5000,"itemName":"pin"}
+{"itemCount":5000,"itemName":"Pin"}
 
-...
+... similar output for the rest ...
 ```
 
-On success the return is the newly created object
-
-Once the first operation has returned and the database connection is all setup the subsequent calls are much faster.
 
 Note that on the 2nd attempt to add the books we don't get anything back representing the newly create object - it's already there, and the logs give us an error message!
 

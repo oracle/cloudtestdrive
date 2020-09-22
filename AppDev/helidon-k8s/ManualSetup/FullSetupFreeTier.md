@@ -329,11 +329,17 @@ The installer progress will be displayed
  
 ![](images/11-eclipse-installer-finished-install-path.png)
 
-- As Eclipse starts you will be presented with a workspace selection option. Click the `use this as the default and do not ask again` option, then the `Launch` button
+As Eclipse starts you will be presented with a start up "splash" then workspace selection option. 
+
+- Set the eclipse workspace to be `/home/opc/workspace` (If you chose a different location you will have to remember to use that new location in many later stages.)
 
 ![](images/20-eclipse-start-workspace-selection.png)
 
-You will be presented with the Eclipse starup. This may include a welcome page. You can close it by clicking the `x` as per normal with sub windows.
+- Click the `use this as the default and do not ask again` option, then the `Launch` button
+
+![](images/20a-eclipse-start-default-workspace-selection.png)
+
+You will be presented with the Eclipse startup. This may include a welcome page. You can close it by clicking the `x` as per normal with sub windows.
 
 ![](images/21-eclipse-welcome-page.png)
 
@@ -381,7 +387,7 @@ To enable us to update the code used by the labs without having to update the De
 
 ![](images/40-open-firefox-menu.png)
 
-- Go to the URL `https://github.com/CloudTestDrive/helidon-labs`
+- Go to the URL `https://github.com/CloudTestDrive/helidon-labs` - Do this in the browser **in the virtual machine**
 
 - Click the `Code` button
 
