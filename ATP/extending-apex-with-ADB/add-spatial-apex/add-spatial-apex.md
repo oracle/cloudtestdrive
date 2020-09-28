@@ -154,7 +154,7 @@ In our (simplified) example we will only look at the first row, and ignore any a
     - **Geocoding type**: "Geocoding"
     - **Collection Name**: `GEOCODER_RESULTS`
     - **Item contains Country Code**: `P6_COUNTRY`
-    - **Item containing address lines**: `P6_CONCATENATED ADDRESS` (This is the Page Item we created earlier)
+    - **Item containing address lines**: `P6_CONCATENATED_ADDRESS` (This is the Page Item we created earlier)
     - **Separator for address elements**: ","
     - **Fire on Initialization**: Off
 
