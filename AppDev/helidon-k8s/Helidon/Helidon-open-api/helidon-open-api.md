@@ -52,6 +52,8 @@ There are two ways to identify the annotations in your code:
 In general the costs of building and storing an index are way smaller than those of scanning each time, and this is the approach that Helidon uses when packaging a service, though when running within Eclipse it does a scan as otherwise you'd have to build the index each time you saved a file which would slow down the development process (This is why you may see warning messages about missing jandex.idx files when running the micro-servcies in Eclipse)
 
 To build the index Heldion uses a tool called jandex (Java ANnotaiton inDEXer) to build the index, This is done for you automatically when you package a service, but the OpenAPI code for some reason only seems to search the jandex index file, and not scan the code. This is why you will be running the maven build target process-classes later on.
+
+Because running JANDEX can take a lot of time (relatively speaking) you don't want to run it each time you make a change to a source code file in Eclipse, so it needs to be specifically run to generate the index when operating in Eclipse. We will shortly see how that is done.
 </p></details>
 
 ---
@@ -106,7 +108,7 @@ The title, description and version fields are I hope self explanatory
 ### Creating the index
 Before we can see the updates to the OpenAPI spec we need to build an index of the annotations
 
-Unlike the server processing annotations the OpenAPI processing only operates against a jandex index, and won't scan for OpenAPI annotations in the class files (in Helidon 1.4.3 at least, I'm not sure if this is a bug or a feature)
+Unlike the server processing annotations the OpenAPI processing only operates against a jandex index, and won't scan for OpenAPI annotations in the class files (I'm not sure if this is a bug or a feature)
 
 Because of this the jandex index needs to be built to reflect the OpenAPI annotations. To do this you can manually run maven in Eclispe with the process-classes goal.
 
@@ -132,7 +134,9 @@ Now to run a build with this target.
 
 ![](images/run-as-maven-build.png)
 
-In the resulting popup window chose the process-classes option
+Depending on the precise eclispe configuration there **may** be a resulting popup window, do not worry if this is not displayed and the build just continues
+
+- If there is a popup then chose the process-classes option.
 
 ![](images/maven-build-run-configurations.png)
 
@@ -175,22 +179,17 @@ In the console tab you'll see output similar to the following
 
 Note that the version numbers may differ.
 
+Towards the end of the output you can see that the Maven jandex plugin is run.
+
 ### Viewing the initial OpenAPI spec
 Now we've added an annotation covering the initial contents let's look at it. You must have created the jandex index as described above and stopped any existing instances (there is no need to have the stockmanager running, but if it already is don't worry)
 
 - Start the storefront service running using the Main class as before, this will cause the jandex.idx file to be read.
 
 - In a terminal window type 
-    - `curl -i http://localhost:8080/openapi`
+    - `curl  http://localhost:8080/openapi`
 
 ```yaml
-HTTP/1.1 200 OK
-Content-Type: application/vnd.oai.openapi;charset=UTF-8
-Date: Wed, 11 Mar 2020 17:18:56 GMT
-connection: keep-alive
-content-length: 1912
-
-
 components: 
   schemas:
     ItemDetails: 
@@ -561,7 +560,7 @@ This has given us the entire API, but the /status is probably not relevant to ex
  
 (It's the last line, so it may be a bit hidden)
  
-This tells Helidon to ignore any paths it fined in the StatusResource and ConfigurationResource classes when generating the Open API document.
+This tells Helidon to ignore any paths it finds in the StatusResource and ConfigurationResource classes when generating the Open API document.
 
 <details><summary><b>Other configuration settings for OpenAPI</b></summary>
 The Helidon runtime supports a large number of configuration settings that can be used to control the generation of the OpenAPI document, this include the ability to packages as well as classes to include / exclude, or if you need finer grained control you can even define filter and model classes that chose exactly which paths will be included or removed. 

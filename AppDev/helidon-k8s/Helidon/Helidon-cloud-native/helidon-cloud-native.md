@@ -20,12 +20,12 @@ This video is an introduction to the Helidon cloud native support lab. Once you'
 
 ---
 
-Most cloud native platforms (and Kubernetes in particular) need to know is a microservcies is running at all, if it's capable to responding to requests and if it has access to all the dependent services it needs to operate. In the event that these conditions are not fulfilled the cloud native platform will take steps like re-starting a microservice instance, or stopping sending it requests for a short while.
+Most cloud native platforms (and Kubernetes in particular) need to know if a microservices is running at all, if it's capable of responding to requests and if it has access to all the dependent services it needs to operate. In the event that these conditions are not fulfilled the cloud native platform will take steps like re-starting a microservice instance, or stopping sending it requests for a short while.
 
 The exercises in this section show how you can use Helidon to directly support the cloud native capabilities that Kubernetes uses. It does not directly cover using them in Kubernetes however, but if you're doing the microservices in kubernetes sections of the workshop then this will make sense when you do it.
 
 **Monitoring and metrics**
-Kubernetes does not itself have built in monitoring tools, however many users of Kubernetes use Prometheus which can use the /metrics API Helidon provides and we saw in the operations section of these labs to extract data on the operation and performance of a microservice.
+Kubernetes does not itself have built in monitoring tools, however many users of Kubernetes use Prometheus which can use the /metrics API Helidon provides and we saw in the operations section of these labs to extract data on the operation and performance of a microservice, then Grafana is used to visualise the metrics retrieved from Prometheus.
 
 ### Health
 Helidon has built in health info as standard. By default this is available on the same port as the service, but our runtime config (conf/storefront-network.yaml) separates these  onto different ports (8080 for the service, 9080 for the non service) 
@@ -54,7 +54,7 @@ Provding a Liveness capability is pretty simple. Somewhere in the class structur
 - Add an annotation to the class definition:
   -  `@Liveness`
 
-```
+```java
 
 @ApplicationScoped
 @Liveness
@@ -62,9 +62,9 @@ Provding a Liveness capability is pretty simple. Somewhere in the class structur
 public class LivenessChecker implements HealthCheck {
 ```
 
-Because this implements the HealthCheck interface it must provide a implementation of the call() method which returns a HealthCheckResponse.
+Because this implements the HealthCheck interface it must provide a implementation of the call() method which returns a HealthCheckResponse, this is at the end of the method. Please ignore the section of code that looks for a `/frozen` file, that is there to support exploring Liveness in the Kubernetes labs (and would not be in a production deployment !)
 
-```
+```java
 @Override
 	public HealthCheckResponse call() {
 	...
@@ -106,9 +106,11 @@ content-length: 574
 
 The health endpoint now includes the data we return from the Liveness check, in this case 
 
-```
+```json
 {"name":"storefront-live","state":"UP","status":"UP","data":{"frozen":false,"storename":"My Shop","uptime":3011}}
 ```
+
+There is of course a lot of other data that Kubernetes could use, for example to detect if a microservice instance was consuming to much memory.
 
 ### Readiness
 <details><summary><b>Intro on Readiness</b></summary>
@@ -132,7 +134,7 @@ Readiness is a way to let the microservices runtime determine if a service has e
 - Add the following annotation to the class ReadinessChecker
   -  `@Readiness`
 
-```
+```java
 @ApplicationScoped
 @Readiness
 @Slf4j
@@ -158,7 +160,7 @@ The readiness check is informing us that the service is ready and can process re
 
 Let's check that the service can indeed inform us of an issue - the backend storemanager not being available in this case :
 
-- On the **Eclipse console tab**, use the **Stop** button to stop the **stockmanager** process and stop it.
+- On the **Eclipse console tab**, switch to the **stockmanager** tab, then use the **Stop** button to stop the **stockmanager** process and stop it.
 
 Now let's make another readiness request to the storefront :
 
@@ -197,7 +199,10 @@ As the stockmanager is now up the storefront has it's dependencies satisfied and
 
 ### End of the lab
 You have finished all the labs in this initial section **A. Helidon**.  
-You can now start working on Section [B. Using Docker](../../Docker/DockerLabs.md)
+
+If you wich you can now do the [optional labs in the Helidon section](../Helidon-labs.md)
+ 
+If you don;t want to do those labs then if you are doing the full set of labs you can now start working on Section [B. Using Docker](../../Docker/DockerLabs.md)
 
 
 
