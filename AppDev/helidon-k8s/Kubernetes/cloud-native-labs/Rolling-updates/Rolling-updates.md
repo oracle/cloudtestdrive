@@ -100,7 +100,7 @@ kind: Deployment
 metadata:
   name: storefront
 spec:
-  replicas: 1 
+  replicas: 4 
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -577,8 +577,8 @@ replicaset.apps/zipkin-88c48d8b9                                         1      
 ```
 We see that all of the pods are now the original replica set version, and there are no pods in the new one.
 
-- If we check this by going to the status we can see the rollback has worked (remember to replace the IP address with the one for your service) :
-  -  `curl -i -k -X GET https://987.123.456.789/sf/status`
+- If we check this by going to the status we can see the rollback has worked (remember to replace <external IP> with the one for your service) :
+  -  `curl -i -k -X GET https://<external IP>/sf/status`
 
 ```
 HTTP/2 200 
@@ -588,7 +588,7 @@ content-type: application/json
 content-length: 51
 strict-transport-security: max-age=15724800; includeSubDomains
 
-{"name":"My Shop","alive":true,"version":"0.0.2"}
+{"name":"My Shop","alive":true,"version":"0.0.1"}
 ```
 
 Normally of course the testing of the pods would be linked into CI/CD automated tooling that would trigger the rollback if it detected a problem automatically, but here we're trying to show you the capabilities of Kubernetes rather than just run automation.
