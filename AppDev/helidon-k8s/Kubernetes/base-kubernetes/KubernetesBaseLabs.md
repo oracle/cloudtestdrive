@@ -2016,7 +2016,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 ```
 
 ### Changing the configuration
-We saw in the helidon labs that it's possible to have the helidon framework monitor the configuration files and triger a refresh of the configuration data if something changed. Let's see how that works in Kubernetes.
+We saw in the helidon labs that it's possible to have the helidon framework monitor the configuration files and trigger a refresh of the configuration data if something changed. Let's see how that works in Kubernetes.
 
 - Get the status resource data :
   -  `curl -i -k -X GET https://<external IP>/sf/status`

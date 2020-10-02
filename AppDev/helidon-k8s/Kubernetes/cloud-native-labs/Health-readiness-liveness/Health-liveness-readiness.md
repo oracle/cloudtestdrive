@@ -150,6 +150,36 @@ You may recall in the Helidon labs (if you did them) we created a liveness probe
 
 - Navigate to the **$HOME/helidon-kubernetes** folder
   - `cd $HOME/helidon-kubernetes`
+  
+- Stop the exisitng deployments
+
+-  `bash undeploy.sh`
+
+```
+Deleting storefront deployment
+deployment.apps "storefront" deleted
+Deleting stockmanager deployment
+deployment.apps "stockmanager" deleted
+Deleting zipkin deployment
+deployment.apps "zipkin" deleted
+Kubenetes config is
+NAME                                READY   STATUS    RESTARTS   AGE
+pod/stockmanager-6456cfd8b6-j6vf9   1/1     Running   0          66m
+pod/storefront-dcc76cccb-6ztsf      1/1     Running   1          66m
+pod/zipkin-88c48d8b9-7rx6q          1/1     Running   0          66m
+
+NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
+service/stockmanager   ClusterIP   10.100.65.58    <none>        8081/TCP,9081/TCP   3h52m
+service/storefront     ClusterIP   10.96.237.252   <none>        8080/TCP,9080/TCP   3h52m
+service/zipkin         ClusterIP   10.104.81.126   <none>        9411/TCP            3h52m
+
+NAME                                      DESIRED   CURRENT   READY   AGE
+replicaset.apps/stockmanager-6456cfd8b6   1         1         1       66m
+replicaset.apps/storefront-dcc76cccb      1         1         1       66m
+replicaset.apps/zipkin-88c48d8b9          1         1         1       66m
+
+```
+
 - Edit the file **storefront-deployment.yaml** using your prefered editor
 - Search for the Liveness probes section. This is under the spec.template.spec.containers section
 
@@ -225,35 +255,6 @@ Finally **failureThreshold** specifies how many consecutive failures are needed 
 Whatever your actual implementation you need to carefully consider the values above. Get them wrong and your service may never be allowed to start, or problems may not be detected.
 
 Let's apply the changes we made in the deployment :
-
-- Make sure you are in the folder **$HOME/helidon-kubernetes**
-
--  `bash undeploy.sh`
-
-```
-Deleting storefront deployment
-deployment.apps "storefront" deleted
-Deleting stockmanager deployment
-deployment.apps "stockmanager" deleted
-Deleting zipkin deployment
-deployment.apps "zipkin" deleted
-Kubenetes config is
-NAME                                READY   STATUS    RESTARTS   AGE
-pod/stockmanager-6456cfd8b6-j6vf9   1/1     Running   0          66m
-pod/storefront-dcc76cccb-6ztsf      1/1     Running   1          66m
-pod/zipkin-88c48d8b9-7rx6q          1/1     Running   0          66m
-
-NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
-service/stockmanager   ClusterIP   10.100.65.58    <none>        8081/TCP,9081/TCP   3h52m
-service/storefront     ClusterIP   10.96.237.252   <none>        8080/TCP,9080/TCP   3h52m
-service/zipkin         ClusterIP   10.104.81.126   <none>        9411/TCP            3h52m
-
-NAME                                      DESIRED   CURRENT   READY   AGE
-replicaset.apps/stockmanager-6456cfd8b6   1         1         1       66m
-replicaset.apps/storefront-dcc76cccb      1         1         1       66m
-replicaset.apps/zipkin-88c48d8b9          1         1         1       66m
-
-```
 
 - Deploy the updated version : `bash deploy.sh`
 
@@ -444,6 +445,8 @@ Kubernetes supports a readiness probe that we can call to see is the container i
 Unlike a liveness probe, if a container fails it's not killed off, and calls to the readiness probe continue to be made, if the probe starts reporting the service in the container is ready then it's added back to the list of containers that can deliver the servcie and requests will be routed to it once more.
 
 - Make sure you are in the folder **$HOME/helidon-kubernetes**
+
+
 - Edit the file **storefront-deployment.yaml**
 
 - Look for the section (just after the Liveness probe) where we define the **readiness probe**. 
@@ -542,7 +545,10 @@ That's all we're going to do with bash shell programming for now !
 Having made the changes let's undeploy the existing configuration and then deploy the new one
 
 In the OCI Cloud Shell
+
 - Navigate to the **$HOME/helidon-kubernetes** folder
+Let's stop the services running
+
 - Run the undeploy.sh script
   -  `bash undeploy.sh `
 
@@ -676,8 +682,8 @@ What happens if a request is made to the service while before the pod is ready ?
 
 To see what happens if the readiness probe does not work we can simply undeploy the stock manager service.
 
-- First let's check it's running fine  (replace the IP address with the one for your service, and be prepared for a short delay as we'd just restarted everything)
-  -  `curl -i -k -X GET -u jack:password https://987.123.456.789/store/stocklevel
+- First let's check it's running fine  (replace the <external IP> with the one for your service, and be prepared for a short delay as we'd just restarted everything)
+  -  `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel
 
 ```
 HTTP/1.1 200 OK
@@ -731,8 +737,8 @@ replicaset.apps/zipkin-88c48d8b9       1         1         1       28m
 
 Something else has also happened though, the storefront service has no pods in the ready state, neither does the storefront deployment and replica set. The readiness probe has run against the storefront pod and when the probe checked the results it found that the storefront pod was not in a position to operate, because the service it depended on (the stock manager) was no longer available. 
 
-- Let's try accessing the service (replace the IP address with the one for your service)
-  -  `curl -i -k -X GET -u jack:password https://987.123.456.789/store/stocklevel`
+- Let's try accessing the service (replace <external IP> with the one for your service)
+  -  `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
 
 ```
 HTTP/1.1 503 Service Temporarily Unavailable
@@ -811,9 +817,9 @@ replicaset.apps/storefront-74cd999d8      1         1         1       35m
 replicaset.apps/zipkin-88c48d8b9          1         1         1       35m
 ```
 
-The storefront readiness probe has kicked in and the services are all back in the ready state once again  (replace the IP address with the one for your service)
+The storefront readiness probe has kicked in and the services are all back in the ready state once again  (replace <external IP> with the one for your service)
 
-- Check the service : `curl -i -k -X GET -u jack:password https://987.123.456.789/store/stocklevel`
+- Check the service : `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
 
 ```
 HTTP/1.1 200 OK
@@ -829,9 +835,9 @@ Connection: keep-alive
 ### Startup probes
 You may have noticed above that we had to wait for the readiness probe to complete on a pod before it became ready, and worse we had to wait the intialDelaySeconds before we could sensibly even start testing to see if the pod was ready. This means that if we wanted to add extra pods then there is a delay before the new capacity come online and support the service, In the case of the storefront this is not to much of a problem as the service starts up fast, but for a more complex service, especially a legacy service that may have a startup time that varies a lot depending on other factors, this could be a problem, after all we want to respond to request as soon as we can.
 
-To solve this in Kubernetes 1.16 the concept of startup probes was introduced. A startup probe is a very simple probe that tests to see if the service has started running, usually at a basic level, and then starts up the liveness and readiness probes. Effectively the startupProbe means there is no longer any need for the initialDelaySeconds.
+To solve this in Kubernetes 1.18 the concept of startup probes will be introduced as a beta feature. A startup probe is a very simple probe that tests to see if the service has started running, usually at a basic level, and then starts up the liveness and readiness probes. Effectively the startupProbe means there is no longer any need for the initialDelaySeconds.
 
-Unfortunately however the startup probes are not supported in versions of Kubernetes prior to 1.16, and this lab is not yet fully updated for that. But there is example configuration in the storefront-deployment.yaml file to show how this would would be defined (the initialDeploymentSeconds would need to be removed from the liveness and readiness configurations.
+Unfortunately however the startup probes are not supported in standard versions of Kubernetes prior to 1.18, which at the time of writing was not available and this lab is not yet fully updated for that. But there is example configuration in the storefront-deployment.yaml file to show how this would would be defined (the initialDeploymentSeconds would need to be removed from the liveness and readiness configurations.
 
 
 
