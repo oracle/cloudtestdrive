@@ -27,7 +27,7 @@ You will be using the **Oracle OCI Cloud shell** to run the Kubernetes parts of 
 
 The **OCI Cloud Shell** is accessible through the Oracle Cloud GUI, and has a number of elements set up out of the box, like the Oracle Cloud Command Line Interface, and it also has quite some useful command-line tools pre-installed, like git, docker, kubectl, helm and more.
 
-To access the OCI Cloud Shell, you can use the native browser on your laptop (no need for using the Linux desktop anymore).
+To access the OCI Cloud Shell, you can use the native browser on your laptop (you don't need to use the Linux desktop VM anymore).
 
 - Login to your Oracle Cloud Console
 
@@ -131,6 +131,8 @@ l_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFU
 
 - Be sure to write down the database connection name you have just found, you will need it later
 
+- Return to the home directory `cd $HOME`
+
 ### Configure the Helm repository
 
 Helm is the tool we will be using to install standard software into Kubernetes. While it's possible to load software into Kubertetes by hand Helm makes it much easier as it has pre-defined configurations (called charts) that it pulls from an internet based repository.
@@ -202,7 +204,7 @@ Access to the cluster is managed via a config file that by default is located in
 
 You will be presented with a page with details for downloading the kubeconfig file. Make sure the **OCI Cloud Shell Access** is the selected option.
 
-Look for a line similar to this :
+Look for the section with the download command, it will look lie this :
 
 ```
 oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaa<lots of stuff>aaa --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0
@@ -238,12 +240,12 @@ NAME        STATUS   ROLES   AGE     VERSION
 
 If the kubectl command returns `No resources found.` and you have only just created the cluster it may still be initializing. Wait a short time and try again until you get the nodes list.
 
- (The details and number of nodes will vary depending on the settings you chose when you created the cluster, it may also take a few mins for the nodes to be up and running)
+ (The details and number of nodes will vary depending on the settings you chose when you created the cluster, they will take a few mins for the nodes to be configured after the cluster management is up and running)
 
 
 ### Basic cluster infrastructure services install
 
-Usually a Kubernetes cluster comes with only the core Kubernetes services installed that are needed to actually run the cluster (e.g. the API, DNS services.) Some providers also give you the option of installing other elements (e.g. Oracle Kubernetes Envrionment provides the option of installing the Helm 2 tiller pod and / or the Kubernetes dashboard) but here we're going to assume you have a minimal cluster with only the core services and will need to setup the other services before you run the rest of the system.
+Usually a Kubernetes cluster comes with only the core Kubernetes services installed that are needed to actually run the cluster (e.g. the API, DNS services.) Some providers also give you the option of installing other elements, but here we're going to assume you have a minimal cluster with only the core services and will need to setup the other services before you run the rest of the system.
 
 For most standard services in Kubernetes Helm is used to install and configure not just the pods, but also the configuration around them. Helm has templates (called charts) that define how to install potentially multiple services and to set them up.
 
@@ -260,7 +262,7 @@ If you are using the OCI Cloud shell for **this** section of the lab (either in 
 
 - Run the following command : 
   
-  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set service.type=LoadBalancer --version 2.2.0`
+  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set service.type=LoadBalancer --version 2.8.0`
 
 ```
 NAME: kubernetes-dashboard
@@ -290,13 +292,13 @@ The helm options are :
 
 - `kubernetes-dashboard` This is the "human" name to give the installation, it's easier to use that later on than using a machine generated one.
 
-- `kubernetes-dashboard/kubernetes-dashboard` is the name of the *chart* to install. Helm will download the char from the repo kubernetes-dashboard and then execute it. if you had needed a specific chart version they you could have added a version specifier, for example `--version=1.2.3`
+- `kubernetes-dashboard/kubernetes-dashboard` is the name of the *chart* to install. Helm will download the chart from the repo kubernetes-dashboard and then execute it. if you had need a specific chart version (see a few lines down) then you could have added a version specifier, for example `--version=1.2.3`
 
 - `--namespace kube-system` This tells helm to install the dashboard into the kube-system namespace. Namespaces are ways of partitioning the physical cluster into a virtual cluster to help you manage related resources, they are similar to the way you organize files using folders on your computer, but can also restrict resource usage like memory and cpu and future versions of Kubernetes plan to support role based access controls based on namespaces.
 
 - `--set service.type=LoadBalancer` This tells helm to configure the Kubernetes service associated with the dashboard as being immediately accessible via a load balancer. Normally you wouldn't do this for a range of reasons (more on these later) but as this is an overview lab we're doing this to avoid having to wait for DNS name propogation getting certificates. In a production environment you would of course do that.
 
-- `--version 2.2.0` This tells helm to use a specific version of the helm chart.
+- `--version 2.8.0` This tells helm to use a specific version of the helm chart.
 
 </p></details>
 
@@ -318,7 +320,7 @@ Note that Helm does all the work needed here, it creates the service, deployment
 
 ```
 NAME                	NAMESPACE  	REVISION	UPDATED                             	STATUS  	CHART                      	APP VERSION
-kubernetes-dashboard	kube-system	1       	2019-12-24 16:16:48.112474 +0000 UTC	deployed	kubernetes-dashboard-1.10.1	1.10.1 
+kubernetes-dashboard	kube-system	1       	2019-12-24 16:16:48.112474 +0000 UTC	deployed	kubernetes-dashboard-2.8.0	     2.0.4 
 ```
 
 We've seen it's been deployed by Helm, this doesn't however mean that the pods are actually running yet (they may still be downloading)
@@ -404,7 +406,7 @@ If you're using JSON and want to focus in on just one section of the data struct
   -  `kubectl get pod kubernetes-dashboard-bfdf5fc85-djnvb  -n kube-system -o=jsonpath='{.spec.containers[0].image}'`
 
 ```
-k8s.gcr.io/kubernetes-dashboard-amd64:v1.10.1
+k8s.gcr.io/kubernetes-dashboard-amd64:v2.0.4
 ```
 This used the "path" in json of .spec.containers[0].image where the first . means the "root" of the JSON structure (subesquent . are delimiters in the way that / is a delimiter in Unix paths) the spec means the spec object (the specification) containers[0] means the first object in the containers list in the spec object and image means the attribute image in the located container.
 
@@ -740,7 +742,7 @@ secret/tls-secret created
 - Run the following command : 
 
 - Install **ingress-nginx** using Helm 3:
-  -  `helm install ingress-nginx stable/nginx-ingress -n ingress-nginx --version 1.40.2 --set rbac.create=true --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-tls-secret"=tls-secret --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-ssl-ports"=443`
+  -  `helm install ingress-nginx stable/nginx-ingress -n ingress-nginx --version 1.41.3 --set rbac.create=true --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-tls-secret"=tls-secret --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-ssl-ports"=443`
 
 
 ```
@@ -809,7 +811,7 @@ In the popup locate the BackendSet option, click on it and select the `TCP-80` o
 
 Click the `Update Listener`
 
-![load-balancer-update-in-progress])images/load-balancer-update-in-progress.png)
+![load-balancer-update-in-progress](images/load-balancer-update-in-progress.png)
 
 You'll be presented with a `Work in progress` menu, for now just click the `Close` button and the update will continue in the background
 
@@ -1155,7 +1157,7 @@ storefront-management     *                 80      47s
 storefront-status         *                 80      47s
 zipkin                    *                 80      47s
 ```
-One thing that you may have noticed is that the ingress controller is running in the default namespae, but when we create the rules we are using the namespace we specified (in this case tg_helidon) This is because the rule needs to be in the same namespace as the service it's defining the connection two, but the ingress controller service exists once for the cluster (we could have more pods if we wanted, but for this lab it's perfectly capable of running all we need) We could put the ingress controller into any namespace we chose, kube-system might be a good choice in a production environment. If we wanted different ingress controllers then for nginx at any rate the --watch-namespace option restricts the controller to only look for ingress rules in specific namespaces.
+One thing that you may have noticed is that the ingress controller is running in the ingress-nginx namespae, but when we create the rules we are using the namespace we specified (in this case tg_helidon) This is because the rule needs to be in the same namespace as the service it's defining the connection two, but the ingress controller service exists once for the cluster (we could have more pods if we wanted, but for this lab it's perfectly capable of running all we need) We could put the ingress controller into any namespace we chose, kube-system might be a good choice in a production environment. If we wanted different ingress controllers then for nginx at any rate the --watch-namespace option restricts the controller to only look for ingress rules in specific namespaces.
 
 If you look at the rules in the ingressConfig.yaml file you'll see they setup the following mappings
 
@@ -1496,16 +1498,16 @@ We need to configure the stockmanager-config.yaml file. You need to do this even
 
 Example :
 
-```
+```yaml
 app:
-  persistenceUnit: "HelidonATPJTA"
+  persistenceUnit: "stockmanagerJTA"
   department: "just_a_name"
 ```
 
 
 \---
 
-In the helidon-kubernetes/base-kubernetes folder there is a script create-configmaps.sh. We have created this to help you setup the configuration maps (though you can of course do this by hand instead of creating a script.) If you run this script it will delete existing config maps and create an up to date config for us :
+In the $HOME/helidon-kubernetes/base-kubernetes folder there is a script create-configmaps.sh. We have created this to help you setup the configuration maps (though you can of course do this by hand instead of creating a script.) If you run this script it will delete existing config maps and create an up to date config for us :
 
 -  `bash create-configmaps.sh `
 
@@ -1712,6 +1714,8 @@ The config files of the storefront and stockmanager refer to the location in the
 - Repeat this operation for the file **storefront-deployment.yaml**
   
   - Edit the line specifying the image to reflect *your* docker image location for the storefront.
+
+The `deploy.sh` script just does a sequence of commands to apply the deployment configuration files, for example `kubectl apply -f zipkin-deployment.yaml --record=true` You could of course issues these commands by hand if you liked, but we're using a script here to save typo probems, and also because it's good practice to scritp this type of thing, so tyou know **exactly** the command that was run - which can be useful if you need to **exactly** reproduce it !
 
 - Now run the deploy.sh script
   -  `bash deploy.sh`
@@ -1961,6 +1965,19 @@ As we are running zipkin and have an ingress setup to let us access the zipkin p
 - Open your browser
 - Go to the ingress end point for your cluster, for example http://<external IP>/zipkin (replace with *your* ingress controllers Load balancer IP address)
 
+- In the browser, accept a self signed certificate.
+  - In Safari you will be presented with a page saying "This Connection Is Not Private" Click the "Show details" button, then you will see a link titled `visit this website` click that, then click the `Visit Website` button on the confirmation pop-up. To update the security settings you may need to enter a password, use Touch ID or confirm using your Apple Watch.
+  - In Firefox once the security risk page is displayed click on the "Advanced" button, then on the "Accept Risk and Continue" button
+  - In Chrome once the "Your connection is not private" page is displayed click the advanced button, then you may see a link titled `Proceed to ....(unsafe)` click that. 
+  
+We have had reports that some versions of Chrome will not allow you to override the page like this, for Chrome 83 at least one solution is to click in the browser window and type the words `thisisunsafe` (copy and past doesn't seem to work, you need to actually type it.) Alternatively use a different browser.
+
+![Zipkin query](images/zipkin-initial-query.png)
+
+- Click the `Run Query` button to get the traces list
+
+In my case I had made two requests before the lazy initialization sorted everything out, so there are a total of three traces.
+
 ![List of traces in Zipkin](images/zipkin-traces-list.png)
 
 - Select the most recent trace and retrieve the data from that
@@ -1980,7 +1997,7 @@ content-type: text/plain
 content-length: 1
 strict-transport-security: max-age=15724800; includeSubDomains
 
-3
+2
 ```
 
 And in this case we are going to look at data on the admin port for the stock management service and get it's readiness data
@@ -1995,7 +2012,7 @@ content-type: application/json
 content-length: 166
 strict-transport-security: max-age=15724800; includeSubDomains
 
-{"outcome":"UP","status":"UP","checks":[{"name":"stockmanager-ready","state":"UP","status":"UP","data":{"department":"TestOrg","persistanceUnit":"HelidonATPJTA"}}]}
+{"outcome":"UP","status":"UP","checks":[{"name":"stockmanager-ready","state":"UP","status":"UP","data":{"department":"TestOrg","persistanceUnit":"stockmanagerJTA"}}]}
 ```
 
 ### Changing the configuration
@@ -2027,7 +2044,7 @@ We've mounted the sf-config-map (which contains the contents of storefront-confi
     ```
     app:
       storename: "My Shop"
-      minimumdecrement: 4
+      minimumdecrement: 2
 
     tracing:
       service: "storefront"
@@ -2077,7 +2094,7 @@ Now let's return to the pod and see what's happened
     ```
     app:
       storename: "Tims Shop"
-      minimumdecrement: 3
+      minimumdecrement: 2
     
     tracing:
       service: "storefront"
