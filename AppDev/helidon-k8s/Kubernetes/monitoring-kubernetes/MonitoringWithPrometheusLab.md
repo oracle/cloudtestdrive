@@ -55,9 +55,11 @@ To separate the monitoring services from the  other services we're going to put 
 
 ### Prometheus
 
-<details><summary><b>Older versions of Kubernetes than 1.16.8</b></summary>
+<details><summary><b>Older versions of Kubernetes than 1.17.9</b></summary>
 <p>
-We assume you are using Kubernetes 1.16.8 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the version of the prometheus helm charts (11.6.0 at the time of writing) were found to work. If you were using an older version of Kubernetes you may need to specify a particular version of the helm chart as follows :
+We assume you are using Kubernetes 1.17.9 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the version of the prometheus helm charts (11.12.1 at the time of writing) were found to work. If you were using an older version of Kubernetes you may need to specify a particular version of the helm chart as follows :
+
+Kubernetes 1.16.9 Promteheus helm chart 11.6.8 worked for us
 
 Kubernetes 1.15.7 Prometheus helm chart 9.7.4 worked for us
 
@@ -72,7 +74,7 @@ To specify a specific older version use the version keyword in your help command
 Installing Prometheus is simple, we just use helm.
 
 - In the OCI Cloud Shell type
-  -  `helm install prometheus stable/prometheus --namespace monitoring --set server.service.type=LoadBalancer --version 11.6.0`
+  -  `helm install prometheus stable/prometheus --namespace monitoring --set server.service.type=LoadBalancer --version 11.12.1`
   
 
 ```
@@ -148,7 +150,7 @@ If the external IP is <pending> then Kubernetes is still starting the Prometheus
 
 Let's go to the service web page
   - In your web browser open up (replace <Ip address> with the IP you got **for the prometheus server**)
-    - `http://<ip address>/graph`
+    - `http://<prometheus ip address>/graph`
  
 You'll see the Initial prometheus graph page as below.
 
@@ -159,19 +161,21 @@ Let's check that Prometheus is scraping some data.
 - Click the "Insert Metric At Cursor" button
   - you will see a *lot* of possible choices exploring the various servcies built into Kubernetes (Including apiserver, Core DNS, Container stats, the number of various kubernetes objects like secrets, pods, configmaps and so on.)
 
-- In the dropdown select `http_requests_total` or `prometheus_http_requests_total` option 
+- In the dropdown select `kubelet_http_requests_total`  
 - Click the **Execute** button. 
 
-Alternatively rather than selecting from the list you can just start to type `http_requests_total` into the Expression box, as you type a drop down will appear showing the possible metrics that match your typing so far, once the list of choices is small enough to see it chose `http_requests_total` from the list (or just finish typing the entire name and press return to select it) 
+Alternatively rather than selecting from the list you can just start to type `kubelet_http_requests_total` into the Expression box, as you type a drop down will appear showing the possible metrics that match your typing so far, once the list of choices is small enough to see it chose `kubelet_http_requests_total` from the list (or just finish typing the entire name and press return to select it) 
 
 You will be presented with either console text data
 
-![prometheus-http-requests-total-console](images/prometheus-http-requests-total-console.png)
+![prometheus-http-requests-total-console](images/prometheus-kubelet-http-requests-total-console.png)
 
 or a graph
-![prometheus-http-requests-total-graph](images/prometheus-http-requests-total-graph.png)
+![prometheus-http-requests-total-graph](images/prometheus-kubelet-http-requests-total-graph.png)
 
 - Click the "Graph" or "Console" buttons to switch between them
+
+The Kubelet is the code that runs in the worker nodes to perform management actions like starting pods and the like, we can therefore be reasonably confident it'll be available to select.
 
 Note that the precise details shown will of course vary, especially if you've only recently started Prometheus.
 
@@ -354,7 +358,7 @@ replicaset.apps/zipkin-88c48d8b9         1         1         0       1s
 
 This script just does a kubectl apply -f on each of the deployments. 
 
-If we use kubectl to get the status after a short while we'll see everything is working as expected and the pods are Running
+If we use kubectl to get the status after a short while (the pods may have to wait for their readiness probes to be operational) we'll see everything is working as expected and the pods are Running
 
 - View status: `kubectl get all`
 
@@ -400,7 +404,7 @@ Now we have configured Prometheus to scrape the data from our services we can lo
 - Return to the Graph page in the Prometheus web page
 - Click on the Graph button at the top of the page.
 
-- In the Expression box use the auto complete function by typing the start of `application:list_all_stock_meter_total` or select it from the list under the **Insert metric at cursor** button.
+- In the Expression box use the auto complete function by typing the start of `application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_listAllStock_total` or select it from the list under the **Insert metric at cursor** button.
 
 - Click the Execute button.
 
@@ -416,8 +420,8 @@ If we look at the data we can see that the retrieved value is 0 (it may be anoth
 
 Let's make a few calls to list the stock and see what we get
 
-- Execute the following command a few times, **replacing *your_ip* with your Ingress endpoint:**
-  -  `curl -i -k -X GET -u jack:password https://your_ip/store/stocklevel`
+- Execute the following command a few times, **replacing <external IP> with your Ingress endpoint (not the prometheus IP):**
+  -  `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
 
 ```
 HTTP/2 200 
@@ -431,7 +435,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 ```
 
 - Go back to the Prometheus browser window
-- Reload the page 
+- Reload the page and make sure you're on the console tab
 
 We see that our changes have been applied.  Note it may take up to 60 seconds for Prometheus to get round to scraping the metrics form the service, it doesn't do it continuously as that may put a significant load on the services it's monitoring.
 
@@ -443,29 +447,33 @@ And in the Graph we can see the data history
 
 ![prometheus-list-stock-requested-graph](images/prometheus-list-stock-requested-graph.png)
 
-In this case you can see a set of 10 requests, then waiting a couple of mins before making another 5 requests.
+In this case you can see a set of 9 requests, you may of course have done a different number, or had a break between requests, so what you see will vary.
 
 When we did the Helidon labs we actually setup the metrics on the call to list stock to not just generate an absolute count of calls, but to also calculate how man calls were begin made over a time interval. 
 
-- Change the metric from `application:list_all_stock_meter_total` to `application:list_all_stock_meter_one_min_rate_per_second`
+Make a few more curl requests to ensure we have some data groupings, take a short break and then make a few more.
 
-We can see the number of calls per second averaged over 1 min. This basically provides us with a view of the number of calls made to the system overtime, and we can use it to identify peak loads.
+- Change the metric from `application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_listAllStock_total` to `application_listAllStockMeter_one_min_rate_per_second`
+
+We can see the number of calls to list all stock per second averaged over 1 min. This basically provides us with a view of the number of calls made to the system over time, and we can use it to identify peak loads.
 
 ![prometheus-list-stock-requested-graph-rat-per-sec-one-min](images/prometheus-list-stock-requested-graph-rat-per-sec-one-min.png)
 
-Prometheus can also produce multi value graphs. For example in addition to the counting metrics we also setup a timer on the listALlStock method to see how long calls to it took. If we now generate a graph on the timer we see in the Console view that instead of just seeing a single entry representing the latest data, that there are actually 6 entries representing different breakdowns of the data (0.5 being the most common data, 0.999 being the least common) Of course the data you see may vary depending on your situation and how much you've already been using the services.
+Prometheus can also produce multi value graphs. For example in addition to the counting metrics we also setup a timer on the listAllStock method to see how long calls to it took. If we now generate a graph on the timer we see in the Console view that instead of just seeing a single entry representing the latest data, that there are actually 6 entries representing different breakdowns of the data (0.5 being the most common data, 0.999 being the least common) Of course the data you see may vary depending on your situation and how much you've already been using the services.
+
+- Change the metrif to `application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_listAllStockTimer_seconds`
 
 ![prometheus-list-stock-timer-quantile-console](images/prometheus-list-stock-timer-quantile-console.png)
 
-Most of the time the requests are in the 0.165 to 0.172 seconds range, but there was one grouping which took over 11 seconds. This could be a cause for concern (in actually the first request always takes a lot longer because Helidon REST services and Database accesses are configured on the first request, and I had re-started the pods since the basic labs so one of my requests was a first access)
+We can see that 50% of the requests are within 0.12 seconds, and 99.9% are within 0.47 seconds.
 
-The graph is also a lot more interesting (you may have to scroll your Prometheus browser window to see all of the graph and legend information)
+The graph is also a lot more interesting, especially if we enabled the stacked mode
 
 ![prometheus-list-stock-timer-quantile-graph](images/prometheus-list-stock-timer-quantile-graph.png)
 
 It's not possible to show in a static window but as you move your mouse over the legend the selected data is highlighted, and if you click on a line in the legend only that data is displayed.
 
-Prometheus has a number of mathematical functions we can apply to the graphs it produces, these are perhaps not so much use if there's only a single pod servicing requests, but if there are multiple pods all generating the same statistics (perhaps because of a replica set providing multiple pods to a service for horizontal scaling) then when you gather information such as call rates (the  `application:list_all_stock_meter_one_min_rate_per_second` metric) instead of just generating and displaying the data per pod you could also generate data such as `sum(application:list_all_stock_meter_one_min_rate_per_second)` which would tell you the total number of requests across ***all*** the pods providing the service.
+Prometheus has a number of mathematical functions we can apply to the graphs it produces, these are perhaps not so much use if there's only a single pod servicing requests, but if there are multiple pods all generating the same statistics (perhaps because of a replica set providing multiple pods to a service for horizontal scaling) then when you gather information such as call rates (the  `application_listAllStockMeter_one_min_rate_per_second` metric) instead of just generating and displaying the data per pod you could also generate data such as `sum(application_listAllStockMeter_one_min_rate_per_second)` which would tell you the total number of requests across ***all*** the pods providing the service.
 
 It's also possible to do things like separate out pods that are being used for testing (say they have a deployment type of test rather than production) or many other parameters. If you want more details there is a link to the Prometheus Query language description in the further-information document
 

@@ -371,11 +371,11 @@ There are other types of metrics, for examples times.
 
 - Add a counter, timer and a meter annotation:
 
-  - ```java
-  	@Counted(name = "stockReporting")
+```java
+    @Counted(name = "stockReporting")
     @Timed(name = "listAllStockTimer")
     @Metered(name = "listAllStockMeter", absolute = true)
-    ```
+```
 
 Result:
 
