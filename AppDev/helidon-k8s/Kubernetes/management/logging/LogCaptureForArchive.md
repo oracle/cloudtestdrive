@@ -203,18 +203,18 @@ You now need to get the access key (this is the other part of the generated key 
 
 Click on the `Copy` link to get a copy of the key, save this in a text editor or something.
 
-You have now gathered the 
+You have now gathered the information we need to write data into the Objact Storage Service.
 
 ### Create the storage bucket
 
-You can let the S3 integration just create the storage bucket, but the scenario we are looking at here is for the long term retention of the log data for occasional access, in that case you want the cheapest possible storage, and for that you need the archive storage tier for the storage bucket. This is not the default tier so it needs to be set when the Oracle Object Storage Service bucket is created.e delay to retrieve the data and as you'd be wiping them every day once they were uploaded you would use the standard tier.
+You can let the S3 integration just create the storage bucket, but the scenario we are looking at here is for the long term retention of the log data for occasional access, in that case you want the cheapest possible storage, and for that you need the archive storage tier for the storage bucket. This is not the default tier so it needs to be set when the Oracle Object Storage Service bucket is created. The archive tier does mean that there is a delay to retrieve the data (Archive after all is about long term efficient storage of the data) so if you were planning on doing something with the data directly (For example uploading into the Oracle log analytics service) as you'd be transferring them once they were uploaded to the storage service, and probably only retaining them for a short while after that you would use the standard tier.
 
 <details><summary><b>What's the difference between Standard and Archive tiers?</b></summary>
 <p>
 
 The `Standard` storage tier is designed for immediate access, the `Archive` tier is designed for infrequent access, may have a time delay (up to an hour) between requesting and being able to access the data. There is a significant cost difference between the two storage tiers, at the time of writing this document (early May 2020)  for the Object storage service data in the archive tier was 1/10th the cost of standard tier in terms of GB data stored / month.
 
-Though it is an implementation detail (and I genuinely don't know if this is the case or not) it is highly likely that data placed in archive storage is actually held on magnetic tape, not disk. To make the data available for access the tape must be loaded into a tape drive from it's slot in the tape library (and there may be a delay for a tape drive to be available.) Then the tape drivers has to wind the tape to the right position to read the data (think of the old cassete tapes you may have has in your car when you wanted to locate a particular song - tapes are linear access devices, **not** true random access devices.) Then the drive has to read the data into a cache to make it available for access. ALl of this takes time and if you want to load data on a tape that is currently being used to write other data then you will also have to wait for the current write operations to complete before the tape can be repositioned to access your data. Thus there are several reasons why it can take a while to make archive data available for retrieval. For more information on tape libraries (the large libraries are impressive beasts and can hold over 100,000 tapes each.)
+Though it is an implementation detail (and I genuinely don't know if this is the case or not) it is highly likely that data placed in archive storage is actually held on magnetic tape, not disk. To make the data available for access the tape must be loaded into a tape drive from it's slot in the tape library (and there may be a delay for a tape drive to be available.) Then the tape drivers has to wind the tape to the right position to read the data (think of the old cassete tapes you may have has in your car when you wanted to locate a particular song - tapes are linear access devices, **not** true random access devices.) Then the drive has to read the data into a cache to make it available for access. All of this takes time and if you want to load data on a tape that is currently being used to write other data then you will also have to wait for the current write operations to complete before the tape can be repositioned to access your data. Thus there are several reasons why it can take a while to make archive data available for retrieval. For more information on tape libraries (the large libraries are impressive beasts and can hold over 100,000 tapes each.)
 
 In both cases the data is encrypted at rest, and is protected via the use of multiple copies and checksums.
 
@@ -253,9 +253,9 @@ We're going to create a new bucket set for archive storage
 
 - Click the `Create Bucket` button
 
-Note, if the bucket name must be unique in your tenancy, if it's not (even if the other bucket is in a different compartment) you will not be able to create it and will have to try again using a different name.
+Note, if the bucket name must be unique across your entire tenancy in the region, if it's not (even if the other bucket is in a different compartment) you will not be able to create it and will have to try again using a different name.
 
-You will now see the list of buckets in your compartment. Remember that in my case the `TG` bucket existed previously.
+You will now see the list of buckets in your compartment. Remember that in my case the `TG` bucket existed previously, so there are two shown here.
 
 ![](images/Object-storage-after-create-bucket.png)
 
@@ -271,7 +271,7 @@ The `fluentd-to-ooss-configmap.yaml` file defines a configuration map representi
 
 The `fluentd-s3-configmap.yaml` contains a config map with the specific settings we will be using (these are what you gathered above) which are applied to the environment variables inside the pod. You will need to edit this to hold the values you gathered.
 
-The `fluentd-daemonset-oss-rbac.yaml` configured the cluster role, service account, binding between the two and also the details of the daemonset that gathers the log data and writes it to the S3 compatible storage service. The daemon set uses the values that are set in the `fluentd-s3-configmap.yaml` for it's environment variables (look at the file for the details of how the environment variables are defined in terms of config map entries.) This means we won't need to change the daemon set configuration / it's yaml file if we want to change those settings.
+The `fluentd-daemonset-oss-rbac.yaml` configures the cluster role, service account, binding between the two and also the details of the daemonset that gathers the log data and writes it to the S3 compatible storage service. The daemon set uses the values that are set in the `fluentd-s3-configmap.yaml` for it's environment variables (look at the file for the details of how the environment variables are defined in terms of config map entries.) This means we won't need to change the daemon set configuration / it's yaml file if we want to change those settings.
 
 <details><summary><b>How does Kubernetes know where to get the environment variable values ?</b></summary>
 <p>
@@ -301,9 +301,13 @@ in the `env:` section we see the name of the environment variable (`SWITCH_LOG_F
 You will need to edit the `fluentd-s3-configmap.yaml` file and update it with the values you gathered earlier. Remember to keep the values in double quotes.
 
 ACCESS_KEY - This is the OCI access key
+
 ACCESS_SECRET - This is the OCI secret key
+
 REGION - The OCI Region
+
 STORAGE_END_POINT - The object storage endpoint
+
 BUCKET_NAME - The name of the bucket you created
 
 Do not change the ROTATION_INTERVAL setting, leave that set to 60
@@ -329,7 +333,7 @@ data:
 <p>
 The SWITCH_LOG_FILE_INTERVAL tells fluentd how often to switch to a new output file.
 
-For lab purposes we have setup the configuration with a 60 second cycle on switching log files. This is to enable us to see output in a reasonable time (the files don't show up in the object storage until they have been written and closed, then the archiving process completed. In a normal situation this would be set to a much higher value, say 3600 seconds, so the log files would switch once an hour (so if you use this config file in your environment remember to update the SWITCH_LOG_FILE_INTERVAL value to reflect your needs.)
+For lab purposes we have setup the configuration with a 60 second cycle on switching log files. This is to enable us to see output in a reasonable time (the files don't show up in the object storage until they have been written and closed, then the archiving process completed. In a normal situation this would be set to a much higher value, say 3600 seconds, so the log files would switch once an hour (so if you use this config file in a production environment remember to update the SWITCH_LOG_FILE_INTERVAL value to reflect your needs.)
 
 ---
 
@@ -340,13 +344,28 @@ For lab purposes we have setup the configuration with a 60 second cycle on switc
 First we will create the `fluentd-config-to-ooss` config map, this is in the `fluentd-to-ooss-configmap.yaml` This is the basic configuration of fluentd and tells it to output to the S3 service, it just used environment variable place holders for the actual setting details though, the Kubernetes runtime will replace those with the actual values from the environment when the configuration map is added to the pod as it starts.
 
 - In the OCI Cloud Shell type :
-  - `kubectl apply -f fluentd-to-oss-configmap.yaml`
+  - `kubectl apply -f fluentd-to-ooss-configmap.yaml`
 
 ```
 configmap/fluentd-config-to-ooss configured
 ```
+<details><summary><b>Why didn't I need to specify a namespace ?</b></summary>
+<p>
 
-Now let's apply the configuration settings specific to our environment. These are the settings used to setup the environment variables inside the the daemonset configuration
+The namespace can be specified on the kubectl command line, in which case it would have looked like `kubectl apply -f fluentd-to-ooss-configmap.yaml --namespace logging` But to make the lab a little easier (and to reduce typing) I specified the namespace in the yaml file in the meta data section 
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluentd-s3-config
+  namespace: logging
+data:
+```
+
+</p></details>
+
+Now let's apply the configuration settings specific to our environment we just setup. These are the settings used to setup the environment variables inside the the daemonset configuration
 
 - In the OCI Cloud Shell type :
   - `kubectl apply -f fluentd-s3-configmap.yaml`
@@ -358,7 +377,7 @@ configmap/fluentd-s3-config configured
 Finally let's start the daemonset itself
 
 - In the OCI Cloud Shell type :
-  - `kubectl apply -f fluentd-daemonset-oss.yaml`
+  - `kubectl apply -f fluentd-daemonset-ooss-rbac.yaml`
 
 ```
 serviceaccount/fluentd-to-ooss created
@@ -372,11 +391,11 @@ Let's make sure that everything has started
   - `kubectl get daemonsets -n logging`
 
 ```
-NAME      DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
-fluentd   3         3         3       3            3           <none>          2m17s
+NAME              DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+fluentd-to-ooss   2         2         2       2            2           <none>          88s
 ```
 
-We can see that there are 3 instances running, this is because the cluster I am using has 3 nodes, and Kubernetes will ensure that there is a pod for each daemonset running on each node (restarting it on the same node if the pod crashes)
+We can see that there are 2 instances running, this is because the cluster I am using has 2 nodes, and Kubernetes will ensure that there is a pod for each daemonset running on each node (restarting it on the same node if the pod crashes)
 
 Let's get the specifics of the pods
 
@@ -385,19 +404,8 @@ Let's get the specifics of the pods
 
 ```
 NAME                                    READY   STATUS             RESTARTS   AGE
-elasticsearch-client-5597688787-mq8qx   1/1     Running            0          12d
-elasticsearch-client-5597688787-vzgk6   1/1     Running            0          12d
-elasticsearch-data-0                    1/1     Running            0          12d
-elasticsearch-data-1                    1/1     Running            0          12d
-elasticsearch-master-0                  1/1     Running            0          12d
-elasticsearch-master-1                  1/1     Running            0          12d
-elasticsearch-master-2                  1/1     Running            0          12d
-fluentd-to-es-6vvp4                     1/1     Running            0          42m
-fluentd-to-es-wgzrc                     1/1     Running            0          42m
-fluentd-to-es-wlhg7                     0/1     CrashLoopBackOff   1          42m
 fluentd-to-ooss-fgx4s                   1/1     Running            0          55s
 fluentd-to-ooss-frkrp                   1/1     Running            0          55s
-fluentd-to-ooss-w7g94                   1/1     Running            0          55s
 ```
 
 In this case I had left the fluentd and elastic search instances running from the log capture for processing module running. This is why you can see a total of 6 fluentd pods running, three (fluentd-to-es) writing to Elastic Search (whcih itself has a number of pods) and three (fluentd-to-ooss) writing to Oracle Object Storage Service. If you have not done the log capture for processing lab (or tidies up after it) then you should only see three fluend based pods.
@@ -505,7 +513,24 @@ It may be that the bucket name is already in use (though this should have genera
 ---
 </p></details>
 
+Do some requests to the storefront service which will generate log data
 
+- In the OCI Cloud Shell terminal type (remember to replace the <external IP> with the IP address for the ingress controller for your service):
+  - `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
+  
+```
+HTTP/1.1 200 OK
+Server: nginx/1.17.8
+Date: Thu, 23 Apr 2020 18:38:50 GMT
+Content-Type: application/json
+Content-Length: 149
+Connection: keep-alive
+Strict-Transport-Security: max-age=15724800; includeSubDomains
+
+[{"itemCount":100,"itemName":"Book"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":500,"itemName":"Pencil"},{"itemCount":5000,"itemName":"Pins"}]
+```
+
+Do this several times
 
 
 ### The saved log files
@@ -513,13 +538,22 @@ It may be that the bucket name is already in use (though this should have genera
 Though the creation of the logs in the Object Storage Service is pretty cloud independent actually retrieving them is outside Kubernetes and specific to the cloud provider. The instructions below apply to the Oracle Object Storage Service.
 
 Open the Object storage page on the OCI web console again and navigate to the bucket you created
+
+The Object storage UI provides a pseudo directory structure view. In this case there's only one "directory"
+
+- Click on the year
+
+![Object-storage-hierarchy-top-level}(images/Object-storage-hierarchy-top-level.png)
+
+- COntinue navigating down the pseudo directory structure until you get to the objects created today
+
 ![](images/Object-storage-bucket-with-logs.png)
 
 You can see the list of logs that have been saved. Note that all of them have a status of `Archived`.
 
 Let's start the process to restore from the archive.
 
-- Click the selection checkbox next to **one** of the entries. 
+- Click the selection checkbox next to **one** of the entries. Then click the `More Actions` button and chose `Restore` from the menu
 
 ![](images/Object-storage-select-for-restore.png)
 
@@ -537,11 +571,11 @@ By default the restored data is available for 24 hours before it's only availabl
 
 You can see that the status is now `Restoring`. Of course there is also a REST API to allow you to automate this process if you wanted in a production environment.
 
-It can take up to an hour for the restore process to complete (remember we chose `Archive` as the storage tier as we wanted to show how to do long term cost effective storage of log data, and the archive tier is far more cost effective compared to the `Standard` tier, but the balance of that is the time to restore if you need to access the data. 
+It can take several hours for the restore process to complete, especially if you chose multiple objects (remember we chose `Archive` as the storage tier as we wanted to show how to do long term cost effective storage of log data, and the archive tier is far more cost effective compared to the `Standard` tier, but the balance of that is the time to restore if you need to access the data. 
 
 If you want to progress with the lab then you can do so and come back to this section later to look at the restored data.
 
-Once the restore process has completed you will see that the objects state becomes `Restored`
+Once the restore process has completed you will see that the objects state becomes `Restored` (The images below were taken about an hour after starting the restore process.) If you don't want to wait for the restore to complete just look at the images below to see what can be done, then follow the instructions in the **Tidying up the environment** section.
 
 ![](images/Object-storage-restored-object.png)
 
@@ -551,7 +585,7 @@ Once the restore process has completed you will see that the objects state becom
 
 - Click the `Download` option on this menu
 
-Your web browser will start to download the object and depending on the web browser you will get a download options popup. This is the one I got when doing the download using Firefor on MacOS Catalina
+Your web browser will start to download the object and depending on the web browser you will get a download options popup. This is the one I got when doing a similar download using Firefox on MacOS Catalina
 
 ![](images/Object-storage-restored-object-download-options.png)
 
@@ -576,7 +610,7 @@ This may take a short time as there is quite a lot of stuff to be stopped and re
 
 Note that this will **not** reclaim the Object storage space used as the Object storage service is outside the Kubernetes environment. 
 
-<details><summary><b>If you want to reclaim the Object storage capacity used</b></summary>
+<details><summary><b>To reclaim the Object storage capacity used</b></summary>
 <p>
 
 If you want to reclaim the object storage capacity you've used for the log data (and you have looked at the restored data, or do not want to look at it) then follow these instructions.

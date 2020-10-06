@@ -415,24 +415,12 @@ The Kubernetes documentation has a [section covering logging](https://kubernetes
 
 If you are in a trial tenancy there are limitations on how many Load Balancers and other resources you can have in use at any time, and you may need them for other modules. The simplest way to release the resources used in his module (including the load balancer) is to delete the entire namespace.
 
-Note, if you are planning on doing the optional lab on capturing log data for archive you can leave the fluentd configuration setup monitoring to Elastic Search you can leave that running if you like. It is of course consuming resources, but there are situations where you may want long term storage of log data as well as short term analytics. After completing that module however please follow the instructions to delete the namespace.
-
-<details><summary><b>If you want to release the logging resources now<b></summary>
-<p>
-
-If you want to delete this logging work you can delete the logging namespace, this will remove all of the services in the namespace.
-
-To delete the logging namespace **Only do this if you want to delete the entire logging environment** do the following
-
 - In the OCI Cloud shell type 
   - `kubectl delete namespace logging`
   
 ```
 namespace "logging" deleted
 ```
----
-
-</p></details>
   
 ### Summary
 
