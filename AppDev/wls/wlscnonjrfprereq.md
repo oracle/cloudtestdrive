@@ -178,7 +178,7 @@ Click on the Secret name and take note of its **OCID**. We need to provide this 
 
 
 
-##  Step 4. Create ssh keys
+##  Step 3. Create ssh keys
 
 You need to generate a public and private ssh key pair. During provisioning using Marketplace, you have to specify the ssh public key that will be associated with each of the WebLogic VM nodes.
 

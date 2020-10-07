@@ -97,8 +97,6 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 - Continue setting up:
 
-  - **WebLogic Server Availability Domain**: choose one of the three ADs
-  
   - **WebLogic Server Node count**: *2* (we will create a WebLogic cluster with two nodes / managed servers)
   
   - **Admin user name**: *weblogic*
@@ -145,10 +143,15 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 
 - Leave Identity Cloud Service Integration **unchecked** as default (no integration) 
-- Leave **Provision with JRF** also unchecked, as we will not associate this WLS instance with a database.
+- Leave **OCI Policies** checked, as a Dynamic Group containing the WebLogic Compute nodes will be created automatically alongside policies for letting them access the Secrets from Vault
 
-![](images/wlsnonjrf.png)
+![](images/wlscnonjrfwithenv/image153.png)
 
+
+- Leave **Provision with JRF** unchecked, as we will not associate this WLS instance with a database
+- Leave **Configure Application Datasource** also unchecked, as we will not use application datasources
+
+![](images/wlscnonjrfwithenv/image155.png)
 
 
 - Review the Stack configuration and Click **Create**:
