@@ -39,7 +39,7 @@ Our starting point is an unfinished APEX application.
 
   ![](./images/import-app.png " ")
 
-5. Click Browse and locate the `f105.sql` file.
+5. Click **Choose File** and locate the `f105.sql` file.
 
   ![](./images/01_import_02.png " ")
 
@@ -47,7 +47,7 @@ Our starting point is an unfinished APEX application.
 
   ![](./images/01_import_03.png " ")
 
-7. On the Install Application Screen, click **Next**, and on the next screen click **Install**.
+7. On the *Install Application - Supporting Objects* Screen, click **Next**, and on the next screen  *Install Application - Confirmation* click **Install**.
 
   ![](./images/01_import_03B.png " ")
 
@@ -57,7 +57,7 @@ Our starting point is an unfinished APEX application.
 
 ## **STEP 2**: Review the APEX application (before Spatial functionality)
 
-1. On the Application 100 - Drone Permits App page, click **5 - Drone Flights Requests - Interactive Report** page.
+1. On the  Drone Permits App page, click **5 - Drone Flights Requests - Interactive Report** page.
 
   ![](./images/select-page-5.png " ")
 
@@ -65,7 +65,11 @@ Our starting point is an unfinished APEX application.
 
   ![](./images/run-page-5.png " ")
 
-  You see the Drone Flight Request application, with a list of requests.
+If prompted, sign in to the **Drone Permits App**  using the WORKSHOPATP username and password.
+
+![login-to-app](./images/login-app.png)
+
+ You will see the Drone Flight Request application, with a list of requests.
 
   ![](images/page-5.png " ")
 
@@ -77,12 +81,13 @@ Our starting point is an unfinished APEX application.
 
 The application currently has textual addresses that have not yet been verified in any way.
 Our goal is to check whether the address is within an urban area.
-However, before we can do that we must first convert the address into a geo-location (long-lat). The process of converting an address from text format to coordinates is called Geo-coding.
+However, before we can do that we must first convert the address into a geo-location (latitude and longitude). The process of converting an address from text format to coordinates is called Geo-coding.
 
-There are several publicly available web services that provide this service. Oracle provides the so-called eLocation service for this. Please read the license and usage terms [here](http://elocation.oracle.com/elocation/home.html) before using the service.
+There are several publicly available web services that provide this service. Oracle provides the  eLocation service for this. Please read the license and usage terms [here](http://elocation.oracle.com/elocation/home.html) before using the service.
 
 There's a plugin in APEX called "Elocation Geocoder", which takes care of the communication with this webservice.
 The input parameters for the plugin are:
+
 * The street, postal code and city, concatenated with commas.
 * The country.
 
@@ -102,7 +107,7 @@ In our (simplified) example we will only look at the first row, and ignore any a
 
   ![](./images/geocoding_00_create_field_for_concatenation.png " ")
 
-3. Under the Page Item tab, change the page name to `P6_CONCATENATED_ADDRESS` and select **Hidden** from the drop down list.
+3. Under the Page Item tab, change the page name to `P6_CONCATENATED_ADDRESS` and select **Hidden** from the drop down list for the Type.
 
   ![](./images/geocoding_00_create_field_for_concatenation2.png " ")
 
@@ -128,10 +133,10 @@ In our (simplified) example we will only look at the first row, and ignore any a
     - **Set Type**: "JavaScript Expression".
     - **JavaScript Expression**:
 
-    ```
-    <copy>$v("P6_ADDRESS").replace(",", " ") + ", " +
+    ```javascript
+    $v("P6_ADDRESS").replace(",", " ") + ", " +
     $v("P6_POSTAL_CODE").replace(",", " ") + ", " +
-    $v("P6_CITY").replace(",", " ")</copy>
+    $v("P6_CITY").replace(",", " ")
     ```
     - **Affected Elements, Items**: `P6_CONCATENATED_ADDRESS`
     - **Fire on Initialization**: Off
@@ -153,7 +158,7 @@ In our (simplified) example we will only look at the first row, and ignore any a
     - **Action**: "Oracle Elocation Geocoder [Plugin-In]"
     - **Geocoding type**: "Geocoding"
     - **Collection Name**: `GEOCODER_RESULTS`
-    - **Item contains Country Code**: `P6_COUNTRY`
+    - **Item containing Country Code**: `P6_COUNTRY`
     - **Item containing address lines**: `P6_CONCATENATED_ADDRESS` (This is the Page Item we created earlier)
     - **Separator for address elements**: ","
     - **Fire on Initialization**: Off
@@ -170,9 +175,15 @@ In our (simplified) example we will only look at the first row, and ignore any a
 
   ![](./images/geocoding_01_set_when_properties0.png " ")
 
-      - **Event**: elocation\_geocoder\_success
-      - **Selection Type**: JavaScript Expression
-      - **JavaScript Expression**: `document`
+
+
+- **Event**: elocation_geocoder_success
+
+- **Selection type**: JavaScript Expression
+
+- **JavaScript Expression**: `document`
+
+  
 
   ![](./images/geocoding_01_set_when_properties.png " ")
 
@@ -183,42 +194,46 @@ In our (simplified) example we will only look at the first row, and ignore any a
 15. On the Action tab:
 
     - **Action**: "Execute PL/SQL Code".
-    - Add the following PL/SQL:
-
-      ```
-      <copy>declare
-          cursor c_geocoded_address
-          is
-              SELECT n002, n003
-              from apex_collections where collection_name = 'GEOCODER_RESULTS'
-              and n002 is not null and n003 is not null
-              order by seq_id;
-          r_geocoded_address c_geocoded_address%rowtype;
-          lon varchar2(100);
-          lat varchar2(100);
-          coordinates MDSYS.SDO_GEOMETRY;
-          overlap_count number;
-          result varchar2(100) := '';
-      begin
-          open c_geocoded_address;
-          fetch c_geocoded_address into r_geocoded_address;
-          lon := r_geocoded_address.n002;
-          lat := r_geocoded_address.n003;
-          close c_geocoded_address;
-          if lon is not null and lat is not null then
-              result := result || 'Address found: ' || '[' || lon || ',' || lat || ']';
-          else
-            result := result || 'Address not found';
-          end if;
-          :P6_PERMIT := result;
-      exception
-          when others then
-              :P6_PERMIT := sqlerrm;
-      end;</copy>
-      ```
-
-     - **Fire on Initialization**: Off.
+    
+- Add the following PL/SQL:
+  
+  ```plsql
+  declare
+      cursor c_geocoded_address
+      is
+          SELECT n002, n003
+          from apex_collections where collection_name = 'GEOCODER_RESULTS'
+          and n002 is not null and n003 is not null
+          order by seq_id;
+      r_geocoded_address c_geocoded_address%rowtype;
+      lon varchar2(100);
+      lat varchar2(100);
+      coordinates MDSYS.SDO_GEOMETRY;
+      overlap_count number;
+      result varchar2(100) := '';
+  begin
+      open c_geocoded_address;
+      fetch c_geocoded_address into r_geocoded_address;
+      lon := r_geocoded_address.n002;
+      lat := r_geocoded_address.n003;
+      close c_geocoded_address;
+      if lon is not null and lat is not null then
+          result := result || 'Address found: ' || '[' || lat || ',' || lon || ']';
+      else
+        result := result || 'Address not found';
+      end if;
+      :P6_PERMIT := result;
+  exception
+      when others then
+          :P6_PERMIT := sqlerrm;
+  end;
+  ```
+  
      - **Items to Return**: "P6_PERMIT".
+    
+     - **Fire on Initialization**: Off.
+    
+       
 
   ![](./images/geocode_return_permit.png " ")
 
@@ -226,7 +241,7 @@ In our (simplified) example we will only look at the first row, and ignore any a
 
   ![](./images/summary_dynamic_actions.png " ")
 
-  You see one Click event that will a) construct the concatenated address and b) call the webservice. You see the elocator "success" event that is called to process the results of the geocoder service.
+You see one Click event that will a) construct the concatenated address and b) call the webservice. You see the elocator "success" event that is called to process the results of the geocoder service.
 
 17. Go to the "Drone Flight Requests - Interactive Report" page and run it.
 
@@ -234,7 +249,7 @@ In our (simplified) example we will only look at the first row, and ignore any a
 
 18. Edit any request, and click **Obtain Fly Zone Info**.
 
-  You should now see either "Address Found" with the long-lat combination or "Address Not Found".
+  You should now see either "Address Found" with the latitude-longitude combination or "Address Not Found".
 
   ![](./images/geocoding_02_handle_result3.png " ")
 
@@ -248,14 +263,14 @@ Oracle Autonomous database comes preconfigured with Oracle Spatial. Highlights o
 
 In our case we will verify that the coordinate of the proposed drone flight is not within any urban area by using the [Oracle Spatial operators](https://docs.oracle.com/database/121/SPATL/spatial-operators.htm#SPATL110). The operator `SDO_ANYINTERACT` will check if the coordinate overlaps/is inside any of the urban area polygons.
 
-1. Go back to the PL/SQL that's executed when the web service returns its result (edit the "Drone Flight Request - Details" page, then go to the Dynamic Actions tab and select the code under the TRUE
+1. Go back to the PL/SQL that's executed when the web service returns its result (edit the "Drone Flight Request - Details" page, then go to the Dynamic Actions tab and select the Execute PL/SQL Code under the TRUE
 
   ![](./images/geocoding_02_handle_result4.png " ")
 
 2. Change the PL/SQL code to the following and click **Save**:
 
-    ```
-    <copy>declare
+    ```pl/sql
+    declare
         cursor c_geocoded_address
         is
             SELECT n002, n003
@@ -275,7 +290,7 @@ In our case we will verify that the coordinate of the proposed drone flight is n
         lat := r_geocoded_address.n003;
         close c_geocoded_address;
         if lon is not null and lat is not null then
-            result := result || 'Address found: ' || '[' || lon || ',' || lat || ']';
+            result := result || 'Address found: ' || '[' || lat || ',' || lon || ']';
 
             --Added code for urban area check
             coordinates := MDSYS.SDO_GEOMETRY(2001, 4326, MDSYS.SDO_POINT_TYPE(lon, lat, NULL), NULL, NULL);
@@ -296,7 +311,7 @@ In our case we will verify that the coordinate of the proposed drone flight is n
     exception
         when others then
             :P6_PERMIT := sqlerrm;
-    end;</copy>
+    end;
     ```
 
 3. Run the "Drone Flight Requests - Interactive Report" page.
