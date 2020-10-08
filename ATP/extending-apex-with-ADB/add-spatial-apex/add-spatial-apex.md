@@ -133,10 +133,10 @@ In our (simplified) example we will only look at the first row, and ignore any a
     - **Set Type**: "JavaScript Expression".
     - **JavaScript Expression**:
 
-    ```
-    <copy>$v("P6_ADDRESS").replace(",", " ") + ", " +
+    ```javascript
+    $v("P6_ADDRESS").replace(",", " ") + ", " +
     $v("P6_POSTAL_CODE").replace(",", " ") + ", " +
-    $v("P6_CITY").replace(",", " ")</copy>
+    $v("P6_CITY").replace(",", " ")
     ```
     - **Affected Elements, Items**: `P6_CONCATENATED_ADDRESS`
     - **Fire on Initialization**: Off
@@ -196,39 +196,39 @@ In our (simplified) example we will only look at the first row, and ignore any a
     - **Action**: "Execute PL/SQL Code".
     
 - Add the following PL/SQL:
-    
-      ```plsql
-      declare
-          cursor c_geocoded_address
-          is
-              SELECT n002, n003
-              from apex_collections where collection_name = 'GEOCODER_RESULTS'
-              and n002 is not null and n003 is not null
-              order by seq_id;
-          r_geocoded_address c_geocoded_address%rowtype;
-          lon varchar2(100);
-          lat varchar2(100);
-          coordinates MDSYS.SDO_GEOMETRY;
-          overlap_count number;
-          result varchar2(100) := '';
-      begin
-          open c_geocoded_address;
-          fetch c_geocoded_address into r_geocoded_address;
-          lon := r_geocoded_address.n002;
-          lat := r_geocoded_address.n003;
-          close c_geocoded_address;
-          if lon is not null and lat is not null then
-              result := result || 'Address found: ' || '[' || lat || ',' || lon || ']';
-          else
-            result := result || 'Address not found';
-          end if;
-          :P6_PERMIT := result;
-      exception
-          when others then
-              :P6_PERMIT := sqlerrm;
-      end;
+  
+  ```plsql
+  declare
+      cursor c_geocoded_address
+      is
+          SELECT n002, n003
+          from apex_collections where collection_name = 'GEOCODER_RESULTS'
+          and n002 is not null and n003 is not null
+          order by seq_id;
+      r_geocoded_address c_geocoded_address%rowtype;
+      lon varchar2(100);
+      lat varchar2(100);
+      coordinates MDSYS.SDO_GEOMETRY;
+      overlap_count number;
+      result varchar2(100) := '';
+  begin
+      open c_geocoded_address;
+      fetch c_geocoded_address into r_geocoded_address;
+      lon := r_geocoded_address.n002;
+      lat := r_geocoded_address.n003;
+      close c_geocoded_address;
+      if lon is not null and lat is not null then
+          result := result || 'Address found: ' || '[' || lat || ',' || lon || ']';
+      else
+        result := result || 'Address not found';
+      end if;
+      :P6_PERMIT := result;
+  exception
+      when others then
+          :P6_PERMIT := sqlerrm;
+  end;
   ```
-    
+  
      - **Items to Return**: "P6_PERMIT".
     
      - **Fire on Initialization**: Off.
