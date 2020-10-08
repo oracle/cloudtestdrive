@@ -277,7 +277,7 @@ You need to let your VM run for a couple of mins to fully boot and start the VNC
 
 ![](images/02-vnc-login.png)
 
-Once you have logged in you will see the Linux desktop, it will look like 
+Once you have logged in you will see the Linux desktop, it will look similar to this, though the background may differ.
 
 ![](images/03-desktop.png)
 
@@ -287,13 +287,11 @@ We have installed a developer configuration of Oracle Linux, and added tools lik
 
 There are many IDE's available. We have chosen Eclipse as it's open source licensed. As Eclipse requires the acceptance of a license we can't automate the process for you.
 
-We have installed the Eclipse installer.
+We have installed the Eclipse installer and places a short cut to it on the desktop. It will look like 
 
- - Double click on the `eclipse-installer` folder icon on the desktop. This will open the installer folder.
+ - Double click on the `eclipse-installer` icon on the desktop. This will open the installer. It may looks like a text page rather than the icon shown below, if it does still click it. You may be warned it's and `Untrusted application launcher`, if this happens click the `Trust and launch` option. **Do not** click the Post Eclipse Installer icon.
  
- - Double click on the eclipse-installer executable
-
-![](images/04-eclipse-installer-folder.png)
+![](images/04-eclipse-installer-icon.png)
 
 The Eclipse installer will start.
 
@@ -327,9 +325,25 @@ The installer progress will be displayed
   
 ![](images/10-eclipse-installer-accept-unsigned.png)
   
- - On completion you can click the `Launch` button from the completion page. There are instrucitons later for running Eclipse via the file manager.
+ - On completion close the installer window (X on the upper right.) **Do not** click the `Launch` button.
  
 ![](images/11-eclipse-installer-finished-install-path.png)
+
+- Click `No` on the exit launcher page that's displayed
+
+![](images/12-eclipse-installer-finished-exit-without-launching.png)
+
+We're now going to run a script that tidies up the desktop and creates an eclipse desktop icon
+
+- Double click on the `Post Eclipse Installer` icon on the desktop. This will run the script. It may looks like a text page rather than the icon shown below, if it does still click it. You may be warned it's an `Untrusted application launcher`, if this happens click the `Trust and launch` option.
+
+![](images/13-post-eclipse-installer-icon.png)
+
+If the eclipse installation was in the right place then the two desktop icons will disappear and be replaced with an `Eclipse` icon. If the Eclipse installation was in the wrong place then it will exit immediately without making any changes. In that case re-run the installer and ensure you use `/home/opc` as the Eclipse installation path.
+
+- Double click on the `Eclipse` icon on the desktop. It may looks like a text page rather than the icon shown below, if it does still click it. You may be warned it's an `Untrusted application launcher`, if this happens click the `Trust and launch` option.
+
+![](images/14-eclipse-icon.png)
 
 As Eclipse starts you will be presented with a start up "splash" then workspace selection option. 
 
@@ -359,25 +373,11 @@ We need to configure Eclipse to display the course files in a hierarchical manne
 
 ![](images/24-eclipse-package-presentation-hierarchical.png)
 
-#### How to re-open Eclipse when you close it
+#### How to re-open Eclipse if you close it
 
-For reasons unclear the Eclipse installer for Linux does not seem to offer the option to create a desktop shortcut to open Eclipse. If you do accidentally close Eclipse, or in the unlikely situation that it crashes) then the following will let you re-open it.
+- Double click on the `Eclipse` icon on the desktop. It may looks like a text page rather than the icon shown below, if it does still click it. You may be warned it's an `Untrusted application launcher`, if this happens click the `Trust and launch` option.
 
-When you installed Eclipse you set the installation path to /home/opc, the installer will then have created a directory called eclipse and installed into that. You need to open that, and then start the Eclipse executable which is in that folder.
-
-- On the Oracle Linux desktop locate and double click the `Home` folder
-
-![](images/30-desktop-home-folder.png)
-
-This will display the home directory, double click the `Eclipse` folder
-
-![](images/31-eclipse-folder.png)
-
-This will open the actual eclipse instalation
-
-- To re-open eclipse double click on the eclipse executable (this is named just `eclipse`) **Do Not** click on the `icon.xpm` or the `eclipse.ini` files
-
-![](images/32-eclipse-executable.png)
+![](images/14-eclipse-icon.png)
 
 ### 9. Downloading and importing the labs initial code
 
