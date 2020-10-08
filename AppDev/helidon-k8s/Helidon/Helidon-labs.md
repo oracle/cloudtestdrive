@@ -6,7 +6,7 @@
 
 ## A. Helidon for Cloud Native
 
-This set of lab instructions is based on the virtual machine image dated 2020-04-03 (3rd April 2020)
+This set of lab instructions is based on the virtual machine image dated 2020-10-09 (9th October 2020)
 
 ### **Introduction**
 
