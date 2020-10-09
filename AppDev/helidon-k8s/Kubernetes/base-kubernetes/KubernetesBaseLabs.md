@@ -27,7 +27,7 @@ You will be using the **Oracle OCI Cloud shell** to run the Kubernetes parts of 
 
 The **OCI Cloud Shell** is accessible through the Oracle Cloud GUI, and has a number of elements set up out of the box, like the Oracle Cloud Command Line Interface, and it also has quite some useful command-line tools pre-installed, like git, docker, kubectl, helm and more.
 
-To access the OCI Cloud Shell, you can use the native browser on your laptop (no need for using the Linux desktop anymore).
+To access the OCI Cloud Shell, you can use the native browser on your laptop (you don't need to use the Linux desktop VM anymore).
 
 - Login to your Oracle Cloud Console
 
@@ -107,26 +107,31 @@ We will use the OCI Cloud Shell to download the database wallet file.
   
 - Look at the contents of the tnsnames.ora file to get the database connection names
   - `cat tnsnames.ora`
-  
+
+```
+jleoow_high = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_high.atp.oraclecloud.com))(security=(ssl_server
+_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
+
+jleoow_low = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_low.atp.oraclecloud.com))(security=(ssl_server_c
+ert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
+
+jleoow_medium = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_medium.atp.oraclecloud.com))(security=(ssl_se
+rver_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
+
+jleoow_tp = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_tp.atp.oraclecloud.com))(security=(ssl_server_cer
+t_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
+
+jleoow_tpurgent = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_tpurgent.atp.oraclecloud.com))(security=(ss
+l_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
+```
+
   You will see a list of the various connection types to your database.
 
-- Locate the "high" connection type to your database and take a note of the full name, for example **jleoow_high**
+- Locate the "high" connection type to your database and take a note of the full name, in the example above that's `jleoow_high` **but yours will differ**
 
-### Point your Application to the database
+- Be sure to write down the database connection name you have just found, you will need it later
 
-
-- Edit the database configuration file to specify the database name. This file is `$HOME/helidon-kubernetes/configurations/stockmanagerconf/confsecure/stockmanager-database.yaml`
-  - Locate the javax.sql.DataSource.stockLevelDataSourceOraATPJTA.datasource.url line. This will look something like 
-    ```
-    url: jdbc:oracle:thin:@<connection name>?TNS_ADMIN=./Wallet_ATP
-    ```
-  - update the name of the connection (shown here as `<connection name>`) and replace `<connection name>` with the name from the tnsnames.ora file, for example `tg_high`.  In this particular case the resulting line will look like  
-    ```
-    url: jdbc:oracle:thin:@tg_high?TNS_ADMIN=./Wallet_ATP
-    ```
-(Of course you will put your connection name in it, not mine)  
-
-- Save the changes
+- Return to the home directory `cd $HOME`
 
 ### Configure the Helm repository
 
@@ -199,7 +204,7 @@ Access to the cluster is managed via a config file that by default is located in
 
 You will be presented with a page with details for downloading the kubeconfig file. Make sure the **OCI Cloud Shell Access** is the selected option.
 
-Look for a line similar to this :
+Look for the section with the download command, it will look lie this :
 
 ```
 oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaa<lots of stuff>aaa --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0
@@ -235,12 +240,12 @@ NAME        STATUS   ROLES   AGE     VERSION
 
 If the kubectl command returns `No resources found.` and you have only just created the cluster it may still be initializing. Wait a short time and try again until you get the nodes list.
 
- (The details and number of nodes will vary depending on the settings you chose when you created the cluster, it may also take a few mins for the nodes to be up and running)
+ (The details and number of nodes will vary depending on the settings you chose when you created the cluster, they will take a few mins for the nodes to be configured after the cluster management is up and running)
 
 
 ### Basic cluster infrastructure services install
 
-Usually a Kubernetes cluster comes with only the core Kubernetes services installed that are needed to actually run the cluster (e.g. the API, DNS services.) Some providers also give you the option of installing other elements (e.g. Oracle Kubernetes Envrionment provides the option of installing the Helm 2 tiller pod and / or the Kubernetes dashboard) but here we're going to assume you have a minimal cluster with only the core services and will need to setup the other services before you run the rest of the system.
+Usually a Kubernetes cluster comes with only the core Kubernetes services installed that are needed to actually run the cluster (e.g. the API, DNS services.) Some providers also give you the option of installing other elements, but here we're going to assume you have a minimal cluster with only the core services and will need to setup the other services before you run the rest of the system.
 
 For most standard services in Kubernetes Helm is used to install and configure not just the pods, but also the configuration around them. Helm has templates (called charts) that define how to install potentially multiple services and to set them up.
 
@@ -257,7 +262,7 @@ If you are using the OCI Cloud shell for **this** section of the lab (either in 
 
 - Run the following command : 
   
-  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set service.type=LoadBalancer --version 2.2.0`
+  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set service.type=LoadBalancer --version 2.8.0`
 
 ```
 NAME: kubernetes-dashboard
@@ -287,13 +292,13 @@ The helm options are :
 
 - `kubernetes-dashboard` This is the "human" name to give the installation, it's easier to use that later on than using a machine generated one.
 
-- `kubernetes-dashboard/kubernetes-dashboard` is the name of the *chart* to install. Helm will download the char from the repo kubernetes-dashboard and then execute it. if you had needed a specific chart version they you could have added a version specifier, for example `--version=1.2.3`
+- `kubernetes-dashboard/kubernetes-dashboard` is the name of the *chart* to install. Helm will download the chart from the repo kubernetes-dashboard and then execute it. if you had need a specific chart version (see a few lines down) then you could have added a version specifier, for example `--version=1.2.3`
 
-- `--namespace kube-system` This tells helm to install the dashboard into the kube-system namespace. Namespaces are ways of partitioning the cluster to help you manage related resources, they are similar to the way you organize files using folders on your computer, but can also restrict resource usage like memory and cpu.
+- `--namespace kube-system` This tells helm to install the dashboard into the kube-system namespace. Namespaces are ways of partitioning the physical cluster into a virtual cluster to help you manage related resources, they are similar to the way you organize files using folders on your computer, but can also restrict resource usage like memory and cpu and future versions of Kubernetes plan to support role based access controls based on namespaces.
 
 - `--set service.type=LoadBalancer` This tells helm to configure the Kubernetes service associated with the dashboard as being immediately accessible via a load balancer. Normally you wouldn't do this for a range of reasons (more on these later) but as this is an overview lab we're doing this to avoid having to wait for DNS name propogation getting certificates. In a production environment you would of course do that.
 
-- `--version 2.2.0` This tells helm to use a specific version of the helm chart.
+- `--version 2.8.0` This tells helm to use a specific version of the helm chart.
 
 </p></details>
 
@@ -315,7 +320,7 @@ Note that Helm does all the work needed here, it creates the service, deployment
 
 ```
 NAME                	NAMESPACE  	REVISION	UPDATED                             	STATUS  	CHART                      	APP VERSION
-kubernetes-dashboard	kube-system	1       	2019-12-24 16:16:48.112474 +0000 UTC	deployed	kubernetes-dashboard-1.10.1	1.10.1 
+kubernetes-dashboard	kube-system	1       	2019-12-24 16:16:48.112474 +0000 UTC	deployed	kubernetes-dashboard-2.8.0	     2.0.4 
 ```
 
 We've seen it's been deployed by Helm, this doesn't however mean that the pods are actually running yet (they may still be downloading)
@@ -395,13 +400,13 @@ spec:
 ```
 If you want the output in json then replace the -o yaml with -o json.
 
-If you're using JSON and want to focuse in on just one section of the data structure you can use the JSONPath printer in kubectl to do this, in this case we're going to look at the image that's used for the pod
+If you're using JSON and want to focus in on just one section of the data structure you can use the JSONPath printer in kubectl to do this, in this case we're going to look at the image that's used for the pod
 
 - Get a specific element from a configuration:
   -  `kubectl get pod kubernetes-dashboard-bfdf5fc85-djnvb  -n kube-system -o=jsonpath='{.spec.containers[0].image}'`
 
 ```
-k8s.gcr.io/kubernetes-dashboard-amd64:v1.10.1
+k8s.gcr.io/kubernetes-dashboard-amd64:v2.0.4
 ```
 This used the "path" in json of .spec.containers[0].image where the first . means the "root" of the JSON structure (subesquent . are delimiters in the way that / is a delimiter in Unix paths) the spec means the spec object (the specification) containers[0] means the first object in the containers list in the spec object and image means the attribute image in the located container.
 
@@ -469,7 +474,7 @@ rules:
       - "*"
 ```
 
-This section is potentially dangerous, it's defining a cluster role that has all permissions to everything. In a production environment you'd want to restrict to specific capabilities, but for this lab it's easier to do the lot rather than immediately jump into the Kubernetes security configuration.
+This section is potentially dangerous, it's  tells Kubernetes to use the rbac.authorization.k8s.io service (This naming scheme uses DNS type naming and basically means the role based access controls capability of the authorization service in Kubernetes.io) to define a cluster role that has all permissions to everything. In a production environment you'd want to restrict to specific capabilities, but for this lab it's easier to do the lot rather than jump into the Kubernetes security configuration, which is a large topic in it's own right (But something you should study before moving into production.)
 
 ```
 apiVersion: rbac.authorization.k8s.io/v1
@@ -485,13 +490,16 @@ subjects:
   name: dashboard-user
   namespace: kube-system
 ```
-The last section tells Kubernetes to use the rbac.authorization.k8s.io service (This naming scheme uses DNS type naming and basically means the role based access controls capability of the authorization service in Kubernetes.io) create a binding that connects the user dashboard-user in namespace kube-system to the kubernetes-dashboard role, basically anyone logged in as dashboard-user has cluster the ability to run the commands specified in the cluster kubernetes-dashboard role. 
+
+The last section tells Kubernetes to create a binding that connects the user dashboard-user in namespace kube-system to the kubernetes-dashboard role, basically anyone logged in as dashboard-user has cluster the ability to run the commands specified in the cluster kubernetes-dashboard role. 
 
 In practice this means that when the kubernetes-dashboard asks the RBAC service it the user identified as dashboard-user is allowed to use the dashboard it will return yes, and this the dashboard service will allow the dashbaord user to log in and process requests. So basically standard type of Role Based Access Control ideas. 
 
 
+</p></details>
 
-**A Note on YAML**
+<details><summary><b>A Note on YAML</b></summary>
+<p>
 
 kubectl can also take JSON input as well as YAML. Personally I think that using any data format (including YAML) where whitespace is sensitive and defines the structure is just asking for trouble (get an extra space to many or too few and you've completely changed what you're trying to do) so my preference would be to use JSON. However (to be fair) JSON is a lot more verbose compared to YAML and the syntax can also lead to problems (though I think that a reasonable JSON editor will be a lot better than a YAML editor at finding problems and helping you fix them)
 
@@ -734,7 +742,7 @@ secret/tls-secret created
 - Run the following command : 
 
 - Install **ingress-nginx** using Helm 3:
-  -  `helm install ingress-nginx stable/nginx-ingress -n ingress-nginx --version 1.40.2 --set rbac.create=true --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-tls-secret"=tls-secret --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-ssl-ports"=443`
+  -  `helm install ingress-nginx stable/nginx-ingress -n ingress-nginx --version 1.41.3 --set rbac.create=true --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-tls-secret"=tls-secret --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-ssl-ports"=443`
 
 
 ```
@@ -803,7 +811,7 @@ In the popup locate the BackendSet option, click on it and select the `TCP-80` o
 
 Click the `Update Listener`
 
-![load-balancer-update-in-progress])images/load-balancer-update-in-progress.png)
+![load-balancer-update-in-progress](images/load-balancer-update-in-progress.png)
 
 You'll be presented with a `Work in progress` menu, for now just click the `Close` button and the update will continue in the background
 
@@ -837,7 +845,7 @@ Note that in a production environment you might want to extend the encryption by
 
 You now have the basic environment to deploy services, and we've looked at how to use the Kubernetes dashboard and the kubectl command line.
 
-Kubernetes supports the concept of namespaces, these logically split the cluster up, it's similar to having different directories to store documents for different projects, and like directories you can have multiple namespaces. In this case you are going to be using your own cluster, but having a separate namespace splits your work from the system functions (those are in a namespace called kube-system.) We're not going to be using it in this lab, but namespaces can also be used to manage resource usage in Kubernetes enabling you to limit the usage of resources used by the pods in a namespace (memory, CPU etc.) It's also possible to restrict resources on individual pods and we'll look at that later.
+Kubernetes supports the concept of namespaces, these logically split the cluster up, effectively into multiple virtual clusters. It's similar to having different directories to store documents for different projects, and like directories you can have multiple namespaces. In this case you are going to be using your own cluster, but having a separate namespace splits your work from the system functions (those are in a namespace called kube-system.) We're not going to be using it in this lab, but namespaces can also be used to control management of the cluster by role based access control to specific namespaces, and to control resource usage in Kubernetes enabling you to limit the usage of resources used by the pods in a namespace (memory, CPU etc.) It's also possible to restrict resources on individual pods and we'll look at that later.
 
 In a production cluster where you may have many applications running composed of many microservices having separate namespaces is basically essential to avoid mistakes and misunderstandings that could impact the service operation.
 
@@ -1149,7 +1157,7 @@ storefront-management     *                 80      47s
 storefront-status         *                 80      47s
 zipkin                    *                 80      47s
 ```
-One thing that you may have noticed is that the ingress controller is running in the default namespae, but when we create the rules we are using the namespace we specified (in this case tg_helidon) This is because the rule needs to be in the same namespace as the service it's defining the connection two, but the ingress controller service exists once for the cluster (we could have more pods if we wanted, but for this lab it's perfectly capable of running all we need) We could put the ingress controller into any namespace we chose, kube-system might be a good choice in a production environment. If we wanted different ingress controllers then for nginx at any rate the --watch-namespace option restricts the controller to only look for ingress rules in specific namespaces.
+One thing that you may have noticed is that the ingress controller is running in the ingress-nginx namespae, but when we create the rules we are using the namespace we specified (in this case tg_helidon) This is because the rule needs to be in the same namespace as the service it's defining the connection two, but the ingress controller service exists once for the cluster (we could have more pods if we wanted, but for this lab it's perfectly capable of running all we need) We could put the ingress controller into any namespace we chose, kube-system might be a good choice in a production environment. If we wanted different ingress controllers then for nginx at any rate the --watch-namespace option restricts the controller to only look for ingress rules in specific namespaces.
 
 If you look at the rules in the ingressConfig.yaml file you'll see they setup the following mappings
 
@@ -1270,6 +1278,55 @@ There are also more specific secrets used for TLS certificates and pulling docke
 
 ---
 
+#### Configuring the database connection details
+
+In The Helidon labs we provided the database details via Java system properties using the command line. We don't want to do that here as it we would have to place them in the image (making it insecure, and also hard to update) To get around that (and to show the flexibility of the Helidon framework) here we will be specifying them using environment variables, because Helidon uses a hierarchy of sources for the configuration we don't even need to change the code to do this !
+
+We will of course be using a Kubernetes secret to hold them (they are sensitive, so placing them in a deployment yaml file which might be accessible by many folks would also be a bad idea) **You** need to update them with the setting for **your** database
+
+- Switch to the **$HOME/helidon-kubernetes/configurations/stockmanagerconf** directory
+
+- **Edit** the file `databaseConnectionSecret.yaml`
+
+- Locate the `url` (in the `stringData` section)
+
+```yaml
+  url: jdbc:oracle:thin:@<database connection name>?TNS_ADMIN=./Wallet_ATP
+```
+
+- Replace `<database connection name>` with the connection nme for **your** database you got from the `tnsnames.ora` file earlier. In my case that was `tg_high`, **but yours will be different**
+
+For **me** tha line looked like this, **YOURS WILL BE DIFFERENT**
+
+```yaml
+  url: jdbc:oracle:thin:@tg_high?TNS_ADMIN=./Wallet_ATP
+```
+
+If you used a different username or password then you will need to update those fields as well.
+
+- Save the changes to the file and exit the editor
+
+We will create the secret using a script later.
+
+<details><summary><b>How do these values get into the container ?</b></summary>
+<p>
+
+In the deployment (we'll see more on this later) the specification defines a section telling Kubernetes what environment variables to create in the pod, and where to get the values from. So for example in this case wherwe we're specifying the JDBC URL for the connection the dep0loyment has an entry of the form
+
+```yaml
+        - name: javax.sql.DataSource.stockmanagerDataSource.dataSource.url
+          valueFrom:
+            secretKeyRef:
+              name: stockmanagerdb
+              key: url
+```
+
+Here we're telling Kubernetes to look in the `stockmanagerdb` secret for a data value named `url` and within the pod create an environment variable named `javax.sql.DataSource.stockmanagerDataSource.dataSource.url` with that value.
+
+</p></details>
+
+#### Configuring the docker image pull secret
+
 To get the docker images you created into Kubernetes we need to pull them from the registry. As we did not place the images in a public repo we need to tell Kubernetes the secrets used to do this. 
 
 The Oracle Cloud Image Registry (OCIR) that we used to hold the images uses tokens rather than a password. You will have got this token when you did your docker login earlier on.
@@ -1278,7 +1335,7 @@ To help you setup the image pull secrets and the others used as configuration vo
 
 **You** need to edit the script to provide the details of the OCIR you used and your identity information
 
-- Make sure you are in the **$HOME/helidon-kubernetes/base-kubernetes** directory
+- Switch to the the **$HOME/helidon-kubernetes/base-kubernetes** directory
 
 - **Edit** the create-secrets.sh script
 
@@ -1441,16 +1498,16 @@ We need to configure the stockmanager-config.yaml file. You need to do this even
 
 Example :
 
-```
+```yaml
 app:
-  persistenceUnit: "HelidonATPJTA"
+  persistenceUnit: "stockmanagerJTA"
   department: "just_a_name"
 ```
 
 
 \---
 
-In the helidon-kubernetes/base-kubernetes folder there is a script create-configmaps.sh. We have created this to help you setup the configuration maps (though you can of course do this by hand instead of creating a script.) If you run this script it will delete existing config maps and create an up to date config for us :
+In the $HOME/helidon-kubernetes/base-kubernetes folder there is a script create-configmaps.sh. We have created this to help you setup the configuration maps (though you can of course do this by hand instead of creating a script.) If you run this script it will delete existing config maps and create an up to date config for us :
 
 -  `bash create-configmaps.sh `
 
@@ -1529,15 +1586,16 @@ Pods are monitored by services so that a service will direct traffic to pod(s_ t
 
 The stockmanager-deployment.yaml, storefront-deployment.yaml and zipkin-deployment.yaml files contain the deployments. These files are in the helidon-kubernetes folder (***not*** the base-kubernetes folder) The following is the core contents of storefront-deployment.yaml file (actually the file has substantial amounts of additional content that is commented out, but we'll get to that when we look at other parts of the lab later on, If you do look at the file itself for now ignore everything that's commented out with #)
 
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: storefront
 ```
+
 As with most kubenetes config files there is a first section that defines what we are creating (in this case a deployment names storefront) The deployment actually contains elements defining the replica sets the deployment contains, and what the pods will look like. These can all be defined in separate config files if desired, but as they are very closely bound together it's easiest to define them all in a single file.
 
-```
+```yaml
 spec:
   replicas: 1 
   selector:
@@ -1546,7 +1604,7 @@ spec:
 ```
 The `spec:` section defines what we want created. Replicas means how many pods we want creating in the replica set, in this case 1 (we will look at scaling later) the selector match labels specifies that and pods with label app:storefront will be part of the deployment.
 
-```
+```yaml
   template:
     metadata:
       labels:
@@ -1555,7 +1613,7 @@ The `spec:` section defines what we want created. Replicas means how many pods w
 The template section defines what the pods will look like, it starts by specifying that they will all "app:storefront" as a label
 
 
-```
+```yaml
     spec:
       containers:
       - name: storefront
@@ -1568,11 +1626,23 @@ The template section defines what the pods will look like, it starts by specifyi
           containerPort: 9080
 ```
 The spec section in the template is the specification of the pods, it starts out by specifying the details of the pods and the details of the containers that comprise them, in this case the pod names, the location of the image and how to retrieve it. It also defines the ports that will be used giving them names (naming is not required, but it helps to make it clear what's what.)
-
+              
 *** IMPORTANT ***
-These service deployment description files refer to the location in the docker repo that *I* used when setting up the labs. You **are** to a different docker repo, so you'll need to edit the deployment files to reflect this diffrent image location !
+These service deployment description `image` entry refer to the location in the docker repo that *I* used when setting up the labs. You **are** using a different docker repo, so you'll need to edit the deployment files to reflect this diffrent image location !
 
-```       
+If you were looking at the stockmanager deployment you'd see entries like the below that tell Kubernetes to create environment variables **inside** the pods container, in this case it says the value of the variable comes from a secret names stockmanagerdb and named `dataSourceClassName` (there are actually multiple entries in the stockmanager deployment, but we're only showing one here so you can get the idea.
+
+```yaml
+        env:
+        - name: javax.sql.DataSource.stockmanagerDataSource.dataSourceClassName
+          valueFrom:
+            secretKeyRef:
+              name: stockmanagerdb
+              key: dataSourceClassName
+...
+```
+
+```yaml      
         resources:
           limits:
             # Set this to me a quarter CPU for now
@@ -1580,7 +1650,7 @@ These service deployment description files refer to the location in the docker r
 ```
 The resources provides a limit for how much CPU each instance of a pod can utilize, in this case 250 mili CPU's or 1/4 whole CPU (the exact definition of what comprises a CPU will vary between Kubernetes deployments and by provider.)
 
-```         
+```yaml         
         volumeMounts:
         - name: sf-conf-secure-vol
           mountPath: /confsecure
@@ -1595,7 +1665,7 @@ Both are mounted read only as there's no need for the programs to modify them, s
 
 
 
-```
+```yaml
       volumes:
       - name: sf-conf-secure-vol
         secret:
@@ -1644,6 +1714,8 @@ The config files of the storefront and stockmanager refer to the location in the
 - Repeat this operation for the file **storefront-deployment.yaml**
   
   - Edit the line specifying the image to reflect *your* docker image location for the storefront.
+
+The `deploy.sh` script just does a sequence of commands to apply the deployment configuration files, for example `kubectl apply -f zipkin-deployment.yaml --record=true` You could of course issues these commands by hand if you liked, but we're using a script here to save typo probems, and also because it's good practice to scritp this type of thing, so tyou know **exactly** the command that was run - which can be useful if you need to **exactly** reproduce it !
 
 - Now run the deploy.sh script
   -  `bash deploy.sh`
@@ -1893,6 +1965,19 @@ As we are running zipkin and have an ingress setup to let us access the zipkin p
 - Open your browser
 - Go to the ingress end point for your cluster, for example http://<external IP>/zipkin (replace with *your* ingress controllers Load balancer IP address)
 
+- In the browser, accept a self signed certificate.
+  - In Safari you will be presented with a page saying "This Connection Is Not Private" Click the "Show details" button, then you will see a link titled `visit this website` click that, then click the `Visit Website` button on the confirmation pop-up. To update the security settings you may need to enter a password, use Touch ID or confirm using your Apple Watch.
+  - In Firefox once the security risk page is displayed click on the "Advanced" button, then on the "Accept Risk and Continue" button
+  - In Chrome once the "Your connection is not private" page is displayed click the advanced button, then you may see a link titled `Proceed to ....(unsafe)` click that. 
+  
+We have had reports that some versions of Chrome will not allow you to override the page like this, for Chrome 83 at least one solution is to click in the browser window and type the words `thisisunsafe` (copy and past doesn't seem to work, you need to actually type it.) Alternatively use a different browser.
+
+![Zipkin query](images/zipkin-initial-query.png)
+
+- Click the `Run Query` button to get the traces list
+
+In my case I had made two requests before the lazy initialization sorted everything out, so there are a total of three traces.
+
 ![List of traces in Zipkin](images/zipkin-traces-list.png)
 
 - Select the most recent trace and retrieve the data from that
@@ -1912,7 +1997,7 @@ content-type: text/plain
 content-length: 1
 strict-transport-security: max-age=15724800; includeSubDomains
 
-3
+2
 ```
 
 And in this case we are going to look at data on the admin port for the stock management service and get it's readiness data
@@ -1927,11 +2012,11 @@ content-type: application/json
 content-length: 166
 strict-transport-security: max-age=15724800; includeSubDomains
 
-{"outcome":"UP","status":"UP","checks":[{"name":"stockmanager-ready","state":"UP","status":"UP","data":{"department":"TestOrg","persistanceUnit":"HelidonATPJTA"}}]}
+{"outcome":"UP","status":"UP","checks":[{"name":"stockmanager-ready","state":"UP","status":"UP","data":{"department":"TestOrg","persistanceUnit":"stockmanagerJTA"}}]}
 ```
 
 ### Changing the configuration
-We saw in the helidon labs that it's possible to have the helidon framework monitor the configuration files and triger a refresh of the configuration data if something changed. Let's see how that works in Kubernetes.
+We saw in the helidon labs that it's possible to have the helidon framework monitor the configuration files and trigger a refresh of the configuration data if something changed. Let's see how that works in Kubernetes.
 
 - Get the status resource data :
   -  `curl -i -k -X GET https://<external IP>/sf/status`
@@ -1959,7 +2044,7 @@ We've mounted the sf-config-map (which contains the contents of storefront-confi
     ```
     app:
       storename: "My Shop"
-      minimumdecrement: 4
+      minimumdecrement: 2
 
     tracing:
       service: "storefront"
@@ -2009,7 +2094,7 @@ Now let's return to the pod and see what's happened
     ```
     app:
       storename: "Tims Shop"
-      minimumdecrement: 3
+      minimumdecrement: 2
     
     tracing:
       service: "storefront"

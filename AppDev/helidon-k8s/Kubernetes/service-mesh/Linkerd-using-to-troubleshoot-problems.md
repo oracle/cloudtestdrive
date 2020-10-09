@@ -31,11 +31,11 @@ In this module we are going to look at how to use a service mesh to track down t
 
 in the case of Linkerd if a service fails to respond at all, or it responds but with a 5xx series response code it's determined to have been a failed request. Note that there are many response codes that an application can return, for example 409 represents a conflict, but these codes are considered valid responses, not failures in that they are reasonably things for the service to respond, a 409 error may for example be a completely justified response if you're trying to create an object which already exists, and 404 could also be completely valid if you're trying to access an object that does not exist. It may be simplistic, but 4xx series error codes could be regarded as a client error for using invalid data for the request.
 
-5xx series error codes (or no connection to / response from the server at all) are pretty fatal however. A 5xx series error code can't be resolved by changing some details, it means there's something pretty major going on that needs to be dealt with, basically it reflect an internal problem with coding, configuration or operational environment in the service.
+5xx series error codes (or no connection to / response from the server at all) are pretty fatal however. A 5xx series error code can't be resolved by correcting details in the request, it means there's something pretty major going on that needs to be dealt with, basically it reflect an internal problem with coding, configuration or operational environment in the service.
 
 ### Where do we get our problem source from ?
 
-Well fortunately for us I have build a version of the Stock Manager that can be configured to generate deliberate errors (I promise it's not just be doing bad coding.) We will deploy this new version and then configure it to generate errors on half of the requests it makes.
+Well fortunately for us I have build a version of the Stock Manager that can be configured to generate deliberate errors (I promise it's not just me doing bad coding :-) ) We will deploy this new version and then configure it to generate errors on half of the requests it makes.
 
 ### Start the load generator
 
@@ -181,7 +181,7 @@ Now let's check that the change has applied by going direct to the stockmanager 
 
 - In the OCI Cloud shell type the following (remember to replace `<external IP>` )
   - `curl -i -k -X GET -u jack:password https://<external IP>/sm/stocklevel`
- 
+
 (As usual the first response may take a short while)
  
 Depending on if you get an error you'll get something similar to the following
@@ -247,6 +247,16 @@ Strict-Transport-Security: max-age=15724800; includeSubDomains
 ```
 
 As before repeat this a few times, approximately half the time it will succeed and half the time it will fail.
+
+Restart the load generator
+
+- In the OCI Cloud shell type (remember to replace `<external IP>` with the IP address of your ingress service
+  - `bash generate-service-mesh-load.sh <external IP> 2 > /dev/null &`
+  
+ ```
+ [1] 619
+ ```
+
 
 ### Looking at the results using the service mesh
 

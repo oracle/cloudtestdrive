@@ -1,0 +1,39 @@
+{
+    "tutorials": [
+        {
+          "title": "Introduction and overview of the steps",
+          "filename":"../Helidon-labs.md"
+        },
+        {
+          "title": "Preparing your Tenancy for the lab",
+          "filename":"../Helidon-core/helidon-core.md"
+        },
+        {
+          "title": "Part 1: Core Helidon ",
+          "filename": "../Helidon-core/helidon-core.md"
+        },
+		    {
+          "title": "Part 2: Database and Helidon",
+          "filename": "../Helidon-data/helidon-data.md"
+        },
+		    {
+          "title": "Part 3: Communicating between microservices with Helidon",
+          "filename": "../Helidon-to-Other-Microservices/helidon-to-other-microservices.md"
+        },
+        {
+          "title": "Part 4: Operations support with Helidon",
+          "filename": "../Helidon-Operations/helidon-operations.md"
+        },
+        {
+          "title": "Part 5: Cloud Native support in Helidon",
+          "filename": "../Helidon-cloud-native/helidon-cloud-native.md"
+        },
+        {
+          "title": "Optional Labs"
+        },
+        {
+          "title": "Optional 1: Self documenting API support in Helidon",
+          "filename": "../Helidon-open-api/helidon-open-api.md"
+        }
+    ]
+}

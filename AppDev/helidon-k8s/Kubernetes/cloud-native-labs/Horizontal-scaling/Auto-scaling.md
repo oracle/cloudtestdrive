@@ -79,6 +79,8 @@ NAME        CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%
 10.0.10.3   109m         5%     1834Mi          27%       
 10.0.10.4   157m         7%     1232Mi          18%       
  ```
+ 
+If you get an response `error: metrics not available yet` then it just means that the metrics server is running, but hasn't completed it's initial data capture yet. Wait a short while and try the `kubectl top nodes` again.
   
 Note that this was from a cluster with three nodes, depending on the size of your cluster you will see a different number of nodes output.
   
@@ -146,10 +148,12 @@ The Column EXTERNAL-IP gives you the IP address, in this case the IP address for
 </p></details>
 ---
 
-In the helidon-kubernetes project in the cloud-native-kubernetes/auto-scaling folder run the following. You must to replace the IP address here with the one for your ingress controller (see the expansion section above for details of how to get this if you've forgotten)
+In the helidon-kubernetes project in the cloud-native-kubernetes/auto-scaling folder run the following. You must to replace <external IP> here with the one for your ingress controller (see the expansion section above for details of how to get this if you've forgotten)
 
 - In the OCI Cloud Shell
-  -  `bash generate-load.sh 132.145.253.186 0.1`
+  -  `bash generate-load.sh <external IP> 0.1`
+  
+Note that the 0.1 controls how long the script waits, depending on how fast things respond below you may need to adjust the rate up (fewer requests) or down (more requests) If you chose an especially powerful processor you may need to open another cloud window in your browser and run a second load in that as well, or adjust the CPU available to the pod.
 
 ```
 Itertation 1
@@ -190,7 +194,9 @@ storefront-79c465dc6b-x8fbl    251m         958Mi
 zipkin-7db7558998-cnbjf        33m          265Mi  
 ```
 
-Notice that in this particular example the CPU here for the storefront is at 251m (your number may be different.) This is actually the limit allowed in the storefront deployment.yaml file, which has a resource restriction of 250 milli CPU specified
+Notice that in this particular example the CPU here for the storefront is at 251m (your number may be different.) This is actually the limit allowed in the storefront deployment.yaml file, which has a resource restriction of 250 milli CPU specified. 
+
+If the load does not reach 250 then you may need to adjust the request rate, or update the storefront-deployment.yaml file and reduce the CPU limit, then undeploy and redeploy it to ensure you can hit the limit (and auto scaling will kick in once we've configured it)
 
 ```
         resources:
@@ -296,7 +302,7 @@ Now restart the load generator program. Note that you may need to change the sle
 ...
 ```
 
-- Stop the load generator with Control-C after a bit
+- Open a second cloud shell window in your browser.
 
 Allow a short time for the load to be recorded, then look at the load on the pods (you may have to adjust the request frequency in the script if the load does not increase enough to trigger autoscaling
 - In the OCI Cloud Shell type
@@ -378,9 +384,29 @@ storefront   Deployment/storefront   66%/50%   2         5         5          30
 
 We can see that the average load across the deployment is still over 50%, if is had not reached the maximum number of pods then the auto scaler would be trying to meet our goal of no more than 50% average load by adding additional pods.
 
+If you want you can also see the pods being added in the Kubernetes dashboard,  
+
+- Open the Kubernetes Dashboard
+
+- Make sure you are in your namespace
+
+- In the left menu Under workloads select `Deployments` then click on the `storefront` deployment
+
+In the pod section you can see that in this case it's scaled to 5 pods
+
+![](images/autoscaling-pods-increased.png)
+
+- Scroll down to the events section and you can seen the changes it's made
+
+![](images/autoscaling-dashboard-events.png)
+
+You can see the pod details by opening the replica set.
+
+![](images/autoscaling-pods-list.png)
+
 - In the load generator window stop the script by typing Control-C
 
-Note that the metrics server seems to operate on a decaying average basis (in version 0.36 at least), so stopping the load generating script will not immediately drop the per pod load. This means that it may take some time after stopping the load generator script for the autoscaler to start removing unneeded pods.   
+Note that the metrics server seems to operate on a decaying average basis, so stopping the load generating script will not immediately drop the per pod load. This means that it may take some time after stopping the load generator script for the autoscaler to start removing unneeded pods.   
 
 The autoscaler tries not to "thrash" the system by starting and stopping pods all the time. Because of this it will only remove pods every few minutes rather than immediately the load becomes low, additionally it will also only remove a few pods at a time. The [autoscaler documentation](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#algorithm-details) describes the algorythm.
 

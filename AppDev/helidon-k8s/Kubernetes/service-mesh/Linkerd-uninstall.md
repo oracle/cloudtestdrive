@@ -137,7 +137,7 @@ deployment.apps/ingress-nginx-nginx-ingress-controller restarted
 deployment.apps/ingress-nginx-nginx-ingress-default-backend restarted
 ```
 
-Now the data plane elements have been removed let's remove the linkerd control plane (Yes, I know that the linkerd command is install, but the kubectl command is delete, so what happens is the linkerd command generates what it woudl to to install, but the kubectl command takes this input as sequence ot things to delete)
+Now the data plane elements have been removed let's remove the linkerd control plane (Yes, I know that the linkerd command is install, but the kubectl command is delete, so what happens is the linkerd command generates what it would as if it were doing an install, but the kubectl command takes this input as sequence ot things to delete)
 
 - In the OCI Cloud shell type :
 

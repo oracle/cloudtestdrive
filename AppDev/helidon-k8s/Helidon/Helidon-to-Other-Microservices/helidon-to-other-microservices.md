@@ -20,7 +20,7 @@ This video is an introduction to the Helidon communicating with other REST servi
 
 ---
 
-For one thing (person, program etc.) to talk to another it does of course need to talk the same language, in the case of microservcies this is generaly based on the ideas in REST, which is an **architectural style, not a standard** (Anyone who tries to say that REST is a standard should go read the [Wikipedia REST article](https://en.wikipedia.org/wiki/Representational_state_transfer))
+For one thing (person, program etc.) to talk to another it does of course need to talk the same language, in the case of microservices this is generally based on the ideas in REST, which is an **architectural style, not a standard** (Anyone who tries to say that REST is a standard should go read the [Wikipedia REST article](https://en.wikipedia.org/wiki/Representational_state_transfer))
 
 REST is generally implemented using http(s) as the transport using XML or JSON text in the body of the request to represent data if needed, so though REST is **not** a standard usually we can get it to work using these mechanisms.
 
@@ -182,13 +182,19 @@ com.oracle.labs.helidon.storefront.restclients.StockManagerStatus/mp-rest/url=ht
 
 As you can probably guess this is for the REST client com.oracle.labs.helidon.storefront.restclients.StockManagerStatus, but in this case I didn't specify a config key in the `@RegisterRestClient` annotation, so it defaulted to the fully qualified classname based property names.
 
+---
+
 </p></details>
 
+<details><summary><b>Why is this interface in this project ? </b></summary><p>
 
+Good question, best practice is that normally you would define code like the interface which is common to multiple projects in a separate project and both the StockManager and Storefront projects would import it. This also allows you to properly use the Java modules.
+
+In fact for some code in this lab (e.g. the ItemDetails class) that is common we do exactly that. However that means you have to manage three separate projects (common, storefront and stockmanager) and remember to build and push the common project to the local Maven repository when changes are made. When we tested the lab we found this caused a lot of confusion, so for the purposes of the lab only we have included it in the storefront project. Normally of course you would not do this and would follow the best practice.
 
 ---
 
-   
+</p></details> 
 
 ### Creating the REST client.
 It's possible to manually create a REST client using the interface, but it's far better to let Helidon use the @RestClient coupled with @Inject to do this for us. That way we don't have to worry about closing the client to reclaim resources and so on.

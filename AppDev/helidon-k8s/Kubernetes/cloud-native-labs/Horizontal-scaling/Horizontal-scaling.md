@@ -81,9 +81,13 @@ We'll see the details of the deployment, scroll down a bit to get to the replica
 
 ![scaling-deployments-storefront-pre-scale-scrolled-to-replica-sets](images/scaling-deployments-storefront-pre-scale-scrolled-to-replica-sets.png)
 
-If we click on the replica set name we can see the details of it
+In the `New replica set` section we can see details of the **current** replica set, there is nothing in the `Old Replica Sets` section as we haven't made any rolling updates, we'll do that later in the lab.
+
+In the `New replica set` section if we click on the replica set name we can see the details of it
 
 ![scaling-replicaset-storefront-pre-scale](images/scaling-replicaset-storefront-pre-scale.png)
+
+In the `Pod Status` section we can see that there is 1 pod running out of 1 pod desired.
 
 - Go back to the storefront deployment.
 
@@ -151,7 +155,7 @@ And if we drill down into the replica set we can see the pods themselves being c
 - Click on the replica set name
 ![scaling-replicaset-started-scaling](images/scaling-replicaset-started-scaling.png)
 
-Notice that most of these have a grey partially complete "pie graph" at the start of the line. That means that the pod is in the process of starting up (probably pulling the image.) On your screen you may have a red warning circle, that means that the pod has started, but is not yet ready. The green check is on the original pod, which was of course running before we started the scaling operation.
+Notice that most of these have a grey partially complete "pie graph" at the start of the line. That means that the pod is in the process of starting up (probably pulling the image.) On your screen you may have a red warning circle, that means that the pod has started, but is not yet ready (I.e. the readiness probe is failing.) The green check is on the original pod, which was of course running before we started the scaling operation. The Service will send requests to the pods marked green
 
 Remember that the storefront uses a readiness probe, so it may be a while before those pods are reporting ready.
 
@@ -174,6 +178,10 @@ Once they are ready return to the replica set
 That returns you to the replica set page, you can see that they will show up in the replica set as ready (I had to scroll down a little to get this image)
 
 ![scaling-replicaset-post-scaling](images/scaling-replicaset-post-scaling.png)
+
+If you scroll down in the replica set page you'll see the events section, and can see the pods have been created.
+
+![replica-set-events](images/scaling-replica-set-events.png)
 
 And if we go back to the deployments list we'll see the pods is now 4 of 4 ready
 

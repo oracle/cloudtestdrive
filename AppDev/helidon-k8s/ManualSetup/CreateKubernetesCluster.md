@@ -37,13 +37,15 @@ Your instructor will inform you if the Kubernetes clusters have already been cre
 
   - In the next form name the cluster something like Helidon-Lab-YOUR-INITIALS
   - Make sure the compartment is **CTDOKE**
-  - Make sure the Kubernetes version is the highest on the list (at the time of writing that was 1.16.8)
+  - Make sure the Kubernetes version is the highest on the list (at the time of writing in Summer 2020 that was 1.16.8, but it will have been updated since then)
   - Leave the visibility type as **private**
   - Set the shape to VM.Standard2.1
   - Set the number of nodes to be 2
 
-  - **TURN OFF** the Add Ons : make sure that the slider for **Kubernetes Dashboard** is grey ("switch" to the left")
+There is no need to do anything in the `Advanced Options` section.
 
+This images is for creating a 1.16.8 cluster, it may be slightly different for later versions.
+ 
 ![](images/create-k8s-cluster.png)
 
 - Click the Next button to go to the review page.

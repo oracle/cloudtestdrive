@@ -82,23 +82,33 @@ Use the Maven package target (mvn package) to trigger jib to create the docker c
 ```
 [MVNVM] Using maven: 3.5.2
 [INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Detecting the operating system and CPU architecture
+[INFO] ------------------------------------------------------------------------
+[INFO] os.detected.name: osx
+[INFO] os.detected.arch: x86_64
+[INFO] os.detected.version: 10.15
+[INFO] os.detected.version.major: 10
+[INFO] os.detected.version.minor: 15
+[INFO] os.detected.classifier: osx-x86_64
 [INFO] 
 [INFO] ------------------------------------------------------------------------
-[INFO] Building storefront 0.0.1
+[INFO] Building storefront 2.0.1.0
 [INFO] ------------------------------------------------------------------------
 [INFO] 
-[INFO] --- maven-resources-plugin:3.0.2:resources (default-resources) @ storefront ---
+[INFO] --- maven-resources-plugin:2.7:resources (default-resources) @ storefront ---
 [INFO] Using 'UTF-8' encoding to copy filtered resources.
 [INFO] Copying 3 resources
+
+...
+...
 [INFO] 
-...
-...
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time: 41.430 s
-[INFO] Finished at: 2019-12-29T15:30:06Z
-[INFO] Final Memory: 39M/176M
+[INFO] Total time: 14.595 s
+[INFO] Finished at: 2020-08-17T19:02:38+01:00
+[INFO] Final Memory: 41M/200M
 [INFO] ------------------------------------------------------------------------
 ```
 
@@ -184,20 +194,19 @@ This command creates a docker container running the shell which is connected to 
 
 - Take a look inside the container
   - `ls`
+
+```
+app   conf	  etc	lib64  opt   run   sys	var
+bin   confsecure  home	media  proc  sbin  tmp	Wallet_ATP
+boot  dev	  lib	mnt    root  srv   usr
+```
+
   - `ls Wallet_ATP`
   - `ls conf`
   - `ls confsecure`
+  
 - Now exit the container
   -  `exit`
-
-```
-root@1e640494f039:/# ls
-Wallet_ATP  app  app.yml  bin  boot  conf  confsecure dev	  etc  home  lib	lib64  media  mnt  opt	proc  root  run  sbin  srv  sys  tmp  usr  var
-root@1e640494f039:/# ls Wallet_ATP
-root@1e640494f039:/# ls conf
-root@1e640494f039:/# ls confsecure
-root@1e640494f039:/# exit
-```
 
 As you can see there is nothing in the /conf /confsecure or /Wallet_ATP directories .jib was told as part of it's config that these would be used for mounting external configuration, so it created the folders for us automatically.
 
@@ -222,7 +231,7 @@ Let's use docker volumes (the docker --volume flag) to inject the configuration 
 
 Make sure you are in the **helidon-labs-stockmanager** directory
 
-- Run the container with a volumes attached:
+- Run the container with the volumes attached:
 
   - ```
     docker run --tty --interactive --volume `pwd`/Wallet_ATP:/Wallet_ATP --volume `pwd`/conf:/conf --volume `pwd`/confsecure:/confsecure  --rm --entrypoint=/bin/bash stockmanager
@@ -230,9 +239,10 @@ Make sure you are in the **helidon-labs-stockmanager** directory
 
 As before we find ourselves in the container and the root directory looks the same, but the other directories now have content
 
-- Look around
+- Look around again
   - `ls`
   - `ls conf`
+  - `ls confsecure`
   - `ls Wallet_ATP`
 
 ```
@@ -242,11 +252,100 @@ Wallet_ATP  app  app.yml  bin  boot  conf  confsecure dev	etc  home  lib	lib64  
 ```
 root@bc7d4ae0666b:/# ls /conf
 stockmanager-config.yaml  stockmanager-network.yaml  
-root@bc7d4ae0666b:/# 
-root@bc7d4ae0666b:/# ls Wallet_ATP
+root@bc7d4ae0666b:/# la /confsecure
+stockmanager-security.yaml
+root@bc7d4ae0666b:/# ls /Wallet_ATP
 cwallet.sso  ewallet.p12  keystore.jks	ojdbc.properties  sqlnet.ora  tnsnames.ora  truststore.jks
 ```
 - Exit the container: `exit`
+
+### What about the database configuration ?
+
+In the Helidon labs we specified the database configuration using Java system properties, e.g. entries like 
+
+  `-Djavax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource`
+
+We did that rather than a config file to show how the different levels of the Helidon config system, specifically that config properties could be automatically used from the Java system properties. Now we're going to show you a slightly different approach, we're going to bring the database connection details in via an the system environment variables **without changing the code** This will work because Helidon first looks at the Java system properties, then it looks at the OS environment variables, so it will automatically pickup the values from the new location (If we used both then then the Java system properties would override the environment variables) Basically we're trying to show you just how flexible the Helidon configuration system is !
+
+If you are using a database provided by an instructor then they will give you the values for the database connection, or may have already set this up in your virtual machine. If you setup your own database then you will have specified a username and password (if you used our example that will be a username of `HelidonLabs` and a password of `H3lid0n_Labs`) have downloaded the wallet file from which you will have got the connection name, for example `tg_high` **yours will be different unless your database is called `tg` !
+
+
+Docker provides several ways to do this, for example you can specify each individual variable on the command line using the --env flag, another way is to use the --env-file flag, this allows you to specify a file full of key/value pairs (like a Java properties file) and if you have multiple variables to set, or the variables or their names contain characters like `.` that have special meaning to the command shell this is the easiest way to do it. 
+
+For this lab the scripts that will run the stockmanager use the --env-file approach, so we need to make sure that the file reflects the database connection details.
+
+- Switch to **helidon-labs-stockmanager**
+
+- Edit the `database-env` file 
+
+It will look like the following
+
+```
+javax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource 
+javax.sql.DataSource.stockmanagerDataSource.dataSource.url=jdbc:oracle:thin:@<database connection name>?TNS_ADMIN=./Wallet_ATP 
+javax.sql.DataSource.stockmanagerDataSource.dataSource.user=HelidonLabs
+javax.sql.DataSource.stockmanagerDataSource.dataSource.password=H3lid0n_Labs
+hibernate.dialect=org.hibernate.dialect.Oracle10gDialect
+hibernate.hbm2ddl.auto=update
+```
+
+- On the line starting `javax.sql.DataSource.stockmanagerDataSource.dataSource.url` you need to replace `<database connection name>` with the name of your high connection, e.g. tg_high **Your** connection name will be different (unless of course your database is called tg)
+
+- If you created the database user with a different username and password you will need to replace those as well.
+
+- Save the changes 
+
+To check that the environment variables are correctly set use the `runBashContainer.sh` script in the `helidon-labs-stockmanager` project. This basically does the docker run command above, using the environment variables and volumes.
+
+Run the container with a the configuration attached:
+
+  - ```
+    $ bash runBashContainer.sh
+    executing in /Users/tg13456/Development/helidon-kubernetes-labs/helidon-labs-stockmanager
+    zipkin ip 172.17.0.2
+    bash-4.2# 
+    
+    ```
+    
+Once in the container look at the environment (we're going to sort the output to make it easier)
+
+In the container 
+
+  - ```
+    $ printenv | sort
+    hibernate.dialect=org.hibernate.dialect.Oracle10gDialect
+    hibernate.hbm2ddl.auto=update
+    HOME=/root
+    HOSTNAME=cb3784c88b1f
+    JAVA_HOME=/opt/graalvm-ce-java11-20.1.0/
+    javax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource 
+    javax.sql.DataSource.stockmanagerDataSource.dataSource.password=H3lid0n_Labs
+    javax.sql.DataSource.stockmanagerDataSource.dataSource.url=jdbc:oracle:thin:@tg_high?TNS_ADMIN=./Wallet_ATP 
+    javax.sql.DataSource.stockmanagerDataSource.dataSource.user=HelidonLabs
+    LANG=en_US.UTF-8
+    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    PWD=/
+    SHLVL=1
+    TERM=xterm
+    _=/usr/bin/printenv
+    ```
+
+You can see the environment variables we have set (in this case it is of course using `tg_high` for the DB conneciton name in the URL, **yours will be different**
+
+- Exit the container: `exit`
+
+<details><summary><b>Why not use the Java system properties in the docker entry point ?</b></summary>
+<p>
+
+When you specified the Java system properties you did that using Eclipse, you can of course also do it using the `java` command, e.g. `java -Djavax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource .....`
+
+The problem is that the actual command a docker container runs is hard coded in the docker image, that would mean that your database security credentials would be visible in the image (always a bad thing) also it would mean that to change any of the database credentials (e.g. the password) you would need to create a new docker image.
+
+Of course if we did that it would also mean we couldn't show you how to use environment variables as well !
+
+</p></details>
+
+### Running the services
 
 To save having to copy and paste (or type !) each time there are scripts runStorefrontLocalExternalConfig.sh and runStockmanagerLocalExternalConfig.sh (one in each of the helidon-labs-storefront and helidon-labs-stockmanager directories.)
 
@@ -311,7 +410,7 @@ content-length: 184
 ```
 This call should return the entries you added earlier. 
 
-- You probably will get a *424 Failed dependency* message:  it's because the lazy initialization has taken a while as the back end request has times out (remember the @Timeout annotation!) 
+- You **may** will get a `424 Failed dependency` message:  it's because the lazy initialization has taken a while as the back end request has times out (remember the @Timeout annotation on the StorefrontResouce is set to 15 seconds!) 
   - Just re-run the request a few times till you get the expected response
 
 
@@ -374,9 +473,7 @@ There are a few details (registry id, authentication tokens and the like) you wi
 
 - Please follow the instructions in this document for [getting your docker details](../ManualSetup/GetDockerDetailsForYourTenancy.md)
 
-As there are may be many attendees doing the lab going through the same tenancy we need to separate the different images out, so we're also going to use your initials / name / something unique 
-
-Your full repo will be a combination of the repository host name (e.g. fra.ocir.io for an Oracle Cloud Infrastructure Registry) the tenancy storage name (for example oractdemeabdmnative) and the  details you've chosen
+Your full login name will be a combination of the repository host name (e.g. fra.ocir.io for an Oracle Cloud Infrastructure Registry) the tenancy storage name (for example oractdemeabdmnative) and your username
 
 #### Docker login in to the Oracle Container Image Registry (OCIR)
 
@@ -405,7 +502,7 @@ Enter the command with **your** details into a terminal in the virtual machine t
 
 #### Pushing the images
 
-You need to update **both** of the repoStockmanagerConfig.sh and repoStorefrontConfig.sh scripts in the helidon-labs-stockmanager and helidon-labs-storefront directories to reflect your chosen details
+You need to update **both** of the `repoStockmanagerConfig.sh` and `repoStorefrontConfig.sh scripts` in the helidon-labs-stockmanager and helidon-labs-storefront directories to reflect your chosen details
 
 <details><summary><b>If you can't find the repoStockmanagerConfig.sh and repoStorefrontConfig.sh scripts </b></summary>
 <p>
@@ -416,7 +513,10 @@ If you can't find the scripts then you will edit the repoConfig.sh scripts, but 
 
 - Navigate to the Storefront project
 
-- Open file **repoStorefrontConfig.sh** and edit the repo name to reflect **your** initials
+
+As for some instructor labs there are may be many attendees doing the lab in the same tenancy, to allow for that we need to separate the different images out, so we're also going to use your initials / name / something unique 
+
+- Open file **repoStorefrontConfig.sh** and edit the repo name to reflect **your** region, tenancy and initials
 
   - Example for region `Frankfurt`, in the `oractdemeabdmnative` tenancy with initials `tg` you might have : 
 
@@ -450,7 +550,7 @@ Note that we have two --tag commands so the resulting image will be pointed to b
 <p>
 On the surface using :latest may seem like a really good idea, you want to run the latest version all the time right ?
 
-Well actually using :latest may not be what you want. In a production environment you probably want to know what your exact configuration is, you may well have accreditation requirements (especially in the finance sector) and in most situations you want the production environment to match your development, and test environment. Certainly if you have problems and want to fix them you would wnat to know the configuration the problem is occuring in.
+Well actually using :latest may not be what you want. In a production environment you probably want to know what your exact configuration is, you may well have accreditation requirements (especially in the finance sector) and in most situations you want the production environment to match your development, and test environment. Certainly if you have problems and want to fix them you would want to know the exact configuration the problem occurrs in.
 
 To make matters worse :latest is just a tag , it has no actual meaning. you could have a v0.0.1 version which is also tagged latest, even though there are many versions after it (0.0.2, 0.1.4, 1.0.2 etc.) docker doesn't ensure that :latest is actually the most recent version of an image. In fact it is only convention that 1.2.3 is more recent than 1.2.2, there is nothing in docker itself that enforces this.
 </p></details>
@@ -503,7 +603,7 @@ Notice that for the second example layers all already exist, so nothing needs to
 
 Let's actually push the images.
 
-Run the buildStockmanagerPushToRepo.sh in the helidon-labs-stockmanager project director, then once it's finished run the buildStorefrontPushToRepo.sh script in the helidon-labs-storefront project directory.
+Run the `buildStockmanagerPushToRepo.sh` script in the helidon-labs-stockmanager project directory, then once it's finished run the `buildStorefrontPushToRepo.sh` script in the helidon-labs-storefront project directory.
 
 
 <details><summary><b>If you can't find the buildStockmanagerPushToRepo.sh and buildStorefrontPushToRepo.sh scripts </b></summary>
@@ -565,7 +665,7 @@ Wait for it to start, then in the storefront directory
 - `bash runStorefrontRepo.sh`
 
 
-<details><summary><b>If you can't find the buildStockmanagerPushToRepo.sh and buildStorefrontPushToRepo.sh scripts </b></summary>
+<details><summary><b>If you can't find the runStockmanagerRepo.sh and runStorefrontRepo.sh scripts </b></summary>
 <p>
 In older versions of the VM these were both called runRepo.sh, there was one of them in each of the helidon-labs-stockmanager and helidon-labs-storefront directory, but people found this confusing, so we re-named them to make it clear.
 
@@ -595,34 +695,11 @@ This is the end of this section of the lab, let's stop the running images
 
 When you do the Kubernetes labs you will test out performing a rolling upgrade. To do that you need to be able to show that the upgrade has applied, so you're going to do a bit of advance work now make a small change now so you can see the differences in versions in the later labs.
 
-- In Eclipse, navigate to the **helidon-labs-storefront** project
-  - Then navigate to **src/main/java**, then open the **com.oracle.labs.helidon.storefront.resources package**
-  - Open the file **StatusResource.java** 
-  - Change the VERSION constant to **0.0.2** (updated version shown below)
+There are scripts that temporarily update the version number, then do the build, and push to the repository, reverting the version number when the build completed.
 
-  ```
-	  public final static String VERSION = "0.0.2") ;
-  ```
+- In the helidon-labs-stockmanager project directory run the `buildStockmanagerV0.0.2PushToRepo.sh` script
 
-  - Save the changes
-
-- In a terminal window, let's build the new version of the container:
-
-  - Change to folder **helidon-labs-storefront**
-  - Run the build and push script that uses 0.0.2 as a tag:
-    -  `bash buildStorefrontV0.0.2PushToRepo.sh`
- 
-<details><summary><b>If you can't find the buildStorefrontV0.0.2PushToRepo.sh script </b></summary>
-<p>
-In older versions of the VM this was called buildV0.0.2PushToRepo.sh, but people found this confusing, so we re-named it to make it clear.
-
-You will find the script with the original buildV0.0.2PushToRepo.sh name that you can run as below
-
- - Change to folder **helidon-labs-storefront**
-  - Run the build and push script that uses 0.0.2 as a tag:
-    -  `bash buildV0.0.2PushToRepo.sh`
-    
-</p></details>
+  - `bash buildStockmanagerV0.0.2PushToRepo.sh`
 
 ```
 Using repository fra.ocir.io/oractdemeabdmnative/tg_repo
@@ -677,13 +754,12 @@ bee1e39d7c3a: Layer already exists
 0ca7f54856c0: Layer already exists 
 ebb9ae013834: Layer already exists 
 0.0.2: digest: sha256:65db7b35e2f2bd73f0010771f66794034eecddb6b10b69a3f34b9a8ffd16d8f5 size: 2839
-built and pushed v0.0.2
-
 ```
 
 There is a lot of output, most of which has been removed in the example output above. You can see that the 0.0.2 version has been pushed to the repo.
 
-(Note the Maven output may refer to v0.0.1, don't worry this is because we haven't changed the version details in the maven pom.xml file. The later stages of the process override this.)
+- In the =helidon-labs-storefront project directory run the `buildStorefrontV0.0.2PushToRepo.sh` script
+  - `bash buildStorefrontV0.0.2PushToRepo.sh`
 
 ## Summary
 Congratulations, you are now able to run your microservices on Docker!  Next step is to use these images to deploy them on a Kubernetes cluster.  For this, navigate to the next chapter, [C. Deploying in Kubernetes](../Kubernetes/Kubernetes-labs.md)

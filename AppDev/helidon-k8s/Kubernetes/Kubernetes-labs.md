@@ -68,7 +68,7 @@ Commonly when a service is deployed it will be updated, Kubernetes provides supp
 
 The following modules are in **some** cases optional, this is because some of the later modules may depend on these (For example the Grafana module relies on the completion of the Prometheus module.) If you are in a guided lab with an instructor they will tell you which of the optional modules you need to complete, if you are doing this in a self-guided mode then please read the descriptions below to determine which optional modules you should do.
 
-These optional modules are grouped by subject area. Unless there are dependencies specified you should be able to do them in any order, or 
+These optional modules are grouped by subject area. Unless there are dependencies specified you should be able to do the module groups in any order, though the labs were written following the order defined below, so if you don't do all of them, or in a different order the visuals may differ slightly.
 
 ### Optional labs group 1. Monitoring your services
 

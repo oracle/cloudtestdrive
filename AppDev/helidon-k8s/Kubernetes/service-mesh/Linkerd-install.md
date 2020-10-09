@@ -25,8 +25,9 @@ This video is an introduction to the Service mesh basics lab. Once you've watche
 
 The concept behind a service mesh is pretty simple. It's basically a set of network proxies that are conceptually interposed between the containers running on a pod and the external network of the pod. This is achieved by the service mesh management capability (the control plane) which automatically adds proxies (the data plane) to the pods when the pods are started (if the pod is in a namespace that requests this via annotations)
 
-The following diagram (from [servicemesh.io](https://servicemesh.io)) whoes the components in the [linkerd](https://linkerd.io) service mesh, but other service mesh implementations have a similar structure. In this architecture, the proxies run as containers within the pod using the [sidecar pattern](https://dzone.com/articles/sidecar-design-pattern-in-your-microservices-ecosy-1)
-![](https://servicemesh.io/images/control-plane.png) 
+The following diagram (from [buoyant.io](https://buoyant.io)) whoes the components in the [linkerd](https://linkerd.io) service mesh, but other service mesh implementations have a similar structure. In this architecture, the proxies run as containers within the pod using the [sidecar pattern](https://dzone.com/articles/sidecar-design-pattern-in-your-microservices-ecosy-1)
+
+![](https://buoyant.io/images/manifesto/diag1.svg)
 
 The data plane consists of proxies which intercept the network operations of the pods and can apply rules to the data, for example restricting which services can be called by other services, encrypting data between proxies so cross microservice connections are transparently encrypted, splitting or mirroring traffic to help with update processes, and also gathering metrics on the number of calls (a link to [golden metrics](https://blog.appoptics.com/the-four-golden-signals-for-monitoring-distributed-systems/) would be good here), how often a cross microservice call failed and such like. Of course in a non Kubernetes environment you may have had your network switches or host operating systems do this, and many organizations had various levels of networking (separated by firewalls) for users, web applications, and databases, but in Kubernetes the boundary between the physical and logical compute resources is blurred, so using a service mesh allows you to have a simple implementation approach that applies regardless of if pods are running on the same node, different nodes in the same environment, or potentially even between data centers in opposite sides of the world.
 
@@ -483,6 +484,9 @@ Curiously the linkerd-web ingress does not by default use a TLS certificate to e
 
 Fortunately for us when we first setup our ingress controller and load balancer we installed a certificate in the load balancer for SSL / TLS connections, so we can just use that for the linkerd SSL/TLS endpoint as well. 
 
+- Move to the `$HOME/helidon-kubernetes/service-mesh` directory
+  - `cd $HOME/helidon-kubernetes/service-mesh`
+
 ### Create a login password to secure the connection
 
 The default configuration for the linkerd-web service includes a password of admin/admin. Obviously this is for demo purposes, but we should use something more secure (and of course you **must** use a strong password kubectl get namespace ingress-nginx -o yaml | linkerd inject - | kubectl replace -f -in a production environment !)
@@ -555,7 +559,7 @@ You will probably be challenged as you have a self signed certificate.
 We have had reports that some versions of Chrome will not allow you to override the page like this, for Chrome 83 at least one solution is to click in the browser window and type the words `thisisunsafe` (copy and past doesn't seem to work, you need to actually type it.) Alternatively use a different browser.
 
 
-Next you will be presented with the login challenge.
+Next you will be presented with the login challenge. The image below was captured using Safari, different browsers have slightly different looks, but the basic content is the same.
 
 ![](images/linkerd-web-login.png)
 
@@ -706,9 +710,9 @@ It doesn't look very different, and if you looked at the Grafana page that would
 
 Well the reason for this is to do with the way a service mesh works. 
 
-The following diagram (from [servicemesh.io](https://servicemesh.io)) shows the components in the [linkerd](https://linkerd.io) service mesh
+The following diagram (from [buoyant.io](https://buoyant.io)) shows the components in the [linkerd](https://linkerd.io) service mesh
 
-![](https://servicemesh.io/images/control-plane.png) 
+![](https://buoyant.io/images/manifesto/control-plane.png) 
 
 If you look at the data plane you can see what a pod looks like when the service mesh is enabled. In addition to the application containers in the pods you'll see there is also a container in the pod called `linkerd-proxy` This is a container that's automatically added to the pod for you when the pod is deployed. The proxy is what does the day to day activities of the service mesh as it intercepts the network traffic, does the metric counting, connection encryption and so on.
 
@@ -748,10 +752,13 @@ Restarting the pods triggered linkerd to do it's automatic update of the pod add
 
 - In the OCI Cloud shell type the following, if you have additional deployments add them to the list
   - ` kubectl get pods
+  
+```
 NAME                            READY   STATUS    RESTARTS   AGE
 stockmanager-654f44d59d-bjn2v   2/2     Running   0          7m55s
 storefront-8ddc6db75-nxlnm      2/2     Running   0          7m55s
 zipkin-84466dc99f-w5hhc         2/2     Running   0          7m55s
+```
 
 Note that pods have 2/2 in the READY column, this means that there are **two** containers running in the pod, previously would have seen 1/1 meaning only one container was running, (the application)
 
@@ -784,7 +791,7 @@ metadata:
     kubectl.kubernetes.io/restartedAt: "2020-05-21T17:27:41Z"
     linkerd.io/created-by: linkerd/proxy-injector stable-2.7.1
     linkerd.io/identity-mode: default
-    linkerd.io/proxy-version: stable-2.7.1
+    linkerd.io/proxy-version: stable-2.8.1
     prometheus.io/path: /metrics
     prometheus.io/port: "9081"
     prometheus.io/scrape: "true"

@@ -37,24 +37,22 @@ The main class we will be using is **StorefrontResource.java**.   Locate it in t
 
 ---
 
-<details><summary><b>More on Lombok</b></summary>
+<details><summary><b>What are the @Slf4j and @NoArgsConstructor annotations ?</b></summary>
 <p>
 
 
-You see a couple of annotations already on place on the class definition (`@Slf4j` and `@NoArgsConstructor`) These are being processed by [Lombok](https://projectlombok.org/).  Lombok is a set of Java based tools tha use annotations to perform common tasks for us. In this case the `@Slf4j` annotation tells Lombok to automatically generate a Java logger (Actually we use the simple logging facade, which makes is easy to switch the logging engine) using the class name as the loggers name. The `@NoArgsConstructor` does what the name suggests and creates a constructor for us without any arguments. 
+You see a couple of annotations already on place on the class definition (`@Slf4j` and `@NoArgsConstructor`) These are being processed by [Lombok](https://projectlombok.org/).  Lombok is a set of Java based tools that use annotations to perform common tasks for us. In this case the `@Slf4j` annotation tells Lombok to automatically generate a Java logger (Actually we use the simple logging facade, which makes is easy to switch the logging engine) using the class name as the loggers name. The `@NoArgsConstructor` does what the name suggests and creates a constructor for us without any arguments. 
 
 Lombok provides a wide variety of other useful annotations to speed up development, for example rather than manually creating getters and setters, hash codes and equals we can just use the @Lombok `@Data` annotation to create them for us automatically. As Lombok is executed when a class if compiled as we change the class any new fields would have getters / setters automatically created for us and any fields that had been removed would no longer have getters / setters created.
 
 It's not required that people use Lombok for java development of course, but I'm using it here to as to not clutter up the code, and also I'm lazy when it comes to coding and Lombok is a great tool for lazy coders :-)
 
 Enough on Lombok. Let's get to the Helidon work !
-</p>
-</details>
 
 ---
 
-
-
+</p>
+</details>
 
 
 ### Make the list stock REST Service available
@@ -100,7 +98,7 @@ Helidon will now REST enable the class, but it needs to know what specific metho
 
 - Scroll to the **listAllStock** method in the StorefrontResource.java file
 
-```
+```java
 	public Collection<ItemDetails> listAllStock() {
 		// log the request
 		log.info("Requesting listing of all stock");
@@ -120,9 +118,18 @@ Helidon will now REST enable the class, but it needs to know what specific metho
 
 It's pretty simple, when called it does some logging, then gets a Collection of ItemDetails and returns it, doing a bit of Exception handling as it does so. Hopefully this type of thing will be very familiar to you.
 
+<details><summary><b>Where is the logging configuration loaded ?</b></summary>
+<p>
+
+In a capability introduced in Helidon 2.0 the Helidon framework  will automatically locate a logging.propoerties if one exists in the classpath (or current working directory) and will use that to configure the logging for us, so we don't need to explicitly configure logging. Makes things a little easier.
+
+---
+
+</p></details>
+
 - Add the following annotations on the **listAllStock** method:
 
-  - ```
+  - ```java
     @GET
     @Path("/stocklevel")
     @Produces(MediaType.APPLICATION_JSON)
@@ -132,7 +139,7 @@ It's pretty simple, when called it does some logging, then gets a Collection of 
 
 Your code now should look like : 
 
-```
+```java
 @GET
 @Path("/stocklevel")
 @Produces(MediaType.APPLICATION_JSON)
@@ -140,6 +147,8 @@ public Collection<ItemDetails> listAllStock() {
 	// log the request
 	log.info("Requesting listing of all stock");
 ```
+
+- Save the changes you've just made, Control-s will do this.
 
 ---
 
@@ -166,14 +175,16 @@ This Produces annotation is very important to understand. It means that the fram
 ### But how does the framework know what to make available?
 We've updated a single class, but in a traditional Java program something else would be calling that class and starting the rest of the program. We need to have a class that does that for us and tells Helidon that this is a class we want enabled as a REST service.
 
-The com.oracle.labs.helidon.storefront.Main class starts the process. We're going to look into sections of this in more detail soon, but the main point here is to that the main method of the main class creates a Helidon server instance.
+The com.oracle.labs.helidon.storefront.Main class starts the process. We're going to look into sections of this in more detail soon, but the main point here is to that the main method of the main class creates a Helidon server instance. Let's have a quick look at that.
 
 - Open the file **Main.java**, located in the project *helidon-labs-storefront*, and in the folder *src/main/java*
 
-```
+```java
 	public static void main(final String[] args) throws IOException {
-		setupLogging();
-
+		// Helidon will automatically locate a logging.propoerties if one exists in the
+		// classpath or current working directory and will use that to configure the
+		// logging for us, so we don't need to explicitly configure logging
+		
 		log.info("Starting server");
 		Server server = Server.builder().config(buildConfig()).build().start();
 
@@ -181,22 +192,46 @@ The com.oracle.labs.helidon.storefront.Main class starts the process. We're goin
 	}
 ```
 
-How does Helidon know what classes it needs to create REST endpoints for ?
+The core line is 
+
+```java
+Server server = Server.builder().config(buildConfig()).build().start();
+```
+
+This creates a server builder, specifies a configuration, builds the server and starts it. For now you can close the Main.java file.
+
+
+<details><summary><b>Why do I need a main class ?</b></summary>
+<p>
+
+Helidon  does not require you to use a main class, you can if you want actually use a class thats part of the Context and Dependency Injection (CDI) framework (we will do more on CDI later) which will locate all `Application`  classes for you. 
+
+In this case the class is called Main, but that's really just so we can easily identify the class with the `main` method and can specify it in the packaging tools later on. As with any Java program the class with the `main` method could be called anything you want, you just need to know the class name so you can run it, and define it in any runnable .jar files. 
+
+The problem with using CDI to do this however is that you won't have the chance alter aspects of the configuration to meet your project needs, or override the logging setup process. For a simple application that's not a problem, but in most cases you will want to setup your own configuration properties and so on, which is why we're using our own startup class.
+
+---
+
+</p></details>
+
+---
+
+### How does Helidon know what classes it needs to create REST endpoints for ?
 
 We need to create a new class to provide this information, and add an annotation to it so Helidon knows that's the new class provides this information.
 
-- Locate the class **StorefrontApplication**
+- Locate and open the class **StorefrontApplication**
 
 - add the following 2 annotations:
 
-  - ```
+  - ```java
     @ApplicationScoped
     @ApplicationPath("/")
     ```
 
 The result should look like : 
 
-```
+```java
 @ApplicationScoped
 @ApplicationPath("/")
 public class StorefrontApplication extends Application {
@@ -205,7 +240,7 @@ public class StorefrontApplication extends Application {
 	public Set<Class<?>> getClasses() {
 		// here we have two classes to operate on, the store front, and the
 		// configuration manager
-		return CollectionsHelper.setOf(StorefrontResource.class);
+		return Set.Of(StorefrontResource.class);
 	}
 }
 ```
@@ -225,15 +260,12 @@ Note that in this case Application is not a Helidon annotation.
 
 When the Helidon server starts up it looks for classes with the @ApplicationPath path annotation and that extend the Application interface and then calls the getClasses method on those to get a set of classes that it will then examine in more detail for other annotations.
 
-</p>
-
-</details>
-
 ---
 
 
 
-- Save your changes to the StorefrontResource file by hitting this icon: <img src="images/eclipse-save2.png" style="zoom:33%;" />
+
+- Save your changes to the StorefrontResource file with Control-s, or you can save all your changes to all files by hitting this icon: <img src="images/eclipse-save2.png" style="zoom:33%;" />
 
 ### Running the storefront program.
 - locate the. file **Main.java**. 
@@ -293,7 +325,7 @@ We've seen how simple it is to make a existing Java method REST enabled and how 
 - Re-open the file **StorefrontResource.java** 
 - locate the **reserveStockItem** method.
 
-```
+```java
 	public ItemDetails reserveStockItem(ItemRequest itemRequest)
 			throws MinimumChangeException, UnknownItemException, NotEnoughItemsException {
 		log.info("Requesting the reservation of " + itemRequest.getRequestedCount() + " items of "
@@ -301,11 +333,6 @@ We've seen how simple it is to make a existing Java method REST enabled and how 
 		// make sure the change is within the minimum change allowed
 		// :-)
 		if (itemRequest.getRequestedCount() < minimumChange.getMinimumChange()) {
-			// didn't meet the minimum requirement, log the failed request and throw the log
-			// message as an error
-			String problemDetails = "The reservation of " + itemRequest.getRequestedCount() + " items of "
-					+ itemRequest.getRequestedItem() + " fails because it's less than the minimum delta of "
-					+ minimumChange.getMinimumChange();
 .....
 ```
 
@@ -313,7 +340,7 @@ We're going to make this class respond to a POST request (in REST terms POST cal
 
 - **Add** the following annotations to the **reserveStockItem** method:
 
-  - ```
+  - ```java
     @POST
     @Path("/reserveStock")
     @Produces(MediaType.APPLICATION_JSON)
@@ -322,7 +349,7 @@ We're going to make this class respond to a POST request (in REST terms POST cal
 
 The result should look like this : 
 
-```
+```java
 	@POST
 	@Path("/reserveStock")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -363,7 +390,7 @@ Basically in addition to running the server and configuring things Helidon is no
 
 ---
 
-<details><summary><b>An error ?</b></summary>
+<details><summary><b>Did you have an error running it ?</b></summary>
 <p>
 
 If when running you get Exception messages in the console about "Failed to start server" and a whole bunch of stack trace including a "Bind Exception: Address already in use" then you forgot to stop the server in the last part of the lab. You will need to close the current console tab by clicking on the X in the console tab options.
@@ -475,7 +502,7 @@ This simple single annotation tells Helidon that before even reaching your actua
 
 Result:
 
-```
+```java
 @Path("/store")
 @RequestScoped
 @Authenticated
@@ -531,7 +558,7 @@ content-length: 107
 
 So how does the Authorized annotation determine what's allowed and what's not ? Basically it's defined using configuration properties that are imported from a configuration file. We'll see later how Helidon is told where it's configuration files are, but for for your reference the security configuration we're using is below.
 
-```
+```yaml
 security:
   providers:
     # enable the "ABAC" security provider (also handles RBAC)
@@ -576,19 +603,19 @@ A big application may have multiple sets of services, grouped into resources, so
 
 Let's look at the reserveStockItem method, you'll see that the code uses a minimumChange to ensure that at least a certain number of items are taken.
 
-```
-if (itemRequest.getRequestedCount() <= minimumChange.getMinimumChange()) {
+```java
+if (itemRequest.getRequestedCount() < minimumChange.getMinimumChange()) {
 			// didn't meet the minimum requirement, log the failed request and throw the log
 			// message as an error
 			String problemDetails = "The reservation of " + itemRequest.getRequestedCount() + " items of "
-					+ itemRequest.getRequestedItem() + " fails because it's <= than the minimum delta of "
+					+ itemRequest.getRequestedItem() + " fails because it's less than the minimum delta of "
 					+ minimumChange.getMinimumChange();
 			log.warning(problemDetails);
 			throw new MinimumChangeException(problemDetails);
 		}
 ```
 
-We can test this by running the service (from now on we're going to assume that you remember to stop the old instance of the program before starting the new one) requesting the reservation of a single item (by default MinimumChange contains a value of 2, so lets see what happens when we request a single Pencil)
+We can test this by running the service (from now on we're going to assume that you remember to stop the old instance of the program before starting the new one) requesting the reservation of a single item (by default MinimumChange contains a value of 3, so lets see what happens when we request two Pencils)
 
 - Run a **curl** command, we **expect an error**
   - `curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":2}' http://localhost:8080/store/reserveStock`
@@ -607,7 +634,7 @@ The code has generated an error, if we look at the logs in the Console tab we'll
 2020.01.05 13:25:31 INFO com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[helidon-1,5,server]: Requesting the reservation of 2 items of Pencil
 2020.01.05 13:25:31 WARNING com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[helidon-1,5,server]: The reservation of 2 items of Pencil fails because it's less than the minimum delta of 2
 2020.01.05 13:25:31 WARNING io.helidon.microprofile.server.ServerImpl.jersey Thread[helidon-1,5,server]: Internal server error
-com.oracle.labs.helidon.storefront.exceptions.MinimumChangeException: The reservation of 2 items of Pencil fails because it's <= than the minimum delta of 2
+com.oracle.labs.helidon.storefront.exceptions.MinimumChangeException: The reservation of 2 items of Pencil fails because it's less than the minimum delta of 3
 	at com.oracle.labs.helidon.storefront.resources.StorefrontResource.reserveStockItem(StorefrontResource.java:153)
 	at com.oracle.labs.helidon.storefront.resources.StorefrontResource$Proxy$_$$_WeldClientProxy.reserveStockItem(Unknown Source)
 ```
@@ -623,13 +650,13 @@ You'll see it sets up a minimumChange value, and has methods for getting and set
 
 These methods differ from the ones in StorefrontResource in a few ways.
 
-There is no `@Path` annotation on the methods, so they will both inherit the path from the class, (/minimumChange)
+There is a `@Path` annotation on the class itself, but no `@Path` annotation on the methods, Helidon will apply class level annotations to all methods in a class (unless they override the setting specifically per method.) So here both methods inherit the path set on the class, (/minimumChange)
 
 They return an http Response rather than just returning an object. This isn't something you'd usually do in this situation, but I included it to show that it's possible if you need to manipulate the response, say if you need to set http response codes in the event of an exception (we'll look at handling exceptions later in the lab) Also I wanted to provide an example of how to use Responses should you have other reasons to do so.
 
-The set method has a `@RolesAllowed({ "admin" })`  annotation. This tells Helidon that not only must the user be @Authenticated, but also that the user once authenticated must be in the admin role.
+The set method has `@Authenticated` and `@RolesAllowed({ "admin" })` annotations. These together tell Helidon that not only must the user be authenticated, but also that the user once authenticated must be in the admin role. For this class we have not applied `@Authenticated` to the class, so as the getMinimumChange method does not have a `2authenticated` annotation that method can be called with no authentication required, this is useful if you have some endpoints that you want to make accessible to everyone, but to restrict others.
 
-Lastly the get method returns plain text, the response isn't wrapped into JSON (again this is just to show it's possible to do this, the return type of your data will vary depending on your application, for example if you're returning chunks of plain text than it is more efficient to do this as text than wrapping it into a structured data format like JSON)
+Lastly the get method has a produces media type of plain text, the response isn't wrapped into JSON (again this is just to show it's possible to do this, the return type of your data will vary depending on your application, for example if you're returning chunks of pure unstructured text than it is more efficient to do this as text than wrapping it into a structured data format like JSON)
 
 So we've created code that will set and get the minimum change value it contains. Next we need to tell Helidon that it's a resource that should be processed, we do that by adding our new resource to the list of application classes.
 
@@ -644,7 +671,7 @@ We do now need to tell Helidon that the endpoints in ConfigurationResource are t
 - Open the **StorefrontApplication.java** file
 - On the last line, containing `return CollectionsHelper`, add the **ConfigurationResource.class** to the set of returned classes as in the below example:
 
-```
+```java
 @ApplicationScoped
 @ApplicationPath("/")
 public class StorefrontApplication extends Application {
@@ -672,13 +699,13 @@ Date: Sun, 5 Jan 2020 13:49:44 GMT
 connection: keep-alive
 content-length: 1
 
-2
+3
 ```
 
-The result is 2, this is the default defined in the MinimumChange class. There is no @Authenticated on the class or the get method, so no need to provide user details.
+The result is 3, this is the default defined in the MinimumChange class. There is no @Authenticated on the class or the get method, so no need to provide user details.
 
-- Now let's change the value - **expect an error**:
-  -  `curl -i -X POST -u jill:password -d "3"  -H "Content-type:application/json" http://localhost:8080/minimumChange`
+- Now let's try and change the value - **expect an error**:
+  -  `curl -i -X POST -u jill:password -d "4"  -H "Content-type:application/json" http://localhost:8080/minimumChange`
 
 Result:
 
@@ -693,7 +720,7 @@ connection: keep-alive
 Well, that's a new error message, we're forbidden to access the resource, even though we've provided a valid username and password. This is because of the `@RolesAllowed({ "admin" })`  annotation. User Jill is not one of the admins, to access a method with this annotation we need an admin, and that's jack. Let's try again using jack as the user
 
 - Retry the change, using **jack** as user:
-  -  `curl -i -X POST -u jack:password -d "3"  -H "Content-type:application/json" http://localhost:8080/minimumChange`
+  -  `curl -i -X POST -u jack:password -d "4"  -H "Content-type:application/json" http://localhost:8080/minimumChange`
 
 Result:
 
@@ -705,7 +732,7 @@ Date: Sun, 5 Jan 2020 13:58:08 GMT
 connection: keep-alive
 content-length: 1
 
-3
+4
 ```
 
 Success, we've changed it.
@@ -722,20 +749,20 @@ Date: Sun, 5 Jan 2020 14:02:05 GMT
 connection: keep-alive
 content-length: 1
 
-2
+3
 ```
 
-It's still 2 ! How come ?
+It's still 3 ! How come ?
 
-The answer relates to the **scope** of the ConfigurationResource class. We've set it to be `@RequestScoped`, so Helidon creates a new instance for each request, and the new instance creates a new instance of the MinimumChange with the default value of 2. That's a problem, we need to be able to make this change and not have it immediately revert the next time it's accessed !
+The answer relates to the **scope** of the ConfigurationResource class. It's currently set it to be `@RequestScoped`, so Helidon creates a new ConfigurationResource instance for each request, and the new instance creates a new instance of the MinimumChange with the default value of 3. That's a problem, we need to be able to make this change and not have it immediately revert the next time it's accessed !
 
-How do we fix this ? Simple, we just change the ConfigurationResource class form being `@RequestScoped` to `@ApplicationScoped` The Helidon framework will now create only a single instance of the ConfigurationResource class and re-use it whenever Helidon needs it.
+How do we fix this ? Simple, we just change the ConfigurationResource class from being `@RequestScoped` to `@ApplicationScoped` The Helidon framework will now create only a single instance of the ConfigurationResource class and re-use it whenever Helidon needs it.
 
 - Open the file **ConfigurationResourse.java**
 
 - Change `@RequestScoped` to `@ApplicationScoped` in the ConfigurationRecourse class and save it
 
-```
+```java
 @Path("/minimumChange")
 @ApplicationScoped
 // Have Lombok create a logger for us
@@ -745,7 +772,7 @@ public class ConfigurationResource {
 
 - Stop the current version of the program running, then re-start it which will use the updated versions of the code.
 
-- Let's just check the current value is 2 as we expect
+- Let's just check the current value is 3 as we expect
   -  `curl -i -X GET http://localhost:8080/minimumChange`
 
 ```
@@ -755,13 +782,13 @@ Date: Sun, 5 Jan 2020 14:11:40 GMT
 connection: keep-alive
 content-length: 1
 
-2
+3
 ```
 
-It is, we get 2 as a result, as expected.
+It is, we get 4 as a result, as expected.
 
 - Now let's make the change again
-  -   `curl -i -X POST -u jack:password -d 3  -H "Content-type:application/json" http://localhost:8080/minimumChange`
+  -   `curl -i -X POST -u jack:password -d 4  -H "Content-type:application/json" http://localhost:8080/minimumChange`
 
 ```
 HTTP/1.1 200 OK
@@ -770,7 +797,7 @@ Date: Sun, 5 Jan 2020 14:11:48 GMT
 connection: keep-alive
 content-length: 1
 
-3
+4
 ```
 
 - And check that the change has held across requests
@@ -783,7 +810,7 @@ Date: Sun, 5 Jan 2020 14:11:52 GMT
 connection: keep-alive
 content-length: 1
 
-3
+4
 ```
 
 Great, it's done what we want and maintained the new value.
@@ -817,7 +844,7 @@ Date: Tue, 7 Jan 2020 16:30:30 GMT
 connection: keep-alive
 content-length: 54
 
-{"name":"Name Not Set","alive":true,"version":"0.0.1"}
+{"name":"Name Not Set","alive":true,"version":"0.0.1","timestamp":"2020-09-22 10:46:19.713"}
 ```
 
 
@@ -832,7 +859,7 @@ We'll look at what the StatusResource is used for later
 <details><summary><b>Sharing resources between classes</b></summary>
 <p>
 
-We've now got ways to setup the MinimumChange and have it persistent, but it's now being used in multiple locations, the ConfigurationResource and the StorefrontResource, and at the moment they both create an instance, so though the Configuration resource (being application scoped) only exists once it's not actually using the same instance of the MinimumChange as the StorefrontResource. So a change to the value via the ConfigurationResource won't actually be reflected in the behavior of the Storefront resource. Bit of a problem that !
+We've now got ways to setup the MinimumChange and have it persistent, but it's now being used in multiple locations, in the ConfigurationResource and the StorefrontResource, and at the moment they both create an instance, so though the Configuration resource (being application scoped) only exists once it's not actually using the same instance of the MinimumChange as the StorefrontResource. So a change to the value via the ConfigurationResource won't actually be reflected in the behavior of the Storefront resource. Bit of a problem that !
 
 Java itself can be used to solve this, we could create a factory to create a single instance, then and hide the MinimumChange constructor so it couldn't be created outside the factory, but that's a lot of hassle if we were to have to do this for all classes in an application. Fortunately for us Helidon has a solution which is connected with a capability called the Dependence Injection system which helps us with this, as well as providing a way to inject the object instances it creates.
 
@@ -848,7 +875,7 @@ The actual creation of the instances is handled for us by Helidon, we just need 
 - Make the class **ApplicationScoped**, so only one instance no matter how often it's used in the application by adding an annotation to the class:
   -  `@ApplicationScoped`
 
-```
+```java
 @ApplicationScoped
 public class MinimumChange {
 ```
@@ -868,12 +895,12 @@ This tells Helidon that when creating an instance of the Configuration resource 
 - Edit the file **StorefrontResource.java**
 - **@Inject** the miniumumChange instead of creating an instance as well. 
 
-  - ```
+  - ```java
 	  @Inject
 	  private MinimumChange minimumChange;
 	  ```
 
-As the Helidon framework knows that MinimumChange is ApplicationScoped this means that every tie a new StorefrontResource is created (once per request) the **same** instance of MinimumChange will be used (which is also the instance used in the ConfigurationResource)
+As the Helidon framework knows that MinimumChange is ApplicationScoped this means that every time a new StorefrontResource is created (once per request) the **same** instance of MinimumChange will be used (which is also the instance used in the ConfigurationResource)
 
 - **Save** all of the class files
 - **Stop** any previously running instance of the program 
@@ -894,7 +921,7 @@ As expected this generates a server error which we can also see in the console t
 
 ```
 2020.01.05 14:42:19 INFO com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[helidon-1,5,server]: Requesting the reservation of 2 items of Pencil
-2020.01.05 14:42:19 WARNING com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[helidon-1,5,server]: The reservation of 2 items of Pencil fails because it's <= than the minimum delta of 2
+2020.01.05 14:42:19 WARNING com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[helidon-1,5,server]: The reservation of 2 items of Pencil fails because it's less than the minimum delta of 3
 2020.01.05 14:42:19 WARNING io.helidon.microprofile.server.ServerImpl.jersey Thread[helidon-1,5,server]: Internal server error
 com.oracle.labs.helidon.storefront.exceptions.MinimumChangeException: The reservation of 2 items of Pencil fails because it's less than the minimum delta of 2
 	at com.oracle.labs.helidon.storefront.resources.StorefrontResource.reserveStockItem(StorefrontResource.java:154)
@@ -914,7 +941,7 @@ content-length: 35
 {"itemCount":9,"itemName":"Pencil"}
 ```
 
-And if we check the minimum change it is of course 2
+And if we check the minimum change it is of course 3
 
 -  `curl -i -X GET http://localhost:8080/minimumChange`
 
@@ -925,7 +952,7 @@ Date: Sun, 5 Jan 2020 14:44:54 GMT
 connection: keep-alive
 content-length: 1
 
-2
+3
 ```
 
 Let's use Jacks admin rights to change the minimum change to 1
@@ -1009,10 +1036,11 @@ Fortunately for us Helidon can get values to use for a constructor from the conf
   
 
 The result should look like :
-```
+
+```java
 ...
 	public MinimumChange() {
-		this.minimumChange.set(2);
+		this.minimumChange.set(3);
 	}
 	
 	@Inject
@@ -1033,7 +1061,7 @@ The `@Inject` on  constructor means to use this constructor when creating instan
 
 
 - **Save** this change and **restart** the program
-- Request the value for minimum change,  we'll see that it has a value of 3
+- Request the value for minimum change,  we'll see that it has a value of 4 (which comes from a config property)
   -  `curl -i -X GET http://localhost:8080/minimumChange`
 
 ```
@@ -1043,7 +1071,7 @@ Date: Sun, 5 Jan 2020 15:04:30 GMT
 connection: keep-alive
 content-length: 1
 
-3
+4
 ```
 
 ---
@@ -1051,21 +1079,25 @@ content-length: 1
 <details><summary><b>Where does that value come from?</b></summary>
 <p>
 
-Helidon by default looks for a file called `META-INF/microprofile-config.properties` in it's classpath. You can find this in Eclipse by opening the src/main/resources folder.
+Helidon by default looks for properties in the Java system properties (-D on the java command) then environment variables, then a resource called `META-INF/microprofile-config.properties` in it's classpath. You can override this, in which case it will look in the Java system properties, then environment variables, then the locations you specify in local files and the class path. Note that if you do specify locations then the `META-INF/microprofile-config.properties` is not included automatically.
 
-By convention the `microprofile-config.properties` is the place where you put default values that you want your program to use so you can guarentee that a property has at least one value set (although as we will see later there are other mechanisms to do this.) Amongst other content has a line 
+Here we will look at using config information in  `META-INF/microprofile-config.properties` 
+
+By convention the `microprofile-config.properties` is the place where you put default values that you want your program to use so you can guarantee that a property has at least one value set (although as we will see later there are other mechanisms to do this.) This is because `META-INF/microprofile-config.properties` is a classpath resource, so it's packaged up in your jar file, and will therefore be delivered along with your code. 
+
+You would use default property values for things that probably need to have a value, and there is a sensible default value that can be chosen, but in some situation would change. For example the minimum size of a password might have a default value (say 8 characters), but in some situations your users may want to override it (say requiring a minimum password of 12 characters.) There are of course some values that should **not** have a default value, for example a database password should be set for each deployment, the program should error immediately without a deployment specific DB password (rather than some random error part way through processing) and absolutely should not be packaged up where anyone can see it.
+
+Open the `META-INF/microprofile-config.properties` in Eclipse, this is in the src/main/resources folder.
+
+Amongst other content it has a line `microprofile-config.properties`
 
 ```
-app.minimumchange=3
+app.minimumchange=4
 ```
-
-When packaging up the code into a jar file, docker container etc. most packaging tools will include the file as part of the jar, so you know your program will have default values.
 
 That's great of course, especially as we need those defaults (if they are not specified then your program won't be able to start and you'll get missing property exceptions) but how do we change that minimum value if we want to use a different value ?
 
-Well Helidon has a quite powerful properties inheritance model based on different levels overriding any properties of the same name that are at lower levels. The priority order is Java system properties (e.g. set with -D to the Java run command) then Operating System environment variables and then configuration files in the order they are specified.
-
-Let's go an add a new config file to the list !
+Well Helidon has a quite powerful properties inheritance model based on different levels overriding any properties of the same name that are at lower levels. The priority order is Java system properties (e.g. set with -D to the Java run command) then Operating System environment variables and then configuration files in the order they are specified. The Helidon config system will return the first value found based on that order.
 
 ---
 
@@ -1089,7 +1121,7 @@ Where you deliberately do not want a default value it's far better to fail at th
 <details><summary><b>Setting a default using @ConfigProperty</b></summary>
 <p>
 
-In some situations the `@ConfigProperty` annotation is intended to provide a mechanism to override a reasonable in the code. That default can be specified in a developer provide config file, but in some cases (for example the size of a buffer) you might reasonably want to have a guaranteed value that is always there as it's very unlikely to need to be overridden.
+In some situations the `@ConfigProperty` annotation is intended to provide a mechanism to override a reasonable default specified in the code. That default can be specified in a developer provided config file, but in some cases (for example the size of a buffer) you might reasonably want to have a guaranteed value that is always there and could only be removed by code changes (presumabaly by a knowlegable person !)
 
 To allow this the  `@ConfigProperty` annotation supports an additional option called defaultValue, for example `@ConfigProperty(name = "app.minimumchange", defaultValue = "4")` The value is provided as a string, but the runtime will try and convert the string to whatever the actual object type is.
 
@@ -1098,60 +1130,125 @@ To allow this the  `@ConfigProperty` annotation supports an additional option ca
 </p></details>
 
 
+Let's go an add a new config file to the list !
 
 
 - Open the file **Main.java** in the *src/main/java* folder
 - Locate the **buildConfig** method at the end of the file
 - Add the **conf/storefront-config.yaml** source as the ***first element*** in the list of property sources to scan.
-  -  `ConfigSources.file("conf/storefront-config.yaml").optional());`
+  -  `configSourcesToScan.add(ConfigSources.file("conf/storefront-config.yaml").optional().build());`
 
 Result should look like : 
 
-```
+```java
 	private static Config buildConfig() {
-		// Build up a list of config sources, as we will have 4 in the end we need to do
-		// it as a list as the source method only supports up to 3 args before requiring
-		// a list
-		List<Supplier<ConfigSource>> configSources = new LinkedList<>();
-		configSources.add(
-				ConfigSources.file("conf/storefront-config.yaml").optional());
-		configSources.add(ConfigSources.file("confsecure/storefront-security.yaml"));
-		configSources.add(ConfigSources.classpath("META-INF/microprofile-config.properties"));
-	
-		// create a config builder using these sources.
-		return Config.builder().sources(configSources).build();
+		// Build up a list of config sources, as we will have 4 in the end, we need to
+		// create a list of built config sources. if we were only creating 3 or less we
+		// could use them directly in the Config.builder.sources(source1, sources2)
+		// mechanism, but for reasons unclear sources does not use varargs
+		//
+		// Note that the ConfigSources.{sourcetype} methods produce a builder, so we
+		// need to
+		// build it before we can add it to the list. again if there were three or less
+		// we could pass the ConfigSource builder directly into the sources method of
+		// the
+		// config builder.
+		List<Supplier<? extends ConfigSource>> configSourcesToScan = new ArrayList<>(5);
+		configSourcesToScan.add(ConfigSources.file("conf/storefront-config.yaml").optional().build());
+		configSourcesToScan.add(ConfigSources.file("confsecure/storefront-security.yaml").build());
+		configSourcesToScan.add(ConfigSources.classpath("META-INF/microprofile-config.properties").build());
+		return Config.builder().sources(configSourcesToScan).build();
 	}
 ```
 
 ---
 
-<details><summary><b>Precedence of configuration values</b></summary>
+
+
+Note the `conf/storefront-config.yaml` config source is optional, if the file is not there no error, it's just skipped. if the configuration file is non optional (it **must** be there) leaving the .optional() out will generate an exception at start up. That may be harsh, but it's far better to know immediately there's a problem than to only find out a while later when your program seems to be using values you didn't expect !
+
+Here we are using a file for configuration information, but later when we look at databases we will see how we can use other sources like environment variables or Java system properties. 
+
+
+<details><summary><b>What formats can the config parser process ?</b></summary>
 <p>
 
-Note it is optional, if the file is not there no error, it's just skipped. if the configuration file is non optional (it **must** be there) leaving the .optional() out will generate an exception at start up. That may be harsh, but it's far better to know immediately there's a problem than to only find out a while later when your program seems to be using values you didn't expect !
+The example the `conf/storefront-config.yaml` is in YAML format, but the Helidon configuration system can process other formats based on the files suffix
+
+ - JSON (.json)
+ - YAML (.yaml)
+ - Java Properties (.properties)
+ - HOCON (.conf)
+ 
+There is also a feature introduced in Helidon 2.0 that allows you to use program code to manipulate the configuration directly, including creating your own configuration tools (for example you could create a configuration module that read the properties from a database table to allow more centralized configuration management.)
+
+---
+
+</p></details>
+
+<details><summary><b>Other types of configuration sources</b></summary>
+<p>
+
+Helidon allows you to bring in configuration from a file in the class path (in the resources part of the class path, but other sources are available as well :
+
+- A file in the local file system, this can be in several formats (a list is provided later)
+
+- A Java system property defined with -D for the Java command e.g. -Dapp.minimumchange=4 Note this is the JSON naming structure for the property here, and matches the name used in the code.
+
+- An environment variable with the same name as the property, the environment variable name is actually modified based on the property name, so app.minimumchange is checked against an environment variable APP_MINIMUMCHANGE (So converted to upper case and `.` replaced with `_` This is done to meet the rules of the various operating system shell names for environment variables.
+
+- A directory, the names of files in the directory are matched against the desired configuration property name, then if a match is found the contents of the file is used as the configuration property value, useful for very large properties (e.g. an html template file !)
+
+- A URL, it's retrieved then the contents treated as if they were a file
+
+You can even if you want have a meta configuration file that defines the actual configuration sources to use.
+
+Finally you can if you want use code to modify the condifguration dynamically.
+
+For more details on exactly how user defined sources (files, classpath, directories, and URL's) work see the [Helidon advanced configuration documentation](https://helidon.io/docs/latest/#/mp/guides/03_config#config/06_advanced-configuration.adoc)
+
+
+---
+
+</p></details>
+
+<details><summary><b>Precedence of configuration sources</b></summary>
+<p>
+
+The configuration code scans a number of locations to locate the value of any given configuration property. The first matching name it finds will return the associated value.
+
+The order is :
+
+- 1. Any Java system property (defined with -D for the Java command, so -Dapp.minimumchange=4) Note this is the JSON naming structure for the property here, and matches the name used in the code.
+
+- 2. Any environment variable with the same name as the property, the environment variable name is actually modified based on the property name, so app.minimumchange is checked against an environment variable APP_MINIMUMCHANGE (So converted to upper case and `.` replaced with `_` This is done to meet the rules of the various operating system shell names for environment variables.
+
+- 3. Any sources defined as in the class path **or** files, **or** directories, **or** URL's (**in the order they were defined**)
+
+Note that if you want to your code can expressly disable the system properties and environment based properties
+
+---
+
+</p></details>
+
 
 We'll see later in the Kubernetes labs why we're using configuration files in the conf and confsecure directories, but it does demonstrate that you don't need to have all of your config in the same place
 
 Look at the conf/storefront-config.yaml file, 
 
-```
+```yaml
 app:
   storename: "My Shop"
-  minimumchange: 4
+  minimumchange: 2
 ```
 
-It has two active properties, the minimumchange of 4 here will override the default of 3 specified in the microprofile-config.properties file, which (because we're using a different constructor) will override the default constructor of MinimumChange setting the value to 2.
+It has two active properties, the minimumchange of 2 here will override the default of 4 specified in the microprofile-config.properties file, which (because we're using a different constructor with an `@Inject` property) will override the default constructor of MinimumChange setting the value to 3.
 
 Configuration properties are stored as basic strings and Helidon will convert them automatically for numbers, booleans and the other basic Java types. If you need to have a configuration property converted into a different type (say an object representing an IP address) then you can create a converter that is given the String from the configuration properties and returns the new object type. This way you can place any type you have (or can write) a converted for as a property.
 
-</p>
-
-</details>
-
----
 
 - **Save** the changes to the files, **stop** and **restart** the program. 
-- Let's check that the minimum change value is now 4:
+- Let's check that the minimum change value is now 2:
   -  `curl -i -X GET http://localhost:8080/minimumChange`
 
 ```
@@ -1161,9 +1258,8 @@ Date: Sun, 5 Jan 2020 15:19:09 GMT
 connection: keep-alive
 content-length: 1
 
-4
+2
 ```
-
 
 
 ### Monitoring the configuration for changes
@@ -1178,31 +1274,46 @@ Now as well as being optional it's also got a polling strategy. In this case the
 
 When allowing for changing the configuration consideration needs to be given to when the data is actually extracted from the configuration. If you look at the StatusResource class you'll see that it's RequestScoped. This means that a new instance is created per request, and the properties that are @Injected reflect the value of those properties at the time the instance was created. If it had been application scoped like the MinimumChange class this would have been true as well, but as application scoped means there is only one per application we would have got the value when it was created, and no updates when the configuration changed (which is actually the right behavior in that case, so all is fine :-)
 
+---
+
 </p>
 
 </details>
 
----
-
+Let's see how we can update the configuration when the file changes.
 
 
 - Open the Main.java file
 - Update the configuration for the storefront-config config file as follows:
-  -  `ConfigSources.file("conf/storefront-config.yaml").pollingStrategy(PollingStrategies::watch).optional());`
 
 ```java
-	private static Config buildConfig() {
-		// Build up a list of config sources, as we will have 4 in the end we need to do
-		// it as a list as the source method only supports up to 3 args before requiring
-		// a list
-		List<Supplier<ConfigSource>> configSources = new LinkedList<>();
-		configSources.add(
-				ConfigSources.file("conf/storefront-config.yaml").pollingStrategy(PollingStrategies::watch).optional());
-		configSources.add(ConfigSources.file("confsecure/storefront-security.yaml"));
-		configSources.add(ConfigSources.classpath("META-INF/microprofile-config.properties"));
-	
-		// create a config builder using these sources.
-		return Config.builder().sources(configSources).build();
+  configSourcesToScan.add(ConfigSources.file("conf/storefront-config.yaml")
+            .pollingStrategy(PollingStrategies.regular(Duration.ofSeconds(5))).optional().build());
+```
+
+Note here that we are specifying a check with a Duration of 5 seconds. That's great for a lab, but in reality you'd want to chose an interval that reflects the overhead of checking for a change vs the implications of not picking the change up immediately, and I suspect in most cases that would possibly be 5 mins rather than 5 seconds. 
+
+The resulting method will look like this
+
+```java
+private static Config buildConfig() {
+		// Build up a list of config sources, as we will have 4 in the end, we need to
+		// create a list of built config sources. if we were only creating 3 or less we
+		// could use them directly in the Config.builder.sources(source1, sources2)
+		// mechanism, but for reasons unclear sources does not use varargs
+		//
+		// Note that the ConfigSources.{sourcetype} methods produce a builder, so we
+		// need to
+		// build it before we can add it to the list. again if there were three or less
+		// we could pass the ConfigSource builder directly into the sources method of
+		// the
+		// config builder.
+		List<Supplier<? extends ConfigSource>> configSourcesToScan = new ArrayList<>(5);
+		configSourcesToScan.add(ConfigSources.file("conf/storefront-config.yaml")
+				.pollingStrategy(PollingStrategies.regular(Duration.ofSeconds(5))).optional().build());
+		configSourcesToScan.add(ConfigSources.file("confsecure/storefront-security.yaml").build());
+		configSourcesToScan.add(ConfigSources.classpath("META-INF/microprofile-config.properties").build());
+		return Config.builder().sources(configSourcesToScan).build();
 	}
 ```
 
@@ -1218,7 +1329,7 @@ Date: Sun, 5 Jan 2020 15:37:12 GMT
 connection: keep-alive
 content-length: 49
 
-{"name":"My Shop","alive":true,"version":"0.0.1"}
+{"name":"My Shop","alive":true,"version":"0.0.1","timestamp":"2020-09-22 11:46:46.683"}
 ```
 
 Note that it returns a name of "My Shop", (the default value in META-INF/microprofile-config.properties is "Name Not Set", but the conf/storefront-config.yaml overrides that)
@@ -1243,12 +1354,12 @@ Date: Sun, 5 Jan 2020 15:40:32 GMT
 connection: keep-alive
 content-length: 51
 
-{"name":"Tims Shop","alive":true,"version":"0.0.1"}
+{"name":"Tims Shop","alive":true,"version":"0.0.1","timestamp":"2020-09-22 11:47:21.706"}
 ```
 
-Note that the name is now what you changed it to ("Tims Shop" in this case)
+Note that the name is now what you changed it to ("Tims Shop" in my case)
 
-(It may take a short while for the modified file to be recognized and loaded, Helidon checks for config modifications in the background, it seems in my testing to recognize changes within 30 seconds, but usually it's faster)
+(It may take a short while for the modified file to be recognized and loaded, Helidon checks for config modifications in the background, this us the 5 second duration we set earlier with the pollingStrategy)
 
 
 <details><summary><b>Injecting values into an objects fields using @ConfigProperty</b></summary>
@@ -1262,7 +1373,7 @@ We've seen the use of `@ConfigProperty` with constructors (it also works the sam
 	private String serviceName ;
 ```
 
-This is done **after** the classes constructor has been run, so if the constructor does set the field then the `@ConfigProperty` will override that. This also means that you cannot refer to that value in the constructor,
+The value is injected **after** the classes constructor has been run, so if the constructor does set the field then the `@ConfigProperty` will override that. This also means that you cannot refer to that value in the constructor,
 
 ---
 
@@ -1273,7 +1384,7 @@ Helidon can deliver service using multiple ports, for example separating out the
 
 Look at the contents config file in conf/storefront-network.yaml 
 
-```
+```yaml
 server:
   port: 8080
   host: "0.0.0.0"
@@ -1292,22 +1403,28 @@ You will see that it defines two network ports, the primary one on port 8080 and
 
 -  Open the file **Main.java**
 - Include the conf/storefront-network.yaml file into the config properties
-  -  `configSources.add(ConfigSources.file("conf/storefront-network.yaml").optional());`
+  -  `configSourcesToScan.add(ConfigSources.file("conf/storefront-network.yaml").optional().build());`
 
-```
+```java
 	private static Config buildConfig() {
-		// Build up a list of config sources, as we will have 4 in the end we need to do
-		// it as a list as the source method only supports up to 3 args before requiring
-		// a list
-		List<Supplier<ConfigSource>> configSources = new LinkedList<>();
-		configSources.add(
-				ConfigSources.file("conf/storefront-config.yaml").pollingStrategy(PollingStrategies::watch).optional());
-		configSources.add(ConfigSources.file("conf/storefront-network.yaml").optional());
-		configSources.add(ConfigSources.file("confsecure/storefront-security.yaml"));
-		configSources.add(ConfigSources.classpath("META-INF/microprofile-config.properties"));
-	
-		// create a config builder using these sources.
-		return Config.builder().sources(configSources).build();
+		// Build up a list of config sources, as we will have 4 in the end, we need to
+		// create a list of built config sources. if we were only creating 3 or less we
+		// could use them directly in the Config.builder.sources(source1, sources2)
+		// mechanism, but for reasons unclear sources does not use varargs
+		//
+		// Note that the ConfigSources.{sourcetype} methods produce a builder, so we
+		// need to
+		// build it before we can add it to the list. again if there were three or less
+		// we could pass the ConfigSource builder directly into the sources method of
+		// the
+		// config builder.
+		List<Supplier<? extends ConfigSource>> configSourcesToScan = new ArrayList<>(5);
+		configSourcesToScan.add(ConfigSources.file("conf/storefront-config.yaml")
+				.pollingStrategy(PollingStrategies.regular(Duration.ofSeconds(5))).optional().build());
+		configSourcesToScan.add(ConfigSources.file("conf/storefront-network.yaml").optional().build());
+		configSourcesToScan.add(ConfigSources.file("confsecure/storefront-security.yaml").build());
+		configSourcesToScan.add(ConfigSources.classpath("META-INF/microprofile-config.properties").build());
+		return Config.builder().sources(configSourcesToScan).build();
 	}
 ```
 
@@ -1336,7 +1453,7 @@ Let's **force an error**.
 - Open **StorefrontResource.java**
 - Change the instantiation of the stockManager so it's now null and doesn't use the dummy implementation:
 
-```
+```java
 	private StockManager stockManager = null;
 ```
 
@@ -1350,7 +1467,7 @@ Date: Sun, 5 Jan 2020 15:52:22 GMT
 connection: keep-alive
 ```
 
-Hardly surprisingly the request fails. Note the null pointer in the console tab logs
+Hardly surprisingly the request fails. Note the null pointer in the console tab logs (you may need to scroll to find this)
 
 ```
 2020.01.05 15:52:22 INFO com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[helidon-1,5,server]: Requesting listing of all stock
@@ -1364,7 +1481,7 @@ Fortunately for us Helidon provides a simple way to handle the problem.
 - Locate the **listAllStock** method
 - Add the annotation `@Fallback(fallbackMethod = "failedListStockItem")`
 
-```
+```java
 	@GET
 	@Path("/stocklevel")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -1380,7 +1497,7 @@ Fortunately for us Helidon provides a simple way to handle the problem.
 
 The `fallbackMethod` is the name of the method you want to call if there is a problem. If you look at the end of the StorefrontResource class you'll see it.
 
-```
+```java
 	public Collection<ItemDetails> failedListStockItem() {
 		log.info("The listing of items failed for some reason");
 		throw new WebApplicationException(
@@ -1418,7 +1535,7 @@ Helidon has another approach error handling we're going to look at here that doe
 - Navigate to folder *resources* and open the file **StorefrontResource.java**
 - Add the annotation `@Fallback(StorefrontFallbackHandler.class)`
 
-```
+```java
 	@POST
 	@Path("/reserveStock")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -1483,7 +1600,7 @@ It's hard to actually simulate these in action, but we're going to show how to d
 - Add the annotation 
   - `@Timeout(value = 15, unit = ChronoUnit.SECONDS)`
 
-```
+```java
 @Path("/store")
 @RequestScoped
 @Authenticated

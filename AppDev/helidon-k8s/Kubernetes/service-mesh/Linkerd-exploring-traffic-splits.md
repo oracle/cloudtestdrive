@@ -23,7 +23,7 @@ This video is an introduction to the Service mesh traffic splits lab. Once you'v
 
 ## What is a a traffic split, and what can I do with it
 
-A traffic split is just what it says, the traffic arriving at a service is split between the implementation instances. In core Kubernetes this is done using the selector in the service to locate pods with matching  labels. Then traffic sent to the service is split between the different pods, often using a round robin approach so each pod responds in turn.
+A traffic split is just what it says, the traffic sent to a service is split between the implementation instances. In core Kubernetes this is done using the selector in the service to locate pods with matching  labels. Then traffic sent to the service is split between the different pods, often using a round robin approach so each pod responds in turn.
 
 In a service mesh a traffic split can do the traditional Kubernetes round robin approach, but it can do a lot more. For example there could be two different versions of the service, with the service mesh sending a percentage of the traffic to the different versions. This is useful if for example you want to try out one of the versions to see if it produced better business results (called A/B testing) or maybe you want to try out a new version of your micro-service before fully rolling it out. By diverting a small percentage of the traffic to it you can find out in the real deployed environment if it has any faults or returns errors. If it does then the new version is abandoned and the traffic all goes to instances of the old version, but if the new version turns out to be more reliable than the old one then you complete the rollout process and switch entirely to the new version.
 
@@ -34,6 +34,8 @@ You can even use the traffic split to deliberately introduce faults to your envi
 Note that in a lot of these cases you use additional external automation tools to manage the service mesh traffic split (and to use it's monitoring) to adjust the traffic split.
 
 This module was written using the information in the [Linkerd fault injection page.](https://linkerd.io/2/tasks/fault-injection/)
+
+## Now let's look at how we can use the service mesh to do a canary deployment
 
 
 ### What is a canary deployment ?
@@ -64,21 +66,9 @@ Let's switch to the right directory
 
 First we need to make a small change to our existing stock manager deployment, adding  the version number to the deployment, this will let us differentiate it from the newer version we are about to deploy.
 
-- In the OCI Cloud shell type
+The file stockmanager-deployment-v0.0.1.yaml is our "standard deployment file, it just has additional version attributes for the `spec.selector.matchLabels` and `spec.template.metadata.labels` sections as shown below
 
-  - `kubectl edit deployment stockmanager` 
-
-- Scroll down until you find the matchLabels section in the selector (this is the spec.selector.matchLabels)
-
-- Make sure you are changing the matchLabels for the selector, after the `app: stockmanager` line add a new line **at the same indent** of `version: 0.0.1`
-
-- Scroll down until you find the labels section in the pod template (this is the spec.template.metadata.labels)
-
-- Make sure you are changing the metadata for the template of the pods, after the `app: stockmanager` line add a new line **at the same indent** of `version: 0.0.1`
-
-This shows part section of the file with the new lines added
-
-```yaml
+ ```yaml
   selector:
     matchLabels:
       app: stockmanager
@@ -102,12 +92,22 @@ This shows part section of the file with the new lines added
       containers:
 ```
 
-(Note that the prometheus annotations may not be present depending on which optional modules you have done previously)
+Unfortunately since Kubernetes 1.17 we cannot just update the deployment with the new configuration as the labels for a deployment are set when it's created, so we'll have to delete and re-apply it. 
 
-- Save the file and exit, the changes will be updated.
+- In the OCI Cloud shell type
+
+  - `kubectl delete deployment stockmanager` 
 
 ```
-deployment/stockmanager: updated
+deployment/stockmanager: deleted
+```
+
+- In the OCI Cloud Shell type 
+
+  - `kubectl apply -f stockmanager-deployment-v0.0.1.yaml`
+  
+```
+deployment.apps/stockmanager created
 ```
 
 If we have a look at the pods we'll see that the stockmanager deployment has been restarted, and we have a new pod
@@ -143,9 +143,31 @@ As the pod has restarted you may have a delay or have to retry the request as th
 
 Now we have a mechanism to differentiate between the old and new versions of the service we're going to create two new service definitions, one having a selector that matches the  0.0.1 version of the stockmanager service and one for the 0.0.2 version. (We haven't actually deployed the 0.0.2 version, that comes later)
 
-We need to do define the version based services now so we can create the traffic split that interposes itself between the original service (stockmanager) and the separate deployments. Remember that the origional stockmanager service definition only has a selector for the label `app: stockmanager` so if we created the deployments before we put the traffic split in place (which can't be done befor we'ce created the per version servcies) the original stockmanager service would match both the old and new deployments, and we wouldn't have any control over the traffic.
+We need to do define the version based services now so we can create the traffic split that interposes itself between the original service (stockmanager) and the separate deployments. Remember that the original stockmanager service definition only has a selector for the label `app: stockmanager` so if we created the deployments before we put the traffic split in place (and the version based traffic split can't be done before we'ce created the per version services) the original stockmanager service would match both the old and new deployments, and we wouldn't have any control over the traffic.
 
-The versioned services are defined in a couple of yaml files. let's deploy them
+The versioned services are defined in a couple of yaml files. The key differences are that they are bound to specific versions. This means that the selector specified the version to match. Our previous service allowed connections to any version of the service
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: stockmanagerv0-0-2
+spec:
+  type: ClusterIP
+  selector:
+    app: stockmanager
+    version: 0.0.2
+  ports:
+    - name: stockmanager
+      protocol: TCP
+      port: 8081
+    - name: stockmanager-mgt
+      protocol: TCP
+      port: 9081
+```
+
+
+let's deploy them
 
 - In the OCI CLoud shell type the following
   - `kubectl apply -f stockmanager-v0.0.1-service.yaml`
@@ -217,7 +239,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 For the 0.0.2 version we get a 502 - Service Unavailable response. The ingress controller can map to the 0.0.2 service, but the 0.0.2 service has a selector which is looking for pods with a label `version: 0.0.2` and so far we haven't created any of those.
 
-Now we have to create the traffic split. We need to do this before creating the 0.0.2 deployment because the original (un-versioned) stockmanager service is still running and being used by the storefront (and ingresses.) The original service has a selector that will match on **any** pod with the label `app: stockmanager` **regardless*** of what the version it is. 
+Now we have to create the traffic split. We need to do this before creating the 0.0.2 deployment because the original (un-versioned) stockmanager service is still running and being used by the storefront. The original service has a selector that will match on **any** pod with the label `app: stockmanager` **regardless*** of what the version it is. 
 
 Looking at the spec the split is deployed on the service `stockmanager` (This is known as the `Apex Service` as it's the actual top level service) The traffic split will split the traffic sent to the `stockmanager` service between the two backend services (also known as `Leaf services`) the `stockmanagerv0-0-1` service and the `stockmanagerv0-0-2` service. In this case there are two backends, but more are possible.
 
@@ -263,7 +285,7 @@ As the traffic split is now in place and it's intercepting requests to the origi
 
 We can confirm this by making a few requests
 
-- In the OCI Cloud shell type (remember to replace `<external IP>`
+- In the OCI Cloud shell type (remember to replace `<external IP>` with your Ingress IP address)
   - `curl -i -k  -u jack:password https://<external IP>/store/stocklevel`
   
 ```
@@ -291,10 +313,19 @@ deployment.apps/stockmanagerv0-0-2 created
 After waiting a short while for the new deployment to start we can check that the new version is configured using the 0.0.2 ingress. We are using the "broken" version of the stockmanager service we saw in the troubleshooting module, so expect some errors
  
 
-- in the OCI Cloud Shell type
-  - `curl -i -k  -u jack:password https://130.61.195.102/stockmanagerv0-0-2/stocklevel`
+- in the OCI Cloud Shell type (remember to replace `<external IP>` with your Ingress IP address)
+  - `curl -i -k  -u jack:password https://<external IP>/stockmanagerv0-0-2/stocklevel`
   
-You will **either** get back some real data
+Note that it may take a short while for the v0.0.2 stockmanager to start, so you may get a 502 Bad Gateway or a delay while the stockmanager does it's lazy initialization and the database connection is established.
+
+<details><summary><b>Why won't I get a timeout ?</b></summary>
+<p>
+
+The `@Timeout` annotation is actually on the storefront class, it will trigger if the stockmanager takes a while to respond. The Ingress rule on the `/stockmanagerv0-0-2/stocklevel` path goes direct to the stockmanager service, this does not have any timeouts set.
+
+</p></details>
+  
+Assuming you don;t have a bade gateway You will **either** get back some real data
 
 ```
 HTTP/2 200 
@@ -306,8 +337,6 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 [{"itemCount":410,"itemName":"Pencil"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":4490,"itemName":"Pins"},{"itemCount":100,"itemName":"Book"}]
 ```
-
-(The first request **that returns data** may take little time as the  lazy initialization set's up the connections to the database )
 
 **OR** you will get back an error message
 
@@ -400,7 +429,7 @@ Go back to the traffic split on the linkerd browser page
 
 You will see that the split is now 90 to the v0.0.1 stockmanager and 10% to the v0.0.2 stock manager
 
-The success rate column for the v0.0.1 is still 100%, but in this case the success rate for the 0.0.2 version is 33.33% Of course the exact number will vary depending on how many requests have been sent to it and the random behavior of it it generates an error or not.
+The success rate column for the v0.0.1 is still 100%, but in this case the success rate for the 0.0.2 version is 33.33% Of course the exact number will vary depending on how many requests have been sent to it and the random behavior of it it generates an error or not. Given that the load generator is set to send one request a second, that only 10% of those are being sent to our test v0.0.2 service, and it only errors half the time only about 5% of the requests will actually have an error - so you may have to wait a bit to short time before seeing any errors
 
 - Click on `Namespaces` 
 
@@ -438,7 +467,7 @@ We can now get the OCI Cloud Shell to stop the job
 
 If it had worked then you would gradually adjust the traffic split, over time sending more traffic to the new deployment. Once it was taking all of the load then you could remove the deployment for the old version, and the associated service.
 
-You **might** delete the traffic split (so requests to the stockmanager service were no longer being intercepted) or you might leave it in place, but remove the old version. That way you would have all of the building blocks in place to easily start testing the next version of the service.
+You **might** delete the traffic split (so requests to the stockmanager service were no longer being intercepted) or you might leave it in place, but remove the old version of the service. That way you would have all of the building blocks in place to easily start testing the next version of the service.
 
 During this entire time period the overall stockmanager service would still have been operating, servicing requests (even if a few of the requests had had problems.)
 
@@ -453,7 +482,7 @@ Well obviously in the short term we don't want a broken version of the service i
 - In the OCI Cloud shell type
   - `kubectl edit trafficsplit stockmanager-canary`
   
-- Go down to the backends section and for the service stockmanagerv-0-0-2 change the weight to 00
+- Go down to the backends section and for the service stockmanagerv-0-0-2 change the weight to 0
 
 The result will look like this (the order of the elements may vary)
 
@@ -509,6 +538,18 @@ ingress.networking.k8s.io "stockmanager-v0-0-2" deleted
 service "stockmanagerv0-0-2" deleted
 service "stockmanagerv0-0-1" deleted
 ```
+
+<details><summary><b>Not removing the version on the original deployment ?</b></summary>
+<p>
+
+Well spotted ! We're going to leave the version in place on the original service. There are a few reasons for this.
+
+1/ It does no harm, the original service will match any deployment as it only looks for the `app: stockmanger`  so will sent traffic to any matching deployment regardless of the deployments version attributes
+
+2/ It's actually a good idea to specify version information as standard. 
+
+3/ It lets you quickly and easily see which version you're dealing with, and also makes it easier to implement traffic splits as the version info is already in place.
+</p></details>
 
 ## Using a traffic split to test resilience (A bit of Chaos)
 
@@ -627,7 +668,7 @@ spec:
     weight: 50
 ```
 
-The weight indicates how many requests of the service should go to each backend, so in this example we have a 50/50 split between fault and working, normally you would have a lower number of requests being sent to the fault-injector (after all, if it does break things you don't want your end customers to be impacted, especially in a production environment if you wern't sure what would happen, but here we want to be confident we'll see some "failures"  generated.
+The weight indicates how many requests of the service should go to each backend, so in this example we have a 50% split between fault and working, normally you would have a lower number of requests being sent to the fault-injector (after all, if it does break things you don't want your end customers to be impacted, especially in a production environment if you wern't sure what would happen, but here we want to be confident we'll see some "failures"  generated.
 
 OK, now we know what it is let's deploy it.
 
@@ -665,7 +706,7 @@ Click on the name of the traffic-split `fault-injector`
 
 We can see the details of the traffic split, the `Apex Service` indicates the service the traffic split is operating on, the `Leaf service` shows where the traffic will be split to and the `Weight` indicates the probability of that split option, in this case it's 500/1000 in each case. Of course you could potentially have additional splits.
 
-keep this page open
+Keep this page open
 
 Let's generate some requests to see what happens
 
@@ -691,7 +732,7 @@ Below is what **I** saw, and it seems that **in this case** the random number ge
 
 **Yours may be different** You may see a partial split where some succeeded and some failed (so some going to the `zipkin` and some going to `fault-injector-zipkin`), of you may see them all succeeding (I.e. all going to the `zipkin` service) as the traffic split works randomly it's impossible to predict exactly
 
-In this case you can see that requests to the fault-injection traffic split had a 0% success rate, and were passed to the failt-injector-zipkin service which had a 0% success rate.
+In this case you can see that requests to the fault-injection traffic split had a 0% success rate, and were passed to the failt-injector-zipkin service which had a 0% success rate. Of course your numbers may vary and it's unlikely you'll have all traffic going to the fault injector as I had here
 
 So I can show you what it looks like if there are only some failures I made a few more curl requests and came back to the page
 
@@ -703,7 +744,7 @@ Here we see that 66.67% of the requests to the traffic split had failed (the bar
 
 Of course this is useful, but in this case all it's telling us is that the `zipkin` service always works and the `fault-injector-zipkin` service always fails. What does that mean for the requests to the zipkin service.
 
-- Click on `Routes` on the left menu
+- In the `Tools` section on the  left menu click on `Routes`
 
 - In the `Namespace` dropdown chose the name of **your** namespace (tg-helidon in the example below)
 
@@ -849,8 +890,6 @@ deployment.apps "fault-injector" deleted
 configmap "fault-injector-configmap" deleted
 ```
 
-## Now let's look at how we can use the service mesh to do a canary deployment
-
 ## Other criteria for splitting the traffic
 
 The [Service mesh specification for traffic splits](https://github.com/servicemeshinterface/smi-spec/blob/master/apis/traffic-split/v1alpha3/traffic-split.md) supports other mechanisms (be warned not all service mesh implementation support this specification, and now all support all the traffic split options.)
@@ -866,8 +905,6 @@ The service mesh standard also defines capabilities that allow you to apply acce
 ---
 
 You have reached the end of this lab module !!
-
-In the next module we will look at how you can use linkerd and grafana to see the traffic flows in your cluster.
 
 Acknowledgments. I'd like to thank Charles Pretzer of Bouyant, Inc for reviewing and sanity checking parts of this document.
 

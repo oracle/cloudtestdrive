@@ -57,7 +57,7 @@ Now you need to add the zipkin packages to the pom.xml file for **both** the sto
 
 For **both** the storefront and stockmanager projects open the pom.xml file, this is in the top level of the project, towards the end of the files for the project.
 
-Look for the dependency `helidon-tracing-zipkin` in **each** pom.xml file, you may want to use the search facility to look for zipkin. You will find a section that has been commented out and looks like the following
+Look for the dependency `helidon-tracing-zipkin` in **each** pom.xml file, you may want to use the search facility (Control-F) to look for zipkin, it will be towards the end of the dependencies section. You will find a section that has been commented out and looks like the following
 
 ```
 		<!-- tracing calls -->
@@ -117,7 +117,7 @@ You now need to tell Helidon what to call the tracing requests and where traces 
 ```
 HTTP/1.1 200 OK
 Content-Type: application/json
-Date: Mon, 6 Jan 2020 15:46:29 GMT
+Date: Mon, 28 Sept 2020 15:46:29 GMT
 connection: keep-alive
 content-length: 37
 
@@ -126,25 +126,46 @@ content-length: 37
 
 We've successfully reserved 7 pencils
 
-- Go to the **zipkin web page** and click find traces, you'll see the list of traces (the details you have will of course be different)
+- Go to the **zipkin web page** and click the `Run Query` button, you'll see the list of traces (the details you have will of course be different)
+
+![zipkin-trace-details-slow-response](images/zipkin-trace-list-slow-response.png)
+
+You can see that this took a while to run, nearly 8 seconds in fact. This is because of the lazy initialization in both the storefront and stock manager microservices.
+
+Let's see what happens once we've re-made the request.
+ - re-run the request
+   -  `curl -i -X POST -u jill:password -d '{"requestedItem":"Pencil", "requestedCount":7}' -H "Content-type:application/json" http://localhost:8080/store/reserveStock`
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Tue, 29 Sept 2020 17:33:00 GMT
+connection: keep-alive
+content-length: 37
+
+{"itemCount":136,"itemName":"Pencil"}
+```
 
 
+- Go to the **zipkin web page** and click the `Run Query` button
 
 ![zipkin-traces-list](images/zipkin-traces-list.png)
 
-Here you can see that is took 236.638ms doign storefront related parts of the request and only 102.309ms doing the stock manager parts of the request.
+We can see that this request was a lot faster at 1.8761 seconds
 
-If we click on the overall time (`239.468ms 27 spans` in this case, though your numbers will vary) zipkin will display the full details of our trace.
+If we click on the trace row zipkin will display the full details of our trace.
 
 ![zipkin-trace-details](images/zipkin-trace-details.png)
 
 Importantly even though they are in separate microservices and the flow switches between them several times we can see the overall flow, what part of the service was called when and how long it took. This let's developers understand exactly how the initial request was processed and how long each step took.
 
-I restarted both the storefront and stockmanager service, so the lazy initialization around the REST infrastructure and the database had not yet happened, then made the same request. This took a lot longer as the framework had to do it's on-demand initialization.
+For requests into the service (the first of these is the first entry in the trace and selected for you) we can see what the request details are, in the tags section to the right of the page , in this case an http POST to /store/reserveStock
 
-![zipkin-trace-details-slow-response](images/zipkin-trace-details-slow-response.png)
+- Click **once** on the text to the right of the first stock manager entry
 
-As you can see it took a long time for the stockmanager to perform it's initial action, but subsequent requests to the stockmanager were much faster. A developer may look at this trace and decide that it would be a good thing if the stockmanager took an action during it's initialization to setup the database connection, which would speed the first request up for users.
+![zipkin-trace-stockmanager-getstockitem](images/zipkin-trace-stockmanager-getstockitem.png)
+
+Now on the right we can see the details of this sub request, made from the storefront to the stockmanager. Feel free to further explore the zipkin UI if you wish, there's a lot if information available to help explore and diagnose problems.
 
 ### Metrics
 Tracking solutions like Zipkin can provide us with detail on how a single request is processed, but they are not going to be able to tell us how many requests were made, and what the distribution of requests per second is. This is the kind of thing that is needed by the operations team to understand how the microservice is being used, and where enhancements may be a good idea (especially where to focus development work for performance enhancements)
@@ -154,12 +175,12 @@ The pom.xml will need to be updated for the metrics, that's already been done fo
 - Go to the project **Storefront**, and navigate to folder **resources**
 - Open the file **StorefrontResources.java**.
 - Add the following annotation:
-  -  `@Counted(monotonic = true)`
+  -  `@Counted`
 
-```
+```java
 @Path("/store")
 @RequestScoped
-@Counted(monotonic = true)
+@Counted
 @Authenticated
 @Timeout(value = 15, unit = ChronoUnit.SECONDS)
 @Slf4j
@@ -170,11 +191,18 @@ public class StorefrontResource {
 <details><summary><b>Details on the annotation</b></summary>
 <p>
 
-The `monotonic=true` means that the counters will increment when the method is called, but will not decrement when it's exited. If you wanted to have a particular method report how many threads were currently in it (perhaps to determine when resource limits may be reached) you'd use `@Counted(monotonic=false)` which would decrement the counter when a thread left the method giving the number of threads in a method.
+The counter will increment each time the method is called, but will not decrement when it's exited. If you wanted to have a particular method report how many threads were currently in it (perhaps to determine when resource limits may be reached) you'd use `@ConcurrentGauge` which would decrement the counter when a thread left the method giving the number of threads in a method.
 
 A note on names, the default name for a counter is based on the class and method, that can be long (as we'll see in the output soon) but you can override the default name and for counters on *methods* you can specify a name for the counter E.g. `@Counted(names="MyListCounter")` This makes the output easier to understand, but do please chose a sensible name. You can also specify a description of the counter and help text if you like (examples of system generated versions are below)
 
 That's it, you don't need to do anything else, Helidon will automatically generate a set of counters for all of the requests it processes.
+
+</p></details>
+
+<details><summary><b>What's with all the metrics starting `application_ft` ?</b></summary>
+<p>
+
+In an earlier lab we setup a fall back on the listAllStock and reserveStock methods. The fault tolerance system will automatically create metrics to determine how often fault are encountered, time taken and so on.
 
 </p></details>
 
@@ -341,31 +369,35 @@ There are other types of metrics, for examples times.
 
 - Locate the method **listAllStock**
 
-- Add a timer and a meter annotation:
+- Add a counter, timer and a meter annotation:
 
-  - ```
+```java
+    @Counted(name = "stockReporting")
     @Timed(name = "listAllStockTimer")
     @Metered(name = "listAllStockMeter", absolute = true)
-    ```
+```
 
 Result:
 
-```
+```java
 	@GET
 	@Path("/stocklevel")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Fallback(fallbackMethod = "failedListStockItem")
+  	@Counted(name = "stockReporting")
 	@Timed(name = "listAllStockTimer")
 	@Metered(name = "listAllStockMeter", absolute = true)
 	public Collection<ItemDetails> listAllStock() {
 ```
+
+Note that here we are naming our Counter, timer and metrics, we can do this as we are doing it on the method, This will make finding the details easier.
 
 The *absolute=true* on the meter means that the class name won't be prepended, it will just be called listAllStockMeter 
 
 
 
 - Now **restart** the **storefront** and make a few calls
--  `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
+-  `curl -i -X GET -u jill:password http://localhost:8081/store/stocklevel`
 
 ```
 HTTP/1.1 200 OK
@@ -404,7 +436,7 @@ application:list_all_stock_meter_fifteen_min_rate_per_second 0.00526411632294898
 ```
 
 ### Combining counters, metrics, times and so on
-You can have multiple annotations on your class / methods, but be careful that you don't get naming collisions, if you do your program will likely fail to start.
+You can have multiple annotations on your class / methods as you've just seen, but be careful that you don't get naming collisions, if you do your program will likely fail to start.
 
 By default any of `@Metric`, `@Timed`, `@Counted` etc. will use a name that's depending on the class / method name, it does **not** append the type of thing it's looking for. So if you had `@Counted` on the class and `@Timed` a class (or `@Counted` and `@Timed` on a particular method) then there would be a naming clash between the two of them. It's best to get into the habit of naming these, and putting the type in the name. Then you also get the additional benefit of being able to easily extract it using the metrics url like `http://localhost:9080/metrics/application/listAllStockMeter`
 

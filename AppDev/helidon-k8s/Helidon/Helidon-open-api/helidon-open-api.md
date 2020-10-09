@@ -52,6 +52,8 @@ There are two ways to identify the annotations in your code:
 In general the costs of building and storing an index are way smaller than those of scanning each time, and this is the approach that Helidon uses when packaging a service, though when running within Eclipse it does a scan as otherwise you'd have to build the index each time you saved a file which would slow down the development process (This is why you may see warning messages about missing jandex.idx files when running the micro-servcies in Eclipse)
 
 To build the index Heldion uses a tool called jandex (Java ANnotaiton inDEXer) to build the index, This is done for you automatically when you package a service, but the OpenAPI code for some reason only seems to search the jandex index file, and not scan the code. This is why you will be running the maven build target process-classes later on.
+
+Because running JANDEX can take a lot of time (relatively speaking) you don't want to run it each time you make a change to a source code file in Eclipse, so it needs to be specifically run to generate the index when operating in Eclipse. We will shortly see how that is done.
 </p></details>
 
 ---
@@ -106,15 +108,35 @@ The title, description and version fields are I hope self explanatory
 ### Creating the index
 Before we can see the updates to the OpenAPI spec we need to build an index of the annotations
 
-Unlike the server processing annotations the OpenAPI processing only operates against a jandex index, and won't scan for OpenAPI annotations in the class files (in Helidon 1.4.3 at least, I'm not sure if this is a bug or a feature)
+Unlike the server processing annotations the OpenAPI processing only operates against a jandex index, and won't scan for OpenAPI annotations in the class files (I'm not sure if this is a bug or a feature)
 
 Because of this the jandex index needs to be built to reflect the OpenAPI annotations. To do this you can manually run maven in Eclispe with the process-classes goal.
 
-- Click right on the **project** name (helidon-labs-storefront) in Eclipse, then chose "Run As" then "Maven build" 
+First we need to create a run configuration to create this goal
+
+Select the helidon-labs-storefront project, click right -> Run As -> Maven Build .... 
+
+![](images/maven-build-config-menu.png)
+
+Update the popup with the following
+
+- set the name to be `helidon-labs-storefront (process-classes)` (if you chose something else it's fine, just remember to use that later on)
+
+- In the goals enter `process-classes`
+
+- Click `Apply` then `Close`
+
+![](images/maven-build-config-process-classes.png)
+
+Now to run a build with this target.
+
+- Click right on the **project** name (helidon-labs-storefront) in Eclipse, then chose `Run As` then `Maven build`  (This is the version **without** the three dots !)
 
 ![](images/run-as-maven-build.png)
 
-In the resulting popup window chose the process-classes option
+Depending on the precise eclispe configuration there **may** be a resulting popup window, do not worry if this is not displayed and the build just continues
+
+- If there is a popup then chose the process-classes option.
 
 ![](images/maven-build-run-configurations.png)
 
@@ -124,28 +146,40 @@ In the console tab you'll see output similar to the following
 
 ```
 [INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Detecting the operating system and CPU architecture
+[INFO] ------------------------------------------------------------------------
+[INFO] os.detected.name: osx
+[INFO] os.detected.arch: x86_64
+[INFO] os.detected.version: 10.15
+[INFO] os.detected.version.major: 10
+[INFO] os.detected.version.minor: 15
+[INFO] os.detected.classifier: osx-x86_64
 [INFO] 
 [INFO] -----------------< com.oracle.labs.helidon:storefront >-----------------
 [INFO] Building storefront 0.0.1
 [INFO] --------------------------------[ jar ]---------------------------------
 [INFO] 
-[INFO] --- maven-resources-plugin:3.0.2:resources (default-resources) @ storefront ---
+[INFO] --- maven-resources-plugin:2.7:resources (default-resources) @ storefront ---
 [INFO] Using 'UTF-8' encoding to copy filtered resources.
 [INFO] Copying 3 resources
 [INFO] 
 [INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ storefront ---
 [INFO] Nothing to compile - all classes are up to date
 [INFO] 
-[INFO] --- jandex-maven-plugin:1.0.7:jandex (make-index) @ storefront ---
+[INFO] --- jandex-maven-plugin:1.0.6:jandex (make-index) @ storefront ---
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  2.581 s
-[INFO] Finished at: 2020-03-11T14:47:58Z
+[INFO] Total time:  1.233 s
+[INFO] Finished at: 2020-08-17T18:40:22+01:00
 [INFO] ------------------------------------------------------------------------
+
 ```
 
 Note that the version numbers may differ.
+
+Towards the end of the output you can see that the Maven jandex plugin is run.
 
 ### Viewing the initial OpenAPI spec
 Now we've added an annotation covering the initial contents let's look at it. You must have created the jandex index as described above and stopped any existing instances (there is no need to have the stockmanager running, but if it already is don't worry)
@@ -153,16 +187,9 @@ Now we've added an annotation covering the initial contents let's look at it. Yo
 - Start the storefront service running using the Main class as before, this will cause the jandex.idx file to be read.
 
 - In a terminal window type 
-    - `curl -i http://localhost:8080/openapi`
+    - `curl  http://localhost:8080/openapi`
 
 ```yaml
-HTTP/1.1 200 OK
-Content-Type: application/vnd.oai.openapi;charset=UTF-8
-Date: Wed, 11 Mar 2020 17:18:56 GMT
-connection: keep-alive
-content-length: 1912
-
-
 components: 
   schemas:
     ItemDetails: 
@@ -250,7 +277,7 @@ paths:
 
 <details><summary><b>If you didn't see similar to the output above</b></summary>
 
-If you just saw the basic info that was returned when you initially did a curl to this URN the probability is that you hadn't completed the maven build on the process-class task before you re-started the storefront service. Stop the storefront service, make sure you've correctly run and finished the maven build and the console reports that the jandex has run and the build has been a success, then re-start the storefront application.
+If you just saw the basic info that was returned when you initially did a curl to this URN the probability is that you hadn't completed the maven build on the process-class goal before you re-started the storefront service. Stop the storefront service, make sure you've correctly run and finished the maven build on the process-class goal and the console reports that the jandex has run and the build has been a success, then re-start the storefront application.
 
 </p></details>
 ---
@@ -533,7 +560,7 @@ This has given us the entire API, but the /status is probably not relevant to ex
  
 (It's the last line, so it may be a bit hidden)
  
-This tells Helidon to ignore any paths it fined in the StatusResource and ConfigurationResource classes when generating the Open API document.
+This tells Helidon to ignore any paths it finds in the StatusResource and ConfigurationResource classes when generating the Open API document.
 
 <details><summary><b>Other configuration settings for OpenAPI</b></summary>
 The Helidon runtime supports a large number of configuration settings that can be used to control the generation of the OpenAPI document, this include the ability to packages as well as classes to include / exclude, or if you need finer grained control you can even define filter and model classes that chose exactly which paths will be included or removed. 

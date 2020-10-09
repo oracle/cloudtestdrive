@@ -136,7 +136,7 @@ Let's now look at the specific data for your namespace. In the HTTP metrics sect
 
 ![](images/linkerd-app-namespace-top-of-page.png)
 
-The most obvious thing we see here it the data routing network at the top of the page. This shows us which services are initiating connections to which other services. We've got an easy way to see our data flows between microservices (to be precise the ones that have the service mesh proxy installed !)
+The most obvious thing we see here it the data routing network at the top of the page. This shows us which services are initiating connections to which other services within the namespace. We've got an easy way to see our data flows between microservices (to be precise the ones that have the service mesh proxy installed !)
 
 You can see the expected `storefront` to `stockmanager` connection, but also that **both** of them are sending data to the `zipkin` service. This is actually the tracing data. I included zipkin in the deployments with the linkerd-proxy so help show more detail in the graph, but in a production environment you may not want want to do this. 
 
@@ -181,13 +181,15 @@ Let's look at what the pod is specifically doing, in the pods section click on t
 
 ![](images/linkerd-pod-stats.png)
 
+Note that you may also see information for linkerd pods such as the prometheus and tap service. Don't worry if you don't, but we will ignore them as they are basically the internal workings of the service mesh communicating with the proxy in the stockmanager pod to gather information. 
+
 Firstly we can see the other pods that are talking to this stock manager pod (the storefront) and the Kubernetes pods it's talking to (zipkin) The database not being a Kuberntes service isn't shown.
 
 Below that we can the specific details. There's a lot of data we can see about the message flows and volumes, even in a simple setup like this one.
 
 ### What network traffic is happening ?
 
-So far we've seen what's happening on the pods, but as the service mesh is a layer 7 proxy it knows what's happening within the requests. Note in late May 2020 as I was writing this module I found this section of the lab works best with Chrome, some features did work in Firefox. The live monitoring features did not work in Safari.
+So far we've seen what's happening on the pods, but as the service mesh is a layer 7 proxy it knows what's happening within the requests. Note in mid October 2020 as I was testing this module I found this section of the lab works best with Chrome, some features did work in Firefox. The live monitoring features did not work in Safari. Those browsers may have been updated since then of course.
 
 On the left hand menu in the tools section 
 
@@ -221,6 +223,8 @@ Note that the UI is displaying what the query would be if you ran the linkerd co
 ![](images/linkerd-top-running.png)
 
 We can now see that the storefront deployment has been receiving requests from the ingress controller on `/store/stocklevel` and making requests to the stockmanager on `/stocklevel` and occasionally connecting to Zipkin to report the tracing spans on `/api/v2/spans` More importantly we can see how many requests there have been and their timings, a useful tool for understanding what's actually happening within your collection of microservices. 
+
+You may also see requests to /status, /metrics and /health/live These are the Kubernetes framework checking to ensure that the pod is alive and ready, and Prometheus gathering performance metrics.
 
 - Click the `Tap` icon ![](images/linkerd-tap-icon.png) on the right of the `To stockmanager` row
 
@@ -336,9 +340,9 @@ You will get a long list of dashboards
 
 ![](images/grafana-dashboards-list.png)
 
-The ones that have recently been visited are listed first (I've been exploring a fair bit as I write this module, so there are many recent's in my list, your's may only contain the `Linkerd Deployments` dashboard.) Then the full list of available dashboards. The ones relating to Linkerd are indicated by their name, and also the `linkers` tag on the right side of the list.
+The ones that have recently been visited are listed first (I've been exploring a fair bit as I write this module, so there are many recent's in my list, yours may only contain the `Linkerd Deployments` dashboard.) Then the full list of available dashboards. The ones relating to Linkerd are indicated by their name, and also the `linkers` tag on the right side of the list.
 
-Feel free to explore the dashboards if you like.
+Feel free to explore the dashboards if you like, the Linkerd Health dashboard provides information on the operation of linkerd itself, whcih may be of interest to the linkerd developers.
 
 ## Stopping the load generator
 
