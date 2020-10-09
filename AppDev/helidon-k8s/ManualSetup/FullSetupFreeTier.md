@@ -341,6 +341,8 @@ We're now going to run a script that tidies up the desktop and creates an eclips
 
 If the eclipse installation was in the right place then the two desktop icons will disappear and be replaced with an `Eclipse` icon. If the Eclipse installation was in the wrong place then it will exit immediately without making any changes. In that case re-run the installer and ensure you use `/home/opc` as the Eclipse installation path.
 
+Note that sometimes the Eclipse installer will create it's own desktop icon to start Eclipse. This does not happen every time, but if it does create one you can also use that icon to start Eclipse as well.
+
 - Double click on the `Eclipse` icon on the desktop. It may looks like a text page rather than the icon shown below, if it does still click it. You may be warned it's an `Untrusted application launcher`, if this happens click the `Trust and launch` option.
 
 ![](images/14-eclipse-icon.png)
