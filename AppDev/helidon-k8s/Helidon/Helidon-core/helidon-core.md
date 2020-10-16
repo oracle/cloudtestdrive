@@ -262,7 +262,7 @@ When the Helidon server starts up it looks for classes with the @ApplicationPath
 
 ---
 
-
+</p></details>
 
 
 - Save your changes to the StorefrontResource file with Control-s, or you can save all your changes to all files by hitting this icon: <img src="images/eclipse-save2.png" style="zoom:33%;" />
