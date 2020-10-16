@@ -8,16 +8,6 @@
         {            
             "title": "WebLogic for OCI as a VM",
             "filename": "./wlscnonjrf.md"
-        },
-		
-        {            
-            "title": "WebLogic on Docker",
-            "filename": "./WLS_on_Docker.md"
-        },
-
-        {            
-            "title": "WebLogic on Kubernetes",
-            "filename": "./WLS_on_OKE.md"
-        }		
+        }	
     ]
 }
