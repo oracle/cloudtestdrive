@@ -2,23 +2,25 @@
 
 ![](../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native
+# Migration of Monolith to Cloud Native architecture
 
-## Migrate a "Monolith" style Java application to a Microservices style architecture using Helidon
+## Overview
+
+This set of labs cover the cloud native part of application development. The core lab flow is build around the process of creating some microservices from a monolithic application, packaging it using Docker and deploying in Kubernetes. 
+
+There are a number of additional lab modules which can be run by themselves or as optional parts of the core lab flow.
 
 ## Introduction
 
-This is the project for the Migration of a Monolith (well actually quite a simple "Monolith" web app that provides a REST API and a basic database service) into a web service comprised of two microservices using the Helidon framework. The microservices are then extended to provide monitoring capabilities such as metrics and tracing, then to prepare them for cloud native capabilities such as health checks, automatic service restart etc.
+The Migration of a Monolith (well actually quite a simple "Monolith" web app that provides a REST API and a basic database service) into a web service comprised of two microservices using the Helidon framework. The microservices are then extended to provide monitoring capabilities such as metrics and tracing, then to prepare them for cloud native capabilities such as health checks, automatic service restart etc. 
+
+The Helidon part of the lab has optional modules on extracting request information (for example the user details) and using the Open API to create a self describing microservice.
 
 The next part of the lab goes through the process of **packaging those services up into Docker containers** and externalizing configuration such as the database connection details and pushing to a docker repository.
 
-Then we look at how to **run the docker containers in Kubernetes**, examining how to set up a Kubernetes cluster with basic capabilities, then creating a basic deployment of the services behind an Ingress controller. The labs then examine how to make use of cloud native capabilities in Kubernetes such as horizontal scaling and using the support in Helidon for things like service liveness, readiness and how those combine to enable continuous service delivery using rolling upgrades. 
+Then we look at how to **run the docker containers in Kubernetes**, examining how to set up a Kubernetes cluster with basic capabilities, then creating a basic deployment of the services behind an Ingress controller. The labs then examine how to make use of cloud native capabilities in Kubernetes such as horizontal scaling and using the support in Helidon for things like service liveness, readiness and how those combine to enable continuous service delivery using rolling upgrades.
 
-Finally we look at **monitoring and graphing** to extract data on how the system operates.
-
-Finally we look at **horizontal scaling** the number of microservice instances to handle changes in load and also how multiple instances can be used to support a **rolling upgrade.**
-
-There are also several optional lab sections you can do which cover development activities such as extracting information from the REST request (e.g. the name of the user making the request) and how to have the Helidon framework automatically generate Open API documentation (previously known as Swagger) to ensure that the REST API documentation reflects exactly the service currently in use. Optional sections also cover deployment activities such as capturing log data and sending it to a data store for analysis, installing and using a service mesh for monitoring, troubleshooting and canary deployments.
+The Kubernetes lab also has several optional lab modules you can do which cover the use of monitoring tools such as Prometheus and Grafana, deployment activities such as capturing log data and sending it to a data store for analysis, and installing and using a service mesh for monitoring, troubleshooting and canary deployments.
 
 For reference, this is the architecture you'll be building (if you do all of the modules)
 
