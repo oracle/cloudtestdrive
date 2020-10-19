@@ -37,7 +37,7 @@ During this day you will be able to experience the various cloud services hands-
 + [Running WebLogic on Kubernetes](https://oracle.github.io/cloudtestdrive/AppDev/wls/ll-oke/)
   Launch WebLogic on a Kubernetes cluster, using the WebLogic Operator to control your WebLogic environment
   
-+ [Migrating Java EE "Monolith" application libraries to Microservices using Helidon](AppDev/helidon-k8s/README.md)
++ [Migrating Java EE "Monolith" application libraries to Cloud Native development using Microservices and Helidon](AppDev/cloud-native/README.md)
 
   
 
