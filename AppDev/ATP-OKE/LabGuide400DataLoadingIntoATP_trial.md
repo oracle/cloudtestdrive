@@ -84,7 +84,7 @@ git push
 
 - Your Wallet is now visible in Visual Builder Studio - you might have to refresh your browser window to see the changes
 
-Note We did chance a file in the Waller directoyu, but didn;t re-zip it. That's because we
+Note We did change a file in the Waller directory, but didn't re-zip it. That's because the SQLcl step of the build process uses the basic zipped file withouht the listener changes, but when we use the aone application (which we'll come to later) we want to change the config using the TNS_ADMIN environment variable, and the driver for that uses the non zipped files. Basically the change we made will be used later in the labs, but this is a good time to make the change and avoid multiple git pushes.
 
 <img src="images/400/wallet_added.png" style="zoom:50%;" />
 
