@@ -17,7 +17,7 @@ This lab is a simplified version of the original [Oracle Learning path](https://
 To run these labs you will need access to an Oracle Cloud Account.  We have prepared this lab for the following situation: 
 
 - <u>You are joining an in-person Oracle event</u>: your instructor will provide you the required credentials to access an environment that has already been prepared with the minimum policies, account credentials etc.  
-- You will be using a Linux desktop running on OCI with all software pre-installed.  See [these instructions ](../helidon-k8s/ManualSetup/CreateClientVm.md)to get started.
+- You will be using a Linux desktop running on OCI with all software pre-installed.  See [these instructions ](../cloud-native/ManualSetup/CreateClientVm.md)to get started.
 
 ## Components of this lab
 
