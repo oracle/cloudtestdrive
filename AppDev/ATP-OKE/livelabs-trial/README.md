@@ -20,7 +20,7 @@ To run these labs you will need access to an Oracle Cloud Account.
 
 <u>We assume you are using your own Oracle Cloud Tenancy,</u> either via a **Free Tier**, using a **Pay-as-you-Go** account, or using the **Corporate account** of your organization.  
 
-==> If you do not have an account yet, you can obtain  an Oracle Free Tier account by [clicking here.](https://myservices.us.oraclecloud.com/mycloud/signup?sourceType=:ow:wb:sh:em::RC_WWMK200517P00005:Vlab_Ku8_ATP_July&intcmp=:ow:wb:sh:em::RC_WWMK200517P00005:Vlab_Ku8_ATP_July)
+==> If you do not have an account yet, you can obtain  an Oracle Free Tier account by [clicking here.](https://signup.oraclecloud.com/?sourceType=:em:lw:ie:pt::RC_WWMK200730P00046:EMEAHOL20OCT)
 
 Next, follow the steps described below.
 

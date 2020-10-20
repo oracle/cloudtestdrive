@@ -154,7 +154,7 @@ Note : The *Visual Builder Studio* service was previously named *Developer Cloud
 
 ### Create an instance ###
 
--  You should have no existing instances.  If you have, you can skip the following steps and just validate you have a build engine witht the correct libraries included.
+-  You should have no existing instances.  If you have, you can skip the following steps and just validate you have a build engine with the correct libraries included.
 
 <img src="images/devcs/DevCS_create_instance_new.png" alt="alt text" style="zoom: 25%;" />
 
@@ -264,10 +264,12 @@ In the following section you will need to switch repeatedly between the Visual B
 <img src="images/devcs/im05-3.png" alt="alt text" style="zoom:50%;" />
 
 - Select the following packages:
-  - Docker 17.12
+  - Docker 17.12 
   - Kubectl
   - OCIcli ==> this will prompt you to also install Python3
-  - SQLcl 18
+  - SQLcl (It doesn't have a version listed in the main title of the component, but it's version 20 within the box)
+
+Note that modules for Oracle Java Required VM build components may be automatically added for you.
 
 <img src="images/devcs/im06-2.png" alt="alt text" style="zoom: 50%;" />
 
@@ -338,6 +340,7 @@ This lab walks you through the steps to get started using the Oracle Autonomous 
 WElcome_123#
 ```
 
+(Be sure to chose a password you can remember, or take a note of it as you will need it later.)
 
 
 <img src="./images/100/Picture100-28-2.png" style="zoom: 50%;" />
@@ -392,6 +395,14 @@ Lets connect to the database you just created using the build-in **SQL Developer
 - Then select **Development** in the left-hand menu, and then the tile labeled **SQL Developer Web** 
 
   <img src="images/400/DB_console.png" style="zoom: 25%;" />
+  
+- Enter the user name **ADMIN** and the password you chose in the login form
+
+  <img src="images/400/DB_login.png" style="zoom: 100%;" />
+  
+- Click **Sign in**
+
+  <img src="images/400/DB_empty_db.png" style="zoom: 75%;" />
 
 - You can now visualize the tables in the database, and execute queries.  Of course this is an empty database for now, we will reuse this tool later to check you have deployed objects into the database via Visual Builder Studio
 
