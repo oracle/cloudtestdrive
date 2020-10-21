@@ -828,7 +828,7 @@ While we're here we're also going to add the StatusResource.class to the com.ora
 ```
 	public Set<Class<?>> getClasses() {
 		// here we have the classes to operate on
-		return CollectionsHelper.setOf(StorefrontResource.class, ConfigurationResource.class, StatusResource.class);
+		return Set.of(StorefrontResource.class, ConfigurationResource.class, StatusResource.class);
 	}
 ```
 
