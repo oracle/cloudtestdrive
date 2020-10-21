@@ -669,7 +669,7 @@ So we've created code that will set and get the minimum change value it contains
 We do now need to tell Helidon that the endpoints in ConfigurationResource are to be made available. 
 
 - Open the **StorefrontApplication.java** file
-- On the last line, containing `return CollectionsHelper`, add the **ConfigurationResource.class** to the set of returned classes as in the below example:
+- On the last line, containing `return Set.of`, add the **ConfigurationResource.class** to the set of returned classes as in the below example:
 
 ```java
 @ApplicationScoped
@@ -680,7 +680,7 @@ public class StorefrontApplication extends Application {
 	public Set<Class<?>> getClasses() {
 		// here we have two classes to operate on, the store front, and the
 		// configuration manager
-		return CollectionsHelper.setOf(StorefrontResource.class, ConfigurationResource.class);
+		return Set.of(StorefrontResource.class, ConfigurationResource.class);
 	}
 }
 ```
