@@ -8,6 +8,12 @@
 
 This set of lab instructions is based on the virtual machine image dated 2020-10-09 (9th October 2020)
 
+### Setup for the Helidon labs
+
+You will need to import the template code you will be using into eclipse, and do some small VM configurations.
+
+Please follow [the setup instructions.](setup/setup.md) When you've completed them click the `back` button on your browser to return to this page.
+
 ### **Introduction**
 
 <details><summary><b>Self guided student - video introduction</b></summary>
@@ -187,9 +193,6 @@ To enable a service to be easily consumed Helidon provides support for the dynam
 [The Helidon support for Open API Document generation](Helidon-open-api/helidon-open-api.md)
 
 ---
-
-
-
 
 
 

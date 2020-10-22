@@ -79,17 +79,18 @@ You will be running these labs on an Oracle Cloud Infrastructure (OCI) tenancy. 
 
 Components we will be using : 
 
-- A Linux VM with a Linux Desktop, accessible through a VNC viewer.  This environment will contain Eclipse, Maven and Docker, tools you will need to run the first 2 labs (**A. Helidon** and **B. Docker**)
+- A Linux VM with a Linux Desktop, accessible through a VNC viewer.  This environment will contain Eclipse, Maven and Docker, tools you will need to run the **Helidon** and **Docker** modules
 - An ATP database to allow our application to store data in a persistent manner.
-- A Kubernetes cluster to deploy you microservices on (for the 3rd lab **C. Kubernetes**) 
+- A Kubernetes cluster to deploy you microservices on for the **Kubernetes** module. 
 
-The basic principles will however run in any Java IDE or Kubernetes environment, however you may need to adjust some aspects, for example if you were to build on this lab by installing a local database and Kubernetes cluster on your laptop the process will be different than when using an Autonomous Transaction Processing database in the Oracle cloud.
+The basic principles will however run in any Java IDE or Kubernetes environment, however you may need to adjust some aspects, for example if you were to build on this lab by installing a local MySQL database and Kubernetes cluster on your laptop the configuration details would be different than when using an Autonomous Transaction Processing database in the Oracle cloud, however the coding and operating the cluster details would be the same.
 
 # Preparing your environment
 
 There are some steps you need to take to prepare the environment for your own individual use.
 
 - You can run the Helidon  parts of this lab on a **Oracle Free Tier** account, You can run the Helidon, Docker and Kubernetes parts in your own tenancy (Trial or paid.)  In this case you need to perform some extra preparation steps, [explained in detail on this page](ManualSetup/FullSetupFreeTier.md).
+
 - If you are part of **an instructor-led lab**, in some cases your instructor might provide Cloud Tenancy for you, minimizing the setup to [these few steps to connect to a remote desktop](ManualSetup/CreateClientVm.md).
 
 

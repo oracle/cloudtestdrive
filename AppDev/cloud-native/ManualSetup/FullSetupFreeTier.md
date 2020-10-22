@@ -68,7 +68,7 @@ This video is an introduction to this section of the lab. Once you've watched it
   - Select the option `IMPORT FROM AN OBJECT STORAGE URL` 
   - Enter the **VM image URL** you received from your instructor
   - Set the image type to **OCI**
-  - Click the `Import image` option - it can take 10 to 15 minutes to finish, you can navigate way from this screen and continue with the next setup actions
+  - Click the `Import image` option - it can take 10 to 15 minutes to finish, you can continue with the next setup actions and check it's completed before you create an instance using the image.
 
 ![](images/import-custom-image-form.png)
 
@@ -257,7 +257,7 @@ You will be using VNC to access the developer VM. There are multiple possible cl
 
     - https://www.tightvnc.com/download.php
 
-      When prompted, select to save the file.  Next, run the executable to install the program. This requires you have the privileges to install software on your machine
+      - When prompted, select to save the file.  Next, run the executable to install the program. This requires you have the privileges to install software on your machine
 
 #### Accessing Development VM using VNC
 
@@ -277,7 +277,7 @@ You need to let your VM run for a couple of mins to fully boot and start the VNC
 
 ![](images/02-vnc-login.png)
 
-Once you have logged in you will see the Linux desktop, it will look similar to this, though the background may differ.
+Once you have logged in you will see the Linux desktop, it will look similar to this, though the background and specific icons may differ.
 
 ![](images/03-desktop.png)
 
@@ -289,7 +289,7 @@ There are many IDE's available. We have chosen Eclipse as it's open source licen
 
 We have installed the Eclipse installer and places a short cut to it on the desktop. It will look like 
 
- - Double click on the `eclipse-installer` icon on the desktop. This will open the installer. It may looks like a text page rather than the icon shown below, if it does still click it. You may be warned it's and `Untrusted application launcher`, if this happens click the `Trust and launch` option. **Do not** click the Post Eclipse Installer icon.
+ - Double click on the `eclipse-installer` icon on the desktop. This will open the installer. It may look like a text page and be named `eclipse-installer.desktop` rather than the icon shown below, if it does still click it. You may be warned it's and `Untrusted application launcher`, if this happens click the `Trust and launch` option. **Do not** click the Post Eclipse Installer icon.
  
 ![](images/04-eclipse-installer-icon.png)
 
@@ -335,7 +335,7 @@ The installer progress will be displayed
 
 We're now going to run a script that tidies up the desktop and creates an eclipse desktop icon
 
-- Double click on the `Post Eclipse Installer` icon on the desktop. This will run the script. It may looks like a text page rather than the icon shown below, if it does still click it. You may be warned it's an `Untrusted application launcher`, if this happens click the `Trust and launch` option.
+- Double click on the `Post Eclipse Installer` icon on the desktop. This will run the script. It may looks like a text page and be called `posteclipseinstal.desktop` rather than the icon shown below, if it does still click it. You may be warned it's an `Untrusted application launcher`, if this happens click the `Trust and launch` option.
 
 ![](images/13-post-eclipse-installer-icon.png)
 
@@ -385,13 +385,13 @@ We need to configure Eclipse to display the course files in a hierarchical manne
 
 To enable us to update the code used by the labs without having to update the Developer VM image each time we hold the primary copy of the code in a git repository (where we can update it as the lab is enhanced) You need to download this into your development VM and import it into Eclipse
 
-#### 9a. Downloading the code zip file.
+#### 9a. Downloading the initial setup code zip file.
 
 - Open the Firefox web browser - Click `Applications` then `Internet` then `Firefox`
 
 ![](images/40-open-firefox-menu.png)
 
-- Go to the URL `https://github.com/CloudTestDrive/helidon-labs` - Do this in the browser **in the virtual machine**
+- Go to the URL `https://github.com/CloudTestDrive/cloud-native-setup` - Do this in the browser **in the virtual machine**
 
 - Click the `Code` button
 
@@ -411,7 +411,7 @@ When the download is complete the Firefox download icon will turn completely blu
 
 ![](images/44-github-download-complete.png)
 
-#### 9b. Importing the downloaded zip file
+#### 9a. Importing the downloaded zip file
 
 - Switch back to Eclipse
 
@@ -427,7 +427,7 @@ When the download is complete the Firefox download icon will turn completely blu
 
 ![](images/52-eclipse-import-archive.png)
 
-- On the left menu chose `Downloads` then in the resulting list chose the download you just made (probably called `helidon-labs-master.zip`)
+- On the left menu chose `Downloads` then in the resulting list chose the download you just made (probably called `cloud-native-setup-main.zip`)
 
 - Click the `Open` button
 
@@ -439,17 +439,17 @@ When the download is complete the Firefox download icon will turn completely blu
 
 Eclipse will import the projects and start importing the Maven dependencies. Expect to see errors listed on the Eclipse `Problems` tab, and projects marked as having errors (red indicators) in the Project Explorer. 
 
-![](images/55-eclipse-import-progress.png)
+![](images/55-eclipse-import-finished.png)
 
 This may take a few mins. **Do not worry if you see errors** these are to be expected as we haven't finished configuring the Eclipse environment yet
 
 Wait until the building indicator (lower right) has gone away.
 
-#### 9d. Configuring Lombok
+#### 9b. Configuring Lombok
 
 These labs use Lombok to do many of the "standard" functions like automatically creating constructors, getters and so on. Lombok will be covered later in the labs, but for now we need to install it into the Eclipse installation.
 
-- Expand the helidon-labs-stockmanager project (Click the little triangle to the left of the project name)
+- Expand the `cloud-native-setup` project (Click the little triangle to the left of the project name)
 
 - Expand the `Maven Dependencies` node
 
@@ -515,11 +515,11 @@ We can check that Lombok has been installed
 
 - Click the `Close` button to get rid of the popup
 
-#### 9e. Updating the projects configuration.
+#### 9c. Updating the project configuration.
 
 Restarting eclipse so it recognises Lombok does not always trigger a rebuild or Maven update to remove the flagged problems, so we need to do that. 
 
-- Select one of the the `helidon-labs-stockmanager` and `helidon-labs-storefront` projects in the project explorer. Click right on them then chose `Maven` from the menu then `Update project`
+- Select the `cloud-native-setup`  project in the project explorer. Click right on them then chose `Maven` from the menu then `Update project`
 
 ![](images/70-maven-update-project-menu.png)
 
@@ -531,23 +531,11 @@ Maven will go and do it's thing, that may take a while.
 
 When Maven finishes there may be warnings about problems (These relate to incomplete code you will be updating in the lab) but there shouldn't be any remaining errors.
 
-#### 9f. Building the helidon-labs-common project
 
-The `helidon-labs-common` project contains classes that are used by both the storefront and stockmanager projects. We need to build that project to the Maven repository so it can be used later on.
-
-- Click right on the `helidon-labs-common` project, then chose the `Run as` menu option, then `Maven install`
-
-![](images/80-helidon-labs-common-menu-maven-install.png)
-
-Eclipse will use Maven to build and install the project. The progress will be shown in the `Console` tab, and you'll be able to see the `Build Success` message when it finishes (usually after 5 - 10 seconds, but it may take longer.
-
-![](images/81-helidon-labs-common-menu-maven-install-completed.png)
 
 ### 10. Handling the database Wallet file.
 
-The database Wallet file contains the details needed to connect to your database instance, it needs to be downloaded to the deveploment VM and placed in the right location.
-
-#### 10a. Getting the Wallet file into your Development VM
+The database Wallet file contains the details needed to connect to your database instance, it needs to be downloaded to the development VM and placed in the right location.
 
 The easiest way to get the database Wallet file into your virtual machine is to use the cloud console to download it.
 
@@ -555,7 +543,7 @@ The easiest way to get the database Wallet file into your virtual machine is to 
 - Login to the Oracle Cloud Console
 - Open the `hamburger` menu (three bars on the top left)
 - Scroll down (if needed) to the `Database` section. Click on the `Autonomous Transaction Processing` menu option
-- If you need to select the **CTDOKE** compartment you created earlier in the Comparment selector on the left side of the page.
+- If you need to select the **CTDOKE** compartment you created earlier in the Compartment selector on the left side of the page.
 - Click on your database name in the list (it's a link)
 - On the database page click the `DB Connection` button
   - This will display a Database connection popup
@@ -569,65 +557,11 @@ The easiest way to get the database Wallet file into your virtual machine is to 
 
 
 
-#### 10b. Configuring to use the Wallet file
-
-The Wallet file will have been downloaded to $HOME/Downloads, we want to place it in the right location for the labs and with the right name. It is **very** important that you follow the exact instructions below to ensure you are in the right directory as otherwise you may delete the lab files !
-
-You need to open a terminal window in the Development VM
-
-- Click **right** on the red background of the desktop in the development VM (you may need to shrink or move other windows to get this.
-
-- In the popup menu chose `Open Terminal`
-
-![](images/desktop-open-terminal.png)
-
-- Delete any existing wallet information
-  - `rm -rf $HOME/workspace/helidon-labs-stockmanager/Wallet_ATP`
-
-- Create a new wallet directory
-  - `mkdir -p $HOME/workspace/helidon-labs-stockmanager/Wallet_ATP`
-
-- Navigate to the stock manager folder
-  - `cd $HOME/workspace/helidon-labs-stockmanager/Wallet_ATP`
-
-- Move the downloaded wallet file from the downloads to the folder
-  - `mv $HOME/Downloads/Wallet_*.zip .`
-
-- Unpack the wallet 
-  - `unzip Wallet_*.zip`
-
-We now need to locate the wallet connection details.
-
-- Look at the contents of the tnsnames.ora file to get the database connection name
-
-  - `cat tnsnames.ora`
-
-  ```
-  tg_high = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_tg_high.atp.oraclecloud.com))(security=(ssl_ser
-  ver_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
-  
-  tg_low = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_tg_low.atp.oraclecloud.com))(security=(ssl_serve
-  r_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
-  
-  tg_medium = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_tg_medium.atp.oraclecloud.com))(security=(ssl
-  _server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
-  
-  tg_tp = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_tg_tp.atp.oraclecloud.com))(security=(ssl_server_
-  cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
-  
-  tg_tpurgent = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_tg_tpurgent.atp.oraclecloud.com))(security=
-  (ssl_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
-  ```
-
-- Locate the "high" connection and take a note of the name, in the example above this is tg_high **Your file will contain different names**
-
-- Be sure to write down the database connection name you have just found, you will need it later
-
 ## End of the setup
 
-Congratulations, you have successfully prepared your tenancy ! 
+Congratulations, you have successfully prepared your tenancy to do the labs, there will be lab specific setup instruction where appropriate in the labs. 
 
-Hit the **Back** button of your browser to return to the top level and start the Helidon lab !
+Hit the **Back** button of your browser to return to the top level and start the labs !
 
 
 
