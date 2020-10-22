@@ -406,6 +406,7 @@ You're probably running this against a nice new database that doesn't have the r
 Of course in a production environment you wouldn't want the database changing under you as the classes are updated, so you'd turn that off (the `hibernate.hbm2ddl.auto` setting) but for a lab it makes things a lot easier for us. 
 </p></details>
 - Let's try to create some stock items - **error expected**:
+
   -  `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pins/5000`
 
 Note there is a few seconds delay when you try this as the code does the database connection on demand ... and then you get an error as expected: 
@@ -496,7 +497,7 @@ Once the first operation has returned and the database connection is all setup t
 
 Let's confirm if it's been committed to the DB. Here we're going to use the API to retrieve a specific item
 
-- `curl -i -X GElocalhost:8081/stocklevel/Pins`
+- `curl -i -u jack:password  -X GET localhost:8081/stocklevel/Pins`
 
 ```
 HTTP/1.1 200 OK
