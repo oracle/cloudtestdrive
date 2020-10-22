@@ -30,7 +30,7 @@ REST is generally implemented using http(s) as the transport using XML or JSON t
 
 Historically much of the work on creating REST based microservice frameworks in Java has concentrated on the server side. Creating the client side connection has required the developer to create the connection themselves. For example the following.
 
-```
+```java
 private ItemDetails setItemCount(ItemDetails newDetails) {
     // business logic happens here
     // let's sent the data
@@ -70,7 +70,7 @@ private ItemDetails setItemCount(ItemDetails newDetails) {
 
 Over time this got a bit easier with wrapper classes 
 
-```
+```java
 private void deleteItem(String itemName) {
    RestTeplateBuilder rtb = new RestTemplateBuilder() ;
    RestTemplate = rtb.build() ;
@@ -80,7 +80,7 @@ private void deleteItem(String itemName) {
 
 But it's still not as simple as calling the method we want directly
 
-```
+```java
 private void deleteItem(String itemName) {
    StockManager manager = new StockManager() ;
    stockmanager.delete(itemName) ;
@@ -97,7 +97,7 @@ All a developer then need to do is to have your code create a proxy for the inte
 
 With Helidon and the Rest Client functionality all we need to do is to annotate the interface with details of paths and such like, add the @RegisterRestClient annotation and then inject it as a Rest client to the class that uses it. Then we can carry on in our code using the interface as if it was an interface for a local class, for example 
 
-```
+```java
 	ItemDetails itemDetails = stockManager.getStockItem(itemRequest.getRequestedItem());
 ```
 
@@ -118,7 +118,7 @@ Let's do this for real.
 
 First let's look at the StockManager interface.
 
-```
+```java
 public interface StockManager {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -143,20 +143,33 @@ Let's set this up as something that can be build into a REST client:
 
 - add the following annotations:
 
-  - ```
+```java
     @RegisterRestClient(configKey = "StockManager")
     @ApplicationScoped
-    ```
+```
 
 The result should look like :
 
-```
+```java
 @ApplicationScoped
 @RegisterRestClient(configKey = "StockManager")
 public interface StockManager {
 ```
 
 ---
+
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following imports to the class
+
+```java
+import javax.enterprise.context.ApplicationScoped;
+import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+```
+
+---
+</p></details>
 
 <details><summary><b>Details on the annotations</b></summary><p>
 
@@ -205,20 +218,32 @@ It's possible to manually create a REST client using the interface, but it's far
 
 - Add the following annotations:
 
-  - ```
+```java
     @Inject
     @RestClient
-    ```
+```
 
 - Remove the null initializer.
 
 Result:
 
-```
+```java
 	@Inject
 	@RestClient
 	private StockManager stockManager;
 ```
+
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following import to the class
+
+```java
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+```
+
+---
+</p></details>
 
 Now when the StorefrontResource class is initialized the Helidon runtime will dynamically create (if needed, or use an existing instance as appropriate depending on the scope) a proxy implementation that looks like the interface, but under the covers does all of the work to make the REST calls and process the response into the returned objects.
 

@@ -80,7 +80,18 @@ public class StorefrontResource {
    .....
 ```
 
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following imports to the class
+
+```java
+import javax.enterprise.context.RequestScoped;
+import javax.ws.rs.Path;
+```
+
 ---
+</p></details>
 
 <details><summary><b>About the annotations</b></summary>
 <p>
@@ -151,6 +162,19 @@ public Collection<ItemDetails> listAllStock() {
 - Save the changes you've just made, Control-s will do this.
 
 ---
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following imports to the class
+
+```java
+import javax.ws.rs.GET;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+```
+
+---
+</p></details>
 
 <details><summary><b>The annotations explained</b></summary>
 <p>
@@ -159,7 +183,7 @@ public Collection<ItemDetails> listAllStock() {
 
 `@GET` the method will be called in response to http GET requests, For REST services by convention the GET method is the one called when retrieving data.
 
-`@Path("/stocklevel")` on the method specifies that it will respond to the relative (to the class) path /stocklevel As the class as a whole has a path annotiaton ti gnicalpunder /stock the actual effective path combined the two so it's /stock/stocklevel 
+`@Path("/stocklevel")` on the method specifies that it will respond to the relative (to the class) path /stocklevel As the class as a whole has a path annotation of `/stock` the actual effective path combined the two so it's `/stock/stocklevel` 
 
 `@Produces(MediaType.APPLICATION_JSON)` means that the framework will convert the resulting object into JSON format (there are other formats available, for example APPLICATION_XML, but JSON is nice for humans to read and parse, and it also relatively compact compared to XML)
 
@@ -218,7 +242,7 @@ The problem with using CDI to do this however is that you won't have the chance 
 
 ### How does Helidon know what classes it needs to create REST endpoints for ?
 
-We need to create a new class to provide this information, and add an annotation to it so Helidon knows that's the new class provides this information.
+We need to define a new class which extents the `Application` to provide this information. Helidon will scan for classes that implement `Application` and then use the `getClasses()` method to build the full set of classes it will process.
 
 - Locate and open the class **StorefrontApplication**
 
@@ -245,20 +269,26 @@ public class StorefrontApplication extends Application {
 }
 ```
 
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following imports to the class
+
+```java
+import javax.enterprise.context.ApplicationScoped;
+import javax.ws.rs.ApplicationPath;
+```
+
 ---
+</p></details>
 
 <details><summary><b>Explaining the annotations</b></summary>
 <p>
 
 `@ApplicationScoped` Means that the Helidon framework will automatically create a *single* instance of the class for the entire application, whenever the framework is asked for an instance of StorefrontApplication that single instance will be returned.
 
-`@ApplicationPath("/")` Means that all the classes that provide REST services for the application will have a URL path starting with / So our listAllStock method will be /store/stocklevel If however the StorefrontAplication has been annotated `@ApplicationPath("/postroom")` then out listAllStock method woudl be on the path /postroom/store/stocklevel (the /postroom coming from the @ApplicationPath annotation on StorefrontApplication, /store from the @Path annotation on the StorefrontResource class and /stocklevel from the @Path annotation on the listAllStock method.
+`@ApplicationPath("/")` Means that all the classes that provide REST services for the application will have a URL path starting with `/` So our listAllStock method will be `/store/stocklevel` If however the StorefrontAplication has been annotated `@ApplicationPath("/postroom")` then our listAllStock method would be on the path `/postroom/store/stocklevel` (the `/postroom` coming from the @ApplicationPath annotation on StorefrontApplication, `/store` from the @Path annotation on the StorefrontResource class and `/stocklevel` from the @Path annotation on the listAllStock method.
 
-the `extends Application` means that there is a getClasses method which returns a set of classes that form part of the application and actually do the work in response to requests.
-
-Note that in this case Application is not a Helidon annotation.
-
-When the Helidon server starts up it looks for classes with the @ApplicationPath path annotation and that extend the Application interface and then calls the getClasses method on those to get a set of classes that it will then examine in more detail for other annotations.
 
 ---
 
@@ -361,6 +391,20 @@ The result should look like this :
 ```
 
 ---
+
+
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following imports to the class
+
+```java
+import javax.ws.rs.POST;
+import javax.ws.rs.Consumes;
+```
+
+---
+</p></details> 
 
 <details><summary><b>The annotations explained</b></summary>
 <p>
@@ -512,6 +556,18 @@ public class StorefrontResource {
    .....
 ```
 
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following import to the class
+
+```java
+import io.helidon.security.annotations.Authenticated;
+```
+
+---
+</p></details> 
+
 - Save the changes to the StorefrontResource.java file 
 - Stop the program if it's running
 - Run the service again (Main class -> Run As -> Java Application)
@@ -556,7 +612,7 @@ content-length: 107
 <details><summary><b>How does this work?</b></summary>
 <p>
 
-So how does the Authorized annotation determine what's allowed and what's not ? Basically it's defined using configuration properties that are imported from a configuration file. We'll see later how Helidon is told where it's configuration files are, but for for your reference the security configuration we're using is below.
+So how does the Authorized annotation determine what's allowed and what's not ? Basically it's defined using configuration properties that are imported from a configuration file. We'll see later how Helidon is told where it's configuration files are, but for for your reference the content of the security configuration we're using is below.
 
 ```yaml
 security:
@@ -685,6 +741,18 @@ public class StorefrontApplication extends Application {
 }
 ```
 
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following import to the class
+
+```java
+import io.helidon.security.annotations.import com.oracle.labs.helidon.storefront.resources.ConfigurationResource;;
+```
+
+---
+</p></details> 
+
 - Save the modified StorefrontApplication, and run the program.
 
 - Run **curl** to see what the current value is:
@@ -770,6 +838,18 @@ How do we fix this ? Simple, we just change the ConfigurationResource class from
 public class ConfigurationResource {
 ```
 
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following import to the class
+
+```java
+import javax.enterprise.context.ApplicationScoped;
+```
+
+---
+</p></details> 
+
 - Stop the current version of the program running, then re-start it which will use the updated versions of the code.
 
 - Let's just check the current value is 3 as we expect
@@ -832,6 +912,18 @@ While we're here we're also going to add the StatusResource.class to the com.ora
 	}
 ```
 
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following import to the class
+
+```java
+import com.oracle.labs.helidon.storefront.resources.StatusResource;
+```
+
+---
+</p></details> 
+
 - Save the StorefrontApplication.java file and restart the program
 
 - We'll test the status is there:
@@ -880,6 +972,18 @@ The actual creation of the instances is handled for us by Helidon, we just need 
 public class MinimumChange {
 ```
 
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following import to the class
+
+```java
+import javax.enterprise.context.ApplicationScoped;
+```
+
+---
+</p></details> 
+
 - Edit the file **ConfigurationResource.java** 
 - Replace the creation of an instance of MinimumChange with the **@Inject annotation** on the field. 
 
@@ -890,6 +994,18 @@ public class MinimumChange {
 	  private MinimumChange minimumChange;
 ```
 
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following import to the class
+
+```java
+import javax.inject.Inject;
+```
+
+---
+</p></details> 
+
 This tells Helidon that when creating an instance of the Configuration resource it should find the one instance of MinimumChange and set the field to use it (creating the MinimumChange instance if there isn't already one)
 
 - Edit the file **StorefrontResource.java**
@@ -899,6 +1015,18 @@ This tells Helidon that when creating an instance of the Configuration resource 
 	  @Inject
 	  private MinimumChange minimumChange;
 	  ```
+
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following import to the class
+
+```java
+import javax.inject.Inject;
+```
+
+---
+</p></details> 
 
 As the Helidon framework knows that MinimumChange is ApplicationScoped this means that every time a new StorefrontResource is created (once per request) the **same** instance of MinimumChange will be used (which is also the instance used in the ConfigurationResource)
 
@@ -1053,7 +1181,18 @@ The result should look like :
 	}
 ...
 ```
+<details><summary><b>Java Imports</b></summary>
+<p>
 
+You may need to add the following imports to the class
+
+```java
+import javax.inject.Inject;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+```
+
+---
+</p></details> 
 
 The `@Inject` on  constructor means to use this constructor when creating instances for use with `@Inject` annotation on a field (Yes it would have been nicer if the two uses had different names).  The syntax `@ConfigProperty(name = "app.minimumchange")` tells Helidon to locate the property `app.minimumchange` in the Helidon configuration system.
 
@@ -1203,7 +1342,7 @@ Helidon allows you to bring in configuration from a file in the class path (in t
 
 You can even if you want have a meta configuration file that defines the actual configuration sources to use.
 
-Finally you can if you want use code to modify the condifguration dynamically.
+Finally you can if you want use code to modify the configuration dynamically.
 
 For more details on exactly how user defined sources (files, classpath, directories, and URL's) work see the [Helidon advanced configuration documentation](https://helidon.io/docs/latest/#/mp/guides/03_config#config/06_advanced-configuration.adoc)
 
@@ -1495,6 +1634,19 @@ Fortunately for us Helidon provides a simple way to handle the problem.
 	public Collection<ItemDetails> listAllStock() {
 ```
 
+
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following imports to the class
+
+```java
+import org.eclipse.microprofile.faulttolerance.Fallback;
+```
+
+---
+</p></details>
+
 The `fallbackMethod` is the name of the method you want to call if there is a problem. If you look at the end of the StorefrontResource class you'll see it.
 
 ```java
@@ -1547,6 +1699,20 @@ Helidon has another approach error handling we're going to look at here that doe
 				+ itemRequest.getRequestedItem());
 		// make sure the change is within the minimum change allowed
 ```
+
+
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following imports to the class
+
+```java
+import org.eclipse.microprofile.faulttolerance.Fallback;
+```
+
+---
+</p></details>
+
 
 This annotation means the in the event of an exception Helidon will call a method on the handler class (look at the class if you like) which generates a response for you. It has available lots more info on what the error cause was.
 
@@ -1610,7 +1776,20 @@ It's hard to actually simulate these in action, but we're going to show how to d
 public class StorefrontResource {
 ```
 
-Now every REST call that does not finish in 15 will generate a timed out http response automatically. If there is a Fallback in place that will trigger the fallback, if there isn't a @Fallback then the caller will get a 408 Request Timed out" message and can determine if it's going to retry itself or not.
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following imports to the class
+
+```java
+import org.eclipse.microprofile.faulttolerance.Timeout;
+import java.time.temporal.ChronoUnit;
+```
+
+---
+</p></details>
+
+Now every REST call that does not finish in 15 will generate a timed out http response automatically. If there is an `@Fallback` in place that will trigger the fallback, if there isn't an `@Fallback` then the caller will get a 408 Request Timed out" message and can determine if it's going to retry itself or not.
 
 Short of going and deliberately putting delays into the code for now we can't test this.
 

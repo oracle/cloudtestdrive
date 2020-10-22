@@ -12,7 +12,7 @@ The RestClient model in Helidon makes it really simple to program access to anot
 
 There are of course many client side frameworks in place to allow you to make a call to a REST end point, for example you could use the basic [Java HTTP client service](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html) which allows you to build every stage of the client connection, defining proxies and so on. There are also clients built on the Reactive Framework. The following is an example using the Http client taken from the Java docs page
 
-```
+```java
    HttpClient client = HttpClient.newBuilder()
         .version(Version.HTTP_1_1)
         .followRedirects(Redirect.NORMAL)
@@ -37,9 +37,9 @@ Fortunately for us Helidon does provide a way of doing this without having to de
 
 #### Define the service interface
 
-You need to define the interface for your micro-service, in the same way as you would for any other Helidon micro-service. Hopefully you have done this as part of process of building the micro-service and can just import the project containing the interface into your client project. The code below is the interface definition for the StockManager micro-service we have already been using. The annotations are the same as building the interface for use with MP, the server side annotations like @ApplicationScoped will be ignored by the rest client builder, and as we are using the Helidon SE code so will the Helidon MP specific annotations like RegisterRestClient
+You need to define the interface for your micro-service, in the same way as you would for any other Helidon micro-service. Hopefully you have done this as part of process of building the micro-service and can just import the project containing the interface into your client project, though for some microservice purists this is regarded as being bad, as really the "contract" should not be in code shared code (which makes it difficult to independently update the client and server) but in the endpoints and data model. The code below is the interface definition for the StockManager micro-service we have already been using. The annotations are the same as building the interface for use with MP, the server side annotations like @ApplicationScoped will be ignored by the rest client builder, and as we are using the Helidon SE code so will the Helidon MP specific annotations like RegisterRestClient
 
-```
+```java
 @RegisterRestClient(configKey = "StockManager")
 @ApplicationScoped
 public interface StockManager {
@@ -65,7 +65,7 @@ public interface StockManager {
 
 The Helidon SE rest client library let's us create a proxy based in the interface programmatically. Ultimately this is what the Helidon MP annotations do under the covers. For example
 
-```
+```java
 		StockManager sm = RestClientBuilder.newBuilder().baseUri(URI.create("http://localhost:8080")).build(StockManager.class);
 		System.out.println("All stock levels are " + sm.getAllStockLevels());
 ```
@@ -76,7 +76,7 @@ The above is a very simple client, it doesn't for example handle setting authent
 
 To do this first we have to create a proxy that will modify the headers in the request to add the authentication you want. The following is a very simple class to do this using basic authentication, but you could of course implement an OAUTH2 client or something else to provide the authentication details if desired. 
  
- ```
+ ```java
  public class AuthBuilder implements ClientRequestFilter {
 	private String user, password;
 
@@ -104,7 +104,7 @@ Looking at the code you'll see that the filter method is the key functionality, 
  
  All we need to do now is to register it when the RestClientBuilder is creating the proxy for us
  
-```
+```java
 		StockManager sm = RestClientBuilder.newBuilder().baseUri(URI.create("http://localhost:8080")).register(new AuthBuilder(DEFAULT_USER, DEFAULT_PASS)).build(StockManager.class);
 		System.out.println("All stock levels are " + sm.getAllStockLevels());
 ```
@@ -120,8 +120,7 @@ The ResponseExceptionMappers take the response returned and if it's not what's e
 ### Required libraries
 You will of course need to bring in the required libraries for the rest client builder. The Maven dependencies are as follows (the version numbers are correct as of Mid Feb 2020, but you may want to check for later versions.)
 
-```
-
+```xml
 		<dependency>
 			<groupId>io.helidon.microprofile.rest-client</groupId>
 			<artifactId>helidon-microprofile-rest-client</artifactId>

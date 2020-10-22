@@ -253,6 +253,18 @@ public class StockResource {
 	private EntityManager entityManager; 
 ```
 
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following import to the class
+
+```java
+import javax.persistence.PersistenceContext;
+```
+
+---
+</p></details>
+
 Note that the name of the persistence context is defined as a hard coded String, and there is no mechanism for it to be injected via a config property. However, this is not as restrictive as it seems, the name just refers to entries in the persistence.xml file, which itself uses configuration data from the Helidon configuration system, so if we do want to change the database details we can achieve that by modifying the config, and that can be done without source code modifications.
 
 ### Configuring the database
@@ -334,9 +346,6 @@ As an example for **my** database it looks like this, **but yours will vary**
 - Click the `Close` button to exit the Run configurations popup.
  
 In case you wanted to see how to use the a config file for the database settings there is an example in example-config-data/stockmanager-database.yaml file. This isn't actually an imported part of the config files, but it shows you how it could be done using a config file.
-
-
-
 
 
 Using Helidon to create our PersistenceContext will also ensure that the entity manager is correctly shutdown when the program exits so we won't have any unused resources hanging around in the database.
@@ -457,23 +466,24 @@ Fortunately for us all we need is an @Transactional annotation and Heliton will 
 @Transactional
 public class StockResource {
 ```
+
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following import to the class
+
+```java
+import javax.transaction.Transactional;
+```
+
+---
+</p></details>
+
 This means that every operation in the class will be wrapped in a transaction automatically, If the method returns normally (so no exceptions thrown) then the transaction will be automatically committed, but if the transaction returned abnormally (e.g. an exception was thrown) then the transaction will be rolled back.
 
 This will apply if there were multiple entity managers or database modification actions operating within the method. So if the method modifies data in several databases then they would all succeed of fail. This how Helidon helps ensure that the database ACID (Atomic, Consistent, Isolated and Durable) semantics are maintained 
 
 
-
----
-
-<details><summary>Note on @Transaction and @Fallback</summary>
-<p>
-
-In the current version of Helidon there is a conflict between the processing of @Transactional and @Fallback, if a class (or method) has the @Fallback annotation then the transaction will not be created, which causes all sorts of problems  Sadly at the moment there is no workaround, though the development team are working on a fix to, but it's expected (but not guaranteed) that the Helidon Data functionality (which is planned to make persistence a lot easier) will fix that problem.
-
-
-</p>
-
-</details>
 
 ---
 

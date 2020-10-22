@@ -59,7 +59,7 @@ For **both** the storefront and stockmanager projects open the pom.xml file, thi
 
 Look for the dependency `helidon-tracing-zipkin` in **each** pom.xml file, you may want to use the search facility (Control-F) to look for zipkin, it will be towards the end of the dependencies section. You will find a section that has been commented out and looks like the following
 
-```
+```xml
 		<!-- tracing calls -->
 		<!-- 
 		<dependency>
@@ -73,7 +73,7 @@ Look for the dependency `helidon-tracing-zipkin` in **each** pom.xml file, you m
 
 The result will look like 
 
-```
+```xml
 		<!-- tracing calls -->
 		<dependency>
 			<groupId>io.helidon.tracing</groupId>
@@ -87,21 +87,21 @@ You now need to tell Helidon what to call the tracing requests and where traces 
 
 - Uncomment the **tracing** lines to specify the relevant project name as the service and the host as "zipkin"
 
-  - ```
+```yaml
     tracing:
       service: "storefront"
       host: "zipkin"
-    ```
+```
 
 - Navigate to the **stockmanager** project, open the **conf** folder and open file **stockmanager-conf.yaml**
 
 - Uncomment the **tracing** lines 
 
-  - ```
+```yaml
     tracing:
       service: "stockmanager"
       host: "zipkin"
-    ```
+```
 
     
 
@@ -187,6 +187,18 @@ The pom.xml will need to be updated for the metrics, that's already been done fo
 @NoArgsConstructor
 public class StorefrontResource {
 ```
+
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following import to the class
+
+```java
+import org.eclipse.microprofile.metrics.annotation.Counted;
+```
+
+---
+</p></details>
 
 <details><summary><b>Details on the annotation</b></summary>
 <p>
@@ -390,6 +402,18 @@ Result:
 	public Collection<ItemDetails> listAllStock() {
 ```
 
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following imports to the class
+
+```java
+import org.eclipse.microprofile.metrics.annotation.Metered;
+import org.eclipse.microprofile.metrics.annotation.Timed;
+```
+
+---
+</p></details>
 Note that here we are naming our Counter, timer and metrics, we can do this as we are doing it on the method, This will make finding the details easier.
 
 The *absolute=true* on the meter means that the class name won't be prepended, it will just be called listAllStockMeter 

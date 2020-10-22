@@ -62,6 +62,18 @@ Provding a Liveness capability is pretty simple. Somewhere in the class structur
 public class LivenessChecker implements HealthCheck {
 ```
 
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following import to the class
+
+```java
+import org.eclipse.microprofile.health.Liveness;
+```
+
+---
+</p></details>
+
 Because this implements the HealthCheck interface it must provide a implementation of the call() method which returns a HealthCheckResponse, this is at the end of the method. Please ignore the section of code that looks for a `/frozen` file, that is there to support exploring Liveness in the Kubernetes labs (and would not be in a production deployment !)
 
 ```java
@@ -79,7 +91,7 @@ Because this implements the HealthCheck interface it must provide a implementati
 
 What you actually do in the liveness check requires careful consideration. It should not be to complex or use a lot of resources, because that in itself will reduce the resources available to process real requests. Yet the liveness check must also ensure that it actually tests something useful, there's no point in just returning "OK" if you don't actually test the operation of the microservice.
 
-THe Liveness check we have here is **not** one that you would use in production. WHile it does test the web service part of the Helidon stack it doesn't check the correct operation of the storefront. However the storefont is pretty simple so there's not really much that could be tested.
+THe Liveness check we have here is **not** one that you would use in production. While it does test the web service part of the Helidon stack it doesn't check the correct operation of the storefront. However the storefont is pretty simple so there's not really much that could be tested.
 
 As another reason this particular Liveness checker is not production ready in that it's actually implemented so we can create a fake scenario where the system is not responding to a Liveness check if the file /frozen exists. This is provided so we can demonstrate how Kubernetes will behave in the event that a Liveness check does fail. Obviously in a production system you're not going to be doing that.
 
@@ -140,6 +152,18 @@ Readiness is a way to let the microservices runtime determine if a service has e
 @Slf4j
 public class ReadinessChecker implements HealthCheck {
 ```
+
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following import to the class
+
+```java
+import org.eclipse.microprofile.health.Readiness;
+```
+
+---
+</p></details>
 
 - Save your changes and **restart** the storefront
 

@@ -34,6 +34,19 @@ The full method signature now looks like
 			throws ItemAlreadyExistsException {
 ```
 
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following imports to the class
+
+```java
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.SecurityContext;
+```
+
+---
+</p></details>
+
 When the method is called the a security context object for the current request is automatically added to the call.
 
 There are multiple things we can do with the security context, but one of the most useful is to get the identity of the person making the REST API call. Of course if the authorization information is not available (say the REST API call did not provide the headers) then the returned value won't have any meaning (it will be null) but in this case we're requiring that the request be authenticated because we've placed an @Authenticated annotation on the class. 
@@ -48,7 +61,7 @@ The full line is :
 	String user = securityContext.getUserPrincipal().getName();
 ```
 
-This value is used later in the method to generate audit record information, though that's pretty standard Java code so we're not going to explain it, but do feel free to look at it if you like.
+This value is used later in the method to generate audit record information (you'll see a call to the `writeCreateCall` method that uses `user`) though that's pretty standard Java code so we're not going to explain it, but do feel free to look at it if you like.
 
 If you save the file, then stop and restart the StockManager, then try adding a new item
 

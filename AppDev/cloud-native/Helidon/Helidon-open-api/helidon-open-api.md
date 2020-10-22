@@ -95,6 +95,18 @@ The resulting class declaration should look like
 public class StorefrontApplication extends Application {
 ```
 
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following import to the class
+
+```java
+import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
+```
+
+---
+</p></details>
+
 <details><summary><b>Explanation of the annotations</b></summary>
 <p>
 
@@ -563,13 +575,13 @@ This has given us the entire API, but the /status is probably not relevant to ex
 This tells Helidon to ignore any paths it finds in the StatusResource and ConfigurationResource classes when generating the Open API document.
 
 <details><summary><b>Other configuration settings for OpenAPI</b></summary>
-The Helidon runtime supports a large number of configuration settings that can be used to control the generation of the OpenAPI document, this include the ability to packages as well as classes to include / exclude, or if you need finer grained control you can even define filter and model classes that chose exactly which paths will be included or removed. 
+The Helidon runtime supports a large number of configuration settings that can be used to control the generation of the OpenAPI document, this include the ability to specify packages as well as classes to include / exclude, or if you need finer grained control you can even define filter and model classes that chose exactly which paths will be included or removed. 
 
 See the OpenAPI documentation (link at the bottom of this module) for the full details. 
 </b></details>
 
 <details><summary><b>Why use the microprofile-config.properties file</b></summary>
-It is of course possible to apply this exclusion in any of the config files, but this is an example of a setting that as a developer you probably want to have applied by default in every deployment, after all you're suppressing internal information. The microprofile-config.propertties file is embedded into the class path, so that will ensure that the default behaviour is what you want. If someone want's to they can of course override that in a local file system based config file such as conf/storefront-config.yaml
+It is of course possible to apply this exclusion in any of the config files, but this is an example of a setting that as a developer you probably want to have applied by default in every deployment, after all you're suppressing internal information. The microprofile-config.properties file is embedded into the class path, so that will ensure that the default behavior is what you want. If someone want's to they can of course override that in a local file system based config file such as conf/storefront-config.yaml
 </b></details>
 
 Let's see how this looks, there is no need to re-build the index this time as the change was in the config file, not annotations in the source code.
@@ -686,6 +698,18 @@ public class ItemRequest {
 }
 ```
 
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following import to the class
+
+```java
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+```
+
+---
+</p></details>
+
 <details><summary><b>Explaining the annotations</b></summary>
 
 `@Schema` is a commonly used annotation with OpenAPI, it basically is used to identify data objects and their fields. 
@@ -799,14 +823,35 @@ As we've excluded the StartResource and ConfigurationResource on the basis that 
  
 - Open the StorefrontResource.java file
 
-- Add the following annotations to the listAllStock method
-  - ```java
+- Add `@Operation` and `@APIResponse` annotations as below to the listAllStock method
+
+The result will look like
+
+```java
+
     @Operation(summary = "List stock items", description = "Returns a list of all of the stock items currently held in the database (the list may be empty if there are no items)")
 	@APIResponse(description = "A set of ItemDetails representing the current data in the database", responseCode = "200", content = @Content(schema = @Schema(implementation = ItemDetails.class, type = SchemaType.ARRAY, example = "[{\"itemCount\": 10, \"itemName\": \"Pencil\"},"
 			+ "{\"itemCount\": 50, \"itemName\": \"Eraserl\"}," + "{\"itemCount\": 4600, \"itemName\": \"Pin\"},"
 			+ "{\"itemCount\": 100, \"itemName\": \"Book\"}]")))
-    ```
- 
+	public Collection<ItemDetails> listAllStock() {
+	....
+```
+
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following imports to the class
+
+```java
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+```
+
+---
+</p></details>
+
 <details><summary><b>Explaining the annotations</b></summary>
 
 `@Operation` is basically a description of the REST end point itself, most of the attributes should be self explanatory.
@@ -916,6 +961,18 @@ The updated method declaration should now look like the following. Note that oth
 			@RequestBody(description = "The details of the item being requested", required = true, content = @Content(schema = @Schema(implementation = ItemRequest.class, example = "{\"requestedItem\", \"Pin\", \"requestedCount\",5}"))) ItemRequest itemRequest)
 			throws MinimumChangeException, UnknownItemException, NotEnoughItemsException {
 ```
+
+<details><summary><b>Java Imports</b></summary>
+<p>
+
+You may need to add the following imports to the class
+
+```java
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+```
+
+---
+</p></details>
 
 - Stop the storefront instance, rebuild the index as usual and once that's done re-start the storefront service
 
