@@ -20,7 +20,12 @@ This video is an introduction to the Kubernetes labs. Once you've watched it ple
 
 ## Introduction
 
-In this series of labs we will focus on the specific features of Kubernetes to run Microservices.  These labs assume you have previously executed the **A. Helidon** and **B. Docker** part of this lab series.  In case you would want to execute *only this part C. Kubernetes of the labs,* you need to perform some [initial steps](../ManualSetup/KubernetesSetup.md) to prepare your environment.
+In this series of labs we will focus on the specific features of Kubernetes to run Microservices.  These labs use a pre-built set of docker images but you can if you did the **Helidon** and **Docker** modules you can use the images you created there if you wish. 
+
+### Setup
+If you have previously executed the **Helidon** and **Docker** parts of this lab series you will have created the CTDOKE compartment and ATP database, and are good to go.
+
+If you only want to do the **Kubernetes** labs and have not done the **Helidon** and **Docker** you need to perform some [initial steps](../ManualSetup/KubernetesSetup.md) to prepare your environment.
 
 ## The Labs
 

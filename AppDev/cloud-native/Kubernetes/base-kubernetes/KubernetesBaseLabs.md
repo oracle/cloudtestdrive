@@ -1272,7 +1272,7 @@ secret/sm-wallet-atp created
 
 The stock manager and storefront both require configuration data and the stock manager also requires the database wallet directory. As the configuration data also includes the authentication data I've decided to store some of this into secrets, though in a real situation the configuration information (except for the authentication server details) would probably be stored in a config map rather than a secret. We'll look at config maps later
 
-There are also more specific secrets used for TLS certificates and pulling docker images from private registries, these have additional arguments to the create command. For  example in the labs we are pulling the docker images from a private registry running in the Oracle Cloud, we define a secret called my-docker-reg. This is a special type of secret in that it specifically has attributes for docker images
+There are also more specific secrets used for TLS certificates and pulling docker images from private registries, these have additional arguments to the create command. For  example a rocker registry secret to pull docker images from a private registry - this is a special type of secret in that it specifically has attributes for docker images
 
 </p></details>
 
@@ -1311,7 +1311,7 @@ We will create the secret using a script later.
 <details><summary><b>How do these values get into the container ?</b></summary>
 <p>
 
-In the deployment (we'll see more on this later) the specification defines a section telling Kubernetes what environment variables to create in the pod, and where to get the values from. So for example in this case wherwe we're specifying the JDBC URL for the connection the dep0loyment has an entry of the form
+In the deployment (we'll see more on this later) the specification defines a section telling Kubernetes what environment variables to create in the pod, and where to get the values from. So for example in this case wherwe we're specifying the JDBC URL for the connection the depoloyment has an entry of the form
 
 ```yaml
         - name: javax.sql.DataSource.stockmanagerDataSource.dataSource.url
@@ -1325,46 +1325,13 @@ Here we're telling Kubernetes to look in the `stockmanagerdb` secret for a data 
 
 </p></details>
 
-#### Configuring the docker image pull secret
+#### Creating the secrets
 
-To get the docker images you created into Kubernetes we need to pull them from the registry. As we did not place the images in a public repo we need to tell Kubernetes the secrets used to do this. 
-
-The Oracle Cloud Image Registry (OCIR) that we used to hold the images uses tokens rather than a password. You will have got this token when you did your docker login earlier on.
-
-To help you setup the image pull secrets and the others used as configuration volumes we have created a script called create-secrets.sh This script deletes any existing secrets and sets up the secrets (in your chosen namespace.) This is just a convenience script, you could of course create them by hand, but for a reproducible setup it's best to have these documented in a easily reusable form, and not have to rely on a human remembering to type them !
-
-**You** need to edit the script to provide the details of the OCIR you used and your identity information
-
-- Switch to the the **$HOME/helidon-kubernetes/base-kubernetes** directory
-
-- **Edit** the create-secrets.sh script
-
-Locate the line where we setup the docker registry details. It will look similar to the below 
-
-
-``` bash
-kubectl create secret docker-registry my-docker-reg --docker-server=fra.ocir.io --docker-username='tenancy-name/oracleidentitycloudservice/username' --docker-password='abcdefrghijklmnopqrstuvwxyz' --docker-email='you@email.com'
-```
-
-This is the line which sets up the image pull secret my-docker-reg that we use when we define the pods later, we need to provide it with your registry details
-
-You will be using the details you gathered for the docker login.
-
-- Replace the `fra.ocir.io` with the name of the registry you used (if its not fra.ocir.io of course !)
-- Replace `tenancy-name` with the name of your tenancy
-- Replace `username` with your username
-- Replace `abcdefrghijklmnopqrstuvwxyz` with the auth token you used previously during the docker login. As this may well have characters in it that have special meaning to the Unix shell you should make sure that's in single quotes ( ' ' )
-- Replace `you@email.com` with the email address you used for your Oracle Cloud account.
-
-- Save the file and the changes you made
-
-- Once you have made the changes above run the following command to create the secrets:
+- Run the following command to create the secrets:
   -  `bash create-secrets.sh`
 
 
 ```
-Deleting existing generic secrets
-my-docker-reg
 Deleting existing store front secrets
 sf-conf
 Deleting existing stock manager secrets
@@ -1374,9 +1341,7 @@ Deleted secrets
 Secrets remaining in namespace are
 NAME                  TYPE                                  DATA   AGE
 default-token-7tk9z   kubernetes.io/service-account-token   3      22s
-Creating general secrets
-my-docker-reg
-secret/my-docker-reg created
+
 Creating stock manager secrets
 sm-wallet-atp
 secret/sm-wallet-atp created
@@ -1405,7 +1370,6 @@ Listing the secrets is simple:
 ```
 NAME                  TYPE                                  DATA   AGE
 default-token-7tk9z   kubernetes.io/service-account-token   3      5m31s
-my-docker-reg         kubernetes.io/dockerconfigjson        1      5m9s
 sf-conf-secure        Opaque                                1      5m8s
 sm-conf-secure        Opaque                                2      5m9s
 sm-wallet-atp         Opaque                                7      5m9s
@@ -1617,7 +1581,7 @@ The template section defines what the pods will look like, it starts by specifyi
     spec:
       containers:
       - name: storefront
-        image: fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:0.0.1
+        image: fra.ocir.io/oractdemeabdmnative/h-k8s_repo/storefront:0.0.1
         imagePullPolicy: IfNotPresent
         ports:
         - name: service-port
@@ -1627,8 +1591,7 @@ The template section defines what the pods will look like, it starts by specifyi
 ```
 The spec section in the template is the specification of the pods, it starts out by specifying the details of the pods and the details of the containers that comprise them, in this case the pod names, the location of the image and how to retrieve it. It also defines the ports that will be used giving them names (naming is not required, but it helps to make it clear what's what.)
               
-*** IMPORTANT ***
-These service deployment description `image` entry refer to the location in the docker repo that *I* used when setting up the labs. You **are** using a different docker repo, so you'll need to edit the deployment files to reflect this diffrent image location !
+These service deployment description `image` entry refers to the location in the docker repo that is used for the pre-build shared images. If you using a different docker repo because you have decided to use the images you created in the Helidon and Docker labs you'll need to edit the deployment files to reflect this diffrent image location ! More details on this later.
 
 If you were looking at the stockmanager deployment you'd see entries like the below that tell Kubernetes to create environment variables **inside** the pods container, in this case it says the value of the variable comes from a secret names stockmanagerdb and named `dataSourceClassName` (there are actually multiple entries in the stockmanager deployment, but we're only showing one here so you can get the idea.
 
@@ -1676,12 +1639,6 @@ Both are mounted read only as there's no need for the programs to modify them, s
 ```
 We define what each volume is based on, in this case we're saying that the volume sf-config-secure-vol (referenced earlier as being mounted on to /confsecure) has a source based on the secret called sf-conf-secure. the volume sf-config-map-vol (which is mounted onto /conf) will containe the contents of the config map sf-config-map There are many other different types of volume sources, including NFS, iSCSI, local storage to the Kubernetes provider etc.
 
-```
-      imagePullSecrets:
-      - name: my-docker-reg
-```
-
-We need to tell Kubernetes what secret to use when retrieving the docker images from the repository, the imagePullSecrets key allows us to pass this information on. Note that if you are using the pre-build image we provided this does not require a secret and this line would have been deleted during the setup.
 
 
 To deploy the config file we would just use kubectl to apply it with a command that looks like  `$ kubectl apply -f mydeployment.yaml` ' (**example, don't type it**)
@@ -1695,7 +1652,14 @@ To deploy the config file we would just use kubectl to apply it with a command t
 
 The script deploy.sh will apply all three deployment configuration files (storefront, stockmanager, zipkin) for us. 
 
-*** IMPORTANT ***
+The docker images refered to in the deployment yaml files are the pre-defined images we provided.
+
+If you did the Helidon and Docker labs and want to use your own images you create there you will have to expand this `Using your own images` and follow the steps it details.
+
+<details><summary><b>Using your own images</b></summary>
+<p>
+
+**IMPORTANT**
 The config files of the storefront and stockmanager refer to the location in the docker repo and any security keys that you used when setting up the labs. So you'll need to edit the deployment files to reflect the location of **your** images.
 
 - Make sure you are in the folder **helidon-kubernetes**
@@ -1704,16 +1668,69 @@ The config files of the storefront and stockmanager refer to the location in the
 
   - Edit the line specifying the image to reflect *your* docker image location for the stockmanager.  The example below shows the config if you chose *tg_repo* as the name, but of course you will have chosen something different !
 
-    ```
+```yaml
     spec:
           containers:
           - name: stockmanager
             image: fra.ocir.io/oractdemeabdmnative/tg_repo/stockmanager:0.0.1
-    ```
+```
 
 - Repeat this operation for the file **storefront-deployment.yaml**
   
   - Edit the line specifying the image to reflect *your* docker image location for the storefront.
+  
+
+We need to tell Kubernetes what secret to use when retrieving the docker images from the repository, the imagePullSecrets key allows us to pass this information on. 
+
+Find the commented line for the image pull secret and uncomment it so it looks like this 
+
+```yaml
+      imagePullSecrets:
+      - name: my-docker-reg
+```
+
+**Configuring the docker image pull secret**
+
+To get the docker images you created into Kubernetes we need to pull them from the registry. As we did not place the images in a public repo we need to tell Kubernetes the secrets used to do this. 
+
+The Oracle Cloud Image Registry (OCIR) that we used to hold the images uses tokens rather than a password. You will have got this token and other related settings for accessing the registry when you gathered the information to push your images to the registry in the docker lab.
+
+To help you setup the image pull secrets and the others used as configuration volumes we have created a script called create-secrets.sh This script deletes any existing secrets and sets up the secrets (in your chosen namespace.) This is just a convenience script, you could of course create them by hand, but for a reproducible setup it's best to have these documented in a easily reusable form, and not have to rely on a human remembering to type them !
+
+**You** need to edit the script to provide the details of the OCIR you used and your identity information
+
+If you no longer have this information you can [follow these instructions](../../ManualSetup/GetDockerDetailsForYourTenancy.md) to get it. 
+
+- Switch to the the **$HOME/helidon-kubernetes/base-kubernetes** directory
+
+- **Edit** the create-docker-secrets.sh script
+
+Locate the line where we setup the docker registry details. It will look similar to the below 
+
+
+``` bash
+kubectl create secret docker-registry my-docker-reg --docker-server=fra.ocir.io --docker-username='tenancy-name/oracleidentitycloudservice/username' --docker-password='abcdefrghijklmnopqrstuvwxyz' --docker-email='you@email.com'
+```
+
+This is the line which sets up the image pull secret my-docker-reg that we use when we define the pods later, we need to provide it with your registry details
+
+You will be using the details you gathered for the docker login.
+
+- Replace the `fra.ocir.io` with the name of the registry you used (if its not fra.ocir.io of course !)
+- Replace `tenancy-name` with the name of your tenancy
+- Replace `username` with your username
+- Replace `abcdefrghijklmnopqrstuvwxyz` with the auth token you used previously during the docker login. As this may well have characters in it that have special meaning to the Unix shell you should make sure that's in single quotes ( ' ' )
+- Replace `you@email.com` with the email address you used for your Oracle Cloud account.
+
+- Save the file and the changes you made
+
+- Now run the file to create the secret
+
+- bash create-docker-secret.sh
+
+---
+
+</p></details>
 
 The `deploy.sh` script just does a sequence of commands to apply the deployment configuration files, for example `kubectl apply -f zipkin-deployment.yaml --record=true` You could of course issues these commands by hand if you liked, but we're using a script here to save typo probems, and also because it's good practice to scritp this type of thing, so tyou know **exactly** the command that was run - which can be useful if you need to **exactly** reproduce it !
 
