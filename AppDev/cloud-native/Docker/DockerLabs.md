@@ -41,7 +41,7 @@ To run this part of the lab you need the working storefront and stockmanager mic
 We will be using **jib** to build the docker images. The Maven pom.xml file contains the details of the jib tooling and it's settings. 
 
 - Open the **storefront** project, and on the top level, open the **pom.xml** file
-- Locate the **jib-maven-plugin** dependency near line 162
+- Locate the **jib-maven-plugin** dependency , you may want to use Ctrl-F to bring up the Eclipse search window and search for `jib-maven-plugin` 
 
 This defines what's required for jib, including the base image to use.  We will be using the Java 11 Oracle GraalVM Community Edition Docker image as a base image for our containers. We've chosen to use Graal rather than OpenJDK as it provides better Just In Time compilation performance and also the garbage collection. When running in a server environment both of those are important as they reduce startup overheads and make for more predictable responses to the callers. The Graal JVM also allows support for other languages, though we're not making use of that capability in these labs. As it's Java 11 it also means that it's a Long Term Support version of Java. There are of course other options if you want instead of the Graal JVM.
 
