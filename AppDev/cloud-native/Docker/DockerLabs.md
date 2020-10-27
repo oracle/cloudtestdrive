@@ -329,7 +329,7 @@ _=/usr/bin/printenv
 ```
 
 (The precise details may vary of course)
-You can see the environment variables we have set (in this case it is of course using `tg_high` for the DB conneciton name in the URL, **yours will be different**
+You can see the environment variables we have set (in this case it is of course using `tg_high` for the DB connection name in the URL, **yours will be different**
 
 - Exit the container by typing in the container
   - `exit`
@@ -656,78 +656,6 @@ This is the end of this section of the lab, let's stop the running images
   -  ` docker stop storefront stockmanager`
 - Stop the zipkin instance running
   -  `docker stop zipkin`
-
-
-
-# Preparing for the Kubernetes labs
-
-When you do the Kubernetes labs you will test out performing a rolling upgrade. To do that you need to be able to show that the upgrade has applied, so you're going to do a bit of advance work now make a small change now so you can see the differences in versions in the later labs.
-
-There are scripts that temporarily update the version number, then do the build, and push to the repository, reverting the version number when the build completed.
-
-- In the helidon-labs-stockmanager project directory run the `buildStockmanagerV0.0.2PushToRepo.sh` script
-
-  - `bash buildStockmanagerV0.0.2PushToRepo.sh`
-
-```
-Using repository fra.ocir.io/oractdemeabdmnative/tg_repo
-[MVNVM] Using maven: 3.5.2
-[INFO] Scanning for projects...
-
-<Lots of Maven output removed>
-
-[INFO] Total time: 23.872 s
-[INFO] Finished at: 2020-01-03T12:13:40Z
-[INFO] Final Memory: 39M/188M
-[INFO] ------------------------------------------------------------------------
-Sending build context to Docker daemon  112.1kB
-Step 1/3 : FROM jib-storefront:latest
- ---> d31de67d9272
-Step 2/3 : RUN cp -r /app/resources/* /app/classes
- ---> Running in 818de3f3faec
-Removing intermediate container 818de3f3faec
- ---> 121bb2f37bb7
-Step 3/3 : RUN rm -rf /app/resources
- ---> Running in 9d650231ec09
-Removing intermediate container 9d650231ec09
- ---> df30253a82ec
-Successfully built df30253a82ec
-Successfully tagged fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:latest
-Successfully tagged fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:0.0.2
-The push refers to repository [fra.ocir.io/oractdemeabdmnative/tg_repo/storefront]
-7f699cf87b87: Pushed 
-76ad72d8097b: Pushed 
-b158b5f94634: Pushed 
-341c644e75cf: Pushed 
-84fad9f97da3: Layer already exists 
-2f6d5006f5d1: Layer already exists 
-1608029e89ad: Layer already exists 
-03ff63c55220: Layer already exists 
-bee1e39d7c3a: Layer already exists 
-1f59a4b2e206: Layer already exists 
-0ca7f54856c0: Layer already exists 
-ebb9ae013834: Layer already exists 
-latest: digest: sha256:65db7b35e2f2bd73f0010771f66794034eecddb6b10b69a3f34b9a8ffd16d8f5 size: 2839
-The push refers to repository [fra.ocir.io/oractdemeabdmnative/tg_repo/storefront]
-7f699cf87b87: Layer already exists 
-76ad72d8097b: Layer already exists 
-b158b5f94634: Layer already exists 
-341c644e75cf: Layer already exists 
-84fad9f97da3: Layer already exists 
-2f6d5006f5d1: Layer already exists 
-1608029e89ad: Layer already exists 
-03ff63c55220: Layer already exists 
-bee1e39d7c3a: Layer already exists 
-1f59a4b2e206: Layer already exists 
-0ca7f54856c0: Layer already exists 
-ebb9ae013834: Layer already exists 
-0.0.2: digest: sha256:65db7b35e2f2bd73f0010771f66794034eecddb6b10b69a3f34b9a8ffd16d8f5 size: 2839
-```
-
-There is a lot of output, most of which has been removed in the example output above. You can see that the 0.0.2 version has been pushed to the repo.
-
-- In the =helidon-labs-storefront project directory run the `buildStorefrontV0.0.2PushToRepo.sh` script
-  - `bash buildStorefrontV0.0.2PushToRepo.sh`
 
 ## Summary
 Congratulations, you are now able to run your microservices on Docker!  Next step is to use these images to deploy them on a Kubernetes cluster.  For this, navigate to the next chapter, [C. Deploying in Kubernetes](../Kubernetes/Kubernetes-labs.md)
