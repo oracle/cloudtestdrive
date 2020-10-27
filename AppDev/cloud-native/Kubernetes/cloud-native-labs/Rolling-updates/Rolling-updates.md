@@ -45,7 +45,7 @@ We are going to once again edit the storefront-deployment.yaml file to give Kube
 - Copy the storefront-deployment yaml file:
   -  `cp storefront-deployment.yaml storefront-deployment-v0.0.1.yaml`
 
-- Edit the new file **storefront-deployment-v0.0.1.yaml** for editing
+- Edit the new file **storefront-deployment-v0.0.1.yaml**
 
 The current contents of the section of the file looks like this:
 
@@ -155,7 +155,7 @@ One point to note here, these changes *only* modified the deployment roll out co
 
 Of course normally you would make a change, test it and build it, then push to the registry, you would probably use some form of CI/CD tooling to manage the process, for example a pipeline built using the Oracle Developer Cloud Service (other options include the open source tools Jenkins / Hudson and Ansible). 
 
-For this lab we are focusing on Helidon and Kubernetes, not the entire CI/CD chain so like any good cooking program we're going to use the v0.0.2 image we created earlier in the docker lab, so we just need to deploy it.
+For this lab we are focusing on Helidon and Kubernetes, not the entire CI/CD chain so like any good cooking program we're going to use a v0.0.2 image that we created for you. For the purposes of this module the image is basically the same as the v0.0.1 version, except it reports it's version as 0.0.2 
 
 
 ### Applying our new image
@@ -164,7 +164,7 @@ To apply the new v0.0.2 image we need to upgrade the configuration again. As dis
 
 However ... for the purpose of showing how this can be done using kubectl we are going to do this using the command line, not a configuration file change. This **might** be something you'd do in a test environment, but **don't** do it in a production environment or your change management processes will almost certainly end up damaged.
 
-- Execute the command (replacing the image details with your repo details of course) 
+- Execute the command 
   -  `kubectl set image deployment storefront storefront=fra.ocir.io/oractdemeabdmnative/h-k8s_repo/storefront:0.0.2`
 
 ```
@@ -380,7 +380,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
-- Now let's check the output from the StausResource (again replace the IP address with the one for your service) :
+- Now let's check the output from the StatusResource (again replace the IP address with the one for your service) :
   -  `curl -i -k -X GET https://<external IP>/sf/status`
 
 ```

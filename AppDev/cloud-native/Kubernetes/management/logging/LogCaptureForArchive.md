@@ -96,9 +96,9 @@ The first thing we need to do is to gather a bit of data about the storage servi
 
 We need to provide five pieces of information, The region ID and the storage service endpoint URL. The keys (Secret and public) that as a pair give access to the storage API and the name of the storage bucket to hold the saved data.
 
-We also need to specify what OCI COmpartment the data will be stored in - the AWS S3 does not have the concept of compartments, so we need to specify the one that will be used.
+We also need to specify what OCI Compartment the data will be stored in - S3 does not have the concept of compartments, so as we're using the Oracle Object Storage S3 compatible API we need to specify the compartment to be used when the data arrives.
 
-We we gather this information but **please save it** in a text editor or notepad for later use !
+We will gather a number of bits of information here, **please save it** in a text editor or notepad for later use !
 
 Firstly let's get the OCI Region details.
 
@@ -545,9 +545,9 @@ The Object storage UI provides a pseudo directory structure view. In this case t
 
 - Click on the year
 
-![Object-storage-hierarchy-top-level}(images/Object-storage-hierarchy-top-level.png)
+![Object-storage-hierarchy-top-level](images/Object-storage-hierarchy-top-level.png)
 
-- COntinue navigating down the pseudo directory structure until you get to the objects created today
+- Continue navigating down the pseudo directory structure until you get to the objects created today
 
 ![](images/Object-storage-bucket-with-logs.png)
 

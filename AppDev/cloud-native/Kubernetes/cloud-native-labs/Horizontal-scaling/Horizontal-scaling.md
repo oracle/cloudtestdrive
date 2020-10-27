@@ -75,7 +75,7 @@ We can if we want modify the number of replicas in the deployment by modifying t
 
 (I know you can go direct to the replica sets, but I want to show how they are connected to the deployments)
 
-You can see our three deployments (Zipkin, storefront and stock manager) and in the Pods column we can see that each has 1 or 1 pods. Click on the storefront deployment for more details.
+You can see our three deployments (Zipkin, storefront and stock manager) and in the Pods column we can see that each has 1 / 1 pods (So one pod running out of a requested one pod to run.) Click on the storefront deployment for more details.
 
 ![scaling-deployments-storefront-pre-scale](images/scaling-deployments-storefront-pre-scale.png)
 
@@ -207,7 +207,7 @@ If you are on a Kubernetes cluster with multiple physical nodes the scaling oper
 
 Kubernetes technically supports scaling on the replica set as well as the deployment, however what actually controls the scaling is the replication controller. If you try and change the number of replicas directly in the replica set it will (briefly) make the change. 
 
-Unfortunately the replication controller that is connected to the deployment doesn't pick up on changes to the replica set, only to the deployment, so the controller will recognize the change in pods and will immediately try and correct the situation and revert the change.
+Unfortunately the replication controller that is connected to the deployment doesn't pick up on changes to the replica set, only to the deployment, so the deployment replication controller will recognize the change in pods and will immediately try and correct the situation and revert the change.
 
 I don't know why you can even scale a replica set in this situation, but I suspect that this is some kind of historical hold-over.
 

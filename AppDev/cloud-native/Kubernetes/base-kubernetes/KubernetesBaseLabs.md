@@ -549,8 +549,6 @@ ca.crt:     1025 bytes
 
 As the OCI Cloud Shell runs in a web browser and is not itself a web browser we need to setup access so that the kubernetes-dashboard is available to your web browser on your laptop. This would normally be a problem as it would be running on a network that it internal to the cluster. 
 
-Fortunately for us Kubernetes provides several mechanisms to expose a service outside the cluster network. Usually you would use port forwarding to enable this, of expose the dashboard using an ingress (more on which later)
-
 Fortunately for us helm is a very powerful mechanism for configuring services, and when we used the helm command to install the dashboard we told it that the service.type was LoadBalancer, this will automatically setup a load balancer for us, making the dashbaord service visible on the public internet, we just need the IP address to use.
 
 To get the IP address of the dashboard load balancer :
@@ -832,7 +830,7 @@ While the configuration of the load balancer is outside kubernetes I just wanted
 
 The following commands do absolutely no error checking, or waiting for the load balancer IP address to be assigned, so before you used them in a script for automation you'd probably want to put some decent error correction in place.
 
-The [oci command](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cliconcepts.htm) used here allows you to manage aspects of the oci environment, you can also run it in your laptop if you want (follow the instructions at the link to download and configure it.) The oci command is **very** powerful and has a lot of options (on the OCI shell type `oci --help` to see them) The script also uses the [jq command](https://stedolan.github.io/jq) which is in the OCI Cloud shell, you can download it from the jq site
+The [oci command](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cliconcepts.htm) used here allows you to manage aspects of the oci environment, you can also run it in your laptop if you want (follow the instructions at the link to download and configure it.) The oci command is **very** powerful and has a lot of options (on the OCI shell type `oci --help` to see them) The script also uses the [jq command](https://stedolan.github.io/jq) which is in the OCI Cloud shell, you can download it from the jq site if you wanted it on your own system.
 
 ```bash
 echo Getting the Load balancer IP address from Kubernetes
@@ -1233,7 +1231,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 <details><summary><b>What's with the -k flag ?</b></summary>
 
-Previously we didn't use the -k flag or https when testing in the Helidon labs. That's because in the development phase we were using a direct http connection and connecting to a service running locally, and the micro-service itself didn't use https. Now we're using the ingress controller to provide us with a secure https connection (because that's what you should do in a production environment) we need to tell curl not to generate a error because in this case we're using a self signed certificate 
+Previously we didn't use the -k flag or https when testing in the Helidon labs. That's because in the development phase we were using a direct http connection and connecting to a service running locally, and the micro-service itself didn't use https. Now we're using the ingress controller to provide us with a secure https connection (because that's what you should do in a production environment) we need to tell curl not to generate a error because in this case we're using a self signed certificate. Of course in production you'd be using a proper certificate with a real certificate chain and wouldn't need to worry about it.
 
 ---
 
@@ -1309,7 +1307,7 @@ We will of course be using a Kubernetes secret to hold them (they are sensitive,
   url: jdbc:oracle:thin:@<database connection name>?TNS_ADMIN=./Wallet_ATP
 ```
 
-- Replace `<database connection name>` with the connection nme for **your** database you got from the `tnsnames.ora` file earlier. In my case that was `tg_high`, **but yours will be different**
+- Replace `<database connection name>` with the connection name for **your** database you got from the `tnsnames.ora` file earlier. In my case that was `tg_high`, **but yours will be different**
 
 For **me** tha line looked like this, **YOURS WILL BE DIFFERENT**
 
@@ -1743,7 +1741,7 @@ You will be using the details you gathered for the docker login.
 
 </details>
 
-The `deploy.sh` script just does a sequence of commands to apply the deployment configuration files, for example `kubectl apply -f zipkin-deployment.yaml --record=true` You could of course issues these commands by hand if you liked, but we're using a script here to save typo probems, and also because it's good practice to scritp this type of thing, so tyou know **exactly** the command that was run - which can be useful if you need to **exactly** reproduce it !
+The `deploy.sh` script just does a sequence of commands to apply the deployment configuration files, for example `kubectl apply -f zipkin-deployment.yaml --record=true` You could of course issues these commands by hand if you liked, but we're using a script here to save typo probems, and also because it's good practice to scritp this type of thing, so you know **exactly** the command that was run - which can be useful if you need to **exactly** reproduce it (which of course in a production environment you would!)
 
 - Now run the deploy.sh script
   -  `bash deploy.sh`
@@ -2163,7 +2161,7 @@ This lab has only implemented basic security in that it's securing the REST API 
 
 There are other ways of securing the connection however, we've put together a [short document](SecuringTheRestEndpoint.md) on some of the other appriaches.
 
-Also when deploying in Kubernetes you should create roles and users for performing specific functions. The [Kubernetes documentation](https://kubernetes.io/docs/concepts/security/overview/) has more information on it's security.
+Also when deploying in Kubernetes you should create roles and users for performing specific functions, for ease of running the lab you have a role which does everything, but in a real environment that's a bad thing as it breaks the principle of least privilege. The [Kubernetes documentation](https://kubernetes.io/docs/concepts/security/overview/) has more information on it's security.
 
 
 

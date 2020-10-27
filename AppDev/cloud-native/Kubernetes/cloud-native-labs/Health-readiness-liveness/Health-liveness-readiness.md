@@ -496,9 +496,9 @@ The ReadinessProbe section should now look like this :
 
 The various options for readiness are similar to those for Liveliness, except you see here we've got an exec instead of httpGet.
 
-The exec means that we are going to run code **inside** the pod to determine if the pod is ready to serve requests. The command section defined the command that will be run and the arguments. In this case we run the /bin/bash shell, -c means to use the arguments as a command (so it won't try and be interactive) and the 'curl -s http://localhost:9080/health/ready | grep "\"outcome\":\"UP\""' is the command.
+The exec means that we are going to run code **inside** the pod to determine if the pod is ready to serve requests. The command section defines the command that will be run and the arguments. In this case we run the /bin/bash shell, -c means to use the arguments as a command (so it won't try and be interactive) and  **'curl -s http://localhost:9080/health/ready | grep "\"outcome\":\"UP\""'** is the command.
 
-Some points about 'curl -s http://localhost:9080/health/ready | grep "\"outcome\":\"UP\""'
+Some points about **'curl -s http://localhost:9080/health/ready | grep "\"outcome\":\"UP\""'**
 
 Firstly this is a command string that actually runs several commands connecting the output of one to the input of the other. If you exec to the pod you can actually run these by hand if you like
 

@@ -366,7 +366,7 @@ For example the URL `https://<External IP>/elastic/logstash-2020.04.23/_search?q
 
 ![](images/ES-search-empty-storefront.png)
 
-It may be empry, or you may get log messages (will really depend on if you'de used it on the chosen day)
+It may be empty, or you may get log messages (will really depend on if you'de used it on the chosen day)
 
 If you haven't generated any log messages from the storefront container since we setup up the log capture just do some requests to the stock manager service which will generate log data
 

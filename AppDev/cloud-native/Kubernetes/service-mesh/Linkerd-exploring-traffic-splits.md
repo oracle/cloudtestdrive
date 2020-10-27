@@ -144,7 +144,7 @@ As the pod has restarted you may have a delay or have to retry the request as th
 
 Now we have a mechanism to differentiate between the old and new versions of the service we're going to create two new service definitions, one having a selector that matches the  0.0.1 version of the stockmanager service and one for the 0.0.2 version. (We haven't actually deployed the 0.0.2 version, that comes later)
 
-We need to do define the version based services now so we can create the traffic split that interposes itself between the original service (stockmanager) and the separate deployments. Remember that the original stockmanager service definition only has a selector for the label `app: stockmanager` so if we created the deployments before we put the traffic split in place (and the version based traffic split can't be done before we'ce created the per version services) the original stockmanager service would match both the old and new deployments, and we wouldn't have any control over the traffic.
+We need to do define the version based services now so we can create the traffic split that interposes itself between the original service (stockmanager) and the separate deployments. Remember that the original stockmanager service definition only has a selector for the label `app: stockmanager` so if we created the deployments before we put the traffic split in place (and the version based traffic split can't be done before we've created the per version services) the original stockmanager service would match both the old and new deployments, and we wouldn't have any control over the traffic.
 
 The versioned services are defined in a couple of yaml files. The key differences are that they are bound to specific versions. This means that the selector specified the version to match. Our previous service allowed connections to any version of the service
 
@@ -170,7 +170,7 @@ spec:
 
 let's deploy them
 
-- In the OCI CLoud shell type the following
+- In the OCI Cloud shell type the following
   - `kubectl apply -f stockmanager-v0.0.1-service.yaml`
 
 ```
@@ -264,7 +264,7 @@ spec:
 
 In this example we have applied a weight of 90 to the v0.0.1 part of the split, and zero to the second. The numbers are not percentages, and don't even need to add up to 100.
 
-The algorythm seems to be add the total of the weights together, then split based on the weight for each individual backend divided by the total of the weights.
+The algorithm seems to be add the total of the weights together, then split based on the weight for each individual backend divided by the total of the weights.
 
 Thus with two services a weight of 1 on each would still be a 50/50 split (in percentage terms) but a split of 1 and 4 would be 20% to the first services and 80% to the second.
 
@@ -546,8 +546,7 @@ service "stockmanagerv0-0-2" deleted
 service "stockmanagerv0-0-1" deleted
 ```
 
-<details><summary><b>Not removing the version on the original deployment ?</b></summary>
-
+<details><summary><b>We haven't removed the version on the original deployment ?</b></summary>
 
 Well spotted ! We're going to leave the version in place on the original service. There are a few reasons for this.
 
@@ -881,9 +880,13 @@ You may be concerned about the impact of traffic splits on the health of the und
 
 Fortunately for us those are defined in the deployment, not the service, so Kubernetes talks directly to the pods in the deployment and doesn't go through the service layer (and thus potentially the traffic split.) Thus even if a service is apparently delivering errors to it's service it should still pass the health checks (assuming it's healthy of course :-) )
 
-The same shouls also apply to the deployment defined actions like prometheus metrics scraping.
+The same should also apply to the deployment defined actions like prometheus metrics scraping.
 
 Of course there are some actions that might be impacted, for example if you had a service that you used for your own data gathering, going to a endpoint that was behind the traffic split then that may start failing, but most folks would use the standard Kuernetes components
+
+### Hum, this could cause me customer problems
+
+You probably don't want to start doing this type of chaos engineering on your production environments until you've tested it thoroughly in your dev and test environments. However there is another option here, you could use header based requests to identify "test traffic, and just make sure you chode a header that wouldn't normally come from your real customers.
 
 ### Cleaning up the fault injection
 
@@ -902,9 +905,9 @@ configmap "fault-injector-configmap" deleted
 
 ## Other criteria for splitting the traffic
 
-The [Service mesh specification for traffic splits](https://github.com/servicemeshinterface/smi-spec/blob/master/apis/traffic-split/v1alpha3/traffic-split.md) supports other mechanisms (be warned not all service mesh implementation support this specification, and now all support all the traffic split options.)
+The [Service mesh specification for traffic splits](https://github.com/servicemeshinterface/smi-spec/blob/master/apis/traffic-split/v1alpha3/traffic-split.md) supports other mechanisms (be warned not all service mesh implementation support this specification, and not all support all the traffic split options.)
 
-One interesting one is to have a split based on an `HTTPRouteGroup` This is interesting because it allows you to split traffic based on HTTP elements such as the presence (or not) of specific headers / header values. For example you could split traffic base on if the users browser was Firefox or not. More interestingly you could add a custom header to your request, for example declaring that the request should be treated in a particular way, thus you could have a header "DevelopmentUser", the request would progress through the connected microservices as usual until it got to the particular traffic split, then the traffic split would sent only traffic with that header to the service. This means you can test an update to your microservice in the fully operational production environment, with no risk that non developers would use the in-test version. This solves many of the problems of testing in that it is genuinely operating in the production environment, not a test environment that you believe is "close to" the production environment (but in reality unlikely to be so as the load and scale is usually much smaller for cost reasons)
+One interesting one is to have a split based on an `HTTPRouteGroup` This is interesting because it allows you to split traffic based on HTTP elements such as the presence (or not) of specific headers / header values. For example you could split traffic base on if the users browser was Firefox or not. More interestingly you could add a custom header to your request, for example declaring that the request should be treated in a particular way, thus you could have a header "DevelopmentUser", the request would progress through the connected microservices as usual until it got to the particular traffic split, then the traffic split would sent only traffic with that header to the service. This means you can test an update to your microservice in the fully operational production environment, with no risk that non developers would use the in-test version. Naturally for this to be safe your microservcies have to fail safe in that they don't just crash entirely when calling another service that fails (or you have multiple instances and just let Kubernetes handle restarting them.) This solves many of the problems of testing in that it is genuinely operating in the production environment, not a test environment that you believe is "close to" the production environment (but in reality unlikely to be so as the load and scale is usually much smaller for cost reasons)
 
 Of course splitting by header is assuming that the headers are correctly passed on between micro-services.
 

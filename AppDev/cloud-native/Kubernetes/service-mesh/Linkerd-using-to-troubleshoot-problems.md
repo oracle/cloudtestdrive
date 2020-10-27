@@ -176,6 +176,8 @@ deployment.apps/stockmanager configured
 ```
 
 Wait a short while for the update to be applied.
+
+This is basically the same stockmanager code that was created in the Helidon labs, however it has a bit of additional code that generates errors at the rate specified by the errorGeneration rate we set in the config file.
   
 Now let's check that the change has applied by going direct to the stockmanager and seeing how it behaves, remember that we said that 0.5 (so 50%) of the requests should generate an error.
 
@@ -246,7 +248,7 @@ Strict-Transport-Security: max-age=15724800; includeSubDomains
 [{"itemCount":410,"itemName":"Pencil"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":4490,"itemName":"Pins"},{"itemCount":100,"itemName":"Book"}]
 ```
 
-As before repeat this a few times, approximately half the time it will succeed and half the time it will fail.
+As before repeat this a few times, approximately half the time it will succeed and half the time it will fail. Note that if you had tried this on the reserverStock end point it would fail 75% of the time - because that API makes two calls to the stockmanager, either of which failing will result in a failure back to the caller.
 
 Restart the load generator
 
@@ -353,7 +355,7 @@ deployment.apps/stockmanager rolled back
 
 You have reached the end of this lab module !!
 
-In the next module we will look at how you can use linkerd and grafana to see the traffic flows in your cluster.
+In the next module we will look at how you can use traffic splits in linkerd to handle canary deployments and also do a bit of chaos engineering to test out what happens in the event of a problem.
 
 Acknowledgments. I'd like to thank Charles Pretzer of Bouyant, Inc for reviewing and sanity checking parts of this document.
 
