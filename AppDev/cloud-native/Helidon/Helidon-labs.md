@@ -10,7 +10,7 @@ This set of lab instructions is based on the virtual machine image dated 2020-10
 
 ### Setup for the Helidon labs
 
-You will need to import the template code you will be using into eclipse, and do some small VM configurations.
+You will need to import the template code you will be using into eclipse, and do some small VM configurations. This is in addition to setting up the VM you did earlier.
 
 Please follow [the setup instructions.](setup/setup.md) When you've completed them click the `back` button on your browser to return to this page.
 

@@ -415,7 +415,7 @@ Of course in a production environment you wouldn't want the database changing un
 
 - Let's try to create some stock items - **error expected**:
 
-  -  `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pins/5000`
+  -  `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pins/5000`
 
 Note there is a few seconds delay when you try this as the code does the database connection on demand ... and then you get an error as expected: 
 
@@ -440,7 +440,7 @@ Hibernate:
     where
         stocklevel0_.departmentName=? 
         and stocklevel0_.itemName=?
-2020.01.05 18:54:47 INFO com.oracle.labs.helidon.stockmanager.resources.StockResource Thread[helidon-1,5,server]: Creating StockLevel(stockId=StockId(departmentName=timg, itemName=pins), itemCount=5000)
+2020.01.05 18:54:47 INFO com.oracle.labs.helidon.stockmanager.resources.StockResource Thread[helidon-1,5,server]: Creating StockLevel(stockId=StockId(departmentName=timg, itemName=Pins), itemCount=5000)
 javax.persistence.TransactionRequiredException
 	at io.helidon.integrations.cdi.jpa.NonTransactionalEntityManager.persist(NonTransactionalEntityManager.java:92)
 ...
@@ -568,7 +568,7 @@ Date: Sun, 5 Jan 2020 19:01:38 GMT
 connection: keep-alive
 content-length: 36
 
-{"itemCount":5000,"itemName":"pins"}
+{"itemCount":5000,"itemName":"Pins"}
 ```
 
 

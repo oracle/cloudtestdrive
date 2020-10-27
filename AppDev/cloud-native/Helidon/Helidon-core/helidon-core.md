@@ -124,7 +124,7 @@ Helidon will now REST enable the class, but it needs to know what specific metho
 
 It's pretty simple, when called it does some logging, then gets a Collection of ItemDetails and returns it, doing a bit of Exception handling as it does so. Hopefully this type of thing will be very familiar to you.
 
-<details><summary><b>Where is the logging configuration loaded ?</b></summary>
+<details><summary><b>Where is the logging configuration setup ?</b></summary>
 
 
 In a capability introduced in Helidon 2.0 the Helidon framework  will automatically locate a logging.properties file if one exists in the classpath (or current working directory) and will use that to configure the logging for us, so we don't need to explicitly configure logging. Makes things a little easier.
@@ -285,8 +285,29 @@ import javax.ws.rs.ApplicationPath;
 
 - Save your changes to the StorefrontResource file with Control-s, or you can save all your changes to all files by hitting this icon: <img src="images/eclipse-save2.png" style="zoom:33%;" />
 
+<details><summary><b>Do I really need an Application class ?</b></summary>
+
+In a real-world environment Helidon doesn't actually need classes extending `Application` in all situations. If the Helidon runtime can't find them then it will look for all resource classes (I believe this is those where the class has an `@Path`) This is what we actually do in the stockmanager microservice.
+
+The rules are
+
+If there is a `Application` class that returns non null set of classes those are used as the resources.
+
+If there is no `Application` class then Helidon will try and work the resources out itself.
+
+If there is an `Application` class (and you may need one in some situations) that returns an empty set of classes then Helidon will work them out itself. This can be used in the case where you need an `Application` class, but want the auto discovery of resources.
+
+We are using the Application class here because we will gradually be adding new resources overtime, these all exist as templates code, but most of them are unfinished - which would cause problems, so we don't want them all to be active from the beginning. This way we can gradually enable them as we go.
+
+Note that in some cases you may still need an Application class however. For the OpenAPI module you will see that we need to place annotations on the application, also if you want an @ApplicationPath then it will need to be set on a class that extends Application.
+
+---
+
+</details>
+
 ### Running the storefront program.
-- locate the. file **Main.java**. 
+
+- Locate the file **Main.java**. 
 - Right-click on it and chose **Run As**, then **Java Application**
 
 ![Eclipse Run Storefront Application Main Class](images/eclipse-run-storefront-main.png)
@@ -510,7 +531,7 @@ Now you've seen how Helidon can not only REST enable methods, but also handle th
 <details><summary><b>The theory</b></summary>
 
 
-The problem is anyone who has access to the IP address and post can access our service, in this case that may not be a problem when retrieving data (though in most cases is woudl be) but we don;t want anyone causing problems by making people thing there are no pencils in the post room !
+The problem is anyone who has access to the IP address and port can access our service, in this example that may not be a problem when retrieving data, after all the number of Pencils is not business critical (though in most cases is would be) but we don't want anyone causing problems by making people think there are no pencils in the post room !
 
 So we need to add some security. Fortunately Helidon makes this very easy, we just add @Authenticated to the StorefrontResource class, this is applied to every REST call in the class.  If we wanted to limit it authentication as required to specific methods we'd just place it on those methods.
 

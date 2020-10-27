@@ -85,12 +85,12 @@ Because this implements the HealthCheck interface it must provide a implementati
 	}
 ```
 
-<details><summary><b>What is a Liveliness check?</b></summary>
+<details><summary><b>What should I do in a Liveliness check?</b></summary>
 
 
 What you actually do in the liveness check requires careful consideration. It should not be to complex or use a lot of resources, because that in itself will reduce the resources available to process real requests. Yet the liveness check must also ensure that it actually tests something useful, there's no point in just returning "OK" if you don't actually test the operation of the microservice.
 
-THe Liveness check we have here is **not** one that you would use in production. While it does test the web service part of the Helidon stack it doesn't check the correct operation of the storefront. However the storefont is pretty simple so there's not really much that could be tested.
+The Liveness check we have here is **not** one that you would use in production. While it does test the web service part of the Helidon stack it doesn't check the correct operation of the storefront. However the storefont is pretty simple so there's not really much that could be tested.
 
 As another reason this particular Liveness checker is not production ready in that it's actually implemented so we can create a fake scenario where the system is not responding to a Liveness check if the file /frozen exists. This is provided so we can demonstrate how Kubernetes will behave in the event that a Liveness check does fail. Obviously in a production system you're not going to be doing that.
 
@@ -130,9 +130,9 @@ If an application crashes then clearly the solution is to restart it, and in bas
 
 There is however a different situation where a microservice itself can be behaving just fine, but it can't actually process requests because a service it depends on is for some reason not available. In many situations the downstream service will likely become available again - perhaps there has been a temporary network issue. 
 
-In this situation restarting the higher level microservice won-t solve the problem, if the downstream service is unavailable doing a restart of the upstream service won't solve that problem, and the restart will place unneeded load on the environment.
+In this situation restarting the higher level microservice wont actually solve the problem, if the downstream service is unavailable doing a restart of the upstream service wont solve that problem, and the restart will place unneeded load on the environment.
 
-Readiness is a way to let the microservices runtime determine if a service has everything it needs to respond to requests. Helidon has a build in configuration to offer a readiness response to platforms like Kubernetes, but like Liveness you need to look at the actual implementation carefully, you don't want to be making expensive calls to the downstream service, but equally you want to make sure that it is responding. In particular if the downstream service does become ready again your readiness checker needs to return to reflecting that in the readiness response it generates.
+Readiness is a way to let the microservices runtime determine if a service has everything it needs to respond to requests. Helidon has a build in configuration to offer a readiness response to platforms like Kubernetes, but like Liveness you need to look at the actual implementation carefully, you don't want to be making expensive calls to the downstream service, but equally you want to make sure that it is responding. In particular if the downstream service does become ready again your readiness checker needs to update it's response, reflecting that it is now ready to process requests again.
 
 ---
 

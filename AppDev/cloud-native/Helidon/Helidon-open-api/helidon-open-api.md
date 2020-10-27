@@ -7,8 +7,8 @@
 ## A. Helidon for Cloud Native
 
 ## 4. Helidon and Open API
-This is an optional module for the Helidon lab, but you will need to complete it if you are going to run the API Gateway section of the cloud infrastructure lab
 
+This is an optional module for the Helidon lab. It is currently not required that this module be completed to enable other optional modules.
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -582,6 +582,16 @@ This has given us the entire API, but the /status is probably not relevant to ex
 (It's the last line, so it may be a bit hidden)
  
 This tells Helidon to ignore any paths it finds in the StatusResource and ConfigurationResource classes when generating the Open API document.
+
+<details><summary><b>What about the Rest Client interfaces ? They have matching annotations </b></summary>
+
+Many microservices also talk to other microservcies, and so their code may include interfaces representing those microservices.  Those annotations may of course include annotations that make it look as it they are a REST endpoint, for example the interface will have `@Path` annotations. Of course you don't want them to be included in the OpenAPI speci of your service (they are after all internal implementation details, not part of your public API.) 
+
+Fortunately Helidon's OpenAPI implementation will automatically ignore any interfaces annotated with RegisterRestClient so you don't have to exclude those by hand. You may have noticed that you haven't seen anything relating to the StockManager interface in the OpenAPI output.
+
+---
+
+</details>
 
 <details><summary><b>Other configuration settings for OpenAPI</b></summary>
 
