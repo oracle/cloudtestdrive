@@ -15,13 +15,14 @@ This page explains all the steps to set up your **Oracle Cloud Tenancy** so you 
 While we strongly recommend running the lab in the virtual machine we have built, running on the Oracle Cloud Infrastructure, if you do not want to use this and are willing and able to re-create the configuration of the virtual machine on your own computer (and adjust the labs content to reflect your differing environment as ypu go through it) there are some guidelines [here](./Using-your-own-computer.md)
 
 <details><summary><b>Self guided student - section video introduction</b></summary>
-<p>
+
 
 This video is an introduction to this section of the lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Introduction to lab preparation Video](https://img.youtube.com/vi/fxrOnJjCLBc/0.jpg)](https://youtu.be/fxrOnJjCLBc "Lab preparation introduction video")
 
-</p>
+---
+
 </details>
 
 ### 1. Create the CTDOKE compartment
@@ -232,8 +233,6 @@ Once the create button has been clicked you will see the VM details page.  Initi
 ![](images/create-instance-public-ip-address.png)
 
 - Give the VM a few minutes to start up it's internal services.
-
-
 
 
 

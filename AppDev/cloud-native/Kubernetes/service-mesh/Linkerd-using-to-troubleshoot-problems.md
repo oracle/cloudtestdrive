@@ -10,16 +10,15 @@
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
+
 
 This video is an introduction to the troubleshooting with a Service mesh lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Using the service mesh to help troubleshoot Introduction Video](https://img.youtube.com/vi/2KFBV1vJcGI/0.jpg)](https://youtu.be/2KFBV1vJcGI "Using the service mesh to help troubleshoot introduction video")
 
-</p>
-</details>
-
 ---
+
+</details>
 
 ## Using a service mesh to troubleshoot
 
@@ -49,7 +48,7 @@ Change to the directory for the service mesh scripts
 Once you are in the directory start the load generator
 
 <details><summary><b>If you need to remind yourself of the ingress controller IP address</b></summary>
-<p>
+
 
 - In the OCI Cloud Shell type :
   - `kubectl get services -n ingress-nginx`
@@ -63,7 +62,8 @@ ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.17.121   <non
 look at the `ingress-nginx-nginx-ingress-controller` row, IP address inthe `EXTERNAL-IP` column is the one you want, in this case that's `130.61.195.102` **but yours will vary**
 
 ---
-</p></details>
+
+</details>
 
 
 - In the OCI Cloud shell type (remember to replace `<external IP>` with the IP address of your ingress service
@@ -93,7 +93,7 @@ Next you may be presented with the login challenge.
 
 ![](images/linkerd-web-login.png)
 
-If you are login with `admin` as the username, for the password use the one you used when creating the login password during the linkerd installation in the previous module.
+If you are, login with `admin` as the username, for the password use the one you used when creating the login password during the linkerd installation in the previous module.
 
 You'll be presented with the linkerd-web main page, unlike when you saw this previously now it's showing load for your services.
 
@@ -176,6 +176,8 @@ deployment.apps/stockmanager configured
 ```
 
 Wait a short while for the update to be applied.
+
+This is basically the same stockmanager code that was created in the Helidon labs, however it has a bit of additional code that generates errors at the rate specified by the errorGeneration rate we set in the config file.
   
 Now let's check that the change has applied by going direct to the stockmanager and seeing how it behaves, remember that we said that 0.5 (so 50%) of the requests should generate an error.
 
@@ -246,7 +248,7 @@ Strict-Transport-Security: max-age=15724800; includeSubDomains
 [{"itemCount":410,"itemName":"Pencil"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":4490,"itemName":"Pins"},{"itemCount":100,"itemName":"Book"}]
 ```
 
-As before repeat this a few times, approximately half the time it will succeed and half the time it will fail.
+As before repeat this a few times, approximately half the time it will succeed and half the time it will fail. Note that if you had tried this on the reserverStock end point it would fail 75% of the time - because that API makes two calls to the stockmanager, either of which failing will result in a failure back to the caller.
 
 Restart the load generator
 
@@ -271,13 +273,12 @@ Locate the HTTP metrics entry for your namespace (mine is tg-helidon, yours will
 While the precise numbers will of course vary you should see that the success rate is not 100%, it's likely to be around 95% It's not a surprise, but it looks like we have a bit of a problem !
 
 <details><summary><b>Why only 95% ?</b></summary>
-<p>
+
 
 Remember that here we're looking at all the HTTP REST API calls that happen in the entire namespace, including those inbound from the Ingress controller as well as calls to the Zipkin tracing, so while we'd expect to see some calls fail we wouldn't expect to see all of them.
 
 ---
 
-</p>
 </details>
 
 - Click on the name of your namespace to access it.
@@ -354,7 +355,7 @@ deployment.apps/stockmanager rolled back
 
 You have reached the end of this lab module !!
 
-In the next module we will look at how you can use linkerd and grafana to see the traffic flows in your cluster.
+In the next module we will look at how you can use traffic splits in linkerd to handle canary deployments and also do a bit of chaos engineering to test out what happens in the event of a problem.
 
 Acknowledgments. I'd like to thank Charles Pretzer of Bouyant, Inc for reviewing and sanity checking parts of this document.
 

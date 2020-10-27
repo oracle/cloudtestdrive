@@ -10,16 +10,15 @@
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
+
 
 This video is an introduction to the Kubernetes core features lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Kubernetes core features lab only setup Introduction Video](https://img.youtube.com/vi/kc1SvmTbvZ8/0.jpg)](https://youtu.be/kc1SvmTbvZ8 "Kubernetes core features lab introduction video")
 
-</p>
-</details>
-
 ---
+
+</details>
 
 ## Lab Setup
 
@@ -46,7 +45,7 @@ Note, in some steps you may want to minimize the OCI Cloud Shell so you can get 
 In some steps you are asked to edit files. The OCI Cloud Shell supports typical Linux editors such at `vi`, `emacs` and `nano` Use the editor you prefer to make changes to files. When you use kubectl to edit configuration directly however it uses a vi style editor.
 
 <details><summary><b>Not familiar with vi ?</b></summary>
-<p>
+
 If you are not familiar with vi this is a very short intro
 
 vi is a modal editor, there are two modes, navigating around (done using the cursor keys on your keyboard) and editing
@@ -56,14 +55,20 @@ To edit navigate to the place you want to change, the `x` key on the keyboard wi
 When you have finished changing the file then press the `Escape` key on your keyboard then press `ZZ` (that's capital Z twice) to save the file and exit
 
 For more details on vi there is a [guide here](http://heather.cs.ucdavis.edu/~matloff/UnixAndC/Editors/ViIntro.html)
-</p></details>
+
+---
+
+</details>
 
 <details><summary><b>Permissions problem accessing the OCI Cloud Shell ?</b></summary>
-<p>
+
 If you are denied access to the OCI Cloud Shell then it means that you do not have the right policies set for your groups in your tenancy. This can happen in existing tenancies if you are not an admin or been given rights via a policy. (In a trial tenancy you are usually the admin with all rights so it's not generally an issue there.) 
 
 You will need to ask your tenancy admin to add you to a group which has rights to access the OCI Cloud Shell. See the [Required IAM policy](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cloudshellintro.htm#RequiredIAMPolicy) in the OCI Cloud Shell documentation.
-</p></details>
+
+---
+
+</details>
 
 ### Downloading the scripts
 
@@ -285,7 +290,7 @@ Get the Kubernetes Dashboard URL by running:
 ```
 
 <details><summary><b>Explaining the helm options</b></summary>
-<p>
+
 The helm options are :
 
 - `install` do an install operation, helm has many other operations type helm --help` for a list.
@@ -300,10 +305,12 @@ The helm options are :
 
 - `--version 2.8.0` This tells helm to use a specific version of the helm chart.
 
-</p></details>
+---
+
+</details>
 
 <details><summary><b>Why are we specifying a particular chart version ?</b></summary>
-<p>
+
 Helm is a great tool for installing software for us, but you don't always want to install the absolute latest version of the software (which is what would happen if you didn't specify a version.) There are several reasons for this :
 
 - You may only have tested a particular version in your environment, and you don't want a later version being installed by accident which might not be compatible with other software in your environment (for example your ingress controller may not have been updated, but a helm chart might be looking to use specific annotations on the ingress controller that are not supported in that version of the ingress controller.)
@@ -311,7 +318,10 @@ Helm is a great tool for installing software for us, but you don't always want t
 - Not all versions of a helm chart (and the SW it installs) are compatible with all versions of Kubernetes, this is especially true in a production environment where you may not be running the absolutely leading edge version of Kuberntes, but are focused on a version you know works for you. For example over time the `apiVersion` defined in a yaml file might switch from beta to release, and the helm chart might be updated to reflect that. If you're still running an older version of Kubernetes the new version or the chart might try and use an `apiVersion` that is not yet available in your cluster.
 
 - You may be in a very regulated industry, for example aviation, medical or banking that have legally binding regulations which require you to maintain very tight version control of your environment.
-</p></details>
+
+---
+
+</details>
 
 Note that Helm does all the work needed here, it creates the service, deployment, replica set and pods for us and starts things running. Unless you need a very highly customised configuration using helm is **way** simpler than setting each of these individual elements up yourself.
 
@@ -445,7 +455,7 @@ clusterrolebinding.rbac.authorization.k8s.io/dashboard-user created
 ---
 
 <details><summary><b>Explaining the dashboard-file.yaml</b></summary>
-<p>
+
 
 Open up the dashboard-file.yaml and let's have a look at a few of the configuration items
 
@@ -495,19 +505,19 @@ The last section tells Kubernetes to create a binding that connects the user das
 
 In practice this means that when the kubernetes-dashboard asks the RBAC service it the user identified as dashboard-user is allowed to use the dashboard it will return yes, and this the dashboard service will allow the dashbaord user to log in and process requests. So basically standard type of Role Based Access Control ideas. 
 
+---
 
-</p></details>
+</details>
 
 <details><summary><b>A Note on YAML</b></summary>
-<p>
 
 kubectl can also take JSON input as well as YAML. Personally I think that using any data format (including YAML) where whitespace is sensitive and defines the structure is just asking for trouble (get an extra space to many or too few and you've completely changed what you're trying to do) so my preference would be to use JSON. However (to be fair) JSON is a lot more verbose compared to YAML and the syntax can also lead to problems (though I think that a reasonable JSON editor will be a lot better than a YAML editor at finding problems and helping you fix them)
 
 Sadly (for me at least) YAML has been pretty widely adopted for use with Kubernetes, so for the configuration files we're using here I've used YAML, if you'd like to convert them to JSON however please feel free :-)
 
-</p></details>
-
 ---
+
+</details>
 
 
 
@@ -538,8 +548,6 @@ ca.crt:     1025 bytes
 - Save it in a plain text editor on your laptop for easy use later in the lab
 
 As the OCI Cloud Shell runs in a web browser and is not itself a web browser we need to setup access so that the kubernetes-dashboard is available to your web browser on your laptop. This would normally be a problem as it would be running on a network that it internal to the cluster. 
-
-Fortunately for us Kubernetes provides several mechanisms to expose a service outside the cluster network. Usually you would use port forwarding to enable this, of expose the dashboard using an ingress (more on which later)
 
 Fortunately for us helm is a very powerful mechanism for configuring services, and when we used the helm command to install the dashboard we told it that the service.type was LoadBalancer, this will automatically setup a load balancer for us, making the dashbaord service visible on the public internet, we just need the IP address to use.
 
@@ -599,7 +607,7 @@ Initially it will probably say default, if you click on it you will get a choice
 ---
 
 <details><summary><b>Exploring the details of the dashboard</b></summary>
-<p>
+
 
 The Kubernetes dashboard gives you a visual interface to many the features that kubectl provides. 
 
@@ -667,18 +675,18 @@ There is also the ability to use the dashboard to connect to a running container
 
 ---
 
-</p></details>
+</details>
 
 <details><summary><b>Other management tools</b></summary>
-<p>
+
 
 There are a lot of other management tools available, some community, for example [K8-Dash](https://github.com/indeedeng/k8dash), and [Kubernetor](https://github.com/smpio/kubernator), and some Open source, but with commercial support, e.g. [Rancher](https://rancher.com/products/rancher/), but they are not part of the official Kubernetes offering, and often require the deployment of additional components to operate, which would mean more work in the initial stages of the lab, so for this lab we're going to use the Kubernetes Dashboard.
 
 Outside a lab environment you may well want to take a little longer to configure these management tools and their dependencies.
 
-</p></details>
-
 ---
+
+</details>
 
 
 ### Ingress for accepting external data
@@ -695,11 +703,12 @@ The advantage of using an ingress compared to a load balancer is that as the ing
 Though an Ingress itself is a Kubernetes concept Kubernetes does not itself provide a specific Ingress service, it provides a framework in which different Ingress services can be deployed, with the user chosing the service to use. Though it uses the Kubernetes configuration mechanism the actual configuration specifics of an Ingress controller unfortunately very between the different controllers. 
 
 <details><summary><b>Why not use an Ingress for the dashboard ?</b></summary>
-<p>
+
 Normally in a production environment you would use an ingress for the dashboard rather than setting up (and paying for) a separate load balancer. For this lab however we are using a load balancer because the dashboard uses certificates, and while it is possible to create the required DNS entries for the certificate, wait for them to propagate and then create and install the certificates that takes time (especially if using real, not self-signed certificates)
-</p></details>
 
 ---
+
+</details>
 
 
 For this lab we're going to use an nginx based Ingress controller. The nginx based Ingress controller is maintained by the Kubernetes team, but there are several others that could be used in your environments if you want. There are a list of commercial and open source Ingress controllers in the [Kubernetes ingress documentation](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)
@@ -816,12 +825,12 @@ Click the `Update Listener`
 You'll be presented with a `Work in progress` menu, for now just click the `Close` button and the update will continue in the background
 
 <details><summary><b>Scripting the listener change</b></summary>
-<p>
+
 While the configuration of the load balancer is outside kubernetes I just wanted to show you how you might go about scripting this rather than doing it through the browser interface.
 
 The following commands do absolutely no error checking, or waiting for the load balancer IP address to be assigned, so before you used them in a script for automation you'd probably want to put some decent error correction in place.
 
-The [oci command](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cliconcepts.htm) used here allows you to manage aspects of the oci environment, you can also run it in your laptop if you want (follow the instructions at the link to download anc configure it.) The oci command is **very** powerful and has a lot of options (on the OCI shell type `oci --help` to see them) The script also uses the [jq command](https://stedolan.github.io/jq) which is in the OCI Cloud shell, you can download it from the jq site
+The [oci command](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cliconcepts.htm) used here allows you to manage aspects of the oci environment, you can also run it in your laptop if you want (follow the instructions at the link to download and configure it.) The oci command is **very** powerful and has a lot of options (on the OCI shell type `oci --help` to see them) The script also uses the [jq command](https://stedolan.github.io/jq) which is in the OCI Cloud shell, you can download it from the jq site if you wanted it on your own system.
 
 ```bash
 echo Getting the Load balancer IP address from Kubernetes
@@ -836,8 +845,9 @@ echo Load balancer ocid is $LB_OCID
 echo Running the update
 echo y | oci lb listener update  --load-balancer-id=$LB_OCID --listener-name=TCP-443  --default-backend-set-name=TCP-80 --protocol=TCP --port=443 --ssl-certificate-name=tls-secret  --wait-for-state SUCCEEDED --wait-for-state FAILED
 ```
+---
 
-</p></details>
+</details>
 
 Note that in a production environment you might want to extend the encryption by encrypting traffic between the load balancer and the ingress controller, and also between the microservices using a servcie mesh (which is a later optional lab.)
 
@@ -889,7 +899,7 @@ As we've set the namespace we just created as the default we don't need to speci
 
 
 <details><summary><b>Details on the script used</b></summary>
-<p>
+
 A namespace is basically a "virtual" cluster that let's us separate our services from others that may be running in the cluster. If you have your own cluster it's still a good idea to have your own namespace so you can separate the lab from other activities in the cluster, letting you easily see what's happening in the lab and also no interfering with other cluster activities, and also easily delete it if needs be (deleting a namespace deletes everything in it)
 
 The following command will create a namespace (don't actually do this)
@@ -919,9 +929,9 @@ $ kubectl config set-context --current --namespace=<my namespace name>
 
 Of course the Kubernetes dashboard also understands namespaces. If you go to the dashboard page you can chose the namespace to use (initially the dashboard uses the "default" namespace, so if you can't see what you're expecting there remember to change it to the namespace you've chosen. 
 
-</p></details>
-
 ---
+
+</details>
 
 
 ### Creating Services
@@ -929,7 +939,7 @@ Of course the Kubernetes dashboard also understands namespaces. If you go to the
 The next step is to create services:  a description of a set of microservice instances and the port(s) they listen on. 
 
 <details><summary><b>Explaining the service concept in Kubernetes</b></summary>
-<p>
+
 
 A service effectively defines a logical endpoint that has a internal dns name inside the cluster and a virtual IP address bound to that name to enable communication to a service. It's also internal load balancer in that if there are multiple pods for a service it will switch between the pods, and also will remove pods from it's load balancer if they are not operating properly (We'll look at this side of a service later on.)
 
@@ -964,11 +974,9 @@ These could of course be manually specified using a kubectl command line.
 ***Important***
 You need to define the services before defining anything else (e.g. deployments, pods, ingress rules etc.) that may use the services, this is especially true of pods which may use the DNS name created by the service as otherwise those dependent pods may fail to start up.
 
-
-
-</p></details>
-
 ---
+
+</details>
 
 
 The servicesClusterIP.yaml file in the defines the cluster services for us. We can apply it to make the changes
@@ -1003,7 +1011,7 @@ If however you click on the service name in the services list in the dashboard y
 ### Accessing your services using an ingress rule
 
 <details><summary><b>Introduction</b></summary>
-<p>
+
 
 Services can configure externally visible load balancers for you, however this is not recommended for several reasons if using REST type access. 
 
@@ -1021,10 +1029,11 @@ Fortunately for REST activities there is another option, the ingress controller.
 Saying that an ingress cannot handle TCP / UDP level requests is actually a slight lie, in more recent versions of the nginx ingress controller it's possible to define a configuration that can process TCP / UDP connections and forward those untouched to a service / port. This is however not a standard capability and needs to be configured separately with specific IP addresses for the external port defined in the ingress configuration. However, different ingress controllers will have different capabilities, so you can't rely on this being the case with all ingress controllers.
 
 
-PS I know in this lab we've used a load balancer for the dashboard (and will do so later for a couple of other services - Prometheus and Grafana.) We're doing this for time reasons, it's certainly possible to run the dashboard, Prometheus, Grafana via an ingress, and this is the best optoin, however doing so means you need to get setup reverse proxies, certifcatse and DNS entries. Those can take a little time to do (esp waiting for DNS changes to propagate through the world wide internet infrastructure) so for this lab we chose the quicker, though less secure option of just using a Load Balancer.
-</p></details>
+PS I know in this lab we've used a load balancer for the dashboard (and will do so later for a couple of other services - Prometheus and Grafana.) We're doing this for time reasons, it's certainly possible to run the dashboard, Prometheus, Grafana via an ingress, and this is the best option, however doing so means you need to get setup reverse proxies, certifcates and DNS entries. Those can take a little time to do (esp waiting for DNS changes to propagate through the world wide internet infrastructure) so for this lab we chose the quicker, though less secure option of just using a Load Balancer.
 
 ---
+
+</details>
 
 
 We have already installed the Ingress controller which actually operates the ingress service and configured the associated load balancer. You can see this by looking at the services.  The ingress service is in the ingress-nginx namespace, so we have to specify that :
@@ -1051,7 +1060,7 @@ No resources found in tg-helidon namespace.
 ```
 
 <details><summary><b>More on Ingress rules</b></summary>
-<p>
+
 
 We need to define the ingress rules that will apply. The critical thing to remember here is that different Ingress Controllers may have different syntax for applying the rules. We're looking at the nginx-ingress controller here which is commonly used, but remember there may be others.
 
@@ -1114,19 +1123,19 @@ On the other hand,  **/smmgt/health/ready** will be mapped to **/health/ready** 
 
 Note that it is possible to match multiple paths in the same ingress, and they can forward to different ports, however the re-write target (the updated URL) will be the same structure in both cases.
 
-</p></details>
-
 ---
 
+</details>
+
 <details><summary><b>How to block http access ?</b></summary>
-<p>
+
 We have provided a certificate in a secret to use for https traffic, but the ingress controller will not block http traffic without some ingress controller specific annotations that seem to very between not only the different ingress controllers but also the same controller in different cloud providers. 
 
 One simple solution however is to modify the load balancer settings to block non ssl traffic. This is generally cloud provider specific however.
-</p></details>
 
 ---
 
+</details>
 
 
 - Apply the Ingress Config file : 
@@ -1221,9 +1230,12 @@ strict-transport-security: max-age=15724800; includeSubDomains
 ```
 
 <details><summary><b>What's with the -k flag ?</b></summary>
-<p>
-Previously we didn't use the -k flag or https when testing in the Helidon labs. That's because in the development phase we were using a direct http connection and connecting to a service running locally, and the micro-service itself didn't use https. Now we're using the ingress controller to provide us with a secure https connection (because that's what you should do in a production environment) we need to tell curl not to generate a error because in this case we're using a self signed certificate 
-</p></details>
+
+Previously we didn't use the -k flag or https when testing in the Helidon labs. That's because in the development phase we were using a direct http connection and connecting to a service running locally, and the micro-service itself didn't use https. Now we're using the ingress controller to provide us with a secure https connection (because that's what you should do in a production environment) we need to tell curl not to generate a error because in this case we're using a self signed certificate. Of course in production you'd be using a proper certificate with a real certificate chain and wouldn't need to worry about it.
+
+---
+
+</details>
 
 We got a **service unavailable** error. This is because that web page is recognised as an ingress rule, but there are no pods able to deliver the service. This isn't a surprise as we haven't started them yet !
 
@@ -1251,7 +1263,7 @@ For see the doc more information on how the regular expressions with with see th
 ### Secrets and external configuration
 
 <details><summary><b>Introduction to Kubernetes secrets</b></summary>
-<p>
+
 
 As when running the docker images we need to specify the external configuration for Kubernetes. This is different from when running with docker though, in docker we just reference the local file system, however in Kubernetes we don't even know what node a pod will be running on, which makes it a little difficult to provide a docker volume there, so we need something different.
 
@@ -1274,9 +1286,10 @@ The stock manager and storefront both require configuration data and the stock m
 
 There are also more specific secrets used for TLS certificates and pulling docker images from private registries, these have additional arguments to the create command. For  example a rocker registry secret to pull docker images from a private registry - this is a special type of secret in that it specifically has attributes for docker images
 
-</p></details>
-
 ---
+
+</details>
+
 
 #### Configuring the database connection details
 
@@ -1294,7 +1307,7 @@ We will of course be using a Kubernetes secret to hold them (they are sensitive,
   url: jdbc:oracle:thin:@<database connection name>?TNS_ADMIN=./Wallet_ATP
 ```
 
-- Replace `<database connection name>` with the connection nme for **your** database you got from the `tnsnames.ora` file earlier. In my case that was `tg_high`, **but yours will be different**
+- Replace `<database connection name>` with the connection name for **your** database you got from the `tnsnames.ora` file earlier. In my case that was `tg_high`, **but yours will be different**
 
 For **me** tha line looked like this, **YOURS WILL BE DIFFERENT**
 
@@ -1309,7 +1322,7 @@ If you used a different username or password then you will need to update those 
 We will create the secret using a script later.
 
 <details><summary><b>How do these values get into the container ?</b></summary>
-<p>
+
 
 In the deployment (we'll see more on this later) the specification defines a section telling Kubernetes what environment variables to create in the pod, and where to get the values from. So for example in this case wherwe we're specifying the JDBC URL for the connection the depoloyment has an entry of the form
 
@@ -1323,7 +1336,9 @@ In the deployment (we'll see more on this later) the specification defines a sec
 
 Here we're telling Kubernetes to look in the `stockmanagerdb` secret for a data value named `url` and within the pod create an environment variable named `javax.sql.DataSource.stockmanagerDataSource.dataSource.url` with that value.
 
-</p></details>
+---
+
+</details>
 
 #### Creating the secrets
 
@@ -1436,7 +1451,7 @@ In the dashboard UI
 ### Config Maps
 
 <details><summary><b>Intro to Kubernetes Config Maps</b></summary>
-<p>
+
 
 Secrets are great for holding information that you don't want written visibly in your cluster, and you need to keep secret. But the problem with them is that if all the cluster management goes down then the secrets are lost and will need to be recreated. Note that some Kubernetes implementations (the docker / Kubernetes single node cluster on my laptop for example) do actually persist the secrets somewhere.
 
@@ -1448,10 +1463,9 @@ Creating a config map can be done in many ways, you can specify a set of key / v
 
 For example (**don't type this**) `$ kubectl create configmap sf-config-map --from-file=projectdir/conf`  would create a secret using the specified directory as a source. A "sub" entry in the config map is created for each file
 
-</p></details>
+---
 
-\---
-
+</details>
 
 We need to configure the stockmanager-config.yaml file. You need to do this even if you have done the Helidon labs as the set of configuration data downloaded into the OCI Cloud Shell is generic and does not include the customizations you made in the Helidon labs 
 
@@ -1467,9 +1481,6 @@ app:
   persistenceUnit: "stockmanagerJTA"
   department: "just_a_name"
 ```
-
-
-\---
 
 In the $HOME/helidon-kubernetes/base-kubernetes folder there is a script create-configmaps.sh. We have created this to help you setup the configuration maps (though you can of course do this by hand instead of creating a script.) If you run this script it will delete existing config maps and create an up to date config for us :
 
@@ -1542,7 +1553,7 @@ As we'll see later we can also update the text by modifying the file and re-crea
 It's been quite a few steps (many of which are one off and don't have to be repeated for each application we want to run in Kubernetes) but we're finally ready to create the deployments and actually run our Helidon microservices inside of Kubernetes!
 
 <details><summary><b>About the deploymets</b></summary>
-<p>
+
 
 A deployment is the microservice itself, this is a replica set containing one or more pods. The deployment itself handles things like rolling upgrades by manipulating the replica sets. A replica set is a group of pods, it will ensure that if a pod fails (the program stops working) that another will be started. It's possible to add and remove replicas form a pod, but the key thing to note is that all pods within a replica set are the same. Finally we have the pods. In most cases a pod will contain a single user container (based on the image you supply) and if the container exits then a new one will be started. Pods may also contain Kubernetes internal containers (for example to handle network redirections) and also pods can contain more than one user container, for example in the case of a web app a pod may have one container to operate the web app and another for a web server delivering the static content.
 
@@ -1643,11 +1654,9 @@ We define what each volume is based on, in this case we're saying that the volum
 
 To deploy the config file we would just use kubectl to apply it with a command that looks like  `$ kubectl apply -f mydeployment.yaml` ' (**example, don't type it**)
 
+---
 
-
-</p></details>
-
-\---
+</details>
 
 
 The script deploy.sh will apply all three deployment configuration files (storefront, stockmanager, zipkin) for us. 
@@ -1657,7 +1666,7 @@ The docker images refered to in the deployment yaml files are the pre-defined im
 If you did the Helidon and Docker labs and want to use your own images you create there you will have to expand this `Using your own images` and follow the steps it details.
 
 <details><summary><b>Using your own images</b></summary>
-<p>
+
 
 **IMPORTANT**
 The config files of the storefront and stockmanager refer to the location in the docker repo and any security keys that you used when setting up the labs. So you'll need to edit the deployment files to reflect the location of **your** images.
@@ -1730,9 +1739,9 @@ You will be using the details you gathered for the docker login.
 
 ---
 
-</p></details>
+</details>
 
-The `deploy.sh` script just does a sequence of commands to apply the deployment configuration files, for example `kubectl apply -f zipkin-deployment.yaml --record=true` You could of course issues these commands by hand if you liked, but we're using a script here to save typo probems, and also because it's good practice to scritp this type of thing, so tyou know **exactly** the command that was run - which can be useful if you need to **exactly** reproduce it !
+The `deploy.sh` script just does a sequence of commands to apply the deployment configuration files, for example `kubectl apply -f zipkin-deployment.yaml --record=true` You could of course issues these commands by hand if you liked, but we're using a script here to save typo probems, and also because it's good practice to scritp this type of thing, so you know **exactly** the command that was run - which can be useful if you need to **exactly** reproduce it (which of course in a production environment you would!)
 
 - Now run the deploy.sh script
   -  `bash deploy.sh`
@@ -1772,7 +1781,7 @@ The output includes the results of running the kubectl get all command. As it's 
 ---
 
 <details><summary><b>Analyzing the output</b></summary>
-<p>
+
 
 Let's look at the specific sections of the output, starting with the pods 
 
@@ -1834,10 +1843,9 @@ Is we look at the Kubernetes dashboard we will see similar information. There is
 
 ![The events relating to starting the storefront pod seen in the dashboard](images/storefront-pod-events-history.png)
 
-</p></details>
-
 ---
 
+</details>
 
 
 - Now lets look at the logs of the pods you have launched (replace the ID shown here with the exact ID of your pod)
@@ -1892,7 +1900,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
   - Wait a minute or so and retry the request
   
 <details><summary><b>How to find out what pods are connected to a service</b></summary>
-<p>
+
 
 The service definition maps onto the actual pods in the dpeloyments using the selector as seen above. To find out exactly what pods match the selectors for a service 
 
@@ -1901,10 +1909,13 @@ NAME           ENDPOINTS                           AGE
 stockmanager   10.244.0.68:8081,10.244.0.68:9081   26d
 storefront     10.244.1.75:9080,10.244.1.75:8080   26d
 zipkin         10.244.0.67:9411                    26d
-</p></details>
+
+---
+
+</details>
   
 <details><summary><b>If you only get `[]` not a list of items</b></summary>
-<p>
+
 Your database does not have the information that was uploaded in the Helidon part of the labs, or if you did the Helidon labs then you probabaly are using a different department name.
 
 All is not lost, you can create the information easily
@@ -1927,7 +1938,8 @@ All is not lost, you can create the information easily
 
 This will populate the database for you so you have some test data.
 
-</p>
+---
+
 </details>
 
 And to see what's happening when we made the request we can look into the pods logs. Here we use --tail=5 to limit the logs output to the last 5 lines of the storefront pod
@@ -2149,7 +2161,7 @@ This lab has only implemented basic security in that it's securing the REST API 
 
 There are other ways of securing the connection however, we've put together a [short document](SecuringTheRestEndpoint.md) on some of the other appriaches.
 
-Also when deploying in Kubernetes you should create roles and users for performing specific functions. The [Kubernetes documentation](https://kubernetes.io/docs/concepts/security/overview/) has more information on it's security.
+Also when deploying in Kubernetes you should create roles and users for performing specific functions, for ease of running the lab you have a role which does everything, but in a real environment that's a bad thing as it breaks the principle of least privilege. The [Kubernetes documentation](https://kubernetes.io/docs/concepts/security/overview/) has more information on it's security.
 
 
 

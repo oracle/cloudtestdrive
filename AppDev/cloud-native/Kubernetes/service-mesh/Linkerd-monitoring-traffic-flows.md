@@ -10,16 +10,15 @@
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
+
 
 This video is an introduction to the monitoring traffic with a Service mesh lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Using the service mesh to monitor traffic Introduction Video](https://img.youtube.com/vi/sLOM1FUcPwE/0.jpg)](https://youtu.be/sLOM1FUcPwE "Using the service mesh to monitor traffic introduction video")
 
-</p>
-</details>
-
 ---
+
+</details>
 
 ## Using the service mesh
 
@@ -37,7 +36,7 @@ Change to the directory for the service mesh scripts
 Once you are in the directory start the load generator
 
 <details><summary><b>If you need to remind yourself of the ingress controller IP address</b></summary>
-<p>
+
 
 - In the OCI Cloud Shell type :
   - `kubectl get services -n ingress-nginx`
@@ -51,7 +50,8 @@ ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.17.121   <non
 look at the `ingress-nginx-nginx-ingress-controller` row, IP address inthe `EXTERNAL-IP` column is the one you want, in this case that's `130.61.195.102` **but yours will vary**
 
 ---
-</p></details>
+
+</details>
 
 
 - In the OCI Cloud shell type (remember to replace `<external IP>` with the IP address of your ingress service
@@ -92,7 +92,7 @@ Unlike the Kubernetes dashboard the linkerd UI is very much about providing you 
 A key point here is that this UI is showing you the **current** load (well actually data collated and processed over the very recent history. To see historical data we can use the Grafana instance that the linkerd install process setup. We'll get to that later in the module, for now we're just going to look at the Linkerd UI
 
 <details><summary><b>What are the column headings?</b></summary>
-<p>
+
 
 Note, Clicking on a column name will cause the data in the table to be sorted by that column in ascending order, this is useful for example if you had a lot of namespaces to quickly see which ones had the most traffic or failures. Clicking on the column name a second time will change the sort order to be descending.
 
@@ -128,7 +128,7 @@ In the TCP Metrics section the columns are :
 
 ---
 
-</p></details>
+</details>
 
 #### Namespace specific load
 
@@ -141,7 +141,7 @@ The most obvious thing we see here it the data routing network at the top of the
 You can see the expected `storefront` to `stockmanager` connection, but also that **both** of them are sending data to the `zipkin` service. This is actually the tracing data. I included zipkin in the deployments with the linkerd-proxy so help show more detail in the graph, but in a production environment you may not want want to do this. 
 
 <details><summary><b>How to exclude a service from the service mesh ?</b></summary>
-<p>
+
 
 Once a namespace has the `linkerd.io/inject: enabled` annotation set then all deployments (and thus app pods) started in the namespace will be detected by the linkerd control plane and the linkerd-proxy (and init) containers will be automatically injected without you having to do anything. This allows you to easily use linkerd in situations where you're using a deployment tool (e.g. helm) and not have to modify the helm charts yourself. 
 
@@ -149,10 +149,10 @@ To prevent this from happening simply add the annotation `linkerd.io/inject: dis
 
 ---
 
-</p></details>
+</details>
 
 <details><summary><b>What about the database connection ?</b></summary>
-<p>
+
 
 There are a couple of points here. Firstly we are looking at HTTP data. It's quite probable that the connection which JDBC uses to actually talk to the database is not HTTP based, so we wouldn't expect it to show up in an HTTP report.
 
@@ -162,7 +162,7 @@ Of course if the database was implemented as a Kubernetes based service (perhaps
 
 ---
 
-</p></details>
+</details>
 
 
 We can see reporting details on a number of Kubernetes objects within the namespace in addition to the route diagram.
@@ -267,7 +267,7 @@ It's not a surprise, but we can now see the details of the control plane :-)
 In the control plane we can see the deployments, the green dots indicate all is well with the services, to the right of that we have a summary of the actual installation. Then there is the list of all of the namespaces currently part of the mesh (this is clickable in the same way as the namespaces list we saw at the start of this module.)
 
 <details><summary><b>What happens if the control plane fails ?</b></summary>
-<p>
+
 
 Obviously if the service mesh is managing all of the network traffic flowing in your cluster then there's a concern as to what will happen if the service mesh itself fails.
 
@@ -275,12 +275,15 @@ The details below cover Linkerd but the basic principles apply to all service me
 
 Firstly the control plane is itself running in Kuernetes, this means if the control plans services have problems then the containers will be restarted automatically by Kubernetes, equally upgrades can be done in a rolling manner.
 
-If the control plane does have a significant failure than the existing proxies will continue to operate, though they won't get any updates to their configuration until the control plane comes back. Of course any new pods will not get their configuration (though they should get the additional proxy containers configured in the pods)
+If the control plane does have a significant failure then existing proxies (i.e. for existing pods) will continue to operate, though they won't get any updates to their configuration until the control plane comes back. Of course any new pods will not get their configuration, so will not be able to communicate (though they should get the additional proxy containers configured in the pods for when the control plane becomes available.)
+
+In summary - what you have working will continue to work, but making changes will not be effective until the control plane restarts.
 
 There is more information on control plan failure in [the linkerd FAQ](https://linkerd.io/2/faq/#what-happens-to-linkerds-proxies-if-the-control-plane-is-down)
 
 ---
-</p></details>
+
+</details>
 
 ### Looking at the Grafana visualizations.
 

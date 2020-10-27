@@ -8,16 +8,16 @@
 ## 3b. Auto Scaling labs
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
+
 
 This video is an introduction to the Kubernetes auto scaling lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Kubernetes auto scaling lab Introduction Video](https://img.youtube.com/vi/awmLUpBwqig.jpg)](https://youtu.be/awmLUpBwqig "Kubernetes auto scaling lab introduction video")
 
-</p>
+---
+
 </details>
 
----
 We've seen how we can increase (or decrease) the number of pods underlying a service and that the service will automatically balance the load across the pods for us as the pod count changes.
 
 This is great, but it required manual intervention to change the number of pods, and that means we need to keep an eye on what's happening. Fortunately for us Kubernetes has support for automating this process based on rules we define.
@@ -123,16 +123,18 @@ proxymux-client-lr7ft                   1m           8Mi
 ```
 
 <details><summary><b>Kubernetes dashboard and the metrics-server</b></summary>
-<p>
+
 
 The metrics server provides information on the current use of resources in the cluster, the kubernetes dashboard has just been updated to version 2, at some point the plan is that the dashboard will be able to connect to the metrics-server and you will be able to see the pod CPU and memory usage in the dashboard
 
-</p></details>
+---
+
+</details>
 
 You can see in the output above that all of the pods are using very small amounts of CPU here, this is because we're not really putting any load on them. Let's run a script that will put load on the services to see what's happening.
 
 <details><summary><b>Getting the service IP address if you don't have it</b></summary>
-<p>
+
 If you haven't written it down, or have forgotten how to get the IP address of the ingress controller service you can do the following
 
 - In the OCI Cloud Shell type the following
@@ -145,8 +147,10 @@ ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.67.181    <no
 ```
 
 The Column EXTERNAL-IP gives you the IP address, in this case the IP address for the ingress-controller load balancer is `132.145.253.186` ** but this of course will be different in your environment !**
-</p></details>
+
 ---
+
+</details>
 
 In the helidon-kubernetes project in the cloud-native-kubernetes/auto-scaling folder run the following. You must to replace <external IP> here with the one for your ingress controller (see the expansion section above for details of how to get this if you've forgotten)
 
@@ -214,9 +218,9 @@ We can also get the current resource level for the container using kubectl and t
  ```
 
 <details><summary><b>Namespace level resource restrictions and implications</b></summary>
-<p>
 
-In kubernetes you can place restrictions on pods as we've seen above, however it's also possible to apply a quote on the namespace. To do this you create a ResourceQuota (there is one for each namespace) The ResourceQuota allows you to specify limits on CPU, memory storage and also it's possible to extend these with custom resources (e.g. GPU if your cluster hardware has these) Some resources can also be limited on the resource count e.g. number of configmaps.
+
+In kubernetes you can place restrictions on pods as we've seen above, however it's also possible to apply a quota on the namespace. All of the pods (or other resources) in the name space have to be within that limit. To do this you create a ResourceQuota (there is one for each namespace) The ResourceQuota allows you to specify limits on CPU, memory storage and also it's possible to extend these with custom resources (e.g. GPU if your cluster hardware has these) Some resources can also be limited on the resource count e.g. number of configmaps.
 
 If an action like adding an object would cause the limits applied to a namespace to be exceeded then the action will be rejected. This applies to auto scaling as well !
 
@@ -224,7 +228,7 @@ Importantly, if you have a ResourceQuota like CPU or memory usage applied to a n
 
 ---
 
-</p></details>
+</details>
 
 As an aside if you do the above for the zipkin pod you'll see that it has no resource constraint in place, so it can use as much CPU as the cluster allows for a pod by default
 

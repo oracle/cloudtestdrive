@@ -7,20 +7,21 @@
 ## Setting up for the Kubernetes section
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
+
 
 This video is an introduction to the Kubernetes labs setup - for people who have not done the Helidon and docker sections. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Kubernetes labs only setup Introduction Video](https://img.youtube.com/vi/o3KqqMqRxPk/0.jpg)](https://youtu.be/o3KqqMqRxPk "Kubernetes labs only setup introduction video")
 
-</p>
-</details>
-
 ---
+
+</details>
 
 ### Introduction
 
 This page explains the steps to set up your **Oracle Cloud Tenancy** so you are ready to run the **C. Helidon lab**. 
+
+If you have completed the Helidon labs then you will have already setup the compartment and ATP database, so you can return to the main lab.
 
 **If you are attending an instructor-led lab**, your instructor will detail steps you need to execute and which ones you can skip.
 

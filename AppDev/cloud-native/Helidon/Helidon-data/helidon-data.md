@@ -9,20 +9,17 @@
 ## 2. Helidon and Databases
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
+
 
 This video is an introduction to the Helidon database capabilities lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Helidon database capabilities lab Introduction Video](https://img.youtube.com/vi/-qNDJtjGfhQ/0.jpg)](https://youtu.be/-qNDJtjGfhQ "Helidon database capabilities lab introduction video")
 
-</p>
-</details>
-
 ---
 
-<details><summary><b>Introduction to Databases</b></summary>
-<p>
+</details>
 
+<details><summary><b>Introduction to Databases</b></summary>
 
 Unlike SPRING with the SPRINGData projects microprofile (and thus Helidon) does not currently have a built in mechanism for accessing databases. This is however something that is being looked at and hopefully at some point there will be a Microprofile standard for accessing data which Helidon can implement. At that point these labs will be updated to reflect the changes.
 
@@ -36,6 +33,10 @@ We are using the Hibernate implementation of the JPA standard to actually do the
 
 If you wanted to change the database instance or the JPA implementation in a deployment it's simply the case of getting the right driver classes and updating the configuration to use them.
 
+---
+
+</details>
+
 As mentioned in the helidon core labs we are only looking at the programming aspects here. We do not cover the Maven pom.xml file. If you want to use this code as a starting point for your own projects then we strongly recommend looking at the pom.xml file so you can see what dependencies are made available to the projects.
 
 **What's in the lab**
@@ -46,9 +47,6 @@ This lab does not attempt to go into all of the detail or JPA and JTA, the goal 
 
 If you want to understand JPA and JTA in a lot of detail there are courses available, and of course lots of books on the subject
 
-</p></details>
-
----
 
 
 
@@ -121,7 +119,7 @@ public class StockLevel {
 
 ---
 <details><summary><b>The annotations explained</b></summary>
-<p>
+
 
 `@Data`, `@NoArgsConstructor` and `@AllArgsConstructor` are Lombok annotations that tell Lombok to automatically create the constructors,getters and setters, toString, equals and hashcode. We could of course do this manually or use tooling in the IDE to generate them, but using Lombok means that the source code is less cluttered and also that if we change the class (say by adding new fields) all of the related methods and constructors update automatically.
 
@@ -138,10 +136,9 @@ On our fields in the class
 
 `@Column` defines the details of the column name, again it can be generated automatically, but this will force a specific name.
 
-</p></details>
-
 ---
 
+</details>
 
 
 - Open the file **StockId** in the same folder
@@ -164,7 +161,7 @@ public class StockId implements Serializable {
 ---
 
 <details><summary><b>The annotations explained</b></summary>
-<p>
+
 
 The Lombok annotations are the same
 
@@ -182,7 +179,7 @@ It is important to note that each item retrieved from or saved to the database u
 
 ---
 
-</p></details>
+</details>
 
 
 
@@ -254,7 +251,6 @@ public class StockResource {
 ```
 
 <details><summary><b>Java Imports</b></summary>
-<p>
 
 You may need to add the following import to the class
 
@@ -263,7 +259,8 @@ import javax.persistence.PersistenceContext;
 ```
 
 ---
-</p></details>
+
+</details>
 
 Note that the name of the persistence context is defined as a hard coded String, and there is no mechanism for it to be injected via a config property. However, this is not as restrictive as it seems, the name just refers to entries in the persistence.xml file, which itself uses configuration data from the Helidon configuration system, so if we do want to change the database details we can achieve that by modifying the config, and that can be done without source code modifications.
 
@@ -315,7 +312,7 @@ The Run configurations popup will now switch to the args tab
 
 ![](images/eclipse-run-configurations-new-config-args.png)
 
-- Copy the text below into a notepad or ASCII text editor you will need to make some changes to it before you use it. (Do **not** use a word processor like Microsoft Word or anything that makes the test "pretty" as they replaces the `-` characters automatically with a longer version - and that won't work) 
+- Copy the text below into a notepad or ASCII text editor you will need to make some changes to it before you use it. (Do **not** use a word processor like Microsoft Word or anything that makes the test "pretty" as they replace the `-` characters automatically with a non ASCII visually longer version, and that won't work) 
 
 Be careful not to add any newlines or extra spaces, tabs etc.
 
@@ -355,7 +352,7 @@ Using Helidon to create our PersistenceContext will also ensure that the entity 
 ---
 
 <details><summary><b>Error on app.department?</b></summary>
-<p>
+
 
 If it fails to run like this
 
@@ -372,11 +369,9 @@ Exception in thread "main" org.jboss.weld.exceptions.DeploymentException: Reques
 
 You haven't setup the stockmanager-config.yaml file with the department value. Go do that, restart the program and try again.
 
-</p>
+---
 
 </details>
-
----
 
 The result should show the application listening on http://localhost:8081
 
@@ -406,17 +401,21 @@ There should be just `[]` returned, if there are any item details it means that 
 
 
 <details><summary><b>What with the SQL in the console output ?</b></summary>
-<p>
+
 
 You may have seen what looks like SQL in the output. The library we are using here to actually handle the database connection is a very commonly used package called Hibernate. One of it's nice features is that it can be set to create the database tables for you if needed. 
 
 You're probably running this against a nice new database that doesn't have the required tables in it yet, so Hibernate has looked at the classes it's been told to manage (These are specified in the persistence.xml file) and has created the tables for us. It can also modify the database scheme to match the classes if the classes have been changed.
 
 Of course in a production environment you wouldn't want the database changing under you as the classes are updated, so you'd turn that off (the `hibernate.hbm2ddl.auto` setting) but for a lab it makes things a lot easier for us. 
-</p></details>
+
+---
+
+</details>
+
 - Let's try to create some stock items - **error expected**:
 
-  -  `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/pins/5000`
+  -  `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pins/5000`
 
 Note there is a few seconds delay when you try this as the code does the database connection on demand ... and then you get an error as expected: 
 
@@ -441,7 +440,7 @@ Hibernate:
     where
         stocklevel0_.departmentName=? 
         and stocklevel0_.itemName=?
-2020.01.05 18:54:47 INFO com.oracle.labs.helidon.stockmanager.resources.StockResource Thread[helidon-1,5,server]: Creating StockLevel(stockId=StockId(departmentName=timg, itemName=pins), itemCount=5000)
+2020.01.05 18:54:47 INFO com.oracle.labs.helidon.stockmanager.resources.StockResource Thread[helidon-1,5,server]: Creating StockLevel(stockId=StockId(departmentName=timg, itemName=Pins), itemCount=5000)
 javax.persistence.TransactionRequiredException
 	at io.helidon.integrations.cdi.jpa.NonTransactionalEntityManager.persist(NonTransactionalEntityManager.java:92)
 ...
@@ -468,7 +467,6 @@ public class StockResource {
 ```
 
 <details><summary><b>Java Imports</b></summary>
-<p>
 
 You may need to add the following import to the class
 
@@ -477,13 +475,12 @@ import javax.transaction.Transactional;
 ```
 
 ---
-</p></details>
+
+</details>
 
 This means that every operation in the class will be wrapped in a transaction automatically, If the method returns normally (so no exceptions thrown) then the transaction will be automatically committed, but if the transaction returned abnormally (e.g. an exception was thrown) then the transaction will be rolled back.
 
 This will apply if there were multiple entity managers or database modification actions operating within the method. So if the method modifies data in several databases then they would all succeed of fail. This how Helidon helps ensure that the database ACID (Atomic, Consistent, Isolated and Durable) semantics are maintained 
-
-
 
 ---
 
@@ -571,7 +568,7 @@ Date: Sun, 5 Jan 2020 19:01:38 GMT
 connection: keep-alive
 content-length: 36
 
-{"itemCount":5000,"itemName":"pins"}
+{"itemCount":5000,"itemName":"Pins"}
 ```
 
 
