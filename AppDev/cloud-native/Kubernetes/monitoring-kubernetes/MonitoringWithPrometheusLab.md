@@ -8,16 +8,15 @@
 ## Optional 1a. Monitoring with Prometheus
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
+
 
 This video is an introduction to the Monitoring microservcies with Prometheus lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Gathering metrics with Prometheus lab Introduction Video](https://img.youtube.com/vi/qnDzZ2eOy0E/0.jpg)](https://youtu.be/qnDzZ2eOy0E "Gathering metrics with Prometheus lab introduction video")
 
-</p>
-</details>
-
 ---
+
+</details>
 
 ### **Introduction**
 
@@ -56,7 +55,7 @@ To separate the monitoring services from the  other services we're going to put 
 ### Prometheus
 
 <details><summary><b>Older versions of Kubernetes than 1.17.9</b></summary>
-<p>
+
 We assume you are using Kubernetes 1.17.9 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the version of the prometheus helm charts (11.12.1 at the time of writing) were found to work. If you were using an older version of Kubernetes you may need to specify a particular version of the helm chart as follows :
 
 Kubernetes 1.16.9 Promteheus helm chart 11.6.8 worked for us
@@ -67,9 +66,9 @@ Kubernetes 1.14.8 Prometheus helm chart 9.7.1 worked for us
 
 To specify a specific older version use the version keyword in your help command, e.g. `--version 9.1.0`
 
-</p></details>
+---
 
-\---
+</details>
 
 Installing Prometheus is simple, we just use helm.
 
@@ -471,7 +470,7 @@ The graph is also a lot more interesting, especially if we enabled the stacked m
 
 ![prometheus-list-stock-timer-quantile-graph](images/prometheus-list-stock-timer-quantile-graph.png)
 
-It's not possible to show in a static window but as you move your mouse over the legend the selected data is highlighted, and if you click on a line in the legend only that data is displayed.
+It's not possible to show in a static screen grab but in your browser as you move your mouse over the legend the selected data is highlighted, and if you click on a line in the legend only that data is displayed.
 
 Prometheus has a number of mathematical functions we can apply to the graphs it produces, these are perhaps not so much use if there's only a single pod servicing requests, but if there are multiple pods all generating the same statistics (perhaps because of a replica set providing multiple pods to a service for horizontal scaling) then when you gather information such as call rates (the  `application_listAllStockMeter_one_min_rate_per_second` metric) instead of just generating and displaying the data per pod you could also generate data such as `sum(application_listAllStockMeter_one_min_rate_per_second)` which would tell you the total number of requests across ***all*** the pods providing the service.
 

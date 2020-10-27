@@ -9,16 +9,15 @@
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
+
 
 This video is an introduction to the Kubernetes health, readiness and liveness lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Kubernetes health, readiness and liveness lab Introduction Video](https://img.youtube.com/vi/z1dKR94TQOE/0.jpg)](https://youtu.be/z1dKR94TQOE "Kubernetes health, readiness and liveness lab introduction video")
 
-</p>
-</details>
-
 ---
+
+</details>
 
 ### **Introduction**
 
@@ -34,7 +33,7 @@ As we've seen a service in Kubernetes is delivered by programs running in contai
 
 
 <details><summary><b>Getting the service IP address if you don't have it</b></summary>
-<p>
+
 If you haven't written it down, or have forgotten how to get the IP address of the ingress controller service you can do the following
 
 - In the OCI Cloud Shell type the following
@@ -47,7 +46,10 @@ ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.67.181    <no
 ```
 
 The Column EXTERNAL-IP gives you the IP address, in this case the IP address for the ingress-controller load balancer is `132.145.253.186` ** but this of course will be different in your environment !**
-</p></details>
+
+---
+
+</details>
 
 First let's make sure that the service is running, (replace <External IP> with the external ip address of the ingress)
 
@@ -93,9 +95,12 @@ root@storefront-65bd698bb4-cq26l:/# command terminated with exit code 137
 ```
 
 <details><summary><b>How do you know it's process 1 ?</b></summary>
-<p>
+
 To be honest this is a bit of inside knowledge, docker images run the command they are given as process 1. The GraalVM image is pretty restricted in the commands it contains and unfortunately does not include the `ps` command, so sadly we can't check this.
-</p></details>
+
+---
+
+</details>
 
 Within a second or two of the process being killed the connection to the container in the pod is terminated as the container exits.
 

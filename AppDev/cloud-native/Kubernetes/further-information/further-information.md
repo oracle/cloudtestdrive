@@ -13,7 +13,7 @@ helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 ## Ingress
 For more information on [Nginx Ingress](https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-ingress-guide-nginx-example.html) (this also looks in more detail at the benefits / disadvantages of using an Ingress vs Load Balancer)
 
-If you don't want to use the nginx there is a [list of other controllers.](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) Note that different controllers may well use different annotations to the ones we've used in these labs, so or the Ingress rules your version of the yaml files will probably need to be modified.
+If you don't want to use the nginx there is a [list of other controllers.](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) Note that different controllers may well use different annotations to the ones we've used in these labs, so for the Ingress rules your version of the yaml files will probably need to be modified.
 
 
 

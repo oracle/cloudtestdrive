@@ -8,21 +8,19 @@
 ## Optional 2a. Log Capture for processing
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
 
 This video is an introduction to the Log Capture for processing labs Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Kubernetes Log capture for processing video](https://img.youtube.com/vi/QjvhjL0hxLE/0.jpg)](https://youtu.be/QjvhjL0hxLE "Kubernetes log capture for procesing video")
 
-</p>
-</details>
-
 ---
+
+</details>
 
 ### Introduction
 
 <details><summary><b>The problem with log data in a distributed cloud native environment</b></summary>
-<p>
+
 
 Many applications generate log data, in the case of Java programs this is usually achieved by a logging library, in the case of the Helidon parts of the labs we have used the Simple Logging Facade (The @slf4j Lombok annotation in the code) which allows us to easily switch the actuall logging engine being used. Other languages also have their own logging frameworks, for example in Ruby there is the Logger class, and in there are open source libraries like log4c.
 
@@ -42,7 +40,7 @@ This is good, but with in a distributed architecture a single request may (almos
 
 ---
 
-</p></details>
+</details>
 
 To process log data in a consistent manner we need to get all of the data into one place. We're going to use [fluentd](https://www.fluentd.org/) to capture the data and send it to  an Elastic search instance deployed in our Kubernetes cluster in the initial example below, but there are many other options.
 
@@ -145,7 +143,7 @@ ingress.networking.k8s.io/elasticsearch created
 ```
 
 <details><summary><b>If you need to remind yourself of the ingress controller IP address</b></summary>
-<p>
+
 
 - In the OCI Cloud Shell type :
   - `kubectl get services -n ingress-nginx`
@@ -158,7 +156,9 @@ ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.17.121   <non
 
 look at the `ingress-nginx-nginx-ingress-controller` row, IP address inthe `EXTERNAL-IP` column is the one you want, in this case that's `130.61.195.102` **but yours will vary**
 
-</p></details>
+---
+
+</details>
 
 - In a web browser go to the web page `https://<External IP>/elastic/_cat`  (remember the one below is **my** ip address **you need to use yours**)
 
@@ -189,14 +189,14 @@ So far we've just asked Kubernetes to create deployments / replica sets / pods a
 Well the daemonset in Kubernetes allows the definition of a pod that will run on every node in the cluster, we just have to define the daemonset and the template of the pod that's going to do the work and Kubernetes will deal with the rest, ensuring that even if nodes are added or removed that a pod matching the daemonset definition is running on the node.
 
 <details><summary><b>Other benefits of using daemon sets</b></summary>
-<p>
+
 The daemon set is a separate pod, running with it's own set of resources, thus while it does consume resources at the node and cluster level it doesn't impact the performance of the pods it's extracting log data for.
 
 Additionally the daemon set can look at the log data for all of the pods in the node, if we did the logging within a pod (say by replacing the log processor or your micro-service) then you'd have to modify every pod, but by logging it to standard out and using a deamonset you can capture the data of all of the logs at the same time, and only need to make changes in a single place.
 
 ---
 
-</p></details>
+</details>
 
 Why run the data gathering in a pod ? Well why not ? While we could run the data capture process by hand manually on each node then we'd have to worry about stopping and starting the service, restarting if it fails, managing and updating configuration files and so on. If we just run it in a Kubernetes pod we can let Kuberneties do all of it's magic for us and we can focus on defining the capture process, and leave running it to Kubernetes ! 
 
@@ -253,7 +253,7 @@ NAME        STATUS   ROLES   AGE   VERSION
 But it's easier to see what's happening using the Kubernetes dashboard in this case.
 
 <details><summary><b>If you've forgotten your Kubernetes dashboard details</b></summary>
-<p>
+
 
 You can get the IP address being used for the dashboard by looking at the services list for the kube-system namespace
 
@@ -268,7 +268,9 @@ kubernetes-dashboard   LoadBalancer   10.96.161.29   132.145.231.23   443:30738/
 
 The address is in the EXTERNAL-IP column, in this case it's 132.145.231.23 **but yours will be different**
 
-</p></details>
+---
+
+</details>
 
 Open the Kubernetes dashboard
 
@@ -285,7 +287,7 @@ We have had reports that some versions of Chrome will not allow you to override 
 If you are presented with the login page use the Token option and the dashboard user token you got previously
 
 <details><summary><b>If you've forgotten your dashboard user token</b></summary>
-<p>
+
 - Visualize the token of the newly created user:
   - ```
     kubectl -n kube-system describe secret `kubectl -n kube-system get secret | grep dashboard-user | awk '{print $1}'`
@@ -309,7 +311,10 @@ ca.crt:     1025 bytes
 ```
 - Copy the contents of the token (in this case the `eyJh........W5iA` text, but it *will* vary in your environment.) 
 - Save it in a plain text editor on your laptop for easy use later
-</p></details>
+
+---
+
+</details>
 
 - Click on the `nodes` option in the `cluster` section of the UI menu on the left
 

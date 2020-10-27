@@ -10,16 +10,15 @@
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
+
 
 This video is an introduction to the Service mesh traffic splits lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Using the service mesh traffic split capability Introduction Video](https://img.youtube.com/vi/ghANv-uM7Ec/0.jpg)](https://youtu.be/ghANv-uM7Ec "Using the service mesh traffic split capability introduction video")
 
-</p>
-</details>
-
 ---
+
+</details>
 
 ## What is a a traffic split, and what can I do with it
 
@@ -43,11 +42,13 @@ This module was written using the information in the [Linkerd fault injection pa
 A canary deployment is a method of doing a small trial deployment, operating within the overall production infrastructure, and if the trial works you can expand it, if the trial deployment fails then it can be removed.
 
 <details><summary><b>Why the term canary ?</b></summary>
-<p>
 
-Historically canaries were used in mines as they were far more sensitive to dangerous atmospheric contaminants than humans, and mines frequently had pockets of carbon monoxide,  and other dangerous gases. The miners would carry a canary in a cage (or a [canary resucitator](https://blog.scienceandindustrymuseum.org.uk/canary-resuscitator/)) with them, sometimes at the end of a long pole, and the canary went first, and if it remained well then in went the humans. If however the canary became unwell then the humans knew it was not safe for them to proceed, and backed out (one hopes taking the canary with them!)
 
-</p></details>
+Historically canaries were used in underground mines as they were far more sensitive to dangerous atmospheric contaminants than humans, and mines frequently had pockets of carbon monoxide,  and other dangerous gases. The miners would carry a canary in a cage (or a [canary resucitator](https://blog.scienceandindustrymuseum.org.uk/canary-resuscitator/)) with them, sometimes at the end of a long pole carried before them, so the canary went first. If the canary remained well then in went the humans. If however the canary became unwell then the humans knew it was not safe for them to proceed, and exited the area (one hopes taking the canary with them!)
+
+---
+
+</details>
 
 ### What are we going to do ?
 
@@ -259,7 +260,7 @@ spec:
     weight: 0
 ```
 <details><summary><b>How are the weights applied to the split ?</b></summary>
-<p>
+
 
 In this example we have applied a weight of 90 to the v0.0.1 part of the split, and zero to the second. The numbers are not percentages, and don't even need to add up to 100.
 
@@ -271,7 +272,8 @@ By having a weight of 0 on the 0.0.2 split it means that no requests will be sen
 
 ---
 
-</p></details>
+</details>
+
 Let's apply the traffic split
 
 - In the OCI Cloud shell type
@@ -319,13 +321,17 @@ After waiting a short while for the new deployment to start we can check that th
 Note that it may take a short while for the v0.0.2 stockmanager to start, so you may get a 502 Bad Gateway or a delay while the stockmanager does it's lazy initialization and the database connection is established.
 
 <details><summary><b>Why won't I get a timeout ?</b></summary>
-<p>
+
 
 The `@Timeout` annotation is actually on the storefront class, it will trigger if the stockmanager takes a while to respond. The Ingress rule on the `/stockmanagerv0-0-2/stocklevel` path goes direct to the stockmanager service, this does not have any timeouts set.
 
-</p></details>
+---
+
+</details>
   
-Assuming you don;t have a bade gateway You will **either** get back some real data
+Assuming you don't have a bad gateway :
+
+You will **either** get back some real data
 
 ```
 HTTP/2 200 
@@ -370,7 +376,7 @@ We can use the Linkerd web UI to see how the traffic is working
 If needed accept that it's a self signed certificate and login as `admin` with password you set when installing linkerd
 
 <details><summary><b>If you need to remind yourself of your ingress controller external IP address</b></summary>
-<p>
+
 
 - In the OCI Cloud Shell type :
   - `kubectl get services -n ingress-nginx`
@@ -384,7 +390,8 @@ ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.17.121   <non
 look at the `ingress-nginx-nginx-ingress-controller` row, IP address in the `EXTERNAL-IP` column is the one you want, in this case that's `130.61.195.102` **but yours will vary**
 
 ---
-</p></details>
+
+</details>
 
 
 Locate your namespace on the list, you'll see that it's running fine with 100% success rate
@@ -540,7 +547,7 @@ service "stockmanagerv0-0-1" deleted
 ```
 
 <details><summary><b>Not removing the version on the original deployment ?</b></summary>
-<p>
+
 
 Well spotted ! We're going to leave the version in place on the original service. There are a few reasons for this.
 
@@ -549,7 +556,10 @@ Well spotted ! We're going to leave the version in place on the original service
 2/ It's actually a good idea to specify version information as standard. 
 
 3/ It lets you quickly and easily see which version you're dealing with, and also makes it easier to implement traffic splits as the version info is already in place.
-</p></details>
+
+---
+
+</details>
 
 ## Using a traffic split to test resilience (A bit of Chaos)
 
@@ -780,7 +790,7 @@ Unless something very unexpected from the point of view of the lab writer has ha
 And you have not had any HTTP errors, this is a pretty good indicator that our service is continuing to work, out little experiment in chaos engineering has given us useful information !
 
 <details><summary><b>What's happening in the pod itself ?</b></summary>
-<p>
+
 
 Wile the service itself is still delivering results fine it's possible that there are useful bit's of information in the logs that might help improve reliability.
 
@@ -853,7 +863,7 @@ In this case we can find (within a lot of other stuff) the error log details whe
 
 ---
 
-</p></details>
+</details>
 
 We've seen that the traffic split has let us inject a fault so that the zipkin service is not available, our clients have continued as expected, but what would happens if we inject a fault such that the stockmanager itself becomes unavailable ?
 

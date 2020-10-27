@@ -1,22 +1,22 @@
 {
     "tutorials": [
         {
-          "title": "Introduction and overview of the steps",
+          "title": "Helidon Labs introduction",
           "filename":"../Helidon-labs.md"
         },
         {
-          "title": "Preparing your Tenancy for the lab",
-          "filename":"../Helidon-core/helidon-core.md"
+          "title": "Setup for the Helidon Labs",
+          "filename":"../setup.md"
         },
         {
           "title": "Part 1: Core Helidon ",
           "filename": "../Helidon-core/helidon-core.md"
         },
-		    {
+		{
           "title": "Part 2: Database and Helidon",
           "filename": "../Helidon-data/helidon-data.md"
         },
-		    {
+		{
           "title": "Part 3: Communicating between microservices with Helidon",
           "filename": "../Helidon-to-Other-Microservices/helidon-to-other-microservices.md"
         },
@@ -31,8 +31,16 @@
         {
           "title": "Optional Labs"
         },
+		{
+          "title": "Optional 2a: Accessing the request context",
+          "filename": "../Helidon-data/accesing-the-context.md"
+        },
+		{
+          "title": "Optional 3a: Communicating from non Helidon clients",
+          "filename": "../Helidon-to-Other-Microservices/non-helidon-rest-clients.md"
+        },
         {
-          "title": "Optional 1: Self documenting API support in Helidon",
+          "title": "Optional 6: Self documenting API support in Helidon",
           "filename": "../Helidon-open-api/helidon-open-api.md"
         }
     ]

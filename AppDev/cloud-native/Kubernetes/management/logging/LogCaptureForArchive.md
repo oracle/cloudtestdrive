@@ -9,21 +9,20 @@
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
+
 
 This video is an introduction to the Log Capture for archive labs Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Kubernetes Log capture for archive video](https://img.youtube.com/vi/lqsq1RtsV28/0.jpg)](https://youtu.be/lqsq1RtsV28 "Kubernetes log capture for archive video")
 
-</p>
-</details>
-
 ---
+
+</details>
 
 ### Introduction
 
 <details><summary><b>The problem with log data in a distributed cloud native environment</b></summary>
-<p>
+
 
 Many applications generate log data, in the case of Java programs this is usually achieved by a logging library, in the case of the Helidon parts of the labs we have used the Simple Logging Facade (The @slf4j Lombok annotation in the code) which allows us to easily switch the actuall logging engine being used. Other languages also have their own logging frameworks, for example in Ruby there is the Logger class, and in there are open source libraries like log4c.
 
@@ -43,7 +42,7 @@ This is good, but with in a distributed architecture a single request may (almos
 
 ---
 
-</p></details>
+</details>
 
 
 Sometimes you want to save log data in the longer term, possibly for legal reasons. While the initial part of the process is similar the approach used for capturing log data for processing the storage structure needed for long term storage of data is usually very different from that needed for the analysis of the data. This is especially true if the chance is high that the data will not ever be used ("Write Only Data") where you need to meet the obligations to store it, but are focused on the costs or saving and storing, and the cost of a very occasional retrieval is less important. For example it may be considered very reasonable to not index log data that is in being held for long term storage, but only group it in large chunks, say one chunk per day) understanding that if data is needed that the entire days data may need to be processed, but accepting the cost of doing that as it's less than the overhead of creating and maintaining an index with a higher resolution.
@@ -76,14 +75,14 @@ So far we've just asked Kubernetes to create deployments / replica sets / pods a
 Well the daemonset in Kubernetes allows the definition of a pod that will run on every node in the cluster, we just have to define the daemonset and the template of the pod that's going to do the work and Kubernetes will deal with the rest, ensuring that even if nodes are added or removed that a pod matching the daemonset definition is running on the node.
 
 <details><summary><b>Other benefits of using daemon sets</b></summary>
-<p>
+
 The daemon set is a separate pod, running with it's own set of resources, thus while it does consume resources at the node and cluster level it doesn't impact the performance of the pods it's extracting log data for.
 
 Additionally the daemon set can look at the log data for all of the pods in the node, if we did the logging within a pod (say by replacing the log processor or your micro-service) then you'd have to modify every pod, but by logging it to standard out and using a deamonset you can capture the data of all of the logs at the same time, and only need to make changes in a single place.
 
 ---
 
-</p></details>
+</details>
 
 Why run the data gathering in a pod ? Well why not ? While we could run the data capture process by hand manually on each node then we'd have to worry about stopping and starting the service, restarting if it fails, managing and updating configuration files and so on. If we just run it in a Kubernetes pod we can let Kubernetes do all of it's magic for us and we can focus on defining the capture process, and leave running it to Kubernetes ! 
 
@@ -210,7 +209,7 @@ You have now gathered the information we need to write data into the Objact Stor
 You can let the S3 integration just create the storage bucket, but the scenario we are looking at here is for the long term retention of the log data for occasional access, in that case you want the cheapest possible storage, and for that you need the archive storage tier for the storage bucket. This is not the default tier so it needs to be set when the Oracle Object Storage Service bucket is created. The archive tier does mean that there is a delay to retrieve the data (Archive after all is about long term efficient storage of the data) so if you were planning on doing something with the data directly (For example uploading into the Oracle log analytics service) as you'd be transferring them once they were uploaded to the storage service, and probably only retaining them for a short while after that you would use the standard tier.
 
 <details><summary><b>What's the difference between Standard and Archive tiers?</b></summary>
-<p>
+
 
 The `Standard` storage tier is designed for immediate access, the `Archive` tier is designed for infrequent access, may have a time delay (up to an hour) between requesting and being able to access the data. There is a significant cost difference between the two storage tiers, at the time of writing this document (early May 2020)  for the Object storage service data in the archive tier was 1/10th the cost of standard tier in terms of GB data stored / month.
 
@@ -220,7 +219,7 @@ In both cases the data is encrypted at rest, and is protected via the use of mul
 
 ---
 
-</p></details>
+</details>
 
 Here we're using the archive tier at that's the most cost effective for long term data retention, but if you were writing the data to storage on a temporary basis (maybe you are using [Oracle Log Analytics](https://www.oracle.com/cloud/systems-management/log-analytics.html) and have configured it to load the data from storage once a day) then there is no point in using the archive tier as don't want the delay to retrieve the data and as you'd be wiping them every day once they were uploaded you would use the standard tier.
 
@@ -274,7 +273,7 @@ The `fluentd-s3-configmap.yaml` contains a config map with the specific settings
 The `fluentd-daemonset-oss-rbac.yaml` configures the cluster role, service account, binding between the two and also the details of the daemonset that gathers the log data and writes it to the S3 compatible storage service. The daemon set uses the values that are set in the `fluentd-s3-configmap.yaml` for it's environment variables (look at the file for the details of how the environment variables are defined in terms of config map entries.) This means we won't need to change the daemon set configuration / it's yaml file if we want to change those settings.
 
 <details><summary><b>How does Kubernetes know where to get the environment variable values ?</b></summary>
-<p>
+
 
 The container template in the daemon set description has a section that allows the definition of environment variables. These can come from many different sources, including constant values, config maps and secrets.
 
@@ -297,7 +296,8 @@ in the `env:` section we see the name of the environment variable (`SWITCH_LOG_F
 
 ---
 
-</p></details>
+</details>
+
 You will need to edit the `fluentd-s3-configmap.yaml` file and update it with the values you gathered earlier. Remember to keep the values in double quotes.
 
 ACCESS_KEY - This is the OCI access key
@@ -330,14 +330,14 @@ data:
 ```
 
 <details><summary><b>What's the SWITCH_LOG_FILE_INTERVAL for?</b></summary>
-<p>
+
 The SWITCH_LOG_FILE_INTERVAL tells fluentd how often to switch to a new output file.
 
 For lab purposes we have setup the configuration with a 60 second cycle on switching log files. This is to enable us to see output in a reasonable time (the files don't show up in the object storage until they have been written and closed, then the archiving process completed. In a normal situation this would be set to a much higher value, say 3600 seconds, so the log files would switch once an hour (so if you use this config file in a production environment remember to update the SWITCH_LOG_FILE_INTERVAL value to reflect your needs.)
 
 ---
 
-</p></details>
+</details>
 
 ### Actually starting the log capture
 
@@ -350,7 +350,7 @@ First we will create the `fluentd-config-to-ooss` config map, this is in the `fl
 configmap/fluentd-config-to-ooss configured
 ```
 <details><summary><b>Why didn't I need to specify a namespace ?</b></summary>
-<p>
+
 
 The namespace can be specified on the kubectl command line, in which case it would have looked like `kubectl apply -f fluentd-to-ooss-configmap.yaml --namespace logging` But to make the lab a little easier (and to reduce typing) I specified the namespace in the yaml file in the meta data section 
 
@@ -362,8 +362,9 @@ metadata:
   namespace: logging
 data:
 ```
+---
 
-</p></details>
+</details>
 
 Now let's apply the configuration settings specific to our environment we just setup. These are the settings used to setup the environment variables inside the the daemonset configuration
 
@@ -411,12 +412,12 @@ fluentd-to-ooss-frkrp                   1/1     Running            0          55
 In this case I had left the fluentd and elastic search instances running from the log capture for processing module running. This is why you can see a total of 6 fluentd pods running, three (fluentd-to-es) writing to Elastic Search (whcih itself has a number of pods) and three (fluentd-to-ooss) writing to Oracle Object Storage Service. If you have not done the log capture for processing lab (or tidies up after it) then you should only see three fluend based pods.
 
 <details><summary><b>What's with the CrashLoopBackOff STATUS ?</b></summary>
-<p>
+
 You may occasionally see a fluentd pod with status CrashLoopBackOff, this is usually due to the pod having problems getting log data, it seems there is a problem in fluentd where it sometimes crashes on reading specific kubernetes log files. Kubernetes of course recognises the failure and restarts the pod for us automatically, and fluentd will recover.
 
 ---
 
-</p></details>
+</details>
 
 
 Let's look at the logs from one of these pods, in this case I'm going to use `fluentd-to-ooss-fgx4s` but of course the pod name you have will be different.
@@ -489,7 +490,7 @@ Lots more output
 The log data shows is the sources whish fluentd is scanning looking for the log data, The match section is the contents of the config map we specified in `fluentd-to-ooss-configmap.yaml` but nots that there are values for items like `s3-bucket` which reflect the settings we provided in the `fluentd-s3-configmap.yaml` file of our environment specific settings.
 
 <details><summary><b>If the log is reporting an unexpected error</b></summary>
-<p>
+
 
 You may find that the log is reporitng an error similar to this :
 
@@ -511,7 +512,8 @@ To fix this get your tenancy admin to create a group, say COMPATSTORAGE, add you
 It may be that the bucket name is already in use (though this should have generated an error when you created the bucket earlier (OCI does not allow duplicate bucket names in the tenancy, even in different compartments.)
 
 ---
-</p></details>
+
+</details>
 
 Do some requests to the storefront service which will generate log data
 
@@ -611,7 +613,7 @@ This may take a short time as there is quite a lot of stuff to be stopped and re
 Note that this will **not** reclaim the Object storage space used as the Object storage service is outside the Kubernetes environment. 
 
 <details><summary><b>To reclaim the Object storage capacity used</b></summary>
-<p>
+
 
 If you want to reclaim the object storage capacity you've used for the log data (and you have looked at the restored data, or do not want to look at it) then follow these instructions.
 
@@ -655,7 +657,8 @@ Once the bucket has been successfully deleted you will be returned to the list o
 Of course there is also a REST API to allow you to automate this process if you wanted in a production environment.
 
 ---
-</p></details>
+
+</details>
 
 ### Summary
 

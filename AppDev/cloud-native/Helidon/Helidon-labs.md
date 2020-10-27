@@ -17,19 +17,19 @@ Please follow [the setup instructions.](setup/setup.md) When you've completed th
 ### **Introduction**
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
+
 
 This video is an introduction to the Helidon labs. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Helidon labs Introduction Video](https://img.youtube.com/vi/182KYHSrf5A/0.jpg)](https://youtu.be/182KYHSrf5A "Helidon labs introduction video")
 
-</p>
+
 </details>
 
 ---
 
 <details><summary><b>What is Helidon?</b></summary>
-<p>
+
 
 [Helidon](https://helidon.io) is an open source implementation of [Eclipse Microprofile](https://microprofile.io/) from Oracle. Through these labs we talk about Helidon, but it's key to remember that the work we're doing is applicable to *any* microprofile implementation, of which Helidon is one.
 
@@ -41,14 +41,14 @@ This lab aims to introduce you to the major capabilities provided by the Helidon
 
 We are using Helidon MP, this is an annotation based framework, where to utilize it you just place annotations (e.g. `@Path("/mypath"`) on a class or method. There is no need to modify the code beyond that. Helidon also comes in a variety called Helidon SE. The SE framework however requires you to actually make the Java method calls yourself, so you'd have to change your code. Helidon MP actually converts the annotations at runtime into calls to the Helidon SE Java API, so there is no need to change your logic. Helidon MP is also similar in style to frameworks like __Spring__ which are also annotation based, so we've chosen the MP version for these labs.
 
-</p></details>
+</details>
 
 
 
 ---
 
 <details><summary><b>Requirements for this Lab</b></summary>
-<p>
+
 
 We have assumed you understand the basic concepts of what a REST service is.
 
@@ -58,39 +58,39 @@ The labs were developed using the Eclipse IDE. Again you don't need to be an exp
 
 We do not expect you to know the details of the Maven build / packaging tool. In particular we are **not** going to be getting you to edit the pom.xml file (the Maven configuration file) for these projects. If you are familiar with Maven and the pom.xml file please feel free to explore it, or copy it for your own projects as a start point, but please do not make any changes to it in this lab. The only exception to this is in some of the optional modules, in which case we will be clear on the changes you need to make.
 
-</p></details>
+</details>
 
 ---
 
 
 <details><summary><b>How to do the coding in the labs</b></summary>
-<p>
+
 
 Most of the labs explain what a specific Helidon features is and why it's useful, then there is a coding example with explanation of the feature. The coding example will usually tell you to modify a particular class (usually by providing you with the fully qualified name of the class, for example `com.oracle.labs.helidon.stockmanager.Main`) and make a specific change to a certain method (e.g. the `buildConfig` method or the constructor.) 
 
 Occasionally it will tell you to just modify the class itself, for example adding an annotation on the class declaration. We try to be clear what the project is for each set of labs, but expect you to be able to use eclipse to open the right .java file (which is referred to but it's fully qualified class name to you can navigate to it) and find the method.
 
-</p></details>
+</details>
 
 
 
 ---
 
 <details><summary><b>Java Imports</b></summary>
-<p>
+
 
 We have tried to ensure that the imports you need are already in the source code, however in some cases when we create the initial state or the code for you Eclipse may have removed imports that are not used in the initial state but you will need to use.
 
 If you have problems with missing classes and imports we have added expanding sections for you detailing the imports you will need to add. Note that in some sections where we are re-using something that's already imported we will not tell you to add a duplicate import.
 
-</p></details>
+</details>
 
 
 
 ---
 
 <details><summary><b>Testing your service as you go</b></summary>
-<p>
+
 
 These labs were designed so that at each stage as you add functionality you will have a working program. To test that you need to make REST calls. 
 
@@ -114,14 +114,14 @@ When you make REST calls in the examples we show the the curl command line call 
 
 If you want to use other REST client tools available to you feel free to use them as long as you are skilled in doing so, but be aware that the tutors may not be able to assist you with those tools. 
 
-</p></details>
+</details>
 
 ---
 
 
 
 <details><summary><b>The Monolith application we will decompose</b></summary>
-<p>
+
 The labs follow the migration of a (admittedly) simple Java program to being a couple of separate microservices. The related Docker and Kubenetes labs then take the microservices, show how to package and run them in Docker and then deploy on Kubernetes in a Cloud Native format.
 
 At it's core the program allows a caller to request the levels of stock items held in a database, and to record items as having been removed. Think of this as perhaps a system that handles consumable items in a post room or something. People may lookup what's there, take stationary and update the database when they do so. As a separate function not included here (but just to explain the scenario) the facilities manager may look at the database, order replacement items and update the stock levels when they are delivered.
@@ -135,7 +135,7 @@ The basic program has two sets of functionality, split into two projects in Ecli
 This is a deliberately simple example, the goal is to see how these two modules can be converted from a traditional **Monolith** type of approach into cloud native ready microservices, with as little as possible being changed in the actual code - we actually don't make *any* changes to the code logic, all of the modifications are done by adding annotations.
 
 Also we are not addressing how to split any existing monolith into modules, hopefully you will have done that when you created the initial program and functionally decomposed your original requirements. There is no single "right" or "wrong" way to decompose your monolith functionally, but I do recommend reading up on the "Strangler Pattern" and the "Anti Corruption Pattern" as they are very useful architectural approaches to take.
-</p></details>
+</details>
 
 ---
 

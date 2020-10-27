@@ -8,16 +8,15 @@
 ## 4. Rolling Updates
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
+
 
 This video is an introduction to the Kubernetes rolling upgrades lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Kubernetes rolling upgrades lab Introduction Video](https://img.youtube.com/vi/x2hXZrUWM0c/0.jpg)](https://youtu.be/x2hXZrUWM0c "Kubernetes rolling upgrades lab introduction video")
 
-</p>
-</details>
-
 ---
+
+</details>
 
 ### **Introduction**
 
@@ -594,7 +593,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 Normally of course the testing of the pods would be linked into CI/CD automated tooling that would trigger the rollback if it detected a problem automatically, but here we're trying to show you the capabilities of Kubernetes rather than just run automation.
 
 <details><summary><b>What if I do new update while another is still in progress ?</b></summary>
-<p>
+
 If you change a different deployment then that will proceed in the same way, the different deployment will create the replica sets and gradually increase the side of the new one while reducing the size of the old one as above (this hopefully is what you'd expect !)
 
 If you changed and started a rollout of a deployment that was currently in the process of being upgraded  then Kubernetes still does the right thing. You will have the old replica set (let's call that replica set 1) and the new one (let's call that replica set 2) Kubernetes will stop the transition from replicas set 1 to replica set 2, and will create another replica set (let's call this replica set 3) for the latest version of the deployment. It will then transition both replica set 1 and 2 to the new replica set 3.
@@ -603,7 +602,7 @@ Obviously this is not something you're likely to be doing often, but it's quite 
 
 ---
 
-</p></details>
+</details>
 
 
 ### Important note on external services
@@ -627,11 +626,8 @@ The important thing is to have a strategy for combining microservice rollouts (a
 
 See the further info for links on this.
 
----
-
-
 <details><summary><b>What other update strategies are there ?</b></summary>
-<p>
+
 Kubernetes has native support for two strategies, the rolling upgrade we've seen above, but also a strategy type called recreate. 
 
 The rolling upgrade strategy attempts to keep the microservice responding without excess use of resources.
@@ -656,9 +652,9 @@ Another version that doesn't really have a name is when you deploy a microservic
 
 Canary testing and A/B testing require a service mesh to handle the split of the requests between versions, but also a mechanism to gather metrics (quality / business etc.) and then adjust the split. These metrics are unlikely to be the type of thing gathered by standard Prometheus and specialized tools like [Spinaker](https://www.spinnaker.io/) may be used to help with managing the service mesh configuration.
 
-
 ---
-</p></details>
+
+</details>
 
 You have reached the end of this lab !!
 
