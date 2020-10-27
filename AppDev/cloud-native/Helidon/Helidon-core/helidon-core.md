@@ -222,7 +222,7 @@ Helidon  does not require you to use a main class, you can if you want actually 
 
 In this case the class is called Main, but that's really just so we can easily identify the class with the `main` method and can specify it in the packaging tools later on. As with any Java program the class with the `main` method could be called anything you want, you just need to know the class name so you can run it, and define it in any runnable .jar files. 
 
-The problem with using CDI to do this however is that you won't have the chance alter aspects of the configuration to meet your project needs, or override the logging setup process. For a simple application that's not a problem, but in most cases you will want to setup your own configuration properties and so on, which is why we're using our own startup class.
+The problem with using CDI to do this however is that you won't have the chance alter aspects of the configuration to meet your project needs, or override the logging setup process. For a simple application that's not a problem, but in some cases you will want to setup your own configuration properties and so on, which is why we're showing you how to use your own startup class.
 
 ---
 
@@ -287,17 +287,19 @@ import javax.ws.rs.ApplicationPath;
 
 <details><summary><b>Do I really need an Application class ?</b></summary>
 
-In a real-world environment Helidon doesn't actually need classes extending `Application` in all situations. If the Helidon runtime can't find them then it will look for all resource classes (I believe this is those where the class has an `@Path`) This is what we actually do in the stockmanager microservice.
+In a real-world environment Helidon doesn't actually need classes extending `Application` in all situations. If the Helidon runtime can't find them then it will look for all resource classes (I believe this is those where the class has an `@Path`, I'm not sure how that works for non REST resources) This is what we actually do in the stockmanager microservice.
 
-The rules are
+The rules are :
 
-If there is a `Application` class that returns non null set of classes those are used as the resources.
+If there is a `Application` class that returns non empty set of classes those are used as the resources.
 
 If there is no `Application` class then Helidon will try and work the resources out itself.
 
 If there is an `Application` class (and you may need one in some situations) that returns an empty set of classes then Helidon will work them out itself. This can be used in the case where you need an `Application` class, but want the auto discovery of resources.
 
-We are using the Application class here because we will gradually be adding new resources overtime, these all exist as templates code, but most of them are unfinished - which would cause problems, so we don't want them all to be active from the beginning. This way we can gradually enable them as we go.
+If there is an `Application` class which returns `null` to the `getClasses()` method the entire microservice will crash with a `NullPointerException` (So don't do that !)
+
+We are using the Application class here because we will gradually be adding new resources overtime, these all exist as templates code (so the automatic processes would discover them) but most of them are unfinished - which would cause problems, so we don't want them all to be active from the beginning. This way we can gradually enable them as we go.
 
 Note that in some cases you may still need an Application class however. For the OpenAPI module you will see that we need to place annotations on the application, also if you want an @ApplicationPath then it will need to be set on a class that extends Application.
 
