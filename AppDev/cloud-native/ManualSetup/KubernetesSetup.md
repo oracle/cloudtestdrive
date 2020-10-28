@@ -45,48 +45,89 @@ If you have completed the Helidon labs then you will have already setup the comp
   - Chose **root** as the parent compartment
   - Click the `Create Compartment` button.
 
-
+![](images/create-compartment.png)
 
 ## 2. Setup the database
 
 ### 2a. Create the database
 
 - Use the Hamburger menu, and select the Database section, **Autonomous Transaction Processing**
-- Click **Create DB**
+
+![](images/db-01-atp-menu.png)
+
+This will switch to the database management page. Note that depending on your tenancy and if others are also using the list of existing database may be empty or differ from what's shown here.
 
 - Make sure the **CTDOKE** compartment is selected
-- Fill in the form, and make sure to give the DB a unique name for you in case multiple users are running the lab on this tenancy.
+
+- Click **Create DB**
+
+![](images/db-02-atp-compartment-create.png)
+
+- Fill in the form, and make sure to give the DB a unique name and display name for you (use your name or initials) in case multiple users are running the lab on this tenancy.
 
 - Make the workload type `Transaction Processing` 
+
 - Set the deployment type `Shared Infrastructure` 
+
+![](images/db-03-atp-create-form-identity.png)
 
 - Chose the most recent option for the database version, allocate 1 OCPU and 1 GB of storage (this lab only requires a very small database)
 
 - Turn off auto scaling
 
+![](images/db-04-atp-create-form-config.png)
+
+- Enter an admin password, be sure to remember it. The current rules are must have at least one number, one upper case, and one lower case letter, if the password does not meet the ruels you will get a error displayed when you switch to the next field.
+
+- Re-enter the password you chose in the confirm password box
+
+![](images/db-05-atp-create-form-password.png)
+
 - Make sure that the `Allow secure access from everywhere` is enabled.
 
 - Chose the `License included` option
 
-Be sure to remember the **admin password**, save it in a notes document for later reference.
+![](images/db-06-atp-create-form-access-and-license.png)
 
-- Once the instance is running go to the database details page, on the center left of the general information column there will be the label OCID and the start of the OCID itself. Click the **Copy** just to the left and then save the ODIC together with the password.
+As a reminder - Be sure to remember the **admin password**, save it in a notes document for later reference.
 
+- Click the `Create Autonomous Database` button at the bottom of the page.
+
+![](images/db-10-atp-creation-in-progress.png)
+
+The database will start to be provisioned. This may take a short while, once it is running the orange box will turn green and the buttons will be enabled.
+
+![](images/db-11-atp-creation-completed.png)
+
+- Once the instance is running click on the **Copy** button by the OCID, this will copy the OCID to your computers copy-and-paste buffer.
+
+![](images/db-12-atp-get-ocid.png)
+
+- Open a document and paste the OCID, you will need this later in the setup.
 
 
 ### 2b. Setup your user in the database
 
-- On the details page for the database, click the **Service Console** button
 
-- On the left side click the **Development** option
+- Now the instance is running click on the tools tab, then SQL Developer Web button
 
-- Open up the **SQL Developer Web** console
+![](images/db-20-atp-access-sql-developer-web.png)
 
-- Login as admin, using the appropriate password
+This will open the SQLDeveloper web login page
 
-- Copy and paste the below SQL instructions:
+- Login as ADMIN (it's case senitive), using the appropriate password.
 
-```CREATE USER HelidonLabs IDENTIFIED BY H3lid0n_Labs;
+![](images/db-21-sql-developer-web-login.png)
+
+- Click the `x` on the intro message popup - or if you want to read them just click all the way through them.
+
+Once the intro messages are gone you'll get to the main screen
+
+
+
+- Copy and paste the below SQL instructions into the worksheet (highlighted in red in this image)
+
+```
 CREATE USER HelidonLabs IDENTIFIED BY H3lid0n_Labs;
 GRANT CONNECT TO HelidonLabs;
 GRANT CREATE SESSION TO HelidonLabs;
@@ -94,7 +135,14 @@ GRANT DWROLE TO HelidonLabs ;
 GRANT UNLIMITED TABLESPACE TO HelidonLabs;
 ```
 
-- Run the script (The Page of paper with the green "run" button.) if it works OK you will see a set of messages in the Script Output window saying the User has been created and grants made.
+- Then Run the script (The Page of paper with the green "run" button.) 
+
+
+
+db-23-sql-developer-web-script-output
+If it works OK you will see a set of messages in the Script Output section of the screen (highlighted in red below) saying the User has been created and grants made.
+
+![](images/db-22-sql-developer-web-worksheet.png)
 
 
 ## End of the setup
