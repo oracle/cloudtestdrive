@@ -2,7 +2,7 @@
 
 ![](../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native
+# Migration of Monolith to Cloud Native - Kubernetes labs
 
 ## Deploying to Kubernetes 
 
