@@ -125,7 +125,7 @@ Once the intro messages are gone you'll get to the main screen
 
 
 
-- Copy and paste the below SQL instructions into the worksheet (highlighted in red in this image)
+- Copy and paste the below SQL instructions into the worksheet (highlighted in red in the image below)
 
 ```
 CREATE USER HelidonLabs IDENTIFIED BY H3lid0n_Labs;
@@ -135,14 +135,13 @@ GRANT DWROLE TO HelidonLabs ;
 GRANT UNLIMITED TABLESPACE TO HelidonLabs;
 ```
 
+![](images/db-22-sql-developer-web-worksheet.png)
+
 - Then Run the script (The Page of paper with the green "run" button.) 
 
-
-
-db-23-sql-developer-web-script-output
 If it works OK you will see a set of messages in the Script Output section of the screen (highlighted in red below) saying the User has been created and grants made.
+![](images/db-23-sql-developer-web-script-output.png)
 
-![](images/db-22-sql-developer-web-worksheet.png)
 
 
 ## End of the setup

@@ -2,10 +2,7 @@
 
 ![](../../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native
-
-## C. Deploying to Kubernetes
-## Optional 2a. Log Capture for processing
+# Migration of Monolith to Cloud Native - Log capture for Processing
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -17,7 +14,7 @@ This video is an introduction to the Log Capture for processing labs Once you've
 
 </details>
 
-### Introduction
+## Introduction
 
 <details><summary><b>The problem with log data in a distributed cloud native environment</b></summary>
 
@@ -44,7 +41,7 @@ This is good, but with in a distributed architecture a single request may (almos
 
 To process log data in a consistent manner we need to get all of the data into one place. We're going to use [fluentd](https://www.fluentd.org/) to capture the data and send it to  an Elastic search instance deployed in our Kubernetes cluster in the initial example below, but there are many other options.
 
-### Installing elastic search
+## Installing elastic search
 
 As with elsewhere in the labs we'll do this module in it's own namespace, so first we have to create one.
 
@@ -63,6 +60,8 @@ Now let's use helm to install the elastic search engine into the logging namespa
 ```
 "bitnami" has been added to your repositories
 ```
+
+Note that depending on what modules you have already done you may get a message that `"bitnami" already exists with the same configuration, skipping` This is fine.
 
 - Update the repository cache
   - `helm repo update`
@@ -339,7 +338,7 @@ The fluentd pod is running, along with a number of others, for example the elaxt
 
 If you look at all of the other nodes you'll find that there is a fluentd pod on all of them, even though the other services like storefrond or stock manager aren't running on them all (well unless you've told Kubernetes to run multiple instances of the pod)
 
-### Looking the the data
+## Looking the the data
 
 If we go back and look at the Elastic search list of indices now we can see that some data has been added (the `?v=true` means that column headings are included the the returned data
 
@@ -393,9 +392,7 @@ Now you will can see that there is data in the system, there were 12 hits.
 
 You may have seen that the data arrived into the elastic search index pretty fast, fluentd is monitoring the log files all the time, in my testing it's usually less than a second between the log data being generated and the data being in the logs cache, though of course that can very.
 
-### Other log capture options
-
-Fluentd itself supports many other output plugins for writing the data, including to the OCI Object Storage service, or other services which provide a S3 compatible. We will see in the next section how to use those.
+## Monolith and other log capture options
 
 ### How do I handle my Monoliths logging ?
 
@@ -403,7 +400,11 @@ It's quite possible (even probable) that you have elements of your overall servi
 
 Of course fluentd is not the only logging solution out there, and elastic search is not the only data storage option, after all you could also write data to an Oracle data warehouse and analyze it using Oracle Analytics !
 
-### Log processing
+### Other log capture options
+
+Fluentd itself supports many other output plugins for writing the data, including to the OCI Object Storage service, or other services which provide a S3 compatible. We will see in the log capture for archive section how to use those.
+
+## Log data processing
 
 Once the data has been captured there needs to be analysis of it, as we saw before it's possible to extract specific records from the storage (and far more complex queries can be constructed than those shown) but for proper data analysis we need additional tools. The usage of these tools is outside the scope of this lab, (and as you've only been gathering data for a short time period there just isn't enough log data to perform an analasys on.)
 
@@ -427,7 +428,7 @@ If you are in a trial tenancy there are limitations on how many Load Balancers a
 namespace "logging" deleted
 ```
   
-### Summary
+## Summary
 
 You've seen that the capture of Log data for Kubernetes hosted microservices is pretty easy, but so far we haven't done a lot of processing of the log data, and though we've seen we can extract the data this approach is not very useful unless you want to look at the specifics of a single log message. 
 

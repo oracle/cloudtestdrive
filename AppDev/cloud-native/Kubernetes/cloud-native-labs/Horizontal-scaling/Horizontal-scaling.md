@@ -2,11 +2,7 @@
 
 ![](../../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native
-
-## C. Deploying to Kubernetes
-## 3a. Horizontal Scaling labs
-
+# Migration of Monolith to Cloud Native - Horizontal Scaling manually
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -19,11 +15,13 @@ This video is an introduction to the Kubernetes horizontal scaling lab. Once you
 
 </details>
 
+## Introduction
+
 In most cases a microservice is horizontally scalable, at least if the services were developed using the principles defined in [The 12 factors](https://12factor.net/)
 
 Kubernetes has built in support for easily managing the horizontal scaling of services.
 
-### Manual scaling
+## Manual scaling
 In many of the labs when you've looked at the contents of the namespace you'll have seen things called replica sets, and may have wondered what they are. We can get this info using kubectl. 
 
 - In the OCI Cloud Shell, type :

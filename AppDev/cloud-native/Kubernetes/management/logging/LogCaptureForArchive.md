@@ -2,11 +2,7 @@
 
 ![](../../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native
-
-## C. Deploying to Kubernetes
-## Optional 2b. Log Capture for archive
-
+# Migration of Monolith to Cloud Native - Log Capture for Archive
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -19,7 +15,7 @@ This video is an introduction to the Log Capture for archive labs Once you've wa
 
 </details>
 
-### Introduction
+## Introduction
 
 <details><summary><b>The problem with log data in a distributed cloud native environment</b></summary>
 
@@ -51,7 +47,7 @@ We're going to now look at how to extract data and save it to a storage service.
 
 Note, if you have the fluentd configuration setup monitoring to Elastic Search you can leave that running if you like. It is of course consuming resources, but there are situations where you may want long term storage of log data as well as short term analytics. 
 
-### Create the logging namespace
+## Create the logging namespace
 
 If you  did not do the capture log for processing, or deleted the logging namespace at the end of that module you will need to create a namespace for this module.
 
@@ -66,7 +62,7 @@ namespace/logging created
 
 If the namespace already exists this command will report : `Error from server (AlreadyExists): namespaces "logging" already exists`
 
-### Storing the log data
+## Storing the log data
 
 Kubernetes writes the log data it captures to files on the host that's running the node. To get the data we therefore need to run a program on every node that accesses the log files and sends them to the storage.
 
@@ -221,7 +217,7 @@ In both cases the data is encrypted at rest, and is protected via the use of mul
 
 </details>
 
-Here we're using the archive tier at that's the most cost effective for long term data retention, but if you were writing the data to storage on a temporary basis (maybe you are using [Oracle Log Analytics](https://www.oracle.com/cloud/systems-management/log-analytics.html) and have configured it to load the data from storage once a day) then there is no point in using the archive tier as don't want the delay to retrieve the data and as you'd be wiping them every day once they were uploaded you would use the standard tier.
+Here we're using the archive tier as that's the most cost effective for long term data retention, but if you were writing the data to storage on a temporary basis (maybe you are using [Oracle Log Analytics](https://www.oracle.com/cloud/systems-management/log-analytics.html) and have configured it to load the data from storage once a day) then there is no point in using the archive tier as don't want the delay to retrieve the data and as you'd be wiping them every day once they were uploaded you would use the standard tier.
 
 Let's create our storage bucket. 
 
@@ -413,7 +409,7 @@ In this case I had left the fluentd and elastic search instances running from th
 
 <details><summary><b>What's with the CrashLoopBackOff STATUS ?</b></summary>
 
-You may occasionally see a fluentd pod with status CrashLoopBackOff, this is usually due to the pod having problems getting log data, it seems there is a problem in fluentd where it sometimes crashes on reading specific kubernetes log files. Kubernetes of course recognises the failure and restarts the pod for us automatically, and fluentd will recover.
+You may occasionally see a fluentd pod with status CrashLoopBackOff, this is usually due to the pod having problems getting log data, it seems there is a problem in fluentd where it sometimes crashes on reading specific Kubernetes log files. Kubernetes of course recognises the failure and restarts the pod for us automatically, and fluentd will recover.
 
 ---
 
@@ -535,7 +531,7 @@ Strict-Transport-Security: max-age=15724800; includeSubDomains
 Do this several times
 
 
-### The saved log files
+## The saved log files
 
 Though the creation of the logs in the Object Storage Service is pretty cloud independent actually retrieving them is outside Kubernetes and specific to the cloud provider. The instructions below apply to the Oracle Object Storage Service.
 

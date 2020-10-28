@@ -2,11 +2,7 @@
 
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native
-
-## C. Deploying to Kubernetes
-
-## Optional 3b. Monitoring traffic flows with a Service mesh
+# Migration of Monolith to Cloud Native - Monitoring traffic flows with a Service mesh
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
@@ -20,7 +16,7 @@ This video is an introduction to the monitoring traffic with a Service mesh lab.
 
 </details>
 
-## Using the service mesh
+## Using the service mesh to see what's happening
 
 We've seen how to install and run the service mesh, we're now doing to look at how to use it.
 
@@ -285,7 +281,7 @@ There is more information on control plan failure in [the linkerd FAQ](https://l
 
 </details>
 
-### Looking at the Grafana visualizations.
+## Looking at the Grafana visualizations.
 
 The data we've seen so far is the live view, but if we wanted to understand what was happening over a longer period of time (say to understand how the request breakdown changes over the day) we want to look at historical data. To do that we will use the Grafana visualizations that the linkerd install setup for us. 
 

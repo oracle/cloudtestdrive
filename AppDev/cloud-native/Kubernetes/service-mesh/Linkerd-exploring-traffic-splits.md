@@ -2,11 +2,7 @@
 
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native
-
-## C. Deploying to Kubernetes
-
-## Optional 3d. Exploring traffic splits with a Service mesh.
+# Migration of Monolith to Cloud Native - Exploring traffic splits with a Service mesh.
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
@@ -20,7 +16,7 @@ This video is an introduction to the Service mesh traffic splits lab. Once you'v
 
 </details>
 
-## What is a a traffic split, and what can I do with it
+## What is a a traffic split, and what can I do with it ?
 
 A traffic split is just what it says, the traffic sent to a service is split between the implementation instances. In core Kubernetes this is done using the selector in the service to locate pods with matching  labels. Then traffic sent to the service is split between the different pods, often using a round robin approach so each pod responds in turn.
 
@@ -34,8 +30,7 @@ Note that in a lot of these cases you use additional external automation tools t
 
 This module was written using the information in the [Linkerd fault injection page.](https://linkerd.io/2/tasks/fault-injection/)
 
-## Now let's look at how we can use the service mesh to do a canary deployment
-
+## Canary deployments with a service mesh traffic split
 
 ### What is a canary deployment ?
 

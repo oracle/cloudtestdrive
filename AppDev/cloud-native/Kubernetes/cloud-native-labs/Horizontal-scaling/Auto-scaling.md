@@ -2,10 +2,7 @@
 
 ![](../../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native
-
-## C. Deploying to Kubernetes
-## 3b. Auto Scaling labs
+# Migration of Monolith to Cloud Native - Auto scaling
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -17,6 +14,8 @@ This video is an introduction to the Kubernetes auto scaling lab. Once you've wa
 ---
 
 </details>
+
+## Introduction
 
 We've seen how we can increase (or decrease) the number of pods underlying a service and that the service will automatically balance the load across the pods for us as the pod count changes.
 
@@ -125,7 +124,7 @@ proxymux-client-lr7ft                   1m           8Mi
 <details><summary><b>Kubernetes dashboard and the metrics-server</b></summary>
 
 
-The metrics server provides information on the current use of resources in the cluster, the kubernetes dashboard has just been updated to version 2, at some point the plan is that the dashboard will be able to connect to the metrics-server and you will be able to see the pod CPU and memory usage in the dashboard
+The metrics server provides information on the current use of resources in the cluster, the Kubernetes dashboard has just been updated to version 2, at some point the plan is that the dashboard will be able to connect to the metrics-server and you will be able to see the pod CPU and memory usage in the dashboard
 
 ---
 
@@ -220,7 +219,7 @@ We can also get the current resource level for the container using kubectl and t
 <details><summary><b>Namespace level resource restrictions and implications</b></summary>
 
 
-In kubernetes you can place restrictions on pods as we've seen above, however it's also possible to apply a quota on the namespace. All of the pods (or other resources) in the name space have to be within that limit. To do this you create a ResourceQuota (there is one for each namespace) The ResourceQuota allows you to specify limits on CPU, memory storage and also it's possible to extend these with custom resources (e.g. GPU if your cluster hardware has these) Some resources can also be limited on the resource count e.g. number of configmaps.
+In Kubernetes you can place restrictions on pods as we've seen above, however it's also possible to apply a quota on the namespace. All of the pods (or other resources) in the name space have to be within that limit. To do this you create a ResourceQuota (there is one for each namespace) The ResourceQuota allows you to specify limits on CPU, memory storage and also it's possible to extend these with custom resources (e.g. GPU if your cluster hardware has these) Some resources can also be limited on the resource count e.g. number of configmaps.
 
 If an action like adding an object would cause the limits applied to a namespace to be exceeded then the action will be rejected. This applies to auto scaling as well !
 
@@ -456,8 +455,6 @@ It's also possible to autoscale on metrics provides from outside Kubernetes (the
 
 The [autoscaler docs explain some of these](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics)
 
-## Additional information
-
-Note - Removing the autoscaler does not return the pods required to the value before the autoscaler was added, the number of pods in the deployment remains set to whatever value the autoscaler last left it, quite possibly in this case that will be more than 2 (it it hasn't finished scaling down.) This is because the autoscaler works by adjusting the number of pods in the deployment.
+### Additional information
 
 Autoscaler and rolling upgrades - The autoscaler will correctly operate in conjunction with rolling upgrades.

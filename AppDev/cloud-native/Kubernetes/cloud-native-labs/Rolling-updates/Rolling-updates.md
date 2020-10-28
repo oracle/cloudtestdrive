@@ -2,10 +2,7 @@
 
 ![](../../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native
-
-## C. Deploying to Kubernetes
-## 4. Rolling Updates
+# Migration of Monolith to Cloud Native - Rolling Updates
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -18,7 +15,7 @@ This video is an introduction to the Kubernetes rolling upgrades lab. Once you'v
 
 </details>
 
-### **Introduction**
+## **Introduction**
 
 One of the problems when deploying an application is how to update it while still delivering service, and perhaps more important (but usually given little consideration) how to revert the changes in the event that the update fails to work in some way.
 
@@ -32,7 +29,7 @@ For *both* approaches Kubernetes will keep track of the changes and will underta
 
 As a general observation though it may be tempting to just go in and modify the configuration directly with kubectl ... this is a **bad** thing to do, it's likely to lead to unrecorded changes in your configuration management system so in the event that you had to do a complete restart of the system changes manually done with kubectl are likely to be forgotten. It is **strongly** recommended that you make changes by modifying your yaml file, and that the yaml file itself has a versioning scheme so you can identify exactly what versions of the service a given yaml file version provides. If you must make changes using kubectl (say you need to make a minor change in a test environment) then as soon as you decide it should be permanent then make the corresponding change in the yaml file *and do a rolling upgrade using the yaml file to ensure you are using the correct configuration* (after all, you may have made a typo in either the kubectl or yaml file.)
 
-### How to do a rolling upgrade in our setup
+## How to do a rolling upgrade in our setup
 
 So far we've been stopping our services (the undeploy.sh script deletes the deployments) and then creating new ones (the deploy.sh script applies the deployment configurations for us) This results in service down time, and we don't want that. But before we can switch to properly using rolling upgrades there are a few bits of configuration we should do
 
@@ -77,7 +74,7 @@ We're now going to tell Kubernetes to use a rolling upgrade strategy for any upg
       type: RollingUpdate
   ```
 
-Finally we're going to tell kubernetes what limits we want to place on the rolling upgrade. 
+Finally we're going to tell Kubernetes what limits we want to place on the rolling upgrade. 
 
 - Under the type line above, and **at the same indent** add the following
 
@@ -395,7 +392,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 ```
 Now the rollout has completed and all the instances are runnign the updated image as expected it's reporting version 0.0.2
 
-### Rolling back a update
+## Rolling back a update
 In this case the update worked, but what would happen if it had for some reason failed. Fortunately for us Kubernetes keeps the old replica set around, which includes the config for just this reason. 
 
 - Let's get the replica set list:
@@ -605,7 +602,7 @@ Obviously this is not something you're likely to be doing often, but it's quite 
 </details>
 
 
-### Important note on external services
+## Important note on external services
 Kubernetes can manage changes and rollbacks within it's environment, provided the older versions of the changes are available. So don't delete your old container images unless you're sure you won't need them ! Kubernetes can handle the older versions of the config itself, but always a good idea to keep an archive of them anyway, in case your cluster crashes and takes your change history with it.
 
 However, Kubernetes itself cannot manage changes outside it's environment. It may seem obvious, but Kubernetes is about compute, not persistence, and in most cases the persistence layer is external to Kubernetes on the providers storage environments.

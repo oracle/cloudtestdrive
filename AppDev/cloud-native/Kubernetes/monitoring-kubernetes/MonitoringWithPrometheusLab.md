@@ -2,10 +2,7 @@
 
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native
-
-## C. Deploying to Kubernetes
-## Optional 1a. Monitoring with Prometheus
+# Migration of Monolith to Cloud Native - Monitoring with Prometheus
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -18,7 +15,7 @@ This video is an introduction to the Monitoring microservcies with Prometheus la
 
 </details>
 
-### **Introduction**
+## **Introduction**
 
 Monitoring a service in Kubernetes involves three components
 
@@ -40,7 +37,32 @@ For this lab we are going to use a very simple monitoring, using the metrics in 
 
 These tools are of course not the only ones, but they are very widely used, and are available as Open Source projects.
 
-#### Namespace for the monitoring and visualization software
+### Configuring Helm
+
+We need to specify the Helm repository for Prometheus
+
+- In the OCI Cloud shell :
+  - `helm repo add prometheus-community https://prometheus-community.github.io/helm-charts`
+
+```
+"prometheus-community" has been added to your repositories
+```
+  
+Now update the repository information
+- In the OCI Cloud shell :
+  - `helm repo update`
+
+```
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "kubernetes-dashboard" chart repository
+...Successfully got an update from the "prometheus-community" chart repository
+...Successfully got an update from the "stable" chart repository
+Update Complete. ⎈Happy Helming!⎈
+```
+  
+Depending on which other modules you have done you may see differences in the repositories in the update list
+
+### Namespace for the monitoring and visualization software
 To separate the monitoring services from the  other services we're going to put them into a new namespace. 
 
 - Type the following to create the namespace:
@@ -52,7 +74,7 @@ To separate the monitoring services from the  other services we're going to put 
 
 
 
-### Prometheus
+## Prometheus
 
 <details><summary><b>Older versions of Kubernetes than 1.17.9</b></summary>
 
@@ -73,7 +95,7 @@ To specify a specific older version use the version keyword in your help command
 Installing Prometheus is simple, we just use helm.
 
 - In the OCI Cloud Shell type
-  -  `helm install prometheus stable/prometheus --namespace monitoring --set server.service.type=LoadBalancer --version 11.12.1`
+  -  `helm install prometheus prometheus-community/prometheus --namespace monitoring --set server.service.type=LoadBalancer --version 11.12.1`
   
 
 ```
@@ -158,7 +180,7 @@ You'll see the Initial prometheus graph page as below.
 Let's check that Prometheus is scraping some data. 
 
 - Click the "Insert Metric At Cursor" button
-  - you will see a *lot* of possible choices exploring the various servcies built into Kubernetes (Including apiserver, Core DNS, Container stats, the number of various kubernetes objects like secrets, pods, configmaps and so on.)
+  - you will see a *lot* of possible choices exploring the various servcies built into Kubernetes (Including apiserver, Core DNS, Container stats, the number of various Kubernetes objects like secrets, pods, configmaps and so on.)
 
 - In the dropdown select `kubelet_http_requests_total`  
 - Click the **Execute** button. 
@@ -194,7 +216,7 @@ We can see what services Prometheus is currently scraping :
 
 ![The initial service discovery screen](images/prometheus-service-discovery-initial.png)
 
-- Click on the "Show More" button next to the Kubernetes-pods line (this is the 2nd reference to kubernetes pods, the 1st is just a link that takes you to the 2nd one it it's not on the screen)
+- Click on the "Show More" button next to the Kubernetes-pods line (this is the 2nd reference to Kubernetes pods, the 1st is just a link that takes you to the 2nd one it it's not on the screen)
 
 You will be presented with a list of all of the pods in the system and the information that Prometheus has gathered about them (it does this by making api calls to the api server in the same way kubectl does)
 

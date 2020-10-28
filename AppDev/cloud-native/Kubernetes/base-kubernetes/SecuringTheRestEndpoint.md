@@ -2,7 +2,9 @@
 
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native
+# Migration of Monolith to Cloud Native - Securing the REST endpoint
+
+This module is a discussion module, there are no exercises for you to do.
 
 ## Should I secure my REST API ?
 
@@ -14,7 +16,7 @@ The answer is that of course you should. Even if the information you have is pub
 
 This module looks at **some** of the ways you can secure your REST API's. Just to be clear, this is not a complete list and there are other approaches not covered here, but I have attempted to cover the major approaches.
 
-## What security approach to use ?
+### What security approach to use ?
 
 There is no right or wrong way to secure your REST API's the best solution is to do a team assessment of the risks you have. You need to to a team assessment because as individuals it's very easy to get wrapped up in your own specific security experiences and viewpoints and not look at other areas, for example my background is such that when writing this document I was focusing on TLS and authentication / authorization and had to be reminded about SQL injection attacks, even though they are quite common attack.
 
@@ -54,16 +56,16 @@ Technologies such as an API gateway are applied (usually with their own load bal
 
 ## Internal to the cluster data encryption
 
-Most Kubernetes implementations can run a service mesh like Istio (other service mesh implementations are of course available.) These cam provide man capabilities, but they usually offer mechanisms whereby you can encrypt internal communications within the cluster.
+Most Kubernetes implementations can run a service mesh like Linkerd (other service mesh implementations are of course available.) These can provide many capabilities, but they usually offer mechanisms whereby you can encrypt internal communications within the cluster.
 
-If you are operating a distributed Kubernetes cluster where the microservices are spread around with physical separation  between the nodes, then this may be a good aprpoach to ensuring that a wide area communications provider (or someone that's hacked into them) cannot access the data (though usually wide area links woudl have their own encryption applied to protect the actuall connection.)
+If you are operating a distributed Kubernetes cluster where the microservices are spread around with physical separation  between the nodes, then this may be a good approach to ensuring that a wide area communications provider (or someone that's hacked into them) cannot access the data (though usually wide area links would have their own encryption applied to protect the actual connection.)
 
 ## Certificate management
 
-Managing certificates can be a pain, especially if you have short lived certificates. To make this easier you can use a tool that will automaticaly source, renew and manage certificates.
+Managing certificates can be a pain, especially if you have short lived certificates. To make this easier you can use a tool that will automatically source, renew and manage certificates.
 
- **For certificates held in Kubernetes** there is a service called [CertManager](https://cert-manager.io/docs/) This service will source and maintain cetficicates for you, a typical use case may be to specify in the Ingress rule that a certificate is needed, along with information of the type of certificate, issuing authority etc. The certmanager will then get a certificate and place it in the appropriate Kubernetes secret. The certificate will then be used as if it was manually installed.
+ **For certificates held in Kubernetes** there is a service called [CertManager](https://cert-manager.io/docs/) This service will source and maintain certificates for you, a typical use case may be to specify in the Ingress rule that a certificate is needed, along with information of the type of certificate, issuing authority etc. The certmanager will then get a certificate and place it in the appropriate Kubernetes secret. The certificate will then be used as if it was manually installed.
  
-# Where to get security assistance.
+## Where to get security assistance.
 
-This section has only covered at a simple level a few of the security options. Clearly in a sensitive commercial situation you will want to conduct a thorough security assessment of your risks, ensure you have not made any common security mistakes etc. Oracle (and I'm sure other vendors and consultants) has a security assessment service that can help with this.
+This section has only covered at a simple level a few of the security options. Clearly in a sensitive commercial situation you will want to conduct a thorough security assessment of your risks, ensure you have not made any common security mistakes etc. Oracle (and I'm sure other vendors and consultants) has a security assessment service that can help with this. Oracle also has automated tools that can help you monitor your OCI environment for security problems.

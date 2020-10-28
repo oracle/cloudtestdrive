@@ -1,0 +1,36 @@
+{
+    "tutorials": [
+        {
+          "title": "Kubernetes Labs Introduction",
+          "filename":"../Kubernetes-labs.md"
+        },
+        {
+          "title": "Tenancy Setup for the Kubernetes Labs",
+          "filename":"../../ManualSetup/KubernetesSetup.md"
+        },
+        {
+          "title": "Cloud Shell Setup for the Kubernetes Labs",
+          "filename":"../setup/cloud-shell-setup.md"
+        },
+        {
+          "title": "Part 1: Setting up the cluster and getting your services running in Kubernetes",
+          "filename": "../base-kubernetes/KubernetesBaseLabs.md"
+        },
+		{
+          "title": "Part 2: Cloud native with Kubernetes",
+          "filename": "../cloud-native-labs/Health-readiness-liveness/Health-liveness-readiness.md"
+        },
+		{
+          "title": "Part 3a: Horizontal Scaling",
+          "filename": "../cloud-native-labs/Horizontal-scaling/horizontal-scaling.md"
+        },
+		{
+          "title": "Part 3b: Auto Scaling",
+          "filename": "../cloud-native-labs/Horizontal-scaling/Auto-scaling.md"
+        },
+        {
+          "title": "Part 4: Rolling Updates",
+          "filename": "../Rolling-updates/Rolling-updates.md"
+        }
+    ]
+}

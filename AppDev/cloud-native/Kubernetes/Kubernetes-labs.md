@@ -29,11 +29,11 @@ If you only want to do the **Kubernetes** labs and have not done the **Helidon**
 
 ## Basic Kubernetes - Setting up your cluster and running your services
 
-This section covers how to run the docker images in kubenetes, how to use kubernetes secrets to hold configuration and access information, how to use an ingress to expose your application on a web port. Basically this covers how to make your docker based services run in in a kubernetes cluster.
+This section covers how to run the docker images in kubenetes, how to use Kubernetes secrets to hold configuration and access information, how to use an ingress to expose your application on a web port. Basically this covers how to make your docker based services run in in a Kubernetes cluster.
 
-We also look at using Helm to install kubernetes "infractructure" such as the ingress server
+We also look at using Helm to install Kubernetes "infractructure" such as the ingress server
 
-[The basic kubernetes labs](base-kubernetes/KubernetesBaseLabs.md)
+[The basic Kubernetes labs](base-kubernetes/KubernetesBaseLabs.md)
 
 ## Cloud Native with Kubernetes
 

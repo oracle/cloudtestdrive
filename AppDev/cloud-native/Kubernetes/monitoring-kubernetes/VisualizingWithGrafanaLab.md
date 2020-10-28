@@ -2,10 +2,7 @@
 
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native
-
-## C. Deploying to Kubernetes
-## Optional 1b. Visualizing using Grafana
+# Migration of Monolith to Cloud Native - Visualising using Grafana
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
@@ -19,7 +16,7 @@ This video is an introduction to the Visualizing metrics with Grafana lab. Once 
 
 </details>
 
-### **Introduction**
+## **Introduction**
 
 If you are going to do this lab module you must have completed the [**Monitoring with Prometheus** module](MonitoringWithPrometheusLab.md)
 
@@ -29,7 +26,7 @@ Grafana on the other hand is a very powerful open source visualization engine an
 
 For this lab we will use a small subset of the open source features only.
 
-### Installing Grafana
+## Installing Grafana
 Like many other Kubernetes services Grafana can be installed using helm. By default the helm chart does not create a volume for the storage of the grafana configuration. This would be a problem in a production environment, so we're going to use the persistent storage option defined inthe helm chart for Grafana to create a storage volume. 
 
 - Create the Helm repository entry for Grafana
@@ -49,7 +46,9 @@ Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "stable" chart repository
 Update Complete. ⎈ Happy Helming!⎈ 
 ```
-  
+
+Depending on what moduels you have done previously the updated repositories list may vary
+
 - In the OCI Cloud Shell type following command:
   - `helm install grafana  bitnami/grafana --version 3.4.3 --namespace  monitoring  --set persistence.enabled=true --set service.type=LoadBalancer`
 
@@ -442,7 +441,7 @@ Now we can see more details
 
 ![grafana-stock-performance-dashboard-with-data](images/grafana-stock-performance-dashboard-with-data.png)
 
-### More complex dashboards
+## More complex dashboards
 This is a fairly simple dashboard, far more complex ones are easily achievable using a combination or Prometheus and Grafana. As an example we're going to look at a prebuilt dashboard.
 
 - Click the Grafana logo ![grafana-logo](images/grafana-logo.png) on the upper left. 

@@ -2,12 +2,7 @@
 
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native
-
-## C. Deploying to Kubernetes
-
-## 1. Basic Kubernetes
-
+# Migration of Monolith to Cloud Native - Deploying to Kubernetes
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -26,11 +21,12 @@ You will be using the OCI Cloud Shell to execute commands and scripts during the
 
 You need to follow the [cloud shell setup instructions](../setup/cloud-shell-setup.md) to download the scripts and template files into the cloud shell before you continue with the labs.
 
+
 ### Configure the Helm repository
 
 Helm is the tool we will be using to install standard software into Kubernetes. While it's possible to load software into Kubertetes by hand Helm makes it much easier as it has pre-defined configurations (called charts) that it pulls from an internet based repository.
 
-The OCI Cloud Shell has helm already installed for you, however it does not know what repositories to use for the helm charts. We need to tell help what repositories to use.
+The OCI Cloud Shell has helm already installed for you, however it does not know what repositories to use for the helm charts. We need to tell helm what repositories to use.
 
 - Run the following command :
   - `helm repo add stable https://kubernetes-charts.storage.googleapis.com/`
@@ -136,7 +132,7 @@ If the kubectl command returns `No resources found.` and you have only just crea
  (The details and number of nodes will vary depending on the settings you chose when you created the cluster, they will take a few mins for the nodes to be configured after the cluster management is up and running)
 
 
-### Basic cluster infrastructure services install
+## Basic cluster infrastructure services install
 
 Usually a Kubernetes cluster comes with only the core Kubernetes services installed that are needed to actually run the cluster (e.g. the API, DNS services.) Some providers also give you the option of installing other elements, but here we're going to assume you have a minimal cluster with only the core services and will need to setup the other services before you run the rest of the system.
 
@@ -473,7 +469,7 @@ You'll now be presented with the login screen for the dashboard.
 
 ![dashboard-login-completed](images/dashboard-login-completed.png)
 
-**Important** The kubernetes dashboard will only keep the login session open for a short time, after which you will be logged out. Unfortunately when your login session expires the kubernetes dashboard doesn't always return you to the login screen. If you find that you are making changes and the dashboard doesn't reflect them, or that you can see something using kubectl - but not in the dashboard, or you trigger an action on the dashboard (e.g. switching to a different a namespace) but the content doesn't update it's probable that the session has expired. In this case **reload** the web page or go to the login URL (above), this will reset the pages state and present you with the login screen again, login using your token as previously (the token does not change, so you don't have to extract it again)
+**Important** The Kubernetes dashboard will only keep the login session open for a short time, after which you will be logged out. Unfortunately when your login session expires the Kubernetes dashboard doesn't always return you to the login screen. If you find that you are making changes and the dashboard doesn't reflect them, or that you can see something using kubectl - but not in the dashboard, or you trigger an action on the dashboard (e.g. switching to a different a namespace) but the content doesn't update it's probable that the session has expired. In this case **reload** the web page or go to the login URL (above), this will reset the pages state and present you with the login screen again, login using your token as previously (the token does not change, so you don't have to extract it again)
 
 You now should see the **Overview** dashboard :
 
@@ -488,9 +484,6 @@ To select a namespace use the dropdown on the upper right of the web page.
 Initially it will probably say default, if you click on it you will get a choice of namespaces.
 
 ![dashboard-namespace-selector-chose](images/dashboard-namespace-selector-chose.png)
-
-
-
 
 ---
 
@@ -714,7 +707,7 @@ You'll be presented with a `Work in progress` menu, for now just click the `Clos
 
 <details><summary><b>Scripting the listener change</b></summary>
 
-While the configuration of the load balancer is outside kubernetes I just wanted to show you how you might go about scripting this rather than doing it through the browser interface.
+While the configuration of the load balancer is outside Kubernetes I just wanted to show you how you might go about scripting this rather than doing it through the browser interface.
 
 The following commands do absolutely no error checking, or waiting for the load balancer IP address to be assigned, so before you used them in a script for automation you'd probably want to put some decent error correction in place.
 
@@ -739,7 +732,7 @@ echo y | oci lb listener update  --load-balancer-id=$LB_OCID --listener-name=TCP
 
 Note that in a production environment you might want to extend the encryption by encrypting traffic between the load balancer and the ingress controller, and also between the microservices using a servcie mesh (which is a later optional lab.)
 
-### Running your containers in Kubernetes
+## Services and Ingress rules
 
 You now have the basic environment to deploy services, and we've looked at how to use the Kubernetes dashboard and the kubectl command line.
 
@@ -1148,7 +1141,7 @@ For more information on the nginx ingress controller and the different rules typ
 
 For see the doc more information on how the regular expressions with with see the [nginx ingress path matching page.](https://kubernetes.github.io/ingress-nginx/user-guide/ingress-path-matching/) 
 
-### Secrets and external configuration
+## Secrets, configmaps - external configuration for your containers
 
 <details><summary><b>Introduction to Kubernetes secrets</b></summary>
 
@@ -1421,7 +1414,7 @@ As we'll see later we can also update the text by modifying the file and re-crea
 
 
 
-### Deploying the actual microservices
+## Deploying the actual microservices
 
 It's been quite a few steps (many of which are one off and don't have to be repeated for each application we want to run in Kubernetes) but we're finally ready to create the deployments and actually run our Helidon microservices inside of Kubernetes!
 
@@ -1917,7 +1910,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 {"outcome":"UP","status":"UP","checks":[{"name":"stockmanager-ready","state":"UP","status":"UP","data":{"department":"TestOrg","persistanceUnit":"stockmanagerJTA"}}]}
 ```
 
-### Changing the configuration
+## Updating your external configuration
 We saw in the helidon labs that it's possible to have the helidon framework monitor the configuration files and trigger a refresh of the configuration data if something changed. Let's see how that works in Kubernetes.
 
 - Get the status resource data :
@@ -2028,7 +2021,7 @@ We've shown how to change the config in helidon using config maps, but the same 
 
 
 
-### Thoughts on security
+## Thoughts on security
 
 This lab has only implemented basic security in that it's securing the REST API using the Ingress controller.
 

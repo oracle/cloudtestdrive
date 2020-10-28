@@ -2,11 +2,7 @@
 
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native
-
-## C. Deploying to Kubernetes
-
-## Optional 3c. Using the Service mesh to troubleshoot problems
+# Migration of Monolith to Cloud Native - Using the Service mesh to troubleshoot problems
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
@@ -20,7 +16,7 @@ This video is an introduction to the troubleshooting with a Service mesh lab. On
 
 </details>
 
-## Using a service mesh to troubleshoot
+## Introduction
 
 A service mesh like Linkerd doesn't just provide encryption and traffic statistics. It can also be used to help identify problems though it's monitoring capabilities.
 
@@ -35,6 +31,8 @@ in the case of Linkerd if a service fails to respond at all, or it responds but 
 ### Where do we get our problem source from ?
 
 Well fortunately for us I have build a version of the Stock Manager that can be configured to generate deliberate errors (I promise it's not just me doing bad coding :-) ) We will deploy this new version and then configure it to generate errors on half of the requests it makes.
+
+## Using a service mesh to troubleshoot
 
 ### Start the load generator
 

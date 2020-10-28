@@ -5,8 +5,12 @@
           "filename":"../Kubernetes-labs.md"
         },
         {
-          "title": "Setup for the Kubernetes Labs",
+          "title": "Tenancy Setup for the Kubernetes Labs",
           "filename":"../../ManualSetup/KubernetesSetup.md"
+        },
+        {
+          "title": "Cloud Shell Setup for the Kubernetes Labs",
+          "filename":"../setup/cloud-shell-setup.md"
         },
         {
           "title": "Part 1: Setting up the cluster and getting your services running in Kubernetes",

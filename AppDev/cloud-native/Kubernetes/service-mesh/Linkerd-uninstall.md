@@ -2,11 +2,7 @@
 
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native
-
-## C. Deploying to Kubernetes
-
-## Optional 3e. Service mesh uninstall
+# Migration of Monolith to Cloud Native - Service mesh uninstall
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>

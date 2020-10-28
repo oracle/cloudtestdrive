@@ -2,11 +2,7 @@
 
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native
-
-## C. Deploying to Kubernetes
-
-## Optional 3a. Service mesh install and setup
+# Migration of Monolith to Cloud Native - Service mesh install and setup
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
@@ -56,7 +52,7 @@ Installing a service mesh adds an additional layer of abstraction to your cluste
 
 Ultimately, the way to think about a service mesh as a cluster operator is to consider that adding this layer will result in better observability and security for your applications.
 
-### Which service mesh to use ?
+## Which service mesh to use ?
 
 There is no simple answer to this, as none of them are built into Kubernetes and there is no official standard. 
 
