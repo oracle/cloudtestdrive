@@ -43,7 +43,7 @@ Kubernetes doesn't just provide a platform to run containers in, it also provide
 
 To understand how this works see the [Health Readiness Liveness labs](cloud-native-labs/Health-readiness-liveness/Health-liveness-readiness.md)
 
-### Horizontal and Auto Scaling
+## Horizontal and Auto Scaling
 
 Kubernetes also supports horizontal scaling of services, enabling multiple instances of a service to run with the load being shared amongst all of them. 
 
@@ -58,7 +58,7 @@ This second scaling labs shows how you can have Kubernetes automatically scale t
 [The auto scaling labs (3b)](cloud-native-labs/Horizontal-scaling/Auto-scaling.md)
 
 
-### Rolling out deployment updates
+## Rolling out deployment updates
 
 Commonly when a service is deployed it will be updated, Kubernetes provides support for performing rolling upgrades, ensuring that the service continues running during the upgrade. Built into this are easy ways to reverse a deployment roll out to one of it's previous states.
 
