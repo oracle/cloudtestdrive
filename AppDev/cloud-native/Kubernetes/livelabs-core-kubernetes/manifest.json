@@ -2,7 +2,7 @@
     "tutorials": [
         {
           "title": "Kubernetes Labs Introduction",
-          "filename":"../Kubernetes-labs.md"
+          "filename":"../Kubernetes-labs-core-only.md"
         },
         {
           "title": "Tenancy Setup for the Kubernetes Labs",
@@ -31,6 +31,10 @@
         {
           "title": "Part 4: Rolling Updates",
           "filename": "../Rolling-updates/Rolling-updates.md"
+        },
+        {
+          "title": "Further Information",
+          "filename": "../further-information/further-information.md"
         }
     ]
 }

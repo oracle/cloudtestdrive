@@ -33,6 +33,10 @@
           "filename": "../Rolling-updates/Rolling-updates.md"
         },
         {
+          "title": "Further Information",
+          "filename": "../further-information/further-information.md"
+        },
+        {
           "title": "Optional 1a: Prometheus for metrics capture",
           "filename": "../monitoring-kubernetes/MonitoringWithPrometheusLab.md"
         },
