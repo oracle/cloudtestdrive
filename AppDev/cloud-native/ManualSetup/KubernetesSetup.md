@@ -4,8 +4,6 @@
 
 # Migration of Monolith to Cloud Native
 
-## Setting up for the Kubernetes section
-
 <details><summary><b>Self guided student - video introduction</b></summary>
 
 
@@ -17,7 +15,7 @@ This video is an introduction to the Kubernetes labs setup - for people who have
 
 </details>
 
-### Introduction
+## Introduction
 
 This page explains the steps to set up your **Oracle Cloud Tenancy** so you are ready to run the **C. Helidon lab**. 
 
@@ -25,7 +23,7 @@ If you have completed the Helidon labs then you will have already setup the comp
 
 **If you are attending an instructor-led lab**, your instructor will detail steps you need to execute and which ones you can skip.
 
-### 1. Create the CTDOKE compartment
+## 1. Create the CTDOKE compartment
 
 - Click the `hamburger` menu (three bars on the upper left)
 
@@ -48,7 +46,9 @@ If you have completed the Helidon labs then you will have already setup the comp
 
 
 
-### 2. Create a database
+## 2. Setup the database
+
+### 2a. Create the database
 
 - Use the Hamburger menu, and select the Database section, **Autonomous Transaction Processing**
 - Click **Create DB**
@@ -73,7 +73,7 @@ Be sure to remember the **admin password**, save it in a notes document for late
 
 
 
-### 3. Setup your user in the database
+### 2b. Setup your user in the database
 
 - On the details page for the database, click the **Service Console** button
 
@@ -94,8 +94,6 @@ GRANT UNLIMITED TABLESPACE TO HelidonLabs;
 ```
 
 - Run the script (The Page of paper with the green "run" button.) if it works OK you will see a set of messages in the Script Output window saying the User has been created and grants made.
-
-
 
 
 ## End of the setup
