@@ -2,9 +2,7 @@
 
 ![](../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native
-
-## B. Running as a docker images locally
+# Migration of Monolith to Cloud Native -  Creating and running as a docker container
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -16,6 +14,12 @@ This video is an introduction to the Helidon and Docker lab. Once you've watched
 ---
 
 </details>
+
+## Introduction
+
+Docker has become the defacto way of packaging code into containers and then running them. In this module we will show you how to use jib to automatically build the container images, use docker to run them locally and then push them to the Oracle Container Image Registry (though you could of course push them to dockerhub or other locations.
+
+The Kubernetes labs that follow this one can be adapted to use the images you're building here if you'd rather not use the ones we pre-built for you.
 
 Like the Helidon lab you perform these steps **inside** the client virtual machine
 
@@ -36,7 +40,7 @@ To run this part of the lab you need the working storefront and stockmanager mic
   - If the entry is **missing**, relaunch it:  `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin:2.22.0`
 
 
-#### Docker image build tool
+## Jib - Docker image build tool
 
 We will be using **jib** to build the docker images. The Maven pom.xml file contains the details of the jib tooling and it's settings. 
 
@@ -55,13 +59,14 @@ The [Graal web site](https://www.graalvm.org/) provides more details on Graal.
 
 </details>
 
-#### Size of the base image
+### Size of the base image
 Our base image includes a full command line environment, using a base image with command lines and so on makes the docker image larger than it strictly speaking needs to be. If you wanted to of course you could of course use a different Java base image. There are lots of possible docker base images we could use (some of these are listed in the JIB section of the pom.xml file) but the command line tools in this image allows us to connect to the image and see what's going on internally as well as performing commands.
 
 Later in the Kubernetes labs we will use the capability to run commands to simulate the failure of our microservice and see how Kubernetes handles that.
 
 In a production environment a cut down version of a Java 11 base image would be used, as there wouldn't be the need to work inside the container. Also we'd suggest using the Graal enterprise versions which has native compilation capabilities to produce a single executable with a smaller footprint.
 
+## Handling configuration and other changing items
 
 ### Self contained images
 Initially you might think that the easiest thing to do when creating a docker image is to simply package up all of the configuration into the docker image so it's entirely self contained. The problem with this is that quite often configuration information changes after the image has been built, for example between test and deployment, and creating different images for each configuration is challenging (you may have lots of different configuration options, and may not even be able to define them all) and worse can result in embedding things like database access or other security configuration information into the docker images. This latter is especially critical if you are storing your image on an external or public repository where it can be accessed by anyone !
@@ -347,7 +352,7 @@ Of course if we did that it would also mean we couldn't show you how to use envi
 
 </details>
 
-### Running the services
+## Running the services
 
 To save having to copy and paste (or type !) each time there are scripts runStorefrontLocalExternalConfig.sh and runStockmanagerLocalExternalConfig.sh (in each of the helidon-labs-storefront and helidon-labs-stockmanager directories respectively.)
 
@@ -455,10 +460,10 @@ Of course in a production environment you'd probably have a separate folder cont
 
 </details>
 
-### Pushing your images to a container repository
+## Pushing your images to a container repository
 The docker container images are currently only held locally, that's not good if you want to distribute them or run them in other locations. We can save the images in an external repository, This could be public - e.g. dockerhub.com, private to your organization or in a cloud registry like the Oracle OCIR. Note that if you wanted to there are docker image save and docker image load commands that will save and load image files from a tar ball, but that's unlikely to be as easy to use as a repository, especially when trying to manage distribution across a large enterprise environment.
 
-#### Getting your docker credentials and other information
+### Getting your docker credentials and other information
 
 There are a few details (registry id, authentication tokens and the like) you will need to get before you push your images. 
 
@@ -466,7 +471,7 @@ There are a few details (registry id, authentication tokens and the like) you wi
 
 Your full login name will be a combination of the repository host name (e.g. fra.ocir.io for an Oracle Cloud Infrastructure Registry) the tenancy storage name (for example oractdemeabdmnative) and your username
 
-#### Docker login in to the Oracle Container Image Registry (OCIR)
+### Docker login in to the Oracle Container Image Registry (OCIR)
 
 We need to tell docker your username and password for the registry. 
 
@@ -491,7 +496,7 @@ For example a completed version may look like this (this is only an example, use
 
 Enter the command with **your** details into a terminal in the virtual machine to login to the OCIR.
 
-#### Pushing the images
+### Pushing the images
 
 You need to update **both** of the `repoStockmanagerConfig.sh` and `repoStorefrontConfig.sh scripts` in the helidon-labs-stockmanager and helidon-labs-storefront directories to reflect your chosen details.
 
@@ -647,7 +652,7 @@ Wait for it to start, then in the storefront directory
 - `bash runStorefrontRepo.sh`
 
 
-### Cleaning up
+## Cleaning up
 
 This is the end of this section of the lab, let's stop the running images
 

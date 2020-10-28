@@ -2,11 +2,7 @@
 
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native
-
-## A. Helidon for Cloud Native
-
-## 2. Helidon and Databases
+# Migration of Monolith to Cloud Native - Helidon and Databases
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -18,6 +14,8 @@ This video is an introduction to the Helidon database capabilities lab. Once you
 ---
 
 </details>
+
+## Introduction
 
 <details><summary><b>Introduction to Databases</b></summary>
 
@@ -50,7 +48,7 @@ If you want to understand JPA and JTA in a lot of detail there are courses avail
 
 
 
-### Configuring the project to be personal to you
+## Configuring the project to be personal to you
 For some version of this lab all attendees will are operating on a shared database, updating the same table. To ensure that your work doesn't interfere with other peoples work you need to provide a unique identity for yourself
 
 - In Eclipse, switch to the **helidon-labs-stockmanager** project.
@@ -88,7 +86,7 @@ Please make sure that for now you have **stopped** the **storefront** applicatio
 ---
 
 
-
+## Overview of the classes
 
 ### Quick overview of the database functionality
 The com.oracle.labs.helidon.stockmanager.resources.StockmanagerResource class is the primary class we'll be working with in this lab. If you're not familar with JPA however there are some other classes you should look at.
@@ -211,6 +209,7 @@ Here (to make it clear what's happening) I've used the same name for the path an
 Other possible sources for the params are @QueryParam and @FormsParam. Which one you chose will depend on what the URL you are expecting (or want) to get.
 
 
+## Accessing the database
 
 ### Getting an entity manager
 JPA requires an entity manager to do the work of interacting with the database for us. Historically however that would require code like the following which is in the StockResource constructor.
@@ -448,7 +447,7 @@ javax.persistence.TransactionRequiredException
 
 `TransactionRequiredException` sounds pretty serious, and it is, it's because we're trying to modify the database, and Helidon created entity management knows that this should be done in a transaction. Whenever you modify a database it's a pretty good rule of thumb that you need a transaction to keep things safe and consistent, even when the modification is a single row in a single database.
 
-### Automatic Transactions
+## Automatic Transactions
 We could manually ask the entity manager to start and and transactions, but that's a load of extra code, and the possible paths if there are problems to do the rollback or commit are significant. Let's use the Java Transaction API (JTA) to do it for us.
 
 Fortunately for us all we need is an @Transactional annotation and Heliton will trigger the JTA to manage the transactions for us.
@@ -518,7 +517,7 @@ content-length: 36
 
 It has been committed to the database.
 
-### Creating some data and testing the stockmanager works
+## Creating some data and testing the stockmanager works
 - Restart the stockmanaer.Main 
 
 - Use curl to create some stock items (expect an error on the last one) :
@@ -590,7 +589,7 @@ content-length: 148
 [{"itemCount":100,"itemName":"Book"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":150,"itemName":"Pencil"},{"itemCount":5000,"itemName":"Pin"}]
 ```
 
-### Optional lab - accessing the context of the request
+## Optional lab - accessing the context of the request
 
 There are situations where you need to access the context of a request, for example in getting the identity of the user, or examining in detail the Http headers.
 

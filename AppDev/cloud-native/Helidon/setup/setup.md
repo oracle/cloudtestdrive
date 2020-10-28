@@ -1,12 +1,12 @@
 [Go to Overview Page](../README.md)
 
-![](../../../common/images/customer.logo2.png)
+![](../../../../common/images/customer.logo2.png)
 
 # Migration of Monolith to Cloud Native
 
 ## 1. Configuring the VM hosts file.
 
-To make it easier to switch to the Kubernetes environment we are using hostnames rather than P addresses to locate the various services.
+To make it easier to switch to the Kubernetes environment we are using hostnames rather than IP addresses to locate the various services.
 
 The cloud-native-support project you downloaded during the initial setup has a script that will do this for you.
 

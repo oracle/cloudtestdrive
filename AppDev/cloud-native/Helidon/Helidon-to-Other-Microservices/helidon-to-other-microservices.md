@@ -2,11 +2,7 @@
 
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native
-
-## A. Helidon for Cloud Native
-
-## 3. Communicating between microservcies
+# Migration of Monolith to Cloud Native - Communicating between microservcies
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -18,6 +14,8 @@ This video is an introduction to the Helidon communicating with other REST servi
 ---
 
 </details>
+
+## Introduction
 
 For one thing (person, program etc.) to talk to another it does of course need to talk the same language, in the case of microservices this is generally based on the ideas in REST, which is an **architectural style, not a standard** (Anyone who tries to say that REST is a standard should go read the [Wikipedia REST article](https://en.wikipedia.org/wiki/Representational_state_transfer))
 
@@ -206,7 +204,7 @@ In fact for some code in this lab (e.g. the ItemDetails class) that is common we
 
 </details> 
 
-### Creating the REST client.
+## Creating the REST client.
 It's possible to manually create a REST client using the interface, but it's far better to let Helidon use the @RestClient coupled with @Inject to do this for us. That way we don't have to worry about closing the client to reclaim resources and so on.
 
 - Navigate to the **resources** folder and open the file **StorefrontResource.java**

@@ -2,11 +2,7 @@
 
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native
-
-## A. Helidon for Cloud Native
-
-## 4. Helidon and Open API
+# Migration of Monolith to Cloud Native - Helidon and Open API
 
 This is an optional module for the Helidon lab. It is currently not required that this module be completed to enable other optional modules.
 
@@ -20,6 +16,8 @@ This video is an introduction to the Helidon Open API (ex Swagger) lab. Once you
 ---
 
 </details>
+
+## Introduction
 
 This module is how to get Helidon to self-describe the REST API you are offering. There are several use cases for this, some of those are :
 
@@ -59,7 +57,7 @@ Because running JANDEX can take a lot of time (relatively speaking) you don't wa
 
 </details>
 
-## What we're going to do
+## Annotating the Storefront
 In this module we will be adding annotations to describe the storefront service and the data it consumes and returns. In a production environment you may chose to limit what's documented and restrict it to only the public API elements intended to be seen outside your project (this will of course be up to you how you do this, but in general it's good practice not to document something that can't be seen externally)
 
 You may of course chose to document other services, for example the stockmanager would normally not publicly visible outside the Kubernetes cluster, but you may chose to document it's API to help building internal clients of the service.
@@ -119,7 +117,7 @@ The title, description and version fields are I hope self explanatory
 
 </details>
 
-### Creating the index
+## Creating the index
 Before we can see the updates to the OpenAPI spec we need to build an index of the annotations
 
 Unlike the server processing annotations the OpenAPI processing only operates against a jandex index, and won't scan for OpenAPI annotations in the class files (I'm not sure if this is a bug or a feature)
@@ -691,7 +689,7 @@ This looks much better, we can see the details of the core REST API we want to e
   
 Strictly speaking this is all that you need to be able to use the API from a caller perspective, you know what to send and what to expect in return, but it's not very detailed information, and it doesn't actually tell you much about what those end-points do (of course this is not completely true here because as a good programmer I've tried to use meaningful names.)
 
-### Defining the inputs and outputs
+## Defining the inputs and outputs
 
 We've got basic information on the ItemRequest (and of course full info on ItemDetails as that was documented in a separate project.) let's see how we can document the ItemRequest in more details.
 

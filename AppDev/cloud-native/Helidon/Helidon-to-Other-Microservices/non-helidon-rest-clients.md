@@ -2,11 +2,9 @@
 
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native
+# Migration of Monolith to Cloud Native - Non Helidon clients of a micro service
 
-##  Helidon for Cloud Native
-
-## Non Helidon clients of a micro service
+## Introduction
 
 The RestClient model in Helidon makes it really simple to program access to another micro-service, but sometimes you will be using something that isn't itself a micro-service to talk to a REST endpoint. It may be that you just haven't got round to updating that code to be Helidon based, or perhaps you never intend to. In that case you probably do not want to bring in the entire Helidon MP stack and change the client to being Helidon based !
 
@@ -33,9 +31,9 @@ If you are refactoring your monolith code and only want to move a small part of 
 
 Fortunately for us Helidon does provide a way of doing this without having to deploy the entire Helidon framework and using the Helidon SE RestClientBuilder. Of course other Microprofile implementations also provide a similar package.
 
-### How to do it
+## How to do it
 
-#### Define the service interface
+### Define the service interface
 
 You need to define the interface for your micro-service, in the same way as you would for any other Helidon micro-service. Hopefully you have done this as part of process of building the micro-service and can just import the project containing the interface into your client project, though for some microservice purists this is regarded as being bad, as really the "contract" should not be in code shared code (which makes it difficult to independently update the client and server) but in the endpoints and data model. The code below is the interface definition for the StockManager micro-service we have already been using. The annotations are the same as building the interface for use with MP, the server side annotations like @ApplicationScoped will be ignored by the rest client builder, and as we are using the Helidon SE code so will the Helidon MP specific annotations like RegisterRestClient
 
@@ -61,7 +59,7 @@ public interface StockManager {
 
 ```
 
-#### Create the client
+### Create the client
 
 The Helidon SE rest client library let's us create a proxy based in the interface programmatically. Ultimately this is what the Helidon MP annotations do under the covers. For example
 
@@ -111,10 +109,10 @@ Looking at the code you'll see that the filter method is the key functionality, 
 
 Here I'm defining and creating an instance of the class, but you could of course use a Lambda to do this if you liked. Equally while here I'm using constants to get the details you would normally get them from a configuration file or some other mechanism.
 
-#### Additional information
+### Additional information
 The full specification of the [RestClient for Microprofile implementations](https://download.eclipse.org/microprofile/microprofile-rest-client-1.3/microprofile-rest-client-1.3.html) defined all of the capabilities. Very useful capabilities to help minimize code changes in your existing client are exception mappers
 
-##### Response Exception Mapping
+#### Response Exception Mapping
 The ResponseExceptionMappers take the response returned and if it's not what's expected convert it into the appropriate exception, for example if your client is trying to retrieve some data and expects a `ItemNotFoundException` to be thrown if the data is not found just define and register a ResponseExceptionMapper so if the micro-service returns a http 404 (not found) code the mapper identifies it and throws a `ItemNotFoundException`
 
 ### Required libraries
