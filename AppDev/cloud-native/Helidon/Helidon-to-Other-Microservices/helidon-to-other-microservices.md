@@ -175,7 +175,7 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 The annotation tells Helidon that this is something that can be used as a REST client, the configKey parameter to the annotation tells Helidon that the configuration settings (URL to use and so on) will be in the configuration properties with property names starting with StockManager.  
 
-If we didn't specify a configuration key the fully qualifies class name would be used for the start of the properties, in this case com.oracle.labs.helidob.storefront.resources.StorefronResource.
+If we didn't specify a configuration key the fully qualifies class name would be used for the start of the properties, in this case com.oracle.labs.helidon.storefront.restclients.StockManager.
 
 As the URL and so on is pretty standard they are defined in the microprofile-config.properties file in src/main/resources These are the relevant lines
 

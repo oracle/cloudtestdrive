@@ -205,7 +205,7 @@ import org.eclipse.microprofile.metrics.annotation.Counted;
 
 The counter will increment each time the method is called, but will not decrement when it's exited. If you wanted to have a particular method report how many threads were currently in it (perhaps to determine when resource limits may be reached) you'd use `@ConcurrentGauge` which would decrement the counter when a thread left the method giving the number of threads in a method.
 
-A note on names, the default name for a counter is based on the class and method, that can be long (as we'll see in the output soon) but you can override the default name and for counters on *methods* you can specify a name for the counter E.g. `@Counted(names="MyListCounter")` This makes the output easier to understand, but do please chose a sensible name. You can also specify a description of the counter and help text if you like (examples of system generated versions are below)
+A note on names, the default name for a counter is based on the class and method, that can be long (as we'll see in the output soon) but you can override the default name and for counters on *methods* you can specify a name for the counter E.g. `@Counted(name="MyListCounter")` This makes the output easier to understand, but do please chose a sensible name. You can also specify a description of the counter and help text if you like (examples of system generated versions are below)
 
 That's it, you don't need to do anything else, Helidon will automatically generate a set of counters for all of the requests it processes.
 
@@ -261,7 +261,7 @@ The `base` data e.g.
 # HELP base:classloader_current_loaded_class_count Displays the number of classes that are currently loaded in the Java virtual machine.
 base:classloader_current_loaded_class_count 8181
 ```
-is core data about the operation of the JVM, this is the kind of data you care about if you want to do things like customize the garbage collector (though I recommend never doign that as nowadays it's highly adaptive and will do a way better job at figuring out how it should behave than you'll ever do)
+is core data about the operation of the JVM, this is the kind of data you care about if you want to do things like customize the garbage collector (though I recommend never doing that as nowadays it's highly adaptive and will do a way better job at figuring out how it should behave than you'll ever do)
 
 The requests under the `vendor` section relate to the Helidon frameworks operation
 
@@ -421,7 +421,7 @@ The *absolute=true* on the meter means that the class name won't be prepended, i
 
 
 - Now **restart** the **storefront** and make a few calls
--  `curl -i -X GET -u jill:password http://localhost:8081/store/stocklevel`
+-  `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
 
 ```
 HTTP/1.1 200 OK
