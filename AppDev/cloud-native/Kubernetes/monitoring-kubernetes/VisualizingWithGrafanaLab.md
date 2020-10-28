@@ -9,16 +9,15 @@
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
+
 
 This video is an introduction to the Visualizing metrics with Grafana lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Visualizing metrics with Grafana lab Introduction Video](https://img.youtube.com/vi/upAhbUQ0K7s/0.jpg)](https://youtu.be/upAhbUQ0K7s "Visualizing metrics with Grafana lab introduction video")
 
-</p>
-</details>
-
 ---
+
+</details>
 
 ### **Introduction**
 
@@ -179,7 +178,7 @@ In the URL field we need to enter the details we got then we installed prometheu
 
 - Scroll down and click the **Save & Test** button at the bottom of the screen. 
 
-![grafana-configure-prometheus-data-source-save-and-test/images/grafana-configure-prometheus-data-source-save-and-test.png)
+![grafana-configure-prometheus-data-source-save-and-test](images/grafana-configure-prometheus-data-source-save-and-test.png)
 
 Assuming you entered the details correctly it will report that it's done the save and that the data source is working
 
@@ -478,6 +477,7 @@ The dashbaords will be imported (there will be a quick "I'm doing an import" mes
 
 ![grafana-prometheus-stats-dashboard](images/grafana-prometheus-stats-dashboard.png)
 
+---
 
 ## Tidying up the environment
 

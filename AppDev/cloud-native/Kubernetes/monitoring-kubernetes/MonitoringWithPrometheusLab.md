@@ -8,16 +8,15 @@
 ## Optional 1a. Monitoring with Prometheus
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
+
 
 This video is an introduction to the Monitoring microservcies with Prometheus lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Gathering metrics with Prometheus lab Introduction Video](https://img.youtube.com/vi/qnDzZ2eOy0E/0.jpg)](https://youtu.be/qnDzZ2eOy0E "Gathering metrics with Prometheus lab introduction video")
 
-</p>
-</details>
-
 ---
+
+</details>
 
 ### **Introduction**
 
@@ -56,7 +55,7 @@ To separate the monitoring services from the  other services we're going to put 
 ### Prometheus
 
 <details><summary><b>Older versions of Kubernetes than 1.17.9</b></summary>
-<p>
+
 We assume you are using Kubernetes 1.17.9 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the version of the prometheus helm charts (11.12.1 at the time of writing) were found to work. If you were using an older version of Kubernetes you may need to specify a particular version of the helm chart as follows :
 
 Kubernetes 1.16.9 Promteheus helm chart 11.6.8 worked for us
@@ -67,9 +66,9 @@ Kubernetes 1.14.8 Prometheus helm chart 9.7.1 worked for us
 
 To specify a specific older version use the version keyword in your help command, e.g. `--version 9.1.0`
 
-</p></details>
+---
 
-\---
+</details>
 
 Installing Prometheus is simple, we just use helm.
 
@@ -124,7 +123,7 @@ For more information on running Prometheus, visit:
 https://prometheus.io/
 ```
 
-Note the name given to the Prometheus server within the cluster, in this case `prometheus-server.monitoring.svc.cluster.local`  and also the alert manager's asigned name, in this case `prometheus-alertmanager.monitoring.svc.cluster.local`
+Note the name given to the Prometheus server within the cluster, in this case `prometheus-server.monitoring.svc.cluster.local`  and also the alert manager's assigned name, in this case `prometheus-alertmanager.monitoring.svc.cluster.local`
 
 The Helm chart will automatically create a couple of small persistent volumes to hold the data it captures. If you want to see more on the volume in the dashboard (namespace monitoring) look at the Config and storage section / Persistent volume claims section, chose the prometheus-server link to get more details, then to locate the volume in the storage click on the Volume link in the details section) Alternatively in the Workloads / Pods section click on the prometheus server pod and scroll down to see the persistent volumes assigned to it.
 
@@ -146,7 +145,7 @@ prometheus-server               LoadBalancer   10.96.216.217   132.145.227.187  
 
 On the `prometheus-server` line you can see the external IP address the load balancer has allocated. In this case it's 132.145.227.187, but of course that will differ in your environment.
 
-If the external IP is <pending> then Kubernetes is still starting the Prometheus environment. Wait a short while (a few mins) and try again.
+If the external IP is `<pending>` then Kubernetes is still starting the Prometheus environment. Wait a short while (a few mins) and try again.
 
 Let's go to the service web page
   - In your web browser open up (replace <Ip address> with the IP you got **for the prometheus server**)
@@ -471,7 +470,7 @@ The graph is also a lot more interesting, especially if we enabled the stacked m
 
 ![prometheus-list-stock-timer-quantile-graph](images/prometheus-list-stock-timer-quantile-graph.png)
 
-It's not possible to show in a static window but as you move your mouse over the legend the selected data is highlighted, and if you click on a line in the legend only that data is displayed.
+It's not possible to show in a static screen grab but in your browser as you move your mouse over the legend the selected data is highlighted, and if you click on a line in the legend only that data is displayed.
 
 Prometheus has a number of mathematical functions we can apply to the graphs it produces, these are perhaps not so much use if there's only a single pod servicing requests, but if there are multiple pods all generating the same statistics (perhaps because of a replica set providing multiple pods to a service for horizontal scaling) then when you gather information such as call rates (the  `application_listAllStockMeter_one_min_rate_per_second` metric) instead of just generating and displaying the data per pod you could also generate data such as `sum(application_listAllStockMeter_one_min_rate_per_second)` which would tell you the total number of requests across ***all*** the pods providing the service.
 
@@ -486,7 +485,7 @@ Prometheus was not designed to be a high end graphing tool, the graphs cannot fo
 
 If you are going to do the [Visualizing with Gafana module](VisualizingWithGrafanaLab.md) please do **not** do the following, but [click here](VisualizingWithGrafanaLab.md) or click the back button on your browser to return to the main [Kubernetes labs document.](../Kubernetes-labs.md) 
 
-** ONLY** do the following if you no longer want the Prometheus environment. **DO NOT** do this if you are planning on running the Visualising with Grafana module.
+**ONLY** do the following if you no longer want the Prometheus environment. **DO NOT** do this if you are planning on running the Visualising with Grafana module.
 
 If you are in a trial tenancy there are limitations on how many Load Balancers and other resources you can have in use at any time, and you may need them for other modules. The simplest way to release the resources used in his module (including the load balancer) is to delete the entire namespace.
 

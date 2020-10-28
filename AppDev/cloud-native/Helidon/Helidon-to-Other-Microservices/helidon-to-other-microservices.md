@@ -9,16 +9,15 @@
 ## 3. Communicating between microservcies
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
+
 
 This video is an introduction to the Helidon communicating with other REST services lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Helidon communication to other REST services capabilities lab Introduction Video](https://img.youtube.com/vi/IZnlF6lhfNA/0.jpg)](https://youtu.be/IZnlF6lhfNA "Helidon communication to other REST services lab introduction video")
 
-</p>
-</details>
-
 ---
+
+</details>
 
 For one thing (person, program etc.) to talk to another it does of course need to talk the same language, in the case of microservices this is generally based on the ideas in REST, which is an **architectural style, not a standard** (Anyone who tries to say that REST is a standard should go read the [Wikipedia REST article](https://en.wikipedia.org/wiki/Representational_state_transfer))
 
@@ -26,7 +25,7 @@ REST is generally implemented using http(s) as the transport using XML or JSON t
 
 
 <details><summary><b>Implementing communications (historically)</b></summary>
-<p>
+
 
 Historically much of the work on creating REST based microservice frameworks in Java has concentrated on the server side. Creating the client side connection has required the developer to create the connection themselves. For example the following.
 
@@ -87,9 +86,14 @@ private void deleteItem(String itemName) {
 ```
 We could of course build a class ourselves that has a delete method that does the REST work in the class, but that's just pushing it down a layer !
 
+
+---
+
+</details>
+
 **RestClients**
 
-Fortunately for us Eclipse Microprofile have created a solution for this in a manner that results in minimal code changes to your logic.
+Fortunately for us Eclipse Microprofile have created a solution for communicating between microservices (and non microservices for that matter) in a manner that results in minimal code changes to your code.
 
 Best software development practice is to to follow the [loose coupling design patterns](https://en.wikipedia.org/wiki/Loose_coupling) so that the caller can't see the details of the implementation. In Java this is achieved using interfaces, so a developer created an interface for externally use that defines the functionality and then a separate class the implements it, this is especially true if your class is in a library class or a different package.
 
@@ -102,13 +106,6 @@ With Helidon and the Rest Client functionality all we need to do is to annotate 
 ```
 
 We don't need to change any of our code that uses the interface at all, and Helidon creates the RestClient proxy to do all of the network activities for us automatically!
-
-</p></details>
-
----
-
-
-
 
 
 Let's do this for real. 
@@ -159,7 +156,6 @@ public interface StockManager {
 ---
 
 <details><summary><b>Java Imports</b></summary>
-<p>
 
 You may need to add the following imports to the class
 
@@ -169,9 +165,10 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 ```
 
 ---
-</p></details>
 
-<details><summary><b>Details on the annotations</b></summary><p>
+</details>
+
+<details><summary><b>Details on the annotations</b></summary>
 
 The annotation tells Helidon that this is something that can be used as a REST client, the configKey parameter to the annotation tells Helidon that the configuration settings (URL to use and so on) will be in the configuration properties with property names starting with StockManager.  
 
@@ -197,9 +194,9 @@ As you can probably guess this is for the REST client com.oracle.labs.helidon.st
 
 ---
 
-</p></details>
+</details>
 
-<details><summary><b>Why is this interface in this project ? </b></summary><p>
+<details><summary><b>Why is this interface in this project ? </b></summary>
 
 Good question, best practice is that normally you would define code like the interface which is common to multiple projects in a separate project and both the StockManager and Storefront projects would import it. This also allows you to properly use the Java modules.
 
@@ -207,7 +204,7 @@ In fact for some code in this lab (e.g. the ItemDetails class) that is common we
 
 ---
 
-</p></details> 
+</details> 
 
 ### Creating the REST client.
 It's possible to manually create a REST client using the interface, but it's far better to let Helidon use the @RestClient coupled with @Inject to do this for us. That way we don't have to worry about closing the client to reclaim resources and so on.
@@ -234,7 +231,6 @@ Result:
 ```
 
 <details><summary><b>Java Imports</b></summary>
-<p>
 
 You may need to add the following import to the class
 
@@ -243,7 +239,8 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 ```
 
 ---
-</p></details>
+
+</details>
 
 Now when the StorefrontResource class is initialized the Helidon runtime will dynamically create (if needed, or use an existing instance as appropriate depending on the scope) a proxy implementation that looks like the interface, but under the covers does all of the work to make the REST calls and process the response into the returned objects.
 
@@ -265,11 +262,40 @@ content-length: 148
 
 [{"itemCount":5000,"itemName":"pin"},{"itemCount":150,"itemName":"Pencil"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":100,"itemName":"Book"}]
 ```
-<details><summary><b>Got an error ?</b></summary><p>
+<details><summary><b>Got an error ?</b></summary>
+
 It's possible that the services may take longer to do their initial initialization that the timeouts. (The initialization is done on demand) If this happens you may get an error. Wait a short while and retry, hopefully the initialization will have been completed then.
-</p></details>
+
+---
+
+</details>
 
 We have now got the data back from the database itself. Our client is working, and with very little effort !
+
+<details><summary><b>Async requests</b></summary>
+
+You may have noticed the delay in the request, if you try the request again it's much faster, this is because the second time all of the lazy initialization will have been done. But in some cases it may be that every call to a request takes a long time (perhaps it's getting data from a real physical device !) which may leave the client execution blocked until the request completes.
+
+One solution to this is to make the request, then go and do something else while waiting for the response. We're not going go to into detail on this, but the REST client supports the use of async operations by having the returned object not be the actual object (which would require the entire call sequence to have completed) but a object of type `CompletionStage`. 
+
+The CompletionStage objects are created by the framework on the client side, so the response is much faster, and by looking into the CompletionStage object it's possible to determine if the call has finished, and if so what the result was. If you want you can register code to be run independently when the CompletionStage finishes (or the process errors.) See the [CompletionStage JavaDoc](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html) for more details.
+
+---
+
+</details>
+
+<details><summary><b>How does the authentication transfer ?</b></summary>
+
+You may be wondering about the authentication here. When we made the curl call we specified the usersername and password, but that was to the storefront service. None of our code event sees the user name / password, that's all done by the framework, so how can it be passed on to the stockmanager service (which if it didn't get the username and password would have thrown a 401 Unauthorized error.
+
+The solution to this is another reason why using Helidon (or other microprofile based frameworks) is exceptionally useful. Helidon automatically extracts the authorization data for us when it received the storefront request. That information is held within the framework as part of the request and when the subsequent requests are made via the REST Client is till automatically add the authentication data for us. Thus the users information is propagated throughout the sequence of requests.
+
+This is why we've used the same user credentials, and in a production environment you'd use the same security system across both services.
+
+---
+
+</details>
+
 
 ### Talking to non Helidon REST services
 If you have a non Helidon micro-service and want to talk to it from a Helidon MP client just create an appropriate interface to represent the REST service and then follow the approach above to create the proxy implementations of the interface and use it.
@@ -282,31 +308,6 @@ We've put together a short document on how to [manually create a rest client](no
 
 ---
 
-<details><summary><b>Async requests</b></summary>
-<p>
-You may have noticed the delay in the request, if you try the request again it's much faster, this is because the second time all of the lazy initialization will have been done. But in some cases it may be that every call to a request takes a long time (perhaps it's getting data from a real physical device !) which may leave the client execution blocked until the request completes.
-
-One solution to this is to make the request, then go and do something else while waiting for the response. We're not going go to into detail on this, but the REST client supports the use of async operations by having the returned object not be the actual object (which would require the entire call sequence to have completed) but a object of type `CompletionStage`. 
-
-The CompletionStage objects are created by the framework on the client side, so the response is much faster, and by looking into the CompletionStage object it's possible to determine if the call has finished, and if so what the result was. If you want you can register code to be run independently when the CompletionStage finishes (or the process errors.)
-
-</p></details>
-
----
-
-<details><summary><b>How does the authentication transfer ?</b></summary>
-<p>
-
-
-You may be wondering about the authentication here. When we made the curl call we specified the usersername and password, but that was to the storefront service. None of our code event sees the user name / password, that's all done by the framework, so how can it be passed on to the stockmanager service (which if it didn't get the username and password would have thrown a 401 Unauthorized error.
-
-The solution to this is another reason why using Helidon (or other microprofile based frameworks) is exceptionally useful. Helidon automatically extracts the authorization data for us when it received the storefront request. That information is held within the framework as part of the request and when the subsequent requests are made via the REST Client is till automatically add the authentication data for us. Thus the users information is propagated throughout the sequence of requests.
-
-This is why we've used the same user credentials, and in a production environment you'd use the same security system across both services.
-
-</p></details>
-
----
 
 
 ### End of the lab

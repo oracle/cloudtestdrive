@@ -9,16 +9,15 @@
 ## 5. Supporting cloud native operations with Helidon
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
+
 
 This video is an introduction to the Helidon cloud native support lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Helidon cloud native support lab Introduction Video](https://img.youtube.com/vi/vPSphbTg1MQ/0.jpg)](https://youtu.be/vPSphbTg1MQ "Helidon cloud native support lab introduction video")
 
-</p>
-</details>
-
 ---
+
+</details>
 
 Most cloud native platforms (and Kubernetes in particular) need to know if a microservices is running at all, if it's capable of responding to requests and if it has access to all the dependent services it needs to operate. In the event that these conditions are not fulfilled the cloud native platform will take steps like re-starting a microservice instance, or stopping sending it requests for a short while.
 
@@ -63,7 +62,6 @@ public class LivenessChecker implements HealthCheck {
 ```
 
 <details><summary><b>Java Imports</b></summary>
-<p>
 
 You may need to add the following import to the class
 
@@ -72,7 +70,8 @@ import org.eclipse.microprofile.health.Liveness;
 ```
 
 ---
-</p></details>
+
+</details>
 
 Because this implements the HealthCheck interface it must provide a implementation of the call() method which returns a HealthCheckResponse, this is at the end of the method. Please ignore the section of code that looks for a `/frozen` file, that is there to support exploring Liveness in the Kubernetes labs (and would not be in a production deployment !)
 
@@ -86,19 +85,18 @@ Because this implements the HealthCheck interface it must provide a implementati
 	}
 ```
 
-<details><summary><b>What is a Liveliness check?</b></summary>
-<p>
+<details><summary><b>What should I do in a Liveliness check?</b></summary>
+
 
 What you actually do in the liveness check requires careful consideration. It should not be to complex or use a lot of resources, because that in itself will reduce the resources available to process real requests. Yet the liveness check must also ensure that it actually tests something useful, there's no point in just returning "OK" if you don't actually test the operation of the microservice.
 
-THe Liveness check we have here is **not** one that you would use in production. While it does test the web service part of the Helidon stack it doesn't check the correct operation of the storefront. However the storefont is pretty simple so there's not really much that could be tested.
+The Liveness check we have here is **not** one that you would use in production. While it does test the web service part of the Helidon stack it doesn't check the correct operation of the storefront. However the storefont is pretty simple so there's not really much that could be tested.
 
 As another reason this particular Liveness checker is not production ready in that it's actually implemented so we can create a fake scenario where the system is not responding to a Liveness check if the file /frozen exists. This is provided so we can demonstrate how Kubernetes will behave in the event that a Liveness check does fail. Obviously in a production system you're not going to be doing that.
 
-</p></details>
-
 ---
 
+</details>
 
 
 - Save the changes and **restart** the application. 
@@ -126,21 +124,19 @@ There is of course a lot of other data that Kubernetes could use, for example to
 
 ### Readiness
 <details><summary><b>Intro on Readiness</b></summary>
-<p>
+
 
 If an application crashes then clearly the solution is to restart it, and in basically most cases if it's in deadlock the only option is to restart, so cloud native platforms like Kubernetes do just that in those situations. 
 
 There is however a different situation where a microservice itself can be behaving just fine, but it can't actually process requests because a service it depends on is for some reason not available. In many situations the downstream service will likely become available again - perhaps there has been a temporary network issue. 
 
-In this situation restarting the higher level microservice won-t solve the problem, if the downstream service is unavailable doing a restart of the upstream service won't solve that problem, and the restart will place unneeded load on the environment.
+In this situation restarting the higher level microservice wont actually solve the problem, if the downstream service is unavailable doing a restart of the upstream service wont solve that problem, and the restart will place unneeded load on the environment.
 
-Readiness is a way to let the microservices runtime determine if a service has everything it needs to respond to requests. Helidon has a build in configuration to offer a readiness response to platforms like Kubernetes, but like Liveness you need to look at the actual implementation carefully, you don't want to be making expensive calls to the downstream service, but equally you want to make sure that it is responding. In particular if the downstream service does become ready again your readiness checker needs to return to reflecting that in the readiness response it generates.
-
-</p></details>
+Readiness is a way to let the microservices runtime determine if a service has everything it needs to respond to requests. Helidon has a build in configuration to offer a readiness response to platforms like Kubernetes, but like Liveness you need to look at the actual implementation carefully, you don't want to be making expensive calls to the downstream service, but equally you want to make sure that it is responding. In particular if the downstream service does become ready again your readiness checker needs to update it's response, reflecting that it is now ready to process requests again.
 
 ---
 
-
+</details>
 
 - In the storefront project navigate to the package **com.oracle.labs.helidon.storefront.health** Open the file **ReadinessChecker.java**
 - Add the following annotation to the class ReadinessChecker
@@ -154,7 +150,6 @@ public class ReadinessChecker implements HealthCheck {
 ```
 
 <details><summary><b>Java Imports</b></summary>
-<p>
 
 You may need to add the following import to the class
 
@@ -163,7 +158,8 @@ import org.eclipse.microprofile.health.Readiness;
 ```
 
 ---
-</p></details>
+
+</details>
 
 - Save your changes and **restart** the storefront
 
@@ -224,12 +220,9 @@ As the stockmanager is now up the storefront has it's dependencies satisfied and
 ### End of the lab
 You have finished all the labs in this initial section **A. Helidon**.  
 
-If you wich you can now do the [optional labs in the Helidon section](../Helidon-labs.md)
+If you wish you can now do the [optional labs in the Helidon section](../Helidon-labs.md)
  
-If you don;t want to do those labs then if you are doing the full set of labs you can now start working on Section [B. Using Docker](../../Docker/DockerLabs.md)
-
-
-
+If you don't want to do those labs then if you are doing the full set of labs you can now start working on Section [B. Using Docker](../../Docker/DockerLabs.md)
 
 
 ---

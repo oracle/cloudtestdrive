@@ -9,16 +9,14 @@
 ## 4. Helidon and operations
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
 
 This video is an introduction to the Helidon operations support lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Helidon operations support lab Introduction Video](https://img.youtube.com/vi/MF7LaX0nH-o/0.jpg)](https://youtu.be/MF7LaX0nH-o "Helidon operations support lab introduction video")
 
-</p>
-</details>
-
 ---
+
+</details>
 
 One thing that many developers used to forget is that once they have finished writing code it still has to run and be maintained. With the introduction of DevOps a lot of developers suddenly found they were the ones being woken up in the middle of the night to fix problems in their code. That changes the perception somewhat and now many developers are acutely aware that they will have ongoing involvement in the code well after the time it compiles cleanly and passed the text suite.
 
@@ -40,13 +38,25 @@ Firstly we need to deploy a tracing engine, Helidon supports several tracing eng
 In the VM you have docker installed and running, so to start zipkin:
 
 - Open a terminal on your Linux desktop
-- Run the following command to start Zipkin in a container:
-  - `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin`
+- Run the following command in a terminsl of your VM to start Zipkin in a container:
+  - `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin:2.22.0`
 
 ```
 Starting zipkin docker image in detached mode
 d12b253c50b7793ca8e3eb64658efead336fa3880d3df040f12152b57347f067
 ```
+
+<details><summary><b>What's with the number after the image name ?</b></summary>
+
+Docker images are tagged to help identify specific versions of an image. This let's us know which version we are dealing with. If you don't specify a version then the latest image is used.
+
+There are many reasons why you may want to specify a version number, for example you may want to know that the image will not change on you and exhibit unexpected behavior. In the case of this lab we don't want the UI images you see to change without us knowing it and suddenly be different from those in the instructions. Of course that could also apply to other changes, an API may have changed in a different version and literally your code can't talk to it !
+
+Other reasons may be that you are in an industry like the aerospace sector or finance industry where you have to maintain rigid version controls for regulatory reasons.
+
+---
+
+</details>
 
 - Now open a browser in the **Virtual machine desktop** 
 - Navigate to : http://localhost:9411/zipkin/ 
@@ -189,19 +199,18 @@ public class StorefrontResource {
 ```
 
 <details><summary><b>Java Imports</b></summary>
-<p>
 
 You may need to add the following import to the class
 
 ```java
 import org.eclipse.microprofile.metrics.annotation.Counted;
 ```
-
 ---
-</p></details>
+
+</details>
 
 <details><summary><b>Details on the annotation</b></summary>
-<p>
+
 
 The counter will increment each time the method is called, but will not decrement when it's exited. If you wanted to have a particular method report how many threads were currently in it (perhaps to determine when resource limits may be reached) you'd use `@ConcurrentGauge` which would decrement the counter when a thread left the method giving the number of threads in a method.
 
@@ -209,18 +218,17 @@ A note on names, the default name for a counter is based on the class and method
 
 That's it, you don't need to do anything else, Helidon will automatically generate a set of counters for all of the requests it processes.
 
-</p></details>
+---
+
+</details>
 
 <details><summary><b>What's with all the metrics starting `application_ft` ?</b></summary>
-<p>
 
 In an earlier lab we setup a fall back on the listAllStock and reserveStock methods. The fault tolerance system will automatically create metrics to determine how often fault are encountered, time taken and so on.
 
-</p></details>
-
 ---
 
-
+</details>
 
 - Restart the storefront service.
 - Now look at the metrics endpoint :
@@ -252,7 +260,7 @@ vendor:requests_meter_fifteen_min_rate_per_second 0.0
 It'a **lot** of data, but it's broken up into sections.
 
 <details><summary><b>Diving into the tracing details</b></summary>
-<p>
+
 
 The `base` data e.g. 
 
@@ -296,11 +304,9 @@ These are generated automatically because we've enabled fault tolerance, the ft_
 
 As we only just restarted the storefront it's not a surprise that these are all zero.
 
-</p></details>
-
 ---
 
-
+</details>
 
 
 ### Limiting the output
@@ -403,7 +409,6 @@ Result:
 ```
 
 <details><summary><b>Java Imports</b></summary>
-<p>
 
 You may need to add the following imports to the class
 
@@ -413,7 +418,9 @@ import org.eclipse.microprofile.metrics.annotation.Timed;
 ```
 
 ---
-</p></details>
+
+</details>
+
 Note that here we are naming our Counter, timer and metrics, we can do this as we are doing it on the method, This will make finding the details easier.
 
 The *absolute=true* on the meter means that the class name won't be prepended, it will just be called listAllStockMeter 

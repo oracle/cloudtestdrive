@@ -7,20 +7,19 @@
 ## A. Helidon for Cloud Native
 
 ## 4. Helidon and Open API
-This is an optional module for the Helidon lab, but you will need to complete it if you are going to run the API Gateway section of the cloud infrastructure lab
 
+This is an optional module for the Helidon lab. It is currently not required that this module be completed to enable other optional modules.
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
+
 
 This video is an introduction to the Helidon Open API (ex Swagger) lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Helidon Open API lab Introduction Video](https://img.youtube.com/vi/A_gVG2cb308/0.jpg)](https://youtu.be/A_gVG2cb308 "Helidon Open APIlab introduction video")
 
-</p>
-</details>
-
 ---
+
+</details>
 
 This module is how to get Helidon to self-describe the REST API you are offering. There are several use cases for this, some of those are :
 
@@ -31,7 +30,7 @@ This module is how to get Helidon to self-describe the REST API you are offering
 3/ You can't find the documentation for a service, or it is a service where you have the jar file, but the documentation was on a since removed website and not even the internet archive can help !
 
 4/ You want to automatically create client code based on the API (or server code, but that gives rise to an initial Catch 22 situation)
- 
+
 To address this the idea of self describing API end points was developed, originally this was developed by an application having a "well known" URL that just returned a manually maintained text document that was distributed as part of the jar file. It then evolved into machine readable data formats, for example the Swagger REST API description format based on JSON, which has since been donated to the community under the name Open API and is now the de-facto data format. For a more detailed history see the Wikipedia [Open API page.](https://en.wikipedia.org/wiki/OpenAPI_Specification)
 
 OpenAPI describes the data format, but there has also been the development of tooling and programming approaches to the automatic runtime generation of the OpenAPI data based on information in the source code. This means that the OpenAPI docuemntation delivered by the service is automatically in sync with the actuall code of the service itself.
@@ -41,6 +40,7 @@ In the case of Microprofile (and this Helidon as a Microprofile implementation) 
 ## Defining the API documentation in your code
 
 <details><summary><b>A Note on annotation processing and jandex</b></summary>
+
 When a system like Helidon MP runs the annotations you've applied to your code need to be identified so they can be processed. This is done automatically for you by the runtime, and annotation processors are called to perform whatever actions you have specified (e.g. setting up a start / stop on a timer on entry / exit form a method)
 
 There are two ways to identify the annotations in your code:
@@ -54,9 +54,10 @@ In general the costs of building and storing an index are way smaller than those
 To build the index Heldion uses a tool called jandex (Java ANnotaiton inDEXer) to build the index, This is done for you automatically when you package a service, but the OpenAPI code for some reason only seems to search the jandex index file, and not scan the code. This is why you will be running the maven build target process-classes later on.
 
 Because running JANDEX can take a lot of time (relatively speaking) you don't want to run it each time you make a change to a source code file in Eclipse, so it needs to be specifically run to generate the index when operating in Eclipse. We will shortly see how that is done.
-</p></details>
 
 ---
+
+</details>
 
 ## What we're going to do
 In this module we will be adding annotations to describe the storefront service and the data it consumes and returns. In a production environment you may chose to limit what's documented and restrict it to only the public API elements intended to be seen outside your project (this will of course be up to you how you do this, but in general it's good practice not to document something that can't be seen externally)
@@ -96,7 +97,7 @@ public class StorefrontApplication extends Application {
 ```
 
 <details><summary><b>Java Imports</b></summary>
-<p>
+
 
 You may need to add the following import to the class
 
@@ -105,17 +106,18 @@ import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
 ```
 
 ---
-</p></details>
+
+</details>
 
 <details><summary><b>Explanation of the annotations</b></summary>
-<p>
 
 The `@OpenAPIDefinition` indicates that this is defining the API top level details for this project. The `@Info` is an annotation that defines what that information actually is.
 
 The title, description and version fields are I hope self explanatory 
-</p>
-</details>
+
 ---
+
+</details>
 
 ### Creating the index
 Before we can see the updates to the OpenAPI spec we need to build an index of the annotations
@@ -291,8 +293,9 @@ paths:
 
 If you just saw the basic info that was returned when you initially did a curl to this URN the probability is that you hadn't completed the maven build on the process-class goal before you re-started the storefront service. Stop the storefront service, make sure you've correctly run and finished the maven build on the process-class goal and the console reports that the jandex has run and the build has been a success, then re-start the storefront application.
 
-</p></details>
 ---
+
+</details>
 
 #### What does this output mean ?
 In summary it means that adding the @OpenAPIDefinition triggered Helidon to scan the jandex index for classes references by the application, looking for REST endpoints (@GET, @POST etc. annotations.) Helidon then builds a OpenAPI document that returns the YAML description. Note that the precise order of the major sections may change (it depends on the order the annotations are processed) so you may see the `components:` section before or after the `info: or `path` section
@@ -348,7 +351,10 @@ To speed up the lab I've already provided the OpenAPI annotations to the ItemDet
 The helidon-labs-common project defines the ItemDetails class, and jandex was run on that package to produce its own jandex.idx file when that package was built and installed into the Maven repository. 
 
 Helidon will scan for jandex.idx files across multiple jar files, and bring in the annotations from all of them. The classes in those files that are referenced by the service REST API will be included in the OpenAPI documentation as required.
-</p></details>
+
+---
+
+</details>
 
 The `openapi: 3.0.1` simply defines what version of the OpenAPI document specification this document conforms to.
 
@@ -411,6 +417,7 @@ paths:
 The `paths:` section defines the REST endpoints offered by the service, in this case `/minimumChange`, `/status`, `/store/reserveStock` and `/store/stocklevel` for each path it defines the method used (`get`, `post`) the parameters to the request and the response. Thus we can see that the /store/stocklevel path returns an array of ItemDetails objects.
 
 <details><summary><b>Want the output in JSON ?</b></summary>
+
 Helidon can generate the OpenAPI document in yaml (the default) or in JSON. To generate JSON use the Accept header.
  - In a terminal window type:
 
@@ -560,8 +567,10 @@ content-length: 2964
 ```
 
 For the rest of the lab documentation I'm going to stick with yaml as it's a bit shorter, but feel free to use JSON if you prefer.
-</b></details>
+
 ---
+
+</details>
 
 
 ### To many paths, how do we hide private ones ?
@@ -574,15 +583,33 @@ This has given us the entire API, but the /status is probably not relevant to ex
  
 This tells Helidon to ignore any paths it finds in the StatusResource and ConfigurationResource classes when generating the Open API document.
 
+<details><summary><b>What about the Rest Client interfaces ? They have matching annotations </b></summary>
+
+Many microservices also talk to other microservcies, and so their code may include interfaces representing those microservices.  Those annotations may of course include annotations that make it look as it they are a REST endpoint, for example the interface will have `@Path` annotations. Of course you don't want them to be included in the OpenAPI speci of your service (they are after all internal implementation details, not part of your public API.) 
+
+Fortunately Helidon's OpenAPI implementation will automatically ignore any interfaces annotated with RegisterRestClient so you don't have to exclude those by hand. You may have noticed that you haven't seen anything relating to the StockManager interface in the OpenAPI output.
+
+---
+
+</details>
+
 <details><summary><b>Other configuration settings for OpenAPI</b></summary>
+
 The Helidon runtime supports a large number of configuration settings that can be used to control the generation of the OpenAPI document, this include the ability to specify packages as well as classes to include / exclude, or if you need finer grained control you can even define filter and model classes that chose exactly which paths will be included or removed. 
 
 See the OpenAPI documentation (link at the bottom of this module) for the full details. 
-</b></details>
+
+---
+
+</details>
 
 <details><summary><b>Why use the microprofile-config.properties file</b></summary>
+
 It is of course possible to apply this exclusion in any of the config files, but this is an example of a setting that as a developer you probably want to have applied by default in every deployment, after all you're suppressing internal information. The microprofile-config.properties file is embedded into the class path, so that will ensure that the default behavior is what you want. If someone want's to they can of course override that in a local file system based config file such as conf/storefront-config.yaml
-</b></details>
+
+---
+
+</details>
 
 Let's see how this looks, there is no need to re-build the index this time as the change was in the config file, not annotations in the source code.
 
@@ -699,7 +726,7 @@ public class ItemRequest {
 ```
 
 <details><summary><b>Java Imports</b></summary>
-<p>
+
 
 You may need to add the following import to the class
 
@@ -708,7 +735,8 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 ```
 
 ---
-</p></details>
+
+</details>
 
 <details><summary><b>Explaining the annotations</b></summary>
 
@@ -720,8 +748,9 @@ Some annotations like `required` might seem a bit strange, after all in Java the
 
 Full details of the `@Schema` annotation are in the Microprofile OpenAPI documentation linked to at the end of this module.
 
-</b></details>
 ---
+
+</details>
 
 Let's look at the updated REST APi description 
 
@@ -838,7 +867,7 @@ The result will look like
 ```
 
 <details><summary><b>Java Imports</b></summary>
-<p>
+
 
 You may need to add the following imports to the class
 
@@ -850,7 +879,8 @@ import org.eclipse.microprofile.openapi.annotations.media.Content;
 ```
 
 ---
-</p></details>
+
+</details>
 
 <details><summary><b>Explaining the annotations</b></summary>
 
@@ -862,9 +892,9 @@ There is one useful attribute for the `@Operation` annotation which is the `hidd
 
 The content attribute of the `@APIResponse` defines what the method returns, in this case an array of instances of ItemDetails.
 
-
 ---
-</b></details>
+
+</details>
 
 Let's look at the updated REST API description 
 
@@ -963,7 +993,7 @@ The updated method declaration should now look like the following. Note that oth
 ```
 
 <details><summary><b>Java Imports</b></summary>
-<p>
+
 
 You may need to add the following imports to the class
 
@@ -972,7 +1002,8 @@ import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 ```
 
 ---
-</p></details>
+
+</details>
 
 - Stop the storefront instance, rebuild the index as usual and once that's done re-start the storefront service
 
@@ -1142,14 +1173,17 @@ paths:
 We now have OpenAPI documentation that defines the reasonable error conditions that may be generated.
 
 <details><summary><b>What API Responses to document ?</b></summary>
-<p>
+
 
 As a general rule of thumb you should only document the http status responses your end point might reasonably throw, in the case above that's 200 (OK), 404 / Not Found (when a request is made to reserve an item not in the database) 409 / CONFLICT (when there are not enough items available to reserve) and 406 / Not Acceptable (when the number of items to be reserved is not acceptable due to minimum change restrictions.)
 
 We have added `@APIResponse` annotations to deal with those as any client could reasonably expect to encounter them, but for codes that may be generated due to internal problems, for example the catch all 500 / Internal Server error and it's related 5xx series of codes we have not documented as a client would not expect to encounter them under normal operation of the call.
 
 Here we have documented a the typical set of http status codes that the method can reasonably return, though of course exactly which ones are included in the documentation will vary by end point and your development standards.
-</p></details>
+
+---
+
+</details>
 
 ## More information
 The Microprofile OpenAPI specification is available from the [Microprofile open api guthub project page.](https://github.com/eclipse/microprofile-open-api)

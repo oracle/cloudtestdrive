@@ -7,16 +7,15 @@
 ## B. Running as a docker images locally
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
+
 
 This video is an introduction to the Helidon and Docker lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Docker with Helidon lab Introduction Video](https://img.youtube.com/vi/SxVC2FGdN9k/0.jpg)](https://youtu.be/SxVC2FGdN9k "Docker with Helidon introduction video")
 
-</p>
-</details>
-
 ---
+
+</details>
 
 Like the Helidon lab you perform these steps **inside** the client virtual machine
 
@@ -34,7 +33,7 @@ To run this part of the lab you need the working storefront and stockmanager mic
   ```
   e3a7df18cd77        openzipkin/zipkin   "/busybox/sh run.sh"   3 seconds ago       Up 2 seconds        9410/tcp, 0.0.0.0:9411->9411/tcp   zipkin
   ```
-  - If the entry is **missing**, relaunch it:  `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin`
+  - If the entry is **missing**, relaunch it:  `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin:2.22.0`
 
 
 #### Docker image build tool
@@ -47,11 +46,14 @@ We will be using **jib** to build the docker images. The Maven pom.xml file cont
 This defines what's required for jib, including the base image to use.  We will be using the Java 11 Oracle GraalVM Community Edition Docker image as a base image for our containers. We've chosen to use Graal rather than OpenJDK as it provides better Just In Time compilation performance and also the garbage collection. When running in a server environment both of those are important as they reduce startup overheads and make for more predictable responses to the callers. The Graal JVM also allows support for other languages, though we're not making use of that capability in these labs. As it's Java 11 it also means that it's a Long Term Support version of Java. There are of course other options if you want instead of the Graal JVM.
 
 <details><summary><b>More details on Graal</b></summary>
-<p>
+
 Though not covered in this lab if you want more details on the free to use community edition of the Graal JVM or the fully supported enterprise version which includes the Ahead-of-Time compilation capabilities for Java applications that compiles the Java byte code into native programs (and thus makes for a much faster startup and more efficient operations) or info on it's support for polyglot applications (which are becoming increasingly important.) there are other labs available.
 
-The [Graal web site](https://www.graalvm.org/) provides more details om Graal.
-</p></details>
+The [Graal web site](https://www.graalvm.org/) provides more details on Graal.
+
+---
+
+</details>
 
 #### Size of the base image
 Our base image includes a full command line environment, using a base image with command lines and so on makes the docker image larger than it strictly speaking needs to be. If you wanted to of course you could of course use a different Java base image. There are lots of possible docker base images we could use (some of these are listed in the JIB section of the pom.xml file) but the command line tools in this image allows us to connect to the image and see what's going on internally as well as performing commands.
@@ -147,7 +149,7 @@ Successfully built 47d8ca5574a1
 Successfully tagged stockmanager:latest
 ```
 
-The --tag flag means that the resulting docker image is to be tagged (named) stockmanager, subsequently we can refer to is using the name, not it's image id which is like a hashcode (e.g. 2655bfee0d99) and much harder to remember than the name !
+The --tag flag means that the resulting docker image is to be tagged (named) stockmanager, subsequently we can refer to it using the name, not it's image id which is like a hashcode (e.g. 2655bfee0d99) and much harder to remember than the name !
 
 The --file flag specified the name of the file containing the commands to execute to build the image, strictly this isn't needed in this case as Dockerfile is the default for the docker build command
 
@@ -175,13 +177,6 @@ For your convenience in the future there are scripts buildStockmanagerLocalExter
 You will need to run each script from within the relevant directory (so buildStockmanagerLocalExternalConfig.sh in the helidon-labs-stockmanager directory and buildStorefrontLocalExternalConfig.sh form the helidon-labs-storefront directory) as that's where maven and docker looks for the code and content.
 
 Initially the scripts may take a few mins to run if docker needs to download the appropriate base layers, but once they are downloaded it should speed up. It's best to let one build finish before starting the next one as it can re-use the content downloaded by the previous script.
-
-<details><summary><b>If you can't find the buildStockmanagerLocalExternalConfig.sh and buildStorefrontLocalExternalConfig.sh scripts </b></summary>
-<p>
-In older versions of the VM these were both called buildLocalExternalConfig.sh, there was one of them in each of the helidon-labs-stockmanager and helidon-labs-storefront directory, but people found this confusing, so we re-named them to make it clear.
-
-If you can't find the scripts then use the buildLocalExternalConfig.sh version, but make sure you know which directory you are in to make sure you are running the right version.
-</p></details>
 
 If you look at the scripts you will see that they run the maven package process to create the docker image using jib. They then create a new docker image which has the changes needed to run helidon. These are the commands you'd have run by hand.
 
@@ -213,7 +208,7 @@ As you can see there is nothing in the /conf /confsecure or /Wallet_ATP director
 When you exited the container it shutdown as nothing was running in it any more. 
 
 <details><summary><b>Docker Flags</b></summary>
-<p>
+
 
 The docker flags are handled as following, 
 
@@ -225,7 +220,9 @@ The docker flags are handled as following,
 
 --entrypoint is the command to use when running the docker container, in this case the shell. jib actually set's up a java command to run your program as the default command if you don't override with --entrypoint.
 
-</p></details>
+---
+
+</details>
 
 Let's use docker volumes (the docker --volume flag) to inject the configuration for us, each volume argument is the host file system name (this needs to be an absolute pathname) and the location inside the container to mount it. 
 
@@ -297,66 +294,62 @@ hibernate.hbm2ddl.auto=update
 
 To check that the environment variables are correctly set use the `runBashContainer.sh` script in the `helidon-labs-stockmanager` project. This basically does the docker run command above, using the environment variables and volumes.
 
-Run the container with a the configuration attached:
+Run the container with the configuration attached:
 
-  - ```
-    $ bash runBashContainer.sh
-    executing in /Users/tg13456/Development/helidon-kubernetes-labs/helidon-labs-stockmanager
-    zipkin ip 172.17.0.2
-    bash-4.2# 
-    
-    ```
+- In the VM shell type :
+  - `bash runBashContainer.sh`
+
+```
+executing in /Users/tg13456/Development/helidon-kubernetes-labs/helidon-labs-stockmanager
+zipkin ip 172.17.0.2
+bash-4.2# 
+```
     
 Once in the container look at the environment (we're going to sort the output to make it easier)
 
-In the container 
+- In the container shell type :
+  - `printenv | sort`
+  
+```
+hibernate.dialect=org.hibernate.dialect.Oracle10gDialect
+hibernate.hbm2ddl.auto=update
+HOME=/root
+HOSTNAME=cb3784c88b1f
+JAVA_HOME=/opt/graalvm-ce-java11-20.1.0/
+javax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource 
+javax.sql.DataSource.stockmanagerDataSource.dataSource.password=H3lid0n_Labs
+javax.sql.DataSource.stockmanagerDataSource.dataSource.url=jdbc:oracle:thin:@tg_high?TNS_ADMIN=./Wallet_ATP 
+javax.sql.DataSource.stockmanagerDataSource.dataSource.user=HelidonLabs
+LANG=en_US.UTF-8
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+PWD=/
+SHLVL=1
+TERM=xterm
+_=/usr/bin/printenv
+```
 
-  - ```
-    $ printenv | sort
-    hibernate.dialect=org.hibernate.dialect.Oracle10gDialect
-    hibernate.hbm2ddl.auto=update
-    HOME=/root
-    HOSTNAME=cb3784c88b1f
-    JAVA_HOME=/opt/graalvm-ce-java11-20.1.0/
-    javax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource 
-    javax.sql.DataSource.stockmanagerDataSource.dataSource.password=H3lid0n_Labs
-    javax.sql.DataSource.stockmanagerDataSource.dataSource.url=jdbc:oracle:thin:@tg_high?TNS_ADMIN=./Wallet_ATP 
-    javax.sql.DataSource.stockmanagerDataSource.dataSource.user=HelidonLabs
-    LANG=en_US.UTF-8
-    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-    PWD=/
-    SHLVL=1
-    TERM=xterm
-    _=/usr/bin/printenv
-    ```
+(The precise details may vary of course)
+You can see the environment variables we have set (in this case it is of course using `tg_high` for the DB connection name in the URL, **yours will be different**
 
-You can see the environment variables we have set (in this case it is of course using `tg_high` for the DB conneciton name in the URL, **yours will be different**
-
-- Exit the container: `exit`
+- Exit the container by typing in the container
+  - `exit`
 
 <details><summary><b>Why not use the Java system properties in the docker entry point ?</b></summary>
-<p>
+
 
 When you specified the Java system properties you did that using Eclipse, you can of course also do it using the `java` command, e.g. `java -Djavax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource .....`
 
-The problem is that the actual command a docker container runs is hard coded in the docker image, that would mean that your database security credentials would be visible in the image (always a bad thing) also it would mean that to change any of the database credentials (e.g. the password) you would need to create a new docker image.
+The problem is that the actual command a docker container runs is hard coded in the docker image, that would mean that your database security credentials would be visible in the image (always a very bad thing to have happen.) Also it would mean that to change any of the database credentials (e.g. the password) you would need to create a new docker image.
 
 Of course if we did that it would also mean we couldn't show you how to use environment variables as well !
 
-</p></details>
+---
+
+</details>
 
 ### Running the services
 
-To save having to copy and paste (or type !) each time there are scripts runStorefrontLocalExternalConfig.sh and runStockmanagerLocalExternalConfig.sh (one in each of the helidon-labs-storefront and helidon-labs-stockmanager directories.)
-
-<details><summary><b>If you can't find the runStockmanagerLocalExternalConfig.sh and runStorefrontLocalExternalConfig.sh scripts </b></summary>
-<p>
-In older versions of the VM these were both called runLocalExternalConfig.sh, there was one of them in each of the helidon-labs-stockmanager and helidon-labs-storefront directory, but people found this confusing, so we re-named them to make it clear.
-
-If you can't find the scripts then use the runLocalExternalConfig.sh version, but make sure you know which directory you are in to make sure you are running the right version.
-
-You will need to run the runLocalExternalConfig.sh script in each directory, in the order below.
-</p></details>
+To save having to copy and paste (or type !) each time there are scripts runStorefrontLocalExternalConfig.sh and runStockmanagerLocalExternalConfig.sh (in each of the helidon-labs-storefront and helidon-labs-stockmanager directories respectively.)
 
 This script uses a docker command to locates the IP addresses of the containers running dependencies (for stockmanager this is zipkin, and for the storefront this is zipkin and stockmanager) and injects the IP addresses and suitable hostnames into the containers as it starts them using the --add-host option to the docker run command.
 
@@ -366,7 +359,9 @@ The script also used the --publish flag to the docker run command this sets up a
 
 - Check now that the **stockmanager and storefront applicationsthey are not running** inside of your Eclipse environment
 
-If when running the docker containers you get bind errors like this
+<details><summary><b>If when running the docker containers you get bind errors.</b></summary>
+
+If when running the docker containers you get bind errors like this :
 
 ```
 docker: Error response from daemon: driver failed programming external connectivity on endpoint stockmanager (6e43692b6b949efc6f48d2dc18a7d5b9954bb0e16ad8b5cdba341fcabb673c89): Error starting userland proxy: listen tcp 0.0.0.0:9081: bind: address already in use.
@@ -374,18 +369,12 @@ docker: Error response from daemon: driver failed programming external connectiv
 
 It means you've not stopped the storefront and / or stock manager programs running in Eclipse
 
+---
 
+</details>
 
-As the storefront depends on the stockmanager (and both depend on zipkin) it's important to ensure that the proper order is followed
+As the storefront depends on the stockmanager (and both depend on zipkin) it's important to ensure that the order shown below is followed
 
-<details><summary><b>If you can't find the runStockmanagerLocalExternalConfig.sh and runStorefrontLocalExternalConfig.sh scripts </b></summary>
-<p>
-In older versions of the VM these were both called runLocalExternalConfig.sh, there was one of them in each of the helidon-labs-stockmanager and helidon-labs-storefront directory, but people found this confusing, so we re-named them to make it clear.
-
-If you can't find the scripts then use the runLocalExternalConfig.sh version, but make sure you know which directory you are in to make sure you are running the right version.
-
-You will need to run the runLocalExternalConfig.sh script in each directory, in the order below.
-</p></details>
 
 - Make sure you are in the helidon-labs-stockmanager directory
 - Once you are in the helidon-labs-stockmanager directory run the **Stockmanager** container via script:
@@ -456,13 +445,15 @@ To stop the containers do Ctrl-C in each of the windows, or in a separate termin
   -  `docker stop storefront stockmanager`
 
 <details><summary><b>Why use volumes for stuff that's not secret ?</b></summary>
-<p>
+
 
 You may be asking in the storefront why do we need to inject configuration using the docker volumes, and not just copy it in to the image, after all it has no database connection details ? The reason is that though we could certainly build the configuration into the container that we should not do this with the authentication data, for a test environment you'd want to inject some hard coded authentication data, but in production you'd want to inject an external authentication service. You certainly would want the microservice to not have default authentication info that would be used if you forgot to do this, having a default that opens up security is a bad thing !
 
 Of course in a production environment you'd probably have a separate folder containing the relevant configuration information (it's highly likely that multiple services would use the same database setup for example) to the host configuration would be in there, not in the development folder.
 
-</p></details>
+---
+
+</details>
 
 ### Pushing your images to a container repository
 The docker container images are currently only held locally, that's not good if you want to distribute them or run them in other locations. We can save the images in an external repository, This could be public - e.g. dockerhub.com, private to your organization or in a cloud registry like the Oracle OCIR. Note that if you wanted to there are docker image save and docker image load commands that will save and load image files from a tar ball, but that's unlikely to be as easy to use as a repository, especially when trying to manage distribution across a large enterprise environment.
@@ -502,14 +493,7 @@ Enter the command with **your** details into a terminal in the virtual machine t
 
 #### Pushing the images
 
-You need to update **both** of the `repoStockmanagerConfig.sh` and `repoStorefrontConfig.sh scripts` in the helidon-labs-stockmanager and helidon-labs-storefront directories to reflect your chosen details
-
-<details><summary><b>If you can't find the repoStockmanagerConfig.sh and repoStorefrontConfig.sh scripts </b></summary>
-<p>
-In older versions of the VM these were both called repoConfig.sh, there was one of them in each of the helidon-labs-stockmanager and helidon-labs-storefront directory, but people found this confusing, so we re-named them to make it clear.
-
-If you can't find the scripts then you will edit the repoConfig.sh scripts, but make sure you edit both of them as described below.
-</p></details>
+You need to update **both** of the `repoStockmanagerConfig.sh` and `repoStorefrontConfig.sh scripts` in the helidon-labs-stockmanager and helidon-labs-storefront directories to reflect your chosen details.
 
 - Navigate to the Storefront project
 
@@ -533,7 +517,7 @@ As for some instructor labs there are may be many attendees doing the lab in the
 ---
 
 <details><summary><b>About the script and the docker tags</b></summary>
-<p>
+
 
 The build script is pretty similar to what we had before. It uses mvn package to create the initial image using jib, but the docker build command in the file is different (don't actually run this, just look at it)
 
@@ -541,19 +525,23 @@ The build script is pretty similar to what we had before. It uses mvn package to
 $ docker build  --tag $REPO/storefront:latest --tag $REPO/storefront:0.0.1 -f Dockerfile .
 ```
 
-Note that we have two --tag commands so the resulting image will be pointed to by two names, not just one. Both of the names include the repository information (we use this later on when pushing the images) but they also have a :\<something\> after the container name we're used to seeing. This is used as the version number, this is not processed in any meaningful way that I've discovered (for example I've yet to find a tool that allows you to do something like Version 1.2.4 or later) but by convention people tag the most recent version with :latest and all images should also be tagged with a version number in the form of :\<major\>.\<minor\>.\<micro\> e.g. 1.2.4
+Note that we have two --tag commands so the resulting image will be pointed to by two names, not just one. Both of the names include the repository information (we use this later on when pushing the images) but they also have a :\<something\> after the container name we're used to seeing. This is used as the version number, this is not processed in any meaningful way that I've discovered (for example I've yet to find a tool that allows you to do something like run version 1.2.4 or later, but less than 2.0.0) but by convention people tag the most recent version with :latest and all images should also be tagged with a version number in the form of :\<major\>.\<minor\>.\<micro\> e.g. 1.2.4
 
-</p>
+---
+
 </details>
 
 <details><summary><b>On the dangers of using :latest</b></summary>
-<p>
-On the surface using :latest may seem like a really good idea, you want to run the latest version all the time right ?
 
-Well actually using :latest may not be what you want. In a production environment you probably want to know what your exact configuration is, you may well have accreditation requirements (especially in the finance sector) and in most situations you want the production environment to match your development, and test environment. Certainly if you have problems and want to fix them you would want to know the exact configuration the problem occurrs in.
+On the surface using `:latest` may seem like a really good idea, you want to run the latest version all the time right ?
 
-To make matters worse :latest is just a tag , it has no actual meaning. you could have a v0.0.1 version which is also tagged latest, even though there are many versions after it (0.0.2, 0.1.4, 1.0.2 etc.) docker doesn't ensure that :latest is actually the most recent version of an image. In fact it is only convention that 1.2.3 is more recent than 1.2.2, there is nothing in docker itself that enforces this.
-</p></details>
+Well actually using `:latest` may not be what you want. In a production environment you probably want to know what your exact configuration is, you may well have accreditation requirements (especially in the finance sector) and in most situations you want the production environment to match your development, and test environment. Certainly if you have problems and want to fix them you would want to know the exact configuration the problem occurs in.
+
+To make matters worse `:latest` is just a tag (a sequence of characters) A tag has no actual meaning. you could have a `0.0.1` version which is also tagged `latest`, even though there are many versions after it (`0.0.2`, `0.1.4`, `1.0.2` etc.) docker doesn't ensure that `:latest` is actually the most recent version of an image. In fact it is only convention that `1.2.3` is more recent than `1.2.2`, there is nothing in docker itself that enforces this.
+
+---
+
+</details>
 
 Now the images are tagged with a name that included version and repo information we can push them to a repository, you will need to have logged in to that docker repository (you did this earlier with the `docker login` command)
 
@@ -605,20 +593,14 @@ Let's actually push the images.
 
 Run the `buildStockmanagerPushToRepo.sh` script in the helidon-labs-stockmanager project directory, then once it's finished run the `buildStorefrontPushToRepo.sh` script in the helidon-labs-storefront project directory.
 
-
-<details><summary><b>If you can't find the buildStockmanagerPushToRepo.sh and buildStorefrontPushToRepo.sh scripts </b></summary>
-<p>
-In older versions of the VM these were both called buildPushToRepo.sh, there was one of them in each of the helidon-labs-stockmanager and helidon-labs-storefront directory, but people found this confusing, so we re-named them to make it clear.
-
-If you can't find the scripts then you will find there is a buildPushToRepo.sh script in both directories, run that instead.
-</p></details>
-
 <details><summary><b>Upload denied error?</b></summary>
-<p>
+
 
 If during the docker push stage you get image upload denied errors then it means that you do not have the right policies set for your groups in your tenancy. This can happen in existing tenancies if you are not an admin or been given rights via a policy. (In a trial tenancy you are usually the admin with all rights so it's not generally an issue there.) You will need to ask your tenancy admin to add you to a group which has rights to create repos in your OCIR instance and upload them. See the [Policies to control repository access](https://docs.cloud.oracle.com/en-us/iaas/Content/Registry/Concepts/registrypolicyrepoaccess.htm) document.
 
-</p></details>
+---
+
+</details>
 
 - In the Storefront directory:
   - Run `bash buildStorefrontPushToRepo.sh`
@@ -665,20 +647,6 @@ Wait for it to start, then in the storefront directory
 - `bash runStorefrontRepo.sh`
 
 
-<details><summary><b>If you can't find the runStockmanagerRepo.sh and runStorefrontRepo.sh scripts </b></summary>
-<p>
-In older versions of the VM these were both called runRepo.sh, there was one of them in each of the helidon-labs-stockmanager and helidon-labs-storefront directory, but people found this confusing, so we re-named them to make it clear.
-
-You will find the scripts with the original runRepo.sh name that you can run as below
-
-In the Stock manager directory
-- `bash runRepo.sh`
-
-Wait for it to start, then in the storefront directory
-- `bash runRepo.sh`
-
-</p></details>
-
 ### Cleaning up
 
 This is the end of this section of the lab, let's stop the running images
@@ -688,78 +656,6 @@ This is the end of this section of the lab, let's stop the running images
   -  ` docker stop storefront stockmanager`
 - Stop the zipkin instance running
   -  `docker stop zipkin`
-
-
-
-# Preparing for the Kubernetes labs
-
-When you do the Kubernetes labs you will test out performing a rolling upgrade. To do that you need to be able to show that the upgrade has applied, so you're going to do a bit of advance work now make a small change now so you can see the differences in versions in the later labs.
-
-There are scripts that temporarily update the version number, then do the build, and push to the repository, reverting the version number when the build completed.
-
-- In the helidon-labs-stockmanager project directory run the `buildStockmanagerV0.0.2PushToRepo.sh` script
-
-  - `bash buildStockmanagerV0.0.2PushToRepo.sh`
-
-```
-Using repository fra.ocir.io/oractdemeabdmnative/tg_repo
-[MVNVM] Using maven: 3.5.2
-[INFO] Scanning for projects...
-
-<Lots of Maven output removed>
-
-[INFO] Total time: 23.872 s
-[INFO] Finished at: 2020-01-03T12:13:40Z
-[INFO] Final Memory: 39M/188M
-[INFO] ------------------------------------------------------------------------
-Sending build context to Docker daemon  112.1kB
-Step 1/3 : FROM jib-storefront:latest
- ---> d31de67d9272
-Step 2/3 : RUN cp -r /app/resources/* /app/classes
- ---> Running in 818de3f3faec
-Removing intermediate container 818de3f3faec
- ---> 121bb2f37bb7
-Step 3/3 : RUN rm -rf /app/resources
- ---> Running in 9d650231ec09
-Removing intermediate container 9d650231ec09
- ---> df30253a82ec
-Successfully built df30253a82ec
-Successfully tagged fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:latest
-Successfully tagged fra.ocir.io/oractdemeabdmnative/tg_repo/storefront:0.0.2
-The push refers to repository [fra.ocir.io/oractdemeabdmnative/tg_repo/storefront]
-7f699cf87b87: Pushed 
-76ad72d8097b: Pushed 
-b158b5f94634: Pushed 
-341c644e75cf: Pushed 
-84fad9f97da3: Layer already exists 
-2f6d5006f5d1: Layer already exists 
-1608029e89ad: Layer already exists 
-03ff63c55220: Layer already exists 
-bee1e39d7c3a: Layer already exists 
-1f59a4b2e206: Layer already exists 
-0ca7f54856c0: Layer already exists 
-ebb9ae013834: Layer already exists 
-latest: digest: sha256:65db7b35e2f2bd73f0010771f66794034eecddb6b10b69a3f34b9a8ffd16d8f5 size: 2839
-The push refers to repository [fra.ocir.io/oractdemeabdmnative/tg_repo/storefront]
-7f699cf87b87: Layer already exists 
-76ad72d8097b: Layer already exists 
-b158b5f94634: Layer already exists 
-341c644e75cf: Layer already exists 
-84fad9f97da3: Layer already exists 
-2f6d5006f5d1: Layer already exists 
-1608029e89ad: Layer already exists 
-03ff63c55220: Layer already exists 
-bee1e39d7c3a: Layer already exists 
-1f59a4b2e206: Layer already exists 
-0ca7f54856c0: Layer already exists 
-ebb9ae013834: Layer already exists 
-0.0.2: digest: sha256:65db7b35e2f2bd73f0010771f66794034eecddb6b10b69a3f34b9a8ffd16d8f5 size: 2839
-```
-
-There is a lot of output, most of which has been removed in the example output above. You can see that the 0.0.2 version has been pushed to the repo.
-
-- In the =helidon-labs-storefront project directory run the `buildStorefrontV0.0.2PushToRepo.sh` script
-  - `bash buildStorefrontV0.0.2PushToRepo.sh`
 
 ## Summary
 Congratulations, you are now able to run your microservices on Docker!  Next step is to use these images to deploy them on a Kubernetes cluster.  For this, navigate to the next chapter, [C. Deploying in Kubernetes](../Kubernetes/Kubernetes-labs.md)

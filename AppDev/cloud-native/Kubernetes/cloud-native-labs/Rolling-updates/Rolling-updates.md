@@ -8,16 +8,15 @@
 ## 4. Rolling Updates
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
+
 
 This video is an introduction to the Kubernetes rolling upgrades lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Kubernetes rolling upgrades lab Introduction Video](https://img.youtube.com/vi/x2hXZrUWM0c/0.jpg)](https://youtu.be/x2hXZrUWM0c "Kubernetes rolling upgrades lab introduction video")
 
-</p>
-</details>
-
 ---
+
+</details>
 
 ### **Introduction**
 
@@ -46,7 +45,7 @@ We are going to once again edit the storefront-deployment.yaml file to give Kube
 - Copy the storefront-deployment yaml file:
   -  `cp storefront-deployment.yaml storefront-deployment-v0.0.1.yaml`
 
-- Edit the new file **storefront-deployment-v0.0.1.yaml** for editing
+- Edit the new file **storefront-deployment-v0.0.1.yaml**
 
 The current contents of the section of the file looks like this:
 
@@ -156,7 +155,7 @@ One point to note here, these changes *only* modified the deployment roll out co
 
 Of course normally you would make a change, test it and build it, then push to the registry, you would probably use some form of CI/CD tooling to manage the process, for example a pipeline built using the Oracle Developer Cloud Service (other options include the open source tools Jenkins / Hudson and Ansible). 
 
-For this lab we are focusing on Helidon and Kubernetes, not the entire CI/CD chain so like any good cooking program we're going to use the v0.0.2 image we created earlier in the docker lab, so we just need to deploy it.
+For this lab we are focusing on Helidon and Kubernetes, not the entire CI/CD chain so like any good cooking program we're going to use a v0.0.2 image that we created for you. For the purposes of this module the image is basically the same as the v0.0.1 version, except it reports it's version as 0.0.2 
 
 
 ### Applying our new image
@@ -165,7 +164,7 @@ To apply the new v0.0.2 image we need to upgrade the configuration again. As dis
 
 However ... for the purpose of showing how this can be done using kubectl we are going to do this using the command line, not a configuration file change. This **might** be something you'd do in a test environment, but **don't** do it in a production environment or your change management processes will almost certainly end up damaged.
 
-- Execute the command (replacing the image details with your repo details of course) 
+- Execute the command 
   -  `kubectl set image deployment storefront storefront=fra.ocir.io/oractdemeabdmnative/h-k8s_repo/storefront:0.0.2`
 
 ```
@@ -381,7 +380,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
-- Now let's check the output from the StausResource (again replace the IP address with the one for your service) :
+- Now let's check the output from the StatusResource (again replace the IP address with the one for your service) :
   -  `curl -i -k -X GET https://<external IP>/sf/status`
 
 ```
@@ -594,7 +593,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 Normally of course the testing of the pods would be linked into CI/CD automated tooling that would trigger the rollback if it detected a problem automatically, but here we're trying to show you the capabilities of Kubernetes rather than just run automation.
 
 <details><summary><b>What if I do new update while another is still in progress ?</b></summary>
-<p>
+
 If you change a different deployment then that will proceed in the same way, the different deployment will create the replica sets and gradually increase the side of the new one while reducing the size of the old one as above (this hopefully is what you'd expect !)
 
 If you changed and started a rollout of a deployment that was currently in the process of being upgraded  then Kubernetes still does the right thing. You will have the old replica set (let's call that replica set 1) and the new one (let's call that replica set 2) Kubernetes will stop the transition from replicas set 1 to replica set 2, and will create another replica set (let's call this replica set 3) for the latest version of the deployment. It will then transition both replica set 1 and 2 to the new replica set 3.
@@ -603,7 +602,7 @@ Obviously this is not something you're likely to be doing often, but it's quite 
 
 ---
 
-</p></details>
+</details>
 
 
 ### Important note on external services
@@ -627,11 +626,8 @@ The important thing is to have a strategy for combining microservice rollouts (a
 
 See the further info for links on this.
 
----
-
-
 <details><summary><b>What other update strategies are there ?</b></summary>
-<p>
+
 Kubernetes has native support for two strategies, the rolling upgrade we've seen above, but also a strategy type called recreate. 
 
 The rolling upgrade strategy attempts to keep the microservice responding without excess use of resources.
@@ -656,9 +652,9 @@ Another version that doesn't really have a name is when you deploy a microservic
 
 Canary testing and A/B testing require a service mesh to handle the split of the requests between versions, but also a mechanism to gather metrics (quality / business etc.) and then adjust the split. These metrics are unlikely to be the type of thing gathered by standard Prometheus and specialized tools like [Spinaker](https://www.spinnaker.io/) may be used to help with managing the service mesh configuration.
 
-
 ---
-</p></details>
+
+</details>
 
 You have reached the end of this lab !!
 

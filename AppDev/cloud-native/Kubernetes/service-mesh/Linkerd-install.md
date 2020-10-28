@@ -10,22 +10,21 @@
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
+
 
 This video is an introduction to the Service mesh basics lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Service mesh setup Introduction Video](https://img.youtube.com/vi/jfNp6VEfFEk/0.jpg)](https://youtu.be/jfNp6VEfFEk "Service mesh setup lab introduction video")
 
-</p>
-</details>
-
 ---
+
+</details>
 
 ## What is a service mesh
 
 The concept behind a service mesh is pretty simple. It's basically a set of network proxies that are conceptually interposed between the containers running on a pod and the external network of the pod. This is achieved by the service mesh management capability (the control plane) which automatically adds proxies (the data plane) to the pods when the pods are started (if the pod is in a namespace that requests this via annotations)
 
-The following diagram (from [buoyant.io](https://buoyant.io)) whoes the components in the [linkerd](https://linkerd.io) service mesh, but other service mesh implementations have a similar structure. In this architecture, the proxies run as containers within the pod using the [sidecar pattern](https://dzone.com/articles/sidecar-design-pattern-in-your-microservices-ecosy-1)
+The following diagram (from [buoyant.io](https://buoyant.io)) shows the components in the [linkerd](https://linkerd.io) service mesh, but other service mesh implementations have a similar structure. In this architecture, the proxies run as containers within the pod using the [sidecar pattern](https://dzone.com/articles/sidecar-design-pattern-in-your-microservices-ecosy-1)
 
 ![](https://buoyant.io/images/manifesto/diag1.svg)
 
@@ -219,7 +218,7 @@ deployment.apps/linkerd-grafana created
 ```
   
 <details><summary><b>If you want to see exactly what is being done</b></summary>
-<p>
+
 
 To find out exactly what linkerd is going to install we can execute it without sending the output to kubectl. There is a lot of output, so we're going to redirect it to a file
 
@@ -267,7 +266,7 @@ There is a lot of output here, we've only seen the beginning of it above
 
 ---
 
-</p></details>
+</details>
 
 Let's check that the linkerd command can talk to the control plane
 
@@ -478,7 +477,7 @@ edit the linkerd web deployment yaml normally would not do
 kubectl will pick them up and apply them, Kubernetes will restart the linkerd-web deployment with the new arguments and linkerd-web will no longer enforce the check on the hostnames.
 
 
-### Securing the connection to the linkerdui
+### Securing the connection to the linkerd UI
 
 Curiously the linkerd-web ingress does not by default use a TLS certificate to ensure that the connection to it is encrypted, as we will be sending passwords we want to ensure it is encrypted, to do which we need to create a TLS secret in Kubernetes that the ingress controller can use.
 
@@ -533,7 +532,7 @@ Now you can go to the ingress ip address for the linkerd UI
 - In your laptop web browser go to `https://<external IP>`
 
 <details><summary><b>If you need to remind yourself of the external IP if your ingress controller</b></summary>
-<p>
+
 
 - In the OCI Cloud Shell type :
   - `kubectl get services -n ingress-nginx`
@@ -547,7 +546,8 @@ ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.17.121   <non
 look at the `ingress-nginx-nginx-ingress-controller` row, IP address inthe `EXTERNAL-IP` column is the one you want, in this case that's `130.61.195.102` **but yours will vary**
 
 ---
-</p></details>
+
+</details>
 
 You will probably be challenged as you have a self signed certificate.
 
@@ -578,7 +578,7 @@ I have found that for some versions of Firefox that grafana complains about reve
 ![](images/linkerd-grafana-initial-topline.png)
 
 <details><summary><b>Other options for linkerd access</b></summary>
-<p>
+
 
 Exposing linkerd via an ingress allows anyone who has access to the external point of the ingress to access it. This may be required due to the way your organization operates, but you can also restrict access to the linkerd UI by using the linkerd command to setup a secure tunnel for you.
 
@@ -599,7 +599,8 @@ Failed to open Linkerd dashboard automatically
 This will setup the tunnel for you. You can then access linkerd and the grafana environment using the url's above. Normally this command will open a web connection for you, but in this case I was using a remote terminal with no graphical desktop available, so running a web browser was not possible.
 
 ---
-</p></details>
+
+</details>
 
 ### Enabling our pods for linkerd
 
@@ -633,7 +634,6 @@ status:
 The above output was using tg-helidon as the namespace name, but of course you will have used a different name so the output will be different.
 
 <details><summary><b>If you can't remember your namespace name</b></summary>
-<p>
 
 If you followed the lab instructions correctly your namespace should be named <your initials>-helidon
 
@@ -657,7 +657,7 @@ tg-helidon        Active   35d
 
 ---
 
-</p></details>
+</details>
 
 We can use the linkerd command to add the annotations, first let's just see what it does
 
@@ -745,8 +745,8 @@ deployment.apps/storefront restarted
 deployment.apps/stockmanager restarted
 deployment.apps/zipkin restarted
 ```
+
 <details><summary><b>What has actually been done to my pod ?</b></summary>
-<p>
 
 Restarting the pods triggered linkerd to do it's automatic update of the pod adding the proxy. It actually also added something called an `init container` which is a container that is run as the pod starts up. The init container actually re-writes the networking configuration in the main application pod to send all connections to the the proxy. 
 
@@ -775,7 +775,7 @@ storefront linkerd-proxy
 The two containers are listed, the `storefront` application container and the `linkerd-proxy` container.
 
 <details><summary><b>If you want so see all the detail on the pod (including the init container)</b></summary>
-<p>
+
 
 The following will generate a **lot** of output, you'll see it's **way** bigger than the yaml file you used to define the deployment !
 
@@ -783,7 +783,7 @@ The following will generate a **lot** of output, you'll see it's **way** bigger 
 
   - `kubectl get pod stockmanager-654f44d59d-bjn2v -o yaml`
 
-```
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -1088,11 +1088,13 @@ status:
   qosClass: Burstable
   startTime: "2020-05-21T17:27:41Z"
 ```
-
-</p></details>
 ---
 
-</p></details>
+</details>
+
+---
+
+</details>
 
 Of course we also want to have the traffic from the ingress controller protected by the service mesh as well (this is actually pretty important as the ingress controller is an access point, so in the unlikely situation it was hacked you want to stop it seeing other traffic internal to the cluster)
 
@@ -1137,7 +1139,7 @@ Now let's make a few calls to the service to check it's all working fine (you ma
 Let's do some requests to the stock manager service which will generate log data
 
 <details><summary><b>If you've forgotten your external IP address</b></summary>
-<p>
+
 
 You can get the external IP address being used for the ingress controller by looking at the services list for the ingress-nginx namespace
 
@@ -1152,7 +1154,7 @@ ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.17.121   <non
 
 The address is in the EXTERNAL-IP column, in this case it's 130.61.195.102 **but yours will be different**
 
-</p></details>
+</details>
 
 
 - In the OCI Cloud Shell terminal type the following, be prepared for an error (remember to replace `<external IP>` with the IP address for your ingress controller)

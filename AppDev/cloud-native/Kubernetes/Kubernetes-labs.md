@@ -7,16 +7,15 @@
 ## C. Deploying to Kubernetes 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
+
 
 This video is an introduction to the Kubernetes labs. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Kubernetes labs Introduction Video](https://img.youtube.com/vi/6Kg-zH6h3Is/0.jpg)](https://youtu.be/6Kg-zH6h3Is "Kubernetes labs introduction video")
 
-</p>
-</details>
-
 ---
+
+</details>
 
 ## Introduction
 
@@ -77,14 +76,14 @@ These optional modules are grouped by subject area. Unless there are dependencie
 
 ### Optional labs group 1. Monitoring your services
 
-##### Optional 1a. Monitoring services -  Prometheus for data gathering
+#### Optional 1a. Monitoring services -  Prometheus for data gathering
 Once a service is running in Kubernetes we want to start seeing how well it's working in terms of the load on the service. At a basic level this is CPU / IO's but more interesting are things like the number of requests being serviced. You will need to do this module if you are going to do the Grafana for data display module.
 
 Monitoring metrics may also help us determining things like how changes when releasing a new version of the service may effect it's operation, for example does adding a database index increase the services efficiency by reducing lookup times, or increase it by adding extra work when updating the data. With this information you can determine if a change is worthwhile keeping.
 
 [Prometheus lab](monitoring-kubernetes/MonitoringWithPrometheusLab.md)
 
-##### Optional 1b. Monitoring services - Grafana for data display
+#### Optional 1b. Monitoring services - Grafana for data display
 To do this optional module you will have to have completed the optional Promtheus for data gathering module.
 
 As you've seen Prometheus is great at capturing the data, but it's not the worlds best tool for displaying the data. Fortunately for us there is an open source tool called **Grafana** which is way better than Prometheus at this.
@@ -98,14 +97,14 @@ These labs are self standing, you can do either of them, or both. They have no d
 
 Both these lab modules use fluentd to read the log data within the Kuberntes environment
 
-##### Optional 2a. Log Capture for processing
+#### Optional 2a. Log Capture for processing
 
 This optional module shows how you can use fluentd to capture the log data, and then write the output to Elastic Search (often used to help process log data in Cloud Native deployments.) The module is intended as an example of how to handle log data for people who will need instant indexed access to the log data.
 
 [Log capture for processing lab](management/logging/LogCaptureForProcessing.md)
 
 
-##### Optional 2b. Log Capture for long term storage (archive)
+#### Optional 2b. Log Capture for long term storage (archive)
 
 This optional module shows how you can use fluentd to capture the log data, and then write the output to a long term storage offering, In this case we will be writing to the S3 compatible Oracle Object Storage Service. The module is intended as an example to how to handle log data for people that need to retain log data for the long term (perhaps for legal reasons) but don't need instant access, so can use the most cost effective long term storage.
 
@@ -124,7 +123,7 @@ Service meshes can also monitor the traffic flowing throughout your clusters, en
 As they are part of the network they can also split the network traffic, enabling activities like canary rollouts and testing the system by injecting faults.
 
 
-##### Optional 3a Service mesh install and setup
+#### Optional 3a Service mesh install and setup
 
 You must do this module before you can do any of the other service mesh modules
 
@@ -132,7 +131,7 @@ This module shows how to install the Linkerd service mesh, and enable it on the 
 
 [Installing the Linkerd service mesh.](service-mesh/Linkerd-install.md)
 
-##### Optional 3b. Monitoring traffic with the service mesh
+#### Optional 3b. Monitoring traffic with the service mesh
 
 You must have done the service mesh install and setup module before this one.
 
@@ -140,15 +139,15 @@ This module shows how to use the service mesh we installed in Optional lab 3a to
 
 [Traffic monitoring with the service mesh](service-mesh/Linkerd-monitoring-traffic-flows.md)
 
-##### Optional 3c. Using the service mesh to troubleshoot problems
+#### Optional 3c. Using the service mesh to troubleshoot problems
 
 You must have done the service mesh install and setup module before this one.
 
-This modules uses a simulated "broken" implementation of the stockmanager service to generate errors, then we use the servcie mesh monitoring capabilities to see where the error is and the conditions around it.
+This modules uses a simulated "broken" implementation of the stockmanager service to generate errors, then we use the service mesh monitoring capabilities to see where the error is and the conditions around it.
 
 [Troubleshooting with the service mesh](service-mesh/Linkerd-using-to-troubleshoot-problems.md)
 
-##### Optional 3d. Using the traffic split facility of the service mesh
+#### Optional 3d. Using the traffic split facility of the service mesh
 
 You must have done the service mesh install and setup module, and the service mesh troubleshooting module before this one.
 
@@ -158,7 +157,7 @@ This module also used the traffic split capability of the service mesh to show h
 
 [Exploring what you can do with a service mesh traffic splits](service-mesh/Linkerd-exploring-traffic-splits.md)
 
-##### Optional 3e Uninstall the service mesh
+#### Optional 3e Uninstalling the service mesh
 
 **Only** do this after you have completed the service mesh lab modules you want to do.
 

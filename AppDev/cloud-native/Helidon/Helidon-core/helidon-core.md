@@ -10,16 +10,16 @@
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
-<p>
+
 
 This video is an introduction to the Helidon core capabilities lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
 
 [![Helidon core capabilities lab Introduction Video](https://img.youtube.com/vi/QCeQ6aKyBHU/0.jpg)](https://youtu.be/QCeQ6aKyBHU "Helidon core capabilities lab introduction video")
 
-</p>
+---
+
 </details>
 
----
 
 #### Where we look at our initial java classes and REST enable them.
 
@@ -35,11 +35,8 @@ The main class we will be using is **StorefrontResource.java**.   Locate it in t
   
   ![](images/eclipse-first-project.png)
 
----
 
 <details><summary><b>What are the @Slf4j and @NoArgsConstructor annotations ?</b></summary>
-<p>
-
 
 You see a couple of annotations already on place on the class definition (`@Slf4j` and `@NoArgsConstructor`) These are being processed by [Lombok](https://projectlombok.org/).  Lombok is a set of Java based tools that use annotations to perform common tasks for us. In this case the `@Slf4j` annotation tells Lombok to automatically generate a Java logger (Actually we use the simple logging facade, which makes is easy to switch the logging engine) using the class name as the loggers name. The `@NoArgsConstructor` does what the name suggests and creates a constructor for us without any arguments. 
 
@@ -51,7 +48,6 @@ Enough on Lombok. Let's get to the Helidon work !
 
 ---
 
-</p>
 </details>
 
 
@@ -81,7 +77,7 @@ public class StorefrontResource {
 ```
 
 <details><summary><b>Java Imports</b></summary>
-<p>
+
 
 You may need to add the following imports to the class
 
@@ -91,19 +87,18 @@ import javax.ws.rs.Path;
 ```
 
 ---
-</p></details>
+
+</details>
 
 <details><summary><b>About the annotations</b></summary>
-<p>
-
 
 The `@Path("/store")` annotation means that each time the Helidon framework brings the StorefromtResource in as a REST service that all of the capabilities will be registered under the /store url (the application can provide a higher level URL if it wants, but we're not going to do that here.)
 
-The `@RequestScoped` annotation means that the Helidon framework will create a new instance of the class automatically each time a rest request is made, and that the instance will be used for the duration of that request. This would allow us to modify the internal state of the class as the request is being processed and we can be sure that those modifications woudln't interfere with other subsequent or concurrent requests (well as long as we limit out changes to the StorefrontResource class of course)
-</p>
-</details>
+The `@RequestScoped` annotation means that the Helidon framework will create a new instance of the class automatically each time a rest request is made, and that the instance will be used for the duration of that request. This would allow us to modify the internal state of the class as the request is being processed and we can be sure that those modifications wouldn't interfere with other subsequent or concurrent requests (well as long as we limit out changes to the StorefrontResource class of course)
 
 ---
+
+</details>
 
 Helidon will now REST enable the class, but it needs to know what specific methods will be REST endpoints.
 
@@ -129,14 +124,14 @@ Helidon will now REST enable the class, but it needs to know what specific metho
 
 It's pretty simple, when called it does some logging, then gets a Collection of ItemDetails and returns it, doing a bit of Exception handling as it does so. Hopefully this type of thing will be very familiar to you.
 
-<details><summary><b>Where is the logging configuration loaded ?</b></summary>
-<p>
+<details><summary><b>Where is the logging configuration setup ?</b></summary>
 
-In a capability introduced in Helidon 2.0 the Helidon framework  will automatically locate a logging.propoerties if one exists in the classpath (or current working directory) and will use that to configure the logging for us, so we don't need to explicitly configure logging. Makes things a little easier.
+
+In a capability introduced in Helidon 2.0 the Helidon framework  will automatically locate a logging.properties file if one exists in the classpath (or current working directory) and will use that to configure the logging for us, so we don't need to explicitly configure logging. Makes things a little easier.
 
 ---
 
-</p></details>
+</details>
 
 - Add the following annotations on the **listAllStock** method:
 
@@ -161,9 +156,7 @@ public Collection<ItemDetails> listAllStock() {
 
 - Save the changes you've just made, Control-s will do this.
 
----
 <details><summary><b>Java Imports</b></summary>
-<p>
 
 You may need to add the following imports to the class
 
@@ -174,12 +167,10 @@ import javax.ws.rs.core.MediaType;
 ```
 
 ---
-</p></details>
+
+</details>
 
 <details><summary><b>The annotations explained</b></summary>
-<p>
-
-
 
 `@GET` the method will be called in response to http GET requests, For REST services by convention the GET method is the one called when retrieving data.
 
@@ -189,10 +180,9 @@ import javax.ws.rs.core.MediaType;
 
 This Produces annotation is very important to understand. It means that the framework handles all of the work in getting the right data type from the result for us and embedding it in the body of the REST response. We don't have to modify our code to generate the JSON (this is often a non trivial bit of work. We could if we wanted support multiple data formats as the return and the framework will chose the right format based on the type the headers in the incoming request asked for. This single annotation is doing a *lot* of work for us behind the scenes.
 
-</p>
-</details>
-
 ---
+
+</details>
 
 
 
@@ -226,19 +216,17 @@ This creates a server builder, specifies a configuration, builds the server and 
 
 
 <details><summary><b>Why do I need a main class ?</b></summary>
-<p>
+
 
 Helidon  does not require you to use a main class, you can if you want actually use a class thats part of the Context and Dependency Injection (CDI) framework (we will do more on CDI later) which will locate all `Application`  classes for you. 
 
 In this case the class is called Main, but that's really just so we can easily identify the class with the `main` method and can specify it in the packaging tools later on. As with any Java program the class with the `main` method could be called anything you want, you just need to know the class name so you can run it, and define it in any runnable .jar files. 
 
-The problem with using CDI to do this however is that you won't have the chance alter aspects of the configuration to meet your project needs, or override the logging setup process. For a simple application that's not a problem, but in most cases you will want to setup your own configuration properties and so on, which is why we're using our own startup class.
+The problem with using CDI to do this however is that you won't have the chance alter aspects of the configuration to meet your project needs, or override the logging setup process. For a simple application that's not a problem, but in some cases you will want to setup your own configuration properties and so on, which is why we're showing you how to use your own startup class.
 
 ---
 
-</p></details>
-
----
+</details>
 
 ### How does Helidon know what classes it needs to create REST endpoints for ?
 
@@ -270,7 +258,7 @@ public class StorefrontApplication extends Application {
 ```
 
 <details><summary><b>Java Imports</b></summary>
-<p>
+
 
 You may need to add the following imports to the class
 
@@ -280,25 +268,48 @@ import javax.ws.rs.ApplicationPath;
 ```
 
 ---
-</p></details>
+
+</details>
 
 <details><summary><b>Explaining the annotations</b></summary>
-<p>
+
 
 `@ApplicationScoped` Means that the Helidon framework will automatically create a *single* instance of the class for the entire application, whenever the framework is asked for an instance of StorefrontApplication that single instance will be returned.
 
 `@ApplicationPath("/")` Means that all the classes that provide REST services for the application will have a URL path starting with `/` So our listAllStock method will be `/store/stocklevel` If however the StorefrontAplication has been annotated `@ApplicationPath("/postroom")` then our listAllStock method would be on the path `/postroom/store/stocklevel` (the `/postroom` coming from the @ApplicationPath annotation on StorefrontApplication, `/store` from the @Path annotation on the StorefrontResource class and `/stocklevel` from the @Path annotation on the listAllStock method.
 
-
 ---
 
-</p></details>
+</details>
 
 
 - Save your changes to the StorefrontResource file with Control-s, or you can save all your changes to all files by hitting this icon: <img src="images/eclipse-save2.png" style="zoom:33%;" />
 
+<details><summary><b>Do I really need an Application class ?</b></summary>
+
+In a real-world environment Helidon doesn't actually need classes extending `Application` in all situations. If the Helidon runtime can't find them then it will look for all resource classes (I believe this is those where the class has an `@Path`, I'm not sure how that works for non REST resources) This is what we actually do in the stockmanager microservice.
+
+The rules are :
+
+If there is a `Application` class that returns non empty set of classes those are used as the resources.
+
+If there is no `Application` class then Helidon will try and work the resources out itself.
+
+If there is an `Application` class (and you may need one in some situations) that returns an empty set of classes then Helidon will work them out itself. This can be used in the case where you need an `Application` class, but want the auto discovery of resources.
+
+If there is an `Application` class which returns `null` to the `getClasses()` method the entire microservice will crash with a `NullPointerException` (So don't do that !)
+
+We are using the Application class here because we will gradually be adding new resources overtime, these all exist as templates code (so the automatic processes would discover them) but most of them are unfinished - which would cause problems, so we don't want them all to be active from the beginning. This way we can gradually enable them as we go.
+
+Note that in some cases you may still need an Application class however. For the OpenAPI module you will see that we need to place annotations on the application, also if you want an @ApplicationPath then it will need to be set on a class that extends Application.
+
+---
+
+</details>
+
 ### Running the storefront program.
-- locate the. file **Main.java**. 
+
+- Locate the file **Main.java**. 
 - Right-click on it and chose **Run As**, then **Java Application**
 
 ![Eclipse Run Storefront Application Main Class](images/eclipse-run-storefront-main.png)
@@ -394,7 +405,7 @@ The result should look like this :
 
 
 <details><summary><b>Java Imports</b></summary>
-<p>
+
 
 You may need to add the following imports to the class
 
@@ -404,10 +415,10 @@ import javax.ws.rs.Consumes;
 ```
 
 ---
-</p></details> 
+
+</details> 
 
 <details><summary><b>The annotations explained</b></summary>
-<p>
 
 `@POST` as indicated above means the method will respond to http POST requests
 
@@ -423,19 +434,15 @@ So these four annotations specify that this method will be accessible using HTTP
 
 Basically in addition to running the server and configuring things Helidon is now doing all of the work of converting incoming JSON into the expected method parameters and of converting the outgoing object back into JSON !
 
-</p>
+---
 
 </details>
-
----
 
 - Save the changes to the StorefrontResource.java file
 - Run the **storefront.Main** class by clicking right on it, then choosing the "Run As" sub menu and "Java Application"
 
----
-
 <details><summary><b>Did you have an error running it ?</b></summary>
-<p>
+
 
 If when running you get Exception messages in the console about "Failed to start server" and a whole bunch of stack trace including a "Bind Exception: Address already in use" then you forgot to stop the server in the last part of the lab. You will need to close the current console tab by clicking on the X in the console tab options.
 
@@ -447,11 +454,9 @@ This should switch to the still running tab. Click the square red stop icon in t
 
 Once the red stop icon turns grey the program is stopped and you can try re-starting the Main program as described above.
 
-</p>
+---
 
 </details>
-
----
 
 Once you see the server running line
 
@@ -524,22 +529,19 @@ Now you've seen how Helidon can not only REST enable methods, but also handle th
 
 
 ### Authentication
----
 
 <details><summary><b>The theory</b></summary>
-<p>
 
-The problem is anyone who has access to the IP address and post can access our service, in this case that may not be a problem when retrieving data (though in most cases is woudl be) but we don;t want anyone causing problems by making people thing there are no pencils in the post room !
+
+The problem is anyone who has access to the IP address and port can access our service, in this example that may not be a problem when retrieving data, after all the number of Pencils is not business critical (though in most cases is would be) but we don't want anyone causing problems by making people think there are no pencils in the post room !
 
 So we need to add some security. Fortunately Helidon makes this very easy, we just add @Authenticated to the StorefrontResource class, this is applied to every REST call in the class.  If we wanted to limit it authentication as required to specific methods we'd just place it on those methods.
 
 This simple single annotation tells Helidon that before even reaching your actual code that for all incoming requests the framework must check that the request includes valid authentication in some form. Note that @Authenticated does *not* specify what authentication mechanism is used, it could be basic auth (the obscured user name and password are in the request headers) or something more powerful like oauth2. We'll see in a bit more detail later in the section how the security is defined.
 
-</p>
+---
 
 </details>
-
----
 
 - **Add** the annotation to the **StorefrontResource** class
   - `@Authenticated`
@@ -557,16 +559,16 @@ public class StorefrontResource {
 ```
 
 <details><summary><b>Java Imports</b></summary>
-<p>
+
 
 You may need to add the following import to the class
 
 ```java
 import io.helidon.security.annotations.Authenticated;
 ```
-
 ---
-</p></details> 
+
+</details> 
 
 - Save the changes to the StorefrontResource.java file 
 - Stop the program if it's running
@@ -610,7 +612,7 @@ content-length: 107
 ---
 
 <details><summary><b>How does this work?</b></summary>
-<p>
+
 
 So how does the Authorized annotation determine what's allowed and what's not ? Basically it's defined using configuration properties that are imported from a configuration file. We'll see later how Helidon is told where it's configuration files are, but for for your reference the content of the security configuration we're using is below.
 
@@ -637,11 +639,9 @@ This defined a very basic provider which is useful for testing (There are many o
 
 The config here has users named jack, jill, joe password for all is password. It also supports the concept of roles, where the code can check if a user has a role, thus allowing the framework to be instructed that anyone with role admin can access an endpoint, but disallowing other non admin users (even if they are authenticated)
 
-</p>
+---
 
 </details>
-
----
 
 - **Stop** the application using the square stop button on the console tab.
 
@@ -650,12 +650,10 @@ With a single annotation and a config file we've now ensured that our service is
 
 
 ### Adding extra endpoints to the application (and scope implications)
-A big application may have multiple sets of services, grouped into resources, so far we're looking at the StorefrontResource that handles the stock interactions. But what if we want to have other resources for other parts of the application ? 
+A big application may have multiple sets of services, grouped into resources, so far we're looking at the StorefrontResource that handles the stock interactions. But what if we want to have other resources for other parts of the application ?
 
----
+<details><summary><b>Details of the class ConfigurationResource</b></summary>
 
-<details><summary><b>Looking at the class ConfigurationResource</b></summary>
-<p>
 
 Let's look at the reserveStockItem method, you'll see that the code uses a minimumChange to ensure that at least a certain number of items are taken.
 
@@ -710,17 +708,15 @@ There is a `@Path` annotation on the class itself, but no `@Path` annotation on 
 
 They return an http Response rather than just returning an object. This isn't something you'd usually do in this situation, but I included it to show that it's possible if you need to manipulate the response, say if you need to set http response codes in the event of an exception (we'll look at handling exceptions later in the lab) Also I wanted to provide an example of how to use Responses should you have other reasons to do so.
 
-The set method has `@Authenticated` and `@RolesAllowed({ "admin" })` annotations. These together tell Helidon that not only must the user be authenticated, but also that the user once authenticated must be in the admin role. For this class we have not applied `@Authenticated` to the class, so as the getMinimumChange method does not have a `2authenticated` annotation that method can be called with no authentication required, this is useful if you have some endpoints that you want to make accessible to everyone, but to restrict others.
+The set method has `@Authenticated` and `@RolesAllowed({ "admin" })` annotations. These together tell Helidon that not only must the user be authenticated, but also that the user once authenticated must be in the admin role. For this class we have not applied `@Authenticated` to the class, so as the getMinimumChange method does not have a `@Authenticated` annotation that method can be called with no authentication required, this is useful if you have some endpoints that you want to make accessible to everyone, but to restrict others.
 
 Lastly the get method has a produces media type of plain text, the response isn't wrapped into JSON (again this is just to show it's possible to do this, the return type of your data will vary depending on your application, for example if you're returning chunks of pure unstructured text than it is more efficient to do this as text than wrapping it into a structured data format like JSON)
 
 So we've created code that will set and get the minimum change value it contains. Next we need to tell Helidon that it's a resource that should be processed, we do that by adding our new resource to the list of application classes.
 
-</p>
+---
 
 </details>
-
----
 
 We do now need to tell Helidon that the endpoints in ConfigurationResource are to be made available. 
 
@@ -742,7 +738,7 @@ public class StorefrontApplication extends Application {
 ```
 
 <details><summary><b>Java Imports</b></summary>
-<p>
+
 
 You may need to add the following import to the class
 
@@ -751,7 +747,8 @@ import io.helidon.security.annotations.import com.oracle.labs.helidon.storefront
 ```
 
 ---
-</p></details> 
+
+</details> 
 
 - Save the modified StorefrontApplication, and run the program.
 
@@ -839,7 +836,7 @@ public class ConfigurationResource {
 ```
 
 <details><summary><b>Java Imports</b></summary>
-<p>
+
 
 You may need to add the following import to the class
 
@@ -848,7 +845,8 @@ import javax.enterprise.context.ApplicationScoped;
 ```
 
 ---
-</p></details> 
+
+</details> 
 
 - Stop the current version of the program running, then re-start it which will use the updated versions of the code.
 
@@ -913,7 +911,7 @@ While we're here we're also going to add the StatusResource.class to the com.ora
 ```
 
 <details><summary><b>Java Imports</b></summary>
-<p>
+
 
 You may need to add the following import to the class
 
@@ -922,7 +920,8 @@ import com.oracle.labs.helidon.storefront.resources.StatusResource;
 ```
 
 ---
-</p></details> 
+
+</details> 
 
 - Save the StorefrontApplication.java file and restart the program
 
@@ -946,10 +945,8 @@ We'll look at what the StatusResource is used for later
 
 ### Injecting classes and resources
 
----
-
 <details><summary><b>Sharing resources between classes</b></summary>
-<p>
+
 
 We've now got ways to setup the MinimumChange and have it persistent, but it's now being used in multiple locations, in the ConfigurationResource and the StorefrontResource, and at the moment they both create an instance, so though the Configuration resource (being application scoped) only exists once it's not actually using the same instance of the MinimumChange as the StorefrontResource. So a change to the value via the ConfigurationResource won't actually be reflected in the behavior of the Storefront resource. Bit of a problem that !
 
@@ -957,11 +954,9 @@ Java itself can be used to solve this, we could create a factory to create a sin
 
 The actual creation of the instances is handled for us by Helidon, we just need to define the scope of the class as being ApplicationScoped (only a single instance per application) RequestScoped (An instances is created for the request and is used wherever needed within the request) There is also support for @SessionScoped where the created instance will be used across multiple http requests that together from a session, but we're not going to look into that further here.
 
-</p>
+---
 
 </details>
-
----
 
 - In the storefront application, navigate to the folder **data** and open the file **MinimumChange.java**
 - Make the class **ApplicationScoped**, so only one instance no matter how often it's used in the application by adding an annotation to the class:
@@ -973,7 +968,7 @@ public class MinimumChange {
 ```
 
 <details><summary><b>Java Imports</b></summary>
-<p>
+
 
 You may need to add the following import to the class
 
@@ -982,7 +977,8 @@ import javax.enterprise.context.ApplicationScoped;
 ```
 
 ---
-</p></details> 
+
+</details> 
 
 - Edit the file **ConfigurationResource.java** 
 - Replace the creation of an instance of MinimumChange with the **@Inject annotation** on the field. 
@@ -995,7 +991,7 @@ import javax.enterprise.context.ApplicationScoped;
 ```
 
 <details><summary><b>Java Imports</b></summary>
-<p>
+
 
 You may need to add the following import to the class
 
@@ -1004,7 +1000,8 @@ import javax.inject.Inject;
 ```
 
 ---
-</p></details> 
+
+</details> 
 
 This tells Helidon that when creating an instance of the Configuration resource it should find the one instance of MinimumChange and set the field to use it (creating the MinimumChange instance if there isn't already one)
 
@@ -1017,7 +1014,6 @@ This tells Helidon that when creating an instance of the Configuration resource 
 	  ```
 
 <details><summary><b>Java Imports</b></summary>
-<p>
 
 You may need to add the following import to the class
 
@@ -1026,7 +1022,8 @@ import javax.inject.Inject;
 ```
 
 ---
-</p></details> 
+
+</details> 
 
 As the Helidon framework knows that MinimumChange is ApplicationScoped this means that every time a new StorefrontResource is created (once per request) the **same** instance of MinimumChange will be used (which is also the instance used in the ConfigurationResource)
 
@@ -1130,13 +1127,11 @@ This time the request worked as the business logic in the StorefrontResource cla
 Of course there are lots of situations where you'd want to use dependency injection like this which are different situations, for example you may just not want to have to deal with constructors !
 
 
-
-
 ### Constructors and Injecting properties from configuration
-<details><summary><b>Some theory</b></summary>
-<p>
 
-Those with more Java experience will be wondering how Helidon knows which constructor to use when creating an instance to `@Inject` The answer is simple, unless instructed differently Helidon will use the no  args constructor. In fact it couldn't use anything different as how would it know what values to use for parameters ?
+<details><summary><b>Some theory</b></summary>
+
+Those with more Java experience will be wondering how Helidon knows which constructor to use when creating an instance to `@Inject` The answer is simple, unless instructed differently Helidon will use the no args constructor. In fact it couldn't use anything different as how would it know what values to use for parameters ?
 
 This of course may be a problem if the constructor if you want to use does actually require values for it's parameters.
 
@@ -1146,21 +1141,18 @@ Fortunately for us Helidon can get values to use for a constructor from the conf
 
 ---
 
-</p>
-
 </details>
-
 
 
 - In folder **data**, open the file **MinimumChange.java**
 - Add an additional constructor after the no args constructor:
 
-  ```java
+```java
     @Inject
     	public MinimumChange(@ConfigProperty(name = "app.minimumchange") Integer initialMinimumChange) {
     		this.minimumChange.set(initialMinimumChange);
     	}
-  ```
+```
   
 
 The result should look like :
@@ -1182,7 +1174,7 @@ The result should look like :
 ...
 ```
 <details><summary><b>Java Imports</b></summary>
-<p>
+
 
 You may need to add the following imports to the class
 
@@ -1192,7 +1184,8 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 ```
 
 ---
-</p></details> 
+
+</details> 
 
 The `@Inject` on  constructor means to use this constructor when creating instances for use with `@Inject` annotation on a field (Yes it would have been nicer if the two uses had different names).  The syntax `@ConfigProperty(name = "app.minimumchange")` tells Helidon to locate the property `app.minimumchange` in the Helidon configuration system.
 
@@ -1213,10 +1206,8 @@ content-length: 1
 4
 ```
 
----
-
 <details><summary><b>Where does that value come from?</b></summary>
-<p>
+
 
 Helidon by default looks for properties in the Java system properties (-D on the java command) then environment variables, then a resource called `META-INF/microprofile-config.properties` in it's classpath. You can override this, in which case it will look in the Java system properties, then environment variables, then the locations you specify in local files and the class path. Note that if you do specify locations then the `META-INF/microprofile-config.properties` is not included automatically.
 
@@ -1240,14 +1231,11 @@ Well Helidon has a quite powerful properties inheritance model based on differen
 
 ---
 
-</p>
-
 </details>
 
 <details><summary><b>What if there is no value available ?</b></summary>
-<p>
 
-If there is no value in the configuration files or default specified then the program will error when Helidon asked the content injection to wire things together (remember this is lazy initialization, so that might not be immediately)
+If there is no value in the configuration files or default specified then the program will error when Helidon asks the content and dependency injection to wire things together (remember this is lazy initialization, so that might not be immediately)
 
 This is a perfectly reasonable thing to do in **some** situations, for example if you must have a value for your database password, clearly in this situation there is no default value that would make sense, and even if there was (say your development DB password is "password") that default would have no meaning externally.
 
@@ -1255,18 +1243,18 @@ Where you deliberately do not want a default value it's far better to fail at th
 
 ---
 
-</p></details>
+</details>
 
 <details><summary><b>Setting a default using @ConfigProperty</b></summary>
-<p>
 
-In some situations the `@ConfigProperty` annotation is intended to provide a mechanism to override a reasonable default specified in the code. That default can be specified in a developer provided config file, but in some cases (for example the size of a buffer) you might reasonably want to have a guaranteed value that is always there and could only be removed by code changes (presumabaly by a knowlegable person !)
 
-To allow this the  `@ConfigProperty` annotation supports an additional option called defaultValue, for example `@ConfigProperty(name = "app.minimumchange", defaultValue = "4")` The value is provided as a string, but the runtime will try and convert the string to whatever the actual object type is.
+In some situations the `@ConfigProperty` annotation is intended to provide a mechanism to override a reasonable default specified in the code. That default can be specified in a developer provided config file, but in some cases (for example the size of a buffer) you might reasonably want to have a guaranteed value that is always there and could only be removed by code changes (presumably by a knowlegable person !)
+
+To support this the `@ConfigProperty` annotation has an additional option called defaultValue, for example `@ConfigProperty(name = "app.minimumchange", defaultValue = "4")` The value is provided as a string, but the runtime will try and convert the string to whatever the actual object type is.
 
 ---
 
-</p></details>
+</details>
 
 
 Let's go an add a new config file to the list !
@@ -1310,7 +1298,7 @@ Here we are using a file for configuration information, but later when we look a
 
 
 <details><summary><b>What formats can the config parser process ?</b></summary>
-<p>
+
 
 The example the `conf/storefront-config.yaml` is in YAML format, but the Helidon configuration system can process other formats based on the files suffix
 
@@ -1323,10 +1311,10 @@ There is also a feature introduced in Helidon 2.0 that allows you to use program
 
 ---
 
-</p></details>
+</details>
 
 <details><summary><b>Other types of configuration sources</b></summary>
-<p>
+
 
 Helidon allows you to bring in configuration from a file in the class path (in the resources part of the class path, but other sources are available as well :
 
@@ -1346,13 +1334,12 @@ Finally you can if you want use code to modify the configuration dynamically.
 
 For more details on exactly how user defined sources (files, classpath, directories, and URL's) work see the [Helidon advanced configuration documentation](https://helidon.io/docs/latest/#/mp/guides/03_config#config/06_advanced-configuration.adoc)
 
-
 ---
 
-</p></details>
+</details>
 
 <details><summary><b>Precedence of configuration sources</b></summary>
-<p>
+
 
 The configuration code scans a number of locations to locate the value of any given configuration property. The first matching name it finds will return the associated value.
 
@@ -1368,7 +1355,7 @@ Note that if you want to your code can expressly disable the system properties a
 
 ---
 
-</p></details>
+</details>
 
 
 We'll see later in the Kubernetes labs why we're using configuration files in the conf and confsecure directories, but it does demonstrate that you don't need to have all of your config in the same place
@@ -1403,7 +1390,7 @@ content-length: 1
 
 ### Monitoring the configuration for changes
 <details><summary><b>How it works</b></summary>
-<p>
+
 
 By default configuration files are read at startup, but it's also possible to define a configuration source that periodically checks for changes, enabling modifications to the configuration to be dynamically reflected in the properties used by the Injection system.
 
@@ -1414,8 +1401,6 @@ Now as well as being optional it's also got a polling strategy. In this case the
 When allowing for changing the configuration consideration needs to be given to when the data is actually extracted from the configuration. If you look at the StatusResource class you'll see that it's RequestScoped. This means that a new instance is created per request, and the properties that are @Injected reflect the value of those properties at the time the instance was created. If it had been application scoped like the MinimumChange class this would have been true as well, but as application scoped means there is only one per application we would have got the value when it was created, and no updates when the configuration changed (which is actually the right behavior in that case, so all is fine :-)
 
 ---
-
-</p>
 
 </details>
 
@@ -1502,7 +1487,7 @@ Note that the name is now what you changed it to ("Tims Shop" in my case)
 
 
 <details><summary><b>Injecting values into an objects fields using @ConfigProperty</b></summary>
-<p>
+
 
 We've seen the use of `@ConfigProperty` with constructors (it also works the same way with methods) but we can use the same approach to set a field in a class. Simply place `@Inject` and `@ConfigProperty` annotations before the field is declared.
 
@@ -1516,7 +1501,7 @@ The value is injected **after** the classes constructor has been run, so if the 
 
 ---
 
-</p></details>
+</details>
 
 ### Separating functionality by port
 Helidon can deliver service using multiple ports, for example separating out the administration functions (e.g. metrics, health etc.) from the operational functions.
@@ -1579,9 +1564,6 @@ We will look more in the the services like health that are available on the admi
 
 
 
-
-
-
 ### Handling failures
 It's a fact of life that problems sometimes occur. We saw in the console output earlier that the reserveStockItem method will throw a MinimumChangeException if the request does not exceed the specified minimum change.
 
@@ -1636,7 +1618,6 @@ Fortunately for us Helidon provides a simple way to handle the problem.
 
 
 <details><summary><b>Java Imports</b></summary>
-<p>
 
 You may need to add the following imports to the class
 
@@ -1645,7 +1626,8 @@ import org.eclipse.microprofile.faulttolerance.Fallback;
 ```
 
 ---
-</p></details>
+
+</details>
 
 The `fallbackMethod` is the name of the method you want to call if there is a problem. If you look at the end of the StorefrontResource class you'll see it.
 
@@ -1702,7 +1684,6 @@ Helidon has another approach error handling we're going to look at here that doe
 
 
 <details><summary><b>Java Imports</b></summary>
-<p>
 
 You may need to add the following imports to the class
 
@@ -1711,7 +1692,8 @@ import org.eclipse.microprofile.faulttolerance.Fallback;
 ```
 
 ---
-</p></details>
+
+</details>
 
 
 This annotation means the in the event of an exception Helidon will call a method on the handler class (look at the class if you like) which generates a response for you. It has available lots more info on what the error cause was.
@@ -1736,7 +1718,7 @@ The fallback class is com.oracle.labs.helidon.storefront.resources.fallback.Stor
 
 ### Handling runtime exceptions
 <details><summary><b>About exceptions</b></summary>
-<p>
+
 
 Some problems occur just because the environment hasn't behaved the way we want. For example it's not unknown for a service to make a call to another service (more on this coming up) and that other service just doesn't respond in time due to a network error.
 
@@ -1752,15 +1734,12 @@ CircuitBreakers - Defines the situation were a load may be sufficiently high tha
 
 Fallbacks - we've already looked at these
 
-</p>
+---
 
 </details>
 
----
 
-
-
-It's hard to actually simulate these in action, but we're going to show how to define a timeout.
+It's hard to actually simulate these in action without writing code to deliberately trigger a problem, but we're going to show how to define a timeout.
 
 - Open the file **StorefrontResource.java** class 
 - Add the annotation 
@@ -1777,7 +1756,6 @@ public class StorefrontResource {
 ```
 
 <details><summary><b>Java Imports</b></summary>
-<p>
 
 You may need to add the following imports to the class
 
@@ -1787,7 +1765,8 @@ import java.time.temporal.ChronoUnit;
 ```
 
 ---
-</p></details>
+
+</details>
 
 Now every REST call that does not finish in 15 will generate a timed out http response automatically. If there is an `@Fallback` in place that will trigger the fallback, if there isn't an `@Fallback` then the caller will get a 408 Request Timed out" message and can determine if it's going to retry itself or not.
 
@@ -1822,10 +1801,3 @@ The next lab in the *Helidon for Cloud Native* section is
 
 [Go to *Helidon for Cloud Native* overview Page](../Helidon-labs.md)
 
-```
-
-```
-
-```
-
-```

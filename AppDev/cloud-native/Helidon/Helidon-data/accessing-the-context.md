@@ -35,7 +35,6 @@ The full method signature now looks like
 ```
 
 <details><summary><b>Java Imports</b></summary>
-<p>
 
 You may need to add the following imports to the class
 
@@ -45,7 +44,8 @@ import javax.ws.rs.core.SecurityContext;
 ```
 
 ---
-</p></details>
+
+</details>
 
 When the method is called the a security context object for the current request is automatically added to the call.
 
