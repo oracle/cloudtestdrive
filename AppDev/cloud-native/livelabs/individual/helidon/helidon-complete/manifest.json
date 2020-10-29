@@ -22,7 +22,7 @@
         },
 		{
           "title": "Optional Part 2a: Accessing the request context",
-          "filename": "../../../../Helidon/Helidon-data/accesing-the-context.md"
+          "filename": "../../../../Helidon/Helidon-data/accessing-the-context.md"
         },
 		{
           "title": "Part 3: Communicating between microservices with Helidon",
