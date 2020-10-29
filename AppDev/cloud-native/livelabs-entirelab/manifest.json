@@ -10,15 +10,15 @@
         },
         {
           "title": "Part 1: Helidon labs",
-          "filename": "../Helidon/livelabs/index.html"
+          "filename": "../Helidon/livelabs-entirelab/index.html"
         },
 		    {
           "title": "Part 2: Docker",
-          "filename": "../Docker/livelabs/index.html"
+          "filename": "../Docker/livelabs-entirelab/index.html"
         },
 		    {
           "title": "Part 3: Kubernetes",
-          "filename": "../Kubernetes/livelabs/index.html"
+          "filename": "../Kubernetes/livelabs-entirelab/index.html"
         }
     ]
 }
