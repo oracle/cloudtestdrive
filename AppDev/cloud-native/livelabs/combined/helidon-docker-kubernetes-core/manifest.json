@@ -54,7 +54,7 @@
         },
 		{
           "title": "Kubernetes - Part 3a: Horizontal Scaling",
-          "filename": "../../../Kubernetes/cloud-native-labs/Horizontal-scaling/horizontal-scaling.md"
+          "filename": "../../../Kubernetes/cloud-native-labs/Horizontal-scaling/Horizontal-scaling.md"
         },
 		{
           "title": "Kubernetes - Part 3b: Auto Scaling",
@@ -62,7 +62,7 @@
         },
         {
           "title": "Kubernetes - Part 4: Rolling Updates",
-          "filename": "../../../Kubernetes/Rolling-updates/Rolling-updates.md"
+          "filename": "../../../Kubernetes/cloud-native-labs/Rolling-updates/Rolling-updates.md"
         },
         {
           "title": "Further Information on Kubernetes",
