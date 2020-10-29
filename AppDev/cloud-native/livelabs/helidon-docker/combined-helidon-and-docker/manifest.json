@@ -2,7 +2,7 @@
     "tutorials": [
         {
           "title": "Helidon Labs introduction",
-          "filename":"../../../Live-labs-overview-pages/Helidon-and-docker.md"
+          "filename":"../../../Live-labs-overview-pages/Combined-Helidon-Docker.md"
         },
         {
           "title": "Setup your tenancy",
