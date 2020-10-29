@@ -6,46 +6,46 @@
         },
         {
           "title": "Setup your tenancy",
-          "filename":"../../../ManualSetup/FullSetupFreeTier.md"
+          "filename":"../../../../ManualSetup/FullSetupFreeTier.md"
         },
         {
           "title": "Setup for the Helidon Labs",
-          "filename":"../../../Helidon/setup/setup.md"
+          "filename":"../../../../Helidon/setup/setup.md"
         },
         {
           "title": "Part 1: Core Helidon ",
-          "filename": "../../../Helidon/Helidon-core/helidon-core.md"
+          "filename": "../../../../Helidon/Helidon-core/helidon-core.md"
         },
 		{
           "title": "Part 2: Database and Helidon",
-          "filename": "../../../Helidon/Helidon-data/helidon-data.md"
+          "filename": "../../../../Helidon/Helidon-data/helidon-data.md"
         },
 		{
           "title": "Optional Part 2a: Accessing the request context",
-          "filename": "../../../Helidon/Helidon-data/accesing-the-context.md"
+          "filename": "../../../../Helidon/Helidon-data/accesing-the-context.md"
         },
 		{
           "title": "Part 3: Communicating between microservices with Helidon",
-          "filename": "../../../Helidon/Helidon-to-Other-Microservices/helidon-to-other-microservices.md"
+          "filename": "../../../../Helidon/Helidon-to-Other-Microservices/helidon-to-other-microservices.md"
         },
 		{
           "title": "Optional Part 3a: Communicating from non Helidon clients",
-          "filename": "../../../Helidon/Helidon-to-Other-Microservices/non-helidon-rest-clients.md"
+          "filename": "../../../../Helidon/Helidon-to-Other-Microservices/non-helidon-rest-clients.md"
         },
         {
           "title": "Part 4: Operations support with Helidon",
-          "filename": "../../../Helidon/Helidon-Operations/helidon-operations.md"
+          "filename": "../../../../Helidon/Helidon-Operations/helidon-operations.md"
         },
         {
           "title": "Part 5: Cloud Native support in Helidon",
-          "filename": "../../../Helidon/Helidon-cloud-native/helidon-cloud-native.md"
+          "filename": "../../../../Helidon/Helidon-cloud-native/helidon-cloud-native.md"
         },
         {
           "title": "Optional Labs"
         },
         {
           "title": "Optional lab 1: Self documenting API support in Helidon",
-          "filename": "../../../Helidon/Helidon-open-api/helidon-open-api.md"
+          "filename": "../../../../Helidon/Helidon-open-api/helidon-open-api.md"
         }
     ]
 }

@@ -6,35 +6,35 @@
         },
         {
           "title": "Tenancy Setup for the Kubernetes Labs",
-          "filename":"../../../ManualSetup/KubernetesSetup.md"
+          "filename":"../../../../ManualSetup/KubernetesSetup.md"
         },
         {
           "title": "Cloud Shell Setup for the Kubernetes Labs",
-          "filename":"../../../Kubernetes/setup/cloud-shell-setup.md"
+          "filename":"../../../../Kubernetes/setup/cloud-shell-setup.md"
         },
         {
           "title": "Part 1: Setting up the cluster and getting your services running in Kubernetes",
-          "filename": "../../../Kubernetes/base-kubernetes/KubernetesBaseLabs.md"
+          "filename": "../../../../Kubernetes/base-kubernetes/KubernetesBaseLabs.md"
         },
 		{
           "title": "Part 2: Cloud native with Kubernetes",
-          "filename": "../../../Kubernetes/cloud-native-labs/Health-readiness-liveness/Health-liveness-readiness.md"
+          "filename": "../../../../Kubernetes/cloud-native-labs/Health-readiness-liveness/Health-liveness-readiness.md"
         },
 		{
           "title": "Part 3a: Horizontal Scaling",
-          "filename": "../../../Kubernetes/cloud-native-labs/Horizontal-scaling/horizontal-scaling.md"
+          "filename": "../../../../Kubernetes/cloud-native-labs/Horizontal-scaling/horizontal-scaling.md"
         },
 		{
           "title": "Part 3b: Auto Scaling",
-          "filename": "../../../Kubernetes/cloud-native-labs/Horizontal-scaling/Auto-scaling.md"
+          "filename": "../../../../Kubernetes/cloud-native-labs/Horizontal-scaling/Auto-scaling.md"
         },
         {
           "title": "Part 4: Rolling Updates",
-          "filename": "../../../Kubernetes/Rolling-updates/Rolling-updates.md"
+          "filename": "../../../../Kubernetes/Rolling-updates/Rolling-updates.md"
         },
         {
           "title": "Further Information on Kubernetes",
-          "filename": "../../../Kubernetes/further-information/further-information.md"
+          "filename": "../../../../Kubernetes/further-information/further-information.md"
         }
     ]
 }
