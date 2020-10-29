@@ -1,8 +1,6 @@
-[Go to Helidon for Cloud Native Page](../Helidon-labs.md)
-
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native - Non Helidon clients of a micro service
+# Cloud Native - Non Helidon clients of a micro service
 
 ## Introduction
 
@@ -143,3 +141,10 @@ You will of course need to bring in the required libraries for the rest client b
 			<version>2.30</version>
 		</dependency>
 ```
+
+---
+
+## End of the lab, what's next
+You have finished the optional lab of **Communicating from non Helidon clients**. 
+
+The next lab in the Helidon labs is **Operations support with Helidon**

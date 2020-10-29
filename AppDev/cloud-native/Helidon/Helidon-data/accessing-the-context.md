@@ -1,5 +1,3 @@
-[Go to Helidon for Cloud Native Page](../Helidon-labs.md)
-
 ![](../../../../common/images/customer.logo2.png)
 
 # Accessing the context of the request
@@ -115,7 +113,7 @@ To be complete update the adjustStockLevel and deleteStockItem methods in the sa
 - Stop and restart the stock manager
   
 ## Other information available
-The security context can be used to find out if a user is in a role, and what form of authentication is in place. You can also use it to find out if the request came over a secure (https) connection, but a little note of warning there. In many micro-servcies deployments you may do the https termination elsewhere in the framework (for example in a Kubernetes Ingress controller) which may result in being told the connection is not secure, when in fact the connection to the framework itself is secure.
+The security context can be used to find out if a user is in a role, and what form of authentication is in place. You can also use it to find out if the request came over a secure (https) connection, but a little note of warning there. In many micro-services deployments you may do the https termination elsewhere in the framework (for example in a Kubernetes Ingress controller) which may result in being told the connection is not secure, when in fact the connection to the framework itself is secure.
 
 
 ## Supporting methods
@@ -125,3 +123,10 @@ There are already methods in the StockResource class which deal with retrieving 
 ## Transactional implications
 
 The entire StockResource class is covered by the @Transational annotation. This means that as we update the database with the stock changes in the transaction the same transaction will also cover the creating of the audit records. Thus both the stock level and the associated audit record will succeed or fail together. Admittedly here we are using the same database, but this would also apply if the audit records were being written to a completely different database.
+
+---
+
+## End of the lab, what's next
+You have finished the optional lab of **Accesing the request context with Helidon**. 
+
+The next lab in the Helidon labs is **Communicating between microservcies with Helidon**

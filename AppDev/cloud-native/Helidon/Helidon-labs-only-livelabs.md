@@ -3,14 +3,22 @@
 # Cloud Native - Helidon for Cloud Native
 
 This set of lab instructions is based on the virtual machine image dated 2020-10-09 (9th October 2020)
-
 ## Setup for the Helidon labs
 
 You will need to import the template code you will be using into eclipse, and do some small VM configurations. This is in addition to setting up the VM you did earlier.
 
-Please follow [the setup instructions.](setup/setup.md) When you've completed them click the `back` button on your browser to return to this page.
+Please follow **Setup for the Helidon Labs** section. When you've completed them click the `back` button on your browser to return to this page.
 
-## **Introduction**
+## Video introductions
+
+These labs were designed in part to be delivered in a classroom environment where we would do a short presentation to introduce the labs, and also each section.
+
+To support those who are doing the labs in a self-guided mode we have created an introduction video to the entire labs, and short videos for each lab section. If you are doing the labs with an instructor you don't need to review these, but for self guided students we **strongly** recommend that you review the videos.
+
+Each video is in a expandable section, see the one below. If you are a self guided student (you are **not** part of an instructor led lab) expand it and click on the video image to be taken to the video streaming web site where you can play it. Once you've finished just click the back button to return to these instructions.
+
+
+## Introduction
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -137,71 +145,48 @@ Also we are not addressing how to split any existing monolith into modules, hope
 
 ## The labs
 
+This section describes the labs, you will need to do them in the order shown. There are optional labs described, the ones that are connected with a core lab should be done in the order shown **if you decide to to them.** Optional labs that are not attached to a lab can be done once the core labs are completed.
+
 ### 1. Core Helidon
 The core labs are designed to show how you can take a some existing Java code and REST enable it so it can operate as a standalone service. This includes not just the REST API, but also configuration, error handling and security.
-
-[The core Helidon lab](Helidon-core/helidon-core.md)
-
 
 
 ### 2. Databases and Helidon
 This looks at how you can access databases within a Helidon based application.
 
-[The database lab](Helidon-data/helidon-data.md)
+### Optional lab 2a Accessing the request context
+This looks at how you can access the context of the request to find out information not directly available from the core API. This lab looks at how to get the identity of the user making the request.
 
 
-
-### 3. Communicating services with Helidon
+### 3. Communicating between microservices with Helidon
 This lab shows the support in Helidon for switching from a direct method call to using a REST call without modifying the calling method.
 
-[The cross service communication lab](Helidon-to-Other-Microservices/helidon-to-other-microservices.md)
-
+### Optional lab 3a - Communicating from non Helidon clients
+Much though we would like everything talking to our mciroservices to be Helidon based in the real world this wont; be the case. This module discusses how you can use the RestClient interface described in **Communicating between microservices with Helidon** to easily connect your non Helidon Java code to a Helidon based microservice.
 
 
 ### 4. Supporting operations activities with Helidon
 This labs looks at how Helidion can help you gather data on the fow of operating when you make a call and how your program is being used. This information can help you learn how to optimize your miroservices, especially in deployments where you have a request propagating across many separate microservices.
 
-[The Helidon support for Ops lab](Helidon-Operations/helidon-operations.md)
-
-
 
 ### 5. Cloud Native support in Helidon - Kubernetes support
 This Helidon lab looks as the features in Helidon that are designed to provide support for cloud native functionality in deployment systems like Kubernetes. For example to help report if a program is still running, but is actually failing to operate (for example it's in a deadlock)
 
-[The Helidon support for Cloud Native Operations lab](Helidon-cloud-native/helidon-cloud-native.md)
-
-
----
-
-
 
 ## Optional Lab modules
 
-The following modules are in **some** cases optional, this is because some of the later modules may depend on these (For example the Visual Builder module relies on the completion of the OpenAPI module.) If you are in a guided lab with an instructor they will tell you which of the optional modules you need to complete, if you are doing this in a self-guided mode then please read the descriptions below to determine which optional modules you should do.
+The following modules are in **some** cases optional, this is because some of the later modules may depend on these (For example the Visual Builder module we acre working on relies on the completion of the OpenAPI module.) If you are in a guided lab with an instructor they will tell you which of the optional modules you need to complete, if you are doing this in a self-guided mode then please read the descriptions below to determine which optional modules you should do.
 
 
 ### 	Optional 1. Cloud Native support in Helidon - Self describing API's
 
-This is an optional lab if you chose to do it. If you are going to do the Visual Builder optional module (it shows how to create a mobile / browser based application, with form like capabilities) then you will need to do this module.
+This is an optional lab if you chose to do it. If you are going to do the Visual Builder optional module we are working on and will be released soon (it shows how to create a mobile / browser based application, with form like capabilities) then you will need to do this module.
 
 To enable a service to be easily consumed Helidon provides support for the dynamic creation of Open API documents (previously known as Swagger)  that document the REST APIs provided by a micro-service. This lab looks at how configure your Helidon projects to generate this information. 
 
-[The Helidon support for Open API Document generation](Helidon-open-api/helidon-open-api.md)
-
 ---
-
-
-
-
 
 ### What's next
 Once you've finished these labs then it's time for a cup of tea (or other beverage of your choice.)
 
-Please look at the follow-on lab focusing [packaging these new microservices in Docker](../Docker/DockerLabs.md) and deploying them in Kubernetes.
-
-
-
-------
-
-[Go to Overview Page](../README.md)
-
+Thanks for doing the labs, and we hope they have been useful to you. 

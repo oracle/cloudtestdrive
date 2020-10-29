@@ -1,8 +1,6 @@
-[Go to Helidon for Cloud Native Page](../Helidon-labs.md)
-
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native - Helidon and Databases
+# Cloud Native - Helidon and Databases
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -589,15 +587,7 @@ content-length: 148
 [{"itemCount":100,"itemName":"Book"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":150,"itemName":"Pencil"},{"itemCount":5000,"itemName":"Pin"}]
 ```
 
-## Optional lab - accessing the context of the request
-
-There are situations where you need to access the context of a request, for example in getting the identity of the user, or examining in detail the Http headers.
-
-Not all projects need to access this information, which is why this is an optional step in the lab you can do if you have time, or come back to later if you wish.
-
-If you'd like to then please work through the [accessing the context](./accessing-the-context.md) module.
-
-### Summary
+## Summary
 
 **Please leave the stockmanager running, we're going to use it in the next few labs**
 
@@ -609,22 +599,13 @@ We've used the `@Transactional` annotation to make our entire class use JTA tran
 
 We've also seen how we can bring use @PathParam to provide us with a different way of gathering data from a REST request and passing it to our methods.
 
-
-
-The next lab in the *Helidon for Cloud Native* section is 
-
-**3. Communicating services with Helidon** : This lab shows the support in Helidon for switching from a direct method call to using a REST call without modifying the calling method.
-
-[The cross service communication lab](../Helidon-to-Other-Microservices/helidon-to-other-microservices.md)
-
-
-
-
-
-
-
 ---
 
+## End of the lab, what's next
+You have finished the lab of **Databases with Helidon**. 
 
+You can now do the optional lab **Accessing the request context**
 
-[Go to *Helidon for Cloud Native* overview Page](../Helidon-labs.md)
+OR
+
+The next lab in the Helidon core labs is **Communicating between microservices with Helidon**

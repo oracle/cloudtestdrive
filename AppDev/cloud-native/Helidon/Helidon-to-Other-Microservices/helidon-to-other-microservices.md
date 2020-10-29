@@ -1,8 +1,6 @@
-[Go to Helidon for Cloud Native Page](../Helidon-labs.md)
-
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native - Communicating between microservcies
+# Cloud Native - Communicating between microservcies
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -307,15 +305,11 @@ We've put together a short document on how to [manually create a rest client](no
 ---
 
 
+## End of the lab, what's next
+You have finished the lab of **Communicating between microservices with Helidon**. 
 
-### End of the lab
-You have finished this part of the lab, you can proceed to the next step of this lab:
+You can now do the optional lab **Communicating from non Helidon clients** lab
 
-[4. Supporting operations activities with Helidon](../Helidon-Operations/helidon-operations.md)
+OR
 
-
-
----
-
-
-[Go to *Helidon for Cloud Native* overview Page](../Helidon-labs.md)
+The next lab in the Helidon core labs is **Operations support with Helidon**

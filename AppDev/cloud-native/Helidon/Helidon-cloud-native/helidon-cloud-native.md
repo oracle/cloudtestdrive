@@ -1,8 +1,6 @@
-[Go to Helidon for Cloud Native Page](../Helidon-labs.md)
-
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native - Supporting cloud native operations with Helidon
+# Cloud Native - Supporting cloud native operations with Helidon
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -212,18 +210,13 @@ content-length: 127
 
 As the stockmanager is now up the storefront has it's dependencies satisfied and it can respond that it's status is UP and it's ready to process requests. The cloud native infrastructure will then send it requests as needed.
 
-
-
-
-### End of the lab
-You have finished all the labs in this initial section **A. Helidon**.  
-
-If you wish you can now do the [optional labs in the Helidon section](../Helidon-labs.md)
- 
-If you don't want to do those labs then if you are doing the full set of labs you can now start working on Section [B. Using Docker](../../Docker/DockerLabs.md)
-
-
 ---
 
+## End of the lab, what's next
+You have finished all the core labs in **Helidon**.  
 
-[Go to *Helidon for Cloud Native* overview Page](../Helidon-labs.md)
+If you wish you can now do the optional **Self documenting API support in Helidon** module
+
+If you do not want to do the **Self documenting API support in Helidon** module and are doing the "mega" lab then the next module is the **Docker** module
+
+If you are only doing the Helidon labs and do not want to do the **Self documenting API support in Helidon** module then thank you for your time and attention

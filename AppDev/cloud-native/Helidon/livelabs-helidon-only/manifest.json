@@ -2,11 +2,11 @@
     "tutorials": [
         {
           "title": "Helidon Labs introduction",
-          "filename":"../Helidon-labs.md"
+          "filename":"../Helidon-labs-only-livelabs.md"
         },
         {
           "title": "Setup for the Helidon Labs",
-          "filename":"../setup.md"
+          "filename":"../setup/setup.md"
         },
         {
           "title": "Part 1: Core Helidon ",
@@ -17,8 +17,16 @@
           "filename": "../Helidon-data/helidon-data.md"
         },
 		{
+          "title": "Optional Part 2a: Accessing the request context",
+          "filename": "../Helidon-data/accesing-the-context.md"
+        },
+		{
           "title": "Part 3: Communicating between microservices with Helidon",
           "filename": "../Helidon-to-Other-Microservices/helidon-to-other-microservices.md"
+        },
+		{
+          "title": "Optional Part 3a: Communicating from non Helidon clients",
+          "filename": "../Helidon-to-Other-Microservices/non-helidon-rest-clients.md"
         },
         {
           "title": "Part 4: Operations support with Helidon",
@@ -31,16 +39,8 @@
         {
           "title": "Optional Labs"
         },
-		{
-          "title": "Optional 2a: Accessing the request context",
-          "filename": "../Helidon-data/accesing-the-context.md"
-        },
-		{
-          "title": "Optional 3a: Communicating from non Helidon clients",
-          "filename": "../Helidon-to-Other-Microservices/non-helidon-rest-clients.md"
-        },
         {
-          "title": "Optional 6: Self documenting API support in Helidon",
+          "title": "Optional lab 1: Self documenting API support in Helidon",
           "filename": "../Helidon-open-api/helidon-open-api.md"
         }
     ]

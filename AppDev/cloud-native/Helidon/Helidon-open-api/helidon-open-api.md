@@ -1,8 +1,6 @@
-[Go to Helidon for Cloud Native Page](../Helidon-labs.md)
-
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native - Helidon and Open API
+# Cloud Native - Helidon and Open API
 
 This is an optional module for the Helidon lab. It is currently not required that this module be completed to enable other optional modules.
 
@@ -1188,5 +1186,11 @@ The Microprofile OpenAPI specification is available from the [Microprofile open 
 
 ---
 
+## End of the lab, what's next
+You have finished the optional lab **Self documenting API support in Helidon**. 
 
-[Go to *Helidon for Cloud Native* overview Page](../Helidon-labs.md)
+This is the end of the Helidon labs.
+
+If you are doing the "mega" lab then the next module is the **Docker** module
+
+If you are only doing the Helidon labs then thank you for your time and attention

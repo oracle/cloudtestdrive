@@ -1,8 +1,6 @@
-[Go to Helidon for Cloud Native Page](../Helidon-labs.md)
-
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native - Core Helidon
+# Cloud Native - Core Helidon
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
@@ -1784,17 +1782,4 @@ Finally we've looked at the functionality Helidon provides for handling problems
 
 ### Next Lab
 
-The next lab in the *Helidon for Cloud Native* section is 
-
-**2. Databases and Helidon** : This looks at how you can access databases within a Helidon based application.
-
-[The database lab](../Helidon-data/helidon-data.md)
-
-
-
----
-
-
-
-[Go to *Helidon for Cloud Native* overview Page](../Helidon-labs.md)
-
+The next lab in the *Helidon for Cloud Native* section is  **Databases and Helidon** : This looks at how you can access databases within a Helidon based application.
