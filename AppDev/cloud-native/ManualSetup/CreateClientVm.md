@@ -1,4 +1,6 @@
-# Creating the client VM in the OCI tenancy
+# Creating the Client VM in the OCI tenancy
+
+Only follow the instruction in this module if you have are in an instructor led lab and the instructor has provided you with details of a pre-prepared tenancy to use.
 
 This page will guide you on how to set up a Compute instance on the Oracle Cloud, running a Linux desktop.  You will be using a *Custom Image* that was prepared by your instructor, which contains all the client-side components you need for running this lab, such as Eclipse and a variety of command-line tools.
 

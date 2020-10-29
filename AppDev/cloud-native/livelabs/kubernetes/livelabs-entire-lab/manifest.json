@@ -1,0 +1,76 @@
+{
+    "tutorials": [
+        {
+          "title": "Kubernetes Labs Introduction",
+          "filename":"../../../Live-labs-overview-pages/Kubernetes-all-labs.md"
+        },
+        {
+          "title": "Tenancy Setup for the Kubernetes Labs",
+          "filename":"../../../ManualSetup/KubernetesSetup.md"
+        },
+        {
+          "title": "Cloud Shell Setup for the Kubernetes Labs",
+          "filename":"../../../Kubernetes/setup/cloud-shell-setup.md"
+        },
+        {
+          "title": "Part 1: Setting up the cluster and getting your services running in Kubernetes",
+          "filename": "../../../Kubernetes/base-kubernetes/KubernetesBaseLabs.md"
+        },
+		{
+          "title": "Part 2: Cloud native with Kubernetes",
+          "filename": "../../../Kubernetes/cloud-native-labs/Health-readiness-liveness/Health-liveness-readiness.md"
+        },
+		{
+          "title": "Part 3a: Horizontal Scaling",
+          "filename": "../../../Kubernetes/cloud-native-labs/Horizontal-scaling/horizontal-scaling.md"
+        },
+		{
+          "title": "Part 3b: Auto Scaling",
+          "filename": "../../../Kubernetes/cloud-native-labs/Horizontal-scaling/Auto-scaling.md"
+        },
+        {
+          "title": "Part 4: Rolling Updates",
+          "filename": "../../../Kubernetes/Rolling-updates/Rolling-updates.md"
+        },
+        {
+          "title": "Further Information",
+          "filename": "../../../Kubernetes/further-information/further-information.md"
+        },
+        {
+          "title": "Optional 1a: Prometheus for metrics capture",
+          "filename": "../../../Kubernetes/monitoring-kubernetes/MonitoringWithPrometheusLab.md"
+        },
+		{
+          "title": "Optional 1b: Visualizing metrics with Grafana",
+          "filename": "../../../Kubernetes/monitoring-kubernetes/VisualizingWithGrafanaLab.md"
+        },
+		{
+          "title": "Optional 2a: Capturing log data for processing",
+          "filename": "../../../Kubernetes/management/logging/LogCaptureForProcessing.md"
+        },
+        {
+          "title": "Optional 2b: Capturing log data for archive",
+          "filename": "../../../Kubernetes/management/logging/LogCaptureForArchive.md"
+        },
+		{
+          "title": "Optional 3a: Installing a service mesh",
+          "filename": "../../../Kubernetes/service-mesh/Linkerd-install.md"
+        },
+        {
+          "title": "Optional 3b: Traffic monitoring with a servcie mesh",
+          "filename": "../../../Kubernetes/service-mesh/Linkerd-monitoring-traffic-flows.md"
+        },
+		{
+          "title": "Optional 3c: Using a service mesh for troubleshooting",
+          "filename": "../../../Kubernetes/service-mesh/Linkerd-using-to-troubleshoot-problems.md"
+        },
+        {
+          "title": "Optional 3d: Traffis splits with a service mesh (Canary deployments, and chaos engineering)",
+          "filename": "../../../Kubernetes/service-mesh/Linkerd-exploring-traffic-splits.md"
+        },
+		{
+          "title": "Optional 3e: Uninstalling the service mesh",
+          "filename": "../../../Kubernetes/service-mesh/Linkerd-uninstall.md"
+        }
+    ]
+}

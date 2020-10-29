@@ -1,0 +1,56 @@
+{
+    "tutorials": [
+        {
+          "title": "Helidon Labs introduction",
+          "filename":"../../../Live-labs-overview-pages/Helidon-and-docker.md"
+        },
+        {
+          "title": "Setup your tenancy",
+          "filename":"../../../ManualSetup/FullSetupFreeTier.md"
+        },
+        {
+          "title": "Setup for the Helidon Labs",
+          "filename":"../../../Helidon/setup/setup.md"
+        },
+        {
+          "title": "Helidon Part 1: Core Helidon ",
+          "filename": "../../../Helidon/Helidon-core/helidon-core.md"
+        },
+		{
+          "title": "Helidon Part 2: Database and Helidon",
+          "filename": "../../../Helidon/Helidon-data/helidon-data.md"
+        },
+		{
+          "title": "Helidon Optional Part 2a: Accessing the request context",
+          "filename": "../../../Helidon/Helidon-data/accesing-the-context.md"
+        },
+		{
+          "title": "Helidon Part 3: Communicating between microservices with Helidon",
+          "filename": "../../../Helidon/Helidon-to-Other-Microservices/helidon-to-other-microservices.md"
+        },
+		{
+          "title": "Helidon Optional Part 3a: Communicating from non Helidon clients",
+          "filename": "../../../Helidon/Helidon-to-Other-Microservices/non-helidon-rest-clients.md"
+        },
+        {
+          "title": "Helidon Part 4: Operations support with Helidon",
+          "filename": "../../../Helidon/Helidon-Operations/helidon-operations.md"
+        },
+        {
+          "title": "Helidon Part 5: Cloud Native support in Helidon",
+          "filename": "../../../Helidon/Helidon-cloud-native/helidon-cloud-native.md"
+        },
+        {
+          "title": "Helidon Optional Labs",
+          "filename": "../../Spacer-manifest-entry.md"
+        },
+        {
+          "title": "Helidon Optional lab 1: Self documenting API support in Helidon",
+          "filename": "../../../Helidon/Helidon-open-api/helidon-open-api.md"
+        },
+        {
+          "title": "Docker labs",
+          "filename": "../../../Docker/Docker-labs.md"
+        }
+    ]
+}

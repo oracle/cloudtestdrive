@@ -1,8 +1,6 @@
-[Go to Overview Page](../README.md)
-
 ![](../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native -  Creating and running as a docker container
+# Creating and running as a docker container
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -663,8 +661,6 @@ This is the end of this section of the lab, let's stop the running images
   -  `docker stop zipkin`
 
 ## Summary
-Congratulations, you are now able to run your microservices on Docker!  Next step is to use these images to deploy them on a Kubernetes cluster.  For this, navigate to the next chapter, [C. Deploying in Kubernetes](../Kubernetes/Kubernetes-labs.md)
+Congratulations, you are now able to run your microservices on Docker, separate the configuration from the container, and push the container to a repository
 
-------
-
-[Go to Overview Page](../README.md)
+If you are doing only the Helidon and Docker lab you've finished. If you're doing the "mega" lab then it's time to start with the **Kubernetes labs introduction**

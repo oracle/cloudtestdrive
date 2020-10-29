@@ -2,7 +2,14 @@
 
 # Cloud Native - Helidon for Cloud Native
 
-This set of lab instructions is based on the virtual machine image dated 2020-10-09 (9th October 2020)
+This set of lab instructions is based on the virtual machine image dated 2020-10-29 (29th October 2020)
+
+## Setup the Tenancy
+
+You will need to do a number of tasks to setup your tenancy, creating the developer VM you will use, creating and configuring a Autonomous Transaction Processing database etc.
+
+Please follow the tasks in the **Setup your tenancy** section (click the name in the labs index)
+
 ## Setup for the Helidon labs
 
 You will need to import the template code you will be using into eclipse, and do some small VM configurations. This is in addition to setting up the VM you did earlier.

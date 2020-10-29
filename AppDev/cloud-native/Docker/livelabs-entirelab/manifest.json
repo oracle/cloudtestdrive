@@ -1,8 +1,0 @@
-{
-    "tutorials": [
-        {
-          "title": "Docker labs",
-          "filename":"../DockerLabs.md"
-        }
-    ]
-}

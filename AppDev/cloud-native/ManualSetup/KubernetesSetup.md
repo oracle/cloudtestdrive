@@ -146,13 +146,4 @@ If it works OK you will see a set of messages in the Script Output section of th
 
 ## End of the setup
 
-Congratulations, you have successfully prepared your tenancy ! 
-
-Hit the **Back** button of your browser to return to the top level and start the Helidon lab !
-
-
-
-
-```
-
-```
+Congratulations, you have successfully prepared your tenancy for the Kubernetes lab modules! 

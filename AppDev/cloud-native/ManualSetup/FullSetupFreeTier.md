@@ -1,5 +1,3 @@
-[Go to Overview Page](../README.md)
-
 ![](../../../common/images/customer.logo2.png)
 
 # Migration of Monolith to Cloud Native
@@ -27,6 +25,8 @@ This video is an introduction to this section of the lab. Once you've watched it
 
 ### 1. Create the CTDOKE compartment
 
+If you are in an **instructor led lab** the instructor may have already done this step for you, if so they will tell you.
+
 - Click the `hamburger` menu (three bars on the upper left)
 
 - Scroll down the list to the `Governance and Administration` section
@@ -50,30 +50,36 @@ This video is an introduction to this section of the lab. Once you've watched it
 
 ### 2. Import the image for the Development VM
 
+If you are in an **instructor led lab** the instructor may have already done this step for you, if so they will tell you.
+
+- Download the image location file ![https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/MonolithToCloudNative/o/MonolithToCloudNativeVMDetails.txt](https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/MonolithToCloudNative/o/MonolithToCloudNativeVMDetails.txt)
+
+- Open this file. You will see the pre-authenticated URL to the VM image and also the default VNC password set for this image
+
 - Navigate to the **Compute** and **Custom Image** screen
 
 ![](images/custom-image.png)
-
-
 
 - On the right, make sure the **CTDOKE** compartment is selected
 
   ![](images/images2.png)
 
-- **ATTENTION** : if an image with a name composed like **H-K8S-Lab-A-Helidon-2020-03-13** already exists and the date at the end (it's in the form year-month-day) is the same as or newer than the date in the import URL your instructor has given you then **you are OK for this step**, please move to the next item on this page.
+- **ATTENTION** : if an image with a name composed like **H-K8S-Lab-A-Helidon-2020-10-29** already exists and the date at the end (it's in the form year-month-day) is the same as **or later**  than the date above in the import URL your instructor has given you then **you are OK for this step**, please move to the next item on this page.
 - If you do not have this image available, import it with following steps:
   - Click the `Import Image` button
   - Make sure the **CTDOKE** compartment is selected
-  - Name the image, probably best to have it match the name in the storage URL which will be something like H-K8S-Lab-A-Helidon-2020-03-23 as that way you will know what version of the lab you are using.
+  - Name the image, probably best to have it match the name in the storage URL which will be something like H-K8S-Lab-A-Helidon-2020-10-29 as that way you will know what version of the lab you are using.
   - Make sure the Operating System is set to **Linux**
   - Select the option `IMPORT FROM AN OBJECT STORAGE URL` 
-  - Enter the **VM image URL** you received from your instructor
+  - Enter the **VM image URL** from the image location file you just downloaded.
   - Set the image type to **OCI**
   - Click the `Import image` option - it can take 10 to 15 minutes to finish, you can continue with the next setup actions and check it's completed before you create an instance using the image.
 
 ![](images/import-custom-image-form.png)
 
 ### 3. Creating a Virtual Cloud Network (VCN)
+
+If you are in an **instructor led lab** the instructor may have already done this step for you, if so they will tell you.
 
 You need to set up a Virtual Cloud Network to run the instances of this lab on.
 
@@ -97,6 +103,8 @@ You need to set up a Virtual Cloud Network to run the instances of this lab on.
 
 
 ### 4. Adding an OCI ingress rule for VNC
+
+If you are in an **instructor led lab** the instructor may have already done this step for you, if so they will tell you.
 
 You need to be sure that the Virtual Cloud Network supports remote access using VNC.
 
@@ -126,9 +134,9 @@ You need to be sure that the Virtual Cloud Network supports remote access using 
 
 
 
-
-
 ### 5. Setup the database.
+
+If you are in an **instructor led lab** the instructor may have already done this step for you, if so they will tell you.
 
 #### 5a. Create a database
 
@@ -183,13 +191,14 @@ GRANT UNLIMITED TABLESPACE TO HelidonLabs;
 ### 6. Create a Development VM using the image you imported
 
 If you are running in your tenancy
+
 - Return to the Custom Compute Images menu (Hamburger menu -> Core Infrastructure section -> Compute -> Custom Images) 
 
-If you are in an **instructor led** lab, you instructor will provide you with the details to locate the Developer VM image to use
+If you are in an **instructor led** lab, you instructor may provide you with details to locate the Developer VM image to use
 
 - Locate image to use which your instructor has provided or you have just imported : If you are in a shared environment and there is more than one image starting H-K8S-Lab-A-Helidon chose the one with the most recent date. (As we recommend naming the images using the date this will be the last part of the image name in the format `yyyy-mm-dd`and if you had to run the import
 
-- Check that the image state is **Available** :
+- Check that the image has finished importing and the state is **Available** :
 
 Note sometimes the import image page does not refresh once the image is imported, so if it's is still displaying `Importing` then try refreshing the page.
 
@@ -279,6 +288,36 @@ You need to let your VM run for a couple of mins to fully boot and start the VNC
 Once you have logged in you will see the Linux desktop, it will look similar to this, though the background and specific icons may differ.
 
 ![](images/03-desktop.png)
+
+#### Changing the VNC Password (optional)
+
+We have provided a pre-set VNC password. If you are in a instructor led lab this may have been provided to you by your lab instructor, or it may be in the image location file you downloaded earlier.
+
+While not required we do recommend that you change this password to prevent access by other people.
+
+- On the desktop background click right, then tak the "Open Terminal" option
+
+![](images/vnc-01-open-terminal.png)
+
+- In the resulting terminal window type `vncpasswd`
+
+- At first the prompt enter your new VNC password
+
+- At second the prompt reenter your new VNC password
+
+- When prompted if you want a view only password enter `n`
+
+![](images/vnc-02-set-vncpasswd.png)
+
+The easiest way to apply the new password is to reboot the VM
+
+- In the terminal enter `sudo reboot`
+
+![](images/vnc-03-reboot.png)
+
+The VNC connection will probably drop immediately and the VNC client will try to reconnect (in which case close the VNC window) or it may just close the window for you (the specific behavior is VNC client specific.) 
+
+When the VM has rebooted (allow about 60 - 90 seconds) Open a new VNC connection, the IP address shoudl remain the same, and at the VNC login enter the **new** VNC password you just set.
 
 ### 8. Installing Eclipse in the developer VM
 
@@ -516,7 +555,7 @@ We can check that Lombok has been installed
 
 #### 9c. Updating the project configuration.
 
-Restarting eclipse so it recognises Lombok does not always trigger a rebuild or Maven update to remove the flagged problems, so we need to do that. 
+Restarting eclipse so it recognizes Lombok does not always trigger a rebuild or Maven update to remove the flagged problems, so we need to do that. 
 
 - Select the `cloud-native-setup`  project in the project explorer. Click right on them then chose `Maven` from the menu then `Update project`
 
@@ -556,14 +595,9 @@ The easiest way to get the database Wallet file into your virtual machine is to 
 
 
 
-## End of the setup
+## End of the tenancy level setup
 
 Congratulations, you have successfully prepared your tenancy to do the labs, there will be lab specific setup instruction where appropriate in the labs. 
 
 Hit the **Back** button of your browser to return to the top level and start the labs !
 
-
-
-------
-
-[Go to Overview Page](../README.md)
