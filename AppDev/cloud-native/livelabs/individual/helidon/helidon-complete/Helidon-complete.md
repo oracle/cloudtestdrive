@@ -4,6 +4,60 @@
 
 This set of lab instructions is based on the virtual machine image dated 2020-10-29 (29th October 2020)
 
+**Lab conventions**
+
+We have used a few layout tricks to make the reading of this tutorial more intuitive : 
+
+- If you see a "Bullet" sign, this means **you** need to perform some sort of **action**.  This can be 
+  - Opening a window and navigating to some point in a file system
+  - Executing some command on the command line of a terminal window :
+    -  For example : `ls -al`
+
+As we cover quite some theoretical concepts, we included pretty verbose explanations.  To make the lab easier to grasp, we placed the longer parts in *Collapsibles*:
+
+<details><summary><b>Click this title to expand !</b></summary>
+
+
+If you feel you are already pretty familiar with a specific concept, you can just skip it, or read quickly through the text, then re-collapse the text section by re-clicking on the title. 
+
+---
+
+</details>
+
+
+
+**Video introductions**
+
+These labs were designed in part to be delivered in a classroom environment where we would do a short presentation to introduce the labs, and also each section.
+
+To support those who are doing the labs in a self-guided mode we have created an introduction video to the entire labs, and short videos for each lab section. If you are doing the labs with an instructor you don't need to review these, but for self guided students we **strongly** recommend that you review the videos.
+
+Each video is in a expandable section, see the one below. If you are a self guided student (you are **not** part of an instructor led lab) expand it and click on the video image to be taken to the video streaming web site where you can play it. Once you've finished just click the back button to return to these instructions.
+
+<details><summary><b>Self guided student - Cloud Native video introduction</b></summary>
+
+
+This video is an introduction to Cloud native architectures and processing. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+Note. The current videos were recorded during the lock down, hence the poor sound quality, you may need to turn up the volume on your computer to hear them properly.
+
+[![Introduction Video](https://img.youtube.com/vi/9bYn7huyQ5g/0.jpg)](https://youtu.be/9bYn7huyQ5g "Labs introduction video")
+
+---
+
+</details>
+
+
+<details><summary><b>Self guided student - Helidon lab video introduction</b></summary>
+
+
+This video is an introduction to the Helidon labs. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Helidon labs Introduction Video](https://img.youtube.com/vi/182KYHSrf5A/0.jpg)](https://youtu.be/182KYHSrf5A "Helidon labs introduction video")
+
+
+</details>
+
 ## Setup the Tenancy
 
 You will need to do a number of tasks to setup your tenancy, creating the developer VM you will use, creating and configuring a Autonomous Transaction Processing database etc.
@@ -16,28 +70,9 @@ You will need to import the template code you will be using into eclipse, and do
 
 Please follow **Setup for the Helidon Labs** section. When you've completed them click the `back` button on your browser to return to this page.
 
-## Video introductions
-
-These labs were designed in part to be delivered in a classroom environment where we would do a short presentation to introduce the labs, and also each section.
-
-To support those who are doing the labs in a self-guided mode we have created an introduction video to the entire labs, and short videos for each lab section. If you are doing the labs with an instructor you don't need to review these, but for self guided students we **strongly** recommend that you review the videos.
-
-Each video is in a expandable section, see the one below. If you are a self guided student (you are **not** part of an instructor led lab) expand it and click on the video image to be taken to the video streaming web site where you can play it. Once you've finished just click the back button to return to these instructions.
-
+---
 
 ## Introduction
-
-<details><summary><b>Self guided student - video introduction</b></summary>
-
-
-This video is an introduction to the Helidon labs. Once you've watched it please press the "Back" button on your browser to return to the labs.
-
-[![Helidon labs Introduction Video](https://img.youtube.com/vi/182KYHSrf5A/0.jpg)](https://youtu.be/182KYHSrf5A "Helidon labs introduction video")
-
-
-</details>
-
----
 
 <details><summary><b>What is Helidon?</b></summary>
 

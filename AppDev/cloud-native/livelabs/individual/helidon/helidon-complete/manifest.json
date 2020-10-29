@@ -2,7 +2,7 @@
     "tutorials": [
         {
           "title": "Helidon Labs introduction",
-          "filename":"../../../Live-labs-overview-pages/Helidon-only.md"
+          "filename":"Helidon-complete.md"
         },
         {
           "title": "Setup your tenancy",

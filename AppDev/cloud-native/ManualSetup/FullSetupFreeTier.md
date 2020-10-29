@@ -1,14 +1,12 @@
 ![](../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native
-
-## Setting up your Cloud Tenancy 
+# Setting up your Cloud Tenancy 
 
 ### Introduction
 
-This page explains all the steps to set up your **Oracle Cloud Tenancy** so you are ready to run the labs.  Because participants can use different types of tenancies, not all steps need to be executed by everybody.  In case you are using a new **Oracle Free Tier** or **Trial tenancy** environment, you are probably starting from an "empty page" and will most likely have to execute all the steps below. If you are using an existing **paid tenancy** then you may need to get the tenancy administrator to create a compartment, create security roles with the appropriate policies and to assign your user to that role.
+This page explains all the steps to set up your **Oracle Cloud Tenancy** so you are ready to run the labs.  Because participants can use different types of tenancies, not all steps need to be executed by everybody.  In the situation that you are using a new **Oracle Free Tier** or **Trial tenancy** environment, you are probably starting from an "empty page" and will most likely have to execute all the steps below. If you are using an existing **paid tenancy** then you may need to get the tenancy administrator to create a compartment, create security roles with the appropriate policies and to assign your user to that role.
 
-**If you are attending an instructor-led lab**, your instructor will detail steps you need to execute and which ones you can skip.
+**If you are attending an instructor-led lab**, your instructor may have been able to arrange to have some steps complete to speed the lab up, if so they will detail steps you need to execute and which ones you can skip.
 
 While we strongly recommend running the lab in the virtual machine we have built, running on the Oracle Cloud Infrastructure, if you do not want to use this and are willing and able to re-create the configuration of the virtual machine on your own computer (and adjust the labs content to reflect your differing environment as ypu go through it) there are some guidelines [here](./Using-your-own-computer.md)
 
@@ -52,7 +50,7 @@ If you are in an **instructor led lab** the instructor may have already done thi
 
 If you are in an **instructor led lab** the instructor may have already done this step for you, if so they will tell you.
 
-- Download the image location file ![https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/MonolithToCloudNative/o/MonolithToCloudNativeVMDetails.txt](https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/MonolithToCloudNative/o/MonolithToCloudNativeVMDetails.txt)
+- Download the image location file [from here](https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/MonolithToCloudNative/o/MonolithToCloudNativeVMDetails.txt)
 
 - Open this file. You will see the pre-authenticated URL to the VM image and also the default VNC password set for this image
 

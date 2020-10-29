@@ -2,7 +2,7 @@
     "tutorials": [
         {
           "title": "Kubernetes Labs Introduction",
-          "filename":"../../../Live-labs-overview-pages/Kubernetes-all-labs.md"
+          "filename":"Kubernetes-complete.md"
         },
         {
           "title": "Tenancy Setup for the Kubernetes Labs",
@@ -33,10 +33,6 @@
           "filename": "../../../Kubernetes/Rolling-updates/Rolling-updates.md"
         },
         {
-          "title": "Further Information",
-          "filename": "../../../Kubernetes/further-information/further-information.md"
-        },
-        {
           "title": "Optional 1a: Prometheus for metrics capture",
           "filename": "../../../Kubernetes/monitoring-kubernetes/MonitoringWithPrometheusLab.md"
         },
@@ -53,24 +49,28 @@
           "filename": "../../../Kubernetes/management/logging/LogCaptureForArchive.md"
         },
 		{
-          "title": "Optional 3a: Installing a service mesh",
+          "title": "Optional 3a: Installing the Linkerd service mesh",
           "filename": "../../../Kubernetes/service-mesh/Linkerd-install.md"
         },
         {
-          "title": "Optional 3b: Traffic monitoring with a servcie mesh",
+          "title": "Optional 3b: Traffic monitoring with a Linkerd service mesh",
           "filename": "../../../Kubernetes/service-mesh/Linkerd-monitoring-traffic-flows.md"
         },
 		{
-          "title": "Optional 3c: Using a service mesh for troubleshooting",
+          "title": "Optional 3c: Using the Linkerd service mesh for troubleshooting",
           "filename": "../../../Kubernetes/service-mesh/Linkerd-using-to-troubleshoot-problems.md"
         },
         {
-          "title": "Optional 3d: Traffis splits with a service mesh (Canary deployments, and chaos engineering)",
+          "title": "Optional 3d: Traffic splits with the Linkerd service mesh (Canary deployments, and chaos engineering)",
           "filename": "../../../Kubernetes/service-mesh/Linkerd-exploring-traffic-splits.md"
         },
 		{
-          "title": "Optional 3e: Uninstalling the service mesh",
+          "title": "Optional 3e: Uninstalling the Linkerd service mesh",
           "filename": "../../../Kubernetes/service-mesh/Linkerd-uninstall.md"
+        },
+        {
+          "title": "Further Information on Kubernetes",
+          "filename": "../../../Kubernetes/further-information/further-information.md"
         }
     ]
 }

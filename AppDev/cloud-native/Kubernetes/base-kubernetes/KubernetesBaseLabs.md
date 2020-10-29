@@ -15,12 +15,6 @@ This video is an introduction to the Kubernetes core features lab. Once you've w
 
 </details>
 
-## Cloud shell and setup
-
-You will be using the OCI Cloud Shell to execute commands and scripts during these labs. 
-
-You need to follow the [cloud shell setup instructions](../setup/cloud-shell-setup.md) to download the scripts and template files into the cloud shell before you continue with the labs.
-
 
 ### Configure the Helm repository
 

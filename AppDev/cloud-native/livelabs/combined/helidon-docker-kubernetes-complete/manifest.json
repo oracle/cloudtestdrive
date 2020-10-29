@@ -1,0 +1,124 @@
+{
+    "tutorials": [
+        {
+          "title": "Helidon Labs introduction",
+          "filename":"Combined-Helidon-Docker-Kubernetes-complete.md"
+        },
+        {
+          "title": "Setup your tenancy",
+          "filename":"../../../ManualSetup/FullSetupFreeTier.md"
+        },
+        {
+          "title": "Setup for the Helidon Labs",
+          "filename":"../../../Helidon/setup/setup.md"
+        },
+        {
+          "title": "Helidon - Part 1: Core Helidon ",
+          "filename": "../../../Helidon/Helidon-core/helidon-core.md"
+        },
+		{
+          "title": "Helidon - Part 2: Database and Helidon",
+          "filename": "../../../Helidon/Helidon-data/helidon-data.md"
+        },
+		{
+          "title": "Helidon - Optional Part 2a: Accessing the request context",
+          "filename": "../../../Helidon/Helidon-data/accesing-the-context.md"
+        },
+		{
+          "title": "Helidon - Part 3: Communicating between microservices with Helidon",
+          "filename": "../../../Helidon/Helidon-to-Other-Microservices/helidon-to-other-microservices.md"
+        },
+		{
+          "title": "Helidon - Optional Part 3a: Communicating from non Helidon clients",
+          "filename": "../../../Helidon/Helidon-to-Other-Microservices/non-helidon-rest-clients.md"
+        },
+        {
+          "title": "Helidon - Part 4: Operations support with Helidon",
+          "filename": "../../../Helidon/Helidon-Operations/helidon-operations.md"
+        },
+        {
+          "title": "Helidon - Part 5: Cloud Native support in Helidon",
+          "filename": "../../../Helidon/Helidon-cloud-native/helidon-cloud-native.md"
+        },
+        {
+          "title": "Helidon - Optional Labs",
+          "filename": "../../Spacer-manifest-entry.md"
+        },
+        {
+          "title": "Helidon - Optional lab 1: Self documenting API support in Helidon",
+          "filename": "../../../Helidon/Helidon-open-api/helidon-open-api.md"
+        },
+        {
+          "title": "Docker - Docker labs",
+          "filename": "../../../Docker/Docker-labs.md"
+        },
+        {
+          "title": "Kubernetes - Labs Introduction",
+          "filename":"../../../Live-labs-overview-pages/Kubernetes-all-labs.md"
+        },
+        {
+          "title": "Cloud Shell Setup for the Kubernetes Labs",
+          "filename":"../../../Kubernetes/setup/cloud-shell-setup.md"
+        },
+        {
+          "title": "Kubernetes - Part 1: Setting up the cluster and getting your services running in Kubernetes",
+          "filename": "../../../Kubernetes/base-kubernetes/KubernetesBaseLabs.md"
+        },
+		{
+          "title": "Kubernetes - Part 2: Cloud native with Kubernetes",
+          "filename": "../../../Kubernetes/cloud-native-labs/Health-readiness-liveness/Health-liveness-readiness.md"
+        },
+		{
+          "title": "Kubernetes - Part 3a: Horizontal Scaling",
+          "filename": "../../../Kubernetes/cloud-native-labs/Horizontal-scaling/horizontal-scaling.md"
+        },
+		{
+          "title": "Kubernetes - Part 3b: Auto Scaling",
+          "filename": "../../../Kubernetes/cloud-native-labs/Horizontal-scaling/Auto-scaling.md"
+        },
+        {
+          "title": "Kubernetes - Part 4: Rolling Updates",
+          "filename": "../../../Kubernetes/Rolling-updates/Rolling-updates.md"
+        },
+        {
+          "title": "Kubernetes - Optional 1a: Prometheus for metrics capture",
+          "filename": "../../../Kubernetes/monitoring-kubernetes/MonitoringWithPrometheusLab.md"
+        },
+		{
+          "title": "Kubernetes - Optional 1b: Visualizing metrics with Grafana",
+          "filename": "../../../Kubernetes/monitoring-kubernetes/VisualizingWithGrafanaLab.md"
+        },
+		{
+          "title": "Kubernetes - Optional 2a: Capturing log data for processing",
+          "filename": "../../../Kubernetes/management/logging/LogCaptureForProcessing.md"
+        },
+        {
+          "title": "Kubernetes - Optional 2b: Capturing log data for archive",
+          "filename": "../../../Kubernetes/management/logging/LogCaptureForArchive.md"
+        },
+		{
+          "title": "Kubernetes - Optional 3a: Installing the Linkerd service mesh",
+          "filename": "../../../Kubernetes/service-mesh/Linkerd-install.md"
+        },
+        {
+          "title": "Kubernetes - Optional 3b: Traffic monitoring with a Linkerd service mesh",
+          "filename": "../../../Kubernetes/service-mesh/Linkerd-monitoring-traffic-flows.md"
+        },
+		{
+          "title": "Kubernetes - Optional 3c: Using the Linkerd service mesh for troubleshooting",
+          "filename": "../../../Kubernetes/service-mesh/Linkerd-using-to-troubleshoot-problems.md"
+        },
+        {
+          "title": "Kubernetes - Optional 3d: Traffic splits with the Linkerd service mesh (Canary deployments, and chaos engineering)",
+          "filename": "../../../Kubernetes/service-mesh/Linkerd-exploring-traffic-splits.md"
+        },
+		{
+          "title": "Kubernetes - Optional 3e: Uninstalling the Linkerd service mesh",
+          "filename": "../../../Kubernetes/service-mesh/Linkerd-uninstall.md"
+        },
+        {
+          "title": "Further Information on Kubernetes",
+          "filename": "../../../Kubernetes/further-information/further-information.md"
+        }
+    ]
+}

@@ -1,8 +1,62 @@
 ![](../../../common/images/customer.logo2.png)
 
-# Cloud Native - Helidon for Cloud Native
+# Cloud Native - Helidon for Cloud Native, and packaging in Docker containers
 
 This set of lab instructions is based on the virtual machine image dated 2020-10-29 (29th October 2020)
+
+**Lab conventions**
+
+We have used a few layout tricks to make the reading of this tutorial more intuitive : 
+
+- If you see a "Bullet" sign, this means **you** need to perform some sort of **action**.  This can be 
+  - Opening a window and navigating to some point in a file system
+  - Executing some command on the command line of a terminal window :
+    -  For example : `ls -al`
+
+As we cover quite some theoretical concepts, we included pretty verbose explanations.  To make the lab easier to grasp, we placed the longer parts in *Collapsibles*:
+
+<details><summary><b>Click this title to expand !</b></summary>
+
+
+If you feel you are already pretty familiar with a specific concept, you can just skip it, or read quickly through the text, then re-collapse the text section by re-clicking on the title. 
+
+---
+
+</details>
+
+
+
+**Video introductions**
+
+These labs were designed in part to be delivered in a classroom environment where we would do a short presentation to introduce the labs, and also each section.
+
+To support those who are doing the labs in a self-guided mode we have created an introduction video to the entire labs, and short videos for each lab section. If you are doing the labs with an instructor you don't need to review these, but for self guided students we **strongly** recommend that you review the videos.
+
+Each video is in a expandable section, see the one below. If you are a self guided student (you are **not** part of an instructor led lab) expand it and click on the video image to be taken to the video streaming web site where you can play it. Once you've finished just click the back button to return to these instructions.
+
+<details><summary><b>Self guided student - Cloud Native video introduction</b></summary>
+
+
+This video is an introduction to Cloud native architectures and processing. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+Note. The current videos were recorded during the lock down, hence the poor sound quality, you may need to turn up the volume on your computer to hear them properly.
+
+[![Introduction Video](https://img.youtube.com/vi/9bYn7huyQ5g/0.jpg)](https://youtu.be/9bYn7huyQ5g "Labs introduction video")
+
+---
+
+</details>
+
+
+<details><summary><b>Self guided student - Helidon lab video introduction</b></summary>
+
+
+This video is an introduction to the Helidon labs. Once you've watched it please press the "Back" button on your browser to return to the labs.
+
+[![Helidon labs Introduction Video](https://img.youtube.com/vi/182KYHSrf5A/0.jpg)](https://youtu.be/182KYHSrf5A "Helidon labs introduction video")
+
+
+</details>
 
 ## Setup the Tenancy
 
@@ -16,28 +70,7 @@ You will need to import the template code you will be using into eclipse, and do
 
 Please follow **Setup for the Helidon Labs** section. When you've completed them click the `back` button on your browser to return to this page.
 
-## Video introductions
-
-These labs were designed in part to be delivered in a classroom environment where we would do a short presentation to introduce the labs, and also each section.
-
-To support those who are doing the labs in a self-guided mode we have created an introduction video to the entire labs, and short videos for each lab section. If you are doing the labs with an instructor you don't need to review these, but for self guided students we **strongly** recommend that you review the videos.
-
-Each video is in a expandable section, see the one below. If you are a self guided student (you are **not** part of an instructor led lab) expand it and click on the video image to be taken to the video streaming web site where you can play it. Once you've finished just click the back button to return to these instructions.
-
-
 ## Introduction
-
-<details><summary><b>Self guided student - video introduction</b></summary>
-
-
-This video is an introduction to the Helidon labs. Once you've watched it please press the "Back" button on your browser to return to the labs.
-
-[![Helidon labs Introduction Video](https://img.youtube.com/vi/182KYHSrf5A/0.jpg)](https://youtu.be/182KYHSrf5A "Helidon labs introduction video")
-
-
-</details>
-
----
 
 <details><summary><b>What is Helidon?</b></summary>
 
@@ -152,44 +185,25 @@ Also we are not addressing how to split any existing monolith into modules, hope
 
 ## The labs
 
-This section describes the labs, you will need to do them in the order shown. There are optional labs described, the ones that are connected with a core lab should be done in the order shown **if you decide to to them.** Optional labs that are not attached to a lab can be done once the core labs are completed.
+This section describes the labs, you will need to do them in the order shown.
 
-### 1. Core Helidon
+### Helidon - Part 1. Core Helidon
 The core labs are designed to show how you can take a some existing Java code and REST enable it so it can operate as a standalone service. This includes not just the REST API, but also configuration, error handling and security.
 
-
-### 2. Databases and Helidon
+### Helidon - Part 2. Databases and Helidon
 This looks at how you can access databases within a Helidon based application.
 
-### Optional lab 2a Accessing the request context
-This looks at how you can access the context of the request to find out information not directly available from the core API. This lab looks at how to get the identity of the user making the request.
-
-
-### 3. Communicating between microservices with Helidon
+### Helidon - Part 3. Communicating between microservices with Helidon
 This lab shows the support in Helidon for switching from a direct method call to using a REST call without modifying the calling method.
 
-### Optional lab 3a - Communicating from non Helidon clients
-Much though we would like everything talking to our mciroservices to be Helidon based in the real world this wont; be the case. This module discusses how you can use the RestClient interface described in **Communicating between microservices with Helidon** to easily connect your non Helidon Java code to a Helidon based microservice.
-
-
-### 4. Supporting operations activities with Helidon
+### Helidon - Part 4. Supporting operations activities with Helidon
 This labs looks at how Helidion can help you gather data on the fow of operating when you make a call and how your program is being used. This information can help you learn how to optimize your miroservices, especially in deployments where you have a request propagating across many separate microservices.
 
-
-### 5. Cloud Native support in Helidon - Kubernetes support
+### Helidon - Part 5. Cloud Native support in Helidon - Kubernetes support
 This Helidon lab looks as the features in Helidon that are designed to provide support for cloud native functionality in deployment systems like Kubernetes. For example to help report if a program is still running, but is actually failing to operate (for example it's in a deadlock)
 
-
-## Optional Lab modules
-
-The following modules are in **some** cases optional, this is because some of the later modules may depend on these (For example the Visual Builder module we acre working on relies on the completion of the OpenAPI module.) If you are in a guided lab with an instructor they will tell you which of the optional modules you need to complete, if you are doing this in a self-guided mode then please read the descriptions below to determine which optional modules you should do.
-
-
-### 	Optional 1. Cloud Native support in Helidon - Self describing API's
-
-This is an optional lab if you chose to do it. If you are going to do the Visual Builder optional module we are working on and will be released soon (it shows how to create a mobile / browser based application, with form like capabilities) then you will need to do this module.
-
-To enable a service to be easily consumed Helidon provides support for the dynamic creation of Open API documents (previously known as Swagger)  that document the REST APIs provided by a micro-service. This lab looks at how configure your Helidon projects to generate this information. 
+## Docker - Using Docker
+The Docker part of the labs covers how we use JIB to create a docker image, run it, then to move the configuration and secrets externally to the docker image, finally we look at how to push the docker image to a repository
 
 ---
 

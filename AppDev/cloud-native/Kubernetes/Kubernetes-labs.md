@@ -26,6 +26,12 @@ If you have previously executed the **Helidon** and **Docker** parts of this lab
 
 If you only want to do the **Kubernetes** labs and have not done the **Helidon** and **Docker** modules you need to perform some [initial steps to setup your tenancy](../ManualSetup/KubernetesSetup.md) to prepare your environment.
 
+## Cloud shell and setup
+
+You will be using the OCI Cloud Shell to execute commands and scripts during these labs. 
+
+You need to follow the [cloud shell setup instructions](../setup/cloud-shell-setup.md) to download the scripts and template files into the cloud shell before you continue with the labs.
+
 
 ## Basic Kubernetes - Setting up your cluster and running your services
 
