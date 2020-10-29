@@ -1,5 +1,7 @@
 [Go to the Cloud Test Drive Welcomer Page](../../readme.md)
 
+platform: github
+
 ![](../../common/images/customer.logo2.png)
 
 # Migration of Monolith to Cloud Native architecture
@@ -84,7 +86,13 @@ The basic principles will however run in any Java IDE or Kubernetes environment,
 
 There are some steps you need to take to prepare the environment for your own individual use.
 
-- You can run the Helidon  parts of this lab on a **Oracle Free Tier** account, You can run the Helidon, Docker and Kubernetes parts in your own tenancy (Trial or paid.)  In this case you need to perform some extra preparation steps, [explained in detail on this page](ManualSetup/FullSetupFreeTier.md).
+- You can run the Helidon  parts of this lab on a **Oracle Free Tier** account, You can run the Helidon, Docker and Kubernetes parts in your own tenancy (Trial or paid.)  In this case you need to perform some extra preparation steps: 
+{% if page.platform == "github" %}
+[explained in detail on this page.](ManualSetup/FullSetupFreeTier.md)
+{% else %}
+Please click the "Preparing your tenancy" option in the left menu.
+{% endif %}
+
 
 - If you are part of **an instructor-led lab**, in some cases your instructor might provide Cloud Tenancy for you, minimizing the setup to [these few steps to connect to a remote desktop](ManualSetup/CreateClientVm.md).
 
