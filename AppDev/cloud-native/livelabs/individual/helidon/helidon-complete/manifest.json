@@ -41,7 +41,8 @@
           "filename": "../../../../Helidon/Helidon-cloud-native/helidon-cloud-native.md"
         },
         {
-          "title": "Optional Labs"
+          "title": "Optional Labs",
+          "filename": "../../../Spacer-manifest-entry.md"
         },
         {
           "title": "Optional lab 1: Self documenting API support in Helidon",
