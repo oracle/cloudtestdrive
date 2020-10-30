@@ -80,7 +80,7 @@ private void deleteItem(String itemName) {
    StockManager manager = new StockManager() ;
    stockmanager.delete(itemName) ;
 ```
-We could of course build a class ourselves that has a delete method that does the REST work in the class, but that's just pushing it down a layer !
+We could of course build a class ourselves that has a delete method that does the REST work in the class, but that's just pushing it down a layer!
 
 
 ---
@@ -178,7 +178,7 @@ StockManager/mp-rest/connectTimeout=5000
 StockManager/mp-rest/responseTimeout=5000
 ```
 
-The only thing we absolutely have to specify is the URL, though this can be specified as an option in the `RegisterRestClient` annotation if desired as well (the configuration files will override anything that's hard coded in the annotation.) The timeouts and so on are really for convenience, we could also (if it wasn't defined in the interface itself) specify the scope of the rest client. Note that configuration property settings will override those in the source code.
+The only thing we absolutely have to specify is the URL, though this can be specified as an option in the `RegisterRestClient` annotation if desired as well (the configuration files will override anything that's hard coded in the annotation). The timeouts and so on are really for convenience, we could also (if it wasn't defined in the interface itself) specify the scope of the rest client. Note that configuration property settings will override those in the source code.
 
 Also in the microprofile-config.properties file are details for another REST client
 
@@ -240,7 +240,7 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 Now when the StorefrontResource class is initialized the Helidon runtime will dynamically create (if needed, or use an existing instance as appropriate depending on the scope) a proxy implementation that looks like the interface, but under the covers does all of the work to make the REST calls and process the response into the returned objects.
 
-Basically this looks pretty simple in comparison to making all of the http requests by hand !
+Basically this looks pretty simple in comparison to making all of the http requests by hand!
 
 - **Save the changes** to the files
 - **Run** the storefront main class.
@@ -266,15 +266,15 @@ It's possible that the services may take longer to do their initial initializati
 
 </details>
 
-We have now got the data back from the database itself. Our client is working, and with very little effort !
+We have now got the data back from the database itself. Our client is working, and with very little effort!
 
 <details><summary><b>Async requests</b></summary>
 
-You may have noticed the delay in the request, if you try the request again it's much faster, this is because the second time all of the lazy initialization will have been done. But in some cases it may be that every call to a request takes a long time (perhaps it's getting data from a real physical device !) which may leave the client execution blocked until the request completes.
+You may have noticed the delay in the request, if you try the request again it's much faster, this is because the second time all of the lazy initialization will have been done. But in some cases it may be that every call to a request takes a long time (perhaps it's getting data from a real physical device!) which may leave the client execution blocked until the request completes.
 
 One solution to this is to make the request, then go and do something else while waiting for the response. We're not going go to into detail on this, but the REST client supports the use of async operations by having the returned object not be the actual object (which would require the entire call sequence to have completed) but a object of type `CompletionStage`. 
 
-The CompletionStage objects are created by the framework on the client side, so the response is much faster, and by looking into the CompletionStage object it's possible to determine if the call has finished, and if so what the result was. If you want you can register code to be run independently when the CompletionStage finishes (or the process errors.) See the [CompletionStage JavaDoc](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html) for more details.
+The CompletionStage objects are created by the framework on the client side, so the response is much faster, and by looking into the CompletionStage object it's possible to determine if the call has finished, and if so what the result was. If you want you can register code to be run independently when the CompletionStage finishes (or the process errors). See the [CompletionStage JavaDoc](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html) for more details.
 
 ---
 

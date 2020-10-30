@@ -145,7 +145,7 @@ I have found that for some versions of Firefox that grafana complains about reve
   - In Firefox once the security risk page is displayed click on the "Advanced" button, then on the "Accept Risk and Continue" button
   - In Chrome once the "Your connection is not private" page is displayed click the advanced button, then you may see a link titled `Proceed to ....(unsafe)` click that. 
   
-We have had reports that some versions of Chrome will not allow you to override the page like this, for Chrome 83 at least one solution is to click in the browser window and type the words `thisisunsafe` (copy and past doesn't seem to work, you need to actually type it.) Alternatively use a different browser.
+We have had reports that some versions of Chrome will not allow you to override the page like this, for Chrome 83 at least one solution is to click in the browser window and type the words `thisisunsafe` (copy and past doesn't seem to work, you need to actually type it). Alternatively use a different browser.
 
 
 You'll be presented with the Grafana login window
@@ -221,7 +221,7 @@ Once you've clicked the time the graph will update
 ![grafana-new-dashboard-first-panel-add-query-selected-time-window](images/grafana-new-dashboard-first-panel-add-query-selected-time-window.png)
 
 
-You may see multiple pods listed in the legend (above one as a green line in the chart, the other as orange.) Do not worry of you can only see one, it depends on the exact flow and timing of the labs which will vary between participants.
+You may see multiple pods listed in the legend (above one as a green line in the chart, the other as orange). Do not worry of you can only see one, it depends on the exact flow and timing of the labs which will vary between participants.
 
 Grafana allows us to combine the data using the Prometheus query language, by using the ***SUM*** function in the language to combine all of these.  If you only have one pod do the following anyway, just so see how to use functions)
 
@@ -251,7 +251,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
 
-After a bit of time for Helidon to update it's metrics (this is an average over 1 min) Prometheus to get round to scraping them and for Grafana to get round to retrieving them click the refresh icon on the upper right ![grafana-refresh-icon](images/grafana-refresh-icon.png) (We'll look at auto refresh in a bit.)
+After a bit of time for Helidon to update it's metrics (this is an average over 1 min) Prometheus to get round to scraping them and for Grafana to get round to retrieving them click the refresh icon on the upper right ![grafana-refresh-icon](images/grafana-refresh-icon.png) (We'll look at auto refresh in a bit).
 
 ![grafana-new-dashboard-first-panel-add-query-list-stock-meter-rate-combined-pods-updated-graph](images/grafana-new-dashboard-first-panel-add-query-list-stock-meter-rate-combined-pods-updated-graph.png)
 
@@ -491,6 +491,6 @@ namespace "monitoring" deleted
 
 ---
 
-You have reached the end of this lab !!
+You have reached the end of this lab!!
 
 Use your **back** button to return to the **C. Deploying to Kubernetes** section

@@ -62,7 +62,7 @@ We do not expect you to know the details of the Maven build / packaging tool. In
 <details><summary><b>How to do the coding in the labs</b></summary>
 
 
-Most of the labs explain what a specific Helidon features is and why it's useful, then there is a coding example with explanation of the feature. The coding example will usually tell you to modify a particular class (usually by providing you with the fully qualified name of the class, for example `com.oracle.labs.helidon.stockmanager.Main`) and make a specific change to a certain method (e.g. the `buildConfig` method or the constructor.) 
+Most of the labs explain what a specific Helidon features is and why it's useful, then there is a coding example with explanation of the feature. The coding example will usually tell you to modify a particular class (usually by providing you with the fully qualified name of the class, for example `com.oracle.labs.helidon.stockmanager.Main`) and make a specific change to a certain method (e.g. the `buildConfig` method or the constructor). 
 
 Occasionally it will tell you to just modify the class itself, for example adding an annotation on the class declaration. We try to be clear what the project is for each set of labs, but expect you to be able to use eclipse to open the right .java file (which is referred to but it's fully qualified class name to you can navigate to it) and find the method.
 
@@ -177,7 +177,7 @@ This Helidon lab looks as the features in Helidon that are designed to provide s
 
 ## Optional Lab modules
 
-The following modules are in **some** cases optional, this is because some of the later modules may depend on these (For example the Visual Builder module relies on the completion of the OpenAPI module.) If you are in a guided lab with an instructor they will tell you which of the optional modules you need to complete, if you are doing this in a self-guided mode then please read the descriptions below to determine which optional modules you should do.
+The following modules are in **some** cases optional, this is because some of the later modules may depend on these (For example the Visual Builder module relies on the completion of the OpenAPI module). If you are in a guided lab with an instructor they will tell you which of the optional modules you need to complete, if you are doing this in a self-guided mode then please read the descriptions below to determine which optional modules you should do.
 
 
 ### 	Optional 1. Cloud Native support in Helidon - Self describing API's
@@ -195,7 +195,7 @@ To enable a service to be easily consumed Helidon provides support for the dynam
 
 
 ### What's next
-Once you've finished these labs then it's time for a cup of tea (or other beverage of your choice.)
+Once you've finished these labs then it's time for a cup of tea (or other beverage of your choice).
 
 Please look at the follow-on lab focusing [packaging these new microservices in Docker](../Docker/DockerLabs.md) and deploying them in Kubernetes.
 

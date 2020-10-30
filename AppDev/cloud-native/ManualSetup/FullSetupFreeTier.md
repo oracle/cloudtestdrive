@@ -273,7 +273,7 @@ You need to let your VM run for a couple of mins to fully boot and start the VNC
 
 - Open your VNC Client
 
-- Connect to the client VM. Depending on your client you may be asked to different information, but usually you'll be asked for a connect string. Thsi will typically look like `123.456.789.123:1` where the ``123.456.789.123` is the IP address and the `:1` is the display number which is a constant (this is an example, the IP address won't work, you need to use your own.)
+- Connect to the client VM. Depending on your client you may be asked to different information, but usually you'll be asked for a connect string. This may look like `123.456.789.123:1` where the `123.456.789.123` is the IP address and the `:1` is the display number. Some VNC clients require the use of the port number in which case it will be `123.456.789.123:5901` where the `123.456.789.123` is the IP address and the `:5901` is the port number. Unfortunately this is client specific, so if one approach doesn't work try the other. Note that is an example connection, you will need to use the IP address of your VM.
 
 - You VNC client may warn you that you're making an insecure connection, this is expected as we have not setup security certificates. For example for a real VNC client on a Mac this may look like 
 
@@ -345,7 +345,7 @@ The installer switched to the next page
  
  - Then click the `Install` button
  
- - Assuming you agree with it click `Accept Now` on the license page. (If you don't agree with the license you can install your own IDE but all of the instructions are on the basis of ucing Eclispe.)
+ - Assuming you agree with it click `Accept Now` on the license page. (If you don't agree with the license you can install your own IDE but all of the instructions are on the basis of using Eclipse.)
  
 ![](images/07-eclipse-installer-license.png)
  
@@ -371,7 +371,7 @@ The installer progress will be displayed
 
 We're now going to run a script that tidies up the desktop and creates an eclipse desktop icon
 
-- Double click on the `Post Eclipse Installer` icon on the desktop. This will run the script. It may looks like a text page and be called `posteclipseinstal.desktop` rather than the icon shown below, if it does still click it. You may be warned it's an `Untrusted application launcher`, if this happens click the `Trust and launch` option.
+- Double click on the `Post Eclipse Installer` icon on the desktop. This will run the script. It may look like a text page and be called `posteclipseinstal.desktop` rather than the icon shown below, if it does still click it. You may be warned it's an `Untrusted application launcher`, if this happens click the `Trust and launch` option.
 
 ![](images/13-post-eclipse-installer-icon.png)
 
@@ -379,7 +379,7 @@ If the eclipse installation was in the right place then the two desktop icons wi
 
 Note that sometimes the Eclipse installer will create it's own desktop icon to start Eclipse. This does not happen every time, but if it does create one you can also use that icon to start Eclipse as well.
 
-- Double click on the `Eclipse` icon on the desktop. It may looks like a text page rather than the icon shown below, if it does still click it. You may be warned it's an `Untrusted application launcher`, if this happens click the `Trust and launch` option.
+- Double click on the `Eclipse` icon on the desktop. It may look like a text page rather than the icon shown below, if it does still click it. You may be warned it's an `Untrusted application launcher`, if this happens click the `Trust and launch` option.
 
 ![](images/14-eclipse-icon.png)
 
@@ -405,7 +405,7 @@ This image shows you the empty Eclipse workspace with the non required tabs all 
 
 ![](images/23-empty-eclipse-workspace.png)
 
-We need to configure Eclipse to display the course files in a hierarchical manner (this is so it matches the images you will have in the lab instructions, if you prefer to use the Eclipse  "Flat" view then you can ignore this step"
+We need to configure Eclipse to display the course files in a hierarchical manner (this is so it matches the images you will have in the lab instructions, if you prefer to use the Eclipse  "Flat" view then you can ignore this step)
 
 - Click on the Three dots in the Project Explorer panel, then take the `Package Presentation` menu option and click the radio button for `Hierarchical`
 
@@ -413,7 +413,7 @@ We need to configure Eclipse to display the course files in a hierarchical manne
 
 #### How to re-open Eclipse if you close it
 
-- Double click on the `Eclipse` icon on the desktop. It may looks like a text page rather than the icon shown below, if it does still click it. You may be warned it's an `Untrusted application launcher`, if this happens click the `Trust and launch` option.
+- Double click on the `Eclipse` icon on the desktop. It may look like a text page rather than the icon shown below, if it does still click it. You may be warned it's an `Untrusted application launcher`, if this happens click the `Trust and launch` option.
 
 ![](images/14-eclipse-icon.png)
 
@@ -537,7 +537,7 @@ Once Lombok has been installed you need to exit and then start Eclipse to have i
 
 - Click the `File` menu then `Exit` (**do not chose restart**, that does not trigger the reload of the entire Eclipse environment) 
 
-- Re-start Eclipse using the method described above, make sure it's Eclipse you are starting, not the installer.)
+- Re-start Eclipse using the method described above, make sure it's Eclipse you are starting, not the installer.
 
 We can check that Lombok has been installed
 
@@ -596,6 +596,4 @@ The easiest way to get the database Wallet file into your virtual machine is to 
 ## End of the tenancy level setup
 
 Congratulations, you have successfully prepared your tenancy to do the labs, there will be lab specific setup instruction where appropriate in the labs. 
-
-Hit the **Back** button of your browser to return to the top level and start the labs !
 

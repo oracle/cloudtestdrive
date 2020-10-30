@@ -6,7 +6,7 @@ This module is a discussion module, there are no exercises for you to do.
 
 ## Should I secure my REST API ?
 
-Stupid question ! 
+Stupid question! 
 
 The answer is that of course you should. Even if the information you have is public and you are not charging for access to your service you should still protect it against malicious actors who want to use it as a way to break into your systems, or vandals who just to deny access to others.
 
@@ -26,7 +26,7 @@ You can of course have your micro-service itself implement the end point termina
 
 You could of course implement a TLS end point in your application as well, but then you have to implement your own certificate management. By taking the encryption all the way to the micro-service you'd also be limiting what you can do in terms of a Layer 7 firewall where you use an external service to inspect your data, for example to rate limit for specific endpoints, or dynamically add capabilities such as SQL Injection protection.
 
-Taking the encryption all the way to the micro-service does however reduce the chance that you will be subject to a attack by compromised network infrastructure (with modern clouds this is unlikely as the vendor can almost certainly do a better job at managing their infrastructure and detecting attacks than most end user organizations who will have a different focus.)
+Taking the encryption all the way to the micro-service does however reduce the chance that you will be subject to a attack by compromised network infrastructure (with modern clouds this is unlikely as the vendor can almost certainly do a better job at managing their infrastructure and detecting attacks than most end user organizations who will have a different focus).
 
 Taking encryption to the service also means that you are responsible for ensuring that your service meets the latest patches and updates. It mag be great to have the fine grained control, but with that comes the responsibility of monitoring the encryption libraries you've used for vulnerabilities and patching them to keep up to the latest versions. On that subject you should **never** write your own encryption unless you are an genuine expert, professionals are guaranteed to do a better job at that than you, and it's incredibly easily to make a mistake with encryption. 
 
@@ -54,9 +54,9 @@ Technologies such as an API gateway are applied (usually with their own load bal
 
 ## Internal to the cluster data encryption
 
-Most Kubernetes implementations can run a service mesh like Linkerd (other service mesh implementations are of course available.) These can provide many capabilities, but they usually offer mechanisms whereby you can encrypt internal communications within the cluster.
+Most Kubernetes implementations can run a service mesh like Linkerd (other service mesh implementations are of course available). These can provide many capabilities, but they usually offer mechanisms whereby you can encrypt internal communications within the cluster.
 
-If you are operating a distributed Kubernetes cluster where the microservices are spread around with physical separation  between the nodes, then this may be a good approach to ensuring that a wide area communications provider (or someone that's hacked into them) cannot access the data (though usually wide area links would have their own encryption applied to protect the actual connection.)
+If you are operating a distributed Kubernetes cluster where the microservices are spread around with physical separation  between the nodes, then this may be a good approach to ensuring that a wide area communications provider (or someone that's hacked into them) cannot access the data (though usually wide area links would have their own encryption applied to protect the actual connection).
 
 ## Certificate management
 

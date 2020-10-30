@@ -47,7 +47,7 @@ Historically canaries were used in underground mines as they were far more sensi
 
 In this lab we are going to go through the process of **manually** performing a canary deployment, along with recovering it. We're doing this manually so you get the full details of what's happening, however normally you would use automated tools like [Flagger](https://flagger.app) or [Spinaker](https://www.spinnaker.io/) to actually perform the steps for you (and at a much finer granularity)
 
-We are going to deploy a version of the stockmanager service that deliberately breaks sometimes, from this you can gather than we will not be completing the deployment, but rolling it back !
+We are going to deploy a version of the stockmanager service that deliberately breaks sometimes, from this you can gather than we will not be completing the deployment, but rolling it back!
 
 More importantly we are going to do this while keeping the stockmanager service online all the time.
 
@@ -439,7 +439,7 @@ The success rate column for the v0.0.1 is still 100%, but in this case the succe
 
 We can see that **in this case** the stockmanagerv0-0-2 deployment is still showing 33.33% success rate (yours may of course vary)
 
-Basically this is a pretty significant indication that our updated deployment has a problem, and should not be deployed in production ! Of course this is somewhat artificial, it may be that in production your original service generates a few errors normally, and the new one is marginally better, and unless the results were very clear cut like this you'd probably monitor it for a while.
+Basically this is a pretty significant indication that our updated deployment has a problem, and should not be deployed in production! Of course this is somewhat artificial, it may be that in production your original service generates a few errors normally, and the new one is marginally better, and unless the results were very clear cut like this you'd probably monitor it for a while.
 
 If you look at the top of the page you can also see the traffic flows in the namespace as a graph, as you would expect the flow out of the storefront to **both** versions of the stockmanager.
 
@@ -469,7 +469,7 @@ If it had worked then you would gradually adjust the traffic split, over time se
 
 You **might** delete the traffic split (so requests to the stockmanager service were no longer being intercepted) or you might leave it in place, but remove the old version of the service. That way you would have all of the building blocks in place to easily start testing the next version of the service.
 
-During this entire time period the overall stockmanager service would still have been operating, servicing requests (even if a few of the requests had had problems.)
+During this entire time period the overall stockmanager service would still have been operating, servicing requests (even if a few of the requests had had problems).
 
 Remember, we've been doing this as a **manual** process to show you what's actually happening, in most cases where you have a CI/CD pipeline you'd use automation to manage the canary process, and it would perform the steps needed to completely switch to the new version automatically.
 
@@ -523,7 +523,7 @@ Another option is if you have some idea as to the cause of the fault and can fix
 
 ### Resetting to our initial state
 
-In this case (and this is probably what the CI/CD connected automation would do) we'll just remove everything. You do of course need to do this in the right order, or there may be a short period where the original stockmanager service would map onto both the old and new versions (and thus the new broken version may be sent requests.)
+In this case (and this is probably what the CI/CD connected automation would do) we'll just remove everything. You do of course need to do this in the right order, or there may be a short period where the original stockmanager service would map onto both the old and new versions (and thus the new broken version may be sent requests).
 
 I've put a small a script in place to do this for us
 
@@ -541,7 +541,7 @@ service "stockmanagerv0-0-1" deleted
 
 <details><summary><b>We haven't removed the version on the original deployment ?</b></summary>
 
-Well spotted ! We're going to leave the version in place on the original service. There are a few reasons for this.
+Well spotted! We're going to leave the version in place on the original service. There are a few reasons for this.
 
 1/ It does no harm, the original service will match any deployment as it only looks for the `app: stockmanger`  so will sent traffic to any matching deployment regardless of the deployments version attributes
 
@@ -769,7 +769,7 @@ This will generate reports from any deployment to the `zipkin` deployment (it is
 
 (you may have to scroll down a bit to see the deployment details)
 
-We can see that **in this case** 50% of the requests from the storefront deployment to the zipkin deployment have failed, the same is true for the stockmanager. We know that our traffic split is doing what we expected and that we are failing the requests and potentially causing chaos ! (If you'd like to please feel free to do a Dr Evil or Bond villan manic laugh at this point)
+We can see that **in this case** 50% of the requests from the storefront deployment to the zipkin deployment have failed, the same is true for the stockmanager. We know that our traffic split is doing what we expected and that we are failing the requests and potentially causing chaos! (If you'd like to please feel free to do a Dr Evil or Bond villan manic laugh at this point)
 
 This is great, but how is our service handling it ?
 
@@ -779,7 +779,7 @@ Unless something very unexpected from the point of view of the lab writer has ha
 [{"itemCount":410,"itemName":"Pencil"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":4490,"itemName":"Pins"},{"itemCount":100,"itemName":"Book"}]
 ```
 
-And you have not had any HTTP errors, this is a pretty good indicator that our service is continuing to work, out little experiment in chaos engineering has given us useful information !
+And you have not had any HTTP errors, this is a pretty good indicator that our service is continuing to work, out little experiment in chaos engineering has given us useful information!
 
 <details><summary><b>What's happening in the pod itself ?</b></summary>
 
@@ -871,7 +871,7 @@ In **some** cases one service failing cannot be recovered from directly. We coul
 
 You may be concerned about the impact of traffic splits on the health of the underlying service, after all if we're redirecting requests to the 504 error generator doesn't this mean that the readiness and liveness checks would start restarting the containers. 
 
-Fortunately for us those are defined in the deployment, not the service, so Kubernetes talks directly to the pods in the deployment and doesn't go through the service layer (and thus potentially the traffic split.) Thus even if a service is apparently delivering errors to it's service it should still pass the health checks (assuming it's healthy of course :-) )
+Fortunately for us those are defined in the deployment, not the service, so Kubernetes talks directly to the pods in the deployment and doesn't go through the service layer (and thus potentially the traffic split). Thus even if a service is apparently delivering errors to it's service it should still pass the health checks (assuming it's healthy of course :-) )
 
 The same should also apply to the deployment defined actions like prometheus metrics scraping.
 
@@ -898,9 +898,9 @@ configmap "fault-injector-configmap" deleted
 
 ## Other criteria for splitting the traffic
 
-The [Service mesh specification for traffic splits](https://github.com/servicemeshinterface/smi-spec/blob/master/apis/traffic-split/v1alpha3/traffic-split.md) supports other mechanisms (be warned not all service mesh implementation support this specification, and not all support all the traffic split options.)
+The [Service mesh specification for traffic splits](https://github.com/servicemeshinterface/smi-spec/blob/master/apis/traffic-split/v1alpha3/traffic-split.md) supports other mechanisms (be warned not all service mesh implementation support this specification, and not all support all the traffic split options).
 
-One interesting one is to have a split based on an `HTTPRouteGroup` This is interesting because it allows you to split traffic based on HTTP elements such as the presence (or not) of specific headers / header values. For example you could split traffic base on if the users browser was Firefox or not. More interestingly you could add a custom header to your request, for example declaring that the request should be treated in a particular way, thus you could have a header "DevelopmentUser", the request would progress through the connected microservices as usual until it got to the particular traffic split, then the traffic split would sent only traffic with that header to the service. This means you can test an update to your microservice in the fully operational production environment, with no risk that non developers would use the in-test version. Naturally for this to be safe your microservcies have to fail safe in that they don't just crash entirely when calling another service that fails (or you have multiple instances and just let Kubernetes handle restarting them.) This solves many of the problems of testing in that it is genuinely operating in the production environment, not a test environment that you believe is "close to" the production environment (but in reality unlikely to be so as the load and scale is usually much smaller for cost reasons)
+One interesting one is to have a split based on an `HTTPRouteGroup` This is interesting because it allows you to split traffic based on HTTP elements such as the presence (or not) of specific headers / header values. For example you could split traffic base on if the users browser was Firefox or not. More interestingly you could add a custom header to your request, for example declaring that the request should be treated in a particular way, thus you could have a header "DevelopmentUser", the request would progress through the connected microservices as usual until it got to the particular traffic split, then the traffic split would sent only traffic with that header to the service. This means you can test an update to your microservice in the fully operational production environment, with no risk that non developers would use the in-test version. Naturally for this to be safe your microservcies have to fail safe in that they don't just crash entirely when calling another service that fails (or you have multiple instances and just let Kubernetes handle restarting them). This solves many of the problems of testing in that it is genuinely operating in the production environment, not a test environment that you believe is "close to" the production environment (but in reality unlikely to be so as the load and scale is usually much smaller for cost reasons)
 
 Of course splitting by header is assuming that the headers are correctly passed on between micro-services.
 
@@ -910,7 +910,7 @@ The service mesh standard also defines capabilities that allow you to apply acce
 
 ---
 
-You have reached the end of this lab module !!
+You have reached the end of this lab module!!
 
 Acknowledgments. I'd like to thank Charles Pretzer of Bouyant, Inc for reviewing and sanity checking parts of this document.
 

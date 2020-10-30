@@ -1,8 +1,6 @@
-[Go to Overview Page](../README.md)
-
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native
+# Cloud Native - Setup for Helidon labs
 
 ## 1. Configuring the VM hosts file.
 
@@ -18,7 +16,7 @@ In the terminal switch to the script directory
 
 - `cd $HOME/workspace/cloud-native-setup/scripts/helidon-basics`
 
-run the script to update the hosts file for us
+Run the script to update the hosts file
 
 - `bash add-helidon-basics-hosts.sh`
 
@@ -34,11 +32,11 @@ Updating hosts file to add storefront as localhost aliases
 Added storefront to /etc/hosts
 ```
 
-The script will update the host file, Note that in some versions of the VM these entries already exist, in which case the script will just confirm they are there.
+The script will update the host file. Note that in some versions of the VM these entries already exist, in which case the script will just confirm they are present and won't make any modifications.
 
 - Close the terminal using the `x` on the windows upper right corner.
 
-Please **do not** run any other scripts you may find in these directories until instructed to do so, or you may end up with your environment in an unexpected state !
+Please **do not** run any other scripts you may find in these directories until instructed to do so, or you may end up with your environment in an unexpected state!
 
 ## 2. Importing our template code
 
@@ -100,7 +98,7 @@ Eclipse will import the projects and start importing the Maven dependencies. Not
 
 ![](images/55-eclipse-import-progress.png)
 
-This may take a few mins. **Do not worry if you see errors during this process** (usually indicated by a white cross in a red box.) These are to be expected as Eclipse imports the code, then updates the Maven configuration and other elements. Once the building indicator (lower right) has gone away the errors should have gone. Expect to see yellow warning triangles though - these are telling about unused code that we will be completing during the lab modules.
+This may take a few mins. **Do not worry if you see errors during this process** (usually indicated by a white cross in a red box). These are to be expected as Eclipse imports the code, then updates the Maven configuration and other elements. Once the building indicator (lower right) has gone away the errors should have gone. Expect to see yellow warning triangles though - these are telling about unused code that we will be completing during the lab modules.
 
 ### 2c. Building the helidon-labs-common project
 
@@ -110,13 +108,13 @@ The `helidon-labs-common` project contains classes that are used by both the sto
 
 ![](images/80-helidon-labs-common-menu-maven-install.png)
 
-Eclipse will use Maven to build and install the project. The progress will be shown in the `Console` tab, and you'll be able to see the `Build Success` message when it finishes (usually after 5 - 10 seconds, but it may take longer.)
+Eclipse will use Maven to build and install the project. The progress will be shown in the `Console` tab, and you'll be able to see the `Build Success` message when it finishes (usually after 5 - 10 seconds, but it may take longer).
 
 ![](images/81-helidon-labs-common-menu-maven-install-completed.png)
 
 ## 3. Configuring to use the Wallet file
 
-When you setup the VM the database Wallet file will have been downloaded to $HOME/Downloads, we want to place it in the right location for the labs and with the right name. It is **very** important that you follow the exact instructions below to ensure you are in the right directory as otherwise you may delete the lab files !
+When you setup the VM the database Wallet file will have been downloaded to $HOME/Downloads, we want to place it in the right location for the labs and with the right name. It is **very** important that you follow the exact instructions below to ensure you are in the right directory as otherwise you may delete the lab files!
 
 Note that these instructions assume you configured the Eclipse workspace in the location we told you to. If you don't have a $HOME/workspace adjust the steps below to reflect where your workspace is.
 
@@ -176,10 +174,3 @@ We now need to locate the wallet connection details.
 
 Congratulations, you have successfully setup your VM with the template code. 
 
-Hit the **Back** button of your browser to return to the top level of the helidon labs and start working through the labs !
-
-
-
-------
-
-[Go to Overview Page](../README.md)

@@ -31,7 +31,7 @@ We have used a few layout tricks to make the reading of this tutorial more intui
 
 As we cover quite some theoretical concepts, we included pretty verbose explanations.  To make the lab easier to grasp, we placed the longer parts in *Collapsibles*:
 
-<details><summary><b>Click this title to expand !</b></summary>
+<details><summary><b>Click this title to expand!</b></summary>
 
 
 If you feel you are already pretty familiar with a specific concept, you can just skip it, or read quickly through the text, then re-collapse the text section by re-clicking on the title. 
@@ -85,5 +85,5 @@ For links to useful web pages and other information that I found while writing t
 
 ## End of this tutorial
 
-Congratulations, you have reached the end of the tutorial !  You are now ready to start refactoring your own applications with the techniques you learned during this session !
+Congratulations, you have reached the end of the tutorial!  You are now ready to start refactoring your own applications with the techniques you learned during this session!
 

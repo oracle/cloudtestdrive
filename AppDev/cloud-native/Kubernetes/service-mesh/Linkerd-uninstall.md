@@ -47,7 +47,7 @@ But if the service mesh was not installed you only need to do
 ```
 kubectl logs stockmanager-7945b54576-9f7q7
 ```
-If you are confident you can handle this (and not complain about the labs being buggy because of these minor changes !) then please feel free to leave linkerd installed, and carry on with the labs.
+If you are confident you can handle this (and not complain about the labs being buggy because of these minor changes!) then please feel free to leave linkerd installed, and carry on with the labs.
 
 If however this will cause you problems you can remove the service mesh
 
@@ -167,6 +167,6 @@ Now you have completed the uninstall process
 
 ---
 
-You have reached the end of this lab module !!
+You have reached the end of this lab module!!
 
 Use your **back** button to return to the lab sequence document to access further service mesh modules.

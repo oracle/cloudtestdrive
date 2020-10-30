@@ -78,11 +78,11 @@ Additionally the daemon set can look at the log data for all of the pods in the 
 
 </details>
 
-Why run the data gathering in a pod ? Well why not ? While we could run the data capture process by hand manually on each node then we'd have to worry about stopping and starting the service, restarting if it fails, managing and updating configuration files and so on. If we just run it in a Kubernetes pod we can let Kubernetes do all of it's magic for us and we can focus on defining the capture process, and leave running it to Kubernetes ! 
+Why run the data gathering in a pod ? Well why not ? While we could run the data capture process by hand manually on each node then we'd have to worry about stopping and starting the service, restarting if it fails, managing and updating configuration files and so on. If we just run it in a Kubernetes pod we can let Kubernetes do all of it's magic for us and we can focus on defining the capture process, and leave running it to Kubernetes! 
 
-How will our capture pod get the log data though ? We've seen previously how we can use volumes to bring in a config map or secret to a pod and make it look like it's part of the local file system, well there are several other types of source for a volume (in the Prometheus section we briefly saw how helm setup an external storage object as a volume for storing the data.) One of the volume types provides the ability to bring in a local file system, in this case in the node as part of the pods file structure.
+How will our capture pod get the log data though ? We've seen previously how we can use volumes to bring in a config map or secret to a pod and make it look like it's part of the local file system, well there are several other types of source for a volume (in the Prometheus section we briefly saw how helm setup an external storage object as a volume for storing the data). One of the volume types provides the ability to bring in a local file system, in this case in the node as part of the pods file structure.
 
-Fluentd is an open source solution to processing the log data, it's basically an engine, reading data from input sources and sending them to output sources (that's more complicated than you'd think when dealing with potentially large numbers of high volume sources.) it supports multiple input sources, including reading log files saved from the containers by Kubernetes (imported from the node into the pods via a volume) It also supports many output types.
+Fluentd is an open source solution to processing the log data, it's basically an engine, reading data from input sources and sending them to output sources (that's more complicated than you'd think when dealing with potentially large numbers of high volume sources). it supports multiple input sources, including reading log files saved from the containers by Kubernetes (imported from the node into the pods via a volume) It also supports many output types.
 
 We will be using one of the built in output plug-ins of Fluentd that allows us to write to storage solutions that provide a Amazon Simple Storage Service (S3) compatible interface. In this case we will be writing the data to the Oracle Object Storage Service, but you could of course use other compatible services.
 
@@ -92,7 +92,7 @@ We need to provide five pieces of information, The region ID and the storage ser
 
 We also need to specify what OCI Compartment the data will be stored in - S3 does not have the concept of compartments, so as we're using the Oracle Object Storage S3 compatible API we need to specify the compartment to be used when the data arrives.
 
-We will gather a number of bits of information here, **please save it** in a text editor or notepad for later use !
+We will gather a number of bits of information here, **please save it** in a text editor or notepad for later use!
 
 Firstly let's get the OCI Region details.
 
@@ -141,7 +141,7 @@ For example **FOR MY TENANCY, YOURS WILL VARY** it might be  `https://oractdemea
 
 - Note the value for the `Amazon S3 Compatibility API Designated Compartment:` (`JAM` in this case)
 
-This is the OCI compartment that will be used to hold the storage bucket. In this case the compartment is named `JAM` If there is no compartment shown then the storage bucket will be created in the root compartment. If you want to change that (only do this if this is your tenancy, if it belongs to your organization then make sure your tenancy admin is OK with you changing it as you might break other things) then click the `Edit Object Storage Settings` and chose another compartment (if this is a new tenancy you may only have the root compartment.)
+This is the OCI compartment that will be used to hold the storage bucket. In this case the compartment is named `JAM` If there is no compartment shown then the storage bucket will be created in the root compartment. If you want to change that (only do this if this is your tenancy, if it belongs to your organization then make sure your tenancy admin is OK with you changing it as you might break other things) then click the `Edit Object Storage Settings` and chose another compartment (if this is a new tenancy you may only have the root compartment).
 
 **Important** You need to have rights to create storage objects in the compatibility compartment, If this is a trial tenancy then you will be operating as the tenancy administrator, if it's a commercial tenancy you may need to check with your admins to ensure you have the appropriate rights.
 
@@ -180,7 +180,7 @@ To generate a new Customer Secret Key
 
 **VITALLY IMPORTANT**
 
-- Click the `Copy` link to copy the secret key, be sure to paste it into a texteditor or somewhere safe (this is a secret key, so it needs to be protected against access.) **You cannot retrieve it at any point once this popup is closed** 
+- Click the `Copy` link to copy the secret key, be sure to paste it into a texteditor or somewhere safe (this is a secret key, so it needs to be protected against access). **You cannot retrieve it at any point once this popup is closed** 
 
 - **ONLY** after you'ce copied and saved the secret key click the `Close` button
 
@@ -207,7 +207,7 @@ You can let the S3 integration just create the storage bucket, but the scenario 
 
 The `Standard` storage tier is designed for immediate access, the `Archive` tier is designed for infrequent access, may have a time delay (up to an hour) between requesting and being able to access the data. There is a significant cost difference between the two storage tiers, at the time of writing this document (early May 2020)  for the Object storage service data in the archive tier was 1/10th the cost of standard tier in terms of GB data stored / month.
 
-Though it is an implementation detail (and I genuinely don't know if this is the case or not) it is highly likely that data placed in archive storage is actually held on magnetic tape, not disk. To make the data available for access the tape must be loaded into a tape drive from it's slot in the tape library (and there may be a delay for a tape drive to be available.) Then the tape drivers has to wind the tape to the right position to read the data (think of the old cassete tapes you may have has in your car when you wanted to locate a particular song - tapes are linear access devices, **not** true random access devices.) Then the drive has to read the data into a cache to make it available for access. All of this takes time and if you want to load data on a tape that is currently being used to write other data then you will also have to wait for the current write operations to complete before the tape can be repositioned to access your data. Thus there are several reasons why it can take a while to make archive data available for retrieval. For more information on tape libraries (the large libraries are impressive beasts and can hold over 100,000 tapes each.)
+Though it is an implementation detail (and I genuinely don't know if this is the case or not) it is highly likely that data placed in archive storage is actually held on magnetic tape, not disk. To make the data available for access the tape must be loaded into a tape drive from it's slot in the tape library (and there may be a delay for a tape drive to be available). Then the tape drivers has to wind the tape to the right position to read the data (think of the old cassete tapes you may have has in your car when you wanted to locate a particular song - tapes are linear access devices, **not** true random access devices). Then the drive has to read the data into a cache to make it available for access. All of this takes time and if you want to load data on a tape that is currently being used to write other data then you will also have to wait for the current write operations to complete before the tape can be repositioned to access your data. Thus there are several reasons why it can take a while to make archive data available for retrieval. For more information on tape libraries (the large libraries are impressive beasts and can hold over 100,000 tapes each).
 
 In both cases the data is encrypted at rest, and is protected via the use of multiple copies and checksums.
 
@@ -229,7 +229,7 @@ This will take you to the storage service page
 
 ![](images/Object-storage-compartment-selection.png)
 
-- Make sure in the compartments list you have selected the compartment used for the Amazon S3 Compatibility (this was shown in the tenancy details earlier.) This may be `root` if there isn't a S3 compatibility compartment specified for the tenancy
+- Make sure in the compartments list you have selected the compartment used for the Amazon S3 Compatibility (this was shown in the tenancy details earlier). This may be `root` if there isn't a S3 compatibility compartment specified for the tenancy
 
 You will now see a list of buckets in this compartment, In this case there is just one called `TG` In your tenancy there may be a zero or more existing buckets.
 
@@ -239,7 +239,7 @@ We're going to create a new bucket set for archive storage
 
 - Click the `Create Bucket` button.
 
-- In the popup name the bucket **<YOUR INITIALS>**-FLUENTD For fluentd to write to this bucket the name **must** be entirely in UPPER CASE and you **must** replace <YOUR INITIALS> with something unique to you !
+- In the popup name the bucket **<YOUR INITIALS>**-FLUENTD For fluentd to write to this bucket the name **must** be entirely in UPPER CASE and you **must** replace <YOUR INITIALS> with something unique to you!
 
 - Change the storage tier option to **archive**
 ![](images/Object-storage-create-bucket.png)
@@ -264,7 +264,7 @@ The `fluentd-to-ooss-configmap.yaml` file defines a configuration map representi
 
 The `fluentd-s3-configmap.yaml` contains a config map with the specific settings we will be using (these are what you gathered above) which are applied to the environment variables inside the pod. You will need to edit this to hold the values you gathered.
 
-The `fluentd-daemonset-oss-rbac.yaml` configures the cluster role, service account, binding between the two and also the details of the daemonset that gathers the log data and writes it to the S3 compatible storage service. The daemon set uses the values that are set in the `fluentd-s3-configmap.yaml` for it's environment variables (look at the file for the details of how the environment variables are defined in terms of config map entries.) This means we won't need to change the daemon set configuration / it's yaml file if we want to change those settings.
+The `fluentd-daemonset-oss-rbac.yaml` configures the cluster role, service account, binding between the two and also the details of the daemonset that gathers the log data and writes it to the S3 compatible storage service. The daemon set uses the values that are set in the `fluentd-s3-configmap.yaml` for it's environment variables (look at the file for the details of how the environment variables are defined in terms of config map entries). This means we won't need to change the daemon set configuration / it's yaml file if we want to change those settings.
 
 <details><summary><b>How does Kubernetes know where to get the environment variable values ?</b></summary>
 
@@ -327,7 +327,7 @@ data:
 
 The SWITCH_LOG_FILE_INTERVAL tells fluentd how often to switch to a new output file.
 
-For lab purposes we have setup the configuration with a 60 second cycle on switching log files. This is to enable us to see output in a reasonable time (the files don't show up in the object storage until they have been written and closed, then the archiving process completed. In a normal situation this would be set to a much higher value, say 3600 seconds, so the log files would switch once an hour (so if you use this config file in a production environment remember to update the SWITCH_LOG_FILE_INTERVAL value to reflect your needs.)
+For lab purposes we have setup the configuration with a 60 second cycle on switching log files. This is to enable us to see output in a reasonable time (the files don't show up in the object storage until they have been written and closed, then the archiving process completed. In a normal situation this would be set to a much higher value, say 3600 seconds, so the log files would switch once an hour (so if you use this config file in a production environment remember to update the SWITCH_LOG_FILE_INTERVAL value to reflect your needs).
 
 ---
 
@@ -503,7 +503,7 @@ To fix this get your tenancy admin to create a group, say COMPATSTORAGE, add you
    Allow group COMPATSTORAGE to manage objects in compartment JAM
    ```
    
-It may be that the bucket name is already in use (though this should have generated an error when you created the bucket earlier (OCI does not allow duplicate bucket names in the tenancy, even in different compartments.)
+It may be that the bucket name is already in use (though this should have generated an error when you created the bucket earlier (OCI does not allow duplicate bucket names in the tenancy, even in different compartments).
 
 ---
 
@@ -571,7 +571,7 @@ It can take several hours for the restore process to complete, especially if you
 
 If you want to progress with the lab then you can do so and come back to this section later to look at the restored data.
 
-Once the restore process has completed you will see that the objects state becomes `Restored` (The images below were taken about an hour after starting the restore process.) If you don't want to wait for the restore to complete just look at the images below to see what can be done, then follow the instructions in the **Tidying up the environment** section.
+Once the restore process has completed you will see that the objects state becomes `Restored` (The images below were taken about an hour after starting the restore process). If you don't want to wait for the restore to complete just look at the images below to see what can be done, then follow the instructions in the **Tidying up the environment** section.
 
 ![](images/Object-storage-restored-object.png)
 
@@ -611,11 +611,11 @@ Note that this will **not** reclaim the Object storage space used as the Object 
 
 If you want to reclaim the object storage capacity you've used for the log data (and you have looked at the restored data, or do not want to look at it) then follow these instructions.
 
-You should have stopped the log capture first of course !
+You should have stopped the log capture first of course!
 
 In the Object bucket details screen 
 
-- Check that you have the right storage bucket, if you have a commercial or production tenancy you will not be popular if you delete someone else's data !
+- Check that you have the right storage bucket, if you have a commercial or production tenancy you will not be popular if you delete someone else's data!
 
 - Click the checkbox next to the `Name` heading at the top of the objects table
 
@@ -642,7 +642,7 @@ Only if the bucket is empty will the delete process complete. If it's not then y
 
 ![](images/Object-storage-delete-non-empty-bucket-refusal.png)
 
-Even though it seems you can press `Delete` anyway this won't have any effect (Yes, this seems odd to me as well.) Click on the `Cancel` button and make sure you have selected all the objects and deleted them, then try to delete the bucket again.
+Even though it seems you can press `Delete` anyway this won't have any effect (Yes, this seems odd to me as well). Click on the `Cancel` button and make sure you have selected all the objects and deleted them, then try to delete the bucket again.
 
 Once the bucket has been successfully deleted you will be returned to the list of buckets in the S3 compatibility compartment (`JAM` in my case)
 

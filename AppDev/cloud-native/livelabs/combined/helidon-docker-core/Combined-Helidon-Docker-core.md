@@ -15,7 +15,7 @@ We have used a few layout tricks to make the reading of this tutorial more intui
 
 As we cover quite some theoretical concepts, we included pretty verbose explanations.  To make the lab easier to grasp, we placed the longer parts in *Collapsibles*:
 
-<details><summary><b>Click this title to expand !</b></summary>
+<details><summary><b>Click this title to expand!</b></summary>
 
 
 If you feel you are already pretty familiar with a specific concept, you can just skip it, or read quickly through the text, then re-collapse the text section by re-clicking on the title. 
@@ -110,7 +110,7 @@ We do not expect you to know the details of the Maven build / packaging tool. In
 <details><summary><b>How to do the coding in the labs</b></summary>
 
 
-Most of the labs explain what a specific Helidon features is and why it's useful, then there is a coding example with explanation of the feature. The coding example will usually tell you to modify a particular class (usually by providing you with the fully qualified name of the class, for example `com.oracle.labs.helidon.stockmanager.Main`) and make a specific change to a certain method (e.g. the `buildConfig` method or the constructor.) 
+Most of the labs explain what a specific Helidon features is and why it's useful, then there is a coding example with explanation of the feature. The coding example will usually tell you to modify a particular class (usually by providing you with the fully qualified name of the class, for example `com.oracle.labs.helidon.stockmanager.Main`) and make a specific change to a certain method (e.g. the `buildConfig` method or the constructor). 
 
 Occasionally it will tell you to just modify the class itself, for example adding an annotation on the class declaration. We try to be clear what the project is for each set of labs, but expect you to be able to use eclipse to open the right .java file (which is referred to but it's fully qualified class name to you can navigate to it) and find the method.
 
@@ -208,6 +208,6 @@ The Docker part of the labs covers how we use JIB to create a docker image, run 
 ---
 
 ### What's next
-Once you've finished these labs then it's time for a cup of tea (or other beverage of your choice.)
+Once you've finished these labs then it's time for a cup of tea (or other beverage of your choice).
 
 Thanks for doing the labs, and we hope they have been useful to you. 

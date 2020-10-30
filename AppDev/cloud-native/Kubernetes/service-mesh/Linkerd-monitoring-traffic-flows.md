@@ -130,7 +130,7 @@ Let's now look at the specific data for your namespace. In the HTTP metrics sect
 
 ![](images/linkerd-app-namespace-top-of-page.png)
 
-The most obvious thing we see here it the data routing network at the top of the page. This shows us which services are initiating connections to which other services within the namespace. We've got an easy way to see our data flows between microservices (to be precise the ones that have the service mesh proxy installed !)
+The most obvious thing we see here it the data routing network at the top of the page. This shows us which services are initiating connections to which other services within the namespace. We've got an easy way to see our data flows between microservices (to be precise the ones that have the service mesh proxy installed!)
 
 You can see the expected `storefront` to `stockmanager` connection, but also that **both** of them are sending data to the `zipkin` service. This is actually the tracing data. I included zipkin in the deployments with the linkerd-proxy so help show more detail in the graph, but in a production environment you may not want want to do this. 
 
@@ -364,7 +364,7 @@ We can now get the OCI Cloud Shell to stop the job
 
 ---
 
-You have reached the end of this lab module !!
+You have reached the end of this lab module!!
 
 In the next module we will look at how you can use linkerd and grafana to diagnose problems.
 

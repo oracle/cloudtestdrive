@@ -17,7 +17,7 @@ This video is an introduction to the Kubernetes health, readiness and liveness l
 
 Kubernetes provides a service that monitors the pods to see if they meet the requirements in terms of running, being responsive, and being able to process requests. 
 
-A core feature of Kubernetes is the assumption that eventually for some reason or another something will happen that means a service cannot be provided, and the designers of Kubernetes made this a core understanding of how it operates. Kubernetes doesn't just set things up they way you request, but it also continuously monitors the state of the entire deployments so that if the system does not meet what was specified Kubernetes steps in and automatically tries to adjust things so it does !
+A core feature of Kubernetes is the assumption that eventually for some reason or another something will happen that means a service cannot be provided, and the designers of Kubernetes made this a core understanding of how it operates. Kubernetes doesn't just set things up they way you request, but it also continuously monitors the state of the entire deployments so that if the system does not meet what was specified Kubernetes steps in and automatically tries to adjust things so it does!
 
 These labs look at how that is achieved.
 
@@ -39,7 +39,7 @@ ingress-nginx-nginx-ingress-controller        LoadBalancer   10.96.210.131   132
 ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.67.181    <none>            80/TCP                       19m
 ```
 
-The Column EXTERNAL-IP gives you the IP address, in this case the IP address for the ingress-controller load balancer is `132.145.253.186` ** but this of course will be different in your environment !**
+The Column EXTERNAL-IP gives you the IP address, in this case the IP address for the ingress-controller load balancer is `132.145.253.186` ** but this of course will be different in your environment!**
 
 ---
 
@@ -72,7 +72,7 @@ storefront-65bd698bb4-cq26l     1/1     Running   0          92m
 zipkin-88c48d8b9-jkcvq          1/1     Running   0          92m
 ```
 
-We can see the state of our pods, look at the RESTARTS column, all of the values are 0 (if there was a problem, for example Kubernetes could not download the container images you would see a message in the Status column, and possibly additional re-starts, but here everything is A-OK.)
+We can see the state of our pods, look at the RESTARTS column, all of the values are 0 (if there was a problem, for example Kubernetes could not download the container images you would see a message in the Status column, and possibly additional re-starts, but here everything is A-OK).
 
 We're going to simulate a crash in our program, this will cause the container to exit, and Kubernetes will identify this and start a replacement container in the pod for us.
 
@@ -208,7 +208,7 @@ replicaset.apps/zipkin-88c48d8b9          1         1         1       66m
 
 As you can see this section has been commented out. 
 
-- On each line remove the # (only the first one, and only the # character, be sure not to remove any whitespace.) 
+- On each line remove the # (only the first one, and only the # character, be sure not to remove any whitespace). 
 - Save the file
 
 The resulting section should look like this:
@@ -237,7 +237,7 @@ The resulting section should look like this:
 #        readinessProbe:
 ```
 
-This is a pretty simple test to see if there is a running service, in this case we use the service to make an http get request (this is made by the framework and is done from outside the pod) on the 9080:/health/live url (we know it's on port 9080 as the port definition names it health-port.) There are other types of liveness probe than just get requests, you can run a command in the container itself, or just see if it's possible to open a tcp/ip connection to a port in the container. Of course this is a simple definition, it doesn't look at the many options that are available.
+This is a pretty simple test to see if there is a running service, in this case we use the service to make an http get request (this is made by the framework and is done from outside the pod) on the 9080:/health/live url (we know it's on port 9080 as the port definition names it health-port). There are other types of liveness probe than just get requests, you can run a command in the container itself, or just see if it's possible to open a tcp/ip connection to a port in the container. Of course this is a simple definition, it doesn't look at the many options that are available.
 
 The first thing to say is that whatever steps your actual liveness test does it needs to be sufficient to detect service problems like deadlocks, but also to use as few resources as possible so the check itself doesn't become a major load factor.
 
@@ -334,7 +334,7 @@ Events:
   Normal  Started    4m28s  kubelet, docker-desktop  Started container storefront
 ```
 
-It's started and no unexpected events !
+It's started and no unexpected events!
 
 Now is the time to explain that "Not frozen ..." text in the status. To enable us to actually simulate the service having a deadlock or resource starvation problem there's a bit of a cheat in the storefront LivenessChecker code :
 
@@ -365,7 +365,7 @@ Now is the time to explain that "Not frozen ..." text in the status. To enable u
 		}
 ```
 
-Every time it's called it checks to see it a file names /frozen exists in the root directory of the container. If it does then it will do a delay (about 60 seconds) before returning the response. Basically this means that by connecting to the container and creating the /frozen file we can simulate the container having a problem. The `Not Frozen...` is just text in the log data so we can see what's happening. Of course you wouldn't do this in a production system !
+Every time it's called it checks to see it a file names /frozen exists in the root directory of the container. If it does then it will do a delay (about 60 seconds) before returning the response. Basically this means that by connecting to the container and creating the /frozen file we can simulate the container having a problem. The `Not Frozen...` is just text in the log data so we can see what's happening. Of course you wouldn't do this in a production system!
 
 Let's see what happens in this case.
 
@@ -539,7 +539,7 @@ The whole thing is held in single quotes `'curl -s http://localhost:9080/health/
 
 Remember, in this case the command is executed inside the container, so you have to make sure that the commands you want to run will be available. This is especially important if you change the base image, you might find you are relying on a command that's no longer there, or works in a different way from your expectations.
 
-That's all we're going to do with bash shell programming for now !
+That's all we're going to do with bash shell programming for now!
 
 Having made the changes let's undeploy the existing configuration and then deploy the new one
 
@@ -710,7 +710,7 @@ stockmanager-6456cfd8b6-vqq7c   0/1     Terminating   0          26m
 storefront-74cd999d8-dzl2n      1/1     Running       0          26m
 zipkin-88c48d8b9-vdn47          1/1     Running       0          26m
 ```
-The stock manager service is being stopped (this is quite a fast process, so it may have completed before you ran the command.) After 60 seconds or so if we run kubectl to get everything we see it's gone (note this is `all`, not `pods` here)
+The stock manager service is being stopped (this is quite a fast process, so it may have completed before you ran the command). After 60 seconds or so if we run kubectl to get everything we see it's gone (note this is `all`, not `pods` here)
 
 -  `kubectl get all`
 
@@ -842,6 +842,6 @@ Unfortunately however the startup probes are not supported in standard versions 
 
 ---
 
-You have reached the end of this lab !!
+You have reached the end of this lab!!
 
 Use your **back** button to return to the **C. Deploying to Kubernetes** section

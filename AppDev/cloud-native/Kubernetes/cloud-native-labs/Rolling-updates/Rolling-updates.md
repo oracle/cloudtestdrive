@@ -17,20 +17,20 @@ One of the problems when deploying an application is how to update it while stil
 
 Changes by the way come in multiple areas, it could be application code changes (Kubernetes sees these as a change in the container image) or it could be a change in the configuration defining a deployment (and it's replica sets / pods)
 
-The update process for code changes involves using your development tooling to create a new container based on the changed code (You presumably have separate processes for managing your source code versions.) As part of your container creation process you **must** give it a different version number so it's easy to identify which container comes from which version of your source code, and also to ensure you differentiate between different releases at the image level. You'd then update the service definition to use the new image by editing and applying the yaml file or using kubectl to directly change the container image.
+The update process for code changes involves using your development tooling to create a new container based on the changed code (You presumably have separate processes for managing your source code versions). As part of your container creation process you **must** give it a different version number so it's easy to identify which container comes from which version of your source code, and also to ensure you differentiate between different releases at the image level. You'd then update the service definition to use the new image by editing and applying the yaml file or using kubectl to directly change the container image.
 
 The update process for configuration changes is to modify the yaml file that defines your service, for example defining different volume mounts, and then applying the change, or to issue a kubectl command to directly update the change.
 
 For *both* approaches Kubernetes will keep track of the changes and will undertake a rolling upgrade strategy.
 
-As a general observation though it may be tempting to just go in and modify the configuration directly with kubectl ... this is a **bad** thing to do, it's likely to lead to unrecorded changes in your configuration management system so in the event that you had to do a complete restart of the system changes manually done with kubectl are likely to be forgotten. It is **strongly** recommended that you make changes by modifying your yaml file, and that the yaml file itself has a versioning scheme so you can identify exactly what versions of the service a given yaml file version provides. If you must make changes using kubectl (say you need to make a minor change in a test environment) then as soon as you decide it should be permanent then make the corresponding change in the yaml file *and do a rolling upgrade using the yaml file to ensure you are using the correct configuration* (after all, you may have made a typo in either the kubectl or yaml file.)
+As a general observation though it may be tempting to just go in and modify the configuration directly with kubectl ... this is a **bad** thing to do, it's likely to lead to unrecorded changes in your configuration management system so in the event that you had to do a complete restart of the system changes manually done with kubectl are likely to be forgotten. It is **strongly** recommended that you make changes by modifying your yaml file, and that the yaml file itself has a versioning scheme so you can identify exactly what versions of the service a given yaml file version provides. If you must make changes using kubectl (say you need to make a minor change in a test environment) then as soon as you decide it should be permanent then make the corresponding change in the yaml file *and do a rolling upgrade using the yaml file to ensure you are using the correct configuration* (after all, you may have made a typo in either the kubectl or yaml file).
 
 ## How to do a rolling upgrade in our setup
 
 So far we've been stopping our services (the undeploy.sh script deletes the deployments) and then creating new ones (the deploy.sh script applies the deployment configurations for us) This results in service down time, and we don't want that. But before we can switch to properly using rolling upgrades there are a few bits of configuration we should do
 
 #### Pod counts
-Kubernetes aims to keep a service running during the rolling upgrade, it does this by starting new pods to run the service, then stopping old ones once the new ones are ready. Through the magic of services and using labels as selectors the Kubernetes run time adds and removed pods from the service. This will work with a deployment whose replica sets only contain a single pod (the new pod will be started before the old one is stopped) but if your service contains multiple pods it will use some configuration rules to try and manage the process in a more balanced manner and sticking reasonably closely to the number of pods you've asked for (or the auto scaler has.)
+Kubernetes aims to keep a service running during the rolling upgrade, it does this by starting new pods to run the service, then stopping old ones once the new ones are ready. Through the magic of services and using labels as selectors the Kubernetes run time adds and removed pods from the service. This will work with a deployment whose replica sets only contain a single pod (the new pod will be started before the old one is stopped) but if your service contains multiple pods it will use some configuration rules to try and manage the process in a more balanced manner and sticking reasonably closely to the number of pods you've asked for (or the auto scaler has).
 
 We are going to once again edit the storefront-deployment.yaml file to give Kubernetes some rules to follow when doing a rolling upgrade. Importantly however we're going to edit a *Copy* of the file so we have a history.
 
@@ -207,7 +207,7 @@ Basically what Kuberntes has done is created a new replica set and started some 
 - Rerun the status command a few times to see the changes 
   -  `kubectl get all`
 
-If we look at the output again we can see the progress (note that the exact results will vary depending on how long after the previous kubectl get all command you ran this one.)
+If we look at the output again we can see the progress (note that the exact results will vary depending on how long after the previous kubectl get all command you ran this one).
 
 ```
 NAME                                READY   STATUS    RESTARTS   AGE
@@ -295,7 +295,7 @@ REVISION  CHANGE-CAUSE
 2         <none>
 ```
 
-Note that the 2nd revision doesn't tell us what changed, another reason we should use configuration files to do this !
+Note that the 2nd revision doesn't tell us what changed, another reason we should use configuration files to do this!
 
 - Let's check on our deployment to make sure that the image is the v0.0.2 we expect
   -  `kubectl describe deployment storefront`
@@ -587,7 +587,7 @@ Normally of course the testing of the pods would be linked into CI/CD automated 
 
 <details><summary><b>What if I do new update while another is still in progress ?</b></summary>
 
-If you change a different deployment then that will proceed in the same way, the different deployment will create the replica sets and gradually increase the side of the new one while reducing the size of the old one as above (this hopefully is what you'd expect !)
+If you change a different deployment then that will proceed in the same way, the different deployment will create the replica sets and gradually increase the side of the new one while reducing the size of the old one as above (this hopefully is what you'd expect!)
 
 If you changed and started a rollout of a deployment that was currently in the process of being upgraded  then Kubernetes still does the right thing. You will have the old replica set (let's call that replica set 1) and the new one (let's call that replica set 2) Kubernetes will stop the transition from replicas set 1 to replica set 2, and will create another replica set (let's call this replica set 3) for the latest version of the deployment. It will then transition both replica set 1 and 2 to the new replica set 3.
 
@@ -599,15 +599,15 @@ Obviously this is not something you're likely to be doing often, but it's quite 
 
 
 ## Important note on external services
-Kubernetes can manage changes and rollbacks within it's environment, provided the older versions of the changes are available. So don't delete your old container images unless you're sure you won't need them ! Kubernetes can handle the older versions of the config itself, but always a good idea to keep an archive of them anyway, in case your cluster crashes and takes your change history with it.
+Kubernetes can manage changes and rollbacks within it's environment, provided the older versions of the changes are available. So don't delete your old container images unless you're sure you won't need them! Kubernetes can handle the older versions of the config itself, but always a good idea to keep an archive of them anyway, in case your cluster crashes and takes your change history with it.
 
 However, Kubernetes itself cannot manage changes outside it's environment. It may seem obvious, but Kubernetes is about compute, not persistence, and in most cases the persistence layer is external to Kubernetes on the providers storage environments.
 
 Persistence is by definition about making things persistent, they exist outside the compute operation, and that can cause problems if other elements also use the stored data.
 
-This is especially critical for data in databases. You need to coordinate changes to the database, especially changes to the database schema (which is outside Kubernetes) with changes to the code in the services that access the database (usually running in Kubernetes.) Kubernetes can handle the rolling upgrades of the *services*, but if different versions of your service have incompatible data requirements you've got a problem. Equally if you do an upgrade that changes the database scheme in a way that's incompatible with earlier versions of the service, and then you need to roll back to a previous version you've got a problem.
+This is especially critical for data in databases. You need to coordinate changes to the database, especially changes to the database schema (which is outside Kubernetes) with changes to the code in the services that access the database (usually running in Kubernetes). Kubernetes can handle the rolling upgrades of the *services*, but if different versions of your service have incompatible data requirements you've got a problem. Equally if you do an upgrade that changes the database scheme in a way that's incompatible with earlier versions of the service, and then you need to roll back to a previous version you've got a problem.
 
-These issues are not unique to Kubernetes, they have always existed when a new version of some code that interacts with the persistence layer is deployed, but the very fast deployment cycle of microservices enabled my Kubernetes makes this more of a critical issue to consider (in 2016 Netflix were doing thousands of deployments a day, admittedly not all of them would involve persistence system changes.) 
+These issues are not unique to Kubernetes, they have always existed when a new version of some code that interacts with the persistence layer is deployed, but the very fast deployment cycle of microservices enabled my Kubernetes makes this more of a critical issue to consider (in 2016 Netflix were doing thousands of deployments a day, admittedly not all of them would involve persistence system changes). 
 
 One common approach used is the have the microservices support different versions of the scheme, and then only upgrade to the new version once all of the microservices that access the data have support for the new version, and sufficient testing has shown that there is likely to be no need to roll back to old versions which wouldn't support the updated schema. Than, and only then is the database (or other persistence) updates to reflect the new structure.
 
@@ -635,7 +635,7 @@ One major benefit of the blue / green approach is that if your new version of th
 
 Other rollout types exist, though these do require the use of a service mesh (e.g. [Linkerd](https://linkerd.io/) or [Istio](https://istio.io/)to split the request flow between different versions. Examples include :
 
-Canary rollouts where the new services instances are created, then a limited amount of traffic is diverted to them by the service mesh (the bulk of the traffic going to the original version.) Once the new version has been tested for a while and shown to meet the release criteria for quality then traffic is switched to the new version is ramped up quickly and the old version stopped. If the quality metrics turn out not to be met then all of the traffic is redirected to the old version.
+Canary rollouts where the new services instances are created, then a limited amount of traffic is diverted to them by the service mesh (the bulk of the traffic going to the original version). Once the new version has been tested for a while and shown to meet the release criteria for quality then traffic is switched to the new version is ramped up quickly and the old version stopped. If the quality metrics turn out not to be met then all of the traffic is redirected to the old version.
 
 A/B testing is a variant of canary testing, and also requires a service mesh. Like canary testing both versions of the microservice exist at the same time, and the traffic is shared between them. But for A/B testing instead of the quality being the focus the switch is driven by some form of business metric, for example the new version results in 5% more orders than the old one.
 
@@ -649,6 +649,6 @@ Canary testing and A/B testing require a service mesh to handle the split of the
 
 </details>
 
-You have reached the end of this lab !!
+You have reached the end of this lab!!
 
 Use your **back** button to return to the **C. Deploying to Kubernetes** section

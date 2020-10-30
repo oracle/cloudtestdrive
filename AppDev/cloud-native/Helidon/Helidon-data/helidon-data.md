@@ -41,13 +41,13 @@ We will be looking at the helidon-labs-stockmanager project. This set of classes
 **What's not in this lab**
 This lab does not attempt to go into all of the detail or JPA and JTA, the goal is to see how they can be handled in a Helidon based microservice. Because of that the lab does not go into great about how those Java API's operate. 
 
-If you want to understand JPA and JTA in a lot of detail there are courses available, and of course lots of books on the subject
+If you want to understand JPA and JTA in a lot of detail there are courses available, and of course lots of books on the subject.
 
 
 
 
 ## Configuring the project to be personal to you
-For some version of this lab all attendees will are operating on a shared database, updating the same table. To ensure that your work doesn't interfere with other peoples work you need to provide a unique identity for yourself
+For some versions of this lab, all attendees will are operating on a shared database, and updating the same table. To ensure that your work doesn't interfere with other peoples work you need to provide a unique identity for yourself
 
 - In Eclipse, switch to the **helidon-labs-stockmanager** project.
 - Navigate into the folder **conf**
@@ -65,10 +65,10 @@ app:
 
 (There is a sample line there already, if you prefer modify the value and uncomment the line)
 
-The way this operates is that the StockResource will automatically and transparently add the department to the primary key in all requests.
+The StockResource class will automatically and transparently add the department to the primary key in all requests. This shows how using a microservice as the access point to the database beneficial, the view of the data as seem by the business logic in the StorefrontResource is unaware that by the simple addition of an extra column (which is not visible beyond the StockManagerRecource, so no changes are needed there) the database is multi department. Of course here we are identifying the department by information from a config file, in reality we would get the department information from the request, for example extracting the user identity and looking that up to determine the department. The optional module `Accessing the request context` shows how to get this identity information.
 
 **What's the difference from the storefront labs ?**
-This set of labs sections concentrates on the data accesses. You are assumed to be familiar with things like @POST, @ApplicationScope, loading configurations and such like.
+This set of lab sections concentrates on the data accesses. You are assumed to be familiar with things like @POST, @ApplicationScope, loading configurations and such like.
 
 There is less coding than the helidon core lab and more reading here.
 
@@ -87,7 +87,7 @@ Please make sure that for now you have **stopped** the **storefront** applicatio
 ## Overview of the classes
 
 ### Quick overview of the database functionality
-The com.oracle.labs.helidon.stockmanager.resources.StockmanagerResource class is the primary class we'll be working with in this lab. If you're not familar with JPA however there are some other classes you should look at.
+The com.oracle.labs.helidon.stockmanager.resources.StockmanagerResource class is the primary class we'll be working with in this lab. If you're not familiar with JPA however there are some other classes you should look at.
 
 The classes in the com.oracle.labs.helidon.stockmanager.database package represent the actual structure of the database. In the database configuration we tell the JPA, JTA layers these are the classes we want the database to represent. You'll see that they have some annotations on them, some of which will be familiar. Let's look at the StockLevel class first:
 
@@ -161,17 +161,17 @@ public class StockId implements Serializable {
 
 The Lombok annotations are the same
 
-The class level `@Embeddable` means that JPA treats thsi class as part of an Entity (so a DB row in this case) which means JPA will construct the primary key using the fields in this class
+The class level `@Embeddable` means that JPA treats this class as part of an Entity (so a DB row in this case) which means JPA will construct the primary key using the fields in this class
 
 As with the StockLevel we're choosing our own column names using `@Column` rather than letting the system chose them for us.
 
-The Java Persistence system at runtime looks for these annotations and will automatically setup the database mappings based on them. The actual JPA implementation that's being used here is hibernate, it's an open source project, and it will not only handle the database interactions for us, but could if if we wanted it to create the database tables on our behalf (this is controlled by the hibernate.hbm2ddl.auto setting in the persistence.xml file, at the moment it will jst check that the database schema matches what our entities require.)
+The Java Persistence system at runtime looks for these annotations and will automatically setup the database mappings based on them. The actual JPA implementation that's being used here is hibernate, it's an open source project, and it will not only handle the database interactions for us, but if we wanted it to could create the database tables on our behalf (this is controlled by the hibernate.hbm2ddl.auto setting in the persistence.xml file, at the moment it will just check that the database schema matches what our entities require).
 
-The entity manager represents the connection to the JPA system, it can be used to locate existing object and create new ones (see the StockResource.createStockLevel method) It can merge updates to existing data (see the StockResource.adjustStockLevel method) and delete objects in the database (see the StockResource.deleteStockItem method.)
+The entity manager represents the connection to the JPA system, it can be used to locate existing object and create new ones (see the StockResource.createStockLevel method) It can merge updates to existing data (see the StockResource.adjustStockLevel method) and delete objects in the database (see the StockResource.deleteStockItem method).
 
 For this lab we've got a little bit of logic around those entity manager functions to act as a starting point to let us provide REST CRUD APIs.
 
-It is important to note that each item retrieved from or saved to the database using the entity manager is almost certainly a different instance of the object. Even if you save an object then look at the returned object that has "just been saved" ! So retrieving the same object twice is two separate objects, which contain the same data, not two references to the same object. This means that you need to think carefully if you're going to implement comparisons or equality (hence the benefits of Lombok generating this type of code automatically for us)
+It is important to note that each item retrieved from or saved to the database using the entity manager is almost certainly a different instance of the object. Even if you save an object then look at the returned object that has "just been saved"! So retrieving the same object twice is two separate objects, which contain the same data, not two references to the same object. This means that you need to think carefully if you're going to implement comparisons or equality (hence the benefits of Lombok generating this type of code automatically for us)
 
 ---
 
@@ -200,12 +200,11 @@ Let's look at the StockResource.createStockLevel method to see how this works
 
 The `@Path("/{itemName}/{itemCount}")` makes two params called itemName and itemCount available. Then in the method signature the `@PathParam("itemName")` binds whatever was in the itemName path param to the itemName parameter, and the same for the itemCount.
 
-Helidon does sanity checks here, it the itemCount wasn't a String version of an integer then the caller would get an error message from the Helidon framework itself before the method was called.
+Helidon does sanity checks here. If the itemCount wasn't a String version of an integer then the caller would get an error message from the Helidon framework itself before the method was called.
 
 Here (to make it clear what's happening) I've used the same name for the path and method param, but that's not required.
 
-Other possible sources for the params are @QueryParam and @FormsParam. Which one you chose will depend on what the URL you are expecting (or want) to get.
-
+Other possible sources for the params are @QueryParam and @FormsParam. Which one you chose will depend on what URL you are expecting (or want) to get.
 
 ## Accessing the database
 
@@ -226,7 +225,7 @@ There are a several problems here. Firstly, we do this each time we create a new
 
 Secondly we have to close the entity manager down when it's no longer needed, that can result in some complex code paths to follow, especially if there are exceptions being handled as well.
 
-Also why write code when we don't have to ? With Helidon we have the context and dependency injections capabilities, so we don't however need to setup the entity manager itself, we can have Helidon do that for us.
+Also why write code when we don't have to ? However, with Helidon, we have the context and dependency injections capabilities, so we don't need to setup the entity manager itself; we can have Helidon do that for us.
 
 - In file **StockResource.java**, scroll up to the constructor of the class **StockResource**
 - Remove the lines that set up the entity manager, it should now look like below:
@@ -263,15 +262,15 @@ Note that the name of the persistence context is defined as a hard coded String,
 
 ### Configuring the database
 
-Helidon CDI configures the JPA / JTA (transaction system) for us and creates the Entity manager. The JPA / JTA uses the classpath resource META-INF/persistence.xml to define what classes will be persisted, however we don't want to encode things like the database access details in something that's part of the jar file distribution, somewhat of a security risk !
+Helidon CDI configures the JPA / JTA (transaction system) for us and creates the Entity manager. The JPA / JTA uses the classpath resource META-INF/persistence.xml to define what classes will be persisted, however we don't want to encode things like the database access details in something that's part of the jar file distribution, somewhat of a security risk!
 
-Normally you'd include the database settings in an external configuration file, but here I want to show another aspect of the Helidon configuration system, and we'll use the Java system properties to hold them (we could equally have used the environment variables, and in the Kubernetes lab we will do just that, with no code changes to handle that switch.)
+Normally you'd include the database settings in an external configuration file, but to demonstrate another aspect of the Helidon configuration system we will use the Java system properties to specify the settings (we could equally have used the environment variables, and in the Kubernetes lab we will do just that, with no code changes to handle that switch).
 
 #### Specifying the database connection details
 
-We need to provide the details of the database connection. Helidon has many ways to do this as you've seen earlier, and so show a different way than using a config file we're going to define them as part of the Java system properties. The Java system properties are the highest priority of configuration items (environment variables are the next level, then files, directories and URL's) These are defined on the java command line using the syntax `-Djavax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource` As we're using Eclipse to start our microservices we need to configure the Eclipse to pass the properties along for us.
+We need to provide the details of the database connection. Helidon has many ways to do this as you've seen earlier, and so to show a different way than using a config file we're going to define them as part of the Java system properties. The Java system properties are the highest priority of configuration items (environment variables are the next level, then files, directories and URL's) These are defined on the java command line using the syntax `-Djavax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource` As we're using Eclipse to start our microservices we need to configure the Eclipse to pass the properties along for us.
 
-If you are using a database provided by an instructor then they will give you the values for the database connection, or may have already set this up in your virtual machine. If you setup your own database then you will have specified a username and password (if you used our example that will be a username of `HelidonLabs` and a password of `H3lid0n_Labs`) have downloaded the wallet file from which you will have got the connection name, for example `tg_high` **yours will be different unless your database is called `tg` !
+If you are using a database provided by an instructor then they will give you the values for the database connection, or may have already set this up in your virtual machine. If you setup your own database then you will have specified a username and password (if you used our example that will be a username of `HelidonLabs` and a password of `H3lid0n_Labs`) have downloaded the wallet file from which you will have got the connection name, for example `tg_high` **yours will be different unless your database is called `tg`!
 
 We are now going to configure the Eclipse run configuration to add the database connection properties every time the java command is called to run our Main class.
 
@@ -305,11 +304,11 @@ Note that in this case it is named `Main (2)` but that may vary
 
 - Now click on the `args` tab (this is just below the name)
 
-The Run configurations popup will now switch to the args tab
+The Run configurations popup will now switch to the arguments tab (this may have been abbreviated to `args` in the UI
 
 ![](images/eclipse-run-configurations-new-config-args.png)
 
-- Copy the text below into a notepad or ASCII text editor you will need to make some changes to it before you use it. (Do **not** use a word processor like Microsoft Word or anything that makes the test "pretty" as they replace the `-` characters automatically with a non ASCII visually longer version, and that won't work) 
+- Copy the text below into a notepad or ASCII text editor you will need to make some changes to it before you use it. (Do **not** use a word processor like Microsoft Word or anything that makes the text "pretty" as they replace the `-` characters automatically with a non ASCII visually longer version, and that won't work) 
 
 Be careful not to add any newlines or extra spaces, tabs etc.
 
@@ -344,7 +343,7 @@ In case you wanted to see how to use the a config file for the database settings
 
 Using Helidon to create our PersistenceContext will also ensure that the entity manager is correctly shutdown when the program exits so we won't have any unused resources hanging around in the database.
 
-- Run the **Main** class of the project (right-click on **Main.java**, *Run As*, then *Java Application*.)
+- Run the **Main** class of the project (right-click on **Main.java**, *Run As*, then *Java Application*).
 
 ---
 
@@ -394,7 +393,7 @@ content-length: 2
 
 
 
-There should be just `[]` returned, if there are any item details it means that you didn't chose a unique department value ! Chose something that is unique, update the stockmanager-config.yaml file department attribute, restart the program and try again.
+There should be just `[]` returned, if there are any item details it means that you didn't chose a unique department value! Chose something that is unique, update the stockmanager-config.yaml file department attribute, restart the program and try again.
 
 
 <details><summary><b>What with the SQL in the console output ?</b></summary>
@@ -448,7 +447,7 @@ javax.persistence.TransactionRequiredException
 ## Automatic Transactions
 We could manually ask the entity manager to start and and transactions, but that's a load of extra code, and the possible paths if there are problems to do the rollback or commit are significant. Let's use the Java Transaction API (JTA) to do it for us.
 
-Fortunately for us all we need is an @Transactional annotation and Heliton will trigger the JTA to manage the transactions for us.
+Fortunately for us all we need is an @Transactional annotation and Helidon will trigger the JTA to manage the transactions for us.
 
 - Still in file **StockResource.java**, locate the StockResource class definition
 - Add the transaction annotation on the top:
@@ -475,7 +474,7 @@ import javax.transaction.Transactional;
 
 </details>
 
-This means that every operation in the class will be wrapped in a transaction automatically, If the method returns normally (so no exceptions thrown) then the transaction will be automatically committed, but if the transaction returned abnormally (e.g. an exception was thrown) then the transaction will be rolled back.
+This means that every operation in the class will be wrapped in a transaction automatically. If the method returns normally (so no exceptions thrown) then the transaction will be automatically committed, but if the transaction returned abnormally (e.g. an exception was thrown) then the transaction will be rolled back.
 
 This will apply if there were multiple entity managers or database modification actions operating within the method. So if the method modifies data in several databases then they would all succeed of fail. This how Helidon helps ensure that the database ACID (Atomic, Consistent, Isolated and Durable) semantics are maintained 
 

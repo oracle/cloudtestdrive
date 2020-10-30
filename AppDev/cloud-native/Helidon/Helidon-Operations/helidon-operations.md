@@ -46,7 +46,7 @@ d12b253c50b7793ca8e3eb64658efead336fa3880d3df040f12152b57347f067
 
 Docker images are tagged to help identify specific versions of an image. This let's us know which version we are dealing with. If you don't specify a version then the latest image is used.
 
-There are many reasons why you may want to specify a version number, for example you may want to know that the image will not change on you and exhibit unexpected behavior. In the case of this lab we don't want the UI images you see to change without us knowing it and suddenly be different from those in the instructions. Of course that could also apply to other changes, an API may have changed in a different version and literally your code can't talk to it !
+There are many reasons why you may want to specify a version number, for example you may want to know that the image will not change on you and exhibit unexpected behavior. In the case of this lab we don't want the UI images you see to change without us knowing it and suddenly be different from those in the instructions. Of course that could also apply to other changes, an API may have changed in a different version and literally your code can't talk to it!
 
 Other reasons may be that you are in an industry like the aerospace sector or finance industry where you have to maintain rigid version controls for regulatory reasons.
 
@@ -242,7 +242,7 @@ content-length: 22309
 base:classloader_current_loaded_class_count 8181
 ...
 ...
-a lot more !!!!
+a lot more!!!!
 ...
 ...
 # TYPE vendor:requests_meter_one_min_rate_per_second gauge
@@ -371,7 +371,7 @@ application:com_oracle_labs_helidon_storefront_resources_storefront_resource_sto
 ...
 ```
 
-We can see that now 5 requests in total have been made to the storefront resource, and 5 requests to the listAllStock method, the others have had none. If we were looking for a place to optimize things then perhaps we might like to consider looking at that method first !
+We can see that now 5 requests in total have been made to the storefront resource, and 5 requests to the listAllStock method, the others have had none. If we were looking for a place to optimize things then perhaps we might like to consider looking at that method first!
 
 
 Why port 9080 ? Well you may recall that in the helidon core lab we defined the network as having two ports, one for the main application on port 8080 and another for admin functions on port 9080, we then specified that metrics (and health which we'll see later) were in the admin category so they are on the admin port. It's useful to split these things so we don't risk the core function of the microservice getting mixed up with operation data.  

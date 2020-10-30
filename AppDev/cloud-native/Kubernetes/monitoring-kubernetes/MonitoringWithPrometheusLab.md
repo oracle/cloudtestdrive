@@ -147,7 +147,7 @@ Note the name given to the Prometheus server within the cluster, in this case `p
 
 The Helm chart will automatically create a couple of small persistent volumes to hold the data it captures. If you want to see more on the volume in the dashboard (namespace monitoring) look at the Config and storage section / Persistent volume claims section, chose the prometheus-server link to get more details, then to locate the volume in the storage click on the Volume link in the details section) Alternatively in the Workloads / Pods section click on the prometheus server pod and scroll down to see the persistent volumes assigned to it.
 
-For the purposes of the lab we've set this up using a load balancer, but Prometheus itself does not provide any login or authentication mechanism to access the UI. Because of this in production you would not expose it without security measures to the public internet using an Ingress or load balancer (neither of which apply authentication rules, but delegate that to the underlying services.) 
+For the purposes of the lab we've set this up using a load balancer, but Prometheus itself does not provide any login or authentication mechanism to access the UI. Because of this in production you would not expose it without security measures to the public internet using an Ingress or load balancer (neither of which apply authentication rules, but delegate that to the underlying services). 
 
 When we used Helm we asked it to setup a load balancer for us on the service, we just need to get the IP address
 
@@ -178,7 +178,7 @@ You'll see the Initial prometheus graph page as below.
 Let's check that Prometheus is scraping some data. 
 
 - Click the "Insert Metric At Cursor" button
-  - you will see a *lot* of possible choices exploring the various servcies built into Kubernetes (Including apiserver, Core DNS, Container stats, the number of various Kubernetes objects like secrets, pods, configmaps and so on.)
+  - you will see a *lot* of possible choices exploring the various servcies built into Kubernetes (Including apiserver, Core DNS, Container stats, the number of various Kubernetes objects like secrets, pods, configmaps and so on).
 
 - In the dropdown select `kubelet_http_requests_total`  
 - Click the **Execute** button. 
@@ -202,7 +202,7 @@ Note that the precise details shown will of course vary, especially if you've on
 - Use the << and >> buttons to move the time window around within the overall data set (of course these may not be much use if you haven't got much data, but have a play if you like)
 
 ### Specifying services to scrape
-The problem we have is that (currently) Prometheus is not collecting any data from our services. Of course we may find info on the clusters behavior interesting, but our own services would be more interesting !
+The problem we have is that (currently) Prometheus is not collecting any data from our services. Of course we may find info on the clusters behavior interesting, but our own services would be more interesting!
 
 We can see what services Prometheus is currently scraping :
 
@@ -253,7 +253,7 @@ $ kubectl annotate pod storefront-588b4d69db-w244b prometheus.io/port=9080 --ove
 pod/storefront-588b4d69db-w244b annotated
 ```
 
-We can see what annotations there would be on the pod with kubectl (this works even if you setup the annotations using the deployment yaml file.)
+We can see what annotations there would be on the pod with kubectl (this works even if you setup the annotations using the deployment yaml file).
 
 Example only:
 
@@ -522,6 +522,6 @@ namespace "monitoring" deleted
 
 ---
 
-You have reached the end of this lab !!
+You have reached the end of this lab!!
 
 Use your **back** button to return to the **C. Deploying to Kubernetes** section

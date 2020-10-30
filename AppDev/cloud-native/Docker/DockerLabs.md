@@ -49,7 +49,7 @@ This defines what's required for jib, including the base image to use.  We will 
 
 <details><summary><b>More details on Graal</b></summary>
 
-Though not covered in this lab if you want more details on the free to use community edition of the Graal JVM or the fully supported enterprise version which includes the Ahead-of-Time compilation capabilities for Java applications that compiles the Java byte code into native programs (and thus makes for a much faster startup and more efficient operations) or info on it's support for polyglot applications (which are becoming increasingly important.) there are other labs available.
+Though not covered in this lab if you want more details on the free to use community edition of the Graal JVM or the fully supported enterprise version which includes the Ahead-of-Time compilation capabilities for Java applications that compiles the Java byte code into native programs (and thus makes for a much faster startup and more efficient operations) or info on it's support for polyglot applications (which are becoming increasingly important). there are other labs available.
 
 The [Graal web site](https://www.graalvm.org/) provides more details on Graal.
 
@@ -67,7 +67,7 @@ In a production environment a cut down version of a Java 11 base image would be 
 ## Handling configuration and other changing items
 
 ### Self contained images
-Initially you might think that the easiest thing to do when creating a docker image is to simply package up all of the configuration into the docker image so it's entirely self contained. The problem with this is that quite often configuration information changes after the image has been built, for example between test and deployment, and creating different images for each configuration is challenging (you may have lots of different configuration options, and may not even be able to define them all) and worse can result in embedding things like database access or other security configuration information into the docker images. This latter is especially critical if you are storing your image on an external or public repository where it can be accessed by anyone !
+Initially you might think that the easiest thing to do when creating a docker image is to simply package up all of the configuration into the docker image so it's entirely self contained. The problem with this is that quite often configuration information changes after the image has been built, for example between test and deployment, and creating different images for each configuration is challenging (you may have lots of different configuration options, and may not even be able to define them all) and worse can result in embedding things like database access or other security configuration information into the docker images. This latter is especially critical if you are storing your image on an external or public repository where it can be accessed by anyone!
 
 To get around this docker provides a mechanism called volumes to have configuration files stored externally and injected into the container at run time.
 
@@ -152,7 +152,7 @@ Successfully built 47d8ca5574a1
 Successfully tagged stockmanager:latest
 ```
 
-The --tag flag means that the resulting docker image is to be tagged (named) stockmanager, subsequently we can refer to it using the name, not it's image id which is like a hashcode (e.g. 2655bfee0d99) and much harder to remember than the name !
+The --tag flag means that the resulting docker image is to be tagged (named) stockmanager, subsequently we can refer to it using the name, not it's image id which is like a hashcode (e.g. 2655bfee0d99) and much harder to remember than the name!
 
 The --file flag specified the name of the file containing the commands to execute to build the image, strictly this isn't needed in this case as Dockerfile is the default for the docker build command
 
@@ -183,7 +183,7 @@ Initially the scripts may take a few mins to run if docker needs to download the
 
 If you look at the scripts you will see that they run the maven package process to create the docker image using jib. They then create a new docker image which has the changes needed to run helidon. These are the commands you'd have run by hand.
 
-You can explore the containers by running them to give you shell access (This is why we used a larger docker base image that includes a shell and other Unix utilities, in production you'd use a minimal image.) 
+You can explore the containers by running them to give you shell access (This is why we used a larger docker base image that includes a shell and other Unix utilities, in production you'd use a minimal image). 
 
 - Run the container:
   -  `docker run --tty --interactive --rm --entrypoint=/bin/bash stockmanager`
@@ -265,9 +265,9 @@ In the Helidon labs we specified the database configuration using Java system pr
 
   `-Djavax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource`
 
-We did that rather than a config file to show how the different levels of the Helidon config system, specifically that config properties could be automatically used from the Java system properties. Now we're going to show you a slightly different approach, we're going to bring the database connection details in via an the system environment variables **without changing the code** This will work because Helidon first looks at the Java system properties, then it looks at the OS environment variables, so it will automatically pickup the values from the new location (If we used both then then the Java system properties would override the environment variables) Basically we're trying to show you just how flexible the Helidon configuration system is !
+We did that rather than a config file to show how the different levels of the Helidon config system, specifically that config properties could be automatically used from the Java system properties. Now we're going to show you a slightly different approach, we're going to bring the database connection details in via an the system environment variables **without changing the code** This will work because Helidon first looks at the Java system properties, then it looks at the OS environment variables, so it will automatically pickup the values from the new location (If we used both then then the Java system properties would override the environment variables) Basically we're trying to show you just how flexible the Helidon configuration system is!
 
-If you are using a database provided by an instructor then they will give you the values for the database connection, or may have already set this up in your virtual machine. If you setup your own database then you will have specified a username and password (if you used our example that will be a username of `HelidonLabs` and a password of `H3lid0n_Labs`) have downloaded the wallet file from which you will have got the connection name, for example `tg_high` **yours will be different unless your database is called `tg` !
+If you are using a database provided by an instructor then they will give you the values for the database connection, or may have already set this up in your virtual machine. If you setup your own database then you will have specified a username and password (if you used our example that will be a username of `HelidonLabs` and a password of `H3lid0n_Labs`) have downloaded the wallet file from which you will have got the connection name, for example `tg_high` **yours will be different unless your database is called `tg`!
 
 
 Docker provides several ways to do this, for example you can specify each individual variable on the command line using the --env flag, another way is to use the --env-file flag, this allows you to specify a file full of key/value pairs (like a Java properties file) and if you have multiple variables to set, or the variables or their names contain characters like `.` that have special meaning to the command shell this is the easiest way to do it. 
@@ -342,9 +342,9 @@ You can see the environment variables we have set (in this case it is of course 
 
 When you specified the Java system properties you did that using Eclipse, you can of course also do it using the `java` command, e.g. `java -Djavax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource .....`
 
-The problem is that the actual command a docker container runs is hard coded in the docker image, that would mean that your database security credentials would be visible in the image (always a very bad thing to have happen.) Also it would mean that to change any of the database credentials (e.g. the password) you would need to create a new docker image.
+The problem is that the actual command a docker container runs is hard coded in the docker image, that would mean that your database security credentials would be visible in the image (always a very bad thing to have happen). Also it would mean that to change any of the database credentials (e.g. the password) you would need to create a new docker image.
 
-Of course if we did that it would also mean we couldn't show you how to use environment variables as well !
+Of course if we did that it would also mean we couldn't show you how to use environment variables as well!
 
 ---
 
@@ -352,7 +352,7 @@ Of course if we did that it would also mean we couldn't show you how to use envi
 
 ## Running the services
 
-To save having to copy and paste (or type !) each time there are scripts runStorefrontLocalExternalConfig.sh and runStockmanagerLocalExternalConfig.sh (in each of the helidon-labs-storefront and helidon-labs-stockmanager directories respectively.)
+To save having to copy and paste (or type!) each time there are scripts runStorefrontLocalExternalConfig.sh and runStockmanagerLocalExternalConfig.sh (in each of the helidon-labs-storefront and helidon-labs-stockmanager directories respectively).
 
 This script uses a docker command to locates the IP addresses of the containers running dependencies (for stockmanager this is zipkin, and for the storefront this is zipkin and stockmanager) and injects the IP addresses and suitable hostnames into the containers as it starts them using the --add-host option to the docker run command.
 
@@ -450,7 +450,7 @@ To stop the containers do Ctrl-C in each of the windows, or in a separate termin
 <details><summary><b>Why use volumes for stuff that's not secret ?</b></summary>
 
 
-You may be asking in the storefront why do we need to inject configuration using the docker volumes, and not just copy it in to the image, after all it has no database connection details ? The reason is that though we could certainly build the configuration into the container that we should not do this with the authentication data, for a test environment you'd want to inject some hard coded authentication data, but in production you'd want to inject an external authentication service. You certainly would want the microservice to not have default authentication info that would be used if you forgot to do this, having a default that opens up security is a bad thing !
+You may be asking in the storefront why do we need to inject configuration using the docker volumes, and not just copy it in to the image, after all it has no database connection details ? The reason is that though we could certainly build the configuration into the container that we should not do this with the authentication data, for a test environment you'd want to inject some hard coded authentication data, but in production you'd want to inject an external authentication service. You certainly would want the microservice to not have default authentication info that would be used if you forgot to do this, having a default that opens up security is a bad thing!
 
 Of course in a production environment you'd probably have a separate folder containing the relevant configuration information (it's highly likely that multiple services would use the same database setup for example) to the host configuration would be in there, not in the development folder.
 
@@ -568,7 +568,7 @@ e4b20fcc48f4: Layer already exists
 latest: digest: sha256:7f5638210c48dd39d458ba946e13e82b56922c3b99096d3372301c1f234772af size: 2839
 ```
 
-(While a layer is being pushed you'll see a progress bar, the above shows the final output.)
+(While a layer is being pushed you'll see a progress bar, the above shows the final output).
 
 
 Note that the first time you run this most if not all of the layers will be pushed, however subsequent runs only the layers that have changes will need to be pushed, which speeds things up a lot, so if the 0.0.1 tagged version is pushed (this is the same actual image, just a different name, again don't actually run this, just look at it)
@@ -599,7 +599,7 @@ Run the `buildStockmanagerPushToRepo.sh` script in the helidon-labs-stockmanager
 <details><summary><b>Upload denied error?</b></summary>
 
 
-If during the docker push stage you get image upload denied errors then it means that you do not have the right policies set for your groups in your tenancy. This can happen in existing tenancies if you are not an admin or been given rights via a policy. (In a trial tenancy you are usually the admin with all rights so it's not generally an issue there.) You will need to ask your tenancy admin to add you to a group which has rights to create repos in your OCIR instance and upload them. See the [Policies to control repository access](https://docs.cloud.oracle.com/en-us/iaas/Content/Registry/Concepts/registrypolicyrepoaccess.htm) document.
+If during the docker push stage you get image upload denied errors then it means that you do not have the right policies set for your groups in your tenancy. This can happen in existing tenancies if you are not an admin or been given rights via a policy. (In a trial tenancy you are usually the admin with all rights so it's not generally an issue there). You will need to ask your tenancy admin to add you to a group which has rights to create repos in your OCIR instance and upload them. See the [Policies to control repository access](https://docs.cloud.oracle.com/en-us/iaas/Content/Registry/Concepts/registrypolicyrepoaccess.htm) document.
 
 ---
 

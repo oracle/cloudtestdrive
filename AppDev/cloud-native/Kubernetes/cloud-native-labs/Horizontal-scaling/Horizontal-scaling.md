@@ -47,7 +47,7 @@ replicaset.apps/storefront-74cd999d8      1         1         1       152m
 replicaset.apps/zipkin-88c48d8b9          1         1         1       152m
 ```
 
-You can see that there is a replica set for each deployment. They are actually implicitly defined in the deployment yaml files, though they don't have an explicit section the `replicas : 1` line tells the Kubernetes deployment to automatically create a replica set for us with one of the pods (as the pod is described later in the file.) If we hadn't specified the `replicas : 1` line it defaults to a single pod. Kubernetes will create a replica set automatically for us with a single pod for each deployment, and as we've seen in the health, liveness and readiness labs if there is a problem it will automatically restart the services so that there is one service available.
+You can see that there is a replica set for each deployment. They are actually implicitly defined in the deployment yaml files, though they don't have an explicit section the `replicas : 1` line tells the Kubernetes deployment to automatically create a replica set for us with one of the pods (as the pod is described later in the file). If we hadn't specified the `replicas : 1` line it defaults to a single pod. Kubernetes will create a replica set automatically for us with a single pod for each deployment, and as we've seen in the health, liveness and readiness labs if there is a problem it will automatically restart the services so that there is one service available.
 
 <details><summary><b>Deployments vs replica sets</b></summary>
 
@@ -71,7 +71,7 @@ We can if we want modify the number of replicas in the deployment by modifying t
 
 (I know you can go direct to the replica sets, but I want to show how they are connected to the deployments)
 
-You can see our three deployments (Zipkin, storefront and stock manager) and in the Pods column we can see that each has 1 / 1 pods (So one pod running out of a requested one pod to run.) Click on the storefront deployment for more details.
+You can see our three deployments (Zipkin, storefront and stock manager) and in the Pods column we can see that each has 1 / 1 pods (So one pod running out of a requested one pod to run). Click on the storefront deployment for more details.
 
 ![scaling-deployments-storefront-pre-scale](images/scaling-deployments-storefront-pre-scale.png)
 
@@ -107,7 +107,7 @@ Kubernetes immediately gets to work creating new pods for us, you can see this i
 
 We can of course change the number of replicas using kubectl as well (it's just more visual using the dashboard)
 
-To do this we can find out the current number of replicas in a deployment. Note that we operate at the deployment, not the replica set. If you tried changing the number in the replica set then you'll find that the deployment will come along and almost instantly reset the count to what the deployment thinks it should be, regardless of what you just told the replica set (I know this doesn't seem right when you first look at it, but it's sensible if you consider what happens in situations like a rolling update, more on which later.)
+To do this we can find out the current number of replicas in a deployment. Note that we operate at the deployment, not the replica set. If you tried changing the number in the replica set then you'll find that the deployment will come along and almost instantly reset the count to what the deployment thinks it should be, regardless of what you just told the replica set (I know this doesn't seem right when you first look at it, but it's sensible if you consider what happens in situations like a rolling update, more on which later).
 
 The following is an example showing how it could be done, please just look at these, but follow the lab and in this section only make changes in the dashboard.
 
@@ -153,7 +153,7 @@ And if we drill down into the replica set we can see the pods themselves being c
 - Click on the replica set name
 ![scaling-replicaset-started-scaling](images/scaling-replicaset-started-scaling.png)
 
-Notice that most of these have a grey partially complete "pie graph" at the start of the line. That means that the pod is in the process of starting up (probably pulling the image.) On your screen you may have a red warning circle, that means that the pod has started, but is not yet ready (I.e. the readiness probe is failing.) The green check is on the original pod, which was of course running before we started the scaling operation. The Service will send requests to the pods marked green
+Notice that most of these have a grey partially complete "pie graph" at the start of the line. That means that the pod is in the process of starting up (probably pulling the image). On your screen you may have a red warning circle, that means that the pod has started, but is not yet ready (I.e. the readiness probe is failing). The green check is on the original pod, which was of course running before we started the scaling operation. The Service will send requests to the pods marked green
 
 Remember that the storefront uses a readiness probe, so it may be a while before those pods are reporting ready.
 
@@ -194,7 +194,7 @@ There are 4/4 pods for the storefront deployment. Let's go to the storefront dep
 
 In the pods section we can see that we have 4 pods
 
-If on the deployments page we scroll down we'll see the list of events for that deployment, our scaling event is there !
+If on the deployments page we scroll down we'll see the list of events for that deployment, our scaling event is there!
 ![scaling-deployment-events-post-scale](images/scaling-deployment-events-post-scale.png)
 
 If you are on a Kubernetes cluster with multiple physical nodes the scaling operation will try and place the pods on different nodes, protecting the service so if one node fails for any reason the other nodes can still be used to provide the service.
@@ -215,6 +215,6 @@ I don't know why you can even scale a replica set in this situation, but I suspe
 
 ---
 
-You have reached the end of this lab !!
+You have reached the end of this lab!!
 
 Use your **back** button to return to the **C. Deploying to Kubernetes** section

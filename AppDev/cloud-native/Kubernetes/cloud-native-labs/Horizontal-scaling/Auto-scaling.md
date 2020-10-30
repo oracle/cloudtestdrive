@@ -143,7 +143,7 @@ ingress-nginx-nginx-ingress-controller        LoadBalancer   10.96.210.131   132
 ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.67.181    <none>            80/TCP                       19m
 ```
 
-The Column EXTERNAL-IP gives you the IP address, in this case the IP address for the ingress-controller load balancer is `132.145.253.186` ** but this of course will be different in your environment !**
+The Column EXTERNAL-IP gives you the IP address, in this case the IP address for the ingress-controller load balancer is `132.145.253.186` ** but this of course will be different in your environment!**
 
 ---
 
@@ -166,7 +166,7 @@ Itertation 1
 .
 ```
 
-The script will just get the stock level data, attempting to do so about 10 times a second (the 0.1 above is the time in seconds to wait after the request returns.) The returned data will be displayed in the [...] (for clarity here it's been removed
+The script will just get the stock level data, attempting to do so about 10 times a second (the 0.1 above is the time in seconds to wait after the request returns). The returned data will be displayed in the [...] (for clarity here it's been removed
 
 - Let the script run for about 75 seconds (the iteration counter reaches over 750) This will let the load statistics level out.
 
@@ -195,7 +195,7 @@ storefront-79c465dc6b-x8fbl    251m         958Mi
 zipkin-7db7558998-cnbjf        33m          265Mi  
 ```
 
-Notice that in this particular example the CPU here for the storefront is at 251m (your number may be different.) This is actually the limit allowed in the storefront deployment.yaml file, which has a resource restriction of 250 milli CPU specified. 
+Notice that in this particular example the CPU here for the storefront is at 251m (your number may be different). This is actually the limit allowed in the storefront deployment.yaml file, which has a resource restriction of 250 milli CPU specified. 
 
 If the load does not reach 250 then you may need to adjust the request rate, or update the storefront-deployment.yaml file and reduce the CPU limit, then undeploy and redeploy it to ensure you can hit the limit (and auto scaling will kick in once we've configured it)
 
@@ -219,7 +219,7 @@ We can also get the current resource level for the container using kubectl and t
 
 In Kubernetes you can place restrictions on pods as we've seen above, however it's also possible to apply a quota on the namespace. All of the pods (or other resources) in the name space have to be within that limit. To do this you create a ResourceQuota (there is one for each namespace) The ResourceQuota allows you to specify limits on CPU, memory storage and also it's possible to extend these with custom resources (e.g. GPU if your cluster hardware has these) Some resources can also be limited on the resource count e.g. number of configmaps.
 
-If an action like adding an object would cause the limits applied to a namespace to be exceeded then the action will be rejected. This applies to auto scaling as well !
+If an action like adding an object would cause the limits applied to a namespace to be exceeded then the action will be rejected. This applies to auto scaling as well!
 
 Importantly, if you have a ResourceQuota like CPU or memory usage applied to a namespace, then each pod must also have a limit applied to it, if it's not there then either a default will be applied or the create object request will be rejected. (the exact action is deployment specific)
 
@@ -291,7 +291,7 @@ Conditions:
 Events:           <none>
 ```
 
-Now restart the load generator program. Note that you may need to change the sleep time from 0.1 to a different value if the load generated is not high enough to trigger an autoscale operation, but don't set it to low !
+Now restart the load generator program. Note that you may need to change the sleep time from 0.1 to a different value if the load generated is not high enough to trigger an autoscale operation, but don't set it to low!
 
 - In the OCI Cloud Shell (substitute the IP address for the ingress for your cluster)
   -  `bash generate-load.sh <external IP> 0.1`
@@ -449,7 +449,7 @@ We have here looked at how to use CPU and memory to determine when to autoscale,
 
 These other metrics can be other Kuberneties metrics (known as custom metrics) for example the number of requests to the ingress controller, or (with the provision of the [Prometheus Adaptor (helm chart)](https://github.com/helm/charts/tree/master/stable/prometheus-adapter)) any metric that Prometheus gathers. This last is especially useful as it means you can autoscale on what are effectively business metrics.
 
-It's also possible to autoscale on metrics provides from outside Kubernetes (these are known as external metrics.) this is only recommended as a last resort however due to the security implications, and custom metrics are preferred.
+It's also possible to autoscale on metrics provides from outside Kubernetes (these are known as external metrics). this is only recommended as a last resort however due to the security implications, and custom metrics are preferred.
 
 The [autoscaler docs explain some of these](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics)
 

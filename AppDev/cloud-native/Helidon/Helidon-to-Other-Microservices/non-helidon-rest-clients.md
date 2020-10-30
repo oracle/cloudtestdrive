@@ -4,7 +4,7 @@
 
 ## Introduction
 
-The RestClient model in Helidon makes it really simple to program access to another micro-service, but sometimes you will be using something that isn't itself a micro-service to talk to a REST endpoint. It may be that you just haven't got round to updating that code to be Helidon based, or perhaps you never intend to. In that case you probably do not want to bring in the entire Helidon MP stack and change the client to being Helidon based !
+The RestClient model in Helidon makes it really simple to program access to another micro-service, but sometimes you will be using something that isn't itself a micro-service to talk to a REST endpoint. It may be that you just haven't got round to updating that code to be Helidon based, or perhaps you never intend to. In that case you probably do not want to bring in the entire Helidon MP stack and change the client to being Helidon based!
 
 There are of course many client side frameworks in place to allow you to make a call to a REST end point, for example you could use the basic [Java HTTP client service](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html) which allows you to build every stage of the client connection, defining proxies and so on. There are also clients built on the Reactive Framework. The following is an example using the Http client taken from the Java docs page
 
@@ -21,7 +21,7 @@ There are of course many client side frameworks in place to allow you to make a 
    System.out.println(response.body());  
 ```
 
-Not to complex, but pretty verbose !
+Not to complex, but pretty verbose!
 
 One problem with these is that they don't provide you with a framework that let's you program the rest service the same way as if it was a local Java object based on an interface in the way that the RestClient annotation does.
 
@@ -114,7 +114,7 @@ The full specification of the [RestClient for Microprofile implementations](http
 The ResponseExceptionMappers take the response returned and if it's not what's expected convert it into the appropriate exception, for example if your client is trying to retrieve some data and expects a `ItemNotFoundException` to be thrown if the data is not found just define and register a ResponseExceptionMapper so if the micro-service returns a http 404 (not found) code the mapper identifies it and throws a `ItemNotFoundException`
 
 ### Required libraries
-You will of course need to bring in the required libraries for the rest client builder. The Maven dependencies are as follows (the version numbers are correct as of Mid Feb 2020, but you may want to check for later versions.)
+You will of course need to bring in the required libraries for the rest client builder. The Maven dependencies are as follows (the version numbers are correct as of Mid Feb 2020, but you may want to check for later versions).
 
 ```xml
 		<dependency>

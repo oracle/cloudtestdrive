@@ -26,7 +26,7 @@ The data plane consists of proxies which intercept the network operations of the
 
 The control plans does what it says on the box, it provides control functions to the data plane, for example getting and updating certificates, providing a management point so you can set the properties you want the data plane to implement (and passing those to the data plane)
 
-The mechanisms to do this are relatively simple to the user, though the internal implementation details of a service mash can be very complex !
+The mechanisms to do this are relatively simple to the user, though the internal implementation details of a service mash can be very complex!
 
 Service meshes can also provide functionality across multiple clusters, in these modules we will be using Linkerd, and that provides the capability to extend the service discovery across multiple Kubernetes clusters, that means a service in a different cluster can appear as if it was a local part of the data plane, enabling things like automatic connection to a service in a different cluster and automatic connection encryption between services in different clusters.
 
@@ -451,7 +451,7 @@ For ease of setting up the lab we are going to use an ingress but relax the secu
 
 ### Removing the linkerd-web hosts restriction
 
-The first thing we need to do is to remove the restriction in the linkerd web front end on which hosts are allowed to access the web front end. Of course you would not do this in a production system !
+The first thing we need to do is to remove the restriction in the linkerd web front end on which hosts are allowed to access the web front end. Of course you would not do this in a production system!
 
 edit the linkerd web deployment yaml normally would not do
 
@@ -482,7 +482,7 @@ Fortunately for us when we first setup our ingress controller and load balancer 
 
 ### Create a login password to secure the connection
 
-The default configuration for the linkerd-web service includes a password of admin/admin. Obviously this is for demo purposes, but we should use something more secure (and of course you **must** use a strong password kubectl get namespace ingress-nginx -o yaml | linkerd inject - | kubectl replace -f -in a production environment !)
+The default configuration for the linkerd-web service includes a password of admin/admin. Obviously this is for demo purposes, but we should use something more secure (and of course you **must** use a strong password kubectl get namespace ingress-nginx -o yaml | linkerd inject - | kubectl replace -f -in a production environment!)
 
 First let's create a password file for the admin user. In the example below I'm using `ZaphodBeeblebrox` as the password, but please feel free to change this if you like
 
@@ -700,7 +700,7 @@ Let's have a look at the web page again, refresh the main web page in the browse
 
 ![](images/linkerd-web-main-page-after-namespace-inject.png)
 
-It doesn't look very different, and if you looked at the Grafana page that would still report it was only be monitoring one namespace. How come ? We added the annotation !
+It doesn't look very different, and if you looked at the Grafana page that would still report it was only be monitoring one namespace. How come ? We added the annotation!
 
 Well the reason for this is to do with the way a service mesh works. 
 
@@ -758,7 +758,7 @@ Note that pods have 2/2 in the READY column, this means that there are **two** c
 
 Let's see what's in those pods, here we're going to use the jsonpath ooption to kubectl to reduce the amount of output
 
-- In the OCI Cloud shell (remember to substitute the pod name for your storefront !)
+- In the OCI Cloud shell (remember to substitute the pod name for your storefront!)
 
   - `kubectl get pods storefront-8ddc6db75-nxlnm   -o jsonpath='{.spec.containers[*].name}'`
 
@@ -771,9 +771,9 @@ The two containers are listed, the `storefront` application container and the `l
 <details><summary><b>If you want so see all the detail on the pod (including the init container)</b></summary>
 
 
-The following will generate a **lot** of output, you'll see it's **way** bigger than the yaml file you used to define the deployment !
+The following will generate a **lot** of output, you'll see it's **way** bigger than the yaml file you used to define the deployment!
 
-- In the OCI Cloud shell (remember to substitute the pod name for your stockmanager !)
+- In the OCI Cloud shell (remember to substitute the pod name for your stockmanager!)
 
   - `kubectl get pod stockmanager-654f44d59d-bjn2v -o yaml`
 
@@ -1180,7 +1180,7 @@ You can now see the main page of the linkerd UI
 
 ![](images/linkerd-web-main-page-after-enablement.png)
 
-Good news ! We can see that there is http traffic in the ingress-ngnix namespace and TCP traffic in the tg-helidon namespace (your namespace will of course be different)
+Good news! We can see that there is http traffic in the ingress-ngnix namespace and TCP traffic in the tg-helidon namespace (your namespace will of course be different)
 
 If we go to the Grafana page 
 
@@ -1208,7 +1208,7 @@ We can see that there are three namespaces being monitored and 14 deployments. Y
 
 ---
 
-You have reached the end of this lab module !!
+You have reached the end of this lab module!!
 
 In the next module we will look at how you can use linkerd and grafana to see the traffic flows in your cluster.
 

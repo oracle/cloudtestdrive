@@ -23,7 +23,7 @@ This module is how to get Helidon to self-describe the REST API you are offering
 
 2/ You want to ensure that the documentation of the REST API actually reflects the implementation, it's not uncommon for documentation and implementation to be out of sync if they are separately maintained through manual processes.
 
-3/ You can't find the documentation for a service, or it is a service where you have the jar file, but the documentation was on a since removed website and not even the internet archive can help !
+3/ You can't find the documentation for a service, or it is a service where you have the jar file, but the documentation was on a since removed website and not even the internet archive can help!
 
 4/ You want to automatically create client code based on the API (or server code, but that gives rise to an initial Catch 22 situation)
 
@@ -140,7 +140,7 @@ Update the popup with the following
 
 Now to run a build with this target.
 
-- Click right on the **project** name (helidon-labs-storefront) in Eclipse, then chose `Run As` then `Maven build`  (This is the version **without** the three dots !)
+- Click right on the **project** name (helidon-labs-storefront) in Eclipse, then chose `Run As` then `Maven build`  (This is the version **without** the three dots!)
 
 ![](images/run-as-maven-build.png)
 
@@ -294,7 +294,7 @@ If you just saw the basic info that was returned when you initially did a curl t
 </details>
 
 #### What does this output mean ?
-In summary it means that adding the @OpenAPIDefinition triggered Helidon to scan the jandex index for classes references by the application, looking for REST endpoints (@GET, @POST etc. annotations.) Helidon then builds a OpenAPI document that returns the YAML description. Note that the precise order of the major sections may change (it depends on the order the annotations are processed) so you may see the `components:` section before or after the `info: or `path` section
+In summary it means that adding the @OpenAPIDefinition triggered Helidon to scan the jandex index for classes references by the application, looking for REST endpoints (@GET, @POST etc. annotations). Helidon then builds a OpenAPI document that returns the YAML description. Note that the precise order of the major sections may change (it depends on the order the annotations are processed) so you may see the `components:` section before or after the `info: or `path` section
 
 First locate the `info:` section. 
 
@@ -339,7 +339,7 @@ components:
       type: object
 ```
 
-The `schemas:` section defines the objects that are passed back and forth (there are other possible sections under `components:` but they are not covered here.) Look at the `ItemRequest:` section, it defines the basic information in the ItemRequest object, this basically describes the ItemRequest class, with a requectedCount of type int32 (a Java int) and a requectedItem of a Java String
+The `schemas:` section defines the objects that are passed back and forth (there are other possible sections under `components:` but they are not covered here). Look at the `ItemRequest:` section, it defines the basic information in the ItemRequest object, this basically describes the ItemRequest class, with a requectedCount of type int32 (a Java int) and a requectedItem of a Java String
 
 <details><summary><b>Why is there more information for the ItemDetails ?</b></summary>
 To speed up the lab I've already provided the OpenAPI annotations to the ItemDetails class, as its in a different project and I didn't want to make this module to complex switching back and forwards between projects and building them.
@@ -581,7 +581,7 @@ This tells Helidon to ignore any paths it finds in the StatusResource and Config
 
 <details><summary><b>What about the Rest Client interfaces ? They have matching annotations </b></summary>
 
-Many microservices also talk to other microservcies, and so their code may include interfaces representing those microservices.  Those annotations may of course include annotations that make it look as it they are a REST endpoint, for example the interface will have `@Path` annotations. Of course you don't want them to be included in the OpenAPI speci of your service (they are after all internal implementation details, not part of your public API.) 
+Many microservices also talk to other microservcies, and so their code may include interfaces representing those microservices.  Those annotations may of course include annotations that make it look as it they are a REST endpoint, for example the interface will have `@Path` annotations. Of course you don't want them to be included in the OpenAPI speci of your service (they are after all internal implementation details, not part of your public API). 
 
 Fortunately Helidon's OpenAPI implementation will automatically ignore any interfaces annotated with RegisterRestClient so you don't have to exclude those by hand. You may have noticed that you haven't seen anything relating to the StockManager interface in the OpenAPI output.
 
@@ -685,11 +685,11 @@ paths:
 
 This looks much better, we can see the details of the core REST API we want to expose, and we're not polluting it with end-points that in a production system would not be exposed.
   
-Strictly speaking this is all that you need to be able to use the API from a caller perspective, you know what to send and what to expect in return, but it's not very detailed information, and it doesn't actually tell you much about what those end-points do (of course this is not completely true here because as a good programmer I've tried to use meaningful names.)
+Strictly speaking this is all that you need to be able to use the API from a caller perspective, you know what to send and what to expect in return, but it's not very detailed information, and it doesn't actually tell you much about what those end-points do (of course this is not completely true here because as a good programmer I've tried to use meaningful names).
 
 ## Defining the inputs and outputs
 
-We've got basic information on the ItemRequest (and of course full info on ItemDetails as that was documented in a separate project.) let's see how we can document the ItemRequest in more details.
+We've got basic information on the ItemRequest (and of course full info on ItemDetails as that was documented in a separate project). let's see how we can document the ItemRequest in more details.
 
 - Open the ItemRequest class in the com.oracle.labs.helidon.storefront.data package and add @Schema annotations
 
@@ -1171,7 +1171,7 @@ We now have OpenAPI documentation that defines the reasonable error conditions t
 <details><summary><b>What API Responses to document ?</b></summary>
 
 
-As a general rule of thumb you should only document the http status responses your end point might reasonably throw, in the case above that's 200 (OK), 404 / Not Found (when a request is made to reserve an item not in the database) 409 / CONFLICT (when there are not enough items available to reserve) and 406 / Not Acceptable (when the number of items to be reserved is not acceptable due to minimum change restrictions.)
+As a general rule of thumb you should only document the http status responses your end point might reasonably throw, in the case above that's 200 (OK), 404 / Not Found (when a request is made to reserve an item not in the database) 409 / CONFLICT (when there are not enough items available to reserve) and 406 / Not Acceptable (when the number of items to be reserved is not acceptable due to minimum change restrictions).
 
 We have added `@APIResponse` annotations to deal with those as any client could reasonably expect to encounter them, but for codes that may be generated due to internal problems, for example the catch all 500 / Internal Server error and it's related 5xx series of codes we have not documented as a client would not expect to encounter them under normal operation of the call.
 

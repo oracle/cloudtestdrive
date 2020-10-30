@@ -162,7 +162,7 @@ configmap "sm-config-map" deleted
 configmap/sm-config-map created
 ```
 
-Now we can apply the update, we'll use the Kubernetes rolling upgrade process (as we're going to want to revert this one !)
+Now we can apply the update, we'll use the Kubernetes rolling upgrade process (as we're going to want to revert this one!)
 
 - In the OCI Cloud shell type
   - `kubectl apply -f $HOME/helidon-kubernetes/service-mesh/stockmanager-deployment-broken.yaml`
@@ -266,7 +266,7 @@ Locate the HTTP metrics entry for your namespace (mine is tg-helidon, yours will
 
 ![](images/Linkerd-broken-overview-namespace.png)
 
-While the precise numbers will of course vary you should see that the success rate is not 100%, it's likely to be around 95% It's not a surprise, but it looks like we have a bit of a problem !
+While the precise numbers will of course vary you should see that the success rate is not 100%, it's likely to be around 95% It's not a surprise, but it looks like we have a bit of a problem!
 
 <details><summary><b>Why only 95% ?</b></summary>
 
@@ -309,7 +309,7 @@ You can now see the details of the failed call. Click the `Close` button on the 
 
 ### Diagnostics summary
 
-Of course this is only showing us the network part of the troubleshooting process, but it's given us a lot of useful information to we can easily understand where the problems might be, and at least some information as to the details surrounding the failures. It's a lot better than just getting a `424 Failed Dependency` result !
+Of course this is only showing us the network part of the troubleshooting process, but it's given us a lot of useful information to we can easily understand where the problems might be, and at least some information as to the details surrounding the failures. It's a lot better than just getting a `424 Failed Dependency` result!
 
 
 ## Resetting the environment
@@ -349,7 +349,7 @@ deployment.apps/stockmanager rolled back
 
 ---
 
-You have reached the end of this lab module !!
+You have reached the end of this lab module!!
 
 In the next module we will look at how you can use traffic splits in linkerd to handle canary deployments and also do a bit of chaos engineering to test out what happens in the event of a problem.
 

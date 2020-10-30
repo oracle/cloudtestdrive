@@ -164,7 +164,7 @@ look at the `ingress-nginx-nginx-ingress-controller` row, IP address inthe `EXTE
   - In Firefox once the security risk page is displayed click on the "Advanced" button, then on the "Accept Risk and Continue" button
   - In Chrome once the "Your connection is not private" page is displayed click the advanced button, then you may see a link titled `Proceed to ....(unsafe)` click that. 
   
-We have had reports that some versions of Chrome will not allow you to override the page like this, for Chrome 83 at least one solution is to click in the browser window and type the words `thisisunsafe` (copy and past doesn't seem to work, you need to actually type it.) Alternatively use a different browser.
+We have had reports that some versions of Chrome will not allow you to override the page like this, for Chrome 83 at least one solution is to click in the browser window and type the words `thisisunsafe` (copy and past doesn't seem to work, you need to actually type it). Alternatively use a different browser.
 
 
 ![](images/ES-catalogue-endpoints.png)
@@ -175,7 +175,7 @@ We can see that the elastic search service is up and running, let's see what dat
 
 ![](images/ES-no-indices.png)
 
-Well, it's empty ! Of course that shouldn't be a surprise, we've not put any log data in it yet !
+Well, it's empty! Of course that shouldn't be a surprise, we've not put any log data in it yet!
 
 ### Capturing the log data from the micro-services
 
@@ -195,11 +195,11 @@ Additionally the daemon set can look at the log data for all of the pods in the 
 
 </details>
 
-Why run the data gathering in a pod ? Well why not ? While we could run the data capture process by hand manually on each node then we'd have to worry about stopping and starting the service, restarting if it fails, managing and updating configuration files and so on. If we just run it in a Kubernetes pod we can let Kuberneties do all of it's magic for us and we can focus on defining the capture process, and leave running it to Kubernetes ! 
+Why run the data gathering in a pod ? Well why not ? While we could run the data capture process by hand manually on each node then we'd have to worry about stopping and starting the service, restarting if it fails, managing and updating configuration files and so on. If we just run it in a Kubernetes pod we can let Kuberneties do all of it's magic for us and we can focus on defining the capture process, and leave running it to Kubernetes! 
 
-How will our capture pod get the log data though ? We've seen previously how we can use volumes to bring in a config map or secret to a pod and make it look like it's part of the local file system, well there are several other types of source for a volume (in the Prometheus section we briefly saw how helm setup an external storage object as a volume for storing the data.) One of the volume types provides the ability to bring in a local file system, in this case in the node as part of the pods file structure.
+How will our capture pod get the log data though ? We've seen previously how we can use volumes to bring in a config map or secret to a pod and make it look like it's part of the local file system, well there are several other types of source for a volume (in the Prometheus section we briefly saw how helm setup an external storage object as a volume for storing the data). One of the volume types provides the ability to bring in a local file system, in this case in the node as part of the pods file structure.
 
-Fluentd is an open source solution to processing the log data, it's basically an engine, reading data from input sources and sending them to output sources (that's more complicated than you'd think when dealing with potentially large numbers of high volume sources.) it supports multiple input sources, including reading log files saved from the containers by Kubernetes (imported from the node into the pods via a volume) It also supports many output types. 
+Fluentd is an open source solution to processing the log data, it's basically an engine, reading data from input sources and sending them to output sources (that's more complicated than you'd think when dealing with potentially large numbers of high volume sources). it supports multiple input sources, including reading log files saved from the containers by Kubernetes (imported from the node into the pods via a volume) It also supports many output types. 
 
 We will be using the output that writes to elastic search, this does all the work of creating indices for us and storing the data for each day.
 
@@ -278,7 +278,7 @@ Open the Kubernetes dashboard
   - In Firefox once the security risk page is displayed click on the "Advanced" button, then on the "Accept Risk and Continue" button
   - In Chrome once the "Your connection is not private" page is displayed click the advanced button, then you may see a link titled `Proceed to ....(unsafe)` click that. 
   
-We have had reports that some versions of Chrome will not allow you to override the page like this, for Chrome 83 at least one solution is to click in the browser window and type the words `thisisunsafe` (copy and past doesn't seem to work, you need to actually type it.) Alternatively use a different browser.
+We have had reports that some versions of Chrome will not allow you to override the page like this, for Chrome 83 at least one solution is to click in the browser window and type the words `thisisunsafe` (copy and past doesn't seem to work, you need to actually type it). Alternatively use a different browser.
 
 
 If you are presented with the login page use the Token option and the dashboard user token you got previously
@@ -306,7 +306,7 @@ eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiw
 
 ca.crt:     1025 bytes
 ```
-- Copy the contents of the token (in this case the `eyJh........W5iA` text, but it *will* vary in your environment.) 
+- Copy the contents of the token (in this case the `eyJh........W5iA` text, but it *will* vary in your environment). 
 - Save it in a plain text editor on your laptop for easy use later
 
 ---
@@ -396,7 +396,7 @@ You may have seen that the data arrived into the elastic search index pretty fas
 
 It's quite possible (even probable) that you have elements of your overall service that are not running in micro-services in Kubernetes. To capture the log data from those applications you can run fluentd on the operating systems of the environments running them. In the case of some logging frameworks there may even be the ability to send log data direct to a central fluentd server.
 
-Of course fluentd is not the only logging solution out there, and elastic search is not the only data storage option, after all you could also write data to an Oracle data warehouse and analyze it using Oracle Analytics !
+Of course fluentd is not the only logging solution out there, and elastic search is not the only data storage option, after all you could also write data to an Oracle data warehouse and analyze it using Oracle Analytics!
 
 ### Other log capture options
 
@@ -404,7 +404,7 @@ Fluentd itself supports many other output plugins for writing the data, includin
 
 ## Log data processing
 
-Once the data has been captured there needs to be analysis of it, as we saw before it's possible to extract specific records from the storage (and far more complex queries can be constructed than those shown) but for proper data analysis we need additional tools. The usage of these tools is outside the scope of this lab, (and as you've only been gathering data for a short time period there just isn't enough log data to perform an analasys on.)
+Once the data has been captured there needs to be analysis of it, as we saw before it's possible to extract specific records from the storage (and far more complex queries can be constructed than those shown) but for proper data analysis we need additional tools. The usage of these tools is outside the scope of this lab, (and as you've only been gathering data for a short time period there just isn't enough log data to perform an analasys on).
 
 The process of data ingest and analysis is specific to the particular tool, though many can retrieve data from elasticsearch or a storage bucket, but here are some tools you may like to consider.
 
