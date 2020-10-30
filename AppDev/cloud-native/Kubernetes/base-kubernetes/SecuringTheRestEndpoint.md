@@ -1,8 +1,6 @@
-[Go to Overview Page](../Kubernetes-labs.md)
-
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native - Securing the REST endpoint
+# Cloud Native - Securing the REST endpoint
 
 This module is a discussion module, there are no exercises for you to do.
 

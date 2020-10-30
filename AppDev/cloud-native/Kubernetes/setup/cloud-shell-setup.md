@@ -2,7 +2,7 @@
 
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native - Cloud Shell setup
+# Kubernetes labs - Cloud Shell setup
 
 ## Accessing the cloud shell
 

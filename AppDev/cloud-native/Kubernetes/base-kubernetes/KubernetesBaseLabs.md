@@ -1,8 +1,6 @@
-[Go to Overview Page](../Kubernetes-labs.md)
-
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native - Deploying to Kubernetes
+# Cloud Native - Deploying to Kubernetes
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 

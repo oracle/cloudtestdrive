@@ -42,7 +42,7 @@
         },
         {
           "title": "Helidon - Optional Labs",
-          "filename": "../../../Spacer-manifest-entry.md"
+          "filename": "../../Spacer-manifest-entry.md"
         },
         {
           "title": "Helidon - Optional lab 1: Self documenting API support in Helidon",
@@ -50,11 +50,7 @@
         },
         {
           "title": "Docker - Docker labs",
-          "filename": "../../../Docker/Docker-labs.md"
-        },
-        {
-          "title": "Kubernetes - Labs Introduction",
-          "filename":"../../../Live-labs-overview-pages/Kubernetes-all-labs.md"
+          "filename": "../../../Docker/DockerLabs.md"
         },
         {
           "title": "Cloud Shell Setup for the Kubernetes Labs",

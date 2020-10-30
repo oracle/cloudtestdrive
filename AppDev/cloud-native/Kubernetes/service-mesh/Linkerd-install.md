@@ -1,8 +1,6 @@
-[Go to Overview Page](../Kubernetes-labs.md)
-
 ![](../../../../common/images/customer.logo2.png)
 
-# Migration of Monolith to Cloud Native - Service mesh install and setup
+# Cloud Native - Service mesh install and setup
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
