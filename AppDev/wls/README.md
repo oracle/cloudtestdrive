@@ -1,8 +1,8 @@
-[Go to the Cloud Test Drive Welcomer Page](../../readme.md)
+
 
 ![](../../common/images/customer.logo2.png)
 
-# WebLogic on OCI and Kubernetes
+# The WebLogic on OCI labs
 
 This folder contains a series of labs for running WebLogic on the Oracle Cloud, both as a Virtual Machine image on OCI Compute, as well as using Kubernetes and the official Oracle WebLogic Docker image.
 
