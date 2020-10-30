@@ -140,7 +140,7 @@ Go to *Master Encryption Keys* submenu of the Vault Information page and create 
 
 Give the key a Name and leave the other settings as default:
 
-![](images/wlscnonjrfwithenvprereq/image050.png)
+![](images/wlscnonjrfwithenvprereq/image050-1.png)
 
 
 
