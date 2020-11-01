@@ -10,25 +10,6 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 ## Step 1. Create WebLogic for OCI Stack
 
-- Go to https://console.eu-frankfurt-1.oraclecloud.com/ and login to the lab cloud environment
-- Choose **oractdemeabdmnative** as Cloud Tenant:
-
-![](images/wlscnonjrfwithenv/image010.png)
-
-
-
-- Choose Single Sign On:
-
-![](images/wlscnonjrfwithenv/image020.png)
-
-
-
-- Login with *User Name* and *Password*; Use the credentials from the Self Registration
-
-![](images/wlscnonjrfwithenv/image030.png)
-
-
-
 - After logging in, go to Hamburger Menu, *Solutions and Platform* -> *Marketplace*:
 
 ![](images/wlscnonjrfwithenv/image040.png)
