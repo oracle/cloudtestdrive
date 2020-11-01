@@ -1,8 +1,17 @@
 {
     "tutorials": [
         {
-            "title": "Overview of WebLogic labs",
-            "filename": "./README.md"
+            "title": "Introduction to the lab",
+            "filename": "./ll-nonjrf/wlscnonjrf_intro.md"
+        },
+        {
+            "title": "Prerequisites",
+            "filename": "./ll-nonjrf/wlscnonjrfprereq.md"
+        },
+
+        {
+            "title": "Instantiate a WebLogic for OCI as a VM",
+            "filename": "./ll-nonjrf/wlscnonjrf.md"
         }
     ]
 }
