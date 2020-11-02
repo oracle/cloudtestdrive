@@ -134,7 +134,7 @@ The latest version of helm is helm 3. This is a client side only program that is
 
 Fortunately for us helm 3 is installed within the OCI Cloud Shell, but if later on you want to use your own laptop to manage a Kubernetes cluster [here are the instructions for a local install of helm](https://helm.sh/docs/intro/install/)
 
-Our first use of helm is to install the kubernetes-dashboard This could have been installed for us by the Oracle Kubernetes Environment during cluster setup, but in this case we didn't do that as we want to show you how to use Helm.
+Our first use of helm is to install the kubernetes-dashboard.
 
 Setting up the Kubernetes dashboard (or any) service using helm is pretty easy. it's basically a simple command. 
 
@@ -259,29 +259,36 @@ If you want more detailed information then you can extract it, for example to ge
 apiVersion: v1
 kind: Pod
 metadata:
-  creationTimestamp: "2020-06-30T13:07:36Z"
-  generateName: kubernetes-dashboard-bfdf5fc85-
+  annotations:
+    seccomp.security.alpha.kubernetes.io/pod: runtime/default
+  creationTimestamp: "2020-09-30T19:28:17Z"
+  generateName: kubernetes-dashboard-bfdf5fc85-djnvb
   labels:
-    app: kubernetes-dashboard
-    pod-template-hash: bfdf5fc85
-    release: kubernetes-dashboard
-  name: kubernetes-dashboard-bfdf5fc85-djnvb
+    app.kubernetes.io/component: kubernetes-dashboard
+    app.kubernetes.io/instance: kubernetes-dashboard
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/version: 2.0.4
+    helm.sh/chart: kubernetes-dashboard-2.8.0
+    pod-template-hash: 866ddb74dc
+  name: kubernetes-dashboard-866ddb74dc-7t7zz
   namespace: kube-system
   ownerReferences:
   - apiVersion: apps/v1
     blockOwnerDeletion: true
     controller: true
     kind: ReplicaSet
-    name: kubernetes-dashboard-bfdf5fc85
-    uid: e5db9335-a245-4fba-bba4-ad56eeb2ac90
-  resourceVersion: "865504"
-  selfLink: /api/v1/namespaces/kube-system/pods/kubernetes-dashboard-bfdf5fc85-djnvb
-  uid: 1f1bd308-b317-4046-8972-87242149721a
+    name: kubernetes-dashboard-866ddb74dc
+    uid: f468b51e-7ccd-403c-8b1d-76b4ba34286f
+  resourceVersion: "5280"
+  selfLink: /api/v1/namespaces/kube-system/pods/kubernetes-dashboard-866ddb74dc-7t7zz
+  uid: 78773476-3b42-4be5-a20c-d159a1fa4129
 spec:
   containers:
   - args:
+    - --namespace=kube-system
     - --auto-generate-certificates
-    image: k8s.gcr.io/kubernetes-dashboard-amd64:v1.10.1
+    image: kubernetesui/dashboard:v2.0.4
  (lots more lines of output)
 ```
 If you want the output in json then replace the -o yaml with -o json.
@@ -292,8 +299,11 @@ If you're using JSON and want to focus in on just one section of the data struct
   -  `kubectl get pod kubernetes-dashboard-bfdf5fc85-djnvb  -n kube-system -o=jsonpath='{.spec.containers[0].image}'`
 
 ```
-k8s.gcr.io/kubernetes-dashboard-amd64:v2.0.4
+kubernetesui/dashboard:v2.0.4
 ```
+
+(The image shown is correct at the time of writing, but as the Kubernetes dashboard updates over time that the precise image used may also update.) 
+
 This used the "path" in json of .spec.containers[0].image where the first . means the "root" of the JSON structure (subesquent . are delimiters in the way that / is a delimiter in Unix paths) the spec means the spec object (the specification) containers[0] means the first object in the containers list in the spec object and image means the attribute image in the located container.
 
 We can use this coupled with kubectl to identify the specific pods associated with a service, for example 
@@ -302,12 +312,12 @@ We can use this coupled with kubectl to identify the specific pods associated wi
   -  `kubectl get service kubernetes-dashboard -n kube-system -o=jsonpath='{.spec.selector}'`
 
 ```
-map[app:kubernetes-dashboard release:kubernetes-dashboard]
+map[app.kubernetes.io/component:kubernetes-dashboard app.kubernetes.io/instance:kubernetes-dashboard app.kubernetes.io/name:kubernetes-dashboard]
 ```
-Tells us that any thing with label app matching kubernetes-dashboard and label release matching kubernetes-dashboard will be part of the service
+Tells us that any thing with label app.kubernetes.io/name (or /component of /instance) matching kubernetes-dashboard and label release matching kubernetes-dashboard will be part of the service
 
-- Get the list of pods providing the service:
-  -  `kubectl get pod -n kube-system --selector=app=kubernetes-dashboard`
+- Get the list of pods providing the service by name:
+  -  `kubectl get pod -n kube-system --selector=app.kubernetes.io/name=kubernetes-dashboard`
 
 ```
 NAME                                    READY   STATUS    RESTARTS   AGE
