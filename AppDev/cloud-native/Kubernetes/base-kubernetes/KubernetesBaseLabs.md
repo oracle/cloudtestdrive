@@ -1486,9 +1486,9 @@ If you were looking at the stockmanager deployment you'd see entries like the be
               key: dataSourceClassName
 ```
 
-Next is the resources section
+Next is the resources section :
 
-```yaml      
+```yaml 
         resources:
           limits:
             # Set this to me a quarter CPU for now
