@@ -32,22 +32,23 @@ The OCI Cloud Shell has helm already installed for you, however it does not know
 You can get the current list of repositories    
 - Run the following command :
   - `helm repo list`
-    ```                                            
-    NAME                    URL                                              
-    stable                  https://kubernetes-charts.storage.googleapis.com/
-    kubernetes-dashboard    https://kubernetes.github.io/dashboard/  
-    ```
+```                                            
+NAME                    URL                                              
+stable                  https://kubernetes-charts.storage.googleapis.com/
+kubernetes-dashboard    https://kubernetes.github.io/dashboard/  
+```
     
 Lastly let's update the helm cache
 
 - Run the following command :
   - `helm repo update`
-    ```
-    Hang tight while we grab the latest from your chart repositories...
-    ...Successfully got an update from the "kubernetes-dashboard" chart repository
-    ...Successfully got an update from the "stable" chart repository
-    Update Complete. ⎈ Happy Helming!⎈ 
-    ```
+
+```
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "kubernetes-dashboard" chart repository
+...Successfully got an update from the "stable" chart repository
+Update Complete. ⎈ Happy Helming!⎈ 
+```
 
 ## Introduction to the lab
 
@@ -1420,8 +1421,7 @@ As we'll see later we can also update the text by modifying the file and re-crea
 
 It's been quite a few steps (many of which are one off and don't have to be repeated for each application we want to run in Kubernetes) but we're finally ready to create the deployments and actually run our Helidon microservices inside of Kubernetes!
 
-<details><summary><b>About the deploymets</b></summary>
-
+<details><summary><b>About the deployment files</b></summary>
 
 A deployment is the microservice itself, this is a replica set containing one or more pods. The deployment itself handles things like rolling upgrades by manipulating the replica sets. A replica set is a group of pods, it will ensure that if a pod fails (the program stops working) that another will be started. It's possible to add and remove replicas form a pod, but the key thing to note is that all pods within a replica set are the same. Finally we have the pods. In most cases a pod will contain a single user container (based on the image you supply) and if the container exits then a new one will be started. Pods may also contain Kubernetes internal containers (for example to handle network redirections) and also pods can contain more than one user container, for example in the case of a web app a pod may have one container to operate the web app and another for a web server delivering the static content.
 
@@ -1445,6 +1445,7 @@ spec:
     matchLabels:
       app: storefront
 ```
+
 The `spec:` section defines what we want created. Replicas means how many pods we want creating in the replica set, in this case 1 (we will look at scaling later) the selector match labels specifies that and pods with label app:storefront will be part of the deployment.
 
 ```yaml
@@ -1453,6 +1454,7 @@ The `spec:` section defines what we want created. Replicas means how many pods w
       labels:
         app: storefront
 ```
+
 The template section defines what the pods will look like, it starts by specifying that they will all "app:storefront" as a label
 
 
@@ -1468,6 +1470,7 @@ The template section defines what the pods will look like, it starts by specifyi
         - name: health-port
           containerPort: 9080
 ```
+
 The spec section in the template is the specification of the pods, it starts out by specifying the details of the pods and the details of the containers that comprise them, in this case the pod names, the location of the image and how to retrieve it. It also defines the ports that will be used giving them names (naming is not required, but it helps to make it clear what's what).
               
 These service deployment description `image` entry refers to the location in the docker repo that is used for the pre-build shared images. If you using a different docker repo because you have decided to use the images you created in the Helidon and Docker labs you'll need to edit the deployment files to reflect this diffrent image location! More details on this later.
@@ -1481,8 +1484,9 @@ If you were looking at the stockmanager deployment you'd see entries like the be
             secretKeyRef:
               name: stockmanagerdb
               key: dataSourceClassName
-...
 ```
+
+Next is the resources section
 
 ```yaml      
         resources:
@@ -1490,6 +1494,7 @@ If you were looking at the stockmanager deployment you'd see entries like the be
             # Set this to me a quarter CPU for now
             cpu: "250m"
 ```
+
 The resources provides a limit for how much CPU each instance of a pod can utilize, in this case 250 mili CPU's or 1/4 whole CPU (the exact definition of what comprises a CPU will vary between Kubernetes deployments and by provider).
 
 ```yaml         
@@ -1501,6 +1506,7 @@ The resources provides a limit for how much CPU each instance of a pod can utili
           mountPath: /conf
           readOnly: true
 ```
+
 We now specify what volumes will be imported into the pods. Note that this defines what volume is connected the pod, the volume definitions themselves are later, in this case the contents of the sf-config-map-vol volume will be mounded on /conf and sf-config-secure-vol on /confsecure
 
 Both are mounted read only as there's no need for the programs to modify them, so it's good practice to make sure that can't happen accidensally (or deliberately if someone hacks into your application and tries to use that as a way to change the config).
@@ -1516,9 +1522,8 @@ Both are mounted read only as there's no need for the programs to modify them, s
         configMap:
           name: sf-config-map
 ```
+
 We define what each volume is based on, in this case we're saying that the volume sf-config-secure-vol (referenced earlier as being mounted on to /confsecure) has a source based on the secret called sf-conf-secure. the volume sf-config-map-vol (which is mounted onto /conf) will containe the contents of the config map sf-config-map There are many other different types of volume sources, including NFS, iSCSI, local storage to the Kubernetes provider etc.
-
-
 
 To deploy the config file we would just use kubectl to apply it with a command that looks like  `$ kubectl apply -f mydeployment.yaml` ' (**example, don't type it**)
 
@@ -1533,7 +1538,7 @@ The docker images refered to in the deployment yaml files are the pre-defined im
 
 If you did the Helidon and Docker labs and want to use your own images you create there you will have to expand this `Using your own images` and follow the steps it details.
 
-<details><summary><b>Using your own images</b></summary>
+<details><summary><b>You want to use your images from the Helidon lab ?</b></summary>
 
 
 **IMPORTANT**
@@ -1576,7 +1581,94 @@ To help you setup the image pull secrets and the others used as configuration vo
 
 **You** need to edit the script to provide the details of the OCIR you used and your identity information
 
-If you no longer have this information you can [follow these instructions](../../ManualSetup/GetDockerDetailsForYourTenancy.md) to get it. 
+<details><summary><b>If you no longer have this information you can follow these instructions to retrieve them</b></summary>
+
+### Getting the docker login details
+
+The following instructions cover how to prepare to interact with the Oracle Cloud Infrastructure **Docker Registry**. They tell you how to get the following bits of information
+
+- Oracle Cloud Infrastructure Registry region code
+- Tenancy Object Storage Namespace
+- Full Username
+- Authentication Token
+
+Once you have got this information please save it in a notepad or something as you will need it later.
+
+#### Determining the Oracle Cloud Infrastructure Registry region code
+
+The OCIR region code is based on the IATA code for the city hosting the region, for example Frankfurt has an IATA core of `fra` and Amsterdam is `ams`. Unfortunately some cities (e.g. London) have multiple airports, in others the IATA airport code refers to an old name for the city, or the airport itself is not directly named after the city it serves, so we need to look the right code up based on our region.
+
+To determine your region look at the top of your Oracle Cloud GUI in the web browser and you'll see your current region.
+
+![](images/region-name.png)
+
+If you click on the name you'll get a list of regions enabled for your tenancy and your home region
+
+![](images/regions-list.png)
+
+You can see here in this example we're using the Frankfurt region, which is also our home region.
+
+Now go to the [OCIR Availability By Region list.](https://docs.cloud.oracle.com/en-us/iaas/Content/Registry/Concepts/registryprerequisites.htm#Availab)
+
+Locate your region on the list and then to the right identify the region code, for example we can see below in the case of Frankfurt the OCIR region code to use is `fra` for Sydney it's `syd`
+
+![](images/fra.png)
+
+
+
+#### Determining your tenancy Object Storage Namespace
+
+- Navigate to the **Tenancy Information** screen
+  - Click the Hambueger menu
+  - In the menu, scroll down to **Administration**, 
+  - Click **Administration** then **Tenancy Details**
+
+![](images/ObjStor.png) 
+
+- Note down the **Object Storage Namespace** of your tenancy, in the example above this is `frjqogy3byob` **but yours will be different** (this is what we mean when we say mytenancystoragenamespace in these labs)
+
+  
+
+#### Getting your Authentication Token
+
+If you do not have the authentication token you will need to create a new one.
+
+OCIR uses an authentication token rather than a password. To set an authentication token you need to take the following steps. 
+
+- Click on the **Magnifying glass** on the top of your console, and enter your username.  For example, if your name was **ppan** : 
+
+  ![](images/ppan.png)
+
+- Select the user **that looks like :  oracleidentitycloudservice/(your_name)**
+
+  ![](images/token1.png)
+
+- Select **Token** in the right-hand menu, then click the button **Create Token**.
+
+  - Enter a name for the token
+
+  - Use the **Copy** button to copy the token in your buffer, and **immediately paste it** in a notebook of your choice, you will need this later.
+
+    ![](images/token2.png)
+
+
+
+
+#### The repo name 
+
+You now need the name for your repository, this is a combination of the OCIR registry and tenancy you determined above and a repo name you chose. 
+
+An OCIR repo name looks like `<OCIR region code>.ocir.io/<Object Storage Namespace>/<repo_name>`
+
+If you cannot remember the repo name than in the VM look at the repoStorefrontConfig.sh in the helidon-storefront project.
+
+The ultimate full repository name will look something like `fra.ocir.io/oractdemeabdmnative/tg_repo` 
+
+**Please save the information you gathered in a text file or similar**
+
+---
+
+</details>
 
 - Switch to the the **$HOME/helidon-kubernetes/base-kubernetes** directory
 
@@ -1586,7 +1678,7 @@ Locate the line where we setup the docker registry details. It will look similar
 
 
 ``` bash
-kubectl create secret docker-registry my-docker-reg --docker-server=fra.ocir.io --docker-username='tenancy-name/oracleidentitycloudservice/username' --docker-password='abcdefrghijklmnopqrstuvwxyz' --docker-email='you@email.com'
+kubectl create secret docker-registry my-docker-reg --docker-server=fra.ocir.io --docker-username='tenancy-object-storage-namespace/oracleidentitycloudservice/username' --docker-password='abcdefrghijklmnopqrstuvwxyz' --docker-email='you@email.com'
 ```
 
 This is the line which sets up the image pull secret my-docker-reg that we use when we define the pods later, we need to provide it with your registry details
@@ -1669,6 +1761,7 @@ replicaset.apps/stockmanager-5b844757df   1         1         0       0s
 replicaset.apps/storefront-7cb7c6659d     1         1         0       0s
 replicaset.apps/zipkin-88c48d8b9          1         1         0       0s
 ```
+
 Lists the replica sets that were created for us as part of the deployment. You can see that Kubernetes knows we want 1 pod in each replicaset and has done that, though the pods themselves are currently not in a READY state (the containers are being created)
 
 Finally let's look at the deployments
@@ -1772,11 +1865,14 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 The service definition maps onto the actual pods in the dpeloyments using the selector as seen above. To find out exactly what pods match the selectors for a service 
 
-kubectl get endpoints
+- `kubectl get endpoints`
+
+```
 NAME           ENDPOINTS                           AGE
 stockmanager   10.244.0.68:8081,10.244.0.68:9081   26d
 storefront     10.244.1.75:9080,10.244.1.75:8080   26d
 zipkin         10.244.0.67:9411                    26d
+```
 
 ---
 
@@ -1790,7 +1886,8 @@ All is not lost, you can create the information easily
 
 - Run the following command, using the external IP address you used above
   - `bash create-test-data.sh <external ip>`
-    ```
+  
+```
     Service IP address is 130.61.11.184
     HTTP/1.1 200 OK
     Server: nginx/1.17.8
@@ -1802,7 +1899,7 @@ All is not lost, you can create the information easily
     {"itemCount":5000,"itemName":"Pins"}HTTP/1.1 200 OK
     
     <Additional lines of output>
-    ```
+```
 
 This will populate the database for you so you have some test data.
 
@@ -1928,6 +2025,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 {"name":"My Shop","alive":true,"version":"0.0.1"}
 ```
+
 (assuming your storefront-config.yamp file says the storename is My Shop this is what you should get back, if you changed the config file it should reflect your changes)
 
 We've mounted the sf-config-map (which contains the contents of storefront-config.yaml file) onto /conf. Let's use a command to connect to the running pod (remember your storefront pod will have a different id so use kubectl get pods to retrieve that) and see how it looks in there, then exit the connection
