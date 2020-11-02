@@ -215,6 +215,4 @@ I don't know why you can even scale a replica set in this situation, but I suspe
 
 ---
 
-You have reached the end of this lab!!
-
-Use your **back** button to return to the **C. Deploying to Kubernetes** section
+You have reached the end of this section of the lab

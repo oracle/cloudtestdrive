@@ -2133,8 +2133,6 @@ Also when deploying in Kubernetes you should create roles and users for performi
 
 ---
 
-You have reached the end of this lab!!
-
-Use your **back** button to return to the **C. Deploying to Kubernetes** section
+You have reached the end of this lab section, the next section is `Cloud Native with Kubernetes`
 
 
