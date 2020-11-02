@@ -7,7 +7,7 @@
 <details><summary><b>Self guided student - video introduction</b></summary>
 
 
-This video is an introduction to the Kubernetes labs. Once you've watched it please press the "Back" button on your browser to return to the labs.
+This video is an introduction to the Kubernetes labs. Depending on your browser settings it may open in this tab / window or open a new one. Once you've watched it please return to this page to continue the labs.
 
 [![Kubernetes labs Introduction Video](https://img.youtube.com/vi/6Kg-zH6h3Is/0.jpg)](https://youtu.be/6Kg-zH6h3Is "Kubernetes labs introduction video")
 

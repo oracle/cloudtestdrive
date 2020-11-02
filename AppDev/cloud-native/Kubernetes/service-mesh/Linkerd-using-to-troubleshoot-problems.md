@@ -6,7 +6,7 @@
 <details><summary><b>Self guided student - video introduction</b></summary>
 
 
-This video is an introduction to the troubleshooting with a Service mesh lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+This video is an introduction to the troubleshooting with a Service mesh lab. Depending on your browser settings it may open in this tab / window or open a new one. Once you've watched it please return to this page to continue the labs.
 
 [![Using the service mesh to help troubleshoot Introduction Video](https://img.youtube.com/vi/2KFBV1vJcGI/0.jpg)](https://youtu.be/2KFBV1vJcGI "Using the service mesh to help troubleshoot introduction video")
 

@@ -5,7 +5,7 @@
 <details><summary><b>Self guided student - video introduction</b></summary>
 
 
-This video is an introduction to the Helidon cloud native support lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+This video is an introduction to the Helidon cloud native support lab. Depending on your browser settings it may open in this tab / window or open a new one. Once you've watched it please return to this page to continue the labs.
 
 [![Helidon cloud native support lab Introduction Video](https://img.youtube.com/vi/vPSphbTg1MQ/0.jpg)](https://youtu.be/vPSphbTg1MQ "Helidon cloud native support lab introduction video")
 

@@ -7,7 +7,7 @@ This is an optional module for the Helidon lab. It is currently not required tha
 <details><summary><b>Self guided student - video introduction</b></summary>
 
 
-This video is an introduction to the Helidon Open API (ex Swagger) lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+This video is an introduction to the Helidon Open API (ex Swagger) lab. Depending on your browser settings it may open in this tab / window or open a new one. Once you've watched it please return to this page to continue the labs.
 
 [![Helidon Open API lab Introduction Video](https://img.youtube.com/vi/A_gVG2cb308/0.jpg)](https://youtu.be/A_gVG2cb308 "Helidon Open APIlab introduction video")
 

@@ -6,7 +6,7 @@
 <details><summary><b>Self guided student - video introduction</b></summary>
 
 
-This video is an introduction to the uninstalling the service mesh module. Once you've watched it please press the "Back" button on your browser to return to the labs.
+This video is an introduction to the uninstalling the service mesh module. Depending on your browser settings it may open in this tab / window or open a new one. Once you've watched it please return to this page to continue the labs.
 
 [![Uninstalling the service mesh Video](https://img.youtube.com/vi/Hx0amwN3Zjs/0.jpg)](https://youtu.be/Hx0amwN3Zjs "Uninstalling the service mesh")
 

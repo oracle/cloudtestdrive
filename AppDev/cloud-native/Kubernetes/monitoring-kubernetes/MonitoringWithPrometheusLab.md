@@ -5,7 +5,7 @@
 <details><summary><b>Self guided student - video introduction</b></summary>
 
 
-This video is an introduction to the Monitoring microservcies with Prometheus lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+This video is an introduction to the Monitoring microservcies with Prometheus lab. Depending on your browser settings it may open in this tab / window or open a new one. Once you've watched it please return to this page to continue the labs.
 
 [![Gathering metrics with Prometheus lab Introduction Video](https://img.youtube.com/vi/qnDzZ2eOy0E/0.jpg)](https://youtu.be/qnDzZ2eOy0E "Gathering metrics with Prometheus lab introduction video")
 

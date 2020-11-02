@@ -37,7 +37,7 @@ Each video is in a expandable section, see the one below. If you are a self guid
 <details><summary><b>Self guided student - Cloud Native video introduction</b></summary>
 
 
-This video is an introduction to Cloud native architectures and processing. Once you've watched it please press the "Back" button on your browser to return to the labs.
+This video is an introduction to Cloud native architectures and processing. Depending on your browser settings it may open in this tab / window or open a new one. Once you've watched it please return to this page to continue the labs.
 
 Note. The current videos were recorded during the lock down, hence the poor sound quality, you may need to turn up the volume on your computer to hear them properly.
 
@@ -51,7 +51,7 @@ Note. The current videos were recorded during the lock down, hence the poor soun
 <details><summary><b>Self guided student - Helidon lab video introduction</b></summary>
 
 
-This video is an introduction to the Helidon labs. Once you've watched it please press the "Back" button on your browser to return to the labs.
+This video is an introduction to the Helidon labs. Depending on your browser settings it may open in this tab / window or open a new one. Once you've watched it please return to this page to continue the labs.
 
 [![Helidon labs Introduction Video](https://img.youtube.com/vi/182KYHSrf5A/0.jpg)](https://youtu.be/182KYHSrf5A "Helidon labs introduction video")
 

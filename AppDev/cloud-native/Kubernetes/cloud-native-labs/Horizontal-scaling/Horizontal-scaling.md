@@ -5,7 +5,7 @@
 <details><summary><b>Self guided student - video introduction</b></summary>
 
 
-This video is an introduction to the Kubernetes horizontal scaling lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+This video is an introduction to the Kubernetes horizontal scaling lab. Depending on your browser settings it may open in this tab / window or open a new one. Once you've watched it please return to this page to continue the labs.
 
 [![Kubernetes horizontal scaling lab Introduction Video](https://img.youtube.com/vi/1hIQ5TRPt-M/0.jpg)](https://youtu.be/1hIQ5TRPt-M "Kubernetes horizontal scaling lab introduction video")
 

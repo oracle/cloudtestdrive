@@ -5,7 +5,7 @@
 <details><summary><b>Self guided student - video introduction</b></summary>
 
 
-This video is an introduction to the Helidon and Docker lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+This video is an introduction to the Helidon and Docker lab. Depending on your browser settings it may open in this tab / window or open a new one. Once you've watched it please return to this page to continue the labs.
 
 [![Docker with Helidon lab Introduction Video](https://img.youtube.com/vi/SxVC2FGdN9k/0.jpg)](https://youtu.be/SxVC2FGdN9k "Docker with Helidon introduction video")
 

@@ -6,7 +6,7 @@
 <details><summary><b>Self guided student - video introduction</b></summary>
 
 
-This video is an introduction to the Helidon core capabilities lab. Once you've watched it please press the "Back" button on your browser to return to the labs.
+This video is an introduction to the Helidon core capabilities lab. Depending on your browser settings it may open in this tab / window or open a new one. Once you've watched it please return to this page to continue the labs.
 
 [![Helidon core capabilities lab Introduction Video](https://img.youtube.com/vi/QCeQ6aKyBHU/0.jpg)](https://youtu.be/QCeQ6aKyBHU "Helidon core capabilities lab introduction video")
 
