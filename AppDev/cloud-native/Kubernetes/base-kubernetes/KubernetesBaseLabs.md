@@ -1486,9 +1486,9 @@ If you were looking at the stockmanager deployment you'd see entries like the be
               key: dataSourceClassName
 ```
 
-Next is the resources section :
+Next is the resources section.
 
-```yaml 
+```
         resources:
           limits:
             # Set this to me a quarter CPU for now
@@ -1497,7 +1497,7 @@ Next is the resources section :
 
 The resources provides a limit for how much CPU each instance of a pod can utilize, in this case 250 mili CPU's or 1/4 whole CPU (the exact definition of what comprises a CPU will vary between Kubernetes deployments and by provider).
 
-```yaml         
+```yaml
         volumeMounts:
         - name: sf-conf-secure-vol
           mountPath: /confsecure
