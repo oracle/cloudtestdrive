@@ -177,7 +177,7 @@ In our (simplified) example we will only look at the first row, and ignore any a
 
 
 
-- **Event**: elocation_geocoder_success
+- **Event**: `elocation_geocoder_success`
 
 - **Selection type**: JavaScript Expression
 
