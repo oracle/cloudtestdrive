@@ -293,7 +293,7 @@ In our case we will verify that the coordinate of the proposed drone flight is n
         if lon is not null and lat is not null then
             result := result || 'Address found: ' || '[' || lat || ',' || lon || ']';
 
-            --Added code for urban area check
+            /* Added code for urban area check */
             coordinates := MDSYS.SDO_GEOMETRY(2001, 4326, MDSYS.SDO_POINT_TYPE(lon, lat, NULL), NULL, NULL);
             SELECT COUNT(*) INTO overlap_count
             FROM URBAN_AREA_UK "t2"
@@ -303,7 +303,7 @@ In our case we will verify that the coordinate of the proposed drone flight is n
             else
                 result := result || ' - NO FLY ZONE';
             end if;
-            --End of added code for urban area check
+            /* End of added code for urban area check */
 
         else
           result := result || 'Address not found';
