@@ -73,7 +73,7 @@ If prompted, sign in to the **Drone Permits App**  using the WORKSHOPATP usernam
 
   ![](images/page-5.png " ")
 
-2. Open one of the Drone Flight requests. Notice how we only have a textual address here at the moment, without coordinates.
+3. Open one of the Drone Flight requests. Notice how we only have a textual address here at the moment, without coordinates.
 
     ![](images/page-5-flight-request.png " ")
 
