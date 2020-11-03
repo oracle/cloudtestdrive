@@ -228,10 +228,11 @@ In our (simplified) example we will only look at the first row, and ignore any a
           :P6_PERMIT := sqlerrm;
   end;
   ```
-  
-     - **Items to Return**: "P6_PERMIT".
+
+
+- **Items to Return**: "P6_PERMIT".
     
-     - **Fire on Initialization**: Off.
+- **Fire on Initialization**: Off.
     
        
 
