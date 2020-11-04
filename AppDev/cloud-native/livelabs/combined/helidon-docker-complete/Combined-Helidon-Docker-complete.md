@@ -183,7 +183,7 @@ Also we are not addressing how to split any existing monolith into modules, hope
 
 ---
 
-## The labs
+## The Helidon labs
 
 This section describes the labs, you will need to do them in the order shown. There are optional labs described, the ones that are connected with a core lab should be done in the order shown **if you decide to to them.** Optional labs that are not attached to a lab can be done once the core labs are completed.
 

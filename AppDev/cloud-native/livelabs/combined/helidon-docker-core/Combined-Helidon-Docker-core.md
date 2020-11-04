@@ -183,7 +183,7 @@ Also we are not addressing how to split any existing monolith into modules, hope
 
 ---
 
-## The labs
+## The Helidon labs
 
 This section describes the labs, you will need to do them in the order shown.
 
