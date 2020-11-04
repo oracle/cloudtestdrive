@@ -73,7 +73,7 @@ If prompted, sign in to the **Drone Permits App**  using the WORKSHOPATP usernam
 
   ![](images/page-5.png " ")
 
-2. Open one of the Drone Flight requests. Notice how we only have a textual address here at the moment, without coordinates.
+3. Open one of the Drone Flight requests. Notice how we only have a textual address here at the moment, without coordinates.
 
     ![](images/page-5-flight-request.png " ")
 
@@ -177,7 +177,7 @@ In our (simplified) example we will only look at the first row, and ignore any a
 
 
 
-- **Event**: elocation_geocoder_success
+- **Event**: `elocation_geocoder_success`
 
 - **Selection type**: JavaScript Expression
 
@@ -228,10 +228,11 @@ In our (simplified) example we will only look at the first row, and ignore any a
           :P6_PERMIT := sqlerrm;
   end;
   ```
-  
-     - **Items to Return**: "P6_PERMIT".
+
+
+- **Items to Return**: "P6_PERMIT".
     
-     - **Fire on Initialization**: Off.
+- **Fire on Initialization**: Off.
     
        
 
@@ -292,7 +293,7 @@ In our case we will verify that the coordinate of the proposed drone flight is n
         if lon is not null and lat is not null then
             result := result || 'Address found: ' || '[' || lat || ',' || lon || ']';
 
-            --Added code for urban area check
+            /* Added code for urban area check */
             coordinates := MDSYS.SDO_GEOMETRY(2001, 4326, MDSYS.SDO_POINT_TYPE(lon, lat, NULL), NULL, NULL);
             SELECT COUNT(*) INTO overlap_count
             FROM URBAN_AREA_UK "t2"
@@ -302,7 +303,7 @@ In our case we will verify that the coordinate of the proposed drone flight is n
             else
                 result := result || ' - NO FLY ZONE';
             end if;
-            --End of added code for urban area check
+            /* End of added code for urban area check */
 
         else
           result := result || 'Address not found';
