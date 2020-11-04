@@ -1,5 +1,5 @@
 
-![](../../../common/images/customer.logo2.png)
+![](../../../../images/customer.logo2.png)
 
 # Cloud Native - Kubernetes labs
 

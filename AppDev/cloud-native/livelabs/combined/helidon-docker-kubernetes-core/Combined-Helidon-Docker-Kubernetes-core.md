@@ -1,4 +1,4 @@
-![](../../../common/images/customer.logo2.png)
+![](../../../images/customer.logo2.png)
 
 # Cloud Native - Helidon for Cloud Native, and packaging in Docker containers
 
@@ -48,15 +48,9 @@ Note. The current videos were recorded during the lock down, hence the poor soun
 </details>
 
 
-<details><summary><b>Self guided student - Helidon lab video introduction</b></summary>
+## Introduction to this page
 
-
-This video is an introduction to the Helidon labs. Depending on your browser settings it may open in this tab / window or open a new one. Once you've watched it please return to this page to continue the labs.
-
-[![Helidon labs Introduction Video](https://img.youtube.com/vi/182KYHSrf5A/0.jpg)](https://youtu.be/182KYHSrf5A "Helidon labs introduction video")
-
-
-</details>
+This document explains the contents of the various lab modules, the modules themselves are accessed via the menu on the left. 
 
 ## Setup the Tenancy
 
@@ -70,7 +64,18 @@ You will need to import the template code you will be using into eclipse, and do
 
 Please follow **Setup for the Helidon Labs** section. When you've completed them click the `back` button on your browser to return to this page.
 
-## Introduction
+## Introduction to Heldon labs
+
+
+<details><summary><b>Self guided student - Helidon lab video introduction</b></summary>
+
+
+This video is an introduction to the Helidon labs. Depending on your browser settings it may open in this tab / window or open a new one. Once you've watched it please return to this page to continue the labs.
+
+[![Helidon labs Introduction Video](https://img.youtube.com/vi/182KYHSrf5A/0.jpg)](https://youtu.be/182KYHSrf5A "Helidon labs introduction video")
+
+---
+</details>
 
 <details><summary><b>What is Helidon?</b></summary>
 
