@@ -1,0 +1,23 @@
+{
+    "tutorials": [
+        {            
+            "title": "WebLogic for OKE - Prerequisites for provisioning the WebLogic Infrastructure",
+            "filename": "wlsforocionokeprereq.md"
+        },
+
+        {            
+            "title": "WebLogic for OKE - Creating the stack and provisioning the WebLogic Infrastructure",
+            "filename": "wlsforocionoke.md"
+        },
+
+		{            
+            "title": "WebLogic for OKE - Deploying Sample Application and Custom Applications",
+            "filename": "wlsforocionokedeploy.md"
+        },
+		
+		{            
+            "title": "WebLogic for OKE - Deleting the WebLogic Infrastructure",
+            "filename": "wlsforocionokedelete.md"
+        }
+    ]
+}
