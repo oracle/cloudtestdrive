@@ -1,6 +1,6 @@
 ![](../../../images/customer.logo2.png)
 
-# Cloud Native - Helidon for Cloud Native, and packaging in Docker containers
+# Cloud Native - Helidon for Cloud Native microservices, packaging in Docker containers, deploying in Kubernetes
 
 This set of lab instructions is based on the virtual machine image dated 2020-10-29 (29th October 2020)
 

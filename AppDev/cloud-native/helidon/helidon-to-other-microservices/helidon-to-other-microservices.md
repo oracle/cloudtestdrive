@@ -244,10 +244,71 @@ Basically this looks pretty simple in comparison to making all of the http reque
 
 - **Save the changes** to the files
 - **Run** the storefront main class.
+- Is it's not already running run the stockmanager main class.
 
-Let's try accessing the storefront service using **curl**.  This may take a few seconds to respond to the first request as there is a lot of stuff which is initialized on demand here. 
+Let's try accessing the storefront service using curl. Expect an error
 
 -  `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
+
+If you look at the log output of the **storefront** main class you will find a long stack trace, at the top of which will be the request to list stock, followed by a line that there was a `Unknown error, status code 401`
+
+```
+...
+2020.11.04 18:51:09.628 INFO com.oracle.labs.helidon.storefront.resources.StorefrontResource !thread!: Requesting listing of all stock
+javax.ws.rs.WebApplicationException: Unknown error, status code 401
+<Lots of stack trace>
+```
+
+Those of you familiar with HTTP status codes will know that 401 us an authentication error, and from the messages we can see that it's coming from when we make the call to the stockmanager service.
+
+Helidon does not automatically propagate the authentication by default (since Helidon 2.1.0) This is on the principle that you restrict security related information to the smallest set of locations you can, because otherwise you may accidentally propagate security information to locations where it shouldn't go.
+
+Clearly we could remove authentication requirements on the stockmanager service, but this may result in it being accessed by unauthorized persons. We need a better solution.
+
+Fortunately for us Helidon has that solution built in, we just need to tell the security provider to pass on the security credentials to the downstream services.
+
+- In the storefront project expand the `confsecure` folder and open the file `storefront-security.yaml`
+
+This contains the security setting used by the storefront service. The `http-basic-auth` is the section we need
+
+- Add an outbound section to the `http-basic-auth` **exactly** as shown below
+
+```
+   - http-basic-auth:
+        realm: "helidon"
+        users:
+          - login: "jack"
+            password: "password"
+            roles: ["admin"]    
+          - login: "jill"
+            password: "password"
+            roles: ["user"]
+          - login: "joe"
+            password: "password"
+        outbound:
+          - name: "propogate-to-everyone"
+            hosts: ["*"]
+```
+
+It is **absolutely critical** that you maintain the indentation shown (this is achieved with spaces, not tabs allowed). The `outbound` should line up with the `users` section, the hypnen in `- name` should be under the `t` in `outbound` and `hosts` should line up with `name`
+
+This setting tells the `http-basic-auth` provider to transfer the inbound credentials to the outbound requests regardless of the host the request is going to.
+
+<details><summary><b>What other settings are possible ?</b></summary>
+
+The `http-basic-auth` provider supports multiple names outbound configurations. Each configuration can specify a host, specific API endpoints the configuration is limited to, if the credentials from the inbound request are to be reused (the default) and any particular credentials to use. 
+
+The precise settings options depend on the security provider, you can see details in the [Helidon security provider documentation.](https://helidon.io/docs/v2/#/mp/security/02_providers) Click on the provider that you're using.
+
+</details>
+
+- Save the changes to the storefront-security.conf` file
+
+- Stop and restart the storefront service.
+
+- Try the curl again
+
+  -  `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
 
 ```
 HTTP/1.1 200 OK
@@ -258,6 +319,10 @@ content-length: 148
 
 [{"itemCount":5000,"itemName":"pin"},{"itemCount":150,"itemName":"Pencil"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":100,"itemName":"Book"}]
 ```
+
+It may take a few seconds to respond to this first request as there is a lot of stuff which is initialized on demand here. 
+
+
 <details><summary><b>Got an error ?</b></summary>
 
 It's possible that the services may take longer to do their initial initialization that the timeouts. (The initialization is done on demand) If this happens you may get an error. Wait a short while and retry, hopefully the initialization will have been completed then.
@@ -280,13 +345,52 @@ The CompletionStage objects are created by the framework on the client side, so 
 
 </details>
 
-<details><summary><b>How does the authentication transfer ?</b></summary>
+<details><summary><b>Can I transfer other headers ? </b></summary>
 
-You may be wondering about the authentication here. When we made the curl call we specified the usersername and password, but that was to the storefront service. None of our code event sees the user name / password, that's all done by the framework, so how can it be passed on to the stockmanager service (which if it didn't get the username and password would have thrown a 401 Unauthorized error.
+You may have other headers that are embedded in your incoming request that you need to transfer. Helidon supports a generic framework for handling headers (and other aspects of a REST request)
 
-The solution to this is another reason why using Helidon (or other microprofile based frameworks) is exceptionally useful. Helidon automatically extracts the authorization data for us when it received the storefront request. That information is held within the framework as part of the request and when the subsequent requests are made via the REST Client is till automatically add the authentication data for us. Thus the users information is propagated throughout the sequence of requests.
+On the RESTClient interface you need to register a class to process them using the `@RegisterClientHeaders` annotation. This takes a single parameter which is the name of the class that will do the processing for us. This class must implement the `ClientHeadersFactory` interface
 
-This is why we've used the same user credentials, and in a production environment you'd use the same security system across both services.
+E.g.
+
+```java
+@RegisterRestClient
+@RegisterClientHeaders(TransferClientHeaders.class)
+public interface StockManager
+...
+```
+
+When Helidon creates the RESTClient for us it will automatically create an instance of that class for us, and add it to the processing pipeline when the RESTClient code calls out to the downstream service.
+
+The class implementing `ClientHeadersFactory` in this case `TransferClientHeaders` will process the actual transfer of the data for us, Here is an example that just adds transfers most of the incoming headers to the outgoing ones, we are removing the `Host` header as forwarding that is regarded as a security issue by the Http processing stack. Also we remove the `Authorization` as we probably want Helidon to process that for us (and the `Authorization` is present it will just use what's already been provided) if  It could of course do some more sophisticated processing for us if we wanted.
+
+```java
+@Slf4j
+public class TransferClientHeaders implements ClientHeadersFactory {
+
+    @Override
+	public MultivaluedMap<String, String> update(MultivaluedMap<String, String> incomingHeaders,
+			MultivaluedMap<String, String> outgoingHeaders) {
+		log.debug("Incoming headers - " + incomingHeaders);
+		log.debug("Provided outgoing headers - " + outgoingHeaders);
+		// we need to remove some headers as by default they are restricted
+		MultivaluedMap<String, String> sanitisedIncomingHeaders = new MultivaluedHashMap<>(incomingHeaders);
+		sanitisedIncomingHeaders.remove("Host");
+		// Helidon may have handled the Authorization for us.
+		sanitisedIncomingHeaders.remove("Authorization");
+		// Need a multi valued map as a header can be repeated multiple times.
+		MultivaluedMap<String, String> transferredHeaders = new MultivaluedHashMap<>();
+		// add all of the headers that have already been setup for us
+		transferredHeaders.putAll(sanitisedIncomingHeaders);
+		// now add all of the incoming ones
+		transferredHeaders.putAll(outgoingHeaders);
+		log.debug("Combined headers - " + transferredHeaders);
+		// return the new map
+		return transferredHeaders;
+	}
+}
+
+```
 
 ---
 
