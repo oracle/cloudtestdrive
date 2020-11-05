@@ -41,10 +41,12 @@ If you want to look at using external storage for prometheus [here is an overvie
 The Prometheus query language is very powerful for fill details look at it's [Query Basics page.](https://prometheus.io/docs/prometheus/latest/querying/basics/)
 
 
+## Metrics to gather
+This article at [golden metrics](https://blog.appoptics.com/the-four-golden-signals-for-monitoring-distributed-systems/) has some intereting information on what you should think about monitoring.
 
-
-
-
+## Service mesh
+ 
+For more details on the service mesh concept the site [servicemesh.io](https://servicemesh.io) has lot's of interesting information, it is however run by one of the creators of linkerd so may be biased towards that. 
 
 ---
 Use the **back** button of our browser to terurn to the previous page.

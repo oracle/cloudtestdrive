@@ -10,10 +10,9 @@ This page details the instructions to spin up a Managed Kubernetes cluster on th
 
 **ATTENTION !!!** 
 
-Your instructor will inform you if the Kubernetes clusters have already been created for you or not.  
+If you are in an instructor let lab they may have already created Kubernetes clusters for you, **only** in that case they will provide a kubeconfig file and you do not need to continue with this section.
 
-- In case you need create them yourselves, follow the instructions below.
-- If the clusters are already running, your kubeconfig file will be provided by your instructor
+If you are doing the lab self guided, or the instructor does not tell you they have created a cluster for you then you need to complete this section.
 
 ---
 

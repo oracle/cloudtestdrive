@@ -34,14 +34,14 @@ You will need a Kubernetes cluster to work with. Follow [these instructions](../
 
 You will be using the OCI Cloud Shell to execute commands and scripts during these labs. 
 
-You need to follow the [cloud shell setup instructions](../setup/cloud-shell-setup.md) to download the scripts and template files into the cloud shell before you continue with the labs.
+You need to follow the [cloud shell setup instructions](./setup/cloud-shell-setup.md) to download the scripts and template files into the cloud shell before you continue with the labs.
 
 
 ## Basic Kubernetes - Setting up your cluster and running your services
 
 This section covers how to run the docker images in kubenetes, how to use Kubernetes secrets to hold configuration and access information, how to use an ingress to expose your application on a web port. Basically this covers how to make your docker based services run in in a Kubernetes cluster.
 
-We also look at using Helm to install Kubernetes "infractructure" such as the ingress server
+We also look at using Helm to install Kubernetes "infrastructure" such as the ingress server
 
 [The basic Kubernetes labs](base-kubernetes/kubernetes-base-labs.md)
 
@@ -160,7 +160,7 @@ You must have done the service mesh install and setup module, and the service me
 
 This module looks at the traffic split capability in the service mesh implementations to see how it can be used for testing purposes, for example injecting faults to do some chaos engineering and test out the overall environment.
 
-This module also used the traffic split capability of the service mesh to show how you can do a canary deployment
+This module also uses the traffic split capability of the service mesh to explain how you can use a service mesh to do a canary deployment
 
 [Exploring what you can do with a service mesh traffic splits](service-mesh/linkerd-exploring-traffic-splits.md)
 
