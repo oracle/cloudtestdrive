@@ -294,7 +294,7 @@ It is **absolutely critical** that you maintain the indentation shown (this is a
 
 This setting tells the `http-basic-auth` provider to transfer the inbound credentials to the outbound requests regardless of the host the request is going to.
 
-<details><summary><b>What other settings are possible ?/b></summary>
+<details><summary><b>What other settings are possible ?</b></summary>
 
 The `http-basic-auth` provider supports multiple names outbound configurations. Each configuration can specify a host, specific API endpoints the configuration is limited to, if the credentials from the inbound request are to be reused (the default) and any particular credentials to use. 
 
@@ -345,7 +345,7 @@ The CompletionStage objects are created by the framework on the client side, so 
 
 </details>
 
-<details><summary><b>Can I transfer other headers ?</b></summary>
+<details><summary><b>Can I transfer other headers ? </b></summary>
 
 You may have other headers that are embedded in your incoming request that you need to transfer. Helidon supports a generic framework for handling headers (and other aspects of a REST request)
 
