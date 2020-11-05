@@ -1,8 +1,6 @@
-[Go to Overview Page](../README.md)
+![](../../../../images/customer.logo2.png)
 
-![](../../../common/images/customer.logo2.png)
-
-# Migration of Monolith to Cloud Native - Kubernetes labs
+# Cloud Native - Kubernetes labs
 
 ## Deploying to Kubernetes 
 
@@ -21,25 +19,45 @@ This video is an introduction to the Kubernetes labs. Depending on your browser 
 
 In this series of labs we will focus on the specific features of Kubernetes to run Microservices.  These labs use a pre-built set of docker images but you can if you did the **Helidon** and **Docker** modules you can use the images you created there if you wish. 
 
-## Setup your tenancy
-If you have previously executed the **Helidon** and **Docker** parts of this lab series you will have created the CTDOKE compartment and ATP database, and are good to go.
+### Lab conventions
 
-If you only want to do the **Kubernetes** labs and have not done the **Helidon** and **Docker** modules you need to perform some [initial steps to setup your tenancy](../ManualSetup/KubernetesSetup.md) to prepare your environment.
+We have used a few layout tricks to make the reading of this tutorial more intuitive : 
+
+- If you see a "Bullet" sign, this means **you** need to perform some sort of **action**.  This can be 
+  - Opening a window and navigating to some point in a file system
+  - Executing some command on the command line of a terminal window :
+    -  For example : `ls -al`
+
+As we cover quite some theoretical concepts, we included pretty verbose explanations.  To make the lab easier to grasp, we placed the longer parts in *Collapsibles*:
+
+<details><summary><b>Click this title to expand!</b></summary>
+
+
+If you feel you are already pretty familiar with a specific concept, you can just skip it, or read quickly through the text, then re-collapse the text section by re-clicking on the title. 
+
+---
+
+</details>
+
+## Setup your tenancy
+You need to perform some initial steps to setup your tenancy so it's in the state expected by the various scripts and Docker images you will be using, for example you need to setup an Autonomous Data Processing database. Follow the instructions in the "Tenancy Setup for Kubernetes Labs" on the menu.
+
+## Create your Kubernetes cluster
+
+You will of course need a cluster to work with. Follow the instructions in this module to do that.
 
 ## Cloud shell and setup
 
 You will be using the OCI Cloud Shell to execute commands and scripts during these labs. 
 
-You need to follow the [cloud shell setup instructions](../setup/cloud-shell-setup.md) to download the scripts and template files into the cloud shell before you continue with the labs.
+You need to follow the cloud shell setup instructions to download the scripts and template files into the cloud shell before you continue with the labs.
 
 
 ## Basic Kubernetes - Setting up your cluster and running your services
 
 This section covers how to run the docker images in kubenetes, how to use Kubernetes secrets to hold configuration and access information, how to use an ingress to expose your application on a web port. Basically this covers how to make your docker based services run in in a Kubernetes cluster.
 
-We also look at using Helm to install Kubernetes "infractructure" such as the ingress server
-
-[The basic Kubernetes labs](base-kubernetes/KubernetesBaseLabs.md)
+We also look at using Helm to install Kubernetes "infrastructure" such as the ingress server
 
 ## Cloud Native with Kubernetes
 
@@ -47,28 +65,19 @@ We also look at using Helm to install Kubernetes "infractructure" such as the in
 
 Kubernetes doesn't just provide a platform to run containers in, it also provides a base for many other things including a comprehensive service availability framework which handles monitoring containers and services to see if they are still running, are still alive and are capable of responding to requests.
 
-To understand how this works see the [Health Readiness Liveness labs](cloud-native-labs/Health-readiness-liveness/Health-liveness-readiness.md)
-
 ## Horizontal and Auto Scaling
 
 Kubernetes also supports horizontal scaling of services, enabling multiple instances of a service to run with the load being shared amongst all of them. 
 
-This first scaling lab shows how you can manually control the number of instances.
-
-[The horizontal scaling labs (3a)](cloud-native-labs/Horizontal-scaling/Horizontal-scaling.md) 
+This horizontal scaling lab shows how you can manually control the number of instances.
 
 Horizontal scaling provides you with a manual process to control how many instances of a microservice you have running, but Kubernetes also offers a mechanism to automatically change the number of instances.
 
-This second scaling labs shows how you can have Kubernetes automatically scale the number of instances for you.
-
-[The auto scaling labs (3b)](cloud-native-labs/Horizontal-scaling/Auto-scaling.md)
-
+This auto scaling labs shows how you can have Kubernetes automatically scale the number of instances for you.
 
 ## Rolling out deployment updates
 
 Commonly when a service is deployed it will be updated, Kubernetes provides support for performing rolling upgrades, ensuring that the service continues running during the upgrade. Built into this are easy ways to reverse a deployment roll out to one of it's previous states.
-
-[Rolling updates labs](cloud-native-labs/Rolling-updates/Rolling-updates.md)
 
 
 ## Optional Lab modules
@@ -80,23 +89,22 @@ These optional modules are grouped by subject area. Unless there are dependencie
 ### Optional labs group 1. Monitoring your services
 
 #### Optional 1a. Monitoring services -  Prometheus for data gathering
+
 Once a service is running in Kubernetes we want to start seeing how well it's working in terms of the load on the service. At a basic level this is CPU / IO's but more interesting are things like the number of requests being serviced. You will need to do this module if you are going to do the Grafana for data display module.
 
 Monitoring metrics may also help us determining things like how changes when releasing a new version of the service may effect it's operation, for example does adding a database index increase the services efficiency by reducing lookup times, or increase it by adding extra work when updating the data. With this information you can determine if a change is worthwhile keeping.
 
-[Prometheus lab](monitoring-kubernetes/MonitoringWithPrometheusLab.md)
+The process for installing and using Prometheus is detailed in the Prometheus module.
 
 #### Optional 1b. Monitoring services - Grafana for data display
 To do this optional module you will have to have completed the optional Promtheus for data gathering module.
 
 As you've seen Prometheus is great at capturing the data, but it's not the worlds best tool for displaying the data. Fortunately for us there is an open source tool called **Grafana** which is way better than Prometheus at this.
 
-The process for installing and using Grafana is detailed in the next lab :  
-[Visualising with Grafana lab document.](monitoring-kubernetes/VisualizingWithGrafanaLab.md)
+The process for installing and using Grafana is detailed in the Visualising with Grafana module
 
 ### Optional labs group 2. Capturing log data
 These labs are self standing, you can do either of them, or both. They have no dependencies and currently there are no other optional modules dependent on them.
-
 
 Both these lab modules use fluentd to read the log data within the Kuberntes environment
 
@@ -104,14 +112,14 @@ Both these lab modules use fluentd to read the log data within the Kuberntes env
 
 This optional module shows how you can use fluentd to capture the log data, and then write the output to Elastic Search (often used to help process log data in Cloud Native deployments). The module is intended as an example of how to handle log data for people who will need instant indexed access to the log data.
 
-[Log capture for processing lab](management/logging/LogCaptureForProcessing.md)
+To understand how to do do this look at the Log capture for processing module.
 
 
 #### Optional 2b. Log Capture for long term storage (archive)
 
 This optional module shows how you can use fluentd to capture the log data, and then write the output to a long term storage offering, In this case we will be writing to the S3 compatible Oracle Object Storage Service. The module is intended as an example to how to handle log data for people that need to retain log data for the long term (perhaps for legal reasons) but don't need instant access, so can use the most cost effective long term storage.
 
-[Log capture for processing lab](management/logging/LogCaptureForArchive.md)
+The process here is covered in the Log Capture For Archive module.
 
 ### Optional labs group 3 Service meshes
 
@@ -132,7 +140,7 @@ You must do this module before you can do any of the other service mesh modules
 
 This module shows how to install the Linkerd service mesh, and enable it on the micro-servcies we have been using for this lab.
 
-[Installing the Linkerd service mesh.](service-mesh/Linkerd-install.md)
+Instalation is covered in the Installing the Linkerd service mesh module
 
 #### Optional 3b. Monitoring traffic with the service mesh
 
@@ -140,7 +148,7 @@ You must have done the service mesh install and setup module before this one.
 
 This module shows how to use the service mesh we installed in Optional lab 3a to report on the traffic between the micro-services in our application on the cluster.
 
-[Traffic monitoring with the service mesh](service-mesh/Linkerd-monitoring-traffic-flows.md)
+You can see how to do traffic monitoring in the Traffic monitoring with a Linkerd service mesh module.
 
 #### Optional 3c. Using the service mesh to troubleshoot problems
 
@@ -148,7 +156,7 @@ You must have done the service mesh install and setup module before this one.
 
 This modules uses a simulated "broken" implementation of the stockmanager service to generate errors, then we use the service mesh monitoring capabilities to see where the error is and the conditions around it.
 
-[Troubleshooting with the service mesh](service-mesh/Linkerd-using-to-troubleshoot-problems.md)
+To understand how to troubleshoot using the service mesh see the  service mesh see the Using the Linkerd service mesh for troubleshooting module.
 
 #### Optional 3d. Using the traffic split facility of the service mesh
 
@@ -158,15 +166,13 @@ This module looks at the traffic split capability in the service mesh implementa
 
 This module also used the traffic split capability of the service mesh to show how you can do a canary deployment
 
-[Exploring what you can do with a service mesh traffic splits](service-mesh/Linkerd-exploring-traffic-splits.md)
+Discover what you can do with a service mesh traffic splits in the Traffic splits with the Linkerd service mesh (Canary deployments, and chaos engineering) module.
 
 #### Optional 3e Uninstalling the service mesh
 
 **Only** do this after you have completed the service mesh lab modules you want to do.
 
-You do not have to uninstall the service mesh, but can if you wish.
-
-[Uninstalling the linkerd service mesh](service-mesh/Linkerd-uninstall.md)
+To learn how to uninstall the service mesh see the it Uninstalling the Linkerd service mesh module.
 
 
 ### Additional optional modules in development.
@@ -175,17 +181,15 @@ We are working on or exploring the posibility of a number of additional optional
 
 ---
 
-**Further Information**
-For links to useful web pages and other information that I found while writing these labs [see this link](further-information/further-information.md)
 
+
+## Further Information
+
+For links to useful web pages and other information that I found while writing these labs see the further information on Kubernetes section
 
 
 ## End of this tutorial
 
-Congratulations, you have reached the end of the tutorial!  You are now ready to start refactoring your own applications with the techniques you learned during this session!
+We hope you enjoy doing the labs, and that they will be useful to you. 
 
-
-
-------
-
-[Go to Overview Page](../README.md)
+When you finish the modules in this lab the take the time for a cup of tea (or other beverage of your choice). While you're having that well earned break we recommend that you visit the [Oracle live labs site](https://apexapps.oracle.com/pls/apex/dbpm/r/livelabs/home) for a wide range of other labs on a variety of subjects.

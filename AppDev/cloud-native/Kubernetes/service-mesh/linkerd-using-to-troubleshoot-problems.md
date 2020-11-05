@@ -264,7 +264,7 @@ We'll open the LinkerdUI and see what it's reporting.
 
 Locate the HTTP metrics entry for your namespace (mine is tg-helidon, yours will have a different name)
 
-![](images/Linkerd-broken-overview-namespace.png)
+![](images/linkerd-broken-overview-namespace.png)
 
 While the precise numbers will of course vary you should see that the success rate is not 100%, it's likely to be around 95% It's not a surprise, but it looks like we have a bit of a problem!
 
@@ -279,19 +279,19 @@ Remember that here we're looking at all the HTTP REST API calls that happen in t
 
 - Click on the name of your namespace to access it.
 
-![](images/Linkerd-broken-detailed-namespace.png)
+![](images/linkerd-broken-detailed-namespace.png)
 
 We can see that it's the stockmanager service that has a problem, the rest are all reporting 100% success
 
 - Click on the stockmanager **in the deployments list** then scroll down so you can see the inbound and outbound HTTP metrics, pods and the live calls
 
-![](images/Linkerd-broken-detailed-service.png)
+![](images/linkerd-broken-detailed-service.png)
 
 Now we can see that it's the inbound requests on the stockmanager that's the problem, the outbound ones are working fine, and (in this case) there is one pod that has the problem (if there were multiple pods you wild see them listed, and might be able to see if the problem was pod specific, or a problem across all pods in the deployment)
 
 Now look at the Live calls section
 
-![](images/Linkerd-broken-live-calls.png)
+![](images/linkerd-broken-live-calls.png)
 
 We can see that the from deploy/storefront to /stocklevel call is the one that's generating a lot of failures
 
@@ -299,11 +299,11 @@ We can see that the from deploy/storefront to /stocklevel call is the one that's
 
 - Click the `Start` button at the top of this page and wait for a few calls to come in, then click the `Stop` button
 
-![](images/Linkerd-broken-tap-list.png)
+![](images/linkerd-broken-tap-list.png)
 
 - Locate a row where the HTTP status is 500, click the `Expand` icon ![](images/linkerd-tap-expand-icon.png)
 
-![](images/Linkerd-broken-tap-details.png)
+![](images/linkerd-broken-tap-details.png)
 
 You can now see the details of the failed call. Click the `Close` button on the lower right to close this popup.
 

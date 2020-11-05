@@ -44,6 +44,10 @@ If you feel you are already pretty familiar with a specific concept, you can jus
 
 You need to perform some initial steps to setup your tenancy so it's in the state expected by the various scripts and Docker images you will be using, for example you need to setup an Autonomous Data Processing database. Follow the instructions in the "Tenancy Setup for Kubernetes Labs" on the menu.
 
+## Create your Kubernetes cluster
+
+You will of course need a cluster to work with. Follow the instructions in this module to do that.
+
 ## Cloud shell and setup
 
 You will be using the OCI Cloud Shell to execute commands and scripts during these labs. 

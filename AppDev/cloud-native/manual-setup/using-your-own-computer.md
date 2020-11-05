@@ -1,5 +1,3 @@
-[Go to Overview Page](../README.md)
-
 ![](../../../common/images/customer.logo2.png)
 
 # Migration of Monolith to Cloud Native
@@ -44,6 +42,6 @@ You will need to replace the docker logins with logins for the docker repository
 
 #### Kubernetes modules
 
-The Kubernetes lab modules will **currently** (as of Sept 2020) run on a Kubernetes 1.17.9 cluster, however you will have to set that up, and configure kubectl. Be aware that as Kubernetes evolves and introduces additional features that we are adding more lab modules to demonstrate them, so you are **strongly** recommended to look at the version of Kubernetes specified in the [create kubernetes cluster](./CreateKubernetesCluster.md) module and ensure you are running that version or later.
+The Kubernetes lab modules will **currently** (as of Sept 2020) run on a Kubernetes 1.17.9 cluster, however you will have to set that up, and configure kubectl. Be aware that as Kubernetes evolves and introduces additional features that we are adding more lab modules to demonstrate them, so you are **strongly** recommended to look at the version of Kubernetes specified in the [create kubernetes cluster](./create-kubernetes-cluster.md) module and ensure you are running that version or later.
 
 Be warned that sometimes Kubernetes and helm chart versions become incompatible. The versions of the helm charts we specify in the instructions should work with the version of Kubernetes in the lab, but if you are using a later version of Kubernetes you may have to switch to a later helm chart version, as sometimes there are incompatible changes in the helm charts or Kubernetes.

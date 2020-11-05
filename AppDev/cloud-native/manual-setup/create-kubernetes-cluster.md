@@ -1,4 +1,8 @@
+![](../../../common/images/customer.logo2.png)
+
 # Creating your own Kubernetes cluster in the OCI tenancy
+
+## Introduction
 
 This page details the instructions to spin up a Managed Kubernetes cluster on the Oracle Cloud.  
 
@@ -17,7 +21,7 @@ Your instructor will inform you if the Kubernetes clusters have already been cre
 
 
 
-**Navigate to the Managed Kubernetes dashboard**
+### Navigate to the Managed Kubernetes dashboard
 
 - Log into the **Cloud Console** using the URL provided, and using the username and password you created earlier.
 - Once on the **OCI infrastructure** page, click on the hamburger menu to navigate to 
@@ -31,20 +35,20 @@ Your instructor will inform you if the Kubernetes clusters have already been cre
 
 
 
-**Creating the cluster**
+### Creating the cluster
 
 - Fill in the form with following parameters:
 
   - In the next form name the cluster something like Helidon-Lab-YOUR-INITIALS
   - Make sure the compartment is **CTDOKE**
-  - Make sure the Kubernetes version is the highest on the list (at the time of writing in Summer 2020 that was 1.16.8, but it will have been updated since then)
+  - Make sure the Kubernetes version is the highest on the list (at the time of the last update of this document in October 2020 that was 1.17.9, but it may have been updated since then)
   - Leave the visibility type as **private**
   - Set the shape to VM.Standard2.1
   - Set the number of nodes to be 2
 
 There is no need to do anything in the `Advanced Options` section.
 
-This images is for creating a 1.16.8 cluster, it may be slightly different for later versions.
+These images are for creating a 1.16.8 cluster, they may be slightly different for later versions.
  
 ![](images/create-k8s-cluster.png)
 

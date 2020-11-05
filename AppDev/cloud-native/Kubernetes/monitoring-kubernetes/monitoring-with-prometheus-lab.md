@@ -503,7 +503,7 @@ Prometheus was not designed to be a high end graphing tool, the graphs cannot fo
 
 ## Tidying up the environment
 
-If you are going to do the [Visualizing with Gafana module](VisualizingWithGrafanaLab.md) please do **not** do the following, but [click here](VisualizingWithGrafanaLab.md) or click the back button on your browser to return to the main [Kubernetes labs document.](../Kubernetes-labs.md) 
+If you are going to do the Visualizing with Gafana module please do **not** do the following, but return to the introduction of jump to the Visualizing With Grafana module
 
 **ONLY** do the following if you no longer want the Prometheus environment. **DO NOT** do this if you are planning on running the Visualising with Grafana module.
 

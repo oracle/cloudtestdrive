@@ -389,13 +389,13 @@ look at the `ingress-nginx-nginx-ingress-controller` row, IP address in the `EXT
 
 Locate your namespace on the list, you'll see that it's running fine with 100% success rate
 
-![](images/Linkerd-traffic-split-canary-main-pre-switchupdate.png)
+![](images/linkerd-traffic-split-canary-main-pre-switchupdate.png)
 
 - Click on your namespace name (`tg-helidon` in my case) 
 
 - On the left menu click on `Traffic Splits`
 
-![](images/Linkerd-traffic-split-canary-split-pre-switch-update.png)
+![](images/linkerd-traffic-split-canary-split-pre-switch-update.png)
 
 As you'd expect we can see all the traffic is going to the 0.0.1 version and it's all successful. Keep this page open
 
@@ -425,7 +425,7 @@ trafficsplit.split.smi-spec.io/stockmanager-canary edited
 
 Go back to the traffic split on the linkerd browser page
 
-![](images/Linkerd-traffic-split-canary-split-immediately-post-switch-update.png)
+![](images/linkerd-traffic-split-canary-split-immediately-post-switch-update.png)
 
 You will see that the split is now 90 to the v0.0.1 stockmanager and 10% to the v0.0.2 stock manager
 
@@ -435,7 +435,7 @@ The success rate column for the v0.0.1 is still 100%, but in this case the succe
 
 - In the HTTP Metrics list click on **your** namespace
 
-![](images/Linkerd-traffic-split-canary-deployments-post-split-update.png)
+![](images/linkerd-traffic-split-canary-deployments-post-split-update.png)
 
 We can see that **in this case** the stockmanagerv0-0-2 deployment is still showing 33.33% success rate (yours may of course vary)
 
@@ -503,7 +503,7 @@ trafficsplit.split.smi-spec.io/stockmanager-canary edited
 
 If you look at the traffic split now you'll find  that it's reverted to all the traffic being sent to the working version
 
-![](images/Linkerd-traffic-split-canary-split-immediatly-post-reversion.png)
+![](images/linkerd-traffic-split-canary-split-immediatly-post-reversion.png)
 
 Of course it will take a short while for the statistics to catch up (**in this case** we're seeing the results of old traffic showing up in the numbers for the 0.0.2 version, which is why it shows 50% failures, even though the weight is zero) but after a short while if you go to the namespaces list you'll see everything back to 100% Success for your namespace 
 
@@ -511,7 +511,7 @@ Of course it will take a short while for the statistics to catch up (**in this c
 
 - Click **your** namespace in the HTTP Metrics section
 
-![](images/Linkerd-traffic-split-canary-namespace-bit-after-post-reversion.png)
+![](images/linkerd-traffic-split-canary-namespace-bit-after-post-reversion.png)
 
 #### Following actions
 
@@ -688,23 +688,23 @@ Let's look at the traffic split in the linkerd UI
 
 - On the upper left click the namespaces dropdown (It may display `DEFAULT` or another namespace name
 
-![](images/Linkerd-namespaces-menu.png)
+![](images/linkerd-namespaces-menu.png)
 
 - Click **your namespace** in the list (tg-helidon in my case, but yours should be different)
 
 - On the left menu in the configuration section click `Traffic Splits`
 
-![](images/Linkerd-traffic-splits-menu-option.png)
+![](images/linkerd-traffic-splits-menu-option.png)
 
 You will be shown the traffic splits page
 
-![](images/Linkerd-traffic-namespace-traffic-splits-list.png)
+![](images/linkerd-traffic-namespace-traffic-splits-list.png)
 
 This Shows the traffic split details
 
 Click on the name of the traffic-split `fault-injector`
 
-![](images/Linkerd-traffic-splits-fault-injector-details-initial.png)
+![](images/linkerd-traffic-splits-fault-injector-details-initial.png)
 
 We can see the details of the traffic split, the `Apex Service` indicates the service the traffic split is operating on, the `Leaf service` shows where the traffic will be split to and the `Weight` indicates the probability of that split option, in this case it's 500/1000 in each case. Of course you could potentially have additional splits.
 
@@ -730,7 +730,7 @@ Well the good news is that on this occasion we got a result, make a few more req
 
 Below is what **I** saw, and it seems that **in this case** the random number generator means that the few requests I made to the traffic split that was connected to the origional zipkin service had all been passed to fault-injector-zipkin which of course failed them all.
 
-![](images/Linkerd-traffic-split-fault-injection-details-all-faults.png)
+![](images/linkerd-traffic-split-fault-injection-details-all-faults.png)
 
 **Yours may be different** You may see a partial split where some succeeded and some failed (so some going to the `zipkin` and some going to `fault-injector-zipkin`), of you may see them all succeeding (I.e. all going to the `zipkin` service) as the traffic split works randomly it's impossible to predict exactly
 
@@ -738,7 +738,7 @@ In this case you can see that requests to the fault-injection traffic split had 
 
 So I can show you what it looks like if there are only some failures I made a few more curl requests and came back to the page
 
-![](images/Linkerd-traffic-split-fault-injection-details-some-faults.png)
+![](images/linkerd-traffic-split-fault-injection-details-some-faults.png)
 
 **Again yours will almost certainly be different**
 
@@ -756,7 +756,7 @@ Of course this is useful, but in this case all it's telling us is that the `zipk
 
 - In the `To resource` dropdown chose `deployment/zipkin`
 
-![](images/Linkerd-traffic-split-route-spec.png)
+![](images/linkerd-traffic-split-route-spec.png)
 
 This will generate reports from any deployment to the `zipkin` deployment (it is of course possible to look at specific deployments, but this shows us a good overview)
 
@@ -765,7 +765,7 @@ This will generate reports from any deployment to the `zipkin` deployment (it is
 - Make multiple curl requests of the form 
   - `curl -i -k  -u jack:password https://<external ip>/store/stocklevel`
 
-![](images/Linkerd-traffic-split-route-results.png)
+![](images/linkerd-traffic-split-route-results.png)
 
 (you may have to scroll down a bit to see the deployment details)
 

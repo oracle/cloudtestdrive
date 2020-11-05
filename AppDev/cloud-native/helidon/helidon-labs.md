@@ -140,35 +140,42 @@ Also we are not addressing how to split any existing monolith into modules, hope
 ### 1. Core Helidon
 The core labs are designed to show how you can take a some existing Java code and REST enable it so it can operate as a standalone service. This includes not just the REST API, but also configuration, error handling and security.
 
-[The core Helidon lab](Helidon-core/helidon-core.md)
+[The core Helidon lab](helidon-core/helidon-core.md)
 
 
 
 ### 2. Databases and Helidon
 This looks at how you can access databases within a Helidon based application.
 
-[The database lab](Helidon-data/helidon-data.md)
+[The database lab](helidon-data/helidon-data.md)
 
 
+### Optional 2a. Accessing the request context
+This optional lab explores how to access the context of a request, it shows how you can get the users identity (though there are many other context related items that coudl be accesses, for example the request header details)
 
+[Accessing the context optional lab](helidon-data/accessing-the-context.md)
+
+ 
 ### 3. Communicating services with Helidon
 This lab shows the support in Helidon for switching from a direct method call to using a REST call without modifying the calling method.
 
-[The cross service communication lab](Helidon-to-Other-Microservices/helidon-to-other-microservices.md)
+[The cross service communication lab](helidon-to-other-microservices/helidon-to-other-microservices.md)
 
+### Optional 3a. Communicating from non Helidon clients using REST CLient
 
+We've put together a short document on how to [manually create a rest client](helidon-to-other-microservices/non-helidon-rest-clients.md) if you want more information. (Reading this is an optional activity in this lab)
 
 ### 4. Supporting operations activities with Helidon
 This labs looks at how Helidion can help you gather data on the fow of operating when you make a call and how your program is being used. This information can help you learn how to optimize your miroservices, especially in deployments where you have a request propagating across many separate microservices.
 
-[The Helidon support for Ops lab](Helidon-Operations/helidon-operations.md)
+[The Helidon support for Ops lab](helidon-operations/helidon-operations.md)
 
 
 
 ### 5. Cloud Native support in Helidon - Kubernetes support
 This Helidon lab looks as the features in Helidon that are designed to provide support for cloud native functionality in deployment systems like Kubernetes. For example to help report if a program is still running, but is actually failing to operate (for example it's in a deadlock)
 
-[The Helidon support for Cloud Native Operations lab](Helidon-cloud-native/helidon-cloud-native.md)
+[The Helidon support for Cloud Native Operations lab](helidon-cloud-native/helidon-cloud-native.md)
 
 
 ---
@@ -186,7 +193,7 @@ This is an optional lab if you chose to do it. If you are going to do the Visual
 
 To enable a service to be easily consumed Helidon provides support for the dynamic creation of Open API documents (previously known as Swagger)  that document the REST APIs provided by a micro-service. This lab looks at how configure your Helidon projects to generate this information. 
 
-[The Helidon support for Open API Document generation](Helidon-open-api/helidon-open-api.md)
+[The Helidon support for Open API Document generation](helidon-open-api/helidon-open-api.md)
 
 ---
 
@@ -197,7 +204,7 @@ To enable a service to be easily consumed Helidon provides support for the dynam
 ### What's next
 Once you've finished these labs then it's time for a cup of tea (or other beverage of your choice).
 
-Please look at the follow-on lab focusing [packaging these new microservices in Docker](../Docker/DockerLabs.md) and deploying them in Kubernetes.
+Please look at the follow-on lab focusing [packaging these new microservices in Docker](../docker/docker-labs.md) and deploying them in Kubernetes.
 
 
 

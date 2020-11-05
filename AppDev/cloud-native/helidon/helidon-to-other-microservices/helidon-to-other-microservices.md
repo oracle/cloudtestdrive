@@ -300,7 +300,7 @@ If you have a non Helidon micro-service and want to talk to it from a Helidon MP
 ## Non Helidon MP clients of a micro service, also known as My monolith is not decomposed yet
 Of course here we've been assuming that this is a Helidon MP micro-service talking to another Helidon MP micro-service. But it's quite possible (even probable) that you are actually going to be making a gradual transition of your monolithic applications to micro-services and will be splitting of bits of the monolith at a time. In those cases you want to be able to connect your remaining monolith to the new micro-service while making as few changes to the monolith as possible. In that case you can still use the approach of defining an interface for your micro-service and then creating a proxy implementation. Your original code just continues to use the proxy which it thinks is the real local object, not a remote micro-service, the only code changed required in the origional monolith code is to crate the proxy rather than instantiate a local class.
 
-We've put together a short document on how to [manually create a rest client](non-helidon-rest-clients.md) if you want more information. (Reading this is an optional activity in this lab)
+For more details there is a optional lab (See the main labs listing) that explores how to do this.
 
 ---
 

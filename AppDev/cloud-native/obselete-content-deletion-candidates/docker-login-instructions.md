@@ -4,7 +4,7 @@ These are obselete for the K8S lab I think
 
 There are a few details (registry id, authentication tokens and the like) you will need to get before you push your images. 
 
-- Please follow the instructions in this document for [getting your docker details](../ManualSetup/GetDockerDetailsForYourTenancy.md)
+- Please follow the instructions in this document for [getting your docker details](../manual-setup/GetDockerDetailsForYourTenancy.md)
 
 As there are may be many attendees doing the lab going through the same tenancy we need to separate the different images out, so we're also going to use your initials / name / something unique 
 
@@ -25,7 +25,7 @@ where :
 - `<user name>` : user name you used to register
 - `<auth token>`: Auth token you associated with your username
 
-All of this is information you gathered when you were [getting your docker details](../ManualSetup/GetDockerDetailsForYourTenancy.md)
+All of this is information you gathered when you were [getting your docker details](../manual-setup/GetDockerDetailsForYourTenancy.md)
 
 For example a completed version may look like this (this is only an example, use your own values) **Important** The auth token being used for the password may well contain characters with special meaning to the Unix shell, so it's important to include it in single quotes as in the example below ( ' )
 

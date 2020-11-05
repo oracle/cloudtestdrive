@@ -55,12 +55,6 @@ Update Complete. ⎈ Happy Helming!⎈
 ### Kubernetes
 Docker is great, but it only runs on a local machine, and doesn't have all of the nice cloud native features of Kubernetes.
 
-You will need access to a running Kubernetes cluster:
-
-- Your instructor might have allocated a Kubernetes cluster to you,  In that case, just follow the instructions on this page
-
-- If you are in your own tenancy, or you have been told you need to spin up a Kubernetes cluster yourself.  Follow [these instructions](../../ManualSetup/CreateKubernetesCluster.md), then return to this page to continue this part of the lab.
-
 #### Getting your cluster access details
 
 Access to the cluster is managed via a config file that by default is located in the $HOME/.kube folder, and is called `config`.  To check the setup, make sure to have copied your personal kubeconfig file to this location : 
@@ -2125,7 +2119,7 @@ We've shown how to change the config in helidon using config maps, but the same 
 
 This lab has only implemented basic security in that it's securing the REST API using the Ingress controller.
 
-There are other ways of securing the connection however, we've put together a [short document](SecuringTheRestEndpoint.md) on some of the other appriaches.
+There are other ways of securing the connection however, we've put together a [short document](https://github.com/oracle/cloudtestdrive/blob/master/AppDev/cloud-native/kubernetes/base-kubernetes/securing-the-rest-endpoint.md) on some of the other approaches.
 
 Also when deploying in Kubernetes you should create roles and users for performing specific functions, for ease of running the lab you have a role which does everything, but in a real environment that's a bad thing as it breaks the principle of least privilege. The [Kubernetes documentation](https://kubernetes.io/docs/concepts/security/overview/) has more information on it's security.
 

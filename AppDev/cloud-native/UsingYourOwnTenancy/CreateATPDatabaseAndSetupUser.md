@@ -1,4 +1,4 @@
-[Go to Helidon for Cloud Native Page](../Helidon-labs.md)
+[Go to Helidon for Cloud Native Page](../helidon-labs.md)
 
 ![](../../../common/images/customer.logo2.png)
 

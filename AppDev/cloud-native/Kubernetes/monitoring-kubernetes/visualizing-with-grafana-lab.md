@@ -16,7 +16,7 @@ This video is an introduction to the Visualizing metrics with Grafana lab. Depen
 
 ## **Introduction**
 
-If you are going to do this lab module you must have completed the [**Monitoring with Prometheus** module](MonitoringWithPrometheusLab.md)
+If you are going to do this lab module you must have completed the **Monitoring with Prometheus** module
 
 As we've seen while Prometheus can gather lots of data, it is not exactly the most powerful visualization mechanism.
 
