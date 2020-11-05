@@ -2,75 +2,79 @@
     "tutorials": [
         {
           "title": "Kubernetes Labs Introduction",
-          "filename":"Kubernetes-complete.md"
+          "filename":"kubernetes-complete.md"
         },
         {
           "title": "Tenancy Setup for the Kubernetes Labs",
-          "filename":"../../../../ManualSetup/KubernetesSetup.md"
+          "filename":"../../../../manual-setup/kubernetes-setup.md"
+        },
+        {
+          "title": "Create your Kubernetes cluster",
+          "filename":"../../../../manual-setup/create-kubernetes-cluster.md"
         },
         {
           "title": "Cloud Shell Setup for the Kubernetes Labs",
-          "filename":"../../../../Kubernetes/setup/cloud-shell-setup.md"
+          "filename":"../../../../kubernetes/setup/cloud-shell-setup.md"
         },
         {
           "title": "Part 1: Setting up the cluster and getting your services running in Kubernetes",
-          "filename": "../../../../Kubernetes/base-kubernetes/KubernetesBaseLabs.md"
+          "filename": "../../../../kubernetes/base-kubernetes/kubernetes-base-labs.md"
         },
 		{
           "title": "Part 2: Cloud native with Kubernetes",
-          "filename": "../../../../Kubernetes/cloud-native-labs/Health-readiness-liveness/Health-liveness-readiness.md"
+          "filename": "../../../../kubernetes/cloud-native-labs/health-readiness-liveness/health-liveness-readiness.md"
         },
 		{
           "title": "Part 3a: Horizontal Scaling",
-          "filename": "../../../../Kubernetes/cloud-native-labs/Horizontal-scaling/Horizontal-scaling.md"
+          "filename": "../../../../kubernetes/cloud-native-labs/horizontal-scaling/horizontal-scaling.md"
         },
 		{
           "title": "Part 3b: Auto Scaling",
-          "filename": "../../../../Kubernetes/cloud-native-labs/Horizontal-scaling/Auto-scaling.md"
+          "filename": "../../../../kubernetes/cloud-native-labs/horizontal-scaling/auto-scaling.md"
         },
         {
           "title": "Part 4: Rolling Updates",
-          "filename": "../../../../Kubernetes/cloud-native-labs/Rolling-updates/Rolling-updates.md"
+          "filename": "../../../../kubernetes/cloud-native-labs/holling-updates/rolling-updates.md"
         },
         {
           "title": "Optional 1a: Prometheus for metrics capture",
-          "filename": "../../../../Kubernetes/monitoring-kubernetes/MonitoringWithPrometheusLab.md"
+          "filename": "../../../../kubernetes/monitoring-kubernetes/monitoring-with-prometheus-lab.md"
         },
 		{
           "title": "Optional 1b: Visualizing metrics with Grafana",
-          "filename": "../../../../Kubernetes/monitoring-kubernetes/VisualizingWithGrafanaLab.md"
+          "filename": "../../../../kubernetes/monitoring-kubernetes/visualizing-with-grafana-lab.md"
         },
 		{
           "title": "Optional 2a: Capturing log data for processing",
-          "filename": "../../../../Kubernetes/management/logging/LogCaptureForProcessing.md"
+          "filename": "../../../../kubernetes/management/logging/log-capture-for-processing.md"
         },
         {
           "title": "Optional 2b: Capturing log data for archive",
-          "filename": "../../../../Kubernetes/management/logging/LogCaptureForArchive.md"
+          "filename": "../../../../kubernetes/management/logging/log-capture-for-archive.md"
         },
 		{
           "title": "Optional 3a: Installing the Linkerd service mesh",
-          "filename": "../../../../Kubernetes/service-mesh/Linkerd-install.md"
+          "filename": "../../../../kubernetes/service-mesh/linkerd-install.md"
         },
         {
           "title": "Optional 3b: Traffic monitoring with a Linkerd service mesh",
-          "filename": "../../../../Kubernetes/service-mesh/Linkerd-monitoring-traffic-flows.md"
+          "filename": "../../../../kubernetes/service-mesh/linkerd-monitoring-traffic-flows.md"
         },
 		{
           "title": "Optional 3c: Using the Linkerd service mesh for troubleshooting",
-          "filename": "../../../../Kubernetes/service-mesh/Linkerd-using-to-troubleshoot-problems.md"
+          "filename": "../../../../kubernetes/service-mesh/linkerd-using-to-troubleshoot-problems.md"
         },
         {
           "title": "Optional 3d: Traffic splits with the Linkerd service mesh (Canary deployments, and chaos engineering)",
-          "filename": "../../../../Kubernetes/service-mesh/Linkerd-exploring-traffic-splits.md"
+          "filename": "../../../../kubernetes/service-mesh/linkerd-exploring-traffic-splits.md"
         },
 		{
           "title": "Optional 3e: Uninstalling the Linkerd service mesh",
-          "filename": "../../../../Kubernetes/service-mesh/Linkerd-uninstall.md"
+          "filename": "../../../../kubernetes/service-mesh/linkerd-uninstall.md"
         },
         {
           "title": "Further Information on Kubernetes",
-          "filename": "../../../../Kubernetes/further-information/further-information.md"
+          "filename": "../../../../kubernetes/further-information/further-information.md"
         }
     ]
 }

@@ -24,7 +24,7 @@ The Kubernetes lab also has several optional lab modules you can do which cover 
 
 For reference, this is the architecture you'll be building (if you do all of the modules)
 
-![](images/Architecture-overview.png)
+![](images/architecture-overview.png)
 
 
 ### Lab conventions
@@ -85,33 +85,33 @@ The basic principles will however run in any Java IDE or Kubernetes environment,
 There are some steps you need to take to prepare the environment for your own individual use.
 
 
-- You can run the Helidon  parts of this lab on a **Oracle Free Tier** account, You can run the Helidon, Docker and Kubernetes parts in your own tenancy (Trial or paid.)  In this case you need to perform some extra preparation steps [explained in detail on this page.](ManualSetup/FullSetupFreeTier.md)
+- You can run the Helidon  parts of this lab on a **Oracle Free Tier** account, You can run the Helidon, Docker and Kubernetes parts in your own tenancy (Trial or paid.)  In this case you need to perform some extra preparation steps [explained in detail on this page.](manual-setup/full-setup-free-tier.md)
 
 
-- If you are part of **an instructor-led lab**, in some cases your instructor might provide Cloud Tenancy for you, minimizing the setup to [these few steps to connect to a remote desktop](ManualSetup/CreateClientVm.md).
+- If you are part of **an instructor-led lab**, in some cases your instructor might provide Cloud Tenancy for you, minimizing the setup to [these few steps to connect to a remote desktop](manual-setup/create-client-vm.md).
 
 
 
 # A. Helidon labs
-The Helidon part of the labs show how to split the Monolith into microservices using Helidon REST, to access data and to extend the microservices to suppport cloud native capabilities
+The Helidon part of the labs show how to split the Monolith into microservices using Helidon REST, to access data and to extend the microservices to support cloud native capabilities
 
 To do these labs you must be familiar with Java at a basic lavel (able to understand classes, constructors, methods etc.) and a bit familiar with the Eclipse IDE
 
-Follow the link to [the Helidon labs](Helidon/Helidon-labs.md) to get started !
+Follow the link to [the Helidon labs](helidon/helidon-labs.md) to get started !
 
 
 
 # B. Using Docker
 The Docker part of the labs covers how we use JIB to create a docker image, run it, then to move the configuration and secrets externally to the docker image, finally we look at how to push the docker image to a repository
 
-Go to [the Docker Labs](Docker/DockerLabs.md)
+Go to [the Docker Labs](docker/docker-labs.md)
 
 
 
 # C. Deploying in Kubernetes
 These labs cover how to deploy our docker continers in Kubernetes and how to make use of the cloud native capabilities of Kubernetes.
 
-Go to [the Kubernetes Labs](Kubernetes/Kubernetes-labs.md)
+Go to [the Kubernetes Labs](kubernetes/kubernetes-labs.md)
 
 
 

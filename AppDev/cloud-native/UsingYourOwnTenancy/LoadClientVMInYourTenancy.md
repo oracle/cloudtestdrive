@@ -1,4 +1,4 @@
-[Go to Helidon for Cloud Native Page](../Helidon-labs.md)
+[Go to Helidon for Cloud Native Page](../helidon-labs.md)
 
 ![](../../../common/images/customer.logo2.png)
 
@@ -216,4 +216,4 @@ You need to let your VM run for a couple of mins to fully boot and start the VNC
  ---
 
 
-[Go to *Helidon for Cloud Native* overview Page](../Helidon-labs.md)
+[Go to *Helidon for Cloud Native* overview Page](../helidon-labs.md)
