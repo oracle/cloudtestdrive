@@ -8,7 +8,7 @@
 
 ## Objective
 
-This Hands on Lab will go through the process of creating a WebLogic for OKE on OCI Infrastructure - using Oracle Cloud Marketplace.
+This Hands on Lab will go through the process of creating a WebLogic for OKE on Oracle CIoud Infrastructure - using Oracle Cloud Marketplace.
 
 
 
@@ -55,7 +55,7 @@ Click **Next** to go to the next screen.
 
 Fill in information for **WebLogic Server on Container Cluster (OKE)**:
 
-- **Resource Name Prefix**: *wlsoke* (use lower case letters and add an unique suffix if other colleagues will be running this lab on the same cloud environment)
+- **Resource Name Prefix**: *wlsoke* (use **lower case letters** and add an unique suffix if other colleagues will be running this lab on the same cloud environment)
 
 - **SSH Public Key**: copy-and-paste the content of the generated **weblogic_ssh_key.pub** file; it contains the public key in RSA format; make sure to include the whole content in a single line, including *ssh-rsa* part at the beginning.
 
@@ -174,7 +174,7 @@ To better understand all components of a WebLogic for OKE on OCI solution keep a
 
 
 
-Before navigation away of the Job Information page, let's take note of some relevant details that we'll be using later. Switch from the *Logs* to the *Outputs* submenu item and check the **Outputs** table:
+Before navigating away of the Job Information page, let's take note of some relevant details that we'll be using later. Switch from the *Logs* to the *Outputs* submenu item and check the **Outputs** table:
 
 ![](images/wlsforocionoke/image-210.png)
 
@@ -182,7 +182,7 @@ Before navigation away of the Job Information page, let's take note of some rele
 
 Some items need our attention:
 
-- **admin_instance_private_ip**: this mentions the private IP address of the *Admin Host* Compute Instance in the reference architecture; we need to know this IP address to connect from the *Bastion* instance to *Admin Host* Instance
+- **admin_instance_private_ip**: this displays the private IP address of the *Admin Host* Compute Instance in the reference architecture; we need to know this IP address to connect from the *Bastion* instance to *Admin Host* Instance
 - **bastion_instance_public_ip**: public IP address of the *Bastion* Compute Instance in the reference architecture; the Bastion VM acts as jump server and let us connect from Internet to the WebLogic Infrastructure
 - **fss_path**: mount path of the shared file system between *Admin Host*, WebLogic managed servers and Jenkins Continuous Integration system; by connecting to the *Admin Host* you can change/add new scripts to be used in existing or new Jenkins Pipelines
 - **jenkins_console_url**: remember that `/jenkins` is the Jenkins application context root
@@ -205,7 +205,7 @@ With yellow (at the top of the above image), we have the full URLs for:
 
 As we can see, the WebLogic Admin Console and the Jenkins Console have the same IP (hostname): this is the IP of the Private Load Balancer as in the Reference Architecture. This Load Balancer balances the traffic across Kubernetes Nodes and subsequently, on each node, an Ingress Controller forwards the traffic to right Pod running respective application (WebLogic Admin Server or Jenkins Master).
 
-The IP address of the WebLogic Cluster LB URL represents the Public IP address of the Public Load Balancer  in the Reference Architecture. This Load Balancer allows incoming Internet traffic to be send to the deployed applications running on WebLogic Managed Server Pods.
+The IP address of the WebLogic Cluster LB URL represents the Public IP address of the Public Load Balancer from the Reference Architecture. This Load Balancer allows incoming Internet traffic to be send to deployed applications running on WebLogic Managed Server Pods.
 
 
 
@@ -291,7 +291,7 @@ At the end of the list we identity a Pod running WLS Admin Server, two Pods runn
 
 
 
-Lastly, going to *Solutions and Platform* -> *Developer Services* -> *Container Registry* we can check of the repositories created once the WebLogic for OKE has been provisioned:
+Lastly, by going to *Solutions and Platform* -> *Developer Services* -> *Container Registry* we can check for the repositories created once the WebLogic for OKE has been provisioned:
 
 ![image-20201103180909347](images/wlsforocionoke/image-330.png)
 
@@ -301,7 +301,7 @@ We can see:
 
 - infra/cisystem-jenkins-controller - Jenkins Controller Image
 - infra/cisystem-jenkins-agent - Jenkins Agent Image
-- infra/nginx-ingress-controller - Ingress Controller Image
+- infra/nginx-ingress-controller - Nginx Ingress Controller Image
 - infra/oraclelinux - Oracle Base Linux Image
 - infra/weblogic-kubernetes-operator - WebLogic Operator Image
 - /wlsoke02/wls-domain-base/12214 - WebLogic domain Base Image
@@ -387,7 +387,7 @@ $ ssh -C -D <port_for_socks_proxy> -i <path_to_private_key> opc@<bastion_public_
 For example:
 
 ```
-ssh -C -D 1088 -i .\weblogic_ssh_key opc@130.61.39.170
+ssh -C -D 1088 -i weblogic_ssh_key opc@130.61.39.170
 ```
 
 
@@ -474,7 +474,7 @@ Don't forget that with WebLogic running on top of Kubernetes, any change to the 
 
 ## Step 4. Access Admin host
 
-There are cases when we would need to access the Admin host, for example to change the existing Jenkins Pipelines script files, add new ones to be persisted on the shared file system or, as we'll see in the last lab of the workshop, to clean up some resources before tearing town the WebLogic for OKE Infrastructure.
+There are cases when we would need to access the Admin host, for example to change the existing Jenkins Pipelines script files, add new ones to the shared file system or, as we'll see in the last lab of the workshop, to clean up some resources before tearing town the WebLogic for OKE Infrastructure.
 
 Accessing the Admin host can be done:
 
@@ -509,4 +509,4 @@ Once logged in, you can inspect `/u01/shared` shared folder, for example checkin
 
 
 
-In the next lab, we'll test some of the pre-build pipelines.
+In the next Hands on Lab, we'll test some of the pre-build Jenkins Pipelines.

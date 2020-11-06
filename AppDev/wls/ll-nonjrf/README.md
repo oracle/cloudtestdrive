@@ -1,4 +1,4 @@
-[Go to the Cloud Test Drive Welcomer Page](../../readme.md)
+[Go to the Cloud Test Drive Welcome Page](../../../readme.md)
 
 ![](../../../common/images/customer.logo2.png)
 
@@ -12,7 +12,7 @@ This folder contains the lab for running WLS for OCI as a VM, using the non-JRF 
 
 
 
-Alternatively, you can visit the normal github .md files of the lab in this folder:
+Alternatively, you can visit the normal GitHub .md files of the lab in this folder:
 
 - [Introduction](wlscnonjrf_intro.md)
 - [Prerequisites](wlscnonjrfprereq.md)
