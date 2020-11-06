@@ -74,7 +74,7 @@ Fill in information for **WebLogic Server on Container Cluster (OKE)**:
   - On Mac, you can simply use `command+c`
 
 - **Managed Server Count**: *2* (two managed WebLogic servers will be up&running as Kubernetes pods; this can be changed later)
-- **Administrator name **: *weblogic*
+- **Administrator name**: *weblogic*
 - **Secrets OCID for Administration Password**: Enter the OCID of the WebLogic Admin Secret that was set up in the prerequisites lab
   
   - A bit of context: the WebLogic Server Admin Password it's stored in an OCI Vault as an OCI Secret (encrypted with an OCI Encryption Key); during WebLogic Domain creation, the provisioning scripts will setup the admin password by getting it from the OCI Secret instead of having it as a Terraform variable in plain-text mode
