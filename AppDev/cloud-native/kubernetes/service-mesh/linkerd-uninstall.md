@@ -13,6 +13,19 @@ This video is an introduction to the uninstalling the service mesh module. Depen
 ---
 
 </details>
+## Introduction
+
+This is one of the optional sets of Kubernetes labs
+
+**Estimated module duration** 5 mins.
+
+### Objectives
+
+This module shows how to remove the Linkerd service mesh from the pods and the Kubernetes cluster.
+
+### Prerequisites
+
+You need to complete the `Rolling update` module (last of the core Kubernetes labs modules). You must have completed the `Installing the Linkerd service mesh` module. You can have done any of the other optional module sets, or any combination of the other service mesh modules.
 
 ## Do I need to uninstall the service mesh ?
 

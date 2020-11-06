@@ -14,6 +14,20 @@ This video is an introduction to the monitoring traffic with a Service mesh lab.
 
 </details>
 
+## Introduction
+
+This is one of the optional sets of Kubernetes labs
+
+**Estimated module duration** 20 mins.
+
+### Objectives
+
+This module shows how to use Linkerd to see the traffic flows between your microservices.
+
+### Prerequisites
+
+You need to complete the `Rolling update` module (last of the core Kubernetes labs modules). You must have completed the `Installing the Linkerd service mesh` module. You can have done any of the other optional module sets, or any combination of the other service mesh modules.
+
 ## Using the service mesh to see what's happening
 
 We've seen how to install and run the service mesh, we're now doing to look at how to use it.

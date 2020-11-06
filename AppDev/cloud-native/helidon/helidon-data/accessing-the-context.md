@@ -1,10 +1,24 @@
 ![](../../../../common/images/customer.logo2.png)
 
-# Accessing the context of the request
+# Helidon Cloud Native - Accessing the context of the request
 
 Sometimes you need to understand what's going on  within a request, for example to generate an audit record you may want to get the users identity (validated of course) so you can record who did what.
 
 In the case of our simple little micro service we're not "billing" back to departments, but lets see how we can get the users information from the request. We'll also discover what over information is available.
+
+## Introduction
+
+This is an optional module, if you do not wish to do it please continue with the rest of your lab.
+
+**Estimated module duration** 10 mins.
+
+### Objectives
+
+Here we will see how you can access the context of your request, in this case to get the identity of the user making the request, though other type of information (for example headers) are available using the same techniques.
+
+### Prerequisites
+
+You need to have completed the `Database and Helidon` module.
 
 ## Accessing the context
 

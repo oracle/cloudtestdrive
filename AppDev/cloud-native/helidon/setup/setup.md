@@ -2,6 +2,18 @@
 
 # Cloud Native - Setup for Helidon labs
 
+## Introduction
+
+**Estimated module duration** 10 mins.
+
+### Objectives
+
+This module takes you through the process of setting up your development virtual machine and loading the template code to do the Helidon and Docker labs
+
+### Prerequisites
+
+You need to have completed the steps in the `Setting up your tenancy` module.
+
 ## 1. Configuring the VM hosts file.
 
 To make it easier to switch to the Kubernetes environment we are using hostnames rather than IP addresses to locate the various services.

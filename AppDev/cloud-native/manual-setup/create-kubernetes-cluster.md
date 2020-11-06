@@ -1,24 +1,30 @@
 ![](../../../common/images/customer.logo2.png)
 
-# Creating your own Kubernetes cluster in the OCI tenancy
-
-## Introduction
-
-This page details the instructions to spin up a Managed Kubernetes cluster on the Oracle Cloud.  
-
----
+# Creating your own Kubernetes cluster
 
 **ATTENTION !!!** 
 
-If you are in an instructor let lab they may have already created Kubernetes clusters for you, **only** in that case they will provide a kubeconfig file and you do not need to continue with this section.
-
 If you are doing the lab self guided, or the instructor does not tell you they have created a cluster for you then you need to complete this section.
 
----
-
-- Make sure you are working in your Virtual Linux environment using your VNC viewer. 
+If you are in an instructor led lab they **may** have already created Kubernetes clusters for you, **only** in the situation where you have been given a kubeconfig file and you do not need to continue with this section.
 
 
+
+## Introduction
+
+**Estimated module duration** 5 mins.
+
+### Objectives
+
+Creating a Managed Kubernetes cluster on the Oracle Cloud.  
+
+### Prerequisites
+
+If you are doing the full labs (these include modules on Helidon and Docker) you need to have completed the steps in the `Helidon` modules (including the setup)
+
+If you are only doing the Kubernetes based labs you need to have completed the steps in the `Tenancy Setup for the Kubernetes Labs` module.
+
+## Creating your Kubernetes cluster
 
 ### Navigate to the Managed Kubernetes dashboard
 

@@ -14,9 +14,21 @@ This video is an introduction to the Visualizing metrics with Grafana lab. Depen
 
 </details>
 
-## **Introduction**
+## Introduction
 
-If you are going to do this lab module you must have completed the **Monitoring with Prometheus** module
+This is one of the optional sets of Kubernetes labs
+
+**Estimated module duration** 30 mins.
+
+### Objectives
+
+This module shows how to install the data visualisation tool Grafana and configure it to use Prometheus as a data source. You will then create a simple dashboard using this data, and explore how complex dashboard can be using a pre-built example.
+
+### Prerequisites
+
+The `Prometheus for metrics capture` module must have been completed before you can do this module.
+
+## Displaying data with Grafana
 
 As we've seen while Prometheus can gather lots of data, it is not exactly the most powerful visualization mechanism.
 

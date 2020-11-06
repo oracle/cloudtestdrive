@@ -2,7 +2,19 @@
 
 # Cloud Native - Securing the REST endpoint
 
-This module is a discussion module, there are no exercises for you to do.
+## Introduction
+
+This is an optional reading only module, there are no exerciese to do.
+
+**Estimated module duration** 5 mins.
+
+### Objectives
+
+This module looks at some of the 
+
+### Prerequisites
+You should have completed the `Setting up the cluster and getting your services running in Kubernetes` module.
+
 
 ## Should I secure my REST API ?
 

@@ -14,6 +14,21 @@ This video is an introduction to the Service mesh basics lab. Depending on your 
 
 </details>
 
+
+## Introduction
+
+This is one of the optional sets of Kubernetes labs
+
+**Estimated module duration** 20 mins.
+
+### Objectives
+
+This module shows how to install and configure the Linkerd service mesh, and enable its use with the microservices.
+
+### Prerequisites
+
+You need to complete the `Rolling update` module (last of the core Kubernetes labs modules). You can have done any of the other optional module sets.
+
 ## What is a service mesh
 
 The concept behind a service mesh is pretty simple. It's basically a set of network proxies that are conceptually interposed between the containers running on a pod and the external network of the pod. This is achieved by the service mesh management capability (the control plane) which automatically adds proxies (the data plane) to the pods when the pods are started (if the pod is in a namespace that requests this via annotations)
@@ -473,7 +488,7 @@ kubectl will pick them up and apply them, Kubernetes will restart the linkerd-we
 
 Curiously the linkerd-web ingress does not by default use a TLS certificate to ensure that the connection to it is encrypted, as we will be sending passwords we want to ensure it is encrypted, to do which we need to create a TLS secret in Kubernetes that the ingress controller can use.
 
-Fortunately for us when we first setup our ingress controller and load balancer we installed a certificate in the load balancer for SSL / TLS connections, so we can just use that for the linkerd SSL/TLS endpoint as well. 
+Fortunately for us when we first setup our ingress controller and load balancer we installed a certificate in the load balancer for SSL / TLS connections, so we can just use that for the inkerd SSL/TLS endpoint as well. 
 
 - Move to the `$HOME/helidon-kubernetes/service-mesh` directory
   - `cd $HOME/helidon-kubernetes/service-mesh`

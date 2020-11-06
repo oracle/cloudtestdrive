@@ -1,6 +1,6 @@
 ![](../../../../common/images/customer.logo2.png)
 
-# Cloud Native - Deploying to Kubernetes
+# Cloud Native - Setting up the cluster and getting your services running in Kubernetes
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -13,8 +13,25 @@ This video is an introduction to the Kubernetes core features lab. Depending on 
 
 </details>
 
+## Introduction
 
-### Configure the Helm repository
+This is one of the core Kubernetes labs
+
+**Estimated module duration** 45 mins.
+
+### Objectives
+
+This module takes you through the process of setting up your environment for the Kubernetes labs (including the optional labs)
+
+### Prerequisites
+
+If you are doing the full labs (these include modules on Helidon and Docker) you need to have completed the steps in the `Helidon` modules (including the setup)
+
+If you are only doing the Kubernetes based labs you need to have completed the steps in the `Tenancy Setup for the Kubernetes Labs` module.
+
+In both cases you need to complete the `Create your Kubernetes cluster` and `Cloud Shell Setup for the Kubernetes Labs` modules.
+
+## Configure the Helm repository
 
 Helm is the tool we will be using to install standard software into Kubernetes. While it's possible to load software into Kubertetes by hand Helm makes it much easier as it has pre-defined configurations (called charts) that it pulls from an internet based repository.
 
@@ -50,12 +67,8 @@ Hang tight while we grab the latest from your chart repositories...
 Update Complete. ⎈ Happy Helming!⎈ 
 ```
 
-## Introduction to the lab
 
-### Kubernetes
-Docker is great, but it only runs on a local machine, and doesn't have all of the nice cloud native features of Kubernetes.
-
-#### Getting your cluster access details
+## Getting your cluster access details
 
 Access to the cluster is managed via a config file that by default is located in the $HOME/.kube folder, and is called `config`.  To check the setup, make sure to have copied your personal kubeconfig file to this location : 
 

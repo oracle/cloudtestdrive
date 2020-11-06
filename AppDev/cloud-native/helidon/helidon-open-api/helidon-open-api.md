@@ -17,6 +17,20 @@ This video is an introduction to the Helidon Open API (ex Swagger) lab. Dependin
 
 ## Introduction
 
+This is an optional module with coding.
+
+**Estimated module duration** 20 mins.
+
+### Objectives
+
+This module shows us how Helidon supports the creation of OpenAPI documents based on the actual specific configuration of the Helidon microservices, enabling you to be sure that you can get the current API description and not require manual maintenance of the information.
+
+### Prerequisites
+
+You need to have completed the `Cloud Native support in Helidon` module.
+
+## Why have a self describing API ?
+
 This module is how to get Helidon to self-describe the REST API you are offering. There are several use cases for this, some of those are :
 
 1/ You need the API description in a consistent machine readable form that can be processed by other applications, for example you are using an API gateway and need to define rules for certain endpoints

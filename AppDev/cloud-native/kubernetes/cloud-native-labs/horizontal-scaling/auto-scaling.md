@@ -15,11 +15,23 @@ This video is an introduction to the Kubernetes auto scaling lab. Depending on y
 
 ## Introduction
 
+This is one of the core Kubernetes labs
+
+**Estimated module duration** 20 mins.
+
+### Objectives
+
+This module explores how you can configure Kubernetes to automatically scale the number of pods for your service to handle changes in demand with no manual intervention.
+
+### Prerequisites
+
+You need to complete the `Horizontal Scaling` module.
+
+## Horizontal autoscaling - based on CPU load or Memory usage
+
 We've seen how we can increase (or decrease) the number of pods underlying a service and that the service will automatically balance the load across the pods for us as the pod count changes.
 
 This is great, but it required manual intervention to change the number of pods, and that means we need to keep an eye on what's happening. Fortunately for us Kubernetes has support for automating this process based on rules we define.
-
-## Horizontal autoscaling - based on CPU load or Memory usage
 
 This is the simplest form of auto scaling, though it is also the least flexible as CPU and memory usage may not always be the most effective indicator of when scaling is required. 
 

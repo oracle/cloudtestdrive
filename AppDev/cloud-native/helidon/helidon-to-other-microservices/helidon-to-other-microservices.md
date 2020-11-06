@@ -15,6 +15,18 @@ This video is an introduction to the Helidon communicating with other REST servi
 
 ## Introduction
 
+**Estimated module duration** 20 mins.
+
+### Objectives
+
+Here we will see how you can use a Helidon RESTClient in your Helidon code to access a different microservice, enabling the condtruction of a cooperating mesh of microservices.
+
+### Prerequisites
+
+You need to have completed the `Databases with Helidon` module.
+
+## Service to service communications
+
 For one thing (person, program etc.) to talk to another it does of course need to talk the same language, in the case of microservices this is generally based on the ideas in REST, which is an **architectural style, not a standard** (Anyone who tries to say that REST is a standard should go read the [Wikipedia REST article](https://en.wikipedia.org/wiki/Representational_state_transfer))
 
 REST is generally implemented using http(s) as the transport using XML or JSON text in the body of the request to represent data if needed, so though REST is **not** a standard usually we can get it to work using these mechanisms.

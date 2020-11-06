@@ -15,6 +15,18 @@ This video is an introduction to the Helidon cloud native support lab. Depending
 
 ## Introduction
 
+**Estimated module duration** 10 mins.
+
+### Objectives
+
+Here we will see how Helidon can provide information to operational frameworks to determine not only if your microservice is able to respond to requests, but also if it's operational. This information can be used by coordinators like Kubernetes to restart services or stop directing requests to them.
+
+### Prerequisites
+
+You need to have completed the `Operations support with Helidon` module.
+
+## Is it running ?
+
 Most cloud native platforms (and Kubernetes in particular) need to know if a microservices is running at all, if it's capable of responding to requests and if it has access to all the dependent services it needs to operate. In the event that these conditions are not fulfilled the cloud native platform will take steps like re-starting a microservice instance, or stopping sending it requests for a short while.
 
 The exercises in this section show how you can use Helidon to directly support the cloud native capabilities that Kubernetes uses. It does not directly cover using them in Kubernetes however, but if you're doing the microservices in kubernetes sections of the workshop then this will make sense when you do it.

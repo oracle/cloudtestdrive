@@ -15,11 +15,13 @@ This video is an introduction to the Helidon in a Docker container lab. Dependin
 
 ## Introduction
 
-Docker has become the defacto way of packaging code into containers and then running them. In this module we will show you how to use jib to automatically build the container images, use docker to run them locally and then push them to the Oracle Container Image Registry (though you could of course push them to dockerhub or other locations.
+**Estimated module duration** 20 mins.
 
-The Kubernetes labs that follow this one can be adapted to use the images you're building here if you'd rather not use the ones we pre-built for you.
+### Objectives
 
-Like the Helidon lab you perform these steps **inside** the client virtual machine
+Docker has become the defacto way of packaging code into containers and then running them. In this module we show how we can package a microservice using JIB into a docker container, to separate the configuration from the code, to run the containers and push them to a repository.
+
+If you chose to do the Kubernetes labs they can be adapted to use the containers you're building here if you'd rather not use the ones we pre-built for you.
 
 ### Prerequisites
 To run this part of the lab you need the working storefront and stockmanager microservices (as per the Helidon labs) connected to the database.
@@ -36,6 +38,9 @@ To run this part of the lab you need the working storefront and stockmanager mic
   e3a7df18cd77        openzipkin/zipkin   "/busybox/sh run.sh"   3 seconds ago       Up 2 seconds        9410/tcp, 0.0.0.0:9411->9411/tcp   zipkin
   ```
   - If the entry is **missing**, relaunch it:  `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin:2.22.0`
+
+Like the Helidon lab you perform these steps **inside** the client virtual machine
+
 
 
 ## Jib - Docker image build tool

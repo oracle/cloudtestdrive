@@ -11,7 +11,21 @@ This video is an introduction to the Kubernetes rolling upgrades lab. Depending 
 
 </details>
 
-## **Introduction**
+## Introduction
+
+This is one of the core Kubernetes labs
+
+**Estimated module duration** 20 mins.
+
+### Objectives
+
+This module demonstrates how the rolling update capabilities in Kubernetes can be used to update a microservice container or configuration with no service interruption. It also looks at how to undo an update if there is a problem with it.
+
+### Prerequisites
+
+You need to complete the `Auto Scaling` module.
+
+## *Why Rolling updates
 
 One of the problems when deploying an application is how to update it while still delivering service, and perhaps more important (but usually given little consideration) how to revert the changes in the event that the update fails to work in some way.
 

@@ -13,6 +13,20 @@ This video is an introduction to the Monitoring microservcies with Prometheus la
 
 </details>
 
+## Introduction
+
+This is one of the optional sets of Kubernetes labs
+
+**Estimated module duration** 20 mins.
+
+### Objectives
+
+This module shows how to install the data capture tool Prometheus and how to configure your microservices to be "scraped" by it. We do some simple retrieval and display of the captured data.
+
+### Prerequisites
+
+You need to complete the `Rolling update` module (last of the core Kubernetes labs modules). You can have done any of the other optional module sets.
+
 ## **Introduction**
 
 Monitoring a service in Kubernetes involves three components

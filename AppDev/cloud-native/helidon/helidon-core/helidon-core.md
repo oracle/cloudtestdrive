@@ -14,6 +14,17 @@ This video is an introduction to the Helidon core capabilities lab. Depending on
 
 </details>
 
+## Introduction
+
+**Estimated module duration** 60 mins.
+
+### Objectives
+
+This module looks at the core Helidon features for REST enabling code to convert it to a microservice. We also look at how to add security to your requests, understand the implications of scope, how to use Context and Dependency injection to automatically inject instances and configuration values into your classes, define and manage configuration changes, and use the Helidon features to handle problems from being distributed applications rather than a single monolith. 
+
+### Prerequisites
+
+You need to have completed the `Setting up your tenancy` and `Setup for the Helidon labs` modules
 
 ## REST enabling our Java classes.
 

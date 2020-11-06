@@ -2,6 +2,18 @@
 
 # Kubernetes labs - Cloud Shell setup
 
+## Introduction
+
+**Estimated module duration** 10 mins.
+
+### Objectives
+
+This module takes you through the process of setting up your OCI Cloud shell environment for the Kubernetes labs (including the optional labs)
+
+### Prerequisites
+
+You need to complete the `Create your Kubernetes cluster` module.
+
 ## Accessing the cloud shell
 
 You will be using the **Oracle OCI Cloud shell** to run the Kubernetes parts of the labs.

@@ -2,7 +2,20 @@
 
 # Setting up your Cloud Tenancy 
 
-### Introduction
+## Introduction
+
+**Estimated module duration** 30 mins.
+
+### Objectives
+
+This module takes you through the process of setting up your tenancy to fit the lab instructions, creating a database and a development virtual machine to use in the coding parts of this lab. You only need to do this setup once in your tenancy.
+
+### Prerequisites
+
+You need to an Oracle Cloud tenancy, with either full admin rights (For example a trial tenancy) **OR** if you have a tenancy but not full admin rights you need a existing compartment (ideally called `CTDOKE` to match the instructions) with full admin rights in that compartment.
+
+
+## Setup needed
 
 This page explains all the steps to set up your **Oracle Cloud Tenancy** so you are ready to run the labs.  Because participants can use different types of tenancies, not all steps need to be executed by everybody.  In the situation that you are using a new **Oracle Free Tier** or **Trial tenancy** environment, you are probably starting from an "empty page" and will most likely have to execute all the steps below. If you are using an existing **paid tenancy** then you may need to get the tenancy administrator to create a compartment, create security roles with the appropriate policies and to assign your user to that role.
 

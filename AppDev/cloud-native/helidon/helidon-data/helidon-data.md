@@ -15,6 +15,16 @@ This video is an introduction to the Helidon database capabilities lab. Dependin
 
 ## Introduction
 
+**Estimated module duration** 15 mins.
+
+### Objectives
+
+Here we will see how we can use Helidon CDI to get an EntityManager to access a database from within our microservice, and how to quickly make the microservices transactionaly safe.  
+
+### Prerequisites
+
+You need to have completed the `Core Helidon` module.
+
 <details><summary><b>Introduction to Databases</b></summary>
 
 Unlike SPRING with the SPRINGData projects microprofile (and thus Helidon) does not currently have a built in mechanism for accessing databases. This is however something that is being looked at and hopefully at some point there will be a Microprofile standard for accessing data which Helidon can implement. At that point these labs will be updated to reflect the changes.

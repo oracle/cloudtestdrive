@@ -14,6 +14,18 @@ This video is an introduction to the Helidon operations support lab. Depending o
 
 ## Introduction
 
+**Estimated module duration** 20 mins.
+
+### Objectives
+
+Here we will see how you can use the Helidon features to transparently enable tracing of requests from start to finish, enabling you to understand your process flow. We also examine how to enable the automatic collection of metrics so monitoring tools can see the operational characteristics of your microservice. 
+
+### Prerequisites
+
+You need to have completed the `Communicating between microservices with Helidon` module.
+
+## Why care about operations ?
+
 One thing that many developers used to forget is that once they have finished writing code it still has to run and be maintained. With the introduction of DevOps a lot of developers suddenly found they were the ones being woken up in the middle of the night to fix problems in their code. That changes the perception somewhat and now many developers are acutely aware that they will have ongoing involvement in the code well after the time it compiles cleanly and passed the text suite.
 
 To help maintain and operate systems after they have been released a lot of information is needed, especially in situations where a bug may be on one service, but not show up until the resulting data has passed through several other microservcies. 

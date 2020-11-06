@@ -14,6 +14,20 @@ This video is an introduction to the Log Capture for processing labs Depending o
 
 ## Introduction
 
+This is one of the optional sets of Kubernetes labs
+
+**Estimated module duration** 20 mins.
+
+### Objectives
+
+This module shows how to install and configure the log capture tool Fluentd, and write data to an elastic search instance where it could be subsequently processed or analysed (this processing / analysis is not covered in this module)
+
+### Prerequisites
+
+You need to complete the `Rolling update` module (last of the core Kubernetes labs modules). You can have done any of the other optional module sets. The `log capture for archive` module is also optional.
+
+## Log capture for processing and analysis
+
 <details><summary><b>The problem with log data in a distributed cloud native environment</b></summary>
 
 

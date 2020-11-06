@@ -16,6 +16,20 @@ This video is an introduction to the troubleshooting with a Service mesh lab. De
 
 ## Introduction
 
+This is one of the optional sets of Kubernetes labs
+
+**Estimated module duration** 20 mins.
+
+### Objectives
+
+This module shows how to use Linkerd to see identify problems in the traffic between your microservices.
+
+### Prerequisites
+
+You need to complete the `Rolling update` module (last of the core Kubernetes labs modules). You must have completed the `Installing the Linkerd service mesh` module. You can have done any of the other optional module sets, or any combination of the other service mesh modules.
+
+## What Linkerd brings to troubleshooting
+
 A service mesh like Linkerd doesn't just provide encryption and traffic statistics. It can also be used to help identify problems though it's monitoring capabilities.
 
 In this module we are going to look at how to use a service mesh to track down the cause of a problem.

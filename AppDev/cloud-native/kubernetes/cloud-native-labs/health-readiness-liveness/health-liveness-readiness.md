@@ -15,6 +15,20 @@ This video is an introduction to the Kubernetes health, readiness and liveness l
 
 ## Introduction
 
+This is one of the core Kubernetes labs
+
+**Estimated module duration** 15 mins.
+
+### Objectives
+
+This module takes you through the Kubernetes functionality for detecting failed pods, stuck pods and pods that cannot process requests.
+
+### Prerequisites
+
+You need to complete the `Setting up the cluster and getting your services running in Kubernetes` module.
+
+## Kubernetes and pod health
+
 Kubernetes provides a service that monitors the pods to see if they meet the requirements in terms of running, being responsive, and being able to process requests. 
 
 A core feature of Kubernetes is the assumption that eventually for some reason or another something will happen that means a service cannot be provided, and the designers of Kubernetes made this a core understanding of how it operates. Kubernetes doesn't just set things up they way you request, but it also continuously monitors the state of the entire deployments so that if the system does not meet what was specified Kubernetes steps in and automatically tries to adjust things so it does!
