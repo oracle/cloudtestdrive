@@ -24,7 +24,7 @@ If you are doing the full labs (these include modules on Helidon and Docker) you
 
 If you are only doing the Kubernetes based labs you need to have completed the steps in the `Tenancy Setup for the Kubernetes Labs` module.
 
-## Creating your Kubernetes cluster
+## Step 1: Creating your Kubernetes cluster
 
 ### Navigate to the Managed Kubernetes dashboard
 

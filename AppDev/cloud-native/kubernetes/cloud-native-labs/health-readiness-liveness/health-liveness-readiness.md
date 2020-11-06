@@ -27,7 +27,7 @@ This module takes you through the Kubernetes functionality for detecting failed 
 
 You need to complete the `Setting up the cluster and getting your services running in Kubernetes` module.
 
-## Kubernetes and pod health
+## Step 1: Kubernetes and pod health
 
 Kubernetes provides a service that monitors the pods to see if they meet the requirements in terms of running, being responsive, and being able to process requests. 
 
@@ -35,7 +35,7 @@ A core feature of Kubernetes is the assumption that eventually for some reason o
 
 These labs look at how that is achieved.
 
-## Is the container running ?
+## Step 2: Is the container running ?
 
 As we've seen a service in Kubernetes is delivered by programs running in containers. The way a container operates is that it runs a single program, once that program exists then the container exits, and the pod is no longer providing the service. 
 
@@ -154,7 +154,7 @@ Kubernetes has identified that the container exited and within the pod restarted
 ```
 
 
-## Liveness
+## Step 3: Liveness
 We now have mechanisms in place to restart a container if it fails, but it may be that the container does not actually fail, just that the program running in it ceases to behave properly, for example there is some kind of non fatal resource starvation such as a deadlock. In this case the pod cannot recognize the problem as the container is still running.
 
 Fortunately Kubernetes provides a mechanism to handle this as well. This mechanism is called **Liveness probes**, if a pod fails a liveness probe then it will be automatically restarted.
@@ -448,7 +448,7 @@ The pod became unhealthy, then the container was killed and a fresh new containe
 
  (Leave the extra window open as you'll be using it again later)
  
-## Readiness
+## Step 4: Readiness
 The first two probes determine if a pod is alive and running, but it doesn't actually report if it's able to process events. That can be a problem if for example a pod has a problem connecting to a backend service, perhaps there is a network configuration issue and the pods path to a back end service like a database is not available.
 
 In this situation restarting the pod / container won't do anything useful, it's not a problem with the container itself, but something outside the container, and hopefully once that problem is resolved the front end service will recover (it's it's been properly coded and doesn't crash, but in that case one of the other health mechanisms will kick in and restart it) **BUT** there is also no point in sending requests to that container as it can't process them.

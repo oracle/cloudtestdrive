@@ -28,7 +28,7 @@ This module shows how to install the data visualisation tool Grafana and configu
 
 The `Prometheus for metrics capture` module must have been completed before you can do this module.
 
-## Displaying data with Grafana
+## Step 1: Displaying data with Grafana
 
 As we've seen while Prometheus can gather lots of data, it is not exactly the most powerful visualization mechanism.
 
@@ -36,7 +36,7 @@ Grafana on the other hand is a very powerful open source visualization engine an
 
 For this lab we will use a small subset of the open source features only.
 
-## Installing Grafana
+## Step 2: Installing Grafana
 Like many other Kubernetes services Grafana can be installed using helm. By default the helm chart does not create a volume for the storage of the grafana configuration. This would be a problem in a production environment, so we're going to use the persistent storage option defined inthe helm chart for Grafana to create a storage volume. 
 
 - Create the Helm repository entry for Grafana
@@ -451,7 +451,7 @@ Now we can see more details
 
 ![grafana-stock-performance-dashboard-with-data](images/grafana-stock-performance-dashboard-with-data.png)
 
-## More complex dashboards
+## Step 3: More complex dashboards
 This is a fairly simple dashboard, far more complex ones are easily achievable using a combination or Prometheus and Grafana. As an example we're going to look at a prebuilt dashboard.
 
 - Click the Grafana logo ![grafana-logo](images/grafana-logo.png) on the upper left. 
@@ -488,7 +488,7 @@ The dashbaords will be imported (there will be a quick "I'm doing an import" mes
 
 ---
 
-## Tidying up the environment
+## Step 4: Tidying up the environment
 
 If you are in a trial tenancy there are limitations on how many Load Balancers and other resources you can have in use at any time, and you may need them for other modules. The simplest way to release the resources used in his module (including the load balancer) is to delete the entire namespace.
 

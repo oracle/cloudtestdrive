@@ -25,7 +25,7 @@ Here we will see how you can use a Helidon RESTClient in your Helidon code to ac
 
 You need to have completed the `Databases with Helidon` module.
 
-## Service to service communications
+## Step 1: Service to service communications
 
 For one thing (person, program etc.) to talk to another it does of course need to talk the same language, in the case of microservices this is generally based on the ideas in REST, which is an **architectural style, not a standard** (Anyone who tries to say that REST is a standard should go read the [Wikipedia REST article](https://en.wikipedia.org/wiki/Representational_state_transfer))
 
@@ -214,7 +214,7 @@ In fact for some code in this lab (e.g. the ItemDetails class) that is common we
 
 </details> 
 
-## Creating the REST client.
+## Step 2: Creating the REST client.
 It's possible to manually create a REST client using the interface, but it's far better to let Helidon use the @RestClient coupled with @Inject to do this for us. That way we don't have to worry about closing the client to reclaim resources and so on.
 
 - Navigate to the **resources** folder and open the file **StorefrontResource.java**
@@ -413,7 +413,7 @@ public class TransferClientHeaders implements ClientHeadersFactory {
 If you have a non Helidon micro-service and want to talk to it from a Helidon MP client just create an appropriate interface to represent the REST service and then follow the approach above to create the proxy implementations of the interface and use it.
 
 
-## Non Helidon MP clients of a micro service, also known as My monolith is not decomposed yet
+## Step 3: Non Helidon MP clients of a micro service, also known as My monolith is not decomposed yet
 Of course here we've been assuming that this is a Helidon MP micro-service talking to another Helidon MP micro-service. But it's quite possible (even probable) that you are actually going to be making a gradual transition of your monolithic applications to micro-services and will be splitting of bits of the monolith at a time. In those cases you want to be able to connect your remaining monolith to the new micro-service while making as few changes to the monolith as possible. In that case you can still use the approach of defining an interface for your micro-service and then creating a proxy implementation. Your original code just continues to use the proxy which it thinks is the real local object, not a remote micro-service, the only code changed required in the origional monolith code is to crate the proxy rather than instantiate a local class.
 
 For more details there is a optional lab (See the main labs listing) that explores how to do this.

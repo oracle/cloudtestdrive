@@ -27,7 +27,7 @@ This module explores how you can configure Kubernetes to automatically scale the
 
 You need to complete the `Horizontal Scaling` module.
 
-## Horizontal autoscaling - based on CPU load or Memory usage
+## Step 2: Horizontal autoscaling - based on CPU load or Memory usage
 
 We've seen how we can increase (or decrease) the number of pods underlying a service and that the service will automatically balance the load across the pods for us as the pod count changes.
 
@@ -456,7 +456,7 @@ zipkin         1/1     1            1           4d2h
 
 The number of pods is now back to one (it may be that you get a report of 2 pods still running, in which case try getting the deployments again a little bit later.
 
-## Autoscaling on other metrics
+## Step 2: Autoscaling on other metrics
 We have here looked at how to use CPU and memory to determine when to autoscale, that may be a good solution, or it may not. Kubernetes autoscaling can support the use of other metrics to manage autoscaling.
 
 These other metrics can be other Kuberneties metrics (known as custom metrics) for example the number of requests to the ingress controller, or (with the provision of the [Prometheus Adaptor (helm chart)](https://github.com/helm/charts/tree/master/stable/prometheus-adapter)) any metric that Prometheus gathers. This last is especially useful as it means you can autoscale on what are effectively business metrics.

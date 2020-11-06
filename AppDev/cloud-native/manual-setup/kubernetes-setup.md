@@ -24,7 +24,7 @@ If you have completed the Helidon labs then you will have already setup the comp
 
 **If you are attending an instructor-led lab**, your instructor will detail steps you need to execute and which ones you can skip.
 
-## 1. Create the CTDOKE compartment
+## Step 1: Create the CTDOKE compartment
 
 - Click the `hamburger` menu (three bars on the upper left)
 
@@ -47,7 +47,7 @@ If you have completed the Helidon labs then you will have already setup the comp
 
 ![](images/create-compartment.png)
 
-## 2. Setup the database
+## Step 2: Setup the database
 
 ### 2a. Create the database
 

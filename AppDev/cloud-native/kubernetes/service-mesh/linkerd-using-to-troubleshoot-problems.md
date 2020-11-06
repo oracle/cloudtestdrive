@@ -28,7 +28,7 @@ This module shows how to use Linkerd to see identify problems in the traffic bet
 
 You need to complete the `Rolling update` module (last of the core Kubernetes labs modules). You must have completed the `Installing the Linkerd service mesh` module. You can have done any of the other optional module sets, or any combination of the other service mesh modules.
 
-## What Linkerd brings to troubleshooting
+## Step 1: What the service mesh brings to troubleshooting
 
 A service mesh like Linkerd doesn't just provide encryption and traffic statistics. It can also be used to help identify problems though it's monitoring capabilities.
 
@@ -44,7 +44,7 @@ in the case of Linkerd if a service fails to respond at all, or it responds but 
 
 Well fortunately for us I have build a version of the Stock Manager that can be configured to generate deliberate errors (I promise it's not just me doing bad coding :-) ) We will deploy this new version and then configure it to generate errors on half of the requests it makes.
 
-## Using a service mesh to troubleshoot
+## Step 2: Using a service mesh to troubleshoot
 
 ### Start the load generator
 
@@ -326,7 +326,7 @@ You can now see the details of the failed call. Click the `Close` button on the 
 Of course this is only showing us the network part of the troubleshooting process, but it's given us a lot of useful information to we can easily understand where the problems might be, and at least some information as to the details surrounding the failures. It's a lot better than just getting a `424 Failed Dependency` result!
 
 
-## Resetting the environment
+## Step 3: Resetting the environment
 
 
 ### Stopping the load generator

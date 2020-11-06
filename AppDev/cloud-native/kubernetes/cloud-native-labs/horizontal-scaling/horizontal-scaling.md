@@ -28,7 +28,7 @@ This module explores how you can use Kubernetes to easily change the number of p
 You need to complete the `Cloud native with Kubernetes` module.
 
 
-## Manual scaling
+## Step 1: Manual scaling
 
 In most cases a microservice is horizontally scalable, at least if the services were developed using the principles defined in [The 12 factors](https://12factor.net/)
 

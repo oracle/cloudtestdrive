@@ -29,7 +29,7 @@ This module shows us how Helidon supports the creation of OpenAPI documents base
 
 You need to have completed the `Cloud Native support in Helidon` module.
 
-## Why have a self describing API ?
+## Step 1: Why have a self describing API ?
 
 This module is how to get Helidon to self-describe the REST API you are offering. There are several use cases for this, some of those are :
 
@@ -47,7 +47,7 @@ OpenAPI describes the data format, but there has also been the development of to
 
 In the case of Microprofile (and this Helidon as a Microprofile implementation) this was done through the MicroProfile OpenAPI specification which defines annotations to be used when generating the OpenAPI documents and associated the control mechanisms (for example to exclude API elements that are not intended to be publicly exposed)
 
-## Defining the API documentation in your code
+## Step 2: Defining the API documentation in your code
 
 <details><summary><b>A Note on annotation processing and jandex</b></summary>
 
@@ -69,7 +69,7 @@ Because running JANDEX can take a lot of time (relatively speaking) you don't wa
 
 </details>
 
-## Annotating the Storefront
+## Step 3: Annotating the Storefront
 In this module we will be adding annotations to describe the storefront service and the data it consumes and returns. In a production environment you may chose to limit what's documented and restrict it to only the public API elements intended to be seen outside your project (this will of course be up to you how you do this, but in general it's good practice not to document something that can't be seen externally)
 
 You may of course chose to document other services, for example the stockmanager would normally not publicly visible outside the Kubernetes cluster, but you may chose to document it's API to help building internal clients of the service.
@@ -129,7 +129,7 @@ The title, description and version fields are I hope self explanatory
 
 </details>
 
-## Creating the index
+## Step 4: Creating the index
 Before we can see the updates to the OpenAPI spec we need to build an index of the annotations
 
 Unlike the server processing annotations the OpenAPI processing only operates against a jandex index, and won't scan for OpenAPI annotations in the class files (I'm not sure if this is a bug or a feature)
@@ -701,7 +701,7 @@ This looks much better, we can see the details of the core REST API we want to e
   
 Strictly speaking this is all that you need to be able to use the API from a caller perspective, you know what to send and what to expect in return, but it's not very detailed information, and it doesn't actually tell you much about what those end-points do (of course this is not completely true here because as a good programmer I've tried to use meaningful names).
 
-## Defining the inputs and outputs
+## Step 5: Defining the inputs and outputs
 
 We've got basic information on the ItemRequest (and of course full info on ItemDetails as that was documented in a separate project). let's see how we can document the ItemRequest in more details.
 

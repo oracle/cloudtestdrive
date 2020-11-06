@@ -28,7 +28,7 @@ This module shows how to use Linkerd to see the traffic flows between your micro
 
 You need to complete the `Rolling update` module (last of the core Kubernetes labs modules). You must have completed the `Installing the Linkerd service mesh` module. You can have done any of the other optional module sets, or any combination of the other service mesh modules.
 
-## Using the service mesh to see what's happening
+## Step 1: Using the service mesh to see what's happening
 
 We've seen how to install and run the service mesh, we're now doing to look at how to use it.
 
@@ -293,7 +293,7 @@ There is more information on control plan failure in [the linkerd FAQ](https://l
 
 </details>
 
-## Looking at the Grafana visualizations.
+## Step 2: Looking at the Grafana visualizations.
 
 The data we've seen so far is the live view, but if we wanted to understand what was happening over a longer period of time (say to understand how the request breakdown changes over the day) we want to look at historical data. To do that we will use the Grafana visualizations that the linkerd install setup for us. 
 
@@ -355,7 +355,7 @@ The ones that have recently been visited are listed first (I've been exploring a
 
 Feel free to explore the dashboards if you like, the Linkerd Health dashboard provides information on the operation of linkerd itself, whcih may be of interest to the linkerd developers.
 
-## Stopping the load generator
+## Step 3: Stopping the load generator
 
 - In the OCI cloud shell type
   - `jobs`
