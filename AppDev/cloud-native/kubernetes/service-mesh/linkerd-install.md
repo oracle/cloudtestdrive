@@ -14,7 +14,22 @@ This video is an introduction to the Service mesh basics lab. Depending on your 
 
 </details>
 
-## What is a service mesh
+
+## Introduction
+
+This is one of the optional sets of Kubernetes labs
+
+**Estimated module duration** 20 mins.
+
+### Objectives
+
+This module shows how to install and configure the Linkerd service mesh, and enable its use with the microservices.
+
+### Prerequisites
+
+You need to complete the `Rolling update` module (last of the core Kubernetes labs modules). You can have done any of the other optional module sets.
+
+## Step 1: What is a service mesh
 
 The concept behind a service mesh is pretty simple. It's basically a set of network proxies that are conceptually interposed between the containers running on a pod and the external network of the pod. This is achieved by the service mesh management capability (the control plane) which automatically adds proxies (the data plane) to the pods when the pods are started (if the pod is in a namespace that requests this via annotations)
 
@@ -38,7 +53,7 @@ Most Service mesh implementations are open source to some level, but currently o
 
 Currently there is no agreed standard on how to manage a service mesh, or even exactly what it does, though the [CNCF Service Mesh Interface project](https://smi-spec.io/)  is starting to define one. 
 
-## What does that mean as an cluster operator or administrator?
+## Step 2L What does that mean as an cluster operator or administrator?
 
 Well the short version is that you need to be careful in choosing the right service mesh to meet your needs!
 
@@ -48,7 +63,7 @@ Installing a service mesh adds an additional layer of abstraction to your cluste
 
 Ultimately, the way to think about a service mesh as a cluster operator is to consider that adding this layer will result in better observability and security for your applications.
 
-## Which service mesh to use ?
+## Step 3: Which service mesh to use ?
 
 There is no simple answer to this, as none of them are built into Kubernetes and there is no official standard. 
 
@@ -56,7 +71,7 @@ Factors to consider are functionality, if it's fully or partially open source, w
 
 The important thing is to define your requirements before selecting a service mesh.
 
-## How to install a a service mesh ?
+## Step 4: How to install a a service mesh ?
 
 For the purposes of this lab we've chosen to use Linkerd as it's a long standing service mesh implementation and is the only CNCF supported service mesh project (at the time of writing.) It also has a reputation for being simple to install and use. The Linkerd website has an [FAQ on the differences](https://linkerd.io/2/faq/#whats-the-difference-between-linkerd-and-istio) and open source implications
 
@@ -438,7 +453,7 @@ If the linkerd environment is not yet running the check will block until the ser
 
 You can see that everything is running fine, there is a lot more output as the check confirms that linkerd itself has all the elements it needs to operate, and it is working fine.
 
-## Configuring access to the linkerd UI
+## Step 5: Configuring access to the linkerd UI
 
 Linkerd is managed via the linkerd command OR via it's browser based dashboard. In general you want to use the dashboard as it give you access to the Grafana instance provided by Linkerd and thus you get the visualizations.
 
@@ -473,7 +488,7 @@ kubectl will pick them up and apply them, Kubernetes will restart the linkerd-we
 
 Curiously the linkerd-web ingress does not by default use a TLS certificate to ensure that the connection to it is encrypted, as we will be sending passwords we want to ensure it is encrypted, to do which we need to create a TLS secret in Kubernetes that the ingress controller can use.
 
-Fortunately for us when we first setup our ingress controller and load balancer we installed a certificate in the load balancer for SSL / TLS connections, so we can just use that for the linkerd SSL/TLS endpoint as well. 
+Fortunately for us when we first setup our ingress controller and load balancer we installed a certificate in the load balancer for SSL / TLS connections, so we can just use that for the inkerd SSL/TLS endpoint as well. 
 
 - Move to the `$HOME/helidon-kubernetes/service-mesh` directory
   - `cd $HOME/helidon-kubernetes/service-mesh`

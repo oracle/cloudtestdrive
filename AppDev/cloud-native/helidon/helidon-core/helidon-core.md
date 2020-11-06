@@ -14,8 +14,19 @@ This video is an introduction to the Helidon core capabilities lab. Depending on
 
 </details>
 
+## Introduction
 
-## REST enabling our Java classes.
+**Estimated module duration** 60 mins.
+
+### Objectives
+
+This module looks at the core Helidon features for REST enabling code to convert it to a microservice. We also look at how to add security to your requests, understand the implications of scope, how to use Context and Dependency injection to automatically inject instances and configuration values into your classes, define and manage configuration changes, and use the Helidon features to handle problems from being distributed applications rather than a single monolith. 
+
+### Prerequisites
+
+You need to have completed the `Setting up your tenancy` and `Setup for the Helidon labs` modules
+
+## Step 1: REST enabling our Java classes.
 
 - Open the Eclipse IDE. There is an Eclipse icon on the desktop, double click it, and wait for Eclipse to start.
 
@@ -522,7 +533,7 @@ Now you've seen how Helidon can not only REST enable methods, but also handle th
 
 
 
-## Authentication
+## Step 2: Authentication
 
 <details><summary><b>The theory</b></summary>
 
@@ -643,7 +654,7 @@ With a single annotation and a config file we've now ensured that our service is
 
 
 
-## Scope of classes and additional REST endpoints
+## Step 3: Scope of classes and additional REST endpoints
 A big application may have multiple sets of services, grouped into resources, so far we're looking at the StorefrontResource that handles the stock interactions. But what if we want to have other resources for other parts of the application ?
 
 <details><summary><b>Details of the class ConfigurationResource</b></summary>
@@ -935,7 +946,7 @@ content-length: 54
 
 We'll look at what the StatusResource is used for later
 
-## Content and Dependency Injection
+## Step 4: Content and Dependency Injection
 
 ### Injecting classes and resources
 
@@ -1382,7 +1393,7 @@ content-length: 1
 ```
 
 
-## Monitoring the configuration for changes
+## Step 5: Monitoring the configuration for changes
 <details><summary><b>How it works</b></summary>
 
 
@@ -1497,7 +1508,7 @@ The value is injected **after** the classes constructor has been run, so if the 
 
 </details>
 
-## Separating functionality by port
+## Step 6: Separating functionality by port
 Helidon can deliver service using multiple ports, for example separating out the administration functions (e.g. metrics, health etc.) from the operational functions.
 
 Look at the contents config file in conf/storefront-network.yaml 
@@ -1557,7 +1568,9 @@ You will see that it defines two network ports, the primary one on port 8080 and
 We will look more in the the services like health that are available on the admin port in a later exercise.
 
 
-## Handling problems
+## Step 7: Handling problems
+
+When working in a distributed set of microservices you are operating in a networked environment, and that introduced a potential set of faults that are different from just accessing a local object instance. 
 
 ### Handling failures
 It's a fact of life that problems sometimes occur. We saw in the console output earlier that the reserveStockItem method will throw a MinimumChangeException if the request does not exceed the specified minimum change.

@@ -15,11 +15,23 @@ This video is an introduction to the Kubernetes auto scaling lab. Depending on y
 
 ## Introduction
 
+This is one of the core Kubernetes labs
+
+**Estimated module duration** 20 mins.
+
+### Objectives
+
+This module explores how you can configure Kubernetes to automatically scale the number of pods for your service to handle changes in demand with no manual intervention.
+
+### Prerequisites
+
+You need to complete the `Horizontal Scaling` module.
+
+## Step 2: Horizontal autoscaling - based on CPU load or Memory usage
+
 We've seen how we can increase (or decrease) the number of pods underlying a service and that the service will automatically balance the load across the pods for us as the pod count changes.
 
 This is great, but it required manual intervention to change the number of pods, and that means we need to keep an eye on what's happening. Fortunately for us Kubernetes has support for automating this process based on rules we define.
-
-## Horizontal autoscaling - based on CPU load or Memory usage
 
 This is the simplest form of auto scaling, though it is also the least flexible as CPU and memory usage may not always be the most effective indicator of when scaling is required. 
 
@@ -444,7 +456,7 @@ zipkin         1/1     1            1           4d2h
 
 The number of pods is now back to one (it may be that you get a report of 2 pods still running, in which case try getting the deployments again a little bit later.
 
-## Autoscaling on other metrics
+## Step 2: Autoscaling on other metrics
 We have here looked at how to use CPU and memory to determine when to autoscale, that may be a good solution, or it may not. Kubernetes autoscaling can support the use of other metrics to manage autoscaling.
 
 These other metrics can be other Kuberneties metrics (known as custom metrics) for example the number of requests to the ingress controller, or (with the provision of the [Prometheus Adaptor (helm chart)](https://github.com/helm/charts/tree/master/stable/prometheus-adapter)) any metric that Prometheus gathers. This last is especially useful as it means you can autoscale on what are effectively business metrics.

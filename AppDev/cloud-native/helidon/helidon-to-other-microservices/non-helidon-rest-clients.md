@@ -4,6 +4,20 @@
 
 ## Introduction
 
+This is an optional module **with no coding** , if you do not wish to do it please continue with the rest of your lab.
+
+**Estimated module duration** 10 mins.
+
+### Objectives
+
+Here we will see how you can use a Helidon RESTClient in your existing Java code to access a microservice (which can be written using Java and Helidon or any other language / framework). This enables the easy partial migration of existing code to a microservices base approach.
+
+### Prerequisites
+
+You need to have completed the `Communicating between microservcies with Helidon` module.
+
+## Step 1: RESTClient without all of Helidon
+
 The RestClient model in Helidon makes it really simple to program access to another micro-service, but sometimes you will be using something that isn't itself a micro-service to talk to a REST endpoint. It may be that you just haven't got round to updating that code to be Helidon based, or perhaps you never intend to. In that case you probably do not want to bring in the entire Helidon MP stack and change the client to being Helidon based!
 
 There are of course many client side frameworks in place to allow you to make a call to a REST end point, for example you could use the basic [Java HTTP client service](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html) which allows you to build every stage of the client connection, defining proxies and so on. There are also clients built on the Reactive Framework. The following is an example using the Http client taken from the Java docs page
@@ -29,7 +43,7 @@ If you are refactoring your monolith code and only want to move a small part of 
 
 Fortunately for us Helidon does provide a way of doing this without having to deploy the entire Helidon framework and using the Helidon SE RestClientBuilder. Of course other Microprofile implementations also provide a similar package.
 
-## How to do it
+## Step 2: How to do it
 
 ### Define the service interface
 

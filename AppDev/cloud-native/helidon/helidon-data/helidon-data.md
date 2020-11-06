@@ -15,6 +15,16 @@ This video is an introduction to the Helidon database capabilities lab. Dependin
 
 ## Introduction
 
+**Estimated module duration** 15 mins.
+
+### Objectives
+
+Here we will see how we can use Helidon CDI to get an EntityManager to access a database from within our microservice, and how to quickly make the microservices transactionaly safe.  
+
+### Prerequisites
+
+You need to have completed the `Core Helidon` module.
+
 <details><summary><b>Introduction to Databases</b></summary>
 
 Unlike SPRING with the SPRINGData projects microprofile (and thus Helidon) does not currently have a built in mechanism for accessing databases. This is however something that is being looked at and hopefully at some point there will be a Microprofile standard for accessing data which Helidon can implement. At that point these labs will be updated to reflect the changes.
@@ -46,7 +56,7 @@ If you want to understand JPA and JTA in a lot of detail there are courses avail
 
 
 
-## Configuring the project to be personal to you
+## Step 1: Configuring the project to be personal to you
 For some versions of this lab, all attendees will are operating on a shared database, and updating the same table. To ensure that your work doesn't interfere with other peoples work you need to provide a unique identity for yourself
 
 - In Eclipse, switch to the **helidon-labs-stockmanager** project.
@@ -84,7 +94,7 @@ Please make sure that for now you have **stopped** the **storefront** applicatio
 ---
 
 
-## Overview of the classes
+## Step 2: Overview of the classes
 
 ### Quick overview of the database functionality
 The com.oracle.labs.helidon.stockmanager.resources.StockmanagerResource class is the primary class we'll be working with in this lab. If you're not familiar with JPA however there are some other classes you should look at.
@@ -206,7 +216,7 @@ Here (to make it clear what's happening) I've used the same name for the path an
 
 Other possible sources for the params are @QueryParam and @FormsParam. Which one you chose will depend on what URL you are expecting (or want) to get.
 
-## Accessing the database
+## Step 3: Accessing the database
 
 ### Getting an entity manager
 JPA requires an entity manager to do the work of interacting with the database for us. Historically however that would require code like the following which is in the StockResource constructor.
@@ -444,7 +454,7 @@ javax.persistence.TransactionRequiredException
 
 `TransactionRequiredException` sounds pretty serious, and it is, it's because we're trying to modify the database, and Helidon created entity management knows that this should be done in a transaction. Whenever you modify a database it's a pretty good rule of thumb that you need a transaction to keep things safe and consistent, even when the modification is a single row in a single database.
 
-## Automatic Transactions
+## Step 4: Automatic Transactions
 We could manually ask the entity manager to start and and transactions, but that's a load of extra code, and the possible paths if there are problems to do the rollback or commit are significant. Let's use the Java Transaction API (JTA) to do it for us.
 
 Fortunately for us all we need is an @Transactional annotation and Helidon will trigger the JTA to manage the transactions for us.
@@ -514,8 +524,8 @@ content-length: 36
 
 It has been committed to the database.
 
-## Creating some data and testing the stockmanager works
-- Restart the stockmanaer.Main 
+## Step 5: Creating some data and testing the stockmanager works
+- Restart the stockmanager.Main 
 
 - Use curl to create some stock items (expect an error on the last one) :
   - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pin/5000`

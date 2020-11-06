@@ -1,6 +1,6 @@
 ![](../../../../common/images/customer.logo2.png)
 
-# Cloud Native - Deploying to Kubernetes
+# Cloud Native - Setting up the cluster and getting your services running in Kubernetes
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -13,8 +13,25 @@ This video is an introduction to the Kubernetes core features lab. Depending on 
 
 </details>
 
+## Introduction
 
-### Configure the Helm repository
+This is one of the core Kubernetes labs
+
+**Estimated module duration** 45 mins.
+
+### Objectives
+
+This module takes you through the process of setting up your environment for the Kubernetes labs (including the optional labs)
+
+### Prerequisites
+
+If you are doing the full labs (these include modules on Helidon and Docker) you need to have completed the steps in the `Helidon` modules (including the setup)
+
+If you are only doing the Kubernetes based labs you need to have completed the steps in the `Tenancy Setup for the Kubernetes Labs` module.
+
+In both cases you need to complete the `Create your Kubernetes cluster` and `Cloud Shell Setup for the Kubernetes Labs` modules.
+
+## Step 1: Configure the Helm repository
 
 Helm is the tool we will be using to install standard software into Kubernetes. While it's possible to load software into Kubertetes by hand Helm makes it much easier as it has pre-defined configurations (called charts) that it pulls from an internet based repository.
 
@@ -50,12 +67,8 @@ Hang tight while we grab the latest from your chart repositories...
 Update Complete. ⎈ Happy Helming!⎈ 
 ```
 
-## Introduction to the lab
 
-### Kubernetes
-Docker is great, but it only runs on a local machine, and doesn't have all of the nice cloud native features of Kubernetes.
-
-#### Getting your cluster access details
+## Step 2: Getting your cluster access details
 
 Access to the cluster is managed via a config file that by default is located in the $HOME/.kube folder, and is called `config`.  To check the setup, make sure to have copied your personal kubeconfig file to this location : 
 
@@ -119,7 +132,7 @@ If the kubectl command returns `No resources found.` and you have only just crea
  (The details and number of nodes will vary depending on the settings you chose when you created the cluster, they will take a few mins for the nodes to be configured after the cluster management is up and running)
 
 
-## Basic cluster infrastructure services install
+## Step 3: Basic cluster infrastructure services install
 
 Usually a Kubernetes cluster comes with only the core Kubernetes services installed that are needed to actually run the cluster (e.g. the API, DNS services). Some providers also give you the option of installing other elements, but here we're going to assume you have a minimal cluster with only the core services and will need to setup the other services before you run the rest of the system.
 
@@ -729,7 +742,7 @@ echo y | oci lb listener update  --load-balancer-id=$LB_OCID --listener-name=TCP
 
 Note that in a production environment you might want to extend the encryption by encrypting traffic between the load balancer and the ingress controller, and also between the microservices using a servcie mesh (which is a later optional lab).
 
-## Services and Ingress rules
+## Step 4: Services and Ingress rules
 
 You now have the basic environment to deploy services, and we've looked at how to use the Kubernetes dashboard and the kubectl command line.
 
@@ -1138,7 +1151,7 @@ For more information on the nginx ingress controller and the different rules typ
 
 For see the doc more information on how the regular expressions with with see the [nginx ingress path matching page.](https://kubernetes.github.io/ingress-nginx/user-guide/ingress-path-matching/) 
 
-## Secrets, configmaps - external configuration for your containers
+## Step 5: Secrets, configmaps - external configuration for your containers
 
 <details><summary><b>Introduction to Kubernetes secrets</b></summary>
 
@@ -1411,7 +1424,7 @@ As we'll see later we can also update the text by modifying the file and re-crea
 
 
 
-## Deploying the actual microservices
+## Step 6: Deploying the actual microservices
 
 It's been quite a few steps (many of which are one off and don't have to be repeated for each application we want to run in Kubernetes) but we're finally ready to create the deployments and actually run our Helidon microservices inside of Kubernetes!
 
@@ -2003,7 +2016,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 {"outcome":"UP","status":"UP","checks":[{"name":"stockmanager-ready","state":"UP","status":"UP","data":{"department":"TestOrg","persistanceUnit":"stockmanagerJTA"}}]}
 ```
 
-## Updating your external configuration
+## Step 7: Updating your external configuration
 We saw in the helidon labs that it's possible to have the helidon framework monitor the configuration files and trigger a refresh of the configuration data if something changed. Let's see how that works in Kubernetes.
 
 - Get the status resource data :

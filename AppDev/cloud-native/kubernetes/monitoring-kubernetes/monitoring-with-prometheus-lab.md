@@ -13,7 +13,21 @@ This video is an introduction to the Monitoring microservcies with Prometheus la
 
 </details>
 
-## **Introduction**
+## Introduction
+
+This is one of the optional sets of Kubernetes labs
+
+**Estimated module duration** 20 mins.
+
+### Objectives
+
+This module shows how to install the data capture tool Prometheus and how to configure your microservices to be "scraped" by it. We do some simple retrieval and display of the captured data.
+
+### Prerequisites
+
+You need to complete the `Rolling update` module (last of the core Kubernetes labs modules). You can have done any of the other optional module sets.
+
+## Step 1: Explaining Minotiring in Kubernetes
 
 Monitoring a service in Kubernetes involves three components
 
@@ -72,7 +86,7 @@ To separate the monitoring services from the  other services we're going to put 
 
 
 
-## Prometheus
+## Step 2: Prometheus
 
 <details><summary><b>Older versions of Kubernetes than 1.17.9</b></summary>
 
@@ -501,7 +515,7 @@ Prometheus was not designed to be a high end graphing tool, the graphs cannot fo
 
 ---
 
-## Tidying up the environment
+## Step 3: Tidying up the environment
 
 If you are going to do the Visualizing with Gafana module please do **not** do the following, but return to the introduction of jump to the Visualizing With Grafana module
 

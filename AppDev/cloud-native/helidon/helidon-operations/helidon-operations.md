@@ -14,6 +14,18 @@ This video is an introduction to the Helidon operations support lab. Depending o
 
 ## Introduction
 
+**Estimated module duration** 20 mins.
+
+### Objectives
+
+Here we will see how you can use the Helidon features to transparently enable tracing of requests from start to finish, enabling you to understand your process flow. We also examine how to enable the automatic collection of metrics so monitoring tools can see the operational characteristics of your microservice. 
+
+### Prerequisites
+
+You need to have completed the `Communicating between microservices with Helidon` module.
+
+## Step 1: Why care about operations ?
+
 One thing that many developers used to forget is that once they have finished writing code it still has to run and be maintained. With the introduction of DevOps a lot of developers suddenly found they were the ones being woken up in the middle of the night to fix problems in their code. That changes the perception somewhat and now many developers are acutely aware that they will have ongoing involvement in the code well after the time it compiles cleanly and passed the text suite.
 
 To help maintain and operate systems after they have been released a lot of information is needed, especially in situations where a bug may be on one service, but not show up until the resulting data has passed through several other microservcies. 
@@ -22,7 +34,7 @@ Equally performance information is key to understanding how well the services ar
 
 Fortunately for us and other developers Helidon has support for tools and and producing data that will help diagnose problems, and determine if there is a problem in the first place.
 
-## Tracing
+## Step 2: Tracing
 We now managed to achieve the situation where we have a set of microservices that cooperate to perform specific function. However we don't know exactly how they are operating in reality, we do of course know how they operate in terms of our design!
 
 Tracing in a microservices environment allows us to see the flow of a request across all of the microservices involved, not just the sequence of method calls in a particular service. 
@@ -173,7 +185,7 @@ For requests into the service (the first of these is the first entry in the trac
 
 Now on the right we can see the details of this sub request, made from the storefront to the stockmanager. Feel free to further explore the zipkin UI if you wish, there's a lot if information available to help explore and diagnose problems.
 
-## Metrics
+## Step 3: Metrics
 Tracking solutions like Zipkin can provide us with detail on how a single request is processed, but they are not going to be able to tell us how many requests were made, and what the distribution of requests per second is. This is the kind of thing that is needed by the operations team to understand how the microservice is being used, and where enhancements may be a good idea (especially where to focus development work for performance enhancements)
 
 The pom.xml will need to be updated for the metrics, that's already been done for you here.

@@ -14,6 +14,20 @@ This video is an introduction to the Log Capture for archive labs. Depending on 
 
 ## Introduction
 
+This is one of the optional sets of Kubernetes labs
+
+**Estimated module duration** 20 mins.
+
+### Objectives
+
+This module shows how to install and configure the log capture tool Fluentd, and write data to the Oracle Object Storage service archive for long term retention of the log data.
+
+### Prerequisites
+
+You need to complete the `Rolling update` module (last of the core Kubernetes labs modules). You can have done any of the other optional module sets. The `log capture for processing` module is also optional.
+
+## Step 1: Capturing data to archive it
+
 <details><summary><b>The problem with log data in a distributed cloud native environment</b></summary>
 
 
@@ -44,7 +58,7 @@ We're going to now look at how to extract data and save it to a storage service.
 
 Note, if you have the fluentd configuration setup monitoring to Elastic Search you can leave that running if you like. It is of course consuming resources, but there are situations where you may want long term storage of log data as well as short term analytics. 
 
-## Create the logging namespace
+## Step 2: Create the logging namespace
 
 If you  did not do the capture log for processing, or deleted the logging namespace at the end of that module you will need to create a namespace for this module.
 
@@ -59,7 +73,7 @@ namespace/logging created
 
 If the namespace already exists this command will report : `Error from server (AlreadyExists): namespaces "logging" already exists`
 
-## Storing the log data
+## Step 3: Storing the log data
 
 Kubernetes writes the log data it captures to files on the host that's running the node. To get the data we therefore need to run a program on every node that accesses the log files and sends them to the storage.
 
@@ -528,7 +542,7 @@ Strict-Transport-Security: max-age=15724800; includeSubDomains
 Do this several times
 
 
-## The saved log files
+## Step 4: The saved log files
 
 Though the creation of the logs in the Object Storage Service is pretty cloud independent actually retrieving them is outside Kubernetes and specific to the cloud provider. The instructions below apply to the Oracle Object Storage Service.
 
@@ -586,7 +600,7 @@ Your web browser will start to download the object and depending on the web brow
 
 To access the restored object follow whatever the normal procedure is on your computer to access a downloaded `.gz` file.
 
-## Tidying up the environment
+## Step 5: Tidying up the environment
 
 
 If you are in a trial tenancy there are limitations on how many resources you can have in use at any time, and you may need them for other modules. The simplest way to release the resources used in his module (including the load balancer) is to delete the entire namespace.

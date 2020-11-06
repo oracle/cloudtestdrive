@@ -15,11 +15,25 @@ This video is an introduction to the Kubernetes horizontal scaling lab. Dependin
 
 ## Introduction
 
+This is one of the core Kubernetes labs
+
+**Estimated module duration** 20 mins.
+
+### Objectives
+
+This module explores how you can use Kubernetes to easily change the number of pods providing your service.
+
+### Prerequisites
+
+You need to complete the `Cloud native with Kubernetes` module.
+
+
+## Step 1: Manual scaling
+
 In most cases a microservice is horizontally scalable, at least if the services were developed using the principles defined in [The 12 factors](https://12factor.net/)
 
 Kubernetes has built in support for easily managing the horizontal scaling of services.
 
-## Manual scaling
 In many of the labs when you've looked at the contents of the namespace you'll have seen things called replica sets, and may have wondered what they are. We can get this info using kubectl. 
 
 - In the OCI Cloud Shell, type :

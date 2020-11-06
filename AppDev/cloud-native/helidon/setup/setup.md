@@ -2,7 +2,19 @@
 
 # Cloud Native - Setup for Helidon labs
 
-## 1. Configuring the VM hosts file.
+## Introduction
+
+**Estimated module duration** 10 mins.
+
+### Objectives
+
+This module takes you through the process of setting up your development virtual machine and loading the template code to do the Helidon and Docker labs
+
+### Prerequisites
+
+You need to have completed the steps in the `Setting up your tenancy` module.
+
+## Step 1: Configuring the VM hosts file.
 
 To make it easier to switch to the Kubernetes environment we are using hostnames rather than IP addresses to locate the various services.
 
@@ -38,7 +50,7 @@ The script will update the host file. Note that in some versions of the VM these
 
 Please **do not** run any other scripts you may find in these directories until instructed to do so, or you may end up with your environment in an unexpected state!
 
-## 2. Importing our template code
+## Step 2: Importing our template code
 
 To save you from having to completely create all of the Eclipse projects and classes from the beginning we have created some template code which you will use as a starting point. This needs to be imported into Eclipse.
 
@@ -112,7 +124,7 @@ Eclipse will use Maven to build and install the project. The progress will be sh
 
 ![](images/81-helidon-labs-common-menu-maven-install-completed.png)
 
-## 3. Configuring to use the Wallet file
+## Step 3: Configuring to use the Wallet file
 
 When you setup the VM the database Wallet file will have been downloaded to $HOME/Downloads, we want to place it in the right location for the labs and with the right name. It is **very** important that you follow the exact instructions below to ensure you are in the right directory as otherwise you may delete the lab files!
 

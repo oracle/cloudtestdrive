@@ -15,6 +15,18 @@ This video is an introduction to the Helidon cloud native support lab. Depending
 
 ## Introduction
 
+**Estimated module duration** 10 mins.
+
+### Objectives
+
+Here we will see how Helidon can provide information to operational frameworks to determine not only if your microservice is able to respond to requests, but also if it's operational. This information can be used by coordinators like Kubernetes to restart services or stop directing requests to them.
+
+### Prerequisites
+
+You need to have completed the `Operations support with Helidon` module.
+
+## Step 1: Is it running ?
+
 Most cloud native platforms (and Kubernetes in particular) need to know if a microservices is running at all, if it's capable of responding to requests and if it has access to all the dependent services it needs to operate. In the event that these conditions are not fulfilled the cloud native platform will take steps like re-starting a microservice instance, or stopping sending it requests for a short while.
 
 The exercises in this section show how you can use Helidon to directly support the cloud native capabilities that Kubernetes uses. It does not directly cover using them in Kubernetes however, but if you're doing the microservices in kubernetes sections of the workshop then this will make sense when you do it.
@@ -22,7 +34,7 @@ The exercises in this section show how you can use Helidon to directly support t
 **Monitoring and metrics**
 Kubernetes does not itself have built in monitoring tools, however many users of Kubernetes use Prometheus which can use the /metrics API Helidon provides and we saw in the operations section of these labs to extract data on the operation and performance of a microservice, then Grafana is used to visualise the metrics retrieved from Prometheus.
 
-## Health
+## Step 2: Health
 Helidon has built in health info as standard. By default this is available on the same port as the service, but our runtime config (conf/storefront-network.yaml) separates these  onto different ports (8080 for the service, 9080 for the non service) 
 
 - Look at the details of the default health service:
@@ -40,7 +52,7 @@ content-length: 460
 
 The default info contains information on the microservcies use of resources (CPU, Memory , disk usage and so on)
 
-## Liveness
+## Step 3: Liveness
 Services like kubenetes will know if a microservice has crashed as the application will have exited, but detecting that the service is not properly responding to requests is harder. Eventually most programs will get into some kind of resource starvation request like a deadlock. Cloud native platforms like Kubernetes have `liveness` tests which check to see if the microservice is alive (e.g. not in deadlock) If the service is not responding then the cloud native platform can restart it.
 
 Provding a Liveness capability is pretty simple. Somewhere in the class structure you just need a class that implements the HealthCheck interface (Helidon uses this interface to know what method to call to run the test) and is annotated with `@Liveness` 
@@ -118,7 +130,7 @@ The health endpoint now includes the data we return from the Liveness check, in 
 
 There is of course a lot of other data that Kubernetes could use, for example to detect if a microservice instance was consuming to much memory.
 
-## Readiness
+## Step 4: Readiness
 <details><summary><b>Intro on Readiness</b></summary>
 
 

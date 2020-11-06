@@ -15,11 +15,13 @@ This video is an introduction to the Helidon in a Docker container lab. Dependin
 
 ## Introduction
 
-Docker has become the defacto way of packaging code into containers and then running them. In this module we will show you how to use jib to automatically build the container images, use docker to run them locally and then push them to the Oracle Container Image Registry (though you could of course push them to dockerhub or other locations.
+**Estimated module duration** 20 mins.
 
-The Kubernetes labs that follow this one can be adapted to use the images you're building here if you'd rather not use the ones we pre-built for you.
+### Objectives
 
-Like the Helidon lab you perform these steps **inside** the client virtual machine
+Docker has become the defacto way of packaging code into containers and then running them. In this module we show how we can package a microservice using JIB into a docker container, to separate the configuration from the code, to run the containers and push them to a repository.
+
+If you chose to do the Kubernetes labs they can be adapted to use the containers you're building here if you'd rather not use the ones we pre-built for you.
 
 ### Prerequisites
 To run this part of the lab you need the working storefront and stockmanager microservices (as per the Helidon labs) connected to the database.
@@ -37,8 +39,11 @@ To run this part of the lab you need the working storefront and stockmanager mic
   ```
   - If the entry is **missing**, relaunch it:  `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin:2.22.0`
 
+Like the Helidon lab you perform these steps **inside** the client virtual machine
 
-## Jib - Docker image build tool
+
+
+## Step 1: Jib - Docker image build tool
 
 We will be using **jib** to build the docker images. The Maven pom.xml file contains the details of the jib tooling and it's settings. 
 
@@ -64,7 +69,7 @@ Later in the Kubernetes labs we will use the capability to run commands to simul
 
 In a production environment a cut down version of a Java 11 base image would be used, as there wouldn't be the need to work inside the container. Also we'd suggest using the Graal enterprise versions which has native compilation capabilities to produce a single executable with a smaller footprint.
 
-## Handling configuration and other changing items
+## Step 2: Handling configuration and other changing items
 
 ### Self contained images
 Initially you might think that the easiest thing to do when creating a docker image is to simply package up all of the configuration into the docker image so it's entirely self contained. The problem with this is that quite often configuration information changes after the image has been built, for example between test and deployment, and creating different images for each configuration is challenging (you may have lots of different configuration options, and may not even be able to define them all) and worse can result in embedding things like database access or other security configuration information into the docker images. This latter is especially critical if you are storing your image on an external or public repository where it can be accessed by anyone!
@@ -350,7 +355,9 @@ Of course if we did that it would also mean we couldn't show you how to use envi
 
 </details>
 
-## Running the services
+## Step 3: Running the services locally in Docker
+
+Docker has been installed in the development VM and is automatically started for you.
 
 To save having to copy and paste (or type!) each time there are scripts runStorefrontLocalExternalConfig.sh and runStockmanagerLocalExternalConfig.sh (in each of the helidon-labs-storefront and helidon-labs-stockmanager directories respectively).
 
@@ -458,7 +465,7 @@ Of course in a production environment you'd probably have a separate folder cont
 
 </details>
 
-## Pushing your images to a container repository
+## Step 4: Pushing your images to a container repository
 The docker container images are currently only held locally, that's not good if you want to distribute them or run them in other locations. We can save the images in an external repository, This could be public - e.g. dockerhub.com, private to your organization or in a cloud registry like the Oracle OCIR. Note that if you wanted to there are docker image save and docker image load commands that will save and load image files from a tar ball, but that's unlikely to be as easy to use as a repository, especially when trying to manage distribution across a large enterprise environment.
 
 ### Getting your docker credentials and other information
@@ -727,7 +734,7 @@ Wait for it to start, then in the storefront directory
 - `bash runStorefrontRepo.sh`
 
 
-## Cleaning up
+## Step 5: Cleaning up
 
 This is the end of this section of the lab, let's stop the running images
 

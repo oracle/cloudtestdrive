@@ -14,7 +14,21 @@ This video is an introduction to the Service mesh traffic splits lab. Depending 
 
 </details>
 
-## What is a a traffic split, and what can I do with it ?
+## Introduction
+
+This is one of the optional sets of Kubernetes labs
+
+**Estimated module duration** 20 mins.
+
+### Objectives
+
+This module shows how to use the Linkerd traffic split functionality to do a trial (canary) deployment of an update, and also to do some simple chaos engineering to see howthe system behaves if a component is unavailable.
+
+### Prerequisites
+
+You need to complete the `Rolling update` module (last of the core Kubernetes labs modules). You must have completed the `Installing the Linkerd service mesh` module. You can have done any of the other optional module sets, or any combination of the other service mesh modules.
+
+## Step 1: What is a a traffic split, and what can I do with it ?
 
 A traffic split is just what it says, the traffic sent to a service is split between the implementation instances. In core Kubernetes this is done using the selector in the service to locate pods with matching  labels. Then traffic sent to the service is split between the different pods, often using a round robin approach so each pod responds in turn.
 
@@ -28,7 +42,7 @@ Note that in a lot of these cases you use additional external automation tools t
 
 This module was written using the information in the [Linkerd fault injection page.](https://linkerd.io/2/tasks/fault-injection/)
 
-## Canary deployments with a service mesh traffic split
+## Step 2: Canary deployments with a service mesh traffic split
 
 ### What is a canary deployment ?
 
@@ -553,7 +567,7 @@ Well spotted! We're going to leave the version in place on the original service.
 
 </details>
 
-## Using a traffic split to test resilience (A bit of Chaos)
+## Step 3: Using a traffic split to test resilience (A bit of Chaos)
 
 We're going to use a traffic split to send some messages to a fake zipkin endpoint which will generate errors, this will let us see how well our micro-services handle the situation where zipkin becomes unavailable.
 
@@ -896,7 +910,7 @@ deployment.apps "fault-injector" deleted
 configmap "fault-injector-configmap" deleted
 ```
 
-## Other criteria for splitting the traffic
+## Step 4: Other criteria for splitting the traffic
 
 The [Service mesh specification for traffic splits](https://github.com/servicemeshinterface/smi-spec/blob/master/apis/traffic-split/v1alpha3/traffic-split.md) supports other mechanisms (be warned not all service mesh implementation support this specification, and not all support all the traffic split options).
 

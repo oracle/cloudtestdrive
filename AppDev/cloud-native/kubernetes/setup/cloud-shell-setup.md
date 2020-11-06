@@ -2,7 +2,19 @@
 
 # Kubernetes labs - Cloud Shell setup
 
-## Accessing the cloud shell
+## Introduction
+
+**Estimated module duration** 10 mins.
+
+### Objectives
+
+This module takes you through the process of setting up your OCI Cloud shell environment for the Kubernetes labs (including the optional labs)
+
+### Prerequisites
+
+You need to complete the `Create your Kubernetes cluster` module.
+
+## Step 1: Accessing the cloud shell
 
 You will be using the **Oracle OCI Cloud shell** to run the Kubernetes parts of the labs.
 
@@ -53,7 +65,7 @@ You will need to ask your tenancy admin to add you to a group which has rights t
 
 </details>
 
-## Downloading the scripts and templates
+## Step 2: Downloading the scripts and templates
 
 Firstly we need to download all of the scripts, templates and other configuration data to run the labs into your OCI Cloud Shell environment. You have a few GB of storage so these will fit just fine. The scripts and instructions are stored in git.
 
@@ -66,7 +78,7 @@ Firstly we need to download all of the scripts, templates and other configuratio
 - Clone the repository with all scripts from github into your OCI Cloud Shell environment:
   - `git clone https://github.com/CloudTestDrive/helidon-kubernetes.git`
   
-## Downloading the database wallet file
+## Step 3: Downloading the database wallet file
 
 Usually you do not hard code the database details in to the images, they are held externally. This is for security reasons, and also convenience, you may decide to switch to a different database, or just change the user password of the database, and it's a lot easier doing that through configuration than having to rebuild the image.
 
@@ -128,7 +140,7 @@ l_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFU
 
 - Return to the home directory `cd $HOME`
 
-## Setting up your department Id
+## Step 4: Setting up your department Id
 
 To allow for some lab situations where there are multiple users in the same database we separate tables by department Id, like many other parts of these labs this will be based on your name or initials.
 
