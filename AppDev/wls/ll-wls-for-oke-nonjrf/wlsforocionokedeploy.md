@@ -6,7 +6,7 @@
 
 ## Objective
 
-In this lab start using the available Jenkins Pipelines to deploy on the WebLogic Domain the standard Sample Application and new applications as well. The same approach can be used for migrating applications from on-premise environments to WebLogic Domain on Kubernetes as the applications package and domain model extracted with WDT can easily passed as input parameters to one of the provided Jenkins Pipelines.
+In this Hands on Lab we start using the available Jenkins Pipelines to deploy on the WebLogic Domain the standard Sample Application and new applications as well. The same approach can be used for migrating applications from on-premise environments to WebLogic Domain on Kubernetes as the applications package and domain model extracted with WDT can easily passed as input parameters to one of the provided Jenkins Pipelines.
 
 Note: Keep previous lab as a reference for connecting to Jenkins console or WebLogic Admin Console. This Hands on Lab won't provide step by step instructions on how to do it.
 
@@ -109,7 +109,7 @@ Now go *Back to Dashboard*:
 
 
 
-Hover on *sample-app* Pipeline, expand the local menu and click on **Build with Parameters**:
+Hover on *sample-app* Pipeline, expand the contextual menu and click on **Build with Parameters**:
 
 ![](images/wlsforocionokedeploy/image-080.png)
 
@@ -123,7 +123,7 @@ Click on **Build** to deploy the Sample Application:
 
 Once build starts, you're redirected to Pipeline's *Status* Page. This page will get updated once build stages are running and completed.
 
-To check the build log, hover the build number in the Build History section, expand the local menu and click on **Console Output**:
+To check the build log, hover the build number in the Build History section, expand the contextual menu and click on **Console Output**:
 
 ![](images/wlsforocionokedeploy/image-100.png)
 
@@ -226,7 +226,7 @@ appDeployments:
 
 
 
-**Note 2**: You can put multiple applications in the applications archive. Don't forget to update the model accordingly, by putting a distinct section for each application, under the `Application:`  section.
+**Note 2**: You can put multiple applications in the applications archive. Don't forget to update the model accordingly, by putting a distinct section for each application, under the `Application:`  parent section.
 
 
 

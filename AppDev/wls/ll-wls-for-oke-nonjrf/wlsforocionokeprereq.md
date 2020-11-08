@@ -108,7 +108,7 @@ When you provision WebLogic for OKE you need to pass the WebLogic Admin password
 
 If you don't have an Authentication Token generated for your OCI user account, you need to create one.
 
-Go to your user profile:
+Go to your user profile (click on your username link):
 
 ![](images/wlsforocionokeprereq/image020.png)
 

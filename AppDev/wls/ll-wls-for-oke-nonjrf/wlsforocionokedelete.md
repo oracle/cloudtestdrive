@@ -6,13 +6,13 @@
 
 ## Objective
 
-In this short lab we will delete all resources created by the WebLogic for OKE Stack.
+In this short Hands on Lab we will delete all resources created by the WebLogic for OKE Stack.
 
 
 
 ## Step 1. Delete resources
 
-Before destroying the Stack, we need first to delete some resources using a provided script on the Shared File System.
+Before destroying the Stack, we need first to delete some resources using a prebuilt script on the Shared File System.
 
 Connect to Admin host (check one of the previous labs on how to connect) and run:
 
