@@ -62,7 +62,6 @@ This is the initial source WebLogic domain configuration as depicted from the We
 =======
 
 
-The script ***lab-comands.txt*** https://github.com/eugsim1/WLS_deploy_scripts/blob/main/lab-commands.txt contains all the steps to execute for this lab.
 
 
 In the below sections you will get some details about these scripts.
@@ -120,9 +119,12 @@ sudo systemctl  status docker
 cd WLS_deploy_scripts
 ```
 
-Then launch the below commands to build the dockerimages for the source and the target server.
-The Docker files used for this purpose are shared on the Oracle Github.
+Then launch the below commands to build the Docker images for the source and the target server.
+
+The Docker files used for this purpose are shared on the [Oracle Github](https://github.com/oracle/weblogic-deploy-tooling/tree/master/samples/docker-domain) .
+
 The source Docker file wil create a WebLogic Installation, and deploy a simple WebLogic Domain
+
 The target Docker file will create a basic WebLogic installation without any domain
 
 ```
@@ -200,12 +202,13 @@ tail -f nohup.out
 Connect to your source WebLogic console , using a browser.
 Get the ip of you host workshop server - you can execute the command  **curl ifconfig.co** to get your servers ip 
 
-And use it as http://host_ip:7001/console
+And use it as http://host_ip:7001/console with the following credentials weblogic/welcome1 ( these are the initial source domain credentials).
 
-with the following credentials weblogic/welcome1 ( these are the initial source domain credentials)
 Take some time examining the structure of you source domain before to start the migration process with the WDT tool.
+
 Then go to the /home/oracle/WLS_deploy_scripts where the WDT is preinstalled, and check the content of the discover_domain.sh utility
 this tool need the following arguments :
+
 - ORACLE_HOME
 - DOMAIN_HOME
 - location of the archive file (source.zip)
@@ -215,14 +218,18 @@ this tool need the following arguments :
 
 During the discovery three artifacts will be created:
 
-1.  source.zip 
-2.  source.properties
-3.  source.yaml
+1. source.zip 
+
+2. source.properties
+
+3. source.yaml
+
+   
 
 
 ![](images/source-console.jpg)
 
-### go to the scripts directory and execute the discovery of the domain
+###### **go to the scripts directory and execute the discovery of the domain**
 ```
 ###
 cd /home/oracle/WLS_deploy_scripts
@@ -259,19 +266,17 @@ if [[ "$(cat source.yaml | grep '@@ORACLE_HOME@@' | wc -l)" != "0" ]]; then
     rm -rf ./wlsdeploy/
     sed -i "s|@@ORACLE_HOME@@|wlsdeploy\/applications|g;" source.yaml
 fi
-
-[oracle@da3bd4d58d23 WLS_deploy_scripts]$
-
 ```
 
 
-Lets execute the introscpection of the domain, and generate the domain files by launching the below command on the source server
+Lets execute the introspection of the domain, and generate the domain files by launching the below command on the source server
 
 ```
 ./discover_domain.sh
 ```
 
-Observer the output of this execution, if there is an error it will be at the end, in this case you should correct it before continuing 
+Observe the output of this execution, if there is an error it will be at the end of the diagnostics, in this case you should correct it before continuing.
+
 In our case there are 0 Warnings, 0 Errors
 
 ```
@@ -304,7 +309,7 @@ Before going further take some time to answer the below questions ?
 What is the domain name ?
 What is the Admin-server name ?
 How many applications are captured from the domain ?
-To which servers of the domains these appliations are deployed ?
+To which servers of the domains these applications are deployed ?
 
 
 ```
@@ -360,7 +365,8 @@ appDeployments:
 
 ```
 
-Then you should copy the files to the target server
+Then you should copy the files to the target server.
+
 In order to facilitate the transport we create a zip file of the generated artifacts.
 
 
@@ -409,7 +415,7 @@ ssh -i ~/.ssh/wls_rsa  \
 
 For the migration task you need :
 To unzip the uploaded files from the migration.
-To create the account/password for thea dmin user of your  new weblogic server
+To create the account/password for the admin user of your  new weblogic server
 execute the below scripts :
 
 ```
@@ -418,7 +424,7 @@ unzip discovery_files.zip
 
 ```
 
-If you want to rerun the same scripts the you can remove the previous created domains.
+If you want to rerun the same scripts then you can remove the previous created domains.
 In our case the below script is not needed as we are creating a brand new domain.
 
 ```
@@ -445,8 +451,9 @@ EOF
 cat discovery_files/source.properties
 
 ```
-Then create the create_domain.sh wich will create the new domain, using the artifacts from the source domain
-We are setting in this script all the variables ( system variable, migration artifacts for the new domain)
+Then create the [create_domain.sh](https://github.com/oracle/weblogic-deploy-tooling/blob/master/site/create.md) script content, which when executed will create the new domain, using the artifacts from the source domain
+We are setting in this script all the variables ( systems variable, migration artifacts for the new domain)
+
 ```
 ###
 ### create the script for the migration 
@@ -474,8 +481,11 @@ Then execute the script
 ./create_new_domain.sh
 ```
 
-Notice the end of the script, if there are errors then you should check the yaml file, or the archive file
-in our case the domain has been created without any errors or warnings
+Notice at the end of the script output , if there are errors which then you should correct checking  the continent of the yaml file, or the archive file.
+
+The [validate domain tool](https://github.com/oracle/weblogic-deploy-tooling/blob/master/site/validate.md) in this cases can help you with any configuration / customization issue
+
+In our case the domain has been created without any errors or warnings
 
 ```
 ####<Oct 26, 2020 3:17:32 PM> <INFO> <ApplicationDeployer> <__add_applications> <WLSDPLY-09301> <Adding Application simple-app to Domain base_domain>
@@ -494,6 +504,7 @@ cd $DOMAIN_HOME
 cat config/config.xml
 ```
 Check the below output of  the configuration of your domain
+
 What is the name of your new domain ?
 What is the name of the admin server ?
 Do you have any clusters ?
@@ -614,7 +625,8 @@ Try to answer to these question before to continue.
 
 ```
 Then launch the new WebLogic Domain, to check that the migration has really created your domain as configured from the migration artifacts.
-Because we havent carry nay modification to the yaml files, or to the application deployements you should see the same domain topology as on the source server.
+
+Because we haven't carry nay modification to the yaml files, or to the application deployments you should see the same domain topology as on the source server.
 
 ```
 nohup $DOMAIN_HOME/startWebLogic.sh &
@@ -648,8 +660,8 @@ And Check the deployed applications :
 ![](images/target-app-deployment.jpg)
 
 
-As you see then we have migrated out source very easily to a new server.
+As you see then we have migrated our source WebLogic domain, very easily to a new server.
 
-In the next releases of this workshop we will combine more features 
+In the next releases of this workshop we will combine more features , stay tuned
 
 Thanks for your participation ! 
