@@ -8,7 +8,8 @@ The workshop is based on a simple scenario:
 2. Create the domain configuration and its associated artifacts 
 3. Apply this configuration to a target WebLogic server 
 
-For this lab you have alrady installed the Workshop Stack, and downloaded the WebLogic Images from the Docker repository 
+For this lab you have already installed the Workshop Stack, and downloaded the WebLogic Images from the Docker repository.
+
 The below schema depicts tha workshop scenario:
 
 A source WebLogic domain is created , and our goal is to generate the migration artifacts with the WebLogic tool to migrate it to another server.
