@@ -48,11 +48,7 @@ The target domain layout model is provided as a yaml file
 
 
 
-
-
-![](images/Migration%20Architecture.png)
-
-
+![](../WLS_imagetool_scripts/images/gen-architecture.jpg)
 
 
 
