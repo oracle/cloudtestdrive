@@ -1,7 +1,4 @@
----
 
-typora-copy-images-to: images
----
 
 # WLS\_deploy\_scripts for the WLS Workshop migration toolkit 
 
@@ -169,11 +166,14 @@ nohup $DOMAIN_HOME/startWebLogic.sh &
 ```
 
 
+
 log in the console IP of the hosts:7001/console
 
 with the following credentials weblogic/welcome1
 
-execute the commande  curl ifconfig.co to get your servers ip
+execute the command  **curl ifconfig.co** to get your servers ip
+
+
 
 ![](images/source-console.jpg)
 
@@ -221,69 +221,35 @@ fi
 
 ```
 
+Notice the final output from the command, and the three artifacts created:
+
+1. source.zip 
+2.  source.properties
+3.  source.yaml
+
+
+
 ```
 ./discover_domain.sh
-rm: cannot remove ‘source.*’: No such file or directory
-clean startup
-Discovering the source domain...
-JDK version is 1.8.0_241-b07
-JAVA_HOME = /u01/jdk
-WLST_EXT_CLASSPATH = /u01/weblogic-deploy/lib/weblogic-deploy-core.jar
-CLASSPATH = /u01/weblogic-deploy/lib/weblogic-deploy-core.jar
-WLST_PROPERTIES = -Dcom.oracle.cie.script.throwException=true -Djava.util.logging.config.class=oracle.weblogic.deploy.logging.WLSDeployCustomizeLoggingConfig
-/u01/oracle/oracle_common/common/bin/wlst.sh /u01/weblogic-deploy/lib/python/discover.py -oracle_home /u01/oracle -domain_home /u01/oracle/user_projects/domains/base_domain -archive_file source.zip -model_file source.yaml -variable_file source.properties -domain_type JRF
+#### several lines of execution 
+####
 
-Initializing WebLogic Scripting Tool (WLST) ...
-
-Welcome to WebLogic Server Administration Scripting Shell
-
-Type help() for help on available commands
-
-####<Oct 26, 2020 2:56:30 PM> <INFO> <WebLogicDeployToolingVersion> <logVersionInfo> <WLSDPLY-01750> <The WebLogic Deploy Tooling discoverDomain version is 1.9.6:master.2c18938:Oct 19, 2020 21:56 UTC>
-####<Oct 26, 2020 2:56:31 PM> <INFO> <discover> <main> <WLSDPLY-06025> <Variable file was provided. Model password attributes will be replaced with tokens and corresponding values put into the variable file.>
-####<Oct 26, 2020 2:56:34 PM> <INFO> <discover> <_get_domain_name> <WLSDPLY-06022> <Discover domain wdt_domain>
-####<Oct 26, 2020 2:56:34 PM> <INFO> <TopologyDiscoverer> <discover> <WLSDPLY-06600> <Discovering domain model topology>
-####<Oct 26, 2020 2:56:35 PM> <INFO> <Discoverer> <discover_domain_mbean> <WLSDPLY-06644> <Adding Domain Log>
-####<Oct 26, 2020 2:56:35 PM> <INFO> <TopologyDiscoverer> <_get_nm_properties> <WLSDPLY-06627> <Discovering NM Properties>
-####<Oct 26, 2020 2:56:35 PM> <INFO> <Discoverer> <_get_additional_parameters> <WLSDPLY-06150> <Unable to determine if additional attributes are available for NMProperties at location /NMProperties : Unable to find a valid MBean Interface in the Class list array(java.lang.Class,[])  of the MBean instance com.oracle.cie.domain.nodemanager.NMPropertiesConfigProxyBase@5756e8d5>
-####<Oct 26, 2020 2:56:35 PM> <INFO> <TopologyDiscoverer> <get_clusters> <WLSDPLY-06601> <Discovering 1 clusters>
-####<Oct 26, 2020 2:56:35 PM> <INFO> <TopologyDiscoverer> <get_clusters> <WLSDPLY-06602> <Adding Cluster cluster-1>
-####<Oct 26, 2020 2:56:36 PM> <INFO> <TopologyDiscoverer> <get_servers> <WLSDPLY-06603> <Discovering 1 servers>
-####<Oct 26, 2020 2:56:36 PM> <INFO> <TopologyDiscoverer> <get_servers> <WLSDPLY-06604> <Adding Server admin-server>
-####<Oct 26, 2020 2:56:37 PM> <INFO> <TopologyDiscoverer> <get_server_templates> <WLSDPLY-06605> <Discovering 1 server templates>
-####<Oct 26, 2020 2:56:37 PM> <INFO> <TopologyDiscoverer> <get_server_templates> <WLSDPLY-06606> <Adding cluster-1-template Server Template>
-####<Oct 26, 2020 2:56:38 PM> <INFO> <TopologyDiscoverer> <discover_security_configuration> <WLSDPLY-06622> <Adding Security Configuration>
-####<Oct 26, 2020 2:56:39 PM> <INFO> <TopologyDiscoverer> <get_embedded_ldap_configuration> <WLSDPLY-06639> <Skipping Embedded LDAP Server Configuration>
-####<Oct 26, 2020 2:56:39 PM> <INFO> <ResourcesDiscoverer> <discover> <WLSDPLY-06300> <Discovering domain model resources>
-####<Oct 26, 2020 2:56:39 PM> <INFO> <DeploymentsDiscoverer> <discover> <WLSDPLY-06380> <Discovering domain model deployments>
-####<Oct 26, 2020 2:56:39 PM> <INFO> <DeploymentsDiscoverer> <get_applications> <WLSDPLY-06391> <Discovering 1 Applications>
-####<Oct 26, 2020 2:56:39 PM> <INFO> <DeploymentsDiscoverer> <get_applications> <WLSDPLY-06392> <Adding Application simple-app>
-####<Oct 26, 2020 2:56:39 PM> <INFO> <DeploymentsDiscoverer> <add_application_to_archive> <WLSDPLY-06394> <Add application simple-app binary /u01/oracle/user_projects/domains/base_domain/wlsdeploy/applications/simple-app.war to archive>
-####<Oct 26, 2020 2:56:39 PM> <INFO> <MultiTenantDiscoverer> <discover> <WLSDPLY-06700> <Discover Multi-tenant>
-####<Oct 26, 2020 2:56:39 PM> <INFO> <MultiTenantTopologyDiscoverer> <discover> <WLSDPLY-06709> <Discover Multi-tenant Topology>
-####<Oct 26, 2020 2:56:40 PM> <INFO> <MultiTenantResourcesDiscoverer> <discover> <WLSDPLY-06707> <Discover Multi-tenant Resources>
-####<Oct 26, 2020 2:56:40 PM> <INFO> <filter_helper> <apply_filters> <WLSDPLY-20017> <No filter configuration file /u01/weblogic-deploy/lib/model_filters.json>
-####<Oct 26, 2020 2:56:40 PM> <INFO> <filter_helper> <apply_filters> <WLSDPLY-20016> <No filters of type discover found in filter configuration file /u01/weblogic-deploy/lib/model_filters.json>
-####<Oct 26, 2020 2:56:40 PM> <INFO> <variable_injector> <inject_variables_keyword_file> <WLSDPLY-19518> <Variables were inserted into the model and written to the variables file source.properties>
 
 Issue Log for discoverDomain version 1.9.6 running WebLogic version 12.2.1.3.0 offline mode:
 
 Total:       WARNING :     0    SEVERE :     0
 
 discoverDomain.sh completed successfully (exit code = 0)
-[oracle@da3bd4d58d23 WLS_deploy_scripts]$
 
 ```
 
 ![](images/disc_results.jpg)
 
-The discovered WebLogic domain is composed from:
+The discovered WebLogic domain from the source.yaml is composed from:
 
-An admin server
-
-one clustered managed server
-
-one application is deployed on the cluster
+1. An admin server
+2. one clustered managed server
+3. one application is deployed on the cluster
 
 ```
 cat source.yaml
