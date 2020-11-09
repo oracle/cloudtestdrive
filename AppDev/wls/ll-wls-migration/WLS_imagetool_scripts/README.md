@@ -664,13 +664,13 @@ WORKDIR /u01/oracle/
 RUN wget https://github.com/oracle/weblogic-deploy-tooling/releases/download/release-1.9.5/weblogic-deploy.zip && \
     chown oracle:root /u01/oracle/weblogic-deploy.zip
     
-##WORKDIR /u01/oracle/user_projects/domains/onprem-domain
-#ENTRYPOINT /bin/bash
-
-### start sshd for this server
-
+### switch to user oracle to let the image be patched by the tooling 
 USER  oracle
-CMD ["/usr/sbin/sshd", "-D"]
+WORKDIR /u01/oracle/user_projects/domains/onprem-domain
+#ENTRYPOINT /bin/bash
+### start sshd for this server
+CMD ["sudo","/usr/sbin/sshd", "-D"]
+##WORKDIR /u01/oracle
 EOF
 ```
 
