@@ -2,7 +2,11 @@
 
 These are the raw stack files that you have to upload to your Resource Manager in order to create the server to run the labs for the wls wdt/tooling session.
 
-You should download them before to start the labs to your local folder after that follow the below steps to create your test server to your compartment
+You should download them from this directory before to start the labs, to your local folder after that follow the below steps to create your test server to your compartment.
+
+Get the test_wls_docker_image-stack.zip which contains the artifact to create your stack
+
+
 
 
 
