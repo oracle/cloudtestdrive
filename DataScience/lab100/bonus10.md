@@ -242,7 +242,7 @@ Under `Developer Services -> Container Registry` copy the name of your root regi
 Use `docker login` to login to the OCI Registry to store the function image.
 
 ```shell
-docker login -u '<container_registry_root_name>/oracleidentitycloudservice/<your_email>' <regionid>.ocir.io
+docker login -u '<container_registry_root_name>/oracleidentitycloudservice/<your_tenant_email>' <regionid>.ocir.io
 ```
 
 ***regionid***: Copy the **Region Id** value from [documentation](https://docs.cloud.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm#AboutRegionsandAvailabilityDomains) that maps to your region.
