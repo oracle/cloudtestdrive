@@ -6,6 +6,10 @@ You should download them before to start the labs to your local folder after tha
 
 
 
+Be sure that all policies described [here](https://docs.cloud.oracle.com/en-us/iaas/Content/Identity/Tasks/managingstacksandjobs.htm#Policies_for_Managing_Stacks_and_Jobs) are fulfilled before to import the stack
+
+
+
 Log into your tenancy 
 
 Scroll to Resource Manager / Stack entry
