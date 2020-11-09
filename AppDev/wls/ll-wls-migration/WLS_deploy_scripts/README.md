@@ -10,32 +10,51 @@ The workshop is based on a simple scenario:
 
 For this lab you have already installed the Workshop Stack, and downloaded the WebLogic Images from the Docker repository.
 
-The below schema depicts tha workshop scenario:
+The below schema depicts the workshop scenario:
 
-A source WebLogic domain is created , and our goal is to generate the migration artifacts with the WebLogic tool to migrate it to another server.
-Two docker images will simulate two weblogic servers (source domain server, target domain server for this migration).
-The source server deploys a simple 12.2.1.3 clustered weblogic domain, which will be migrated to the target 12.2.1.4 server.
-The target server is installed with the base 12.2.1.4 WebLogic installation.
-The migration tool will recreate the source domain , deploy configuration of the initial domain without any modifications.
-In order to run the migration the WDT tool should be installed and available on both servers
-The migration steps are the following
+A  WebLogic domain is created on the source serve, and our goal is to generate the migration artifacts with the WebLogic tool, and migrate then to another server.
 
-1- On the source server the Discover Domain Tool will introscpect the existing domain.
-It will create a domain model file in yaml format, an application archive file ,and a properties file that has to be used to update password related configurations.
-The tool will gather binaries that are accesible from the local system.
+Two docker images will simulate the weblogic servers (source domain server, target domain server for this migration).
+
+The source server [deploys a simple 12.2.1.3 clustered weblogic domain,](https://github.com/oracle/docker-images/tree/master/OracleWebLogic/dockerfiles/12.2.1.3) which will be migrated to the [target 12.2.1.4 server](https://github.com/oracle/docker-images/tree/master/OracleWebLogic/dockerfiles/12.2.1.4).
+
+The target server is installed with the base 12.2.1.4 WebLogic installation, no domains are created.
+
+The migration tool will recreate the source domain to the target server , and deploy the applications configuration of the initial domain without any modifications.
+
+In order to run the migration, the WDT tool should be installed and available on both servers.
+
+The migration steps are as below:
+
+1- On the source server the [Discover Domain Tool](https://github.com/oracle/weblogic-deploy-tooling/blob/master/site/discover.md) will introspect the existing domain.
+
+It will create a domain model file in yaml format, an application archive file , and a properties file that has to be used to update password related configurations.
+
+The tool will gather binaries that are accessible from the local system.
+
 If there are any missing files, its up to the operator to correct the issues by adding manually the files to the captured archive.
 
-Further customisation are possible in cases that the captured configuration have to been applied to some other domains ie change the domain name, rename the datasources,
-change the layout of the domain, change the deployed applications
+Further customization are possible in cases that the captured configuration have to been applied to some other domains ie change the domain name, rename the data sources, change the layout of the domain, change the deployed applications.
+
 The tool need the admin user name , and the Admin URL of the source server
 
 2- The generated artifacts will be copied to the target WebLogic Server (scp operation between source and target)
 
-3-On the target server the Create Domain tool will be used to create the target WebLogic domain.
-This tool will use the files captured from the source, and password for the newe admin user of the target site.
+3-On the target server the [Create Domain](https://github.com/oracle/weblogic-deploy-tooling/blob/master/site/create.md) tool will be used to create the target WebLogic domain.
+
+This tool will use the files captured from the source,  password information for the new admin user of the target site.
+
 The target domain layout model is provided as a yaml file
 
+
+
+
+
 ![](images/Migration%20Architecture.png)
+
+
+
+
 
 This is the initial source WebLogic domain configuration as depicted from the WebLogic console
 
@@ -48,13 +67,13 @@ The script ***lab-comands.txt*** https://github.com/eugsim1/WLS_deploy_scripts/b
 
 In the below sections you will get some details about these scripts.
 
-Before to run these steps you need to log into the [Docker hub](https://hub.docker.com/_/oracle-weblogic-server-12c) 
+**Before to run these steps you need to log into the [Docker hub](https://hub.docker.com/_/oracle-weblogic-server-12c)** 
 
 ![](images/docker-hub.jpg)
 
 
 
-and download the following weblogic images:
+**and download the following weblogic images to your workshop server**
 
 **store/oracle/weblogic:12.2.1.3**
 
@@ -75,7 +94,7 @@ docker pull store/oracle/weblogic:12.2.1.4
 ```
 
 The previous command will retrieve the source and target images.
-If you need to run the workshop more than once, in the same server,  then you should run the below commands to remove any container, or previous created configurations.
+If you need to run the workshop more than once, in the same server,  then you should run the below commands to remove any containers, or previous created configurations.
 
 
 ```
@@ -86,7 +105,7 @@ docker network rm test
 docker container ls -a 
 ```
 
-Then clone to your localserver, the workshop repository scrips as, and relaunch the Docker system :
+Then clone to your local server, the workshop repository scrips as below , and **relaunch the Docker system** :
 
 ```
 cd
