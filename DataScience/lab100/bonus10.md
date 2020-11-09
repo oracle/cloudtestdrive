@@ -6,13 +6,13 @@ This lab will guide you through the steps required to store a model in Model Cat
 
 **This lab is based on LAB100 which you have to finish to be able to proceed.**
 
-In `LAB100` we build a linear regression model. To be able to use the model, we have to store it in a way that it is deployable. One way to do model deployment is using Oracle Functions. Oracle Data Science Service stores the serialized weights of the model as pickle file, which does not require any proprietary software to be read and can be used or deployed to any cloud vendor, compute instance or service you prefer.
+In `LAB100` we build a linear regression model. To be able to use the model, we have to store it in a way that it is deployable. One way to do model deployment is using Oracle Functions. Oracle Data Science Service stores the serialized weights of the model as pickle file, which does not require any proprietary software to be read and can be deployed to any cloud vendor, compute instance or service you prefer.
 
 **To store the model continue to work in the notebook you used for LAB100.**
 
 ## Finish Getting Started Guide
 
-The last step in LAB100 was to used RMSE to validated the performance of the model. Let's now store the model. To do so we need to initialize the ADS (Oracle Accelerated Data Science Library). Before we could use the library you have to make sure that you generated your OCI private key.
+The last step in LAB100 was to used RMSE to validated the performance of the model. Let's now store the model. To do so we need to initialize the ADS (Oracle Accelerated Data Science Library). Before you could use the library you have to make sure that you generated your OCI private key.
 
 **Please follow the steps in the `getting-started.ipynb` file to register your account and generate a key that would allow you to use the ADS library.**
 
@@ -20,60 +20,62 @@ After you finish the registration and validate that the ADS works, we are going 
 
 ## Prepare the model artifacts
 
-The first step when saving models to the model catalog is to create a model artifact for each model. We will initiate the ADSModel by using the model we build from the linear regression lab. Notice the **`model`** variable is the model you build as you executed `model = lr.fit(X_train, y_train)`
+The first step when saving models to the model catalog is to create a model artifact for each model. We will initiate the `ADSModel` object by using the model we build from the linear regression lab. Notice the **`model`** variable is the model you build as you executed `model = lr.fit(X_train, y_train)`
+
+### STEP 1: Set the user principal
+
+Set the authentication type.
+
+```python
+import ads
+ads.set_auth(auth='resource_principal')
+```
+
+Set the resource principal.
+
+```python
+import oci
+from oci.data_science import DataScienceClient
+resource_principal = oci.auth.signers.get_resource_principals_signer()
+dsc = DataScienceClient(config={},signer=resource_principal)
+```
+
+### STEP 2: Load the model in the ADS library
 
 ```python
 from ads.common.model import ADSModel
-adsModel = ADSModel.from_estimator(model)
+ads_model = ADSModel.from_estimator(model)
 ```
 
-Now let's load into the model catalog and prepare the model for deployment.
+### STEP 3: Prepare the model to be stored into the model catalog
 
 ```python
-%load_ext autoreload
-%autoreload 2
-from ads.catalog.model import ModelSummaryList, ModelCatalog
-from ads.catalog.project import ProjectSummaryList, ProjectCatalog
-from ads.catalog.summary import SummaryList
-from ads.common.model_artifact import ModelArtifact
-
-model_artifact_fn = adsModel.prepare("/home/datascience/lab100", force_overwrite=True, 
-                                     fn_artifact_files_included=True, fn_name="housemarket")
+model_artifact_fn = ads_model.prepare("/home/datascience/lab100", force_overwrite=True, fn_name="housemarket")
 ```
 
-When you prepare the artifact using the `prepare()` method, you can also create the files that are necessary for `Function` deployment by setting the optional parameter ```fn_artifact_files_included=True```. You may also set the function name in `fn_name` parameter. `fn_name` will set the name of your function in `func.yaml`.
+When you prepare the artifact using the `prepare()` method, you also create the files that are necessary for `Function` deployment. You may also set the function name in `fn_name` parameter. `fn_name` will set the name of your function in `func.yaml`.
 
-Executing `prepare()` now created a new folder called `LAB100` and because we set ```fn_artifact_files_included=True```, within the `LAB100` you can notice that there is additional folder called `fn-model` which contains all the file required to build and deploy the model as function. Your `fn-model` folder should have following structure:
+Executing `prepare()` now created a new folder called `lab100` that should have the following structure:
 
-<pre>fn-model/
+<pre>
+lab100/
    + func.py
    + func.yaml
-   + model-fn.pkl
+   + model.pkl
    + requirements.txt
-   + scorefn.py</pre>
+   + runtime.yaml
+   + score.py
+</pre>
 
-A few remarks on the files in `fn-model/` :
+A few remarks:
 
-* `model-fn.pkl` under `fn-model` is different from the `model.pkl` file created in the parent folder. `model-fn.pkl` is serialized from core estimator that was used to build the model. For example, if the core model used for creating the model was `sklearn.linear_model.LogisticRegression` then the `type` of `model-fn.pkl` would be `sklearn.linear_model.LogisticRegression`. **This lets you package your model without a runtime dependency on `ADS`.**
+* `model.pkl` is serialized from core estimator that was used to build the model. For example, if the core model used for creating the model was `sklearn.linear_model.LogisticRegression` then the `type` of `model.pkl` would be `sklearn.linear_model.LogisticRegression`. **This lets you package your model without a runtime dependency on `ADS`.**
 
 * the `requirements.txt` file will contain the libraries required by the core estimator. The version number provided will be the ones that are compatible with the notebook session environment.
 
 * `func.py` and `func.yaml` are templatized and pre-written on your behalf. In principle, you do not need to modify these files unless you want to include additional data transformations steps before passing the data to the estimator object.
 
-## Adjust func.yaml file
-
-Depending on the Data Science Service version if you open the file, you may see a `triggers` configuration, that is no longer needed to deploy the model as function and has to be removed. If you have that option please remove it now from the YAML file. Your `func.yaml` file should look like this:
-
-```yaml
-entrypoint: /python/bin/fdk /function/func.py handler
-memory: 1024
-name: housemarket
-runtime: python3.6
-schema_version: 20180708
-version: 0.0.1
-```
-
-## Store the model to the Model Catalog
+### STEP 4: Store the model to the Model Catalog
 
 We initialized already the libraries required to store the model, now execute the following code in your notebook:
 
@@ -89,6 +91,8 @@ mc_model
 
 This code should get the model generated in your LAB100 folder and store it into the Model Catalog. If the process was successful, you should see a confirmation table that has a row with `lifecycle_state` `ACTIVE`.
 
+### STEP 5: Copy the model OCID
+
 Go back to your OCI Console in the browser and identify again your Data Science Project. On the left side under `Resources` there is a `Models` link. Click it to see all your stored models:
 
 ![Model Catalog Housemarket](../commonimages/modelcataloghousemarket.png)
@@ -103,7 +107,7 @@ To build the function we will use the Oracle OCI Cloud Shell. To open it, click 
 
 Oracle Cloud Infrastructure Cloud (OCI) Shell is a web browser-based terminal accessible from the Oracle Cloud Console. Cloud Shell is free to use (within monthly tenancy limits), and provides access to a Linux shell, with a pre-authenticated Oracle Cloud Infrastructure CLI, a pre-authenticated Ansible installation, and other useful tools for following Oracle Cloud Infrastructure service tutorials and labs, including Functions CLI and Docker. Cloud Shell is a feature available to all OCI users, accessible from the Console. Your Cloud Shell will appear in the Oracle Cloud Console as a persistent frame of the Console, and will stay active as you navigate to different pages of the Console. For more information visit the official documentation under [Cloud Shell Documentation](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cloudshellintro.htm)
 
-### Get the model
+### STEP 1: Get the model
 
 We will create a folder in the `Cloud Shell` and will download the model into it.
 
@@ -127,7 +131,7 @@ unzip model1.0.zip
 cd fn-model
 ```
 
-### Set the Fn context
+### STEP 2: Set the Fn context
 
 We need to make sure that our current `Fn` context is in the same region.
 
@@ -151,7 +155,7 @@ fn use context uk-london-1
 
 `Notice` that `uk-london-1` is the region used to build this lab, your region may differ. You can get the region identifier from the following page: [Oracle Regions](https://docs.cloud.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm)
 
-### Update the context
+### STEP 3: Update the context
 
 To get access to the Fn apps configured, we have to update the context.
 
@@ -168,7 +172,7 @@ Current context updated oracle.compartment-id with ocid1.compartment.oc1..aaaaaa
 
 `<COMPARTMENT_OCID>` - the OCID of your current compartment, which you can find under `Identity -> Compartments` and select the name of the compartment you are using. `Notice` your compartment could be within another compartment.
 
-### Update the context registry
+### STEP 4: Update the context registry
 
 The registry will be created if not available, it will be the location to store the function.
 
@@ -185,7 +189,7 @@ fn update context registry lhr.ocir.io/ociateam/lab100
 `<regionid>.ocir.io/<tenancy>` - you can get this information from the previous command `fn list context` on the right side you will see the default root `REGISTRY` for the current context
 `<repo_name>` - name that you can set, you could use `lab100` for example
 
-### List Fn Apps
+### STEP 5: List Fn Apps
 
 Make sure that at least one app exist, as the Function will be deployed into it. Make a note of the name to use it later.
 
@@ -201,7 +205,7 @@ NAME            ID
 DataScienceApp  ocid1.fnapp.oc1.uk-london-1.aaaaaaaaah6lnfurqyoe7x6aqvaarzpdzogmads54qdejr2c4uys5wxtmadq
 ```
 
-### Build the function
+### STEP 6: Build the function
 
 Run the build within the `fn-model` folder. On every build the function version will auto-increment.
 
@@ -217,7 +221,30 @@ Building image lhr.ocir.io/ociateam/housemarket:0.0.1 ..........................
 Function lhr.ocir.io/ociateam/housemarket:0.0.1 built successfully.
 ```
 
-### Deploy the function
+### STEP 7: Generate Auth Token
+
+Under `Identity -> Users -> User Details -> Auth Token` generate one and copy it and store it to use it later.
+
+![Model Catalog Housemarket](images/authtoken.png)
+
+### STEP 8: Get the Container Registry Root Name
+
+Under `Developer Services -> Container Registry` copy the name of your root registry.
+
+![Model Catalog Housemarket](images/containerregistryname.png)
+
+### STEP 9: Docker Login
+
+Use `docker login` to login to the OCI Registry to store the function image.
+
+```shell
+docker login -u '<container_registry_root_name>/oracleidentitycloudservice/<your_email>' <region>.ocir.io
+```
+
+***region***: Copy the **Region Key** value from [documentation](https://docs.cloud.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm#AboutRegionsandAvailabilityDomains) that maps to your region.
+***password:*** the value of the auth key created in ***Step 7***
+
+### STEP 10: Deploy the function
 
 ```shell
 fn deploy --app <name-of-func-application>
@@ -248,7 +275,7 @@ d9947aec7289: Pushed
 Updating function housemarket using image lhr.ocir.io/ociateam/lab100/housemarket:0.0.3...
 ```
 
-### Inspect the Function
+### STEP 11: Inspect the Function
 
 Let's check if the function was deployed successfully.
 
@@ -281,7 +308,7 @@ fn inspect function DataScienceApp housemarket
 `DataScienceApp` - is the name of the Function app
 `housemarket` - is the name of the deployed function
 
-### Create a payload file to test the function
+### STEP 12: Create a payload file to test the function
 
 Let's check if the function works properly. To do so invoke it with a payload that represents a single house data. To be able to do that we would need to create a JSON file in the Cloud Shell console and use to invoke the Fn.
 
