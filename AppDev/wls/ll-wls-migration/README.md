@@ -7,12 +7,13 @@ The content of this folder will be updated in a regular basis
 
 1. [Prerequisites for the tooling part](test_wls_docker_image-stack/Readme.md) 
 
-   If you want to run only the tooling lab then you [need to create a stack]() 
+   If you want to run only the tooling lab then you [need to create a stack](test_wls_docker_image-stack/Readme.md) 
 
 2. Prerequisites for the WDT part
 
-   If you want to run the WDT part , you [need to create a stack]() 
+   If you want to run the WDT part , you [need to create a stack](test_wls_docker_image-stack/Readme.md) 
    
+
 and download WebLogic docker images from the Docker Hub[Deploy kit lab](WLS_deploy_scripts/Prerequisites.md)
 
 3. Instructions to run the WDT lab.
