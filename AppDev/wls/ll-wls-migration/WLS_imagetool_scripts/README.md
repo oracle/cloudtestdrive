@@ -543,8 +543,10 @@ docker run --rm -it --name test_$IMAGE_NAME $IMAGE_NAME /bin/bash
 ### now you are logged into the docker image check the patches
 cd  /u01/oracle/inventory/patches
 ls
-31960985.xml
+###31960985.xml
 cat 31960985.xml
+### exit to return to the host after inspection !
+
 ```
 
 ```
@@ -553,7 +555,11 @@ cat 31960985.xml
 ```
 
 As we see we have a basic wls 12.2.1.4 installation with the associated patches installed
-Now lets cleanup our environment before to run the next session 
+Enter exit to return to your host,  then lets cleanup our environment before to run the next session 
+
+
+
+
 
 
 ```
@@ -576,6 +582,7 @@ During this lab we will:
 
 Run the below command to your linux terminal
 
+
 ```
 #### create a docker file to inspect the content
 ####
@@ -587,7 +594,6 @@ cat<<EOF> build_commands
 create
 --type wls
 --dryRun
---additionalBuildCommands  add_build_commands.txt
 --pull
 --chown=oracle:root
 --version 12.2.1.4.0
@@ -635,46 +641,6 @@ This is quite easy as we have the Dockerfile, and we have our own section ( see 
 1. Can you see what rpm we add ?
 2. Do you see some new features in the Dockerfile ?
 
-Run the below scrip to generate the additionals features for our next release 
-
-
-```
-cat<<'EOF'> add_docker.txt
-USER root
-
-COPY --chown=oracle:root keys/.  /home/oracle/.ssh/.
-COPY --chown=oracle:root letsEncryptCerts.jks /u01/oracle/.
-RUN echo "installing yum rpms " && \
-    yum install -y --downloaddir=/tmp/imagetool more openssh-server openssh-clients vi sudo shadow-utils sed zip git wget && \
-    echo "oracle ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && echo 'root:Welcome1412#' chpasswd && \
-echo 'oracle:Welcome1412#' | chpasswd && \
-sed -i 's/#*PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config && \
-sed -i 's/#Banner none/Banner \/home\/oracle\/WLS_deploy_scripts\/welcome_source.txt/g' /etc/ssh/sshd_config && \
-sed -i 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' /etc/pam.d/sshd && \
-/usr/bin/ssh-keygen -A  \
- && yum -y --downloaddir=/tmp/imagetool clean all \
- && rm -rf /var/cache/yum/* \
- && rm -rf /tmp/imagetool && \
-        echo ". /u01/oracle/user_projects/domains/onprem-domain/bin/setDomainEnv.sh" >> /home/oracle/.bashrc && \
-        chmod go-rwx /home/oracle/.ssh/*
-
-
-EXPOSE $ADMIN_PORT $MANAGED_SERVER_PORT 22
-
-WORKDIR /u01/oracle/
-RUN wget https://github.com/oracle/weblogic-deploy-tooling/releases/download/release-1.9.5/weblogic-deploy.zip && \
-    chown oracle:root /u01/oracle/weblogic-deploy.zip
-
-### switch to user oracle to let the image be patched by the tooling 
-USER  oracle
-WORKDIR /u01/oracle/user_projects/domains/onprem-domain
-#ENTRYPOINT /bin/bash
-
-### start sshd for this server
-
-CMD ["sudo","/usr/sbin/sshd", "-D"]
-EOF
-```
 
 And then concatenate the 2 Dockerfiles for the final build.
 
