@@ -1,0 +1,97 @@
+####
+#### prepare a txt file with the Oracle support password to be able to get ORacle patches for the next section
+####
+cd /home/oracle/stage/installers/
+docker system prune -f
+
+export ORACLE_SUPPORT_PASSWORD=YOUR_SUPPORT_PASSWRD
+export ORACLE_SUPPORT_USER=YOUR_SUPPORT_USER_ID
+
+echo $ORACLE_SUPPORT_PASSWORD > passwd.txt
+
+
+### create a docker image
+### the paches are downloaded to /home/oracle/cache directory
+export DOCKER_FILE=Dockerfile_build_commands_12.2.1.4.0
+export IMAGE_NAME=image_tool_12.2.1.4.0_buildkit_step1
+echo "************************" 
+echo "removing previous image"
+echo "************************"
+docker image rmi $IMAGE_NAME
+ 
+
+time imagetool create --tag $IMAGE_NAME \
+--latestPSU --version 12.2.1.4.0 \
+--user  $ORACLE_SUPPORT_USER \
+--jdkVersion=8u261 \
+--passwordFile passwd.txt
+
+##
+## as we are using the build kit we have to generate lower case tags for the docker file
+##
+###
+### we will use the DOCKER_BUILDKIT=1 feature to accelarate the build time of the image
+### https://docs.docker.com/develop/develop-images/build_enhancements/
+###
+
+#docker images
+#docker run -it --name test12.2.1.4.0 $IMAGE_NAME /bin/bash
+#docker container rm test12.2.1.4.0 -f
+
+### now create the Dockerfile of this image
+cd /home/oracle/stage/installers/
+export DOCKER_FILE=dockerfile_build_commands_12.2.1.4.0_step1
+cat<<EOF> build_commands_12.2.1.4.0
+create
+--type wls
+--dryRun
+--skipcleanup
+--pull
+--chown=oracle:root
+--latestPSU
+--version 12.2.1.4.0
+--jdkVersion=8u261
+--tag 12.2.1.4.0
+--user $ORACLE_SUPPORT_USER
+--passwordFile passwd.txt
+EOF
+imagetool @build_commands_12.2.1.4.0 > $DOCKER_FILE
+cat $DOCKER_FILE
+
+### we have to modify some sections to lower letters
+export DOCKER_FILE=dockerfile_build_commands_12.2.1.4.0
+
+sed 's/EXPOSE/EXPOSE 22/g'  $DOCKER_FILE \
+ | sed 's/WDT_BUILD/wdt_build/g'   \
+ | sed 's/FINAL_BUILD/final_build/g' \
+ | sed 's/OS_UPDATE/os_update/g'    \
+ | sed 's/JDK_BUILD/jdk_build/g'  \
+ | sed 's/WLS_BUILD/wls_build/g' > ${DOCKER_FILE}_corr
+
+cat ${DOCKER_FILE}_corr
+
+### rebuild the image now
+cd /home/oracle/stage/installers/
+export IMAGE_NAME=frm_${DOCKER_FILE}_corr
+echo "rebuild the image $IMAGE_NAME"
+
+
+docker container rm $IMAGE_NAME -f
+docker rmi $IMAGE_NAME -f
+## --no-cache=true \
+time DOCKER_BUILDKIT=1  docker image build  \
+--tag $IMAGE_NAME  \
+--force-rm=true \
+--squash \
+--rm=true \
+--file ${DOCKER_FILE}_corr .
+
+
+docker images
+echo $IMAGE_NAME
+docker run --rm -it --name test_$IMAGE_NAME $IMAGE_NAME /bin/bash
+docker container rm test_$IMAGE_NAME -f
+docker rmi $IMAGE_NAME
+unset DOCKER_FILE IMAGE_NAME
+docker system prune -f
+###

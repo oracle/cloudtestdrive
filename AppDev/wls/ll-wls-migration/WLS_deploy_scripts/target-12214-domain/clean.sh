@@ -1,0 +1,2 @@
+docker container stop test_sshd_target
+docker container rm test_sshd_target

@@ -1,0 +1,13 @@
+{
+    "tutorials": [
+        {            
+            "title": "WebLogic for OCI as a VM - prerequisites",
+            "filename": "./wlscnonjrfprereq.md"
+        },
+
+        {            
+            "title": "WebLogic for OCI as a VM",
+            "filename": "./wlscnonjrf.md"
+        }	
+    ]
+}
