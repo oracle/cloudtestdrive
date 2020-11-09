@@ -19,7 +19,7 @@ The content of this folder will be updated in a regular basis
 
 You will use the WDT tool to migrate a WebLogic domain from a source to a target server
 
-​    instructions to run th Image toolkit lab.
+4. Instructions to run th Image toolkit lab.
 ​    You will create several docker images, with WebLogic software
 ​    You will patch these distribution with the latest PSU, and deploy Weblogic Domains
 ​    You will create new images from these "patched" images and you will store them to Oracle OCI Registry
