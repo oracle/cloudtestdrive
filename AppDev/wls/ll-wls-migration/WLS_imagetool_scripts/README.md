@@ -669,7 +669,7 @@ RUN wget https://github.com/oracle/weblogic-deploy-tooling/releases/download/rel
 
 ### start sshd for this server
 
-USER  root
+USER  oracle
 CMD ["/usr/sbin/sshd", "-D"]
 EOF
 ```
@@ -741,7 +741,7 @@ docker system prune -f
 docker images
 
 #### run the container in detached mode, we map the ssh port to the host 9000 ...
-docker run -rm -d -it  \
+docker run --rm -d -it  \
 -p 9000:22 -p 7001:7001 \
 --name $IMAGE_NAME $IMAGE_NAME 
 docker container ls -a
@@ -761,7 +761,7 @@ The container is having a "custom ssh server installed" lets ssh into the contai
 
 
 ```
-ssh -i ~/.ssh/priv.txt  \
+ssh -i keys/wls_rsa  \
 -o "UserKnownHostsFile=/dev/null" \
 -o "StrictHostKeyChecking=no"  \
 oracle@localhost  -p 9000
