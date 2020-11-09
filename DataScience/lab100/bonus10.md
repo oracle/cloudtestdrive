@@ -14,7 +14,11 @@ In `LAB100` we build a linear regression model. To be able to use the model, we 
 
 The last step in LAB100 was to used RMSE to validated the performance of the model. Let's now store the model. To do so we need to initialize the ADS (Oracle Accelerated Data Science Library). Before you could use the library you have to make sure that you generated your OCI private key.
 
+## Getting Started Guide
+
 **Please follow the steps in the `getting-started.ipynb` file to register your account and generate a key that would allow you to use the ADS library.**
+
+![Getting Started](images/gettingstarted.png)
 
 After you finish the registration and validate that the ADS works, we are going to initialize the library now in **the notebook we used for LAB100**.
 
@@ -225,13 +229,13 @@ Function lhr.ocir.io/ociateam/housemarket:0.0.1 built successfully.
 
 Under `Identity -> Users -> User Details -> Auth Token` generate one and copy it and store it to use it later.
 
-![Model Catalog Housemarket](images/authtoken.png)
+![Auth Token](images/authtoken.png)
 
 ### STEP 8: Get the Container Registry Root Name
 
 Under `Developer Services -> Container Registry` copy the name of your root registry.
 
-![Model Catalog Housemarket](images/containerregistryname.png)
+![Container Registry Root Name](images/containerregistryname.png)
 
 ### STEP 9: Docker Login
 
