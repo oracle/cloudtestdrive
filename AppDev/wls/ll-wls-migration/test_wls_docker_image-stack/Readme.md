@@ -1,0 +1,136 @@
+
+
+These are the raw stack files that you have to upload to your Resource Manager in order to create the server to run the labs for the wls wdt/tooling session
+
+Log into your tenancy 
+
+Scroll to Resource Manager / Stack entry
+
+![](../WLS_deploy_scripts/images/2020-11-09_13-05-58.jpg)
+
+Then choose your compartment:
+
+![](../WLS_deploy_scripts/images/RM-2.jpg)
+
+The Click on the Create Stack button:
+
+![](../WLS_deploy_scripts/images/RM-3.jpg)
+
+
+
+Then Choose folder, and Browse to your local directory :
+
+![](../WLS_deploy_scripts/images/RM-4.jpg)
+
+
+
+Choose the folder name as origin and click to upload button:
+
+![](../WLS_deploy_scripts/images/RM-5.jpg)
+
+
+
+Then accept the option of the uploading :
+
+![](../WLS_deploy_scripts/images/RM-6.jpg)
+
+
+
+Then check that the stack will be created in your compartment, you can change the name, and you see that a number of files will be used for the creation of your server infrastructure:
+
+![](../WLS_deploy_scripts/images/RM-7.jpg)
+
+
+
+Then copy your OWN PUBLIC KEY in the field SSH_PUBLIC_KEY, and , give also the REGION where your server will be created :
+
+![](../WLS_deploy_scripts/images/RM-8.jpg)
+
+
+Click Next and review carefully the stack variables , you can still go back if you need to modify them, otherwise click on Create to start the stack creation:
+
+![](../WLS_deploy_scripts/images/RM-9.jpg)
+
+
+
+When the stack is created then you will see this screen :
+
+![](../WLS_deploy_scripts/images/RM-10.jpg)
+
+
+
+The stack will create a VCN, and a compute node using the below variables :
+
+![](../WLS_deploy_scripts/images/RM-11.jpg)
+
+
+
+Click on Terraform Apply to launch the stack creation:
+
+
+
+![](../WLS_deploy_scripts/images/RM-12.jpg)
+
+
+
+Click on the Apply button to start the process:
+
+![](../WLS_deploy_scripts/images/RM-13.jpg)
+
+
+After a couple of minutes you will see the progress of the stack creation:
+
+![](../WLS_deploy_scripts/images/RM-14.jpg)
+
+
+
+When the status is succeeded then copy the public ip of you server :
+
+![](../WLS_deploy_scripts/images/RM-15.jpg)
+
+
+Go to the compute/instances of your compartment and check that the server is up :
+
+![](../WLS_deploy_scripts/images/RM-16.jpg)
+
+
+
+Go to the NetWorking/Virtual CloudNetworks of your compartment
+
+![](../WLS_deploy_scripts/images/RM-17.jpg)
+
+Check that a VCN and the associated resources are created :
+
+![](../WLS_deploy_scripts/images/RM-18.jpg)
+
+
+
+Check the public ip of your server:
+
+![](../WLS_deploy_scripts/images/RM-19.jpg)
+
+
+
+then connect to your server as oracle with your public key  :
+
+![](../WLS_deploy_scripts/images/RM-20.jpg)
+
+
+In the terminal enter : docker version
+
+![](../WLS_deploy_scripts/images/RM-21.jpg)
+
+
+
+Then enter:
+
+ java -version to check that the java runtime is installed
+
+imagetool to check that the image tool is installed 
+
+the cd stage/installers to check that several files are installed 
+
+![](../WLS_deploy_scripts/images/RM-22.jpg)
+
+
+if you see all these artifacts then you server is ready for your labs
