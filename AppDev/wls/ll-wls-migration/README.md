@@ -13,7 +13,7 @@ The content of this folder will be updated in a regular basis
 
    If you want to run the WDT part , you [need to create a stack]() 
    
-    and download WebLogic docker images from the Docker Hub[Deploy kit lab](WLS_deploy_scripts/README.md)
+and download WebLogic docker images from the Docker Hub[Deploy kit lab](WLS_deploy_scripts/Prerequisites.md)
 
 3. Instructions to run the WDT lab.
 
