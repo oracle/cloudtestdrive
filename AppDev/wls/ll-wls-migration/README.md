@@ -15,8 +15,9 @@ The content of this folder will be updated in a regular basis
 
 [Deploy kit lab](WLS_deploy_scripts/README.md)
 
-      Instructions to run the WDT lab.
-      You will use the WDT tool to migrate a WebLogic domain from a source to a target server
+Instructions to run the WDT lab.
+
+You will use the WDT tool to migrate a WebLogic domain from a source to a target server
 
 ​    instructions to run th Image toolkit lab.
 ​    You will create several docker images, with WebLogic software
