@@ -174,24 +174,24 @@ fn update context oracle.compartment-id ocid1.compartment.oc1..aaaaaaaauz6brmxna
 Current context updated oracle.compartment-id with ocid1.compartment.oc1..aaaaaaaauz6brmxnajpmwvdwupt53uhrb2szkockrbhuruq7pgp3ptl4btdq
 ```
 
-`<COMPARTMENT_OCID>` - the OCID of your current compartment, which you can find under `Identity -> Compartments` and select the name of the compartment you are using. `Notice` your compartment could be within another compartment.
+***<COMPARTMENT_OCID>*** - the OCID of your current compartment, which you can find under `Identity -> Compartments` and select the name of the compartment you are using. `Notice` your compartment could be within another compartment.
 
 ### STEP 4: Update the context registry
 
 The registry will be created if not available, it will be the location to store the function.
 
 ```shell
-fn update context registry <regionid>.ocir.io/<tenancy>/<repo_name>
+fn update context registry <regionid>.ocir.io/<container_registry_root_name>/lab100
 ```
+
+***regionid***: Copy the **Region Id** value from [documentation](https://docs.cloud.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm#AboutRegionsandAvailabilityDomains) that maps to your region.
+***container_registry_root_name***: Check ***STEP 8*** for how to find and get the registry root name
 
 ***Example***
 
 ```console
-fn update context registry lhr.ocir.io/ociateam/lab100
+fn update context registry lhr.ocir.io/lr7zczmvkcl1/lab100
 ```
-
-`<regionid>.ocir.io/<tenancy>` - you can get this information from the previous command `fn list context` on the right side you will see the default root `REGISTRY` for the current context
-`<repo_name>` - name that you can set, you could use `lab100` for example
 
 ### STEP 5: List Fn Apps
 
@@ -242,10 +242,10 @@ Under `Developer Services -> Container Registry` copy the name of your root regi
 Use `docker login` to login to the OCI Registry to store the function image.
 
 ```shell
-docker login -u '<container_registry_root_name>/oracleidentitycloudservice/<your_email>' <region>.ocir.io
+docker login -u '<container_registry_root_name>/oracleidentitycloudservice/<your_email>' <regionid>.ocir.io
 ```
 
-***region***: Copy the **Region Key** value from [documentation](https://docs.cloud.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm#AboutRegionsandAvailabilityDomains) that maps to your region.
+***regionid***: Copy the **Region Id** value from [documentation](https://docs.cloud.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm#AboutRegionsandAvailabilityDomains) that maps to your region.
 ***password:*** the value of the auth key created in ***Step 7***
 
 ### STEP 10: Deploy the function
@@ -361,7 +361,7 @@ cat hm.json | fn invoke DataScienceApp housemarket --content-type application/js
 
 ***The house prices is 248660$***
 
-## Expose the model as REST API with API Gateway
+## API Gateway - Expose the model as REST API
 
 Now that we have the model deployed as a function, we could also use the Oracle API Gateway to expose the model as REST API. Go to `Developer Services->API Gateway`.
 
