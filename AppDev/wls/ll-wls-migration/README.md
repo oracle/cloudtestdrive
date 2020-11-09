@@ -16,11 +16,11 @@ The content of this folder will be updated in a regular basis
 
 and download WebLogic docker images from the Docker Hub[Deploy kit lab](WLS_deploy_scripts/Prerequisites.md)
 
-3. Instructions to run the WDT lab.
+3. Instructions to [run the WDT lab](WLS_deploy_scripts).
 
    You will use the WDT tool to migrate a WebLogic domain from a source to a target server
 
-4. Instructions to run the Image toolkit lab.
+4. Instructions to [run the Image toolkit lab](WLS_imagetool_scripts).
 
    You will create several docker images, with WebLogic software
 
