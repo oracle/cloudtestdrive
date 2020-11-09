@@ -11,15 +11,15 @@ The content of this folder will be updated in a regular basis
 
 2. Prerequisites for the WDT part
 
-   If you want to run the WDT part , you [need to create a stack]() , and [download WebLogic docker images from the Docker Hub]()
-
-[Deploy kit lab](WLS_deploy_scripts/README.md)
+   If you want to run the WDT part , you [need to create a stack]() 
+   
+    and download WebLogic docker images from the Docker Hub[Deploy kit lab](WLS_deploy_scripts/README.md)
 
 3. Instructions to run the WDT lab.
 
    You will use the WDT tool to migrate a WebLogic domain from a source to a target server
 
-4. Instructions to run th Image toolkit lab.
+4. Instructions to run the Image toolkit lab.
 
    You will create several docker images, with WebLogic software
 
