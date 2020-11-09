@@ -5,11 +5,11 @@ In this Lab we will use the [Oracle Weblogic Image tool](https://github.com/orac
 1. Create a Weblogic docker Image using the [Create Image](https://github.com/oracle/weblogic-image-tool/blob/master/site/create-image.md) command 
 2. Update a Weblogic docker image with the latest PSU and with a domain deployment using the [Update Image](https://github.com/oracle/weblogic-image-tool/blob/master/site/update-image.md) command and the WDT tool to deploy a domain from a model
 3. Create a Weblogic docker image from an existing Weblogic image, apply some patch updates using the [Create Image](https://github.com/oracle/weblogic-image-tool/blob/master/site/create-image.md) tool
-4. Push a Weblogic docker image to an OCI registry
-5. Pull a Weblogic image from an OCI registry
+4. Push a Weblogic docker image to an [OCI registry](https://docs.cloud.oracle.com/en-us/iaas/Content/Registry/Concepts/registryoverview.htm)
+5. Pull a Weblogic image from an [OCI registry](https://docs.cloud.oracle.com/en-us/iaas/Content/Registry/Concepts/registryoverview.htm)
 
 **All the subsequent steps for this workshop should be run from your workshop compute node**.
-**We have already pre-installed  your server with the below features dont try to modify it during the workshop:**
+**We have already pre-installed  your server with the below features don't try to modify it during the workshop:**
 
 1. Imagetool
 
@@ -19,44 +19,43 @@ In this Lab we will use the [Oracle Weblogic Image tool](https://github.com/orac
 
 4. Patches needed to run the PSU updates 
 
-After having created a compute node from the delivered stack you,
-should log the linux server as oracle user abd check the directory /home/oracle/stage/installers 
+After having created a compute node from the delivered stack, you should be able to log to this Linux server as oracle user and check the directory /home/oracle/stage/installers 
 which contains all the artifacts needed for the next workshop labs.
 
-Your linux system is already preinstalled with the latest version of Docker.
-Additional optimisations are activated in order to speed up the Docker image creation process by using the buildkit feature.
-This optimisation is done on the Docker daemon configuration explained in the below link.
+Your Linux system is already preinstalled with the latest version of Docker.
+
+Additional optimizations are activated in order to speed up the Docker image creation process by using the [buildkit](https://docs.docker.com/develop/develop-images/build_enhancements/) feature.
+
+This [optimization](https://docs.docker.com/develop/develop-images/build_enhancements/) is done on the Docker daemon configuration explained in the below link ( /etc/daemon.json) .
 
 The buildkit [extention](https://docs.docker.com/develop/develop-images/build_enhancements/) can also used by adding a flag in the Docker build command.
 
-BuildKit scripts handle docker tag in lower letters, you will see that you will run convertions to lower letter case for our generated Docker files in order to use this feature.
+BuildKit scripts handle docker tag in ***lower letters***, you have to  convert to lower letter case the generated tags  for theses Docker files, from the image tool,  in order to compile the Dockerfiles to  images 
 
-In case that your docker installations will not use the BuildKit feature, then you dont need to convert the generated Docker file tags in lower letters, and all the labs can run without the conversion scripts.
+In case that your docker installations will not use the BuildKit feature, then you don't need to convert the generated Docker file tags in lower letters, and all the labs can run without the conversion scripts.
 
-The Weblogic image tool can be used to create /rebase/ update Docker images with WebLogic software, but one important function is the generation of "Dockerfiles" with dryRun flag.
-The stubs generated can then be even more customized  by using custom Docker commands and this is the approach that we will adopt during this workshop.
+The WebLogic image tool can be used to **create /rebase/ update** Docker images with WebLogic software, but one important function is the generation of "Dockerfiles" with **dryRun** flag.
 
-We will generate the "stubs", or Dockerfiles with the dryrun flag, we will convert the relevant tags in lower letters, and then we will built the docker images, addind some features,  with the docker build commands.
+The stubs generated can bu further customized,  by using custom Docker commands and this is the approach that we will adopt during this workshop.
 
-The below annotation will be used for our scripts, activating the buildkit feature.
+We will generate the "stubs", or Dockerfiles with the dryRun flag.
+We will convert the relevant tags in lower letters, and then we will built the docker images, adding more features,  with the docker build commands.
 
-```
-DOCKER_BUILDKIT=1 docker build .
-```
+# Lab 1 Introduction to the Image Tool
 
 
-Lab 1 Introduction to the Iamge Tool
+Before to start to use the image tool,  we have to create a ["cache"](https://github.com/oracle/weblogic-image-tool/blob/master/site/cache.md)  with the software that we will use to create out docker images.
 
+During the "updates" process of your docker images, installing  PSU or patches,  the tool will place them  into the cache.
 
-Before to start to use the image tool we have to create a ["cache"](https://github.com/oracle/weblogic-image-tool/blob/master/site/cache.md)  with the software that we will use to create out docker images.
-
-During the "updates" process of your docker images, if you install PSU or patches the tool will place these artifacts into this cache.
-
-In the below code , the command imagetool cache listItems will show you the loaded items into the cache and their location into a local file system.
+In the below code , the command 
 
 ```
 imagetool cache listItems
 ```
+
+ will show you the loaded items into the cache and their location into a local file system.
+
 
 The resulat will be as below:
 
@@ -70,12 +69,15 @@ jdk_8u261=/home/oracle/stage/installers/jdk-8u261-linux-x64.tar.gz
 28186730_13.9.4.2.4=/home/oracle/cache/p28186730_139424_Generic.zip
 ```
 
-
 We will copy some of the downloaded patches from the  "cache filesystem" into precise filesystem locations.
-We can use them during the customisation of our images.
+We can use them during the customization of our images.
 
-The removal of the cached items from the case is done with the command imagetool cache deleteEntry --key XXXX.
-In the previous exemple we see that the key associated with the p31960985_122140_Generic.zip is 31960985_12.2.1.4.0, the patch is located to /home/oracle/cache/p31960985_122140_Generic.zip.
+The removal of the cached items from the case is done with the command **imagetool cache deleteEntry --key XXXX.**
+
+In the previous example we see that the key associated with the p31960985_122140_Generic.zip is 31960985_12.2.1.4.0
+
+the patch is located to /home/oracle/cache/p31960985_122140_Generic.zip.
+
 The removal of this artifact from the cache then is done with the below command :
 
 
@@ -108,8 +110,7 @@ You should load you cache with the below code :
  --path /home/oracle/stage/installers/weblogic-deploy.zip
  ```
 
-
-Removing unused images from the system is alway a good habit, and saves you a lot of space from your building system.
+Removing unused images from the system is always a good habit, and saves you a lot of space from your building system.
 The command below will be used for this cleanup
 
 
@@ -117,7 +118,7 @@ The command below will be used for this cleanup
 docker system prune -f
 ```
 
-You need to provide support creadentials to be able to use the "patch" feature of the image tool.
+You need to provide support credentials to be able to use the "patch" feature of the image tool.
 For this purpose create a text file with your Oracle Support Credentials
 
 
@@ -131,8 +132,8 @@ Loaded you cache with the software bit that needed to create your images, and yo
 
 # PART 1 CREATE A BASIC DOCKER IMAGE
 
-Lets create a basic docker image with the imag tool.
-The image will be patch with the latestPSU for the weblogic version 12.2.1.4 ( the installed is already loaded in the cache)
+Lets create a basic docker image with the image tool.
+The image will be patch with the latestPSU for the WebLogic version 12.2.1.4 ( the software is installed already loaded in the cache)
 The docker image will use the jdk 18u261 (loaded already in the cache).
 Execute the below code:
 
@@ -152,12 +153,30 @@ time imagetool create \
 
 The result will be as below:
 Notice all the steps taken by the build tool:
-the installers are copied to a temp location
-the tool tries to laod relevent patches, and then downloads them back to the cache
-once all software bits are downloaded then the tool tries to build the DockerImage, but in our case as we use the latest docker optimisation, we see a failure.
-"OS_UPDATE": invalid reference format: repository name must be lowercase.
-To workaround then this issue we will not create an image but we will generate the associated Dockerfile, and we will compile it in a subsequent step.
-If your support credentials are wrong the operation will fail and then you have to correct them and re laucnh the same operation.
+
+1. the installers are copied to a temp location
+2. the tool tries to load relevant patches, and then downloads them back to the cache
+3. once all software bits are downloaded then the tool tries to build the DockerImage, but in our case as we use the latest docker optimization, we see a failure.
+
+**"OS_UPDATE": invalid reference format: repository name must be lowercase.**
+
+To workaround then this issue,  **we will not create an image** but we will generate the associated Dockerfile, and we will compile it in a subsequent step.
+
+If your support credentials are wrong the operation will fail and then you have to correct them and re launch the same operation.
+
+Copy the patches from the cache to the file system are they will be referenced by the Dockerfiles during the build process of the images.
+
+Copy the below code again to your Linux terminal :
+
+```
+cd /home/oracle/stage/installers/
+mkdir -p /home/oracle/stage/installers/patches
+cp /home/oracle/cache/p31960985_122140_Generic.zip patches/.
+cp /home/oracle/cache/p31960985_122140_Generic.zip .
+cp /home/oracle/cache/p28186730_139424_Generic.zip .
+### relaunch the docker daemon
+sudo systemctl  restart docker
+```
 
 
 
@@ -199,7 +218,7 @@ failed to solve with frontend dockerfile.v0: failed to create LLB definition: fa
 
 In some rare cases you might get a timeout on the communication between the tool and the oracle support site.
 
-You will get the below error, in this case tr to re execute yor script !
+You will get the below error, in this case try to re execute your script !
 
 ```
 [INFO   ] Image Tool build ID: 6151a7c8-4ab1-4898-8289-0d84ec216b28
@@ -211,7 +230,8 @@ You will get the below error, in this case tr to re execute yor script !
 [SEVERE ] Unable to retrieve list of Oracle releases from Oracle Updates (ARU). Try again later.
 ```
 
-Althought the build process of DockerImage has failed the cache has been updated from the support downloaded patches.
+Although the build process of DockerImage has failed the cache has been updated from the support downloaded patches.
+
 Examine the content of your "updated" cache again :
 
 
@@ -219,7 +239,9 @@ Examine the content of your "updated" cache again :
 imagetool cache listItems
 ```
 The result will be as below:
+
 Do you seen any difference ?
+
 Can you describe the new elements , and their physical location into your servers filesystem ?
 
 
@@ -233,9 +255,11 @@ jdk_8u261=/home/oracle/stage/installers/jdk-8u261-linux-x64.tar.gz
 28186730_13.9.4.2.4=/home/oracle/cache/p28186730_139424_Generic.zip
 ```
 
-Now we will create our Dockerfiles, and make some lower case convertion to be able to build our images much faster with the buildkit feature.
-Enter the below script to your linux system :
-! REMEMBER TO REPLACE THE USER WITH YOUR USER AND YOUR SUPPORT CREDENTIALS !
+Now we will create our Dockerfiles, and make some lower case conversion, in order  to be able to build our images much faster with the buildkit feature.
+
+Enter the below script to your Linux system :
+
+**! REMEMBER TO REPLACE THE USER WITH YOUR USER AND YOUR SUPPORT CREDENTIALS !**
 
 ```
 ### now create the Dockerfile of this image
@@ -260,10 +284,12 @@ imagetool @build_commands_12.2.1.4.0 > $DOCKER_FILE
 ```
 
 This command creates the configuration for image tool to create a wls server.
-We will pull out the latest base image for our Docker images ( we will later that is a linux7 thin)
-We will use our weblogic installation media 
-The installation will be patched with the latest PSU patches, and will use the jkd 18u261
-The flag dryRun will create the associated Dockerfile but it will not run the build image proccess, we will do this step later.
+
+1. We will pull out the latest base image for our Docker images ( we will later that is a linux7 thin)
+2. We will use our weblogic installation media 
+3. The installation will be patched with the latest PSU patches, and will use the jkd 18u261
+4. The flag dryRun will create the associated Dockerfile but it will not run the build image proccess, we will do this step later.
+
 Lets follow the output of this command:
 
 ```
@@ -408,13 +434,13 @@ WORKDIR /u01/oracle
 
 ```
 
-What is the base image of our future DockerContainer ?
-What components are installed ?
-In which order ?
-Are there any "system updates" if yes why ?
-Can you see when and how the weblogic installation is patched ?
+1. What is the base image of our future DockerContainer ?
+2. What components are installed ?
+3. In which order ?
+4. Are there any "system updates" if yes why ?
+5. Can you see when and how the weblogic installation is patched ?
 
-As you see the image tool create a ***multi stage build***, with sever tags as : 
+As you see, the image tool create a ***multi stage build***, with several tags as : 
 
 **OS_UPDATE, JDK_BUILD, JDK_BUILD,FINAL_BUILD**
 
@@ -540,11 +566,12 @@ docker system prune -f
 
 # PART 2 CREATE AN UPDATED WEBLOGIC IMAGE WITH A WEBLOGIC DOMAIN
 
+During this lab we will:
 
-During this lab we will add instructions to Dockerfile to add rpms to our docker image.
-We will create a new docker image updated with the latest PSU, and we will install a Domain obtained from a previous migration with the wdt tool.
+1. Add instructions to Dockerfile to add rpms to our docker image.
+2. We will create a new docker image updated with the latest PSU, and we will install a Domain obtained from a previous migration with the wdt tool.
+3. We will convert the tags to lower case, and we will build the Dockerfile.
 
-We will convert the tags to lower case, and we will build the Dockerfile.
 
 Run the below command to your linux terminal
 
@@ -581,10 +608,10 @@ What you notice about the additional flags ?
 --wdtDomainHome
 --wdtDomainHome
 
-Can you check the associated files ?
-What domain you will inject into your docker file ?
-Are there any applications that there will be deployed ?
-What is the name of the Weblogic Admin user, and what will be the associated password ?
+1. Can you check the associated files ?
+2. What domain you will inject into your docker file ?
+3. Are there any applications that there will be deployed ?
+4. What is the name of the Weblogic Admin user, and what will be the associated password ?
 
 Check out the result, and the Dockerfile generated
 
@@ -601,10 +628,11 @@ Check out the result, and the Dockerfile generated
 ```
 
 Now we will add some rpm to this Dockerfile.
+
 This is quite easy as we have the Dockerfile, and we have our own section ( see below which will be added to the one generated by the tool !)
 
-Can you see what rpm we add ?
-Do you see some new features in the Dockerfile ?
+1. Can you see what rpm we add ?
+2. Do you see some new features in the Dockerfile ?
 
 Run the below scrip to generate the additionals features for our next release 
 
@@ -647,7 +675,8 @@ CMD ["sudo","/usr/sbin/sshd", "-D"]
 EOF
 ```
 
-And then conncatenate the 2 Dockerfiles for the final build.
+And then concatenate the 2 Dockerfiles for the final build.
+
 Then convert the tags to lower case, and build the new docker image :
 
 ```
@@ -699,7 +728,8 @@ sys     0m1.239s
 Great ! in a few minutes we have a new Weblogic Docker image with a new domain, and with the latest patches 
 
 Now lets explorer this container 
-Enter the following commands to your linux system:
+
+Enter the following commands to your Linux system:
 
 ```
 docker system prune -f
@@ -751,11 +781,13 @@ This is the end of part 2 , we need this docker image as a source for the next l
 
 # PART 3 CREATE AND DEPLOY AN IMAGE WITH A WEBLOGIC DOMAIN TO OCI REGISTRY FROM AN EXISTING IMAGE
 
-For this lab we will use the image created in part2.
+For this lab we will:
 
-We will apply a simple patch upgrade to see the Dockerfile created by the tool.
+1. Use the image created in part2.
+2. We will apply a simple patch upgrade to see the Dockerfile created by the tool.
 
-The image will be tagged accordingly tp our OCI account registry, then this image will uploaded to the registry and download when needed.
+3. The image will be tagged accordingly to our OCI account registry
+4. This image will uploaded to the registry and download when needed.
 
 An overview of the registry service is given [here](https://docs.cloud.oracle.com/en-us/iaas/Content/Registry/Concepts/registryoverview.htm)
 
@@ -861,7 +893,8 @@ Follow the execution result :
 ```
 
 inspect the dockerfile
-Execute again the below command to our linux terminal
+
+Execute again the below command to our Linux terminal
 
 ```
 cat frm_dockerfile_update_from_image
@@ -905,9 +938,10 @@ USER oracle
 ########## END DOCKERFILE ##########
 ```
 
-What are the actions for this Dockerfile ?
+1. What are the actions for this Dockerfile ?
 
-Create the image the final docker image by running the below command to your linux terminal
+
+Create  the final docker image by running the below command to your Linux terminal
 
 ```
 DOCKER_BUILDKIT=1  docker image build  \
@@ -915,7 +949,7 @@ DOCKER_BUILDKIT=1  docker image build  \
 --force-rm=true \
 --file  frm_dockerfile_update_from_image .
 ```
-The result of this comand should be as below :
+The result of this command should be as below :
 ```
 [+] Building 80.9s (10/10) FINISHED
 .....
@@ -932,25 +966,37 @@ The result of this comand should be as below :
 ```
 
 
-To upload this image to the OCIR we need to have / create a token
+To upload this image to the OCIR we need to have / [create a token](https://docs.cloud.oracle.com/en-us/iaas/Content/Registry/Tasks/registrygettingauthtoken.htm)
 
-To create a token click on the right part of the OCI concole
+To create a token click on the right part of the OCI console
 
 ![](images/create_token1.jpg)
 
+Then click on :
 
-Then click on the line just after the Profile string ie your user account , and on the lower left side click on Auth Tokens
+1. the line just after the Profile string ie your user account , 
+2. and on the lower left side click on AUTH Tokens
 
 ![](images/create_token2.jpg)
 
-Then click on generate Token , give the name OCIR , and then copy the content of the token to your notepad.
-The TOKEN content will not be available any more for the console.
-You can repeat this process if you need to recreate this token
+Then 
+
+1. click on generate Token , 
+2. give the name OCIR , 
+3. and then copy the content of the token to your notepad.
+
+The TOKEN content will not be visible any more from  the console.
+
+You can repeat this process if you need to recreate this token.
+
+
 
 ![](images/create_token3.jpg) 
 
+1. You need the token 
+2. and you account info 
 
-You need this token and you account info to log into the registry as ( run again the below command to your linux terminal)
+to log into your OICI Registry  ( run again the below command to your Linux terminal)
 
 ```
 echo "THE_CONTENT_OF_YOUR_TOKEN" > token
@@ -1006,7 +1052,7 @@ fra.ocir.io/oraseemeatechse/mydockerwls/wls   12.2.1.4.0-psu      cb71838939bb  
 
 your image is stored to the OCI Registry and can be reused by pulling it for this registry
 
-Congratulation with the image tool we are able to create your tailored WebLogic software images, and distribute them to any OCI process throught th OCI registry.
+Congratulation with the image tool we are able to create your tailored WebLogic software images, and distribute them to any OCI process through the OCI registry.
 
 Thanks for your participation
 
