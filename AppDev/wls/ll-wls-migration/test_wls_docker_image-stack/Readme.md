@@ -1,6 +1,6 @@
 
 
-These are the raw stack files that you have to upload to your Resource Manager in order to create the server to run the labs for the wls wdt/tooling session
+These are the raw stack files that you have to upload to your Resource Manager in order to create the server to run the labs for the wls wdt/tooling session, you should download them before to start the labs to your local folder
 
 Log into your tenancy 
 
