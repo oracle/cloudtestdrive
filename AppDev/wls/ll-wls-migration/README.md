@@ -6,3 +6,4 @@ Prerequisites ...
 
 [Image tool kit labs](WLS_imagetool_scripts/README.md)
 
+[Troubleshooting](troublshooting.md)
