@@ -23,3 +23,11 @@ Permission denied (publickey).
 ```
 
 in this case wait , and try to reconnect to the server, or try to connect as opc user then execute sudo su - oracle to continue as oracle user
+
+Missing File DiscoveredDemoDomain.zip-logfile
+
+in case that this file is missing and the Docker build fails then run this command from the linux terminal
+
+/home/oracle/stage/installers
+
+wget  https://github.com/eugsim1/WLS_imagetool_scripts/raw/main/DiscoveredDemoDomain.zip
