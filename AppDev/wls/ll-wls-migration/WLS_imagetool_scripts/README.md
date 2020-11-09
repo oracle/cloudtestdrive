@@ -95,7 +95,8 @@ You should load you cache with the below code :
 
 
  ```
- imagetool cache addInstaller \
+cd /home/oracle/stage/installers/imagetool
+imagetool cache addInstaller \
  --type jdk --version 8u261      \
  --path /home/oracle/stage/installers/jdk-8u261-linux-x64.tar.gz
  
