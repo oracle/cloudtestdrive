@@ -6,9 +6,9 @@ This page is to allow easy access to various of the live labs which have their o
 ## Core labs
 These have no optional modules
 
-[Helidon core lab](https://oracle.github.io/cloudtestdrive/AppDev/cloud-native/livelabs/individual/helidon/helidon-core/index.html?lab=helidon-labs-introduction)
+[Helidon core lab](https://oracle.github.io/cloudtestdrive/AppDev/cloud-native/livelabs/individual/helidon/helidon-core/index.html?lab=labs-introduction)
 
-[Kubernetes core lab](https://oracle.github.io/cloudtestdrive/AppDev/cloud-native/livelabs/individual/kubernetes/kubernetes-core/index.html?lab=kubernetes-labs-introduction)
+[Kubernetes core lab](https://oracle.github.io/cloudtestdrive/AppDev/cloud-native/livelabs/individual/kubernetes/kubernetes-core/index.html?lab=labs-introduction)
 
 (No Docker lab as it makes no sense if you haven't finished the Helidon lab)
 
