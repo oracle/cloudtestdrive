@@ -1,3 +1,5 @@
+
+
 # WebLogic Deploy Workshop  
 
 ## Introduction
@@ -296,6 +298,15 @@ Total:       WARNING :     0    SEVERE :     0
 discoverDomain.sh completed successfully (exit code = 0)
 
 ```
+
+
+The discovery script has created three files:
+
+1. source.zip
+2. source.properties
+3. source.yaml
+
+
 
 ![](images/disc_results.jpg)
 
