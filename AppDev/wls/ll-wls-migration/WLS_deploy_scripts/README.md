@@ -236,7 +236,11 @@ During the discovery three artifacts will be created:
 cd /home/oracle/WLS_deploy_scripts
 ```
 
-![](images/WLS_scripts.jpg)
+
+
+Inspect the discovery domain scrips as below:
+
+
 
 ```
 cat discover_domain.sh
