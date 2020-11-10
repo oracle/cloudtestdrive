@@ -30,15 +30,16 @@ This [optimization](https://docs.docker.com/develop/develop-images/build_enhance
 
 The buildkit [extention](https://docs.docker.com/develop/develop-images/build_enhancements/) can also used by adding a flag in the Docker build command.
 
-BuildKit scripts handle docker tag in ***lower letters***, you have to  convert to lower letter case the generated tags  for theses Docker files, from the image tool,  in order to compile the Dockerfiles to  images 
+BuildKit scripts handle docker tag in ***lower letters***, you have to  convert  the generated tags  for theses Docker files from the image tool, to lower letter case,  in order to compile the Dockerfiles to  images 
 
-In case that your docker installations will not use the BuildKit feature, then you don't need to convert the generated Docker file tags in lower letters, and all the labs can run without the conversion scripts.
+**In case that your docker installations will not use the BuildKit feature, then you don't need to convert the generated Docker file tags in lower letters, and all the labs can run without the conversion scripts.**
 
-The WebLogic image tool can be used to **create /rebase/ update** Docker images with WebLogic software, but one important function is the generation of "Dockerfiles" with **dryRun** flag.
+The WebLogic image tool can be used to **create /rebase/ update** Docker images with WebLogic software, ***but one important function is the generation of "Dockerfiles" with dryRun flag.***
 
-The stubs generated can bu further customized,  by using custom Docker commands and this is the approach that we will adopt during this workshop.
+The stubs generated can be further customized,  by using custom Docker commands and this is the approach that we will adopt during this workshop.
 
 We will generate the "stubs", or Dockerfiles with the dryRun flag.
+
 We will convert the relevant tags in lower letters, and then we will built the docker images, adding more features,  with the docker build commands.
 
 # Lab 1 Introduction to the Image Tool
@@ -46,7 +47,7 @@ We will convert the relevant tags in lower letters, and then we will built the d
 
 Before to start to use the image tool,  we have to create a ["cache"](https://github.com/oracle/weblogic-image-tool/blob/master/site/cache.md)  with the software that we will use to create out docker images.
 
-During the "updates" process of your docker images, installing  PSU or patches,  the tool will place them  into the cache.
+During the "update" process of your docker images (ie ) installation of  PSU or patches) ,  the tool will place the patches  into the cache.
 
 In the below code , the command 
 
@@ -57,7 +58,7 @@ imagetool cache listItems
  will show you the loaded items into the cache and their location into a local file system.
 
 
-The resulat will be as below:
+The result will be as below:
 
 ```
 Cache contents
@@ -70,13 +71,14 @@ jdk_8u261=/home/oracle/stage/installers/jdk-8u261-linux-x64.tar.gz
 ```
 
 We will copy some of the downloaded patches from the  "cache filesystem" into precise filesystem locations.
+
 We can use them during the customization of our images.
 
 The removal of the cached items from the case is done with the command **imagetool cache deleteEntry --key XXXX.**
 
-In the previous example we see that the key associated with the p31960985_122140_Generic.zip is 31960985_12.2.1.4.0
+In the previous example, we see that the key associated with the **p31960985_122140_Generic.zip is 31960985_12.2.1.4.0**
 
-the patch is located to /home/oracle/cache/p31960985_122140_Generic.zip.
+the patch **is located to /home/oracle/cache/p31960985_122140_Generic.zip**.
 
 The removal of this artifact from the cache then is done with the below command :
 
@@ -91,7 +93,7 @@ For our labs we need to use the :
 - fmw_12.2.1.4.0_wls_Disk1_1of1.zip
 - weblogic-deploy.zip
 
-You should load you cache with the below code :
+You should load your cache with the below code :
 
 
  ```
@@ -112,6 +114,7 @@ imagetool cache addInstaller \
  ```
 
 Removing unused images from the system is always a good habit, and saves you a lot of space from your building system.
+
 The command below will be used for this cleanup
 
 
@@ -120,6 +123,7 @@ docker system prune -f
 ```
 
 You need to provide support credentials to be able to use the "patch" feature of the image tool.
+
 For this purpose create a text file with your Oracle Support Credentials
 
 
@@ -128,14 +132,21 @@ cd /home/oracle/stage/installers/
 export ORACLE_SUPORT_PASSWORD=Your_Oracle_Support_Password
 echo $ORACLE_SUPORT_PASSWORD > passwd.txt
 ```
-Once that you have :
-Loaded you cache with the software bit that needed to create your images, and you support credentials then you are ready to create your images.
+At this point of the Lab :
+
+1. You have loaded you cache with the software bit that needed to create your images.
+2. Yoy have created your support credentials needed for the patching process.
+
+
 
 # PART 1 CREATE A BASIC DOCKER IMAGE
 
 Lets create a basic docker image with the image tool.
-The image will be patch with the latestPSU for the WebLogic version 12.2.1.4 ( the software is installed already loaded in the cache)
+
+The image will be patched with the latestPSU for the WebLogic version 12.2.1.4 ( the software is installed already loaded in the cache).
+
 The docker image will use the jdk 18u261 (loaded already in the cache).
+
 Execute the below code:
 
 
@@ -153,11 +164,12 @@ time imagetool create \
 ```
 
 The result will be as below:
+
 Notice all the steps taken by the build tool:
 
 1. the installers are copied to a temp location
 2. the tool tries to load relevant patches, and then downloads them back to the cache
-3. once all software bits are downloaded then the tool tries to build the DockerImage, but in our case as we use the latest docker optimization, we see a failure.
+3. once all software bits are downloaded,  then the tool tries to build the DockerImage, **but in our case as we use the latest docker optimization, we see a failure.**
 
 **"OS_UPDATE": invalid reference format: repository name must be lowercase.**
 
