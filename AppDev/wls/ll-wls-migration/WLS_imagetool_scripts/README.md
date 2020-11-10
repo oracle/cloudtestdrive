@@ -74,11 +74,9 @@ We will copy some of the downloaded patches from the  "cache filesystem" into pr
 
 We can use them during the customization of our images.
 
-The removal of the cached items from the case is done with the command **imagetool cache deleteEntry --key XXXX.**
+The removal of the cached items from the cache, is done with the command **imagetool cache deleteEntry --key XXXX.**
 
-In the previous example, we see that the key associated with the **p31960985_122140_Generic.zip is 31960985_12.2.1.4.0**
-
-the patch **is located to /home/oracle/cache/p31960985_122140_Generic.zip**.
+In the previous example, we see that the key associated with the the patch  **p31960985_122140_Generic.zip is 31960985_12.2.1.4.0**  **is located to /home/oracle/cache/p31960985_122140_Generic.zip**.
 
 The removal of this artifact from the cache then is done with the below command :
 
@@ -87,8 +85,10 @@ The removal of this artifact from the cache then is done with the below command 
 imagetool cache deleteEntry --key 31960985_12.2.1.4.0
 ```
 
-Before to launch any operation with the Image tool we have to load the cache with the software that will be used by the Image Creation process.
+Before to launch any operation with the Image tool we have to load the cache with the software that will be used by the Image creation process.
+
 For our labs we need to use the :
+
 - jdk-8u261-linux-x64.tar.gz
 - fmw_12.2.1.4.0_wls_Disk1_1of1.zip
 - weblogic-deploy.zip
@@ -216,7 +216,7 @@ If your support credentials are wrong the operation will fail and then you have 
 
 Copy the patches from the cache to the file system are they will be referenced by the Dockerfiles during the build process of the images.
 
-Copy the below code again to your Linux terminal :
+Copy the below code again to your Linux terminal (the patches will be used from the Dockerfiles) :
 
 
 
@@ -224,7 +224,6 @@ Copy the below code again to your Linux terminal :
 cd /home/oracle/stage/installers/
 mkdir -p /home/oracle/stage/installers/patches
 cp /home/oracle/cache/p31960985_122140_Generic.zip patches/.
-cp /home/oracle/cache/p31960985_122140_Generic.zip .
 cp /home/oracle/cache/p28186730_139424_Generic.zip .
 ### relaunch the docker daemon
 sudo systemctl  restart docker
@@ -516,9 +515,10 @@ echo "rebuild the image $IMAGE_NAME"
 
 docker container rm $IMAGE_NAME -f
 docker rmi $IMAGE_NAME -f
-## --no-cache=true \
+## 
 time DOCKER_BUILDKIT=1  docker image build  \
 --tag $IMAGE_NAME  \
+--no-cache=true \
 --force-rm=true \
 --squash \
 --rm=true \
@@ -777,6 +777,7 @@ docker rmi $IMAGE_NAME -f
 
 time DOCKER_BUILDKIT=1  docker image build  \
 --tag $IMAGE_NAME  \
+--no-cache=true \
 --force-rm=true \
 --squash \
 --rm=true \
@@ -1048,7 +1049,9 @@ Create  the final docker image by running the below command to your Linux termin
 ```
 DOCKER_BUILDKIT=1  docker image build  \
 --tag ${TARGET_NEW_IMAGE}  \
+--no-cache=true \
 --force-rm=true \
+--rm=true \
 --file  frm_dockerfile_update_from_image .
 ```
 The result of this command should be as below :
@@ -1158,3 +1161,4 @@ Congratulation with the image tool we are able to create your tailored WebLogic 
 
 Thanks for your participation
 
+eugene.simos@oracle.com
