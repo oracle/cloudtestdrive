@@ -10,18 +10,15 @@ This lab is composed of the following steps :
 
 
 
-- **Prerequisites** : you will create a compute instance where we will spin up 2 WebLogic environments, so we can use these environments to execute the migration.  
-  [Steps to follow to set up the instance](test_wls_docker_image-stack/Readme.md)
+- **[Prerequisites](test_wls_docker_image-stack/Readme.md)** : you will create a compute instance where we will spin up 2 WebLogic environments, so we can use these environments to execute the migration.  
 
 
 
-- **Part 1 : Using the WDT** tool to migrate a WebLogic domain from a source to a target server
-  [Lab Execution steps](WLS_deploy_scripts)
+- **[Part 1 : Using the WDT](WLS_deploy_scripts/README.md)** tool to migrate a WebLogic domain from a source to a target server.
 
 
 
-- Part 2 : Image Toolkit : creating docker images with WebLogic software, patch these distribution with the latest PSU, and deploy Weblogic Domains and you will store them to Oracle OCI Registry
-   [Lab Execution steps](WLS_imagetool_scripts).
+- **[Part 2 : Image Toolkit](WLS_imagetool_scripts/README.md)** : creating docker images with WebLogic software, patch these distribution with the latest PSU, and deploy Weblogic Domains and you will store them to Oracle OCI Registry.
 
   
 
