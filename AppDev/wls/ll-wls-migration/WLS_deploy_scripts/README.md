@@ -65,7 +65,9 @@ In the below sections you will get some details about these scripts.
 
 ## Preparing the WebLogic environments
 
-**Check again that you have done the next steps before to start this lab** :
+**Check again that you have done the next steps (installed the weblogic docker images ) before to start this lab** :
+
+if you have done this step skip to the **"Start the Labs from here"**
 
 - Log into [Docker hub](https://hub.docker.com/_/oracle-weblogic-server-12c).  You need a docker account to do this, if you don't have such an account follow the instructions on the docker site to create a free account.
 - Accept the T&C from Oracle in order to be allowed to download the WebLogic images
@@ -74,7 +76,7 @@ In the below sections you will get some details about these scripts.
 
 
 
-- Download the following weblogic images to your workshop server
+- Download the following WebLogic images to your workshop server
 
   **store/oracle/weblogic:12.2.1.3**
 
@@ -90,6 +92,14 @@ cat ~/my_password.txt | docker login --username Your_Docker_Id --password-stdin
 docker pull store/oracle/weblogic:12.2.1.3 
 docker pull store/oracle/weblogic:12.2.1.4
 ```
+
+
+
+# Start the Labs from here
+
+Once the the WebLogic images are into your server continue then the lab :
+
+
 
 - Then clone the workshop repository scrips as below to your machine , and **relaunch the Docker system** :
 
