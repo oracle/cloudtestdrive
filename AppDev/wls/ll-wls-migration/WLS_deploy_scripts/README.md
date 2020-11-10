@@ -14,7 +14,7 @@ For this lab you have already installed the Workshop Stack, and downloaded the W
 
 The below schema depicts the workshop scenario:
 
-A  WebLogic domain is created on the source serve, and our goal is to generate the migration artifacts with the WebLogic tool, and migrate then to another server.
+A  WebLogic domain is created on the source server, and our goal is to generate the migration artifacts with the WebLogic tool, and migrate them to another server.
 
 Two docker images will simulate the weblogic servers (source domain server, target domain server for this migration).
 
@@ -22,7 +22,7 @@ The source server [deploys a simple 12.2.1.3 clustered weblogic domain,](https:/
 
 The target server is installed with the base 12.2.1.4 WebLogic installation, no domains are created.
 
-The migration tool will recreate the source domain to the target server , and deploy the applications configuration of the initial domain without any modifications.
+The migration tool will recreate the source domain to the target server,  and deploy the applications configuration of the initial source domain without any modifications.
 
 In order to run the migration, the WDT tool should be installed and available on both servers.
 
@@ -65,8 +65,10 @@ In the below sections you will get some details about these scripts.
 
 ## Preparing the WebLogic environments
 
+**Check again that you have done the next steps before to start this lab** :
+
 - Log into [Docker hub](https://hub.docker.com/_/oracle-weblogic-server-12c).  You need a docker account to do this, if you don't have such an account follow the instructions on the docker site to create a free account.
-- Accept the T&C from Oracle in order to be allowed to downlod the WebLogic images
+- Accept the T&C from Oracle in order to be allowed to download the WebLogic images
 
 ![](images/docker-hub.jpg)
 
