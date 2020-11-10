@@ -139,8 +139,8 @@ cp -R /home/oracle/stage/installers/keys .
 ```
 Having created these images , we need now to create our Workshop infrastructure:
 
+We will Create a local network for our docker servers.
 
-We will Create a local network for our docker servers
 We will instantiate 2 container images for the source, and target server as below:
 
 
@@ -196,10 +196,9 @@ nohup $DOMAIN_HOME/startWebLogic.sh &
 tail -f nohup.out
 ```
 
-Connect to your source WebLogic console , using a browser.
-Get the ip of you host workshop server - you can execute the command  **curl ifconfig.co** to get your servers ip 
+Connect to your source WebLogic console , using a browser
 
-And use it as http://host_ip:7001/console with the following credentials weblogic/welcome1 ( these are the initial source domain credentials).
+And use , the public ip of your vm as host_ip  http://host_ip:7001/console  with the following credentials weblogic/welcome1 ( these are the initial source domain credentials).
 
 Take some time examining the structure of you source domain before to start the migration process with the WDT tool.
 
