@@ -1,0 +1,7 @@
+appDeployments:
+    Application:
+        simple_wls_application:
+            SourcePath: wlsdeploy/applications/simple_wls_application/
+            ModuleType: war
+            StagingMode: stage
+            Target: 'cluster-1'

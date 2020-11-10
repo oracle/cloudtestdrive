@@ -1,0 +1,3 @@
+## oraseemeatechse
+cp provider.tf-stack provider.tf
+echo "current config resource manager" > current_config.txt

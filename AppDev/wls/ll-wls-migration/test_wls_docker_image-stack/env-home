@@ -1,0 +1,20 @@
+## oraseemeatechse
+### this file should be used only if you run a local terraform cli to create this infa
+### its not used by the RM
+### if you will use it locally replace the below params according to the settings of your oci account config
+###
+
+export TF_VAR_region=eu-frankfurt-1
+export TF_VAR_tenancy_ocid=ocid1.tenancy.oc1..aaaaaaaazvorzuwptfwqsu6xw4slonllvenoh3lbb3yikela4xntjoibd4ka
+export TF_VAR_user_ocid=ocid1.user.oc1..aaaaaaaai3u7lafmqpuxgmnducvyxgb6orbpzxym2kqzv76env7ryywijkma
+export TF_VAR_fingerprint=44:1a:62:b4:1a:37:0e:34:40:20:e9:1d:dc:d9:5f:de
+export TF_VAR_compartment_ocid=ocid1.compartment.oc1..aaaaaaaa375sfgxnc24b3rmxjju6ttxv264t6ukiyv42txxfxs3zj2difroa
+export TF_VAR_private_key_path=/home/oracle/.oci/oci_api_key_home.pem
+
+### set the correct DNS setting for the tenancy
+#cp terraform.tfvars "terraform.tfvars-$(date +"%m-%d-%y-beforeenvhome")"
+#sed 's/ORACLECLOUDPURSUITLABS.COM/emeacloudpursuit.com/g' -i terraform.tfvars
+
+### set the correct PROFILE for the oci cli
+cp provider.tf-user provider.tf
+echo "current config OCI provide" > current_config.txt

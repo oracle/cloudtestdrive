@@ -1,0 +1,105 @@
+domainInfo:
+    AdminUserName: '@@PROP:AdminUserName@@'
+    AdminPassword: '@@PROP:AdminPassword@@'
+topology:
+    Name: onprem_domain
+    EnableEeCompliantClassloadingForEmbeddedAdapters: true
+    AdminServerName: 'admin-server'
+    DomainVersion: 12.2.1.4.0
+    CdiContainer:
+        ImplicitBeanDiscoveryEnabled: false
+    JMX:
+        PlatformMBeanServerUsed: true
+    Cluster:
+        cluster_1:
+            DynamicServers:
+                ServerNamePrefix: 'managed-server'
+                CalculatedListenPorts: false
+                MachineMatchType: name
+                MaximumDynamicServerCount: 5
+                ServerTemplate: 'server-template_1'
+                DynamicClusterSize: 5
+    Server:
+        'admin-server':
+    ServerTemplate:
+        'server-template_1':
+            ListenPort: 8001
+            Cluster: cluster_1
+            JTAMigratableTarget:
+                Cluster: cluster_1
+            SSL:
+                ListenPort: 8100
+    SecurityConfiguration:
+        CredentialEncrypted: '@@PROP:SecurityConfig.CredentialEncrypted@@'
+        Realm:
+            myrealm:
+                Adjudicator:
+                    DefaultAdjudicator:
+                        DefaultAdjudicator:
+                AuthenticationProvider:
+                    DefaultAuthenticator:
+                        DefaultAuthenticator:
+                    DefaultIdentityAsserter:
+                        DefaultIdentityAsserter:
+                            ActiveType: [ AuthenticatedUser, 'weblogic-jwt-token' ]
+                Authorizer:
+                    XACMLAuthorizer:
+                        XACMLAuthorizer:
+                            PolicyDeploymentEnabled: true
+                CertPathProvider:
+                    WebLogicCertPathProvider:
+                        WebLogicCertPathProvider:
+                CredentialMapper:
+                    DefaultCredentialMapper:
+                        DefaultCredentialMapper:
+                PasswordValidator:
+                    SystemPasswordValidator:
+                        SystemPasswordValidator:
+                RoleMapper:
+                    XACMLRoleMapper:
+                        XACMLRoleMapper:
+resources:
+    JDBCSystemResource:
+        testDatasource:
+            Target: cluster_1
+            JdbcResource:
+                DatasourceType: GENERIC
+                JDBCConnectionPoolParams:
+                    ConnectionHarvestTriggerCount: -1
+                    StatementCacheSize: 10
+                    InitialCapacity: 0
+                    RemoveInfectedConnections: true
+                    CountOfRefreshFailuresTillDisable: 2
+                    ConnectionCreationRetryFrequencySeconds: 0
+                    MinCapacity: 0
+                    LoginDelaySeconds: 0
+                    TestTableName: SQL ISVALID
+                    TestFrequencySeconds: 120
+                    StatementTimeout: 23
+                    HighestNumWaiters: 2147483647
+                    InactiveConnectionTimeoutSeconds: 0
+                    WrapTypes: true
+                    SecondsToTrustAnIdlePoolConnection: 10
+                    ConnectionReserveTimeoutSeconds: 10
+                    ConnectionHarvestMaxCount: 1
+                    CountOfTestFailuresTillFlush: 2
+                    ShrinkFrequencySeconds: 900
+                    StatementCacheType: LRU
+                    IgnoreInUseConnectionsEnabled: true
+                    MaxCapacity: 15
+                JDBCDataSourceParams:
+                    GlobalTransactionsProtocol: OnePhaseCommit
+                    JNDIName: jdbc/testDatasource
+                JDBCDriverParams:
+                    URL: 'jdbc:oracle:thin:@//xxx.xxx.x.xxx:1521/ORCLCDB'
+                    PasswordEncrypted: '@@PROP:JDBC.testDatasource.PasswordEncrypted@@'
+                    DriverName: oracle.jdbc.OracleDriver
+                    Properties:
+                        user:
+                            Value: scott
+appDeployments:
+    Application:
+        opdemo:
+            SourcePath: wlsdeploy/applications/opdemo.war
+            ModuleType: war
+            Target: 'cluster_1,admin-server'

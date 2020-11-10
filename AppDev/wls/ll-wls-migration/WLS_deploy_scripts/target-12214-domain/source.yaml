@@ -1,0 +1,50 @@
+domainInfo:
+    AdminUserName: '@@PROP:AdminUserName@@'
+    AdminPassword: '@@PROP:AdminPassword@@'
+topology:
+    Name: wdt_domain
+    AdminServerName: 'admin-server'
+    DomainVersion: 12.2.1.3.0
+    Log:
+        DomainLogBroadcasterBufferSize: 1
+        FileName: wdt_domain.log
+    NMProperties:
+        JavaHome: /u01/jdk
+        weblogic.StartScriptName: startWebLogic.sh
+    Cluster:
+        'cluster-1':
+            DynamicServers:
+                ServerNamePrefix: 'managed-server-'
+                MaxDynamicClusterSize: 1
+                CalculatedListenPorts: false
+                MaximumDynamicServerCount: 1
+                ServerTemplate: 'cluster-1-template'
+                DynamicClusterSize: 1
+    Server:
+        'admin-server':
+            NetworkAccessPoint:
+                T3Channel:
+                    PublicPort: 30012
+                    ListenPort: 30012
+                    PublicAddress: kubernetes
+    ServerTemplate:
+        'cluster-1-template':
+            ListenPort: 8001
+            Cluster: 'cluster-1'
+            JTAMigratableTarget:
+                Cluster: 'cluster-1'
+            SSL:
+                ListenPort: 8100
+appDeployments:
+    Application:
+        'simple-app':
+            SourcePath: 'wlsdeploy/applications/simple-app.war'
+            PlanStagingMode: nostage
+            ModuleType: war
+            StagingMode: nostage
+            Target: 'cluster-1'
+        simple_wls_application:
+            SourcePath: wlsdeploy/applications/simple_wls_application/
+            ModuleType: war
+            StagingMode: stage
+            Target: 'cluster-1'

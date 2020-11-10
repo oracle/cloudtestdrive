@@ -1,0 +1,29 @@
+cat<<'EOF'> add_docker.txt
+USER root
+
+COPY --chown=oracle:root keys/.  /home/oracle/.ssh/. 
+COPY --chown=oracle:root letsEncryptCerts.jks /u01/oracle/.
+RUN echo "installing yum rpms " && \
+    yum -y --downloaddir=/tmp/imagetool more openssh-server openssh-clients vi sudo shadow-utils sed zip git wget && \
+    echo "oracle ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && echo 'root:Welcome1412#' chpasswd && \
+echo 'oracle:Welcome1412#' | chpasswd && \
+sed -i 's/#*PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config && \
+sed -i 's/#Banner none/Banner \/home\/oracle\/WLS_deploy_scripts\/welcome_source.txt/g' /etc/ssh/sshd_config && \
+sed -i 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' /etc/pam.d/sshd && \
+/usr/bin/ssh-keygen -A  \
+ && yum -y --downloaddir=/tmp/imagetool clean all \
+ && rm -rf /var/cache/yum/* \
+ && rm -rf /tmp/imagetool && \
+        echo ". /u01/oracle/user_projects/domains/onprem-domain/bin/setDomainEnv.sh" >> /home/oracle/.bashrc && \
+        chmod go-rwx /home/oracle/.ssh/*
+
+
+EXPOSE $ADMIN_PORT $MANAGED_SERVER_PORT 22
+
+##USER oracle
+WORKDIR /u01/oracle/user_projects/domains/onprem-domain
+#ENTRYPOINT /bin/bash
+### start sshd for this server
+USER  root
+CMD ["/usr/sbin/sshd", "-D"]	
+EOF	

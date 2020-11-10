@@ -1,0 +1,182 @@
+###
+### we will use the DOCKER_BUILDKIT=1 feature to accelarate the build time of the image
+### https://docs.docker.com/develop/develop-images/build_enhancements/
+###
+
+
+####
+#### try to add some custom commands
+####
+export ORACLE_SUPORT_USER=
+cd /home/oracle/stage/installers/
+export DOCKER_FILE=dockerfile_build_commands_step2
+export IMAGE_NAME=frm_${DOCKER_FILE}
+
+####
+#### create a file with custom commands
+####
+cat<<-EOF>add_build_commands.txt
+[before-jdk-install]
+USER root
+RUN yum install -y openssh-server openssh-clients vi sudo shadow-utils sed zip git wget && \
+yum -y --downloaddir=/tmp/imagetool clean all && \
+rm -rf /var/cache/yum/* && \
+echo "oracle ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+echo 'root:Welcome1412#' | chpasswd && \
+echo 'oracle:Welcome1412#' | chpasswd && \
+sed -i 's/#*PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config && \
+sed -i 's/#Banner none/Banner \/home\/oracle\/WLS_deploy_scripts\/welcome_source.txt/g' /etc/ssh/sshd_config && \
+sed -i 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' /etc/pam.d/sshd && \
+/usr/bin/ssh-keygen -A
+USER oracle
+WORKDIR /u01/oracle/
+RUN wget https://github.com/oracle/weblogic-deploy-tooling/releases/download/release-1.9.5/weblogic-deploy.zip
+[final-build-commands]
+### start sshd for this server
+##
+CMD ["/usr/sbin/sshd", "-D"]
+EOF
+cat add_build_commands.txt
+
+#### create a docker file to inspect the content
+####
+cd /home/oracle/stage/installers/
+cat<<EOF> build_commands
+create
+--type wls
+--dryRun
+--additionalBuildCommands  add_build_commands.txt
+--pull
+--chown=oracle:root
+--version 12.2.1.4.0
+--jdkVersion=8u261
+--tag 12.2.1.4.0
+--user $ORACLE_SUPORT_USER
+--passwordFile passwd.txt
+--wdtModel=./DiscoveredDemoDomain.yaml \
+--wdtArchive=./DiscoveredDemoDomain.zip \
+--wdtDomainHome=/u01/oracle/user_projects/domains/onprem-domain \
+--wdtVariables=./DiscoverDemoDomain.properties \
+--wdtVersion=1.9.3
+EOF
+imagetool @build_commands > $DOCKER_FILE
+
+### convert sections to lower letters
+### add expose 22 to docker file
+sed 's/EXPOSE/EXPOSE 22/g'  $DOCKER_FILE \
+ | sed 's/WDT_BUILD/wdt_build/g'   \
+ | sed 's/FINAL_BUILD/final_build/g' \
+ | sed 's/OS_UPDATE/os_update/g'    \
+ | sed 's/JDK_BUILD/jdk_build/g'  \
+ | sed 's/WLS_BUILD/wls_build/g' > ${DOCKER_FILE}_corr
+
+cat ${DOCKER_FILE}_corr
+
+####
+#### there will be some issues with this approch
+#### we have to patch the generated docker file with our sections
+#### so lets generate again a docker file without the additionalBuildCommands
+cat<<EOF> build_commands
+create
+--type wls
+--dryRun
+--pull
+--chown=oracle:root
+--version 12.2.1.4.0
+--jdkVersion=8u261
+--tag 12.2.1.4.0
+--user $ORACLE_SUPORT_USER
+--passwordFile passwd.txt
+--wdtModel=./DiscoveredDemoDomain.yaml \
+--wdtArchive=./DiscoveredDemoDomain.zip \
+--wdtDomainHome=/u01/oracle/user_projects/domains/onprem-domain \
+--wdtVariables=./DiscoverDemoDomain.properties \
+--wdtVersion=1.9.3
+EOF
+imagetool @build_commands > $DOCKER_FILE
+
+cat<<'EOF'> add_docker.txt
+USER root
+
+COPY --chown=oracle:root keys/.  /home/oracle/.ssh/.
+COPY --chown=oracle:root letsEncryptCerts.jks /u01/oracle/.
+RUN echo "installing yum rpms " && \
+    yum install -y --downloaddir=/tmp/imagetool more openssh-server openssh-clients vi sudo shadow-utils sed zip git wget && \
+    echo "oracle ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && echo 'root:Welcome1412#' chpasswd && \
+echo 'oracle:Welcome1412#' | chpasswd && \
+sed -i 's/#*PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config && \
+sed -i 's/#Banner none/Banner \/home\/oracle\/WLS_deploy_scripts\/welcome_source.txt/g' /etc/ssh/sshd_config && \
+sed -i 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' /etc/pam.d/sshd && \
+/usr/bin/ssh-keygen -A  \
+ && yum -y --downloaddir=/tmp/imagetool clean all \
+ && rm -rf /var/cache/yum/* \
+ && rm -rf /tmp/imagetool && \
+        echo ". /u01/oracle/user_projects/domains/onprem-domain/bin/setDomainEnv.sh" >> /home/oracle/.bashrc && \
+        chmod go-rwx /home/oracle/.ssh/*
+
+
+EXPOSE $ADMIN_PORT $MANAGED_SERVER_PORT 22
+
+WORKDIR /u01/oracle/
+RUN wget https://github.com/oracle/weblogic-deploy-tooling/releases/download/release-1.9.5/weblogic-deploy.zip && \
+    chown oracle:root /u01/oracle/weblogic-deploy.zip
+ 
+### switch to user oracle to let the image be patched by the tooling 
+USER  oracle
+WORKDIR /u01/oracle/user_projects/domains/onprem-domain
+#ENTRYPOINT /bin/bash
+### start sshd for this server
+CMD ["sudo","/usr/sbin/sshd", "-D"]
+##WORKDIR /u01/oracle
+EOF
+
+cat add_docker.txt >> $DOCKER_FILE
+
+### convert sections to lower letters
+### add expose 22 to docker file
+sed 's/WDT_BUILD/wdt_build/g'   $DOCKER_FILE \
+ | sed 's/FINAL_BUILD/final_build/g' \
+ | sed 's/OS_UPDATE/os_update/g'    \
+ | sed 's/JDK_BUILD/jdk_build/g'  \
+ | sed 's/WLS_BUILD/wls_build/g' > ${DOCKER_FILE}_corr
+
+cat  ${DOCKER_FILE}_corr
+
+
+### rebuild the image now
+export IMAGE_NAME=frm_${DOCKER_FILE}_corr_part2
+docker container rm $IMAGE_NAME -f
+docker rmi $IMAGE_NAME -f
+## --no-cache=true \
+time DOCKER_BUILDKIT=1  docker image build  \
+--tag $IMAGE_NAME  \
+--force-rm=true \
+--squash \
+--rm=true \
+--file ${DOCKER_FILE}_corr .
+
+docker system prune -f
+docker images
+docker container run --rm \
+-it --name $IMAGE_NAME $IMAGE_NAME /bin/bash
+docker container rm  -f $IMAGE_NAME
+
+docker run -d -it --rm  \
+-p 9000:22 -p 7001:7001 \
+--name $IMAGE_NAME $IMAGE_NAME 
+docker container ls -a
+
+ssh -i keys/wls_rsa  -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no"  oracle@localhost  -p 9000
+
+docker logs $IMAGE_NAME
+
+
+####docker container rm  test_$IMAGE_NAME
+####docker run -d -it   --name $IMAGE_NAME $IMAGE_NAME /bin/bash
+####docker container ls -a
+####export DOCKER_PORT_TARGET=`docker port $IMAGE_NAME 22/tcp`
+####echo $DOCKER_PORT_TARGET
+####export DOCKER_PORT_TARGET=`echo $DOCKER_PORT_TARGET | sed 's/0.0.0.0://g'`
+####echo $DOCKER_PORT_TARGET
+####ssh -i keys/wls_rsa  -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no"  oracle@localhost  -p 9000
+####
