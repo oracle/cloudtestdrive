@@ -1,54 +1,48 @@
+# WebLogic Migration Tooling - Prerequisites
 
+For this lab you will use a Linux compute instance to simulate old and new WLS environments.  This page describes how to set up that instance using Terraform script with Resource Manager.
+
+- Required policies on the tenancy: validate that all policies described [here](https://docs.cloud.oracle.com/en-us/iaas/Content/Identity/Tasks/managingstacksandjobs.htm#Policies_for_Managing_Stacks_and_Jobs) are fulfilled before creating the instance
+
+- Download the [test_wls_docker_image-stack.zip](test_wls_docker_image-stack.zip) to your local machine and unzip it.
 
 These are the raw stack files that you have to upload to your Resource Manager in order to create the server to run the labs for the wls wdt/tooling session.
 
-You should download them from this directory before to start the labs, to your local folder after that follow the below steps to create your test server to your compartment.
+- Log into your tenancy 
 
-Get the test_wls_docker_image-stack.zip which contains the artifact to create your stack
-
-
-
-
-
-Be sure that all policies described [here](https://docs.cloud.oracle.com/en-us/iaas/Content/Identity/Tasks/managingstacksandjobs.htm#Policies_for_Managing_Stacks_and_Jobs) are fulfilled before to import the stack
-
-
-
-Log into your tenancy 
-
-Scroll to Resource Manager / Stack entry
+- Scroll to Resource Manager / Stack entry
 
 ![](../WLS_deploy_scripts/images/2020-11-09_13-05-58.jpg)
 
-Then choose your compartment:
+- Then choose your compartment:
 
 ![](../WLS_deploy_scripts/images/RM-2.jpg)
 
-The Click on the Create Stack button:
+- Then Click on the Create Stack button:
 
 ![](../WLS_deploy_scripts/images/RM-3.jpg)
 
 
 
-Then Choose folder, and Browse to your local directory :
+- Then Choose folder, and Browse to your local directory :
 
 ![](../WLS_deploy_scripts/images/RM-4.jpg)
 
 
 
-Choose the folder name as origin and click to upload button:
+- Choose the folder name as origin and click to upload button:
 
 ![](../WLS_deploy_scripts/images/RM-5.jpg)
 
 
 
-Then accept the option of the uploading :
+- Then accept the option of the uploading :
 
 ![](../WLS_deploy_scripts/images/RM-6.jpg)
 
 
 
-Then check that the stack will be created in your compartment, you can change the name, and you see that a number of files will be used for the creation of your server infrastructure:
+- Then check that the stack will be created in your compartment, you can change the name, and you see that a number of files will be used for the creation of your server infrastructure:
 
 ![](../WLS_deploy_scripts/images/RM-7.jpg)
 
@@ -123,24 +117,30 @@ Check the public ip of your server:
 
 
 
-then connect to your server as oracle with your public key  :
+- then connect to your server 
+  - User : oracle 
+  - Use your private key
+- On Mac : 
+  - `ssh -i my_private_key oracle@my_compute_ip_address`
+- On Windows:
 
 ![](../WLS_deploy_scripts/images/RM-20.jpg)
 
-
-In the terminal enter : docker version
+- In the terminal enter : docker version
 
 ![](../WLS_deploy_scripts/images/RM-21.jpg)
 
 
 
-Then enter:
+Check that the java runtime and the image tool are installed:
 
- java -version to check that the java runtime is installed
+-  `java -version`
+-  `imagetool` 
 
-imagetool to check that the image tool is installed 
+Check that several files are installed :
 
-the cd stage/installers to check that several files are installed 
+- `cd stage/installers`
+- `ls`
 
 ![](../WLS_deploy_scripts/images/RM-22.jpg)
 

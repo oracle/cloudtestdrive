@@ -14,7 +14,7 @@ This lab is composed of the following steps :
 
 
 
-- **[Part 1 : Using the WDT](WLS_deploy_scripts/README.md)** tool to migrate a WebLogic domain from a source to a target server.
+- **[Part 1 : Using the WDT tool](WLS_deploy_scripts/README.md)** to migrate a WebLogic domain from a source to a target server.
 
 
 
