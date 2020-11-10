@@ -1,5 +1,7 @@
 # WebLogic Deploy Workshop  
 
+## Introduction
+
 The following scripts are using the [WDT Weblogic toolkit](https://github.com/oracle/weblogic-deploy-tooling)
 
 The workshop is based on a simple scenario:
@@ -59,23 +61,22 @@ This is the initial source WebLogic domain configuration as depicted from the We
 
 
 
-
 In the below sections you will get some details about these scripts.
 
-**Before to run these steps you need to log into the [Docker hub](https://hub.docker.com/_/oracle-weblogic-server-12c)** 
+## Preparing the WebLogic environments
+
+- Log into [Docker hub](https://hub.docker.com/_/oracle-weblogic-server-12c).  You need a docker account to do this, if you don't have such an account follow the instructions on the docker site to create a free account.
+- Accept the T&C from Oracle in order to be allowed to downlod the WebLogic images
 
 ![](images/docker-hub.jpg)
 
 
 
-**and download the following weblogic images to your workshop server**
+- Download the following weblogic images to your workshop server
 
-**store/oracle/weblogic:12.2.1.3**
+  **store/oracle/weblogic:12.2.1.3**
 
-**store/oracle/weblogic:12.2.1.4**
-
-If you don't have a Docker account follow the instructions on Docker site to create your account,
-then use the below scripts to download the images to you test server:
+  **store/oracle/weblogic:12.2.1.4**
 
 ```
 ###
@@ -88,19 +89,7 @@ docker pull store/oracle/weblogic:12.2.1.3
 docker pull store/oracle/weblogic:12.2.1.4
 ```
 
-The previous command will retrieve the source and target images.
-If you need to run the workshop more than once, in the same server,  then you should run the below commands to remove any containers, or previous created configurations.
-
-
-```
-#### clean all previous configuration
-docker rm -f $(docker ps -a -q)
-docker image prune -f
-docker network rm test
-docker container ls -a 
-```
-
-Then clone to your local server, the workshop repository scrips as below , and **relaunch the Docker system** :
+- Then clone the workshop repository scrips as below to your machine , and **relaunch the Docker system** :
 
 ```
 cd
@@ -115,7 +104,7 @@ sudo systemctl  status docker
 cd WLS_deploy_scripts
 ```
 
-Then launch the below commands to build the Docker images for the source and the target server.
+- Then launch the below commands to build the Docker images for the source and the target server.
 
 The Docker files used for this purpose are shared on the [Oracle Github](https://github.com/oracle/weblogic-deploy-tooling/tree/master/samples/docker-domain) .
 
@@ -225,7 +214,12 @@ During the discovery three artifacts will be created:
 
 ![](images/source-console.jpg)
 
-###### **go to the scripts directory and execute the discovery of the domain**
+
+
+## Discover the existing WebLogic Configuration
+
+- Go to the scripts directory and execute the discovery of the domain
+
 ```
 ###
 cd /home/oracle/WLS_deploy_scripts
@@ -390,15 +384,18 @@ clear
 ```
 
 
-#### At this point you have :
 
-1. #### discovered a domain, 
+**At this point you have :**
 
-2. #### created the migration templates, and the domain artifacts for the migration, we dont need to carry any modification to the target domain
+1. discovered a domain, 
+2. created the migration templates, and the domain artifacts for the migration, we dont need to carry any modification to the target domain
+3. copied the generated files, to the target server 
 
-3. #### copied the generated files, to the target server 
 
-#### The next step is to log into the target server, and create a domain based on the captured configuration.
+
+## Create a new domain based on the captured config
+
+The next step is to log into the target server, and create a domain based on the captured configuration.
 
 Log into the target WebLogic Server (from your source server) :
 

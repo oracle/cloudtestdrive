@@ -1,4 +1,4 @@
-![](/Users/jleemans/dev/eugene/indirect/cloudtestdrive/common/images/customer.logo2.png)
+![](../../../common/images/customer.logo2.png)
 
 # WebLogic Migration Tooling
 
