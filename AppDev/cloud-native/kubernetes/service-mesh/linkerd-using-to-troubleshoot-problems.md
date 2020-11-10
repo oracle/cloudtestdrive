@@ -360,13 +360,18 @@ Let's use the Kubernetes rollout mechanism to reverse our "upgrade"
 deployment.apps/stockmanager rolled back
 ```
 
+## End of the lab, What's next ?
 
----
+You can chose from the remaining `Linkerd service mesh` modules or switch to one of the other Kubernetes optional module sets.
 
-You have reached the end of this lab module!!
+## Acknowledgements
 
-In the next module we will look at how you can use traffic splits in linkerd to handle canary deployments and also do a bit of chaos engineering to test out what happens in the event of a problem.
+* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Contributor** - Charles Pretzer, Bouyant, Inc for reviewing and sanity checking parts of this document.
+* **Last Updated By** - Tim Graves, November 2020
 
-Acknowledgments. I'd like to thank Charles Pretzer of Bouyant, Inc for reviewing and sanity checking parts of this document.
+## Need Help ?
 
-Use your **back** button to return to the lab sequence document to access further service mesh modules.
+If you are doing this module as part of an instructor led lab then please just ask the instructor.
+
+If you are working through this module self guided then please submit feedback or ask for help using our [LiveLabs Support Forum](https://community.oracle.com/tech/developers/categories/OCI%20Native%20Development). Please click the **Log In** button and login using your Oracle Account. Click the **Ask A Question** button to the left to start a *New Discussion* or *Ask a Question*.  Please include your workshop name and lab name.  You can also include screenshots and attach files.  Engage directly with the author of the workshop.

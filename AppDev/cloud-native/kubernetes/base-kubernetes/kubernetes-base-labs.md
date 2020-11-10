@@ -2140,6 +2140,18 @@ Also when deploying in Kubernetes you should create roles and users for performi
 
 ---
 
+## End of the lab, What's next ?
+
 You have reached the end of this lab section, the next section is `Cloud Native with Kubernetes`
 
+## Acknowledgements
 
+* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
+* **Last Updated By** - Tim Graves, November 2020
+
+## Need Help ?
+
+If you are doing this module as part of an instructor led lab then please just ask the instructor.
+
+If you are working through this module self guided then please submit feedback or ask for help using our [LiveLabs Support Forum](https://community.oracle.com/tech/developers/categories/OCI%20Native%20Development). Please click the **Log In** button and login using your Oracle Account. Click the **Ask A Question** button to the left to start a *New Discussion* or *Ask a Question*.  Please include your workshop name and lab name.  You can also include screenshots and attach files.  Engage directly with the author of the workshop.
