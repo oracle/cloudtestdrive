@@ -704,6 +704,7 @@ Check out the result, and the Dockerfile generated
 ```
 
 Now we will add some rpm to this Dockerfile.
+
 Run again this command from the Linux terminal :
 
 ```
@@ -783,7 +784,11 @@ time DOCKER_BUILDKIT=1  docker image build  \
 
 ```
 
+
+
 The result will be as below:
+
+
 
 
 ```
@@ -799,11 +804,15 @@ user    0m3.130s
 sys     0m1.239s
 ```
 
+
+
 Great ! in a few minutes we have a new Weblogic Docker image with a new domain, and with the latest patches 
 
 Now lets explorer this container 
 
 Enter the following commands to your Linux system:
+
+
 
 ```
 docker system prune -f
@@ -815,8 +824,13 @@ docker run --rm -d -it  \
 --name $IMAGE_NAME $IMAGE_NAME 
 docker container ls -a
 ```
+
+
 **Notice that the container exposes the ports 7001, 8001 and the ssh port is mapped to the host port 9000**
+
 The result of this command is below :
+
+
 
 ```
 cb0bdc976001ecbb5058d09caa9cde66a9e8fdca139df84f9e5e62055864e65a
@@ -826,7 +840,11 @@ cb0bdc976001        frm_dockerfile_build_commands_step2_corr_part2   "sudo /usr/
 
 ```
 
+
+
 The container is having a "custom ssh server installed" lets ssh into the container
+
+
 
 
 ```
@@ -836,8 +854,13 @@ ssh -i keys/wls_rsa  \
 oracle@localhost  -p 9000
 ```
 
+
+
 Lets start the Weblogic admin Server
-copy the following line to your linux terminal
+
+copy the following line to your Linux terminal
+
+
 
 ```
 ls -la
@@ -845,12 +868,17 @@ nohup ./startWebLogic.sh &
 tail -f nohup.out
 ```
 
+
+
 The domain is configuration can be seen here :
+
+
 
 ![](images/2020-10-30_12-21-08.jpg)
 
-
 This is the end of part 2 , we need this docker image as a source for the next lab
+
+
 
 
 # PART 3 CREATE AND DEPLOY AN IMAGE WITH A WEBLOGIC DOMAIN TO OCI REGISTRY FROM AN EXISTING IMAGE
