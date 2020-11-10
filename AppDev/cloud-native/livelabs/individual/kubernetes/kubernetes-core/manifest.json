@@ -1,7 +1,7 @@
 {
     "tutorials": [
         {
-          "title": "Kubernetes Labs Introduction",
+          "title": "Labs Introduction",
           "filename":"kubernetes-core.md"
         },
         {

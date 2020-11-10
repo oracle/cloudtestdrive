@@ -1,7 +1,7 @@
 {
     "tutorials": [
         {
-          "title": "Helidon Labs introduction",
+          "title": "Labs introduction",
           "filename":"combined-helidon-docker-kubernetes-complete.md"
         },
         {
