@@ -423,7 +423,7 @@ clear
 
 The next step is to log into the target server, and create a domain based on the captured configuration.
 
-Log into the target WebLogic Server (from your source server) :
+Log into the target WebLogic Server (**from your source container NOT FROM THE HOST** ) :
 
 ```
 ssh -i ~/.ssh/wls_rsa  \
@@ -458,6 +458,7 @@ mkdir -p $DOMAIN_HOME
 ```
 
 We need to provide the new credentials for the admin user of the migrated WebLogic domain.
+
 update the content of the source.properties file as below :
 
 ```
