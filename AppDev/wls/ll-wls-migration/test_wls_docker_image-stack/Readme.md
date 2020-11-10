@@ -77,11 +77,17 @@ Click Next and review carefully the stack variables , you can still go back if y
 
 When the stack is created then you will see this screen :
 
+
+
 ![](../WLS_deploy_scripts/images/RM-10.jpg)
 
 
 
+
+
 The stack will create a VCN, and a compute node using the below variables :
+
+
 
 ![](../WLS_deploy_scripts/images/RM-11.jpg)
 
@@ -95,12 +101,19 @@ Click on Terraform Apply to launch the stack creation:
 
 
 
+
+
 Click on the Apply button to start the process:
+
+
 
 ![](../WLS_deploy_scripts/images/RM-13.jpg)
 
 
+
 After a couple of minutes you will see the progress of the stack creation:
+
+
 
 ![](../WLS_deploy_scripts/images/RM-14.jpg)
 
@@ -108,37 +121,61 @@ After a couple of minutes you will see the progress of the stack creation:
 
 When the status is succeeded then copy the public ip of you server :
 
+
+
 ![](../WLS_deploy_scripts/images/RM-15.jpg)
 
 
+
 Go to the compute/instances of your compartment and check that the server is up :
+
+
 
 ![](../WLS_deploy_scripts/images/RM-16.jpg)
 
 
 
+
+
 Go to the NetWorking/Virtual CloudNetworks of your compartment
+
+
 
 ![](../WLS_deploy_scripts/images/RM-17.jpg)
 
+
+
 Check that a VCN and the associated resources are created :
+
+
 
 ![](../WLS_deploy_scripts/images/RM-18.jpg)
 
 
 
+
+
 Check the public ip of your server:
+
+
 
 ![](../WLS_deploy_scripts/images/RM-19.jpg)
 
 
 
-then connect to your server as oracle with your public key  :
+
+
+then connect to your server as **oracle user** with your public key or the provided public IP  :
+
+
 
 ![](../WLS_deploy_scripts/images/RM-20.jpg)
 
 
+
 In the terminal enter : docker version
+
+
 
 ![](../WLS_deploy_scripts/images/RM-21.jpg)
 
@@ -150,11 +187,16 @@ Then enter:
 
 imagetool to check that the image tool is installed 
 
-the cd stage/installers to check that several files are installed 
+then  cd stage/installers to check that several files are installed 
+
+
 
 ![](../WLS_deploy_scripts/images/RM-22.jpg)
 
 
+
 if you see all these artifacts then you server is ready for your labs
+
+
 
 eugene.simos@oracle.com
