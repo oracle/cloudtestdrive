@@ -79,3 +79,15 @@ Managing certificates can be a pain, especially if you have short lived certific
 ## Where to get security assistance.
 
 This section has only covered at a simple level a few of the security options. Clearly in a sensitive commercial situation you will want to conduct a thorough security assessment of your risks, ensure you have not made any common security mistakes etc. Oracle (and I'm sure other vendors and consultants) has a security assessment service that can help with this. Oracle also has automated tools that can help you monitor your OCI environment for security problems.
+
+## Acknowledgements
+
+* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
+* **Last Updated By** - Tim Graves, November 2020
+
+## Need Help ?
+
+If you are doing this module as part of an instructor led lab then please just ask the instructor.
+
+If you are working through this module self guided then please submit feedback or ask for help using our [LiveLabs Support Forum](https://community.oracle.com/tech/developers/categories/OCI%20Native%20Development). Please click the **Log In** button and login using your Oracle Account. Click the **Ask A Question** button to the left to start a *New Discussion* or *Ask a Question*.  Please include your workshop name and lab name.  You can also include screenshots and attach files.  Engage directly with the author of the workshop.

@@ -853,7 +853,18 @@ To solve this in Kubernetes 1.18 the concept of startup probes will be introduce
 Unfortunately however the startup probes are not supported in standard versions of Kubernetes prior to 1.18, which at the time of writing was not available and this lab is not yet fully updated for that. But there is example configuration in the storefront-deployment.yaml file to show how this would would be defined (the initialDeploymentSeconds would need to be removed from the liveness and readiness configurations.
 
 
+## End of the lab, What's next ?
 
----
+You have reached the end of this section of the lab. The next module is `Horizontal scaling`
 
-You have reached the end of this section of the lab.
+## Acknowledgements
+
+* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
+* **Last Updated By** - Tim Graves, November 2020
+
+## Need Help ?
+
+If you are doing this module as part of an instructor led lab then please just ask the instructor.
+
+If you are working through this module self guided then please submit feedback or ask for help using our [LiveLabs Support Forum](https://community.oracle.com/tech/developers/categories/OCI%20Native%20Development). Please click the **Log In** button and login using your Oracle Account. Click the **Ask A Question** button to the left to start a *New Discussion* or *Ask a Question*.  Please include your workshop name and lab name.  You can also include screenshots and attach files.  Engage directly with the author of the workshop.

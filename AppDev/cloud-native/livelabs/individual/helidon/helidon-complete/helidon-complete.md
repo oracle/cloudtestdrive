@@ -58,6 +58,16 @@ This video is an introduction to the Helidon labs. Depending on your browser set
 
 </details>
 
+## Prerequisites
+
+These labs can be run in many different ways, but in all cases you will need access to a Oracle Cloud Tenancy and be signed in to it.
+
+Please look at the instructions in the Prerequisites section for details of how to sign up for a free trial tenancy and how to log into it. If you already have access to a tenancy (you may be in an instructor led lab, or have a pre-existing tenancy) then go direct to Prerequisites Step 2 which covers how to login to the tenancy.
+
+## Getting Help
+
+If you are in an instructor led lab then clearly just ask your instructor, if you are working through this self guided then each module has a section at the end for getting help. 
+
 ## Setup the Tenancy
 
 You will need to do a number of tasks to setup your tenancy, creating the developer VM you will use, creating and configuring a Autonomous Transaction Processing database etc.
