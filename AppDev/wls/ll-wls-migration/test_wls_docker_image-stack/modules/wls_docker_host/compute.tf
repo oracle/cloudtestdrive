@@ -83,8 +83,32 @@ resource "oci_core_default_route_table" "default_route_table" {
   }
 }
 
+resource "oci_core_default_security_list" "default_core_security_list" {
+  display_name   = "Default Security List"
+
+
+  // allow outbound tcp traffic on all ports
+  egress_security_rules {
+    destination = "0.0.0.0/0"
+    protocol    = "6"
+  }
+  
+  ingress_security_rules {
+    description = "open all ports for the lab"
+    #icmp_options = 
+    protocol    = "6"
+    source      = "0.0.0.0/0"
+    source_type = "CIDR_BLOCK"
+    stateless   = "false"
+    #udp_options = <<Optional value not found in discovery>>
+  }
+
+manage_default_resource_id = oci_core_vcn.test_vcn.default_security_list_id  
+
+}
+
 resource "oci_core_subnet" "test_subnet" {
-  availability_domain = data.oci_identity_availability_domain.ad.name
+##  availability_domain = data.oci_identity_availability_domain.ad.name
   cidr_block          = "10.0.0.0/24"
   display_name        = "wls_wdt_toolkit_Subnet"
   dns_label           = "toolkitsubnet"
