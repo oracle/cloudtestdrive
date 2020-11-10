@@ -1,7 +1,7 @@
 ![](../../../common/images/customer.logo2.png)
 
 # This page is to support the live labs development.
-This page is to allow easy access to various of the live labs which have their own manifests, but actually tend to use common content
+This page is to allow easy access to various of the live labs which have their own manifests, but actually tend to use common content.
 
 ## Core labs
 These have no optional modules
