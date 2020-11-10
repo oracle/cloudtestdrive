@@ -173,25 +173,6 @@ Notice all the steps taken by the build tool:
 
 **"OS_UPDATE": invalid reference format: repository name must be lowercase.**
 
-To workaround then this issue,  **we will not create an image** but we will generate the associated Dockerfile, and we will compile it in a subsequent step.
-
-If your support credentials are wrong the operation will fail and then you have to correct them and re launch the same operation.
-
-Copy the patches from the cache to the file system are they will be referenced by the Dockerfiles during the build process of the images.
-
-Copy the below code again to your Linux terminal :
-
-```
-cd /home/oracle/stage/installers/
-mkdir -p /home/oracle/stage/installers/patches
-cp /home/oracle/cache/p31960985_122140_Generic.zip patches/.
-cp /home/oracle/cache/p31960985_122140_Generic.zip .
-cp /home/oracle/cache/p28186730_139424_Generic.zip .
-### relaunch the docker daemon
-sudo systemctl  restart docker
-```
-
-
 
 ```
 [INFO   ] Image Tool build ID: 4dc21037-3aa1-4f14-8321-007cef2caa6f
@@ -229,9 +210,33 @@ failed to solve with frontend dockerfile.v0: failed to create LLB definition: fa
 
 
 
+To workaround then this issue,  **we will not create an image** but we will generate the associated Dockerfile, and we will compile it in a subsequent step.
+
+If your support credentials are wrong the operation will fail and then you have to correct them and re launch the same operation.
+
+Copy the patches from the cache to the file system are they will be referenced by the Dockerfiles during the build process of the images.
+
+Copy the below code again to your Linux terminal :
+
+
+
+```
+cd /home/oracle/stage/installers/
+mkdir -p /home/oracle/stage/installers/patches
+cp /home/oracle/cache/p31960985_122140_Generic.zip patches/.
+cp /home/oracle/cache/p31960985_122140_Generic.zip .
+cp /home/oracle/cache/p28186730_139424_Generic.zip .
+### relaunch the docker daemon
+sudo systemctl  restart docker
+```
+
+
+
 In some rare cases you might get a timeout on the communication between the tool and the oracle support site.
 
 You will get the below error, in this case try to re execute your script !
+
+
 
 ```
 [INFO   ] Image Tool build ID: 6151a7c8-4ab1-4898-8289-0d84ec216b28
@@ -243,19 +248,27 @@ You will get the below error, in this case try to re execute your script !
 [SEVERE ] Unable to retrieve list of Oracle releases from Oracle Updates (ARU). Try again later.
 ```
 
+
+
 Although the build process of DockerImage has failed the cache has been updated from the support downloaded patches.
 
 Examine the content of your "updated" cache again :
 
 
+
+
 ```
 imagetool cache listItems
 ```
+
+
 The result will be as below:
 
 Do you seen any difference ?
 
 Can you describe the new elements , and their physical location into your servers filesystem ?
+
+
 
 
 ```
@@ -268,11 +281,15 @@ jdk_8u261=/home/oracle/stage/installers/jdk-8u261-linux-x64.tar.gz
 28186730_13.9.4.2.4=/home/oracle/cache/p28186730_139424_Generic.zip
 ```
 
-Now we will create our Dockerfiles, and make some lower case conversion, in order  to be able to build our images much faster with the buildkit feature.
+
+
+Now we will create our Dockerfiles, and make some lower case conversions, in order  to be able to build our images much faster with the buildkit feature.
 
 Enter the below script to your Linux system :
 
 **! REMEMBER TO REPLACE THE USER WITH YOUR USER AND YOUR SUPPORT CREDENTIALS !**
+
+
 
 ```
 ### now create the Dockerfile of this image
@@ -296,6 +313,8 @@ EOF
 imagetool @build_commands_12.2.1.4.0 > $DOCKER_FILE
 ```
 
+
+
 This command creates the configuration for image tool to create a wls server.
 
 1. We will pull out the latest base image for our Docker images ( we will later that is a linux7 thin)
@@ -304,6 +323,8 @@ This command creates the configuration for image tool to create a wls server.
 4. The flag dryRun will create the associated Dockerfile but it will not run the build image proccess, we will do this step later.
 
 Lets follow the output of this command:
+
+
 
 ```
 [INFO   ] Image Tool build ID: c9471dd6-abab-4d9f-8f55-fb5407ba21d5
@@ -326,7 +347,10 @@ Lets follow the output of this command:
 ```
 
 The content of the Dockerfile generated can be seen with the following command:
-Take some time to read the content of this file 
+
+Take some time to read the content of this file !
+
+
 
 ```
 cat $DOCKER_FILE
@@ -447,6 +471,7 @@ WORKDIR /u01/oracle
 
 ```
 
+
 1. What is the base image of our future DockerContainer ?
 2. What components are installed ?
 3. In which order ?
@@ -477,7 +502,11 @@ cat ${DOCKER_FILE}_corr
 
 ```
 
+
+
 The image is build with the below command using the generated Dockerfile
+
+
 
 ```
 ### rebuild the image now
@@ -496,8 +525,12 @@ time DOCKER_BUILDKIT=1  docker image build  \
 --file ${DOCKER_FILE}_corr .
 ```
 
+
+
 The result of this command is as below:
 Several steps are executed and the final image frm_dockerfile_build_commands_12.2.1.4.0_step1_corr is now created
+
+
 
 ```
 [+] Building 22.7s (22/22) FINISHED
@@ -535,19 +568,31 @@ user    0m2.680s
 sys     0m1.020s
 ```
 
+
+
 Check that the image is created with the below command:
+
+
 
 ```
 docker images
 ```
+
+
 The result will be as below:
+
+
 
 ```
 REPOSITORY                                             TAG                 IMAGE ID            CREATED             SIZE
 frm_dockerfile_build_commands_12.2.1.4.0_step1_corr    latest              36d592f24e87        6 minutes ago       1.41GB
 ```
 
+
+
 Lets inspect this image by running the below command:
+
+
 
 ```
 docker run --rm -it --name test_$IMAGE_NAME $IMAGE_NAME /bin/bash
@@ -566,7 +611,10 @@ cat 31960985.xml
 <patch-def unique-patch-id="23842278" patch-id="31960985" description="WLS PATCH SET UPDATE 12.2.1.4.201001" rollbackable="true" location="oneoffs/31960985" installer-version="13.9.4.0.0" xmlns:ns2="http://xmlns.oracle.com/cie/gdr/dei" xmlns:ns3="http://xmlns.oracle.com/cie/gdr/nfo" xmlns:ns4="http://xmlns.oracle.com/cie/gdr/rgy" xmlns="http://xmlns.oracle.com/cie/gdr/pch">
 ```
 
+
+
 As we see we have a basic wls 12.2.1.4 installation with the associated patches installed
+
 Enter exit to return to your host,  then lets cleanup our environment before to run the next session 
 
 
@@ -622,10 +670,17 @@ EOF
 
 imagetool @build_commands > $DOCKER_FILE
 ```
+
+
 What you notice about the additional flags ?
+
 --wdtModel
+
 --wdtDomainHome
+
 --wdtDomainHome
+
+
 
 1. Can you check the associated files ?
 2. What domain you will inject into your docker file ?
@@ -633,6 +688,8 @@ What you notice about the additional flags ?
 4. What is the name of the Weblogic Admin user, and what will be the associated password ?
 
 Check out the result, and the Dockerfile generated
+
+
 
 ```
 [INFO   ] Image Tool build ID: 4972aa91-fe91-433f-9ac2-0ac6d0f07f75
