@@ -1,33 +1,31 @@
-This is the placeholder for the wls -migration workshop
-The content of this folder will be updated in a regular basis
+![](/Users/jleemans/dev/eugene/indirect/cloudtestdrive/common/images/customer.logo2.png)
+
+# WebLogic Migration Tooling
+
+This folder contains the lab giving you hands-on experience of the tools needed to migrate WebLogic environments: WebLogic Deployment Tool and Image Tool.
 
 
 
-[Prerequisites](test_wls_docker_image-stack/Readme.md)
+This lab is composed of the following steps : 
 
-1. [Prerequisites for the tooling part](test_wls_docker_image-stack/Readme.md) 
 
-   If you want to run only the tooling lab then you [need to create a stack](test_wls_docker_image-stack/Readme.md) 
 
-2. Prerequisites for the WDT part
+- **Prerequisites** : you will create a compute instance where we will spin up 2 WebLogic environments, so we can use these environments to execute the migration.  
+  [Steps to follow to set up the instance](test_wls_docker_image-stack/Readme.md)
 
-   If you want to run the WDT part , you [need to create a stack](test_wls_docker_image-stack/Readme.md) 
-   
 
-and download WebLogic docker images from the Docker Hub[Deploy kit lab](WLS_deploy_scripts/Prerequisites.md)
 
-3. Instructions to [run the WDT lab](WLS_deploy_scripts).
+- **Part 1 : Using the WDT** tool to migrate a WebLogic domain from a source to a target server
+  [Lab Execution steps](WLS_deploy_scripts)
 
-   You will use the WDT tool to migrate a WebLogic domain from a source to a target server
 
-4. Instructions to [run the Image toolkit lab](WLS_imagetool_scripts).
 
-   You will create several docker images, with WebLogic software
+- Part 2 : Image Toolkit : creating docker images with WebLogic software, patch these distribution with the latest PSU, and deploy Weblogic Domains and you will store them to Oracle OCI Registry
+   [Lab Execution steps](WLS_imagetool_scripts).
 
-   You will patch these distribution with the latest PSU, and deploy Weblogic Domains
+  
 
-   You will create new images from these "patched" images and you will store them to Oracle OCI Registry
 
-[Troubleshooting](troublshooting.md)
 
-   Important information to help you during the execution of the steps of your labs
+You can find extra information to help you during the execution of the steps of your labs in the [Troubleshooting](troublshooting.md) section
+
