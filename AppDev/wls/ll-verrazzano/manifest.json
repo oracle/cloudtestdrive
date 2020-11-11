@@ -1,0 +1,8 @@
+{
+    "tutorials": [
+        {
+            "title": "Running Verrazzano for various workloads",
+            "filename": "../README.MD"
+        }
+    ]
+}
