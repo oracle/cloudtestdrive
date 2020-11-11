@@ -39,4 +39,4 @@ Allow group MyGroup to use the cloud-shell in tenancy
 Allow group MyGroup to manage all-resources in compartment MyCompartment
 ```
 
-Press this [link](verrazzanolab.md) to get to the lab!
+
