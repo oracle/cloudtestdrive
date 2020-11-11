@@ -1,6 +1,6 @@
 ![](../../../common/images/customer.logo2.png)
 
-# Deploying multiple workloads w/ Verrazzano
+# Running Verrazzano for various workloads
 
 This folder contains the lab for running Verrazzano on OKE, creating a sample application consisting of multiple workloads (Weblogic, Helidon and Coherence).
 
