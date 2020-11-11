@@ -226,7 +226,9 @@ This command creates a docker container running the shell which is connected to 
 
   10. Take a look inside the container
   
-  10a. `ls`
+  10a. Inside the container type 
+  
+  	- `ls`
 
   ```
 app   conf	  etc	lib64  opt   run   sys	var
@@ -234,20 +236,28 @@ bin   confsecure  home	media  proc  sbin  tmp	Wallet_ATP
 boot  dev	  lib	mnt    root  srv   usr
 ```
 
-  10b. `ls Wallet_ATP` 
-
-  ```
-```
-  10c. `ls conf` 
-
-  ```
-```
-  10d. `ls confsecure` 
+  10b. Inside the container type 
+  
+  	- `ls Wallet_ATP` 
 
   ```
 ```
 
-  11. Now exit the container
+  10c. Inside the container type 
+  
+  	- `ls conf` 
+
+  ```
+```
+
+  10d. Inside the container type 
+  
+  	- `ls confsecure` 
+
+  ```
+```
+
+  11. Now exit the container - Inside the container type
   
   -  `exit`
 
@@ -284,37 +294,45 @@ As before we find ourselves in the container and the root directory looks the sa
 
 14. Look around again
 
-  14a. `ls`
+  14a. Inside the container type 
+  
+    - `ls`
   
   ```
 root@bc7d4ae0666b:/# ls
 Wallet_ATP  app  app.yml  bin  boot  conf  confsecure dev	etc  home  lib	lib64  media  mnt  opt	proc  root  run  sbin  srv  sys  tmp  usr  var
 ```
   
-  14b. `ls conf`
+  14b. Inside the container type 
+  
+    - `ls conf`
   
   ```
 root@bc7d4ae0666b:/# ls /conf
 stockmanager-config.yaml  stockmanager-network.yaml 
 ```
   
-  14c. `ls confsecure`
+  14c. Inside the container type 
+  
+    - `ls confsecure`
   
   ```
   root@bc7d4ae0666b:/# la /confsecure
 stockmanager-security.yaml
 ```
   
-  14d. `ls Wallet_ATP`
+  14d. Inside the container type 
+  
+    - `ls Wallet_ATP`
 
   ```
 root@bc7d4ae0666b:/# ls /Wallet_ATP
 cwallet.sso  ewallet.p12  keystore.jks	ojdbc.properties  sqlnet.ora  tnsnames.ora  truststore.jks
 ```
 
-  15. Exit the container
- 
-  - `exit`
+  15. Exit the container. Inside the container type 
+  
+    - `exit`
 
 ### What about the database configuration ?
 
