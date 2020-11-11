@@ -30,11 +30,9 @@ To run this part of the lab you need the working storefront and stockmanager mic
   
   1a. To check if it is already running type :
 
-   ```
-  docker ps
-  ```
+   - `docker ps`
   
-  1b. Check if there is an entry named **zipkin**:
+  1b. Check in the output if there is an entry named **zipkin**:
   
    ```
   e3a7df18cd77        openzipkin/zipkin   "/busybox/sh run.sh"   3 seconds ago       Up 2 seconds        9410/tcp, 0.0.0.0:9411->9411/tcp   zipkin
@@ -50,13 +48,13 @@ Like the Helidon lab you perform these steps **inside** the client virtual machi
 
 You will be running script in two locations, the storefront and the stockmanager project directories. 
 
-1. The simplest approach is to open **two** terminal windows 
+  1. The simplest approach is to open **two** terminal windows 
 
-2. In one switch to the storefront project directory
+  2. In one switch to the storefront project directory
 
   -  `cd $HOME/workspace/helidon-labs-storefront/`
 
-3. In one switch to the stockmanager project directory
+  3. In one switch to the stockmanager project directory
 
   -  `cd $HOME/workspace/helidon-labs-stockmanager/`
   
@@ -228,7 +226,7 @@ This command creates a docker container running the shell which is connected to 
   
   10a. Inside the container type 
 
-  	- `ls`
+  - `ls`
 
   ```
 app   conf	  etc	lib64  opt   run   sys	var
@@ -238,25 +236,25 @@ boot  dev	  lib	mnt    root  srv   usr
 
   10b. Inside the container type 
 
-  	- `ls Wallet_ATP` 
+  - `ls Wallet_ATP` 
 
 (No output)
 
   10c. Inside the container type 
   
-  	- `ls conf` 
+  - `ls conf` 
 
 (No output)
 
   10d. Inside the container type 
   
-  	- `ls confsecure` 
+  - `ls confsecure` 
 
 (No output)
 
   11. Now exit the container - Inside the container type
 
-    -  `exit`
+  -  `exit`
 
 As you can see there is nothing in the /conf /confsecure or /Wallet_ATP directories .jib was told as part of it's config that these would be used for mounting external configuration, so it created the folders for us automatically.
 
@@ -281,19 +279,19 @@ The docker flags are handled as following,
 
 Let's use docker volumes (the docker --volume flag) to inject the configuration for us, each volume argument is the host file system name (this needs to be an absolute pathname) and the location inside the container to mount it. 
 
-12. Switch to the terminal for the **stockmanager** project directory
+  12. Switch to the terminal for the **stockmanager** project directory
 
-13. Run the container with the volumes attached:
+  13. Run the container with the volumes attached:
 
   - `docker run --tty --interactive --volume `pwd`/Wallet_ATP:/Wallet_ATP --volume `pwd`/conf:/conf --volume `pwd`/confsecure:/confsecure  --rm --entrypoint=/bin/bash stockmanager`
 
 As before we find ourselves in the container and the root directory looks the same, but the other directories now have content
 
-14. Look around again
+  14. Look around again
 
   14a. Inside the container type 
   
-    - `ls`
+   - `ls`
   
   ```
 root@bc7d4ae0666b:/# ls
@@ -302,7 +300,7 @@ Wallet_ATP  app  app.yml  bin  boot  conf  confsecure dev	etc  home  lib	lib64  
   
   14b. Inside the container type 
   
-    - `ls conf`
+   - `ls conf`
   
   ```
 root@bc7d4ae0666b:/# ls /conf
@@ -311,7 +309,7 @@ stockmanager-config.yaml  stockmanager-network.yaml
   
   14c. Inside the container type 
   
-    - `ls confsecure`
+   - `ls confsecure`
   
   ```
   root@bc7d4ae0666b:/# la /confsecure
@@ -320,7 +318,7 @@ stockmanager-security.yaml
   
   14d. Inside the container type 
   
-    - `ls Wallet_ATP`
+  - `ls Wallet_ATP`
 
   ```
 root@bc7d4ae0666b:/# ls /Wallet_ATP
@@ -329,7 +327,7 @@ cwallet.sso  ewallet.p12  keystore.jks	ojdbc.properties  sqlnet.ora  tnsnames.or
 
   15. Exit the container. Inside the container type 
   
-    - `exit`
+  - `exit`
 
 ### What about the database configuration ?
 
@@ -346,9 +344,9 @@ Docker provides several ways to do this, for example you can specify each indivi
 
 For this lab the scripts that will run the stockmanager use the --env-file approach, so we need to make sure that the file reflects the database connection details.
 
-16. Switch to the terminal for the **stockmanager** project directory
+  16. Switch to the terminal for the **stockmanager** project directory
 
-17. Edit the `database-env` file 
+  17. Edit the `database-env` file 
 
 It will look like the following
 
@@ -361,17 +359,17 @@ hibernate.dialect=org.hibernate.dialect.Oracle10gDialect
 hibernate.hbm2ddl.auto=update
 ```
 
-18. On the line starting `javax.sql.DataSource.stockmanagerDataSource.dataSource.url` you need to replace `<database connection name>` with the name of your high connection, e.g. tg_high **Your** connection name will be different (unless of course your database is called tg)
+  18. On the line starting `javax.sql.DataSource.stockmanagerDataSource.dataSource.url` you need to replace `<database connection name>` with the name of your high connection, e.g. tg_high **Your** connection name will be different (unless of course your database is called tg)
 
-- If you created the database user with a different username and password you will need to replace those as well.
+  - If you created the database user with a different username and password you will need to replace those as well.
 
-19. Save the changes 
+  19. Save the changes 
 
 To check that the environment variables are correctly set use the `runBashContainer.sh` script in the `helidon-labs-stockmanager` project. This basically does the docker run command above, using the environment variables and volumes.
 
 Run the container with the configuration attached:
 
-20. In the VM shell type
+  20. In the VM shell type
 
   - `bash runBashContainer.sh`
 
@@ -383,7 +381,7 @@ bash-4.2#
     
 Once in the container look at the environment (we're going to sort the output to make it easier)
 
-21. In the container shell type :
+  21. In the container shell type :
 
   - `printenv | sort`
   
@@ -408,7 +406,7 @@ _=/usr/bin/printenv
 (The precise details may vary of course)
 You can see the environment variables we have set (in this case it is of course using `tg_high` for the DB connection name in the URL, **yours will be different**
 
-22. Exit the container by typing in the container
+  22. Exit the container by typing in the container
 
   - `exit`
 
@@ -437,7 +435,7 @@ The script also used the --publish flag to the docker run command this sets up a
 
 **If you have not stopped the stockmanager and storefront applications you were running in the helidon labs then they will have ownership of the ports** 
 
-1. Check now that the **stockmanager and storefront applicationsthey are not running** inside of your Eclipse environment
+  1. Check now that the **stockmanager and storefront applicationsthey are not running** inside of your Eclipse environment
 
 <details><summary><b>If when running the docker containers you get bind errors.</b></summary>
 
@@ -456,23 +454,23 @@ It means you've not stopped the storefront and / or stock manager programs runni
 As the storefront depends on the stockmanager (and both depend on zipkin) it's important to ensure that the order shown below is followed
 
 
-2. Switch to the terminal for the **stockmanager** project directory
+  2. Switch to the terminal for the **stockmanager** project directory
 
-3. Run the **Stockmanager** container via script:
+  3. Run the **Stockmanager** container via script:
 
   - `bash runStockmanagerLocalExternalConfig.sh`
   
   Keep the terminal window open to see any log info it generates
   
-4.Switch to the terminal for the **storefront** project directory
+  4.Switch to the terminal for the **storefront** project directory
   
-5. Run the **Storefront** container via script
+  5. Run the **Storefront** container via script
   
   - `bash runStorefrontLocalExternalConfig.sh`
 
-6. Open **another** new terminal window
+  6. Open **another** new terminal window
 
-7. Call the stocklevel method of the application:
+  7. Call the stocklevel method of the application:
   -  `curl -i -X GET -u jack:password http://localhost:8080/store/stocklevel`
 
   ```
@@ -527,7 +525,8 @@ If you want to see the traces in zipkin use the URL http://localhost:9411/zipkin
 
 To stop the containers do Ctrl-C in each of the windows, or in a separate terminal use docker to stop them
 
-8. Stop the containers:
+  8. Stop the containers:
+  
   -  `docker stop storefront stockmanager`
 
 <details><summary><b>Why use volumes for stuff that's not secret ?</b></summary>
@@ -564,27 +563,27 @@ Once you have got this information please save it in a notepad or something as y
 
 The OCIR region code is based on the IATA code for the city hosting the region, for example Frankfurt has an IATA core of `fra` and Amsterdam is `ams`. Unfortunately some cities (e.g. London) have multiple airports, in others the IATA airport code refers to an old name for the city, or the airport itself is not directly named after the city it serves, so we need to look the right code up based on our region.
 
-1. To determine your region look at the top of your Oracle Cloud GUI in the web browser and you'll see your current region.
+  1. To determine your region look at the top of your Oracle Cloud GUI in the web browser and you'll see your current region.
 
-![](images/region-name.png)
+  ![](images/region-name.png)
 
-1a. If you click on the name you'll get a list of regions enabled for your tenancy and your home region
+  1a. If you click on the name you'll get a list of regions enabled for your tenancy and your home region
 
-![](images/regions-list.png)
+  ![](images/regions-list.png)
 
 You can see here in this example we're using the Frankfurt region, which is also our home region.
 
-1b. Now go to the [OCIR Availability By Region list.](https://docs.cloud.oracle.com/en-us/iaas/Content/Registry/Concepts/registryprerequisites.htm#Availab)
+  1b. Now go to the [OCIR Availability By Region list.](https://docs.cloud.oracle.com/en-us/iaas/Content/Registry/Concepts/registryprerequisites.htm#Availab)
 
-1c. Locate your region on the list and then to the right identify the region code, for example we can see below in the case of Frankfurt the OCIR region code to use is `fra` for Sydney it's `syd`
+  1c. Locate your region on the list and then to the right identify the region code, for example we can see below in the case of Frankfurt the OCIR region code to use is `fra` for Sydney it's `syd`
 
-![](images/fra.png)
+  ![](images/fra.png)
 
 
 
 #### Determining your tenancy Object Storage Namespace
 
-2. Navigate to the **Tenancy Information** screen
+  2. Navigate to the **Tenancy Information** screen
 
   2a. Click the Hamburger menu
   
@@ -601,17 +600,17 @@ You can see here in this example we're using the Frankfurt region, which is also
 
 #### Getting your Authentication Token
 
-3. OCIR uses an authentication token rather than a password. To set an authentication token you need to take the following steps. 
+  3. OCIR uses an authentication token rather than a password. To set an authentication token you need to take the following steps. 
 
-3a Click on the **Magnifying glass** on the top of your console, and enter your username.  For example, if your name was **ppan** : 
+  3a. Click on the **Magnifying glass** on the top of your console, and enter your username.  For example, if your name was **ppan** : 
 
   ![](images/ppan.png)
 
-3b. Select the user **that looks like :  oracleidentitycloudservice/(your_name)**
+  3b. Select the user **that looks like :  oracleidentitycloudservice/(your_name)**
 
   ![](images/token1.png)
 
-3c. Select **Token** in the right-hand menu, then click the button **Create Token**.
+  3c. Select **Token** in the right-hand menu, then click the button **Create Token**.
 
   3c1. Enter a name for the token
 
@@ -628,7 +627,7 @@ You now need to chose a name for your repository,this is a combination of the OC
 
 An OCIR repo name looks like \<OCIR region code\>.ocir.io/\<Object Storage Namespace\>/\<repo_name\>
 
-4. Chose something unique **TO YOU** e.g. your initials : tg_repo 
+  4. Chose something unique **TO YOU** e.g. your initials : tg_repo 
 
   - this must be in **lower case** and can **only contain letters, numbers, underscore and hyphen**
 
@@ -642,7 +641,7 @@ We need to tell docker your username and password for the registry.
 
 You will have gathered the information needed in the previous step. 
 
-5. You just need to execute the login command, of course you need to substitute the fields
+  5. You just need to execute the login command, of course you need to substitute the fields
 
   - `docker login <region-code>.ocir.io --username=<mytenancystoragenamespace>/oracleidentitycloudservice/<myusername> --password='<auth token>'`
 
@@ -665,23 +664,23 @@ Enter the command with **your** details into a terminal in the virtual machine t
 
 You need to update **both** of the `repoStockmanagerConfig.sh` and `repoStorefrontConfig.sh scripts` in the helidon-labs-stockmanager and helidon-labs-storefront directories to reflect your chosen details.
 
-6. Switch to the terminal for the **storefront** project directory
+  6. Switch to the terminal for the **storefront** project directory
 
 As for some instructor labs there are may be many attendees doing the lab in the same tenancy, to allow for that we need to separate the different images out, so we're also going to use your initials / name / something unique 
 
-7. Open file **repoStorefrontConfig.sh** and edit the repo name to reflect **your** region, tenancy and initials
+  7. Open file **repoStorefrontConfig.sh** and edit the repo name to reflect **your** region, tenancy and initials
 
   - Example for region `Frankfurt`, in the `oractdemeabdmnative` tenancy with initials `tg` you might have : 
 
-```bash
+  ```bash
     #!/bin/bash
     REPO=fra.ocir.io/oractdemeabdmnative/tg_repo
     echo Using repository $REPO
 ```
 
-8. Switch to the terminal for the **stockmanager** project directory
+  8. Switch to the terminal for the **stockmanager** project directory
 
-9. Open file **repoStockmanagerConfig.sh** and edit the repo name again as above
+  9. Open file **repoStockmanagerConfig.sh** and edit the repo name again as above
 
 ---
 
@@ -760,28 +759,14 @@ Notice that for the second example layers all already exist, so nothing needs to
 
 Let's actually push the images.
 
-10. Switch to the terminal for the **stockmanager** project directory
+  10. Switch to the terminal for the **stockmanager** project directory
 
-11. Run the `buildStockmanagerPushToRepo.sh` script
-
-12. Once it's finished switch to the terminal for the **storefront** project directory
-
-13. Run the `buildStorefrontPushToRepo.sh` script
-
-<details><summary><b>Upload denied error?</b></summary>
-
-
-If during the docker push stage you get image upload denied errors then it means that you do not have the right policies set for your groups in your tenancy. This can happen in existing tenancies if you are not an admin or been given rights via a policy. (In a trial tenancy you are usually the admin with all rights so it's not generally an issue there). You will need to ask your tenancy admin to add you to a group which has rights to create repos in your OCIR instance and upload them. See the [Policies to control repository access](https://docs.cloud.oracle.com/en-us/iaas/Content/Registry/Concepts/registrypolicyrepoaccess.htm) document.
-
----
-
-</details>
-
-14. Switch to the terminal for the **storefront** project directory
-
-  - Run `bash buildStorefrontPushToRepo.sh`
-
-```$ bash buildPushToRepo.sh 
+  11. Run the script to build the image and push it to the repo
+  
+  - `bash buildStockmanagerPushToRepo.sh`
+  
+ 
+  ```$ bash buildPushToRepo.sh 
 Using repository fra.ocir.io/oractdemeabdmnative/tg_repo
 [MVNVM] Using maven: 3.5.2
 [INFO] Scanning for projects...
@@ -809,38 +794,61 @@ ebb9ae013834: Layer already exists
 0.0.1: digest: sha256:c993e660e73e681b7b5a8200b0a2e8baed0af1a52c334ef03284f13c27d4ed7c size: 2839
 build and pushed with tags 0.0.1
 ```
-  
-15. Switch to the terminal for the **stockmanager** project directory
 
-  - Run `bash buildStockmanagerPushToRepo.sh`
-  
-(Similar output to the previous script))
+The script will do the build then push the container images. The first time you push the image to the repository it may take a while because you've pushing all of the layers in the runtime, the next time however only changed layers will need to be pushed.
 
-The script will do the build then push the container images. The first time you push to the repository it may take a while because you've pushing all of the layers in the runtime, the next time however only changes layers will need to be pushed.
+  12. Once it's finished switch to the terminal for the **storefront** project directory
+
+  13. Run the script to build the image and push it to the repo
+  
+  - `bash buildStorefrontPushToRepo.sh`
+
+(Lots of output similar to the above)
+
+The script will do the build then push the container images. The first time you push the image to the repository it may take a while because you've pushing all of the layers in the runtime, the next time however only changed layers will need to be pushed.
+
+<details><summary><b>Upload denied error?</b></summary>
+
+
+If during the docker push stage you get image upload denied errors then it means that you do not have the right policies set for your groups in your tenancy. This can happen in existing tenancies if you are not an admin or been given rights via a policy. (In a trial tenancy you are usually the admin with all rights so it's not generally an issue there). You will need to ask your tenancy admin to add you to a group which has rights to create repos in your OCIR instance and upload them. See the [Policies to control repository access](https://docs.cloud.oracle.com/en-us/iaas/Content/Registry/Concepts/registrypolicyrepoaccess.htm) document.
+
+---
+
+</details>
+
+
 
 You can now re-run the images that have been pushed the cloud.
 
-16. Switch to the terminal for the **storefront** project directory
+  14. Switch to the terminal for the **storefront** project directory
 
-17. Run the image you just pushed
+  15. Run the image you just pushed
 
-  -  `bash runStockmanagerRepo.sh`
+  - `bash runStockmanagerRepo.sh`
 
-18. Wait for it to start, switch to the terminal for the **storefront** project directory
+(Usual output from the stockmanager starting) 
+
+  16. Wait for it to start, switch to the terminal for the **storefront** project directory
+
+  17. Run the image you just pushed
 
   - `bash runStorefrontRepo.sh`
+
+(Usual output from the storefront starting) 
 
 
 ## Step 5: Cleaning up
 
 This is the end of this section of the lab, let's stop the running images
 
-1. Open a new terminal window
+  1. Open a new terminal window
 
-2. Stop the Storefront and Stockmanager apps:
+  2. Stop the Storefront and Stockmanager apps:
+  
   -  ` docker stop storefront stockmanager`
   
-3. Stop the zipkin instance running
+  3. Stop the zipkin instance running
+  
   -  `docker stop zipkin`
 
 ## Summary
