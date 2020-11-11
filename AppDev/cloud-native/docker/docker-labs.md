@@ -227,7 +227,7 @@ This command creates a docker container running the shell which is connected to 
   10. Take a look inside the container
   
   10a. Inside the container type 
-  
+
   	- `ls`
 
   ```
@@ -237,29 +237,26 @@ boot  dev	  lib	mnt    root  srv   usr
 ```
 
   10b. Inside the container type 
-  
+
   	- `ls Wallet_ATP` 
 
-  ```
-```
+(No output)
 
   10c. Inside the container type 
   
   	- `ls conf` 
 
-  ```
-```
+(No output)
 
   10d. Inside the container type 
   
   	- `ls confsecure` 
 
-  ```
-```
+(No output)
 
   11. Now exit the container - Inside the container type
-  
-  -  `exit`
+
+    -  `exit`
 
 As you can see there is nothing in the /conf /confsecure or /Wallet_ATP directories .jib was told as part of it's config that these would be used for mounting external configuration, so it created the folders for us automatically.
 
