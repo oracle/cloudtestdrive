@@ -6,8 +6,8 @@
 ###
 ### build a new image from the previous 
 ###
-export ORACLE_SUPORT_USER=eugene.simos@oracle.com
-echo "ToulaToula142312" > passwd.txt
+export ORACLE_SUPORT_USER=YOUR_SUPPORT_ID
+echo "YOUR_PASSWD" > passwd.txt
 cd /home/oracle/stage/installers/
 docker system prune -f
 docker images
