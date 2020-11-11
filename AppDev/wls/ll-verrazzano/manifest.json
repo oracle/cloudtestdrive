@@ -1,8 +1,12 @@
 {
     "tutorials": [
         {
-            "title": "Running Verrazzano for various workloads",
-            "filename": "../README.MD"
+            "title": "Verrazzano lab - Introduction and prerequisites",
+            "filename": "../verrazzanointroprereq.md"
+        },
+        {
+            "title": "Verrazzano lab - Lab steps",
+            "filename": "../verrazzanolab.md"
         }
     ]
 }
