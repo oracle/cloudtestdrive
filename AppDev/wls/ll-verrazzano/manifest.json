@@ -2,7 +2,7 @@
     "tutorials": [
         {
             "title": "Running Verrazzano for various workloads",
-            "filename": "../README.md"
+            "filename": "../README.MD"
         }
     ]
 }
