@@ -59,15 +59,19 @@ If you want to understand JPA and JTA in a lot of detail there are courses avail
 ## Step 1: Configuring the project to be personal to you
 For some versions of this lab, all attendees will are operating on a shared database, and updating the same table. To ensure that your work doesn't interfere with other peoples work you need to provide a unique identity for yourself
 
-- In Eclipse, switch to the **helidon-labs-stockmanager** project.
-- Navigate into the folder **conf**
-- Open the file **stockmanager-config.yaml**
-- In the `app:` section, add a property **department** with **your** your name, initials or something that's going to be **unique**:
+  1. In Eclipse, switch to the **helidon-labs-stockmanager** project.
+
+  2. Navigate into the folder **conf**
+
+  3. Open the file **stockmanager-config.yaml**
+
+  4. In the `app:` section, add a property **department** with **your** your name, initials or something that's going to be **unique**:
+  
   -  `department: "your_name"`
 
 Example :
 
-```yaml
+  ```yaml
 app:
   persistenceUnit: "stockmanagerJTA"
   department: "just_a_name"
@@ -101,10 +105,11 @@ The com.oracle.labs.helidon.stockmanager.resources.StockmanagerResource class is
 
 The classes in the com.oracle.labs.helidon.stockmanager.database package represent the actual structure of the database. In the database configuration we tell the JPA, JTA layers these are the classes we want the database to represent. You'll see that they have some annotations on them, some of which will be familiar. Let's look at the StockLevel class first:
 
-- Expand the folder **src/main/java**, then the folder **database**
-- Open the file **StockLevel.java**
+  1. Expand the folder **src/main/java**, then the folder **database**
 
-```java
+  2. Open the file **StockLevel.java**
+
+  ```java
 @Data
 // setup the constructors for us
 @NoArgsConstructor
@@ -147,11 +152,11 @@ On our fields in the class
 </details>
 
 
-- Open the file **StockId** in the same folder
+  3. Open the file **StockId** in the same folder
 
 Looking at the StockId class
 
-```java
+  ```java
 @Embeddable
 @Data
 @AllArgsConstructor
@@ -196,11 +201,13 @@ For the StockmanagerResource we are using @PathParams.  A path param is basicall
 
 Let's look at the StockResource.createStockLevel method to see how this works
 
-- Navigate to folder **resources**
-- Open file **StockResource.java**
-- Locate the method **createStockLevel** approximately in the middle of the file
+  4. Navigate to folder **resources**
 
-```java
+  5. Open file **StockResource.java**
+
+  6.Locate the method **createStockLevel** approximately in the middle of the file
+
+  ```java
 @Path("/{itemName}/{itemCount}")
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
@@ -237,20 +244,26 @@ Secondly we have to close the entity manager down when it's no longer needed, th
 
 Also why write code when we don't have to ? However, with Helidon, we have the context and dependency injections capabilities, so we don't need to setup the entity manager itself; we can have Helidon do that for us.
 
-- In file **StockResource.java**, scroll up to the constructor of the class **StockResource**
-- Remove the lines that set up the entity manager, it should now look like below:
+  1. In file **StockResource.java**, scroll up to the constructor of the class **StockResource**
 
-```java
+  2. Remove the lines that set up the entity manager
+  
+The resulting method should now look like this
+
+  ```java
 	public StockResource(@ConfigProperty(name = "app.persistenceUnit") String persistenceUnitProvided,
 			DepartmentProvider departmentProviderProvided) {
 		persistenceUnit = persistenceUnitProvided;
 		departmentProvider = departmentProviderProvided;
 	}
 ```
-- Scroll up to the **top** of the file, just below the class definition, and locate where the **EntityManager** is defined and add an annotation :
+  3. Scroll up to the **top** of the file, just below the class definition, and locate where the **EntityManager** is defined and add an annotation :
+  
   - `@PersistenceContext(unitName = "stockmanagerJTA")`
 
-```java
+The result should look like 
+
+  ```java
 public class StockResource {
 	@PersistenceContext(unitName = "stockmanagerJTA")
 	private EntityManager entityManager; 
@@ -284,53 +297,53 @@ If you are using a database provided by an instructor then they will give you th
 
 We are now going to configure the Eclipse run configuration to add the database connection properties every time the java command is called to run our Main class.
 
-- In the Eclipse navigator window on (on the left) select the stockmanager main class
+  4. In the Eclipse navigator window on (on the left) select the stockmanager main class
 
-![](images/eclipse-select-stockmanager-main.png)
+  ![](images/eclipse-select-stockmanager-main.png)
 
-- Now click the right mouse button and in the resulting menu navigate to `Run As`, then `Run configurations`
+  5. Now click the right mouse button and in the resulting menu navigate to `Run As`, then `Run configurations`
 
-![](images/eclipse-select-run-configurations.png)
+  ![](images/eclipse-select-run-configurations.png)
 
 The run configurations popup appears
 
-- In the left side of the Run Configurations popup select `Java Applications`
+  6. In the left side of the Run Configurations popup select `Java Applications`
 
-![](images/eclipse-run-configuration-select-java-application.png)
+  ![](images/eclipse-run-configuration-select-java-application.png)
 
-- Click the new configuration button, this looks like a blank page at the top of the left hand list
+  7. Click the new configuration button, this looks like a blank page at the top of the left hand list
 
-![](images/eclipse-run-configuration-new-config.png)
+  ![](images/eclipse-run-configuration-new-config.png)
 
 The Run configurations popup will create and display a new configuration
 
-![](images/eclipse-run-configurations-new-config-initial.png)
+  ![](images/eclipse-run-configurations-new-config-initial.png)
 
 Note that in this case it is named `Main (2)` but that may vary
 
-- Click the name `Main (2)` in this case (but yours may vary) and name this configuration `stockmanager`
+  8. Click the name `Main (2)` in this case (but yours may vary) and name this configuration `stockmanager`
 
-![](images/eclipse-run-configurations-new-config-named.png)
+  ![](images/eclipse-run-configurations-new-config-named.png)
 
-- Now click on the `args` tab (this is just below the name)
+  9. Now click on the `args` tab (this is just below the name)
 
 The Run configurations popup will now switch to the arguments tab (this may have been abbreviated to `args` in the UI
 
-![](images/eclipse-run-configurations-new-config-args.png)
+  ![](images/eclipse-run-configurations-new-config-args.png)
 
-- Copy the text below into a notepad or ASCII text editor you will need to make some changes to it before you use it. (Do **not** use a word processor like Microsoft Word or anything that makes the text "pretty" as they replace the `-` characters automatically with a non ASCII visually longer version, and that won't work) 
+  10. Copy the text below into a notepad or ASCII text editor you will need to make some changes to it before you use it. (Do **not** use a word processor like Microsoft Word or anything that makes the text "pretty" as they replace the `-` characters automatically with a non ASCII visually longer version, and that won't work) 
 
 Be careful not to add any newlines or extra spaces, tabs etc.
 
-```
+  ```
 -Djavax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.url=jdbc:oracle:thin:@<database connection name>?TNS_ADMIN=./Wallet_ATP -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.user=HelidonLabs -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.password=H3lid0n_Labs -Dhibernate.dialect=org.hibernate.dialect.Oracle10gDialect -Dhibernate.hbm2ddl.auto=update
 ```
 
-- In the test editor replace `<database connection name>` with the name of your database connection, in my case that's `tg_high`, **yours will be different** 
+  11. In the test editor replace `<database connection name>` with the name of your database connection, in my case that's `tg_high`, **yours will be different** 
 
-- Make sure you replace the entire thing including `<` and `>`
+  - Make sure you replace the entire thing including `<` and `>`
 
-- If you created a database and used different names for the username and password than we suggested (or have been told by an instructor that there are different user names or passwords) you will need to replace those here as well.
+  - If you created a database and used different names for the username and password than we suggested (or have been told by an instructor that there are different user names or passwords) you will need to replace those here as well.
 
 As an example for **my** database it looks like this, **but yours will vary**
 
@@ -338,22 +351,22 @@ As an example for **my** database it looks like this, **but yours will vary**
 -Djavax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.url=jdbc:oracle:thin:@tg_high?TNS_ADMIN=./Wallet_ATP -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.user=HelidonLabs -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.password=H3lid0n_Labs -Dhibernate.dialect=org.hibernate.dialect.Oracle10gDialect -Dhibernate.hbm2ddl.auto=update
 ```
 
-- Copy the updated text
+  12. Copy the updated text
 
-- In the `VM Arguments` file of the Run configurations popup paste the **updated** text
+  13. In the `VM Arguments` file of the Run configurations popup paste the **updated** text
 
-![](images/eclipse-run-configurations-new-config-args-with-vm.png)
+  ![](images/eclipse-run-configurations-new-config-args-with-vm.png)
 
-- Click the `Apply` button to save the changes
+  14. Click the `Apply` button to save the changes
 
-- Click the `Close` button to exit the Run configurations popup.
+  15. Click the `Close` button to exit the Run configurations popup.
  
 In case you wanted to see how to use the a config file for the database settings there is an example in example-config-data/stockmanager-database.yaml file. This isn't actually an imported part of the config files, but it shows you how it could be done using a config file.
 
 
 Using Helidon to create our PersistenceContext will also ensure that the entity manager is correctly shutdown when the program exits so we won't have any unused resources hanging around in the database.
 
-- Run the **Main** class of the project (right-click on **Main.java**, *Run As*, then *Java Application*).
+  16. Run the **Main** class of the project (right-click on **Main.java**, *Run As*, then *Java Application*).
 
 ---
 
@@ -386,12 +399,11 @@ The result should show the application listening on http://localhost:8081
 2020.01.05 18:30:33 INFO com.oracle.labs.helidon.stockmanager.Main Thread[main,5,main]: http://localhost:8081
 ```
 
+  17. Use curl to see what's there
 
-- Use curl to see what's there
   -  `curl -i -X GET -u jack:password http://localhost:8081/stocklevel`
 
-
-```
+  ```
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 18:54:06 GMT
@@ -419,13 +431,13 @@ Of course in a production environment you wouldn't want the database changing un
 
 </details>
 
-- Let's try to create some stock items - **error expected**:
+  18. Let's try to create some stock items - **error expected**:
 
   -  `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pins/5000`
 
 Note there is a few seconds delay when you try this as the code does the database connection on demand ... and then you get an error as expected: 
 
-```
+  ```
 HTTP/1.1 500 Internal Server Error
 Content-Length: 0
 Date: Sun, 5 Jan 2020 18:54:43 GMT
@@ -434,7 +446,7 @@ connection: keep-alive
 
 Look at the console tab and you will see that the code generates an error
 
-```
+  ```
 2020.01.05 18:54:46 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator Thread[helidon-1,5,server]: HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.JBossStandAloneJtaPlatform]
 Hibernate: 
     select
@@ -459,12 +471,13 @@ We could manually ask the entity manager to start and and transactions, but that
 
 Fortunately for us all we need is an @Transactional annotation and Helidon will trigger the JTA to manage the transactions for us.
 
-- Still in file **StockResource.java**, locate the StockResource class definition
-- Add the transaction annotation on the top:
+  1. Still in file **StockResource.java**, locate the StockResource class definition
+ 
+  2. Add the transaction annotation on the top:
+  
   -  `@Transactional`
 
-
-```
+  ```
 @Path("/stocklevel")
 @RequestScoped
 @Slf4j
@@ -490,11 +503,11 @@ This will apply if there were multiple entity managers or database modification 
 
 ---
 
-Let's try the POST again
+  3. Let's try the POST again
 
-- `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pins/5000`
+  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pins/5000`
 
-```
+  ```
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Tue, 22 Sep 2020 18:57:53 GMT
@@ -508,11 +521,11 @@ We've successfully called the creation API with no errors. On success the return
 
 Once the first operation has returned and the database connection is all setup the subsequent calls are much faster.
 
-Let's confirm if it's been committed to the DB. Here we're going to use the API to retrieve a specific item
+  4. Let's confirm if it's been committed to the DB. Here we're going to use the API to retrieve a specific item
 
-- `curl -i -u jack:password  -X GET localhost:8081/stocklevel/Pins`
+  - `curl -i -u jack:password  -X GET localhost:8081/stocklevel/Pins`
 
-```
+  ```
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Tue, 22 Sep 2020 19:02:14 GMT
@@ -525,16 +538,22 @@ content-length: 36
 It has been committed to the database.
 
 ## Step 5: Creating some data and testing the stockmanager works
-- Restart the stockmanager.Main 
 
-- Use curl to create some stock items (expect an error on the last one) :
+  1. Restart the stockmanager.Main if it's not running
+
+  2. Use curl to create some stock items (expect an error on the last one) :
+  
   - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pin/5000`
+  
   - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pencil/200`
+  
   - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Eraser/50`
+  
   - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Book/100`
+  
   - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Book/50`
-
-```
+  
+  ```
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 18:58:43 GMT
@@ -549,10 +568,11 @@ content-length: 35
 
 Note that on the 2nd attempt to add the books we don't get anything back representing the newly create object - it's already there, and the logs give us an error message!
 
-- Use curl to get the current stock list
+  3. Use curl to get the current stock list
+  
   -  `curl -i -X GET -u jack:password http://localhost:8081/stocklevel`
 
-```
+  ```
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 19:01:01 GMT
@@ -564,10 +584,11 @@ content-length: 185
 
 Note that we have "accidentally" created two versions of the Pin (Pin and Pins), let's remove one
 
-- Use curl to remove it
+  4. Use curl to remove it
+  
   -  `curl -i -X DELETE -u jack:password http://localhost:8081/stocklevel/Pins`
 
-```
+  ```
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 19:01:38 GMT
@@ -578,15 +599,15 @@ content-length: 36
 ```
 
 
-Finally let's test changing the level of some stock, we had 200 Pencils, let's reduce that to 150
+  5.Finally let's test changing the level of some stock, we had 200 Pencils, let's reduce that to 150
 
--  `curl -X POST  -u jack:password http://localhost:8081/stocklevel/Pencil/150`
+  -  `curl -X POST  -u jack:password http://localhost:8081/stocklevel/Pencil/150`
 
-And we can check the stock levels are changed : 
+  6. And we can check the stock levels are changed : 
 
--  `curl -i -X GET -u jack:password http://localhost:8081/stocklevel`
+  -  `curl -i -X GET -u jack:password http://localhost:8081/stocklevel`
 
-```
+  ```
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Sun, 5 Jan 2020 19:03:11 GMT

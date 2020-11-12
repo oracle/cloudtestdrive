@@ -33,13 +33,13 @@ You need to have completed the `Cloud Native support in Helidon` module.
 
 This module is how to get Helidon to self-describe the REST API you are offering. There are several use cases for this, some of those are :
 
-1/ You need the API description in a consistent machine readable form that can be processed by other applications, for example you are using an API gateway and need to define rules for certain endpoints
+A/ You need the API description in a consistent machine readable form that can be processed by other applications, for example you are using an API gateway and need to define rules for certain endpoints
 
-2/ You want to ensure that the documentation of the REST API actually reflects the implementation, it's not uncommon for documentation and implementation to be out of sync if they are separately maintained through manual processes.
+B/ You want to ensure that the documentation of the REST API actually reflects the implementation, it's not uncommon for documentation and implementation to be out of sync if they are separately maintained through manual processes.
 
-3/ You can't find the documentation for a service, or it is a service where you have the jar file, but the documentation was on a since removed website and not even the internet archive can help!
+C/ You can't find the documentation for a service, or it is a service where you have the jar file, but the documentation was on a since removed website and not even the internet archive can help!
 
-4/ You want to automatically create client code based on the API (or server code, but that gives rise to an initial Catch 22 situation)
+D/ You want to automatically create client code based on the API (or server code, but that gives rise to an initial Catch 22 situation)
 
 To address this the idea of self describing API end points was developed, originally this was developed by an application having a "well known" URL that just returned a manually maintained text document that was distributed as part of the jar file. It then evolved into machine readable data formats, for example the Swagger REST API description format based on JSON, which has since been donated to the community under the name Open API and is now the de-facto data format. For a more detailed history see the Wikipedia [Open API page.](https://en.wikipedia.org/wiki/OpenAPI_Specification)
 
@@ -55,9 +55,9 @@ When a system like Helidon MP runs the annotations you've applied to your code n
 
 There are two ways to identify the annotations in your code:
 
-1/ The runtime can search through every class and method to find them each time the program is started, this can be time consuming if you have a lot of code
+A/ The runtime can search through every class and method to find them each time the program is started, this can be time consuming if you have a lot of code
 
-2/ When the service is built the build process creates an index (usually packaged into the jar file) that is processed when the service starts, and each annotation can be immediately identified. This means that the code scanning process only happens once at build time and results in a faster startup, though it does mean a slightly longer build phase and also a slightly larger deployment.
+B/ When the service is built the build process creates an index (usually packaged into the jar file) that is processed when the service starts, and each annotation can be immediately identified. This means that the code scanning process only happens once at build time and results in a faster startup, though it does mean a slightly longer build phase and also a slightly larger deployment.
 
 In general the costs of building and storing an index are way smaller than those of scanning each time, and this is the approach that Helidon uses when packaging a service, though when running within Eclipse it does a scan as otherwise you'd have to build the index each time you saved a file which would slow down the development process (This is why you may see warning messages about missing jandex.idx files when running the micro-servcies in Eclipse)
 
@@ -75,10 +75,12 @@ In this module we will be adding annotations to describe the storefront service 
 You may of course chose to document other services, for example the stockmanager would normally not publicly visible outside the Kubernetes cluster, but you may chose to document it's API to help building internal clients of the service.
 
 ### Accessing the OpenAPI documentation
-The generated OpenAPI documentation can be accessed using curl
- - `curl http://localhost:8080/openapi`
 
-```yaml
+  1. The generated OpenAPI documentation can be accessed using curl
+
+  - `curl http://localhost:8080/openapi`
+
+  ```yaml
 info: 
   title: Generated API
   version: '1.0'
@@ -92,14 +94,15 @@ Of course at the moment we haven't actually build anything in it (if you see out
 
 Firstly we shall define what the top level service provides, this can be done on any of the classes managed by the content and dependency injection syb-system, but it seems most relevant to place the annotations on the StorefrontApplication class.
 
-- Open the **StorefrontApplication.java file**, and add the following @OpenAPIDefiniton annotation on the *class declaration* itself:
-  - ```java
+  2. Open the **StorefrontApplication.java file**, and add the following @OpenAPIDefiniton annotation on the *class declaration* itself:
+  
+  ```java
     @OpenAPIDefinition(info = @Info(title = "StorefrontApplication", description = "Acts as a simple stock level tool for a post room or similar", version = "0.0.1"))
-    ```
+```
 
 The resulting class declaration should look like
 
-```java
+  ```java
 @ApplicationScoped
 @ApplicationPath("/")
 @OpenAPIDefinition(info = @Info(title = "StorefrontApplication", description = "Acts as a simple stock level tool for a post room or similar", version = "0.0.1"))
@@ -138,37 +141,37 @@ Because of this the jandex index needs to be built to reflect the OpenAPI annota
 
 First we need to create a run configuration to create this goal
 
-Select the helidon-labs-storefront project, click right -> Run As -> Maven Build .... 
+  1. Select the helidon-labs-storefront project, click right -> Run As -> Maven Build .... 
 
-![](images/maven-build-config-menu.png)
+  ![](images/maven-build-config-menu.png)
 
-Update the popup with the following
+  2. Update the popup with the following
 
-- set the name to be `helidon-labs-storefront (process-classes)` (if you chose something else it's fine, just remember to use that later on)
+  2a. set the name to be `helidon-labs-storefront (process-classes)` (if you chose something else it's fine, just remember to use that later on)
 
-- In the goals enter `process-classes`
+  2b. In the goals enter `process-classes`
 
-- Click `Apply` then `Close`
+  2c. Click `Apply` then `Close`
 
-![](images/maven-build-config-process-classes.png)
+  ![](images/maven-build-config-process-classes.png)
 
 Now to run a build with this target.
 
-- Click right on the **project** name (helidon-labs-storefront) in Eclipse, then chose `Run As` then `Maven build`  (This is the version **without** the three dots!)
+  3. Click right on the **project** name (helidon-labs-storefront) in Eclipse, then chose `Run As` then `Maven build`  (This is the version **without** the three dots!)
 
-![](images/run-as-maven-build.png)
+  ![](images/run-as-maven-build.png)
 
 Depending on the precise eclispe configuration there **may** be a resulting popup window, do not worry if this is not displayed and the build just continues
 
-- If there is a popup then chose the process-classes option.
+  4. If there is a popup then chose the process-classes option.
 
-![](images/maven-build-run-configurations.png)
+  ![](images/maven-build-run-configurations.png)
 
-Then click the OK button
+  5. Then click the OK button
 
 In the console tab you'll see output similar to the following
 
-```
+  ```
 [INFO] Scanning for projects...
 [INFO] ------------------------------------------------------------------------
 [INFO] Detecting the operating system and CPU architecture
@@ -208,12 +211,13 @@ Towards the end of the output you can see that the Maven jandex plugin is run.
 ### Viewing the initial OpenAPI spec
 Now we've added an annotation covering the initial contents let's look at it. You must have created the jandex index as described above and stopped any existing instances (there is no need to have the stockmanager running, but if it already is don't worry)
 
-- Start the storefront service running using the Main class as before, this will cause the jandex.idx file to be read.
+  6. Start the storefront service running using the Main class as before, this will cause the jandex.idx file to be read.
 
-- In a terminal window type 
-    - `curl  http://localhost:8080/openapi`
+  7. In a terminal window type
 
-```yaml
+  - `curl  http://localhost:8080/openapi`
+
+   ```yaml
 components: 
   schemas:
     ItemDetails: 
@@ -310,9 +314,9 @@ If you just saw the basic info that was returned when you initially did a curl t
 #### What does this output mean ?
 In summary it means that adding the @OpenAPIDefinition triggered Helidon to scan the jandex index for classes references by the application, looking for REST endpoints (@GET, @POST etc. annotations). Helidon then builds a OpenAPI document that returns the YAML description. Note that the precise order of the major sections may change (it depends on the order the annotations are processed) so you may see the `components:` section before or after the `info: or `path` section
 
-First locate the `info:` section. 
+  8. First locate the `info:` section. 
 
-```yaml
+  ```yaml
 info: 
   description: Acts as a simple stock level tool for a post room or similar
   title: StorefrontApplication
@@ -321,9 +325,9 @@ info:
 
 This contains the information you supplied to the `@OpenAPIDefinition` annotation.
 
-Now let's look at the `components:` section.
+  9. Now let's look at the `components:` section.
 
-```yaml
+  ```yaml
 components: 
   schemas:
     ItemDetails: 
@@ -368,9 +372,9 @@ Helidon will scan for jandex.idx files across multiple jar files, and bring in t
 
 The `openapi: 3.0.1` simply defines what version of the OpenAPI document specification this document conforms to.
 
-Lastly let's look at the `paths` section
+  10. Lastly let's look at the `paths` section
 
-```yaml
+  ```yaml
 paths:
   /minimumChange: 
     post: 
@@ -586,8 +590,9 @@ For the rest of the lab documentation I'm going to stick with yaml as it's a bit
 ### To many paths, how do we hide private ones ?
 This has given us the entire API, but the /status is probably not relevant to external callers. (As we'll see in the Kubernetes sections it's more for the internal operation of the cluster and availability than something an client would call. So we need a way to remove some end-points from the output.
 
-- Open the src/main/resources/META-INF/microprofile-config.properties file
-  - Uncomment the line `mp.openapi.scan.exclude.classes=com.oracle.labs.helidon.storefront.resources.StatusResource,com.oracle.labs.helidon.storefront.resources.ConfigurationResource`
+  11. Open the src/main/resources/META-INF/microprofile-config.properties file
+
+  12. Uncomment the line `mp.openapi.scan.exclude.classes=com.oracle.labs.helidon.storefront.resources.StatusResource,com.oracle.labs.helidon.storefront.resources.ConfigurationResource`
  
 (It's the last line, so it may be a bit hidden)
  
@@ -623,13 +628,13 @@ It is of course possible to apply this exclusion in any of the config files, but
 
 Let's see how this looks, there is no need to re-build the index this time as the change was in the config file, not annotations in the source code.
 
-- Restart the storefront service (have to do this as the microprofile-config.propeties file isn't one of the ones that's checked for changes)
+  13. Restart the storefront service (have to do this as the microprofile-config.propeties file isn't one of the ones that's checked for changes)
 
-- Check out the updated documentation that's generated
+  14. Check out the updated documentation that's generated
 
   - ` curl -i http://localhost:8080/openapi`
   
-```yaml
+  ```yaml
 HTTP/1.1 200 OK
 Content-Type: application/vnd.oai.openapi;charset=UTF-8
 Date: Wed, 11 Mar 2020 18:16:56 GMT
@@ -705,20 +710,25 @@ Strictly speaking this is all that you need to be able to use the API from a cal
 
 We've got basic information on the ItemRequest (and of course full info on ItemDetails as that was documented in a separate project). let's see how we can document the ItemRequest in more details.
 
-- Open the ItemRequest class in the com.oracle.labs.helidon.storefront.data package and add @Schema annotations
+  1. Open the ItemRequest class in the com.oracle.labs.helidon.storefront.data package and add @Schema annotations
 
-- Add the following annotation to the class definition itself
-  - ```java
+  2. Add the following annotation to the class definition itself
+  
+  ```java
     @Schema(name = "ItemRequest", description = "Details of a Item reservation request")
-    ```
-- Add the following annotation to the requestedItem field
-  - ```java
+```
+
+  3. Add the following annotation to the requestedItem field
+  
+  ```java
     @Schema(required = true, description = "Name of the item being requested", example = "Pencil")
-    ```
-- Add the following annotation to the requestedCount field
-  - ```java
+```
+
+  4. Add the following annotation to the requestedCount field
+
+  ```java
     @Schema(name = "ItemRequest", description = "Details of a Item reservation request", example = "{\"requestedItem\", \"Pin\", \"requestedCount\",5}")
-    ```
+```
 
 The resulting class looks like :
 
@@ -764,17 +774,17 @@ Full details of the `@Schema` annotation are in the Microprofile OpenAPI documen
 
 Let's look at the updated REST APi description 
 
-- Stop the existing instance of storefront
+  5. Stop the existing instance of storefront
 
-- Rebuild the jandex.idx file following the create index process (described above)
+  6. Rebuild the jandex.idx file following the create index process (described above)
 
-- **Once the index has been rebuilt** then start the storefront service again
+  7. **Once the index has been rebuilt** then start the storefront service again
 
-- Get the updated documentation, in a terminal window type
+  8. Get the updated documentation, in a terminal window type
 
   - `curl -i http://localhost:8080/openapi`
 
-```yaml
+  ```yaml
 HTTP/1.1 200 OK
 Content-Type: application/vnd.oai.openapi;charset=UTF-8
 Date: Wed, 11 Mar 2020 19:04:05 GMT
@@ -860,13 +870,13 @@ We've up until now only put OpenAPI related annotations onto the data objects, w
  
 As we've excluded the StartResource and ConfigurationResource on the basis that in this case they would not normally be externally visible we only need to document the StorefrontResource.
  
-- Open the StorefrontResource.java file
+  9. Open the StorefrontResource.java file
 
-- Add `@Operation` and `@APIResponse` annotations as below to the listAllStock method
+  10. Add `@Operation` and `@APIResponse` annotations as below to the listAllStock method
 
 The result will look like
 
-```java
+  ```java
 
     @Operation(summary = "List stock items", description = "Returns a list of all of the stock items currently held in the database (the list may be empty if there are no items)")
 	@APIResponse(description = "A set of ItemDetails representing the current data in the database", responseCode = "200", content = @Content(schema = @Schema(implementation = ItemDetails.class, type = SchemaType.ARRAY, example = "[{\"itemCount\": 10, \"itemName\": \"Pencil\"},"
@@ -908,19 +918,19 @@ The content attribute of the `@APIResponse` defines what the method returns, in 
 
 Let's look at the updated REST API description 
 
-- Stop the existing instance of storefront
+  11. Stop the existing instance of storefront
 
-- Rebuild the jandex.idx file following the create index process (described above)
+  12. Rebuild the jandex.idx file following the create index process (described above)
 
-- **Once the index has been rebuilt** then start the storefront service again
+  13. **Once the index has been rebuilt** then start the storefront service again
 
-- Get the updated documentation, in a terminal window type
+  14. Get the updated documentation, in a terminal window type
 
   - `curl -i http://localhost:8080/openapi`
   
 (The following has been truncated to only include the `paths:` section)
 
-```yaml
+  ```yaml
 paths:
   /store/reserveStock: 
     post: 
@@ -974,21 +984,24 @@ We can now see the details of the `/store/stocklevel` end point.
 Let's now add annotations to the `/store/reserveStock` method that let's us describe the arguments to the end point
 
 
-- Open the StorefrontResource.java file
+  15. Open the StorefrontResource.java file
 
-- Add the following annotations to the reserveStock method
-  - ```java
+  16. Add the following annotations to the reserveStock method
+
+  ```java
     @Operation(summary = "Reserves a number of stock items", description = "reserves a number of stock items in the database. The number of stock items being reserved must be greater than the defined minimum change")
 	@APIResponse(description = "The updated stock details for the item", responseCode = "200", content = @Content(schema = @Schema(implementation = ItemDetails.class, example = "{\"itemCount\": 10, \"itemName\": \"Pencil\"}")))
-    ```
-- Add the following annotation to the reserveStock method itemRequest parameter
-  - ```java
+```
+
+  17. Add the following annotation to the reserveStock method itemRequest parameter
+
+  ```java
     @RequestBody(description = "The details of the item being requested", required = true, content = @Content(schema = @Schema(implementation = ItemRequest.class, example = "{\"requestedItem\", \"Pin\", \"requestedCount\",5}")))
-    ```
+```
 
 The updated method declaration should now look like the following. Note that other annotations for metrics, timers etc. may not be as displayed here depending on what sections of the lab you've done. Comments have been omitted to simplify the text
 
-```java
+  ```java
 	@POST
 	@Path("/reserveStock")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -1015,15 +1028,15 @@ import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
 </details>
 
-- Stop the storefront instance, rebuild the index as usual and once that's done re-start the storefront service
+  18. Stop the storefront instance, rebuild the index as usual and once that's done re-start the storefront service
 
-- Get the updated documentation, in a terminal window type
+  19. Get the updated documentation, in a terminal window type
 
   - `curl -i http://localhost:8080/openapi`
   
 (The following has been truncated to only include the reserveStock path in the `paths:` section)
 
-```yaml
+  ```yaml
 paths:
   /store/reserveStock: 
     post: 
@@ -1083,16 +1096,17 @@ We can see that there is a lot more into on the `/store/reserveStock` REST endpo
 ### Documenting the error status codes 
 Of course not every REST API call returns successfully, there may be problems, for example in the case of the `reserveStock` method it might throw a `UnknownItemException` In an earlier module we put an `@Fallback` annotation on the method directing Helidon to pass exceptions a handler class which convertc them into relevant http status codes, in this case an `UnknownItemException` is converted into a 404 / Not Found status. But we need a way to document this and the other returns a client may reasonably be expected to handle.
 
-- Add the following additional `@APIResponse` annotations to the reserveStock method
-  - ```java
+  20. Add the following additional `@APIResponse` annotations to the reserveStock method
+
+  ```java
     @APIResponse(description = "The requested item does not exist", responseCode = "404")
 	@APIResponse(description = "The requested change does not meet the minimum level required for the change (i.e. is <= the minimumChange value)", responseCode = "406")
 	@APIResponse(description = "There are not enough of the requested item to fulfil your request", responseCode = "409")
-    ```
+```
 
 The updated method declaration should now look like this (comments omitted for clarity)
 
-```java
+  ```java
 	@POST
 	@Path("/reserveStock")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -1111,15 +1125,15 @@ The updated method declaration should now look like this (comments omitted for c
 				+ itemRequest.getRequestedItem());
 ```
 
-- Stop the storefront, rebuild the index, and re-start the storefront service as usual
+  21. Stop the storefront, rebuild the index, and re-start the storefront service as usual
 
-- Get the updated documentation, in a terminal window type
+  22. Get the updated documentation, in a terminal window type
 
   - `curl -i http://localhost:8080/openapi`
   
 (The following has been truncated to only include the reseve stock path in the `paths:` section)
 
-```yaml
+  ```yaml
 paths:
   /store/reserveStock: 
     post: 

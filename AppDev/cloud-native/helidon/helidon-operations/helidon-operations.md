@@ -45,11 +45,13 @@ Firstly we need to deploy a tracing engine, Helidon supports several tracing eng
 
 In the VM you have docker installed and running, so to start zipkin:
 
-- Open a terminal on your Linux desktop
-- Run the following command in a terminsl of your VM to start Zipkin in a container:
+  1. Open a terminal on your Linux desktop
+  
+  2. Run the following command in a terminsl of your VM to start Zipkin in a container:
+  
   - `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin:2.22.0`
 
-```
+  ```
 Starting zipkin docker image in detached mode
 d12b253c50b7793ca8e3eb64658efead336fa3880d3df040f12152b57347f067
 ```
@@ -66,18 +68,19 @@ Other reasons may be that you are in an industry like the aerospace sector or fi
 
 </details>
 
-- Now open a browser in the **Virtual machine desktop** 
-- Navigate to : http://localhost:9411/zipkin/ 
+  3. Now open a browser in the **Virtual machine desktop** 
 
-![zipkin-initial](images/zipkin-initial.png)
+  4. Navigate to : http://localhost:9411/zipkin/ 
+
+  ![zipkin-initial](images/zipkin-initial.png)
 
 Now you need to add the zipkin packages to the pom.xml file for **both** the storefront and stockmanager projects. This will trigger Helidon to automatically setup the tracing, no code changes are needed by you at all to use the tracing.
 
-For **both** the storefront and stockmanager projects open the pom.xml file, this is in the top level of the project, towards the end of the files for the project.
+  5. For **both** the storefront and stockmanager projects open the pom.xml file, this is in the top level of the project, towards the end of the files for the project.
 
-Look for the dependency `helidon-tracing-zipkin` in **each** pom.xml file, you may want to use the search facility (Control-F) to look for zipkin, it will be towards the end of the dependencies section. You will find a section that has been commented out and looks like the following
+  6. Look for the dependency `helidon-tracing-zipkin` in **each** pom.xml file, you may want to use the search facility (Control-F) to look for zipkin, it will be towards the end of the dependencies section. You will find a section that has been commented out and looks like the following
 
-```xml
+  ```xml
 		<!-- tracing calls -->
 		<!-- 
 		<dependency>
@@ -87,10 +90,10 @@ Look for the dependency `helidon-tracing-zipkin` in **each** pom.xml file, you m
 		-->
 ```
 
-- Remove the `<!--` and `-->` around the dependency ONLY
+  7. Remove the `<!--` and `-->` around the dependency ONLY
 
 The result will look like 
-
+  
 ```xml
 		<!-- tracing calls -->
 		<dependency>
@@ -99,23 +102,25 @@ The result will look like
 		</dependency>
 ```
 
+  8. Save **both** of the pom.xml files
+
 You now need to tell Helidon what to call the tracing requests and where traces should be sent.
 
-- In the **storefront** project, navigate to the toplevel folder **conf** and open file **storefront-config.yaml**
+  9. In the **storefront** project, navigate to the toplevel folder **conf** and open file **storefront-config.yaml**
 
-- Uncomment the **tracing** lines to specify the relevant project name as the service and the host as "zipkin"
+  10. Uncomment the **tracing** lines to specify the relevant project name as the service and the host as "zipkin"
 
-```yaml
+  ```yaml
     tracing:
       service: "storefront"
       host: "zipkin"
 ```
 
-- Navigate to the **stockmanager** project, open the **conf** folder and open file **stockmanager-conf.yaml**
+  11. Navigate to the **stockmanager** project, open the **conf** folder and open file **stockmanager-conf.yaml**
 
-- Uncomment the **tracing** lines 
+  12. Uncomment the **tracing** lines 
 
-```yaml
+  ```yaml
     tracing:
       service: "stockmanager"
       host: "zipkin"
@@ -123,16 +128,15 @@ You now need to tell Helidon what to call the tracing requests and where traces 
 
     
 
-- **Stop** any existing storefront and stockmanager instances
+  13. **Stop** any existing storefront and stockmanager instances
 
-- Then **restart** them.
+  14. Then **restart** them.
 
-
-
-- Make a request, for example reserving stock (this may take a few seconds due to the lazy initialization) :
+  15. Make a request, for example reserving stock (this may take a few seconds due to the lazy initialization) 
+  
   -  `curl -i -X POST -u jill:password -d '{"requestedItem":"Pencil", "requestedCount":7}' -H "Content-type:application/json" http://localhost:8080/store/reserveStock`
 
-```
+  ```
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Mon, 28 Sept 2020 15:46:29 GMT
@@ -144,17 +148,19 @@ content-length: 37
 
 We've successfully reserved 7 pencils
 
-- Go to the **zipkin web page** and click the `Run Query` button, you'll see the list of traces (the details you have will of course be different)
+  16. Go to the **zipkin web page** and click the `Run Query` button, you'll see the list of traces (the details you have will of course be different)
 
-![zipkin-trace-details-slow-response](images/zipkin-trace-list-slow-response.png)
+  ![zipkin-trace-details-slow-response](images/zipkin-trace-list-slow-response.png)
 
 You can see that this took a while to run, nearly 8 seconds in fact. This is because of the lazy initialization in both the storefront and stock manager microservices.
 
 Let's see what happens once we've re-made the request.
- - re-run the request
+ 
+  17. re-run the request
+  
    -  `curl -i -X POST -u jill:password -d '{"requestedItem":"Pencil", "requestedCount":7}' -H "Content-type:application/json" http://localhost:8080/store/reserveStock`
 
-```
+  ```
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Tue, 29 Sept 2020 17:33:00 GMT
@@ -165,23 +171,23 @@ content-length: 37
 ```
 
 
-- Go to the **zipkin web page** and click the `Run Query` button
+  18. Go to the **zipkin web page** and click the `Run Query` button
 
-![zipkin-traces-list](images/zipkin-traces-list.png)
+  ![zipkin-traces-list](images/zipkin-traces-list.png)
 
 We can see that this request was a lot faster at 1.8761 seconds
 
-If we click on the trace row zipkin will display the full details of our trace.
+  19.Click on the trace row zipkin will display the full details of our trace.
 
-![zipkin-trace-details](images/zipkin-trace-details.png)
+  ![zipkin-trace-details](images/zipkin-trace-details.png)
 
 Importantly even though they are in separate microservices and the flow switches between them several times we can see the overall flow, what part of the service was called when and how long it took. This let's developers understand exactly how the initial request was processed and how long each step took.
 
 For requests into the service (the first of these is the first entry in the trace and selected for you) we can see what the request details are, in the tags section to the right of the page , in this case an http POST to /store/reserveStock
 
-- Click **once** on the text to the right of the first stock manager entry
+  20. Click **once** on the text to the right of the first stock manager entry
 
-![zipkin-trace-stockmanager-getstockitem](images/zipkin-trace-stockmanager-getstockitem.png)
+  ![zipkin-trace-stockmanager-getstockitem](images/zipkin-trace-stockmanager-getstockitem.png)
 
 Now on the right we can see the details of this sub request, made from the storefront to the stockmanager. Feel free to further explore the zipkin UI if you wish, there's a lot if information available to help explore and diagnose problems.
 
@@ -190,12 +196,17 @@ Tracking solutions like Zipkin can provide us with detail on how a single reques
 
 The pom.xml will need to be updated for the metrics, that's already been done for you here.
 
-- Go to the project **Storefront**, and navigate to folder **resources**
-- Open the file **StorefrontResources.java**.
-- Add the following annotation:
+  1. Go to the project **Storefront**, and navigate to folder **resources**
+  
+  2. Open the file **StorefrontResources.java**.
+  
+  3. Add the following annotation:
+  
   -  `@Counted`
 
-```java
+The result will look like
+
+  ```java
 @Path("/store")
 @RequestScoped
 @Counted
@@ -238,11 +249,13 @@ In an earlier lab we setup a fall back on the listAllStock and reserveStock meth
 
 </details>
 
-- Restart the storefront service.
-- Now look at the metrics endpoint :
+  4. Restart the storefront service.
+
+  5. Now look at the metrics endpoint :
+  
   - `curl -i -X GET http://localhost:9080/metrics`
 
-```
+  ```
 HTTP/1.1 200 OK
 Content-Type: text/plain;charset=UTF-8
 Date: Mon, 6 Jan 2020 16:43:11 GMT
@@ -319,11 +332,11 @@ As we only just restarted the storefront it's not a surprise that these are all 
 
 ### Limiting the output
 
-If you like you can limit the scope of the returned metrics by specifying the scope in the request:
+  6. If you like you can limit the scope of the returned metrics by specifying the scope in the request:
 
--  `curl -i -X GET http://localhost:9080/metrics/application`
+  -  `curl -i -X GET http://localhost:9080/metrics/application`
 
-```
+  ```
 HTTP/1.1 200 OK
 Content-Type: text/plain;charset=UTF-8
 Date: Mon, 6 Jan 2020 17:07:17 GMT
@@ -345,10 +358,11 @@ Of if you're only interested in a specific metric you can just retrieve that, pr
 
 Let's make a couple of list stock requests, then look at the list_all_stock counter
 
-- Run the following command 5 times : 
+  7. Run the following command 5 times : 
+  
   -  `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
 
-```
+  ```
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Mon, 6 Jan 2020 16:58:21 GMT
@@ -357,11 +371,12 @@ content-length: 148
 
 [{"itemCount":5000,"itemName":"pin"},{"itemCount":136,"itemName":"Pencil"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":100,"itemName":"Book"}]
 ```
-Now let's look at the metrics (I removed a bunch of unneeded output here to focus on the counters):
 
--  `curl -i -X GET http://localhost:9080/metrics/`
+  7. Now let's look at the metrics (I removed a bunch of unneeded output here to focus on the counters):
 
-```
+  -  `curl -i -X GET http://localhost:9080/metrics/`
+
+  ```
 HTTP/1.1 200 OK
 Content-Type: text/plain;charset=UTF-8
 Date: Mon, 6 Jan 2020 16:59:03 GMT
@@ -391,21 +406,21 @@ Why port 9080 ? Well you may recall that in the helidon core lab we defined the 
 ### Other types of metrics
 There are other types of metrics, for examples times. 
 
-- open the file **StorefrontResource.java**
+  7. Open the file **StorefrontResource.java**
 
-- Locate the method **listAllStock**
+  8. Locate the method **listAllStock**
 
-- Add a counter, timer and a meter annotation:
+  9. Add a counter, timer and a meter annotation:
 
-```java
+  ```java
     @Counted(name = "stockReporting")
     @Timed(name = "listAllStockTimer")
     @Metered(name = "listAllStockMeter", absolute = true)
 ```
 
-Result:
+The resulting code will look like 
 
-```java
+  ```java
 	@GET
 	@Path("/stocklevel")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -435,10 +450,11 @@ The *absolute=true* on the meter means that the class name won't be prepended, i
 
 
 
-- Now **restart** the **storefront** and make a few calls
--  `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
+  10. Now **restart** the **storefront** and make a few calls
 
-```
+  -  `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
+
+  ```
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Mon, 6 Jan 2020 17:19:49 GMT
@@ -448,13 +464,11 @@ content-length: 148
 [{"itemCount":5000,"itemName":"pin"},{"itemCount":136,"itemName":"Pencil"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":100,"itemName":"Book"}]
 ```
 
+  11. Now let's get the details specific to our named meter by specifying it in the metrics data request:
 
+  -  `curl -i -X GET http://localhost:9080/metrics/application/listAllStockMeter`
 
-Now let's get the details specific to our named meter by specifying it in the metrics data request:
-
--  `curl -i -X GET http://localhost:9080/metrics/application/listAllStockMeter`
-
-```
+  ```
 HTTP/1.1 200 OK
 Content-Type: text/plain;charset=UTF-8
 Date: Mon, 6 Jan 2020 17:20:41 GMT

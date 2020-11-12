@@ -118,12 +118,13 @@ We don't need to change any of our code that uses the interface at all, and Heli
 
 Let's do this for real. 
 
-- The **stockmanager** service should still be running, if not then please start it.
-- In project **helidon-labs-storefront**, navigate to folder **src/main/java**, then **restclients** and open the file **StockManager.java**
+  1. The **stockmanager** service should still be running, if not then please start it.
+
+  2. In project **helidon-labs-storefront**, navigate to folder **src/main/java**, then **restclients** and open the file **StockManager.java**
 
 First let's look at the StockManager interface.
 
-```java
+  ```java
 public interface StockManager {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -144,18 +145,16 @@ public interface StockManager {
 
 Apart from being an interface (so only method names, not implementations) this looks very like the getAllStockLevels, getStockItem and setStockItemLevel methods in the StockResource class in the stock manager project. We have the same request types, paths, params etc.
 
-Let's set this up as something that can be build into a REST client:
+  3. Let's set this up as something that can be build into a REST client. Add the following annotations:
 
-- add the following annotations:
-
-```java
+  ```java
     @RegisterRestClient(configKey = "StockManager")
     @ApplicationScoped
 ```
 
 The result should look like :
 
-```java
+  ```java
 @ApplicationScoped
 @RegisterRestClient(configKey = "StockManager")
 public interface StockManager {
@@ -184,7 +183,7 @@ If we didn't specify a configuration key the fully qualifies class name would be
 
 As the URL and so on is pretty standard they are defined in the microprofile-config.properties file in src/main/resources These are the relevant lines
 
-```
+  ```
 StockManager/mp-rest/url=http://stockmanager:8081/stocklevel
 StockManager/mp-rest/connectTimeout=5000
 StockManager/mp-rest/responseTimeout=5000
@@ -194,7 +193,7 @@ The only thing we absolutely have to specify is the URL, though this can be spec
 
 Also in the microprofile-config.properties file are details for another REST client
 
-```
+  ```
 com.oracle.labs.helidon.storefront.restclients.StockManagerStatus/mp-rest/url=http://stockmanager:8081/status
 ```
 
@@ -217,22 +216,22 @@ In fact for some code in this lab (e.g. the ItemDetails class) that is common we
 ## Step 2: Creating the REST client.
 It's possible to manually create a REST client using the interface, but it's far better to let Helidon use the @RestClient coupled with @Inject to do this for us. That way we don't have to worry about closing the client to reclaim resources and so on.
 
-- Navigate to the **resources** folder and open the file **StorefrontResource.java**
+  1. Navigate to the **resources** folder and open the file **StorefrontResource.java**
 
-- Locate the line where the **stockManager** is defined
+  2. Locate the line where the **stockManager** is defined
 
-- Add the following annotations:
+  3. Add the following annotations:
 
-```java
+  ```java
     @Inject
     @RestClient
 ```
 
-- Remove the null initializer.
+  4. Remove the null initializer.
 
 Result:
 
-```java
+  ```java
 	@Inject
 	@RestClient
 	private StockManager stockManager;
@@ -254,17 +253,19 @@ Now when the StorefrontResource class is initialized the Helidon runtime will dy
 
 Basically this looks pretty simple in comparison to making all of the http requests by hand!
 
-- **Save the changes** to the files
-- **Run** the storefront main class.
-- Is it's not already running run the stockmanager main class.
+  5. **Save the changes** to the files
 
-Let's try accessing the storefront service using curl. Expect an error
+  6. **Run** the storefront main class.
+  
+  7. Is it's not already running run the stockmanager main class.
 
--  `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
+  8. Let's try accessing the storefront service using curl. Expect an error
+
+  -  `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
 
 If you look at the log output of the **storefront** main class you will find a long stack trace, at the top of which will be the request to list stock, followed by a line that there was a `Unknown error, status code 401`
 
-```
+  ```
 ...
 2020.11.04 18:51:09.628 INFO com.oracle.labs.helidon.storefront.resources.StorefrontResource !thread!: Requesting listing of all stock
 javax.ws.rs.WebApplicationException: Unknown error, status code 401
@@ -279,13 +280,13 @@ Clearly we could remove authentication requirements on the stockmanager service,
 
 Fortunately for us Helidon has that solution built in, we just need to tell the security provider to pass on the security credentials to the downstream services.
 
-- In the storefront project expand the `confsecure` folder and open the file `storefront-security.yaml`
+  9. In the storefront project expand the `confsecure` folder and open the file `storefront-security.yaml`
 
 This contains the security setting used by the storefront service. The `http-basic-auth` is the section we need
 
-- Add an outbound section to the `http-basic-auth` **exactly** as shown below
+  10. Add an outbound section to the `http-basic-auth` **exactly** as shown below
 
-```
+  ```
    - http-basic-auth:
         realm: "helidon"
         users:
@@ -314,15 +315,15 @@ The precise settings options depend on the security provider, you can see detail
 
 </details>
 
-- Save the changes to the storefront-security.conf` file
+  11. Save the changes to the storefront-security.conf` file
 
-- Stop and restart the storefront service.
+  12. Stop and restart the storefront service.
 
-- Try the curl again
+  13. Try the curl again
 
   -  `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
 
-```
+  ```
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Mon, 6 Jan 2020 14:33:57 GMT
@@ -374,7 +375,7 @@ public interface StockManager
 
 When Helidon creates the RESTClient for us it will automatically create an instance of that class for us, and add it to the processing pipeline when the RESTClient code calls out to the downstream service.
 
-The class implementing `ClientHeadersFactory` in this case `TransferClientHeaders` will process the actual transfer of the data for us, Here is an example that just adds transfers most of the incoming headers to the outgoing ones, we are removing the `Host` header as forwarding that is regarded as a security issue by the Http processing stack. Also we remove the `Authorization` as we probably want Helidon to process that for us (and the `Authorization` is present it will just use what's already been provided) if  It could of course do some more sophisticated processing for us if we wanted.
+The class implementing `ClientHeadersFactory` in this case `TransferClientHeaders` will process the actual transfer of the data for us, Here is an example that just adds transfers most of the incoming headers to the outgoing ones, we are removing the `Host` header as forwarding that is regarded as a security issue by the Http processing stack. Also we remove the `Authorization` as we want Helidon to process that for us (if the `Authorization` is present it will just use what's already been provided) It could of course do some more sophisticated processing for us if we wanted.
 
 ```java
 @Slf4j
@@ -410,10 +411,12 @@ public class TransferClientHeaders implements ClientHeadersFactory {
 
 
 ### Talking to non Helidon REST services
+
 If you have a non Helidon micro-service and want to talk to it from a Helidon MP client just create an appropriate interface to represent the REST service and then follow the approach above to create the proxy implementations of the interface and use it.
 
 
 ## Step 3: Non Helidon MP clients of a micro service, also known as My monolith is not decomposed yet
+
 Of course here we've been assuming that this is a Helidon MP micro-service talking to another Helidon MP micro-service. But it's quite possible (even probable) that you are actually going to be making a gradual transition of your monolithic applications to micro-services and will be splitting of bits of the monolith at a time. In those cases you want to be able to connect your remaining monolith to the new micro-service while making as few changes to the monolith as possible. In that case you can still use the approach of defining an interface for your micro-service and then creating a proxy implementation. Your original code just continues to use the proxy which it thinks is the real local object, not a remote micro-service, the only code changed required in the origional monolith code is to crate the proxy rather than instantiate a local class.
 
 For more details there is a optional lab (See the main labs listing) that explores how to do this.

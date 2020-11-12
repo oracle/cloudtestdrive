@@ -34,13 +34,13 @@ There are several different types of context that can be injected. Here we will 
 
 As you might expect we use dependency injection to automatically add the context to method call. Let's add it to the createStockLevel method
 
-- Open the com.oracle.labs.helidon.stockmanager.resources.StockResource class in the helidon-stockmanager project.
+  1. Open the com.oracle.labs.helidon.stockmanager.resources.StockResource class in the helidon-stockmanager project.
 
-- add ` @Context SecurityContext securityContext` to the end of the createStockLevel method parameters.
+  2. add ` @Context SecurityContext securityContext` to the end of the createStockLevel method parameters.
 
 The full method signature now looks like
 
-```java
+  ```java
 	public ItemDetails createStockLevel(@PathParam("itemName") String itemName,
 			@PathParam("itemCount") Integer itemCount, @Context SecurityContext securityContext)
 			throws ItemAlreadyExistsException {
@@ -65,26 +65,29 @@ There are multiple things we can do with the security context, but one of the mo
 
 In this case we're going to get the user name in the request. For this lab we're using the Basic Authentication scheme where the user name and password are in a header in the request itself, but this will work equally well for more advanced authentication schemes like OAUTH2 where a token is issued after an initial login process.
 
-- In the createStockLevel method update the setting of the user String so it's now set to `securityContext.getUserPrincipal().getName()`
+  3. In the createStockLevel method update the setting of the user String so it's now set to `securityContext.getUserPrincipal().getName()`
 
 The full line is :
 
-```java
+  ```java
 	String user = securityContext.getUserPrincipal().getName();
 ```
 
 This value is used later in the method to generate audit record information (you'll see a call to the `writeCreateCall` method that uses `user`) though that's pretty standard Java code so we're not going to explain it, but do feel free to look at it if you like.
 
-If you save the file, then stop and restart the StockManager, then try adding a new item
+  4. Save the file, then stop and restart the StockManager
+  
+  5. try adding a new item
 
   - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pie/3142`
   
-There is a REST endpoint that let's us get the most recent audit records
+There is a REST endpoint that let's us get the most recent audit records, let's have a look at tht data now
 
-- Run the following command 
+  6. Run the following command 
+  
   - `curl -i -X GET -u jack:password http://localhost:8081/stocklevel/audit`
   
-```json
+  ```json
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Wed, 1 Apr 2020 15:55:38 +0100
@@ -107,7 +110,7 @@ The example output above will of course vary from the output you get (and I've f
 
 To be complete update the adjustStockLevel and deleteStockItem methods in the same way, their updated method signatures and initial lines of code are below
 
-```java
+  ```java
 	public ItemDetails adjustStockLevel(@PathParam("itemName") String itemName,
 			@PathParam("itemCount") Integer itemCount, @Context SecurityContext securityContext)
 			throws UnknownItemException {
@@ -115,16 +118,16 @@ To be complete update the adjustStockLevel and deleteStockItem methods in the sa
 ```
 
 
-```java
+  ```java
 	public ItemDetails deleteStockItem(@PathParam("itemName") String itemName, @Context SecurityContext securityContext)
 			throws UnknownItemException {
 		String user = securityContext.getUserPrincipal().getName();
 
 ```
 
-- Save the StockResource 
+  7. Save the StockResource 
 
-- Stop and restart the stock manager
+  8. Stop and restart the stock manager
   
 ## Step 2: Other information available
 The security context can be used to find out if a user is in a role, and what form of authentication is in place. You can also use it to find out if the request came over a secure (https) connection, but a little note of warning there. In many micro-services deployments you may do the https termination elsewhere in the framework (for example in a Kubernetes Ingress controller) which may result in being told the connection is not secure, when in fact the connection to the framework itself is secure.

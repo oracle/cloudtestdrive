@@ -619,7 +619,7 @@ You can see here in this example we're using the Frankfurt region, which is also
 
   3c2. Use the **Copy** button to copy the token in your buffer, and **immediately paste it** in a notebook of your choice, you cannot retrieve it once you've closed this popup and you will need this later.
 
-    ![](images/token2.png)
+  ![](images/token2.png)
 
 
 
