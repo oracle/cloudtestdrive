@@ -282,15 +282,11 @@ Let's use docker volumes (the docker --volume flag) to inject the configuration 
   12. Switch to the terminal for the **stockmanager** project directory
 
   13. Run the container with the volumes attached:
-
-    - 
+    
    ```
-  docker run --tty --interactive --volume `pwd`/Wallet_ATP:/Wallet_ATP --volume `pwd`/conf:/conf --volume `pwd`/confsecure:/confsecure  --rm --entrypoint=/bin/bash stockmanager </copy>
-  ```
+docker run --tty --interactive --volume `pwd`/Wallet_ATP:/Wallet_ATP --volume `pwd`/conf:/conf --volume `pwd`/confsecure:/confsecure  --rm --entrypoint=/bin/bash stockmanager
+```
   
-  OR
-  
-  <copy>docker run --tty --interactive --volume `pwd`/Wallet_ATP:/Wallet_ATP --volume `pwd`/conf:/conf --volume `pwd`/confsecure:/confsecure  --rm --entrypoint=/bin/bash stockmanager </copy>
 
 As before we find ourselves in the container and the root directory looks the same, but the other directories now have content
 
