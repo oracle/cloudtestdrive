@@ -372,7 +372,7 @@ content-length: 148
 [{"itemCount":5000,"itemName":"pin"},{"itemCount":136,"itemName":"Pencil"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":100,"itemName":"Book"}]
 ```
 
-  7. Now let's look at the metrics (I removed a bunch of unneeded output here to focus on the counters):
+  8. Now let's look at the metrics (I removed a bunch of unneeded output here to focus on the counters):
 
   -  `curl -i -X GET http://localhost:9080/metrics/`
 
@@ -406,11 +406,11 @@ Why port 9080 ? Well you may recall that in the helidon core lab we defined the 
 ### Other types of metrics
 There are other types of metrics, for examples times. 
 
-  7. Open the file **StorefrontResource.java**
+  9. Open the file **StorefrontResource.java**
 
-  8. Locate the method **listAllStock**
+  10. Locate the method **listAllStock**
 
-  9. Add a counter, timer and a meter annotation:
+  11. Add a counter, timer and a meter annotation:
 
   ```java
     @Counted(name = "stockReporting")
@@ -450,7 +450,7 @@ The *absolute=true* on the meter means that the class name won't be prepended, i
 
 
 
-  10. Now **restart** the **storefront** and make a few calls
+  12. Now **restart** the **storefront** and make a few calls
 
   -  `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
 
@@ -464,7 +464,7 @@ content-length: 148
 [{"itemCount":5000,"itemName":"pin"},{"itemCount":136,"itemName":"Pencil"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":100,"itemName":"Book"}]
 ```
 
-  11. Now let's get the details specific to our named meter by specifying it in the metrics data request:
+  13	. Now let's get the details specific to our named meter by specifying it in the metrics data request:
 
   -  `curl -i -X GET http://localhost:9080/metrics/application/listAllStockMeter`
 

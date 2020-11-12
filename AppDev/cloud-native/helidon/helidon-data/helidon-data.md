@@ -333,7 +333,7 @@ The Run configurations popup will now switch to the arguments tab (this may have
 
   10. Copy the text below into a notepad or ASCII text editor you will need to make some changes to it before you use it. (Do **not** use a word processor like Microsoft Word or anything that makes the text "pretty" as they replace the `-` characters automatically with a non ASCII visually longer version, and that won't work) 
 
-Be careful not to add any newlines or extra spaces, tabs etc.
+Be careful not to add any newlines or extra spaces, tabs etc. Note that this is a long line, and you may have to scroll in the text box to see all of it.
 
   ```
 -Djavax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.url=jdbc:oracle:thin:@<database connection name>?TNS_ADMIN=./Wallet_ATP -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.user=HelidonLabs -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.password=H3lid0n_Labs -Dhibernate.dialect=org.hibernate.dialect.Oracle10gDialect -Dhibernate.hbm2ddl.auto=update

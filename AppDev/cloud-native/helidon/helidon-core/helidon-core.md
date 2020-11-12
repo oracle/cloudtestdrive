@@ -669,8 +669,6 @@ With a single annotation and a config file we've now ensured that our service is
 ## Step 3: Scope of classes and additional REST endpoints
 A big application may have multiple sets of services, grouped into resources, so far we're looking at the StorefrontResource that handles the stock interactions. But what if we want to have other resources for other parts of the application ?
 
-<details><summary><b>Details of the class ConfigurationResource</b></summary>
-
 
 Let's look at the reserveStockItem method, you'll see that the code uses a minimumChange to ensure that at least a certain number of items are taken.
 
@@ -720,6 +718,8 @@ Simple! We just create a new resource with REST endpoints to handle this.
   3. Open the file **ConfigurationResource.java**
 
 You'll see it sets up a minimumChange value, and has methods for getting and setting the minimum change value. 
+
+<details><summary><b>Differences of approach in the ConfigurationResource class </b></summary>
 
 These methods differ from the ones in StorefrontResource in a few ways.
 
