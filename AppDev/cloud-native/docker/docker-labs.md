@@ -24,31 +24,12 @@ Docker has become the defacto way of packaging code into containers and then run
 If you chose to do the Kubernetes labs they can be adapted to use the containers you're building here if you'd rather not use the ones we pre-built for you.
 
 ### Prerequisites
-To run this part of the lab you need the working storefront and stockmanager microservices (as per the Helidon labs) connected to the database.
 
-  1. Make sure the zipkin container is running. You may have done this in the previous lab chapter and left it running. 
-  
-  1a. To check if it is already running type :
+Like the Helidon lab you perform the steps in thie module **inside** the client virtual machine
 
-   - `docker ps`
-  
-  1b. Check in the output if there is an entry named **zipkin**:
-  
-   ```
-  e3a7df18cd77        openzipkin/zipkin   "/busybox/sh run.sh"   3 seconds ago       Up 2 seconds        9410/tcp, 0.0.0.0:9411->9411/tcp   zipkin
-  ```
-  
-  1c. If the entry is **missing**, relaunch it
-  
-  - `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin:2.22.0`
+You will be running scripts in two locations, the storefront and the stockmanager project directories. The simplest approach is to use multiple terminal windows
 
-Like the Helidon lab you perform these steps **inside** the client virtual machine
-
-## Setup
-
-You will be running script in two locations, the storefront and the stockmanager project directories. 
-
-  1. The simplest approach is to open **two** terminal windows 
+  1. Open **two** terminal windows (or tabs in a single window if you prefer)
 
   2. In one switch to the storefront project directory
 
@@ -59,6 +40,25 @@ You will be running script in two locations, the storefront and the stockmanager
   -  `cd $HOME/workspace/helidon-labs-stockmanager/`
   
 Make sure you keep track of which terminal is in which directory !
+
+To run this part of the lab you need the working storefront and stockmanager microservices (as per the Helidon labs) connected to the database.
+
+  4. Make sure the zipkin container is running. You may have done this in the previous lab chapter and left it running. 
+  
+  4a. To check if it is already running type :
+
+   - `docker ps`
+  
+  4b. Check in the output if there is an entry named **zipkin**:
+  
+   ```
+  e3a7df18cd77        openzipkin/zipkin   "/busybox/sh run.sh"   3 seconds ago       Up 2 seconds        9410/tcp, 0.0.0.0:9411->9411/tcp   zipkin
+  ```
+  
+  4c. If the entry is **missing**, relaunch it
+  
+  - `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin:2.22.0`
+
 
 ## Step 1: Jib - Docker image build tool
 
@@ -283,11 +283,18 @@ Let's use docker volumes (the docker --volume flag) to inject the configuration 
 
   13. Run the container with the volumes attached:
 
-  - `docker run --tty --interactive --volume `pwd`/Wallet_ATP:/Wallet_ATP --volume `pwd`/conf:/conf --volume `pwd`/confsecure:/confsecure  --rm --entrypoint=/bin/bash stockmanager`
+    - 
+   ```
+  docker run --tty --interactive --volume `pwd`/Wallet_ATP:/Wallet_ATP --volume `pwd`/conf:/conf --volume `pwd`/confsecure:/confsecure  --rm --entrypoint=/bin/bash stockmanager </copy>
+  ```
+  
+  OR
+  
+  <copy>docker run --tty --interactive --volume `pwd`/Wallet_ATP:/Wallet_ATP --volume `pwd`/conf:/conf --volume `pwd`/confsecure:/confsecure  --rm --entrypoint=/bin/bash stockmanager </copy>
 
 As before we find ourselves in the container and the root directory looks the same, but the other directories now have content
 
-  14. Look around again
+  14. Let's Look around again
 
   14a. Inside the container type 
   
