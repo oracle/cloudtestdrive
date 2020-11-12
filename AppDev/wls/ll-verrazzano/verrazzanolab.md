@@ -331,7 +331,11 @@ oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.a
    
     ![Screenshot 2020-11-03 at 13.27.09](images/verrazzano/interfaces.png)
 
-   You access the **ElasticSearch**, **Kibana**, **Grafana** and **Prometheus** services by logging in with the username `Verrazzano`. Password can be retrieved by running the `kubectl get secret` command shown at the end of our Verrazzano installation:
+   You access the **ElasticSearch**, **Kibana**, **Grafana** and **Prometheus** services by logging in with the credentials below. 
+   
+   **User:** `verrazzano`
+   
+   Password can be retrieved by running the `kubectl get secret` command shown at the end of our Verrazzano installation:
 
    ```
    kubectl get secret --namespace verrazzano-system verrazzano -o jsonpath={.data.password} | base64 --decode; echo
