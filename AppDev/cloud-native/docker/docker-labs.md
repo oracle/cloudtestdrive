@@ -767,9 +767,9 @@ Let's actually push the images.
   11. Run the script to build the image and push it to the repo
   
   - `bash buildStockmanagerPushToRepo.sh`
-  
  
-  ```$ bash buildPushToRepo.sh 
+  ```
+$ bash buildPushToRepo.sh 
 Using repository fra.ocir.io/oractdemeabdmnative/tg_repo
 [MVNVM] Using maven: 3.5.2
 [INFO] Scanning for projects...
