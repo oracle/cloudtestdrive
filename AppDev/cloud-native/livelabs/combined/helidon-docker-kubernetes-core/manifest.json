@@ -41,10 +41,6 @@
           "filename": "../../../docker/docker-labs.md"
         },
         {
-          "title": "Kubernetes - Labs Introduction",
-          "filename":"../../../Live-labs-overview-pages/Kubernetes-all-labs.md"
-        },
-        {
           "title": "Create your Kubernetes cluster",
           "filename":"../../../manual-setup/create-kubernetes-cluster.md"
         },
