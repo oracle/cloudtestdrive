@@ -53,7 +53,7 @@
           "filename": "../../../kubernetes/base-kubernetes/kubernetes-base-labs.md"
         },
 		{
-          "title": "Kubernetes - Part 2: Cloud native with Kubernetes",
+          "title": "Kubernetes - Part 2: Cloud native availability with Kubernetes",
           "filename": "../../../kubernetes/cloud-native-labs/health-readiness-liveness/health-liveness-readiness.md"
         },
 		{
