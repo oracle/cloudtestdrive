@@ -61,10 +61,11 @@ The Column EXTERNAL-IP gives you the IP address, in this case the IP address for
 
 First let's make sure that the service is running, (replace <External IP> with the external ip address of the ingress)
 
-- In the OCI Cloud Shell
+  1. In the OCI Cloud Shell
+  
   - `curl -i -X GET -u jack:password http://<External IP>:80/store/stocklevel`
 
-```
+  ```
 HTTP/1.1 200 OK
 Server: openresty/1.15.8.2
 Date: Thu, 02 Jan 2020 14:01:18 GMT
@@ -75,11 +76,11 @@ Connection: keep-alive
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
 
-Lets look at the pods to check all is running fine:
+  2. Lets look at the pods to check all is running fine:
 
--  `kubectl get pods` 
+  -  `kubectl get pods` 
 
-```
+  ```
 NAME                            READY   STATUS    RESTARTS   AGE
 stockmanager-6456cfd8b6-rl8wg   1/1     Running   0          92m
 storefront-65bd698bb4-cq26l     1/1     Running   0          92m
@@ -90,15 +91,15 @@ We can see the state of our pods, look at the RESTARTS column, all of the values
 
 We're going to simulate a crash in our program, this will cause the container to exit, and Kubernetes will identify this and start a replacement container in the pod for us.
 
-Using the name of the storefront pod above let's connect to the container in the pod using kubectl:
+  3. Using the name of the storefront pod above let's connect to the container in the pod using kubectl:
 
--  `kubectl exec storefront-65bd698bb4-cq26l -ti -- /bin/bash` 
+  -  `kubectl exec storefront-65bd698bb4-cq26l -ti -- /bin/bash` 
 
-Simulate a major fault that causes a service failure by killing the process running our service :
+  4. Inside the pod simulate a major fault that causes a service failure by killing the process running our service :
 
   - `kill -1 1`
 
-```
+  ```
 root@storefront-65bd698bb4-cq26l:/# command terminated with exit code 137
 ```
 
@@ -114,9 +115,11 @@ Within a second or two of the process being killed the connection to the contain
 
 If we now try getting the data again it still responds  (replace <External IP> with the one for your service) If you get a 503 error that just means that the pod is still restarting, wait a few seconds and try again.
 
-- `curl -i -k -X GET -u jack:password https://<External IP>/store/stocklevel`
+  5. Try getting the data
 
-```
+  - `curl -i -k -X GET -u jack:password https://<External IP>/store/stocklevel`
+
+  ```
 HTTP/2 200 
 server: nginx/1.17.8
 date: Fri, 27 Mar 2020 10:08:15 GMT
@@ -129,10 +132,11 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 The reason it took a bit longer than usual when accessing the service is that because it was restarted the code had to do the on-demand setup of the web services. This of course is only done once when the services are first accessed after the container in the pod starts up.
 
-- Let's look at the pod details again:
+  6. Let's look at the pod details again:
+  
   -  `kubectl get pods`
 
-```
+  ```
 NAME                            READY   STATUS    RESTARTS   AGE
 stockmanager-6456cfd8b6-rl8wg   1/1     Running   0          107m
 storefront-65bd698bb4-cq26l     1/1     Running   1          107m
@@ -143,9 +147,11 @@ Now we can see that the pod names are still the same, but the storefront pod has
 
 Kubernetes has identified that the container exited and within the pod restarted a new container. Another indication of this is if we look at the logs we can see that previous activity is no longer displaying:
 
--  `kubectl logs storefront-65bd698bb4-cq26l `
+  7. Let's look at the logs (use your storefront pod id of course)
 
-```
+  -  `kubectl logs storefront-65bd698bb4-cq26l `
+
+  ```
 2020.01.02 14:06:30 INFO com.oracle.labs.helidon.storefront.Main Thread[main,5,main]: Starting server
 2020.01.02 14:06:32 INFO org.jboss.weld.Version Thread[main,5,main]: WELD-000900: 3.1.1 (Final)
 ...
@@ -161,14 +167,15 @@ Fortunately Kubernetes provides a mechanism to handle this as well. This mechani
 
 You may recall in the Helidon labs (if you did them) we created a liveness probe, this is an example of Helidon is designed to work in cloud native environments.
 
-- Navigate to the **$HOME/helidon-kubernetes** folder
+  1. Navigate to the **$HOME/helidon-kubernetes** folder
+  
   - `cd $HOME/helidon-kubernetes`
   
-- Stop the exisitng deployments
+  2. Stop the existing deployments
 
--  `bash undeploy.sh`
+  -  `bash undeploy.sh`
 
-```
+  ```
 Deleting storefront deployment
 deployment.apps "storefront" deleted
 Deleting stockmanager deployment
@@ -193,10 +200,11 @@ replicaset.apps/zipkin-88c48d8b9          1         1         1       66m
 
 ```
 
-- Edit the file **storefront-deployment.yaml** using your prefered editor
-- Search for the Liveness probes section. This is under the spec.template.spec.containers section
+  3. Edit the file **storefront-deployment.yaml** using your prefered editor
+  
+  4. Search for the Liveness probes section. This is under the spec.template.spec.containers section
 
-```
+  ```
         resources:
           limits:
             # Set this to me a whole CPU for now
@@ -222,12 +230,13 @@ replicaset.apps/zipkin-88c48d8b9          1         1         1       66m
 
 As you can see this section has been commented out. 
 
-- On each line remove the # (only the first one, and only the # character, be sure not to remove any whitespace). 
-- Save the file
+  5. On each line remove the # (only the first one, and only the # character, be sure not to remove any whitespace). 
+
+  6. Save the file
 
 The resulting section should look like this:
 
-```
+  ```
         resources:
           limits:
             # Set this to me a whole CPU for now
@@ -269,9 +278,11 @@ Whatever your actual implementation you need to carefully consider the values ab
 
 Let's apply the changes we made in the deployment :
 
-- Deploy the updated version : `bash deploy.sh`
+  7. Deploy the updated version
+  
+  -  `bash deploy.sh`
 
-```
+  ```
 Creating zipkin deployment
 deployment.apps/zipkin created
 Creating stockmanager deployment
@@ -301,10 +312,11 @@ replicaset.apps/zipkin-88c48d8b9          1         1         0       0s
 
 ```
 
-- Let's see how our pod is doing.
+  8. Let's see how our pod is doing.
+  
   -  `kubectl get pods`
 
-```
+  ```
 NAME                            READY   STATUS    RESTARTS   AGE
 stockmanager-6456cfd8b6-29lmk   1/1     Running   0          24s
 storefront-b44457b4d-29jr7      1/1     Running   0          24s
@@ -315,9 +327,11 @@ Note that as we have undeployed and then deployed again these are new pods and s
 
 If we look at the logs for the storefront **before** the liveness probe has started (so before the 120 seconds from container creation) we see that it starts as we expect it to. 
 
-- Visualize the logs :  `kubectl logs storefront-b44457b4d-29jr7`
+  9. Let's look at the logs 
+  
+  -  `kubectl logs storefront-b44457b4d-29jr7`
 
-```
+  ```
 2020.01.02 16:18:58 INFO com.oracle.labs.helidon.storefront.Main Thread[main,5,main]: Starting server
 ...
 2020.01.02 16:19:07 INFO com.oracle.labs.helidon.storefront.Main Thread[main,5,main]: Running on http://localhost:8080/store
@@ -325,18 +339,21 @@ If we look at the logs for the storefront **before** the liveness probe has star
 
 If however the 120 seconds has passed and the liveness call has started we will see calls being made to the status resource,
 
-- Run the kubectl command again: `kubectl logs storefront-b44457b4d-29jr7 `
+  10. Run the kubectl command again
+  
+  - `kubectl logs storefront-b44457b4d-29jr7 `
 
 You will see multiple entries like the one below:
 
-```
+  ```
 2020.01.02 16:21:11 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
 ```
 
-- Look at the pods detailed info to check the state is fine :
+  11. Look at the pods detailed info to check the state is fine :
+  
   -  `kubectl describe pod storefront-b44457b4d-29jr7 `
 
-```
+  ```
 ...
 Events:
   Type    Reason     Age    From                     Message
@@ -383,26 +400,29 @@ Every time it's called it checks to see it a file names /frozen exists in the ro
 
 Let's see what happens in this case.
 
-First let's start following the logs of your pod
-
-- Run the following command (replace the pod Id with yours)
+  12. First let's start following the logs of your pod. Run the following command (replace the pod Id with yours)
+  
   -  `kubectl logs -f --tail=10 storefront-b44457b4d-29jr7 `
 
-
-```
+  ```
 ...
 2020.01.02 16:24:36 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
 2020.01.02 16:24:41 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
 ```
 
-- Open new browser window or tab
-- Go to your cloud account
-- Once in the cloud account open an OCI Cloud Shell in the new window
+  13. Open new browser window or tab
+  
+  14. Go to your cloud account
+  
+  15. Once in the cloud account open an OCI Cloud Shell in the new window
 
-- Log in to the your container and create the /frozen file  (replace the pod Id with yours)
+  16. Log in to the your container and create the /frozen file  (replace the pod Id with yours)
+  
   -  `kubectl exec -ti storefront-b44457b4d-29jr7 -- /bin/bash`
+  
   -  `touch /frozen`
-- Go back to the window running the logs
+  
+  17. Go back to the window running the logs
 
 Kubernetes detected that the liveness probes were not responding in time, and after 3 failures it restarted the pod.
 
@@ -418,19 +438,22 @@ Weld SE container 53fe34a2-0291-4b72-a00e-966bab7ab2ad shut down by shutdown hoo
 
 Kubectl tells us there's been a problem and a pod has done a restart for us (the kubectl connection to the pod will have terminated when the pod restsrted)
 
-- Check the pod status: `kubectl get pods`
+  18. Check the pod status
+  
+  - `kubectl get pods`
 
-```
+  ```
 NAME                            READY   STATUS    RESTARTS   AGE
 stockmanager-6456cfd8b6-29lmk   1/1     Running   0          7m50s
 storefront-b44457b4d-29jr7      1/1     Running   1          7m50s
 zipkin-88c48d8b9-bftvx          1/1     Running   0          7m50s
 ```
 
-- Look at the deployment events for the pod
+  19. Look at the deployment events for the pod
+  
   -  `kubectl describe pod storefront-b44457b4d-29jr7`
 
-```
+  ```
 ...
 Events:
   Type     Reason     Age                  From                     Message
@@ -457,14 +480,13 @@ Kubernetes supports a readiness probe that we can call to see is the container i
 
 Unlike a liveness probe, if a container fails it's not killed off, and calls to the readiness probe continue to be made, if the probe starts reporting the service in the container is ready then it's added back to the list of containers that can deliver the servcie and requests will be routed to it once more.
 
-- Make sure you are in the folder **$HOME/helidon-kubernetes**
+  1. Make sure you are in the folder **$HOME/helidon-kubernetes**
 
+  2. Edit the file **storefront-deployment.yaml**
 
-- Edit the file **storefront-deployment.yaml**
+  3. Look for the section (just after the Liveness probe) where we define the **readiness probe**. 
 
-- Look for the section (just after the Liveness probe) where we define the **readiness probe**. 
-
-```
+  ```
 #        readinessProbe:
 #          exec:
 #            command:
@@ -480,11 +502,11 @@ Unlike a liveness probe, if a container fails it's not killed off, and calls to 
 #          # Need at least only one fail for this to be a problem
 #          failureThreshold: 1
 ```
-- Remove the # (and only the #, not spaces or anything else) and save the file. 
+  4.Remove the # (and only the #, not spaces or anything else) for the **readiness section only** and save the file. 
 
 The ReadinessProbe section should now look like this :
 
-```
+  ```
        # This checks if the pod is ready to process requests
         readinessProbe:
           exec:
@@ -521,19 +543,25 @@ We can just use the final command the grep to look for a line containing `"outco
 
 Now try it out:
 
-- Connect to the pod : `kubectl exec -ti storefront-b44457b4d-29jr7  -- /bin/bash`
-- Run the command in the pod:
+  5. Connect to the pod 
+  
+  - `kubectl exec -ti storefront-b44457b4d-29jr7  -- /bin/bash`
+  
+  6. Run the command in the pod:
+  
   -  `curl -s http://localhost:9080/health/ready | grep "\"outcome\":\"UP\""`
 
-```
+  ```
 {"outcome":"UP","status":"UP","checks":[{"name":"storefront-ready","state":"UP","status":"UP","data":{"storename":"My Shop"}}]}
 ```
 
 In this case the pod is ready, so the grep command returns what it's found. We are not actually concerned with what the pod returns in terms of string output, we are looking for the exit code, interactivly we can find that by looking in the $? variable:
 
--  `echo $?`
+  7. Inside the pod look at the output of the previous command
+  
+  -  `echo $?`
 
-```
+  ```
 0
 ```
 
@@ -559,13 +587,13 @@ Having made the changes let's undeploy the existing configuration and then deplo
 
 In the OCI Cloud Shell
 
-- Navigate to the **$HOME/helidon-kubernetes** folder
-Let's stop the services running
-
-- Run the undeploy.sh script
+  8. Navigate to the **$HOME/helidon-kubernetes** folder
+  
+  9. Let's stop the services running, run the undeploy.sh script
+  
   -  `bash undeploy.sh `
 
-```
+ ```
 Deleting storefront deployment
 deployment.apps "storefront" deleted
 Deleting stockmanager deployment
@@ -591,10 +619,11 @@ replicaset.apps/zipkin-88c48d8b9          1         1         1       46m
 
 As usual it takes a few seconds for the deployments to stop, this was about 30 seonds later
 
-- Check only the services remain running : 
+  10. Check only the services remain running : 
+  
   -  `kubectl get all`
 
-```
+  ```
 NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
 service/stockmanager   ClusterIP   10.100.65.58    <none>        8081/TCP,9081/TCP   4h42m
 service/storefront     ClusterIP   10.96.237.252   <none>        8080/TCP,9080/TCP   4h42m
@@ -603,9 +632,11 @@ service/zipkin         ClusterIP   10.104.81.126   <none>        9411/TCP       
 
 Now let's deploy them again, run the deploy.sh script, be prepared to run kubectl get all within a few seconds of the deploy finishing.
 
-- Run the deploy script :  `bash deploy.sh`
+  12. Run the deploy script 
+  
+  -  `bash deploy.sh`
 
-```
+  ```
 Creating zipkin deployment
 deployment.apps/zipkin created
 Creating stockmanager deployment
@@ -634,9 +665,11 @@ replicaset.apps/storefront-74cd999d8      1         1         0       0s
 replicaset.apps/zipkin-88c48d8b9          1         1         0       0s
 ```
 
-- Immediately run the command `kubectl get all`
+  13. **Immediately** run the command in the OCI cloud shell
+  
+  - `kubectl get all`
 
-```
+  ```
 NAME                                READY   STATUS    RESTARTS   AGE
 pod/stockmanager-6456cfd8b6-vqq7c   1/1     Running   0          12s
 pod/storefront-74cd999d8-dzl2n      0/1     Running   0          12s
@@ -695,10 +728,11 @@ What happens if a request is made to the service while before the pod is ready ?
 
 To see what happens if the readiness probe does not work we can simply undeploy the stock manager service.
 
-- First let's check it's running fine  (replace the <external IP> with the one for your service, and be prepared for a short delay as we'd just restarted everything)
-  -  `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel
+  14. First let's check it's running fine  (replace the <external IP> with the one for your service, and be prepared for a short delay as we'd just restarted everything)
+  
+  - `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
 
-```
+  ```
 HTTP/1.1 200 OK
 Server: openresty/1.15.8.2
 Date: Thu, 02 Jan 2020 17:30:32 GMT
@@ -709,16 +743,18 @@ Connection: keep-alive
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
 
-- Now let's use kubectl to undeploy just the stockmanager service
+  15. Now let's use kubectl to undeploy just the stockmanager service
+  
   -  `kubectl delete -f stockmanager-deployment.yaml`
 
-```
+  ```
 deployment.apps "stockmanager" deleted
 ```
-- Let's check the pods status
+  16. Let's check the pods status
+  
   -  `kubectl get pods`
 
-```
+  ```
 NAME                            READY   STATUS        RESTARTS   AGE
 stockmanager-6456cfd8b6-vqq7c   0/1     Terminating   0          26m
 storefront-74cd999d8-dzl2n      1/1     Running       0          26m
@@ -726,9 +762,11 @@ zipkin-88c48d8b9-vdn47          1/1     Running       0          26m
 ```
 The stock manager service is being stopped (this is quite a fast process, so it may have completed before you ran the command). After 60 seconds or so if we run kubectl to get everything we see it's gone (note this is `all`, not `pods` here)
 
--  `kubectl get all`
+  17. Make sure that the stockmanager **pod** and **service** are terminated
+  
+  -  `kubectl get all`
 
-```
+  ```
 NAME                             READY   STATUS    RESTARTS   AGE
 pod/storefront-74cd999d8-dzl2n   0/1     Running   0          28m
 pod/zipkin-88c48d8b9-vdn47       1/1     Running   0          28m
@@ -750,10 +788,11 @@ replicaset.apps/zipkin-88c48d8b9       1         1         1       28m
 
 Something else has also happened though, the storefront service has no pods in the ready state, neither does the storefront deployment and replica set. The readiness probe has run against the storefront pod and when the probe checked the results it found that the storefront pod was not in a position to operate, because the service it depended on (the stock manager) was no longer available. 
 
-- Let's try accessing the service (replace <external IP> with the one for your service)
+  18. Let's try accessing the service (replace <external IP> with the one for your service)
+  
   -  `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
 
-```
+  ```
 HTTP/1.1 503 Service Temporarily Unavailable
 Server: openresty/1.15.8.2
 Date: Thu, 02 Jan 2020 17:37:29 GMT
@@ -771,17 +810,21 @@ Connection: keep-alive
 ```
 The service is giving us a 503 Service Temporarily Unavailable message. Well to be precise this is coming from the Kubernetes as it can't find a storefront service that is in the ready state.
 
-- Let's start the stockmager service using kubectl again
+  19. Let's start the stockmager service using kubectl again
+  
   -  `kubectl apply -f stockmanager-deployment.yaml`
 
-```
+  ```
 deployment.apps/stockmanager created
 ```
 
-- Now let's see what's happening with our deployments 
+Now let's see what's happening with our deployments 
+
+  20. **Immediately** let's look at the situation
+  
   -  `kubectl get all`
 
-```
+  ```
 NAME                                READY   STATUS    RESTARTS   AGE
 pod/stockmanager-6456cfd8b6-4mpl2   1/1     Running   0          7s
 pod/storefront-74cd999d8-dzl2n      0/1     Running   0          33m
@@ -805,7 +848,8 @@ replicaset.apps/zipkin-88c48d8b9          1         1         1       33m
 
 The stockmanager is running, but the storefront is still not ready, and it won't be until the readiness check is called again and determines that it's ready to work.
 
-- Looking at the kubectl output about 120 seconds later:
+  21. Looking at the kubectl output about 120 seconds later:
+  
   -  `kubectl get all`
 
 ```
@@ -832,9 +876,11 @@ replicaset.apps/zipkin-88c48d8b9          1         1         1       35m
 
 The storefront readiness probe has kicked in and the services are all back in the ready state once again  (replace <external IP> with the one for your service)
 
-- Check the service : `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
+  22. Check the service is responding properly now
+  
+  - `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
 
-```
+  ```
 HTTP/1.1 200 OK
 Server: openresty/1.15.8.2
 Date: Thu, 02 Jan 2020 17:42:40 GMT

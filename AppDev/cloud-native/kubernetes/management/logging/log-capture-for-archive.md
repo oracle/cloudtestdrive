@@ -64,10 +64,11 @@ If you  did not do the capture log for processing, or deleted the logging namesp
 
 As with elsewhere in the labs we do this module in it's own namespace. 
 
-- In the cloud console type :
+  1. In the cloud console type 
+  
   - `kubectl create namespace logging`
   
-```
+  ```
 namespace/logging created
 ```
 
@@ -109,40 +110,43 @@ We will gather a number of bits of information here, **please save it** in a tex
 
 Firstly let's get the OCI Region details.
 
-On the upper right of the OCI browser UI you will see the name of **your** current region
-![](images/Region-dropdown.png)
+  1. On the upper right of the OCI browser UI you will see the name of **your** current region
+
+  ![](images/Region-dropdown.png)
 
 In the example above this is Germany Central (Frankfurt) **but yours may vary**
 
 However we need the region ID, not the name
 
-- Click on the name you will get a list of regions enabled for your tenancy.
-![](images/Regions-enabled.png)
+  2. Click on the name you will get a list of regions enabled for your tenancy.
 
-- Click the **Manage Regions** button to get a list of the inrastructure regions, along with their details
-![](images/Regions-choice.png)
+  ![](images/Regions-enabled.png)
+
+  3. Click the **Manage Regions** button to get a list of the infrastructure regions, along with their details
+  
+  ![](images/Regions-choice.png)
 
 Regions that are enabled for **your** tenancy are in green, the ones in grey are not enabled.
 
-- Locate **your** region in the list (it will have a green region icon) Then locate the region identifier, these are the details for the region I'm using Frankfurt in Germany.
+  4. Locate **your** region in the list (it will have a green region icon) Then locate the region identifier, these are the details for the region I'm using Frankfurt in Germany.
 
-![](images/Region-frankfurt.png)
+  ![](images/Region-frankfurt.png)
 
 We can see here that the region identifier for Frankfurt (the region I'm using) is `eu-frankfurt-1` **your region identifier will be different if you are not in this region**
 
 Next we need to get the storage endpoint this is of the form `https://<object storage namespace>.compat.objectstorage.<region identifier>.oraclecloud.com` Obviously we need to determine the value of `<object storage namespace>` (you have just retrieved the region identifier)
 
-In the upper right of the screen you can access your tenancy details.
+  5. In the upper right of the screen you can access your tenancy details.
 
-![](images/Region-dropdown.png)
+  ![](images/Region-dropdown.png)
 
-- Click on the little "shadow" of a person to access your profile.
+  6. Click on the little "shadow" of a person to access your profile.
 
-![](images/User-profile-details.png)
+  ![](images/User-profile-details.png)
 
-- Click on the tenancy name (oractdemeabdnmative in this case) to access the tenancy details
+  7. Click on the tenancy name (oractdemeabdnmative in this case) to access the tenancy details
 
-![](images/Tenancy-details.png)
+  ![](images/Tenancy-details.png)
 
 In this case in the Object Storage Settings you can see that the `Object Storage Namespace` is `oractdemeabdmnative` It will be different in other tenancies. This particular tenancy is quite old which is why the storage namespace is the same as the tenancy name, recent tenancies have a storage namespace that is a set of random letters and numbers.
 
@@ -150,9 +154,9 @@ The object storage endpoint is `https://<object storage namespace>.compat.object
 
 For example **FOR MY TENANCY, YOURS WILL VARY** it might be  `https://oractdemeabdmnative.compat.objectstorage.eu-frankfurt-1.oraclecloud.com`
 
-- Save the Object Storage Service endpoint in your texteditor for later use.
+  8. Save the Object Storage Service endpoint in your texteditor for later use.
 
-- Note the value for the `Amazon S3 Compatibility API Designated Compartment:` (`JAM` in this case)
+  9. Note the value for the `Amazon S3 Compatibility API Designated Compartment:` (`JAM` in this case)
 
 This is the OCI compartment that will be used to hold the storage bucket. In this case the compartment is named `JAM` If there is no compartment shown then the storage bucket will be created in the root compartment. If you want to change that (only do this if this is your tenancy, if it belongs to your organization then make sure your tenancy admin is OK with you changing it as you might break other things) then click the `Edit Object Storage Settings` and chose another compartment (if this is a new tenancy you may only have the root compartment).
 
@@ -160,20 +164,21 @@ This is the OCI compartment that will be used to hold the storage bucket. In thi
 
 We need to have security keys to access the S3 compliant storage API. Access those from the User details. 
 
-- Click on the little "shadow" of a person to access your profile.
-![](images/User-profile-details.png)
+  10. Click on the little "shadow" of a person to access your profile.
 
-- Click on your name (in this case oracleidentitycloudservice/tim.graves) to go to your account details.
+  ![](images/User-profile-details.png)
 
-Locate the resources section, this is on the lower left of the page (you may need to scroll down to see it
+  11. Click on your name (in this case oracleidentitycloudservice/tim.graves) to go to your account details.
 
-![](images/User-profile-resources.png)
+  12. Locate the resources section, this is on the lower left of the page (you may need to scroll down to see it
 
-- Click on the `Customer Secret Keys` in the resources section.
+  ![](images/User-profile-resources.png)
+
+  13. Click on the `Customer Secret Keys` in the resources section.
 
 The table changes to showing the `Customer Secret Keys` table
 
-![](images/User-profile-customer-secret-keys.png)
+  ![](images/User-profile-customer-secret-keys.png)
 
 In this case there is already one Customer secret key for my account.
 
@@ -181,33 +186,33 @@ Note, if you have already generated a Customer Secret Key for another reason (yo
 
 To generate a new Customer Secret Key 
 
-- Click the generate secret key button. 
+  14. Click the generate secret key button. 
 
-![](images/User-profile-generate-secret-key.png)
+  ![](images/User-profile-generate-secret-key.png)
 
-- Provide a name that you'll be able to remember, in this case I'm using `MySecretKey` but you chose your own
+  15. Provide a name that you'll be able to remember, in this case I'm using `MySecretKey` but you chose your own
 
-- Click the `Generate Secret Key` button, to get the system to generate a key pair for you.
+  16. Click the `Generate Secret Key` button, to get the system to generate a key pair for you.
 
-![](images/User-profile-save-secret-key.png)
+  ![](images/User-profile-save-secret-key.png)
 
 **VITALLY IMPORTANT**
 
-- Click the `Copy` link to copy the secret key, be sure to paste it into a texteditor or somewhere safe (this is a secret key, so it needs to be protected against access). **You cannot retrieve it at any point once this popup is closed** 
+  17. Click the `Copy` link to copy the secret key, be sure to paste it into a texteditor or somewhere safe (this is a secret key, so it needs to be protected against access). **You cannot retrieve it at any point once this popup is closed** 
 
-- **ONLY** after you'ce copied and saved the secret key click the `Close` button
+  18. **ONLY** after you'ce copied and saved the secret key click the `Close` button
 
-![](images/User-profile-secret-key-list.png)
+  ![](images/User-profile-secret-key-list.png)
 
 You'll see the newly generated key in the list (remember in this case I had an existing key, you may not have in which case you'll only see the key you just generated)
 
 You now need to get the access key (this is the other part of the generated key pair)
 
-- Click on the `Access key` for the key you just generated, if you have multiple keys remember to chose the key you just generated (the name you chose will help you)
+  19. Click on the `Access key` for the key you just generated, if you have multiple keys remember to chose the key you just generated (the name you chose will help you)
 
-![](images/User-profile-get-access-key.png)
+  ![](images/User-profile-get-access-key.png)
 
-Click on the `Copy` link to get a copy of the key, save this in a text editor or something.
+  20. Click on the `Copy` link to get a copy of the key, save this in a text editor or something.
 
 You have now gathered the information we need to write data into the Objact Storage Service.
 
@@ -232,44 +237,47 @@ Here we're using the archive tier as that's the most cost effective for long ter
 
 Let's create our storage bucket. 
 
-- Log in to the OCI in your web browser
+  21. Log in to the OCI console in your web browser
 
-- Click on the "Hamburger" menu, then under Core Infastructure click on `Object Storage` then `Object Storage` 
+  22. Click on the "Hamburger" menu, then under Core Infastructure click on `Object Storage` then `Object Storage` 
 
-![](images/Object-storage-hamburger-menu.png)
+  ![](images/Object-storage-hamburger-menu.png)
 
 This will take you to the storage service page
 
-![](images/Object-storage-compartment-selection.png)
+  ![](images/Object-storage-compartment-selection.png)
 
-- Make sure in the compartments list you have selected the compartment used for the Amazon S3 Compatibility (this was shown in the tenancy details earlier). This may be `root` if there isn't a S3 compatibility compartment specified for the tenancy
+  23. Make sure in the compartments list you have selected the compartment used for the Amazon S3 Compatibility (this was shown in the tenancy details earlier). This may be `root` if there isn't a S3 compatibility compartment specified for the tenancy
 
 You will now see a list of buckets in this compartment, In this case there is just one called `TG` In your tenancy there may be a zero or more existing buckets.
 
-![](images/Obiect-storage-initial-compartments.png)
+  ![](images/Obiect-storage-initial-compartments.png)
 
 We're going to create a new bucket set for archive storage
 
-- Click the `Create Bucket` button.
+  24. Click the `Create Bucket` button.
 
-- In the popup name the bucket **<YOUR INITIALS>**-FLUENTD For fluentd to write to this bucket the name **must** be entirely in UPPER CASE and you **must** replace <YOUR INITIALS> with something unique to you!
+  25. In the popup name the bucket **<YOUR INITIALS>**-FLUENTD For fluentd to write to this bucket the name **must** be entirely in UPPER CASE and you **must** replace <YOUR INITIALS> with something unique to you!
 
-- Change the storage tier option to **archive**
-![](images/Object-storage-create-bucket.png)
+  26. Change the storage tier option to **archive**
 
-- Click the `Create Bucket` button
+  ![](images/Object-storage-create-bucket.png)
+
+  27. Click the `Create Bucket` button
 
 Note, if the bucket name must be unique across your entire tenancy in the region, if it's not (even if the other bucket is in a different compartment) you will not be able to create it and will have to try again using a different name.
 
 You will now see the list of buckets in your compartment. Remember that in my case the `TG` bucket existed previously, so there are two shown here.
 
-![](images/Object-storage-after-create-bucket.png)
+  ![](images/Object-storage-after-create-bucket.png)
 
 Note that the storage tier for the new bucket (named TG-FLUENTD in this case **but yours will vary**) is `Archive` This means all data will be held in a long term storage model which is much cheaper, but may take time to become available when requested.
 
 ### Setting up the log monitoring.
 
-- Change to the `$HOME/helidon-kubernetes/managmenent/logging` folder.
+  28. In the OCI Cloud shell Change to the logging folder.
+  
+  - `cd $HOME/helidon-kubernetes/managmenent/logging`
 
 There are a several of yaml files that we will use. These will all be applied in the `logging` namespace
 
@@ -305,17 +313,17 @@ in the `env:` section we see the name of the environment variable (`SWITCH_LOG_F
 
 </details>
 
-You will need to edit the `fluentd-s3-configmap.yaml` file and update it with the values you gathered earlier. Remember to keep the values in double quotes.
+  29. You will need to edit the `fluentd-s3-configmap.yaml` file and update it with the values you gathered earlier. Remember to keep the values in double quotes.
 
-ACCESS_KEY - This is the OCI access key
+  - ACCESS_KEY - This is the OCI access key
 
-ACCESS_SECRET - This is the OCI secret key
+  - ACCESS_SECRET - This is the OCI secret key
 
-REGION - The OCI Region
+  - REGION - The OCI Region
 
-STORAGE_END_POINT - The object storage endpoint
+  - STORAGE_END_POINT - The object storage endpoint
 
-BUCKET_NAME - The name of the bucket you created
+  - BUCKET_NAME - The name of the bucket you created
 
 Do not change the ROTATION_INTERVAL setting, leave that set to 60
 
@@ -350,10 +358,11 @@ For lab purposes we have setup the configuration with a 60 second cycle on switc
 
 First we will create the `fluentd-config-to-ooss` config map, this is in the `fluentd-to-ooss-configmap.yaml` This is the basic configuration of fluentd and tells it to output to the S3 service, it just used environment variable place holders for the actual setting details though, the Kubernetes runtime will replace those with the actual values from the environment when the configuration map is added to the pod as it starts.
 
-- In the OCI Cloud Shell type :
+  30. In the OCI Cloud Shell type 
+  
   - `kubectl apply -f fluentd-to-ooss-configmap.yaml`
 
-```
+  ```
 configmap/fluentd-config-to-ooss configured
 ```
 <details><summary><b>Why didn't I need to specify a namespace ?</b></summary>
@@ -375,19 +384,21 @@ data:
 
 Now let's apply the configuration settings specific to our environment we just setup. These are the settings used to setup the environment variables inside the the daemonset configuration
 
-- In the OCI Cloud Shell type :
+  31. In the OCI Cloud Shell type 
+  
   - `kubectl apply -f fluentd-s3-configmap.yaml`
   
-```
+  ```
 configmap/fluentd-s3-config configured
 ```
 
 Finally let's start the daemonset itself
 
-- In the OCI Cloud Shell type :
+  32. In the OCI Cloud Shell type 
+  
   - `kubectl apply -f fluentd-daemonset-ooss-rbac.yaml`
 
-```
+  ```
 serviceaccount/fluentd-to-ooss created
 clusterrole.rbac.authorization.k8s.io/fluentd-to-ooss created
 clusterrolebinding.rbac.authorization.k8s.io/fluentd-to-ooss created
@@ -395,7 +406,8 @@ daemonset.apps/fluentd-to-ooss created
 ```
 Let's make sure that everything has started
 
-- In the OCI Cloud Shell type :
+  33. In the OCI Cloud Shell type 
+  
   - `kubectl get daemonsets -n logging`
 
 ```
@@ -407,9 +419,10 @@ We can see that there are 2 instances running, this is because the cluster I am 
 
 Let's get the specifics of the pods
 
-- In the OCI Cloud Shell type :
+  34. In the OCI Cloud Shell type 
+  
   - `kubectl get pods -n logging`
-
+  
 ```
 NAME                                    READY   STATUS             RESTARTS   AGE
 fluentd-to-ooss-fgx4s                   1/1     Running            0          55s
@@ -429,10 +442,11 @@ You may occasionally see a fluentd pod with status CrashLoopBackOff, this is usu
 
 Let's look at the logs from one of these pods, in this case I'm going to use `fluentd-to-ooss-fgx4s` but of course the pod name you have will be different.
 
-- In the OCI Cloud Shell type :
+  35. In the OCI Cloud Shell type 
+  
   - `kubectl logs -n logging fluentd-to-ooss-fgx4s`
 
-```
+  ```
 2020-05-05 14:53:35 +0000 [info]: parsing config file is succeeded path="/fluentd/etc/override/fluent.conf"
 2020-05-05 14:53:35 +0000 [info]: gem 'fluent-plugin-concat' version '2.4.0'
 2020-05-05 14:53:35 +0000 [info]: gem 'fluent-plugin-detect-exceptions' version '0.0.13'
@@ -524,10 +538,11 @@ It may be that the bucket name is already in use (though this should have genera
 
 Do some requests to the storefront service which will generate log data
 
-- In the OCI Cloud Shell terminal type (remember to replace the <external IP> with the IP address for the ingress controller for your service):
+  35. In the OCI Cloud Shell terminal type (remember to replace the <external IP> with the IP address for the ingress controller for your service)
+  
   - `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
   
-```
+  ```
 HTTP/1.1 200 OK
 Server: nginx/1.17.8
 Date: Thu, 23 Apr 2020 18:38:50 GMT
@@ -550,33 +565,33 @@ Open the Object storage page on the OCI web console again and navigate to the bu
 
 The Object storage UI provides a pseudo directory structure view. In this case there's only one "directory"
 
-- Click on the year
+  1. Click on the year
 
-![Object-storage-hierarchy-top-level](images/Object-storage-hierarchy-top-level.png)
+  ![Object-storage-hierarchy-top-level](images/Object-storage-hierarchy-top-level.png)
 
-- Continue navigating down the pseudo directory structure until you get to the objects created today
+  2. Continue navigating down the pseudo directory structure until you get to the objects created today
 
-![](images/Object-storage-bucket-with-logs.png)
+  ![](images/Object-storage-bucket-with-logs.png)
 
 You can see the list of logs that have been saved. Note that all of them have a status of `Archived`.
 
 Let's start the process to restore from the archive.
 
-- Click the selection checkbox next to **one** of the entries. Then click the `More Actions` button and chose `Restore` from the menu
+  3. Click the selection checkbox next to **one** of the entries. Then click the `More Actions` button and chose `Restore` from the menu
 
-![](images/Object-storage-select-for-restore.png)
+  ![](images/Object-storage-select-for-restore.png)
 
 Note that the `Restore` and `Delete` buttons are now enabled.
 
-- Click the `Restore` button, the confirm restore popup is shown
+  4. Click the `Restore` button, the confirm restore popup is shown
 
-![](images/Object-storage-confirm-restore.png)
+  ![](images/Object-storage-confirm-restore.png)
 
 By default the restored data is available for 24 hours before it's only available in the archive again, you can change this duration if you like, but for now we'll leave the field blank which keeps the default 24 hours download window. The storage service will be charging you the extra copy for the time it's spent online, so you want to keep that to a minimum that meets your needs
 
-- Click the `Restore` button and the object storage service will trigger the restore process to start.
+  5. Click the `Restore` button and the object storage service will trigger the restore process to start.
 
-![](images/Object-storage-restore-in-process.png)
+  ![](images/Object-storage-restore-in-process.png)
 
 You can see that the status is now `Restoring`. Of course there is also a REST API to allow you to automate this process if you wanted in a production environment.
 
@@ -586,17 +601,17 @@ If you want to progress with the lab then you can do so and come back to this se
 
 Once the restore process has completed you will see that the objects state becomes `Restored` (The images below were taken about an hour after starting the restore process). If you don't want to wait for the restore to complete just look at the images below to see what can be done, then follow the instructions in the **Tidying up the environment** section.
 
-![](images/Object-storage-restored-object.png)
+  ![](images/Object-storage-restored-object.png)
 
-- Click the three vertical dots just to the right of the word Restored to get the object menu.
+  6. Click the three vertical dots just to the right of the word Restored to get the object menu.
 
-![](images/Object-storage-restored-object-menu.png)
+  ![](images/Object-storage-restored-object-menu.png)
 
-- Click the `Download` option on this menu
+  7. Click the `Download` option on this menu
 
 Your web browser will start to download the object and depending on the web browser you will get a download options popup. This is the one I got when doing a similar download using Firefox on MacOS Catalina
 
-![](images/Object-storage-restored-object-download-options.png)
+  ![](images/Object-storage-restored-object-download-options.png)
 
 To access the restored object follow whatever the normal procedure is on your computer to access a downloaded `.gz` file.
 
@@ -607,11 +622,11 @@ If you are in a trial tenancy there are limitations on how many resources you ca
 
 If you want to leave the log capture running to see more of the data please feel free to do so (this particular module only generates storage objects) but do remember that this is consuming processing and storage resources. If you don't want to keep those tasks running the simplest way to stop all of the log capture activities is to delete the entire `logging` namespace. 
 
-To delete the `logging` namespace (if you have chosen to do this)
-- In the OCI Cloud Shell type :
+  1. To delete the `logging` namespace (if you have chosen to do this). In the OCI Cloud Shell type 
+  
   - `kubectl delete namespace logging`
   
-```
+  ```
 namespace "logging" deleted
 ```
 

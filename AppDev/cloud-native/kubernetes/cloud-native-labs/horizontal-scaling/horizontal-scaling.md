@@ -36,10 +36,11 @@ Kubernetes has built in support for easily managing the horizontal scaling of se
 
 In many of the labs when you've looked at the contents of the namespace you'll have seen things called replica sets, and may have wondered what they are. We can get this info using kubectl. 
 
-- In the OCI Cloud Shell, type :
+  1. Let's look at the replicat sets. In the OCI Cloud Shell, type
+  
   -  `kubectl get all`
 
-```
+  ```
 NAME                                READY   STATUS    RESTARTS   AGE
 pod/stockmanager-6456cfd8b6-4mpl2   1/1     Running   0          118m
 pod/storefront-74cd999d8-dzl2n      1/1     Running   0          152m
@@ -77,45 +78,47 @@ This is especially useful for things like rolling upgrades as we will see in tha
 
 We can if we want modify the number of replicas in the deployment by modifying the YAML and then re-applying it, or of course we could use the kubectl scale command to do it as well, but for this lab we're going to use the dashbaord.
 
-- Open the dashboard and switch to your namespace (tg-helidon in my case) 
+  2. Open the dashboard and switch to your namespace (tg-helidon in my case) 
 
-- In the left menu under the workloads section chose Deployments
+  3. In the left menu under the workloads section chose Deployments
 
-![scaling-deployments-list](images/scaling-deployments-list.png)
+  ![scaling-deployments-list](images/scaling-deployments-list.png)
 
 (I know you can go direct to the replica sets, but I want to show how they are connected to the deployments)
 
-You can see our three deployments (Zipkin, storefront and stock manager) and in the Pods column we can see that each has 1 / 1 pods (So one pod running out of a requested one pod to run). Click on the storefront deployment for more details.
+You can see our three deployments (Zipkin, storefront and stock manager) and in the Pods column we can see that each has 1 / 1 pods (So one pod running out of a requested one pod to run). 
 
-![scaling-deployments-storefront-pre-scale](images/scaling-deployments-storefront-pre-scale.png)
+  4. Click on the storefront deployment for more details.
 
-We'll see the details of the deployment, scroll down a bit to get to the replica sets 
+  ![scaling-deployments-storefront-pre-scale](images/scaling-deployments-storefront-pre-scale.png)
 
-![scaling-deployments-storefront-pre-scale-scrolled-to-replica-sets](images/scaling-deployments-storefront-pre-scale-scrolled-to-replica-sets.png)
+  5. We'll see the details of the deployment, scroll down a bit to get to the replica sets 
+
+  ![scaling-deployments-storefront-pre-scale-scrolled-to-replica-sets](images/scaling-deployments-storefront-pre-scale-scrolled-to-replica-sets.png)
 
 In the `New replica set` section we can see details of the **current** replica set, there is nothing in the `Old Replica Sets` section as we haven't made any rolling updates, we'll do that later in the lab.
 
-In the `New replica set` section if we click on the replica set name we can see the details of it
+  6. In the `New replica set` section if we click on the replica set name we can see the details of it
 
-![scaling-replicaset-storefront-pre-scale](images/scaling-replicaset-storefront-pre-scale.png)
+  ![scaling-replicaset-storefront-pre-scale](images/scaling-replicaset-storefront-pre-scale.png)
 
 In the `Pod Status` section we can see that there is 1 pod running out of 1 pod desired.
 
-- Go back to the storefront deployment.
+  7. Go back to the storefront deployment.
 
 Scaling the deployment is simple, :
 
-- Click on the Scale Icon on the upper right of the deployment page![scaling-scale-icon](images/scaling-scale-icon.png) 
+  8. Click on the Scale Icon on the upper right of the deployment page![scaling-scale-icon](images/scaling-scale-icon.png) 
+  
+  9. In the new pop up enter the desired number of pods you want. Enter 4
 
-- In the new pop up enter the desired number of pods you want. Enter 4
+  ![scaling-deployment-chose-scaling](images/scaling-deployment-chose-scaling.png)
 
-![scaling-deployment-chose-scaling](images/scaling-deployment-chose-scaling.png)
-
-- Click the `Scale` button
+  10.  Click the `Scale` button
 
 Kubernetes immediately gets to work creating new pods for us, you can see this in the pod status section of the page
 
-![scaling-deployment-increasing-pods](images/scaling-deployment-increasing-pods.png)
+  ![scaling-deployment-increasing-pods](images/scaling-deployment-increasing-pods.png)
 
 <details><summary><b>Changing the number of replicas using kubectl</b></summary>
 
@@ -158,22 +161,23 @@ Notice that the deployment now says 1/2 meaning there is one running pod, but 2 
 
 </details>
 
-Scroll down to the replica sets section of the deployment
+  11. Scroll down to the replica sets section of the deployment
 
-![scaling-deployment-started-scaling](images/scaling-deployment-started-scaling.png)
+  ![scaling-deployment-started-scaling](images/scaling-deployment-started-scaling.png)
 
 And if we drill down into the replica set we can see the pods themselves being created
 
-- Click on the replica set name
-![scaling-replicaset-started-scaling](images/scaling-replicaset-started-scaling.png)
+  12. Click on the replica set name
+
+  ![scaling-replicaset-started-scaling](images/scaling-replicaset-started-scaling.png)
 
 Notice that most of these have a grey partially complete "pie graph" at the start of the line. That means that the pod is in the process of starting up (probably pulling the image). On your screen you may have a red warning circle, that means that the pod has started, but is not yet ready (I.e. the readiness probe is failing). The green check is on the original pod, which was of course running before we started the scaling operation. The Service will send requests to the pods marked green
 
 Remember that the storefront uses a readiness probe, so it may be a while before those pods are reporting ready.
 
-- Click on the pod name of a pod that is not yet ready, Look at the conditions section.
+  13. Click on the pod name of a pod that is not yet ready, Look at the conditions section.
 
-![scaling-pod-not-yet-ready](images/scaling-pod-not-yet-ready.png)
+  ![scaling-pod-not-yet-ready](images/scaling-pod-not-yet-ready.png)
 
 You can see the details of the startup process, in this case the pod is not ready because the container within it is not yet ready.
 
@@ -183,33 +187,36 @@ After a short while the pod will become ready
 
 Once they are ready return to the replica set
 
-- Click the replica set name in the controlled by section (storefront-579968f88b in this case)
+  14. Click the replica set name in the controlled by section (storefront-579968f88b in this case)
 
-![scaling-pod-controlled-by](images/scaling-pod-controlled-by.png)
+  ![scaling-pod-controlled-by](images/scaling-pod-controlled-by.png)
 
-That returns you to the replica set page, you can see that they will show up in the replica set as ready (I had to scroll down a little to get this image)
+That returns you to the replica set page, you can see that they will show up in the replica set as ready 
 
-![scaling-replicaset-post-scaling](images/scaling-replicaset-post-scaling.png)
+  15. I had to scroll down a little to get this image
 
-If you scroll down in the replica set page you'll see the events section, and can see the pods have been created.
+  ![scaling-replicaset-post-scaling](images/scaling-replicaset-post-scaling.png)
 
-![replica-set-events](images/scaling-replica-set-events.png)
+  16. If you scroll down in the replica set page you'll see the events section, and can see the pods have been created.
+
+  ![replica-set-events](images/scaling-replica-set-events.png)
 
 And if we go back to the deployments list we'll see the pods is now 4 of 4 ready
 
-- Click deployments on the left menu
+  17. Click deployments on the left menu
 
-![scaling-deployments-list-post-scaling](images/scaling-deployments-list-post-scaling.png)
+  ![scaling-deployments-list-post-scaling](images/scaling-deployments-list-post-scaling.png)
 
 There are 4/4 pods for the storefront deployment. Let's go to the storefront deployment 
 
-- Click the `storefront` deployment in the list
-![scaling-deployment-post-scale](images/scaling-deployment-post-scale.png)
+  18. - Click the `storefront` deployment in the list
+
+  ![scaling-deployment-post-scale](images/scaling-deployment-post-scale.png)
 
 In the pods section we can see that we have 4 pods
 
-If on the deployments page we scroll down we'll see the list of events for that deployment, our scaling event is there!
-![scaling-deployment-events-post-scale](images/scaling-deployment-events-post-scale.png)
+  19. If on the deployments page we scroll down we'll see the list of events for that deployment, our scaling event is there!
+  ![scaling-deployment-events-post-scale](images/scaling-deployment-events-post-scale.png)
 
 If you are on a Kubernetes cluster with multiple physical nodes the scaling operation will try and place the pods on different nodes, protecting the service so if one node fails for any reason the other nodes can still be used to provide the service.
 

@@ -38,7 +38,8 @@ The first thing we need is some load so we can see what the service mesh is doin
 
 Change to the directory for the service mesh scripts
 
-- In the OCI Cloud shell type
+  1. In the OCI Cloud shell type
+  
   - `cd $HOME/helidon-kubernetes/service-mesh`
 
 Once you are in the directory start the load generator
@@ -62,24 +63,25 @@ look at the `ingress-nginx-nginx-ingress-controller` row, IP address inthe `EXTE
 </details>
 
 
-- In the OCI Cloud shell type (remember to replace `<external IP>` with the IP address of your ingress service
-  - `bash generate-service-mesh-load.sh <external IP> 2 > /dev/null &`
+  2. In the OCI Cloud shell type (remember to replace `<external IP>` with the IP address of your ingress service
+  
+  - `bash generate-service-mesh-load.sh <external IP> 2`
   
  ```
- [1] 614
+Iteration 1
+Iteration 2
+....
  ```
 
-This will display the job and process id (these may vary in your case) then return to the command prompt immediately, but it will continue generating the load making a request roughly every 2 seconds.
+This will continue generating the load making a request roughly every 2 seconds.
 
-Note, the OCI Cloud Shell session will terminate (and thus kill off the load generator) after 20 minutes of inactivity. If this happens you will see the throughput figures for your namespace and services in the Linkerd and Grafana UI's drop to zero and potentially even disappear if they fall outside the time ranges displayed. 
-
-You can prevent this by interacting with the OCI CLoud Shell at least once every 20 minutes, either by running another command or by simply pressing the return key int he shell.
+Note, the OCI Cloud Shell session will terminate (and thus kill off the load generator) after 20 minutes of inactivity. If this happens you will see the throughput figures for your namespace and services in the Linkerd and Grafana UI's drop to zero and potentially even disappear if they fall outside the time ranges displayed.
 
 If that happens while you are doing the service mesh labs the solution is to connect back to the OCI CLoud shell and restart the load generator
 
 ### Viewing the load
 
-- In your laptop web browser go to `https://<external IP>`
+  3. In your laptop web browser go to `https://<external IP>`
 
 You may be challenged as you have a self signed certificate. Follow the normal procedures in your browser to accept the connection and proceed.
 
@@ -87,7 +89,7 @@ Next you may be presented with the login challenge.
 
 ![](images/linkerd-web-login.png)
 
-If you are login with `admin` as the username, for the password use the one you used when creating the login password during the linkerd installation in the previous module.
+  4. If you are login with `admin` as the username, for the password use the one you used when creating the login password during the linkerd installation in the previous module.
 
 You'll be presented with the linkerd-web main page, unlike when you saw this previously now it's showing load for your services.
 
@@ -140,9 +142,11 @@ In the TCP Metrics section the columns are :
 
 #### Namespace specific load
 
-Let's now look at the specific data for your namespace. In the HTTP metrics section click on the **name** of your namespace (mine is `tg-helidon`, but yours will be different)
+Let's now look at the specific data for your namespace. 
 
-![](images/linkerd-app-namespace-top-of-page.png)
+  5. In the HTTP metrics section click on the **name** of your namespace (mine is `tg-helidon`, but yours will be different)
+
+  ![](images/linkerd-app-namespace-top-of-page.png)
 
 The most obvious thing we see here it the data routing network at the top of the page. This shows us which services are initiating connections to which other services within the namespace. We've got an easy way to see our data flows between microservices (to be precise the ones that have the service mesh proxy installed!)
 
@@ -175,9 +179,11 @@ Of course if the database was implemented as a Kubernetes based service (perhaps
 
 We can see reporting details on a number of Kubernetes objects within the namespace in addition to the route diagram.
 
-There are details on the deployments and also specific pods. If we scroll down a bit we can see further information.
+There are details on the deployments and also specific pods. 
 
-![](images/linkerd-app-namespace-bottom-of-page.png)
+  6. If we scroll down a bit we can see further information.
+
+  ![](images/linkerd-app-namespace-bottom-of-page.png)
 
 We can see the traffic broken down by replica set and the TCP traffic. 
 
@@ -185,9 +191,11 @@ You will see something unusual in the replica sets section above (and potentiall
 
 This may seem pointless, but it's actually very important if we look at this from a rolling upgrade perspective. As seen in the rolling upgrade module, we were upgrading a deployment then there will be **two** (at least) replica sets with pods that are actively servicing the deployment. Each replica set will reflect a different configuration, the old and the new ones. By breaking the information down per replica set during the rolling update (or roll back) we will be able to see how each replica set (and thus configuration) is behaving. Of course the rolling upgrades we have done so far have been configured to complete as soon as possible, but as we will see later there are other approaches (e.g. canary deployments) where the process takes a lot longer with the traffic being split between the deployment and being able to determine if the new version is working properly. There being able to examine what is happening for each version (or have automation manage that for you) is critical.
 
-Let's look at what the pod is specifically doing, in the pods section click on the stock manager pod, in my case that's stockmanager-6b5d4897fc-t2ddz but of course yours will be different
+Let's look at what the pod is specifically doing, in the pods section 
 
-![](images/linkerd-pod-stats.png)
+  7. Click on the stock manager pod, in my case that's stockmanager-6b5d4897fc-t2ddz but of course yours will be different
+
+  ![](images/linkerd-pod-stats.png)
 
 Note that you may also see information for linkerd pods such as the prometheus and tap service. Don't worry if you don't, but we will ignore them as they are basically the internal workings of the service mesh communicating with the proxy in the stockmanager pod to gather information. 
 
@@ -199,62 +207,62 @@ Below that we can the specific details. There's a lot of data we can see about t
 
 So far we've seen what's happening on the pods, but as the service mesh is a layer 7 proxy it knows what's happening within the requests. Note in mid October 2020 as I was testing this module I found this section of the lab works best with Chrome, some features did work in Firefox. The live monitoring features did not work in Safari. Those browsers may have been updated since then of course.
 
-On the left hand menu in the tools section 
+  8. On the left hand menu in the tools section 
 
-![](images/linkerd-tools-selection.png)
+  ![](images/linkerd-tools-selection.png)
 
 
-- Click on the `Top` option
+  9. Click on the `Top` option
 
 We switch to the `Top` screen
 
-![](images/linkerd-top-empty.png)
+  ![](images/linkerd-top-empty.png)
 
 Here we can have a look at the REST API calls being made to / from a service.
 
-- Click on the `Namespace`, select **your** namespace from the list
+  10. Click on the `Namespace`, select **your** namespace from the list
 
-![](images/linkerd-top-select-namespace.png)
+  ![](images/linkerd-top-select-namespace.png)
 
-- Click on the `Resource` section (this may have been updated when you selected a namespace) 
+  11. Click on the `Resource` section (this may have been updated when you selected a namespace) 
 
-- Select `deloyment/storefront` from the list
+  12. Select `deloyment/storefront` from the list
 
-![](images/linkerd-top-select-resource.png)
+  ![](images/linkerd-top-select-resource.png)
 
 Note that the UI is displaying what the query would be if you ran the linkerd command manually, in this case it's `linkerd top deployment/storefront --namespace tg-helidon` This helps you understand how you could write scripts to gather information if you liked)
 
-- Click the `Start` button (when you selected the resource it may have automatically started, in which case **do not** click the `Stop` button)
+  13. Click the `Start` button (when you selected the resource it may have automatically started, in which case **do not** click the `Stop` button)
 
-- Wait a short while for requests to be made and data to be gathered
+  14. Wait a short while for requests to be made and data to be gathered
 
-![](images/linkerd-top-running.png)
+  ![](images/linkerd-top-running.png)
 
 We can now see that the storefront deployment has been receiving requests from the ingress controller on `/store/stocklevel` and making requests to the stockmanager on `/stocklevel` and occasionally connecting to Zipkin to report the tracing spans on `/api/v2/spans` More importantly we can see how many requests there have been and their timings, a useful tool for understanding what's actually happening within your collection of microservices. 
 
 You may also see requests to /status, /metrics and /health/live These are the Kubernetes framework checking to ensure that the pod is alive and ready, and Prometheus gathering performance metrics.
 
-- Click the `Tap` icon ![](images/linkerd-tap-icon.png) on the right of the `To stockmanager` row
+  15. Click the `Tap` icon ![](images/linkerd-tap-icon.png) on the right of the `To stockmanager` row
 
-![](images/linkerd-tap-intro.png)
+  ![](images/linkerd-tap-intro.png)
 
 This is the `Tap` page, it let's us look at individual requests so we can see how things are going, and also diagnose problems.If it's not obvious you could also get to it by clicking the `Tap` menu option in the tools section on the left hand menu.
 
 For now we are not going to change any of these settings as we're just exploring, but you can see there are options to filter the requests, for example only looking at HTTP PUT rather than all requests
 
-- Click the `Start` button
+  16. Click the `Start` button
 
-- Wait a short while for requests to be made and data to be gathered
+Wait a short while for requests to be made and data to be gathered
 
-![](images/linkerd-tap-results.png)
+  ![](images/linkerd-tap-results.png)
 
 We see the results as they are generated, let's look at them
 
-- Click the `Stop` button 
+  17. Click the `Stop` button 
 
-- Click on the "down arrow" - at the start of each row to the left of the `Direction` column
+  18. Click on the "down arrow" - at the start of each row to the left of the `Direction` column
 
-![](images/linkerd-tap-details.png)
+  ![](images/linkerd-tap-details.png)
 
 We can now see the details of the request. Note that we **do not** see the content of the request, only the header information (content could of course contain private information, admittedly the basic auth can easily be reversed, but in a production rather than a lab environment you's use something like JWT or OAUTH2.) We can however see the duration of the request, and other information that could be very useful in diagnosing  problems (something we will look at in another module)
 
@@ -264,9 +272,9 @@ Finally let's have a quick look at the status of the linkerd control plane itsel
 
 We've currently been looking at the services, deployments and pods within the namespaces, we need to switch to the control plane view.
 
-- Click `Control Plane` on the upper left.
+  19. Click `Control Plane` on the upper left.
 
-![](images/linkerd-select-namespace.png)
+  ![](images/linkerd-select-namespace.png)
 
 It's not a surprise, but we can now see the details of the control plane :-)
 
@@ -275,7 +283,6 @@ It's not a surprise, but we can now see the details of the control plane :-)
 In the control plane we can see the deployments, the green dots indicate all is well with the services, to the right of that we have a summary of the actual installation. Then there is the list of all of the namespaces currently part of the mesh (this is clickable in the same way as the namespaces list we saw at the start of this module.)
 
 <details><summary><b>What happens if the control plane fails ?</b></summary>
-
 
 Obviously if the service mesh is managing all of the network traffic flowing in your cluster then there's a concern as to what will happen if the service mesh itself fails.
 
@@ -299,57 +306,59 @@ The data we've seen so far is the live view, but if we wanted to understand what
 
 We could of course go direct to the Grafana page for a specific item (all the tables have a little Grafana icon ![](images/linkerd-grafana-icon.png) which would take us there directly) but let's start out looking at the Grafana overview
 
-- In your laptop web browser go to `https://<external IP>/grafana`
+  1. In your laptop web browser go to `https://<external IP>/grafana`
 
-![](images/grafana-overview.png)
+  ![](images/grafana-overview.png)
 
 The first few rows show us a summary of everything that's running in the system, As expected everything is fine in this image.
 
-The remainder of the Grafana dashboard shows us what's happening broken down by namespace, you don't need to do anything to get these, this will update as you add or remove namespaces from linkerd. You may have to scroll down to find it, as they are in alphabetical order, but here is the section for my namespace
+The remainder of the Grafana dashboard shows us what's happening broken down by namespace, you don't need to do anything to get these, this will update as you add or remove namespaces from linkerd. 
 
-![](images/grafana-my-namespace-on-overview-landing-page.png)
+  2. You may have to scroll down to find it, as they are in alphabetical order, but here is the section for my namespace
 
-- Click on the name for your namespace, mine is ns/tg-helidon, but yours of course will vary.
+  ![](images/grafana-my-namespace-on-overview-landing-page.png)
 
-![](images/grafana-my-namespace-stockmanager.png)
+  3. Click on the name for your namespace, mine is ns/tg-helidon, but yours of course will vary.
+
+  ![](images/grafana-my-namespace-stockmanager.png)
 
 This takes us to a details page for our namespace. It's showing us the page for the stock manager deployment, but you could change that (please **don't**) using the dropdowns on the upper left
 
-![](images/grafana-my-namespace-change-deployment.png)
+  ![](images/grafana-my-namespace-change-deployment.png)
 
-- Hover your mouse above the `Latency` graph on the right
+  4. Hover your mouse above the `Latency` graph on the right
 
-![](images/grafana-my-namespace-stockmanager-latency.png)
+  ![](images/grafana-my-namespace-stockmanager-latency.png)
 
 This give us a report of the latency of handling requests , the green line hows the max latency for 50% or the requests, the other lines show us the max latency for 95% and 99% of the requests.
 
 Grafana is showing us an overview in the first few sets of panels. There are however a number of panel sets that are currently hidden
 
-![](images/grafana-my-namespace-stockmanager-expander.png)
+  ![](images/grafana-my-namespace-stockmanager-expander.png)
 
-- Click on the `>` to the left of the `Inbound TCP Metrics` heading
+  5. Click on the `>` to the left of the `Inbound TCP Metrics` heading
 
-![](images/grafana-my-namespace-stockmanager-inbound-tcp.png)
+  ![](images/grafana-my-namespace-stockmanager-inbound-tcp.png)
 
 This will expand the panel and we can see more details.
 
 Let's look at the TCP performance graph on the right hand side. In my deployment there are two "buckets" of performance, the lower white one and the upper red one (yours may of course vary)
 
-- Hover your mouse over the lower "bucket" to get a tool tip like popup
+  6. Hover your mouse over the lower "bucket" to get a tool tip like popup
 
-![](images/grafana-my-namespace-stockmanager-inbound-tcp-performance.png)
+  ![](images/grafana-my-namespace-stockmanager-inbound-tcp-performance.png)
 
 We can see that this is reporting that 50 requests were received in the 0 to 2 millisecond range (on my system the upper red line is reporting one request in the 21-23 millisecond range)
 
-There are many other dashboards provided by Grafana, they all have the same basic functionality, but look at the data in different directions
+There are many other dashboards provided by Grafana, they all have the same basic functionality, but look at the data in different ways
 
-- On the upper left click the dashboard name, in this case `Linkerd Deployment`
+  7. On the upper left click the dashboard name, in this case `Linkerd Deployment`
 
-![](images/grafana-dashboard-selection.png)
+  ![](images/grafana-dashboard-selection.png)
 
 You will get a long list of dashboards
 
-![](images/grafana-dashboards-list.png)
+  ![](images/grafana-dashboards-list.png)
 
 The ones that have recently been visited are listed first (I've been exploring a fair bit as I write this module, so there are many recent's in my list, yours may only contain the `Linkerd Deployments` dashboard.) Then the full list of available dashboards. The ones relating to Linkerd are indicated by their name, and also the `linkers` tag on the right side of the list.
 
@@ -357,24 +366,8 @@ Feel free to explore the dashboards if you like, the Linkerd Health dashboard pr
 
 ## Step 3: Stopping the load generator
 
-- In the OCI cloud shell type
-  - `jobs`
-
-```
-[1]+  Running                 bash generate-service-mesh-load.sh 130.61.195.102 2 > /dev/null &
-```
-
-We can see that our load generator is running, and at the beginning of the line we see `[1]` which tells us it's job id is 1 (in the []) It's possible that you may have additional lines, if you have other jobs running, in which case look for the job that's running the `generate-service-mesh-load.sh` line and get it's job id
-
-We can now get the OCI Cloud Shell to stop the job
-
-- In the OCI cloud shell type (replace 1 with the job id if you had multiple jobs running)
-  - `kill %1`
-
-```
-[1]+  Terminated              bash generate-service-mesh-load.sh 130.61.195.102 2 > /dev/null
-```
-
+  1. In the OCI cloud shell stop the load generator using Control-C
+  
 ## End of the lab, What's next ?
 
 You can chose from the remaining `Linkerd service mesh` modules or switch to one of the other Kubernetes optional module sets.

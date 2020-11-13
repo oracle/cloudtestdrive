@@ -22,17 +22,17 @@ The **OCI Cloud Shell** is accessible through the Oracle Cloud GUI, and has a nu
 
 To access the OCI Cloud Shell, you can use the native browser on your laptop (you don't need to use the Linux desktop VM anymore).
 
-- Login to your Oracle Cloud Console
+  1. Login to your Oracle Cloud Console
 
-- Click the icon on the top right of your screen:  **>_**
+  2. Click the icon on the top right of your screen:  **>_**
 
   ![](images/home-screen.png)
 
-- This will result in the OCI Cloud Shell to be displayed at the bottom of your window.
+  3. This will result in the OCI Cloud Shell to be displayed at the bottom of your window.
 
   ![](images/cloud-console.png)
 
-- To maximise the size of the OCI Cloud Shell window, click the "Arrows" button on the right of the console as indicated above:
+  4. To maximise the size of the OCI Cloud Shell window, click the "Arrows" button on the right of the console as indicated above:
 
 
 Note, in some steps you may want to minimize the OCI Cloud Shell so you can get information from the GUI. Click the arrows icon again ![](images/cloud-console-shrink.png) to minimize the OCI Cloud Shell and see the Oracle Cloud GUI again. Alternatively you can open a second browser window or tab onto the Oracle Cloud GUI.
@@ -70,12 +70,14 @@ You will need to ask your tenancy admin to add you to a group which has rights t
 Firstly we need to download all of the scripts, templates and other configuration data to run the labs into your OCI Cloud Shell environment. You have a few GB of storage so these will fit just fine. The scripts and instructions are stored in git.
 
 
-- Open the OCI Cloud Shell
+  1. Open the OCI Cloud Shell
 
-- Make sure you are in the top level directory
+  2. Make sure you are in the top level directory
+  
   - `cd $HOME`
   
-- Clone the repository with all scripts from github into your OCI Cloud Shell environment:
+  3. Clone the repository with all scripts from github into your OCI Cloud Shell environment
+  
   - `git clone https://github.com/CloudTestDrive/helidon-kubernetes.git`
   
 ## Step 3: Downloading the database wallet file
@@ -86,36 +88,39 @@ To keep the secrets outside the image means that you need to get the database co
 
 We will use the OCI Cloud Shell to download the database wallet file. 
   
-- Get the wallet file of your database
+  1. Get the wallet file of your database
   
-- Make sure you are in the top level directory
+  2. Make sure you are in the top level directory
+  
   - `cd $HOME`
   
-  - Attention: replace the example ODIC below with the OCID of your database
+  3. Attention: replace the example ODIC below with the OCID of your database (if you didn't copy this when you created the database or don;t have it then if you go to the database page it will sho there with a `copy` button)
     
   - `oci db autonomous-database generate-wallet --file Wallet.zip --password 'Pa$$w0rd' --autonomous-database-id ocid1.autonomousdatabase.oc1.eu-frankfurt-1.aa8d698erlewaiehqrfklhfoeqwfaalkdhfuieiq`
-  
-    ```
-    Downloading file  [####################################]  100%
-    ```  
 
-- Create the wallet directory and navigate to it:
+  ```
+Downloading file  [####################################]  100%
+```
+
+  4. Create the wallet directory and navigate to it:
   
   - `mkdir -p $HOME/helidon-kubernetes/configurations/stockmanagerconf/Wallet_ATP`
   
   - `cd $HOME/helidon-kubernetes/configurations/stockmanagerconf/Wallet_ATP`
   
-- Copy the wallet file
+  5. Copy the wallet file to the directory
+  
   - `cp $HOME/Wallet.zip .`
   
-- Unzip the wallet file
+  6. Unzip the wallet file
   
   - `unzip Wallet.zip`
   
-- Look at the contents of the tnsnames.ora file to get the database connection names
+  7. Look at the contents of the tnsnames.ora file to get the database connection names
+  
   - `cat tnsnames.ora`
 
-```
+  ```
 jleoow_high = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_high.atp.oraclecloud.com))(security=(ssl_server
 _cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
 
@@ -134,11 +139,11 @@ l_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFU
 
   You will see a list of the various connection types to your database.
 
-- Locate the "high" connection type to your database and take a note of the full name, in the example above that's `jleoow_high` **but yours will differ**
+  8. Locate the "high" connection type to your database and take a note of the full name, in the example above that's `jleoow_high` **but yours will differ**
 
-- Be sure to write down the database connection name you have just found, you will need it later
+  9. Be sure to write down the database connection name you have just found, you will need it later
 
-- Return to the home directory `cd $HOME`
+  10. Return to the home directory `cd $HOME`
 
 ## Step 4: Setting up your department Id
 
@@ -146,9 +151,12 @@ To allow for some lab situations where there are multiple users in the same data
 
 We need to configure the stockmanager-config.yaml file. You need to do this even if you have done the Helidon labs as the set of configuration data downloaded into the OCI Cloud Shell is generic and does not include the customizations you made in the Helidon labs 
 
-- Navigate into the folder $HOME/helidon-kubernetes/configurations/stockmanagerconf/conf
-- Open the file **stockmanager-config.yaml**
-- In the `app:` section, add a property **department** with **your** your name, initials or something that's going to be **unique**:
+  1. Navigate into the folder $HOME/helidon-kubernetes/configurations/stockmanagerconf/conf
+  
+  2. Open the file **stockmanager-config.yaml**
+  
+  3. In the `app:` section, add a property **department** with **your** your name, initials or something that's going to be **unique**
+  
   -  `department: "your_name"`
 
 Example (Yours will be different of course)
@@ -159,9 +167,9 @@ app:
   department: "timsDepartment"
 ```
  
- - Save the changes to the file
+  4. Save the changes to the file
  
-## End of the lab, What's next ?
+## End of the setup module, What's next ?
 
 Go to the `Setting up the cluster and getting your services running in Kubernetes` lab
 

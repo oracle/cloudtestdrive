@@ -69,10 +69,11 @@ If however this will cause you problems you can remove the service mesh
 
 First remove the linkerd annotation on the namespaces
 
-- In the OCI Cloud shell type the following (replace <ns-name with your namespace)
+  1. In the OCI Cloud shell type the following (replace <ns-name with your namespace)
+  
   - `kubectl get namespace <ns-name> -o yaml | linkerd uninject - | kubectl replace -f -`
 
-```
+  ```
 namespace "usernameecho" uninjected
 
 namespace/usernameecho replaced
@@ -80,12 +81,11 @@ namespace/usernameecho replaced
 
 Now restart the deployments to remove the linkerd-proxy sidecar container, as the namespace is no longer annotated as having linkerd enabled the new version will not have the proxy injected automatically.
 
-Let's get the list of deplpyments
-
-- In the OCI Cloud shell type :
+  2. Let's get the list of deplpyments. In the OCI Cloud shell type 
+  
   - `kubectl get deployments`
 
-```
+  ```
 NAME           READY   UP-TO-DATE   AVAILABLE   AGE
 stockmanager   1/1     1            1           14d
 storefront     1/1     1            1           14d
@@ -96,11 +96,11 @@ We can see in this case we have deployments for stockmanager, storefront and zip
 
 Sadly there doesn't seem to be a way to restart all of the deployments in a namespace (maybe that will be added in a future Kubernetes release) so we have to restart each one by it's individual name.
 
-- In the OCI Cloud shell type the following, if you have additional deployments add them to the list
+  3.In the OCI Cloud shell type the following, if you have additional deployments from other modules add them to the list
 
   - `kubectl rollout restart deployments storefront stockmanager zipkin`
 
-```
+  ```
 deployment.apps/storefront restarted
 deployment.apps/stockmanager restarted
 deployment.apps/zipkin restarted
@@ -111,21 +111,23 @@ Let's do the same process for the ingress controller  namespace
 
 First update the ingress-nginix namespace to remove the linkerd annotation
 
-- In the OCI Cloud shell type the following 
+  4. In the OCI Cloud shell type the following 
+
   - `kubectl get namespace ingress-nginx -o yaml | linkerd uninject - | kubectl replace -f -`
 
-```
+  ```
 namespace "ingress-nginx" uninjected
 
 namespace/ingress-nginx replaced
 ```
 
 Now get the list of deployments in the ingress-nginx namespace
-- In the OCI Cloud shell type :
+
+  5. In the OCI Cloud shell type :
 
   - `kubectl get deployments -n ingress-nginx`
 
-```
+  ```
 NAME                                          READY   UP-TO-DATE   AVAILABLE   AGE
 ingress-nginx-nginx-ingress-controller        1/1     1            1           35d
 ingress-nginx-nginx-ingress-default-backend   1/1     1            1           35d
@@ -133,19 +135,18 @@ ingress-nginx-nginx-ingress-default-backend   1/1     1            1           3
 
 And next update them so the proxy will be removed.
 
-
-- In the OCI Cloud shell type :
+  6. In the OCI Cloud shell type :
 
   - `kubectl rollout restart deployments -n ingress-nginx ingress-nginx-nginx-ingress-controller ingress-nginx-nginx-ingress-default-backend`
 
-```
+  ```
 deployment.apps/ingress-nginx-nginx-ingress-controller restarted
 deployment.apps/ingress-nginx-nginx-ingress-default-backend restarted
 ```
 
 Now the data plane elements have been removed let's remove the linkerd control plane (Yes, I know that the linkerd command is install, but the kubectl command is delete, so what happens is the linkerd command generates what it would as if it were doing an install, but the kubectl command takes this input as sequence ot things to delete)
 
-- In the OCI Cloud shell type :
+  7. In the OCI Cloud shell type 
 
   - `linkerd install --ignore-cluster | kubectl delete -f -`
   
@@ -153,10 +154,11 @@ There will be lots of messages about deleting resources, you may get warnings ab
 
 At the end check to see if the linkerd namespace is still there, it may have been removed, but as we added additional resources (secrets for the ingress rules and the rules themselves) it may still be there
 
-In the OCI Cloud shell type :
+  8. In the OCI Cloud shell type 
+  
   - `kubectl get namespaces`
 
-```
+  ```
 NAME              STATUS   AGE
 default           Active   49d
 ingress-nginx     Active   48d
@@ -169,10 +171,11 @@ tg-helidon        Active   48d
 
 If you don't see `linkerd` in the list then remove you're done, if (as above) you do then remove it
 
-In the OCI Cloud shell type :
+  9. In the OCI Cloud shell type 
+
   - `kubectl delete namespace linkerd`
 
-```
+ ```
 namespace "test" deleted
 ```
 

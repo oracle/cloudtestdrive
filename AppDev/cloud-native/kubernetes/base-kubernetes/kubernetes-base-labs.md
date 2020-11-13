@@ -37,30 +37,36 @@ Helm is the tool we will be using to install standard software into Kubernetes. 
 
 The OCI Cloud Shell has helm already installed for you, however it does not know what repositories to use for the helm charts. We need to tell helm what repositories to use.
 
-- Run the following command :
+  1. Run the following command to add the core stable repo to helm :
+  
   - `helm repo add stable https://kubernetes-charts.storage.googleapis.com/`
-    ```
+  
+  ```
     "stable" has been added to your repositories
-    ```
+```
+  2. Now add the dashboard repo
+  
   - `helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/`
+  
     ```
     "kubernetes-dashboard" has been added to your repositories
-    ```
-You can get the current list of repositories    
-- Run the following command :
+ ```
+ 
+  3. To can get the current list of repositories run the following command :
+  
   - `helm repo list`
-```                                            
+  
+  ```                                            
 NAME                    URL                                              
 stable                  https://kubernetes-charts.storage.googleapis.com/
 kubernetes-dashboard    https://kubernetes.github.io/dashboard/  
 ```
     
-Lastly let's update the helm cache
-
-- Run the following command :
+  4. Lastly let's update the helm cache, run the following command :
+  
   - `helm repo update`
 
-```
+  ```
 Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "kubernetes-dashboard" chart repository
 ...Successfully got an update from the "stable" chart repository
@@ -72,64 +78,66 @@ Update Complete. ⎈ Happy Helming!⎈
 
 Access to the cluster is managed via a config file that by default is located in the $HOME/.kube folder, and is called `config`.  To check the setup, make sure to have copied your personal kubeconfig file to this location : 
 
-- Create a directory for the Kubernetes config
+  1. Create a directory for the Kubernetes config
+  
   - `mkdir -p $HOME/.kube`
 
-- Open the Oracle Cloud web GUI
+  2. Open the Oracle Cloud web GUI
 
-- Open the `hamburger` menu on the upper left scroll down to the `Solutions and Platform` section
+  3. Open the `hamburger` menu on the upper left scroll down to the `Solutions and Platform` section
 
-- Click on the `Developer Services` menu option, then `Container Clusters (OKE)`
+  4. Click on the `Developer Services` menu option, then `Container Clusters (OKE)`
 
-![](images/container-oke-menu.png)
+  ![](images/container-oke-menu.png)
 
-- Locate **your** cluster in the list, this will be the one you've been assigned or the one you just created. Click on the name to get to the cluster details.
+  5. Locate **your** cluster in the list, this will be the one you've been assigned or the one you just created. Click on the name to get to the cluster details.
 
-![](images/cluster-details.png)
+  ![](images/cluster-details.png)
 
-- Click the **Accesss Cluster** button to get the configuration for **your** cluster.
+  6. Click the **Accesss Cluster** button to get the configuration for **your** cluster.
 
-![](images/access-your-cluster.png)
+  ![](images/access-your-cluster.png)
 
 You will be presented with a page with details for downloading the kubeconfig file. Make sure the **OCI Cloud Shell Access** is the selected option.
 
-Look for the section with the download command, it will look lie this :
+Look for the section with the download command, it will look like this :
 
-```
+  ```
 oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaa<lots of stuff>aaa --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0
 ```
 
 
-- Click the `Copy` to get *your* config download script (the above is an example and won't work for real)
+  7. Click the `Copy` to get *your* config download script (the above is an example and won't work for real)
 
-- Open your OCI Cloud Shell window and **paste** the line to execute it.
+  8. Open your OCI Cloud Shell window and **paste** the line to execute it.
 
-```
+  ```
 oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaa<lots of stuff>aaa --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0
 New config written to the kubeconfig file /home/oracle/.kube/config
 ```
 
 Note that if there was an existing Kubernetes config file (most likely because you're using an existing tenancy) then the output will say
 
-```
+  ```
 Existing kubeconfig file found at /home/oracle/.kube/config and new config merged into it
 ```
 
 
 Your Kubernetes config file is now downloaded into the .kube/config file
 
-- Verify you can access the cluster:
+  8. Verify you can access the cluster:
+  
   -  `kubectl get nodes`
 
-```
+  ```
 NAME        STATUS   ROLES   AGE     VERSION
 10.0.10.2   Ready    node    9m16s   v1.16.8
 10.0.10.3   Ready    node    9m2s    v1.16.8
 ```
 
-If the kubectl command returns `No resources found.` and you have only just created the cluster it may still be initializing. Wait a short time and try again until you get the nodes list.
+If the kubectl command returns `No resources found.` and you have only just created the cluster it may still be initializing the worker nodes (They have to be created, the OS installed and then the Kubernetes software installed before they report ready). Wait a short time and try again until you get the nodes list.
 
- (The details and number of nodes will vary depending on the settings you chose when you created the cluster, they will take a few mins for the nodes to be configured after the cluster management is up and running)
+(The details and number of nodes will vary depending on the settings you chose when you created the cluster, they will take a few mins for the nodes to be configured after the cluster management is up and running)
 
 
 ## Step 3: Basic cluster infrastructure services install
@@ -149,11 +157,11 @@ Setting up the Kubernetes dashboard (or any) service using helm is pretty easy. 
 If you are using the OCI Cloud shell for **this** section of the lab (either in an oracle provided or your own tenancy)
 
 
-- Run the following command : 
+  1. To install the dashboard run the following command : 
   
   -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set service.type=LoadBalancer --version 2.8.0`
 
-```
+  ```
 NAME: kubernetes-dashboard
 LAST DEPLOYED: Tue Jun 30 13:07:36 2020
 NAMESPACE: kube-system
@@ -209,20 +217,22 @@ Helm is a great tool for installing software for us, but you don't always want t
 
 Note that Helm does all the work needed here, it creates the service, deployment, replica set and pods for us and starts things running. Unless you need a very highly customised configuration using helm is **way** simpler than setting each of these individual elements up yourself.
 
--  Check the staus of the Helm deployment
+  2.  Check the staus of the Helm deployment
+  
   -  `helm list --namespace kube-system`
 
-```
+  ```
 NAME                	NAMESPACE  	REVISION	UPDATED                             	STATUS  	CHART                      	APP VERSION
 kubernetes-dashboard	kube-system	1       	2019-12-24 16:16:48.112474 +0000 UTC	deployed	kubernetes-dashboard-2.8.0	     2.0.4 
 ```
 
 We've seen it's been deployed by Helm, this doesn't however mean that the pods are actually running yet (they may still be downloading)
 
-- Check the  status of the objects created:
+  3. Check the  status of the objects created:
+  
   -  `kubectl get all --namespace kube-system`
 
-```
+  ```
 NAME                                       READY   STATUS    RESTARTS   AGE
 pod/coredns-78f8cf49d4-8pq5c               1/1     Running   0          3d23h
 pod/kube-dns-autoscaler-9f6b6c9c9-76tw5    1/1     Running   0          3d23h
@@ -260,10 +270,11 @@ We see all the elements of the dashboard: a pod, a replica set, a deployment and
 
 If you want more detailed information then you can extract it, for example to get the details on the pods do the following
 
--  Execute below command, replacing the ID with the ID of your pod:
+  4.  Execute below command, replacing the ID with the ID of your pod:
+  
   -  `kubectl get pod kubernetes-dashboard-bfdf5fc85-djnvb  -n kube-system -o yaml`
 
-```yaml
+  ```yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -299,14 +310,16 @@ spec:
     image: kubernetesui/dashboard:v2.0.4
  (lots more lines of output)
 ```
+
 If you want the output in json then replace the -o yaml with -o json.
 
 If you're using JSON and want to focus in on just one section of the data structure you can use the JSONPath printer in kubectl to do this, in this case we're going to look at the image that's used for the pod
 
-- Get a specific element from a configuration:
+  5. Get a specific element from a configuration:
+  
   -  `kubectl get pod kubernetes-dashboard-bfdf5fc85-djnvb  -n kube-system -o=jsonpath='{.spec.containers[0].image}'`
 
-```
+  ```
 kubernetesui/dashboard:v2.0.4
 ```
 
@@ -316,18 +329,20 @@ This used the "path" in json of .spec.containers[0].image where the first . mean
 
 We can use this coupled with kubectl to identify the specific pods associated with a service, for example 
 
-- Command : 
+  6. Run this to get the selectors used by the dashboard service
+   
   -  `kubectl get service kubernetes-dashboard -n kube-system -o=jsonpath='{.spec.selector}'`
 
-```
+  ```
 map[app.kubernetes.io/component:kubernetes-dashboard app.kubernetes.io/instance:kubernetes-dashboard app.kubernetes.io/name:kubernetes-dashboard]
 ```
 Tells us that any thing with label app.kubernetes.io/name (or /component of /instance) matching kubernetes-dashboard and label release matching kubernetes-dashboard will be part of the service
 
-- Get the list of pods providing the service by name:
+  7. Get the list of pods providing the dashboard service by name:
+  
   -  `kubectl get pod -n kube-system --selector=app.kubernetes.io/name=kubernetes-dashboard`
 
-```
+  ```
 NAME                                    READY   STATUS    RESTARTS   AGE
 kubernetes-dashboard-bfdf5fc85-djnvb   1/1     Running   0          43m
 ```
@@ -336,12 +351,15 @@ kubernetes-dashboard-bfdf5fc85-djnvb   1/1     Running   0          43m
 
 First we're going to need create a user to access the dashboard. This involves creating the user, then giving it the kubernetes-dashbaord role that helm created for us when it installed the dashbaord chart.
 
-- Go to the helidon-kubernetes project folder, then the base-kubernetes directory
+  8. Go to the helidon-kubernetes project folder, then the base-kubernetes directory
+  
   -  `cd  $HOME/helidon-kubernetes/base-kubernetes`
-- Create the user and role
+  
+  9. Create the user and role
+  
   -  `kubectl apply -f dashboard-user.yaml`
 
-```
+  ```
 serviceaccount/dashboard-user created
 clusterrolebinding.rbac.authorization.k8s.io/dashboard-user created
 ```
@@ -353,18 +371,19 @@ clusterrolebinding.rbac.authorization.k8s.io/dashboard-user created
 
 Open up the dashboard-file.yaml and let's have a look at a few of the configuration items
 
-```
+  ```
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: dashboard-user
   namespace: kube-system
 ```
+
 This first line tells us that kubectl will be using the core Kubernetes API to do the work, then the remainder of the section tells Kubernetes to create an object of kind ServiceAccount called dashboard-user in the kube-system namespace. 
 
 There is then a "divider" of `---` between the next section, this tells kubectl / kubetnetes to start the next section as if it was a separate command, the benefit here is that it allows us to basically issue one command that does two actions.
 
-```
+  ```
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
@@ -380,7 +399,7 @@ rules:
 
 This section is potentially dangerous, it's  tells Kubernetes to use the rbac.authorization.k8s.io service (This naming scheme uses DNS type naming and basically means the role based access controls capability of the authorization service in Kubernetes.io) to define a cluster role that has all permissions to everything. In a production environment you'd want to restrict to specific capabilities, but for this lab it's easier to do the lot rather than jump into the Kubernetes security configuration, which is a large topic in it's own right (But something you should study before moving into production).
 
-```
+  ```
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -417,12 +436,13 @@ Sadly (for me at least) YAML has been pretty widely adopted for use with Kuberne
 
 Before we can login to the dashboard we need to get the access token for the dashboard-user. We do this using kubectl
 
-- Visualize the token of the newly created user:
-  - ```
-    kubectl -n kube-system describe secret `kubectl -n kube-system get secret | grep dashboard-user | awk '{print $1}'`
-    ```
+  10. Get the token of the newly created user:
+  
+   ``` `kubectl -n kube-system describe secret `kubectl -n kube-system get secret | grep dashboard-user | awk '{print $1}'`
+   ```
 
-```
+
+   ```
 Name:         dashboard-user-token-mhtf9
 Namespace:    kube-system
 Labels:       <none>
@@ -438,21 +458,23 @@ eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiw
 
 ca.crt:     1025 bytes
 ```
-- Copy the contents of the token (in this case the `eyJh........W5iA` text, but it *will* vary in your environment). 
-- Save it in a plain text editor on your laptop for easy use later in the lab
+
+  11. Copy the contents of the token (in this case the `eyJh........W5iA` text, but it *will* vary in your environment). 
+  
+  12. Save it in a plain text editor on your laptop for easy use later in the lab
 
 As the OCI Cloud Shell runs in a web browser and is not itself a web browser we need to setup access so that the kubernetes-dashboard is available to your web browser on your laptop. This would normally be a problem as it would be running on a network that it internal to the cluster. 
 
 Fortunately for us helm is a very powerful mechanism for configuring services, and when we used the helm command to install the dashboard we told it that the service.type was LoadBalancer, this will automatically setup a load balancer for us, making the dashbaord service visible on the public internet, we just need the IP address to use.
 
-To get the IP address of the dashboard load balancer :
-
-- Run the following command
+  13. To get the IP address of the dashboard load balancer run the following command
+  
   - `kubectl get service kubernetes-dashboard -n kube-system`
-    ```
+  
+  ```
     NAME                   TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)         AGE
     kubernetes-dashboard   LoadBalancer   10.96.21.252   130.61.134.234   443:32302/TCP   4m48s
-    ```
+```
 
 The IP address of the load balancer is in the EXTERNAL-IP column. Note that this can take a few minutes to be assigned, so it it's listed as <pending> just re-run the `kubectl get` command after a short while
 
@@ -460,40 +482,47 @@ The IP address of the load balancer is in the EXTERNAL-IP column. Note that this
 ### Looking around the dashboard.
 In several of the labs we're going to be using the dashboard, so let's look around it a bit to get familiar with it's operation.
 
-- Open a web browser and using the IP address you got above and go to :
+  14. Open a web browser and using the IP address you got above and go to 
+  
   - `https://<load balancer ip address>/#!/login`
 
-- In the browser, accept a self signed certificate.
+  15. In the browser, accept a self signed certificate the mechanism varies by browser and version, but as of August 2020 the following worked.
+  
   - In Safari you will be presented with a page saying "This Connection Is Not Private" Click the "Show details" button, then you will see a link titled `visit this website` click that, then click the `Visit Website` button on the confirmation pop-up. To update the security settings you may need to enter a password, use Touch ID or confirm using your Apple Watch.
+  
   - In Firefox once the security risk page is displayed click on the "Advanced" button, then on the "Accept Risk and Continue" button
+  
   - In Chrome once the "Your connection is not private" page is displayed click the advanced button, then you may see a link titled `Proceed to ....(unsafe)` click that. 
   
 We have had reports that some versions of Chrome will not allow you to override the page like this, for Chrome 83 at least one solution is to click in the browser window and type the words `thisisunsafe` (copy and past doesn't seem to work, you need to actually type it). Alternatively use a different browser.
 
 You'll now be presented with the login screen for the dashboard.
 
-- Click the radio button for the **Token**
-- Enter the token for the admin-user you retrieved earlier
-- Accept to save the password if given the option, it'll make things easier on the next login
-- Press **Sign In**
+  16. Click the radio button for the **Token**
+  
+  17. Enter the token for the admin-user you retrieved earlier
+  
+  18. Accept to save the password if given the option, it'll make things easier on the next login
+  
+  20. Press **Sign In**
 
-![dashboard-login-completed](images/dashboard-login-completed.png)
+  ![dashboard-login-completed](images/dashboard-login-completed.png)
 
 **Important** The Kubernetes dashboard will only keep the login session open for a short time, after which you will be logged out. Unfortunately when your login session expires the Kubernetes dashboard doesn't always return you to the login screen. If you find that you are making changes and the dashboard doesn't reflect them, or that you can see something using kubectl - but not in the dashboard, or you trigger an action on the dashboard (e.g. switching to a different a namespace) but the content doesn't update it's probable that the session has expired. In this case **reload** the web page or go to the login URL (above), this will reset the pages state and present you with the login screen again, login using your token as previously (the token does not change, so you don't have to extract it again)
 
 You now should see the **Overview** dashboard :
 
-![dashboard-overview](images/dashboard-overview.png)
+  ![dashboard-overview](images/dashboard-overview.png)
 
 Note that some options on the left menu have a little N by them (if you hover your mouse it becomes "Namespaced") This is a reminder that this menu item (or in the case of Workloads, Service, and Config and storage) will display / allow you to manage stuff that is namespace specific. 
 
-To select a namespace use the dropdown on the upper right of the web page.
+  21. To select a namespace use the dropdown on the upper right of the web page.
 
-![dashboard-namespace-selector](images/dashboard-namespace-selector.png)
+  ![dashboard-namespace-selector](images/dashboard-namespace-selector.png)
 
-Initially it will probably say default, if you click on it you will get a choice of namespaces.
+  22. Initially it will probably say default, if you click on it you will get a choice of namespaces.
 
-![dashboard-namespace-selector-chose](images/dashboard-namespace-selector-chose.png)
+  ![dashboard-namespace-selector-chose](images/dashboard-namespace-selector-chose.png)
 
 ---
 
@@ -506,59 +535,59 @@ If you do not have the menu on the left click the three bars to open the menu up
 
 The first thing to remember with the dashboard is that (like kubectl) you need to select a namespace to operate in, or you can chose to extract data from all namespaces. The namespace selection is on the top left by the Kubernetes logo, initially it may well be set to "default".
 
- In the Namespace section on the click the dropdown to select the kube-system namespace
+  - In the Namespace section on the click the dropdown to select the kube-system namespace
  
-![dashboard-namespace-selector-select-kube-system](images/dashboard-namespace-selector-select-kube-system.png)
+  ![dashboard-namespace-selector-select-kube-system](images/dashboard-namespace-selector-select-kube-system.png)
 
-Select kube-system, precisely which page you'll go to will depend on what was selected in the left menu when you switched namespaces, but in my case it took me to an overview page.
+  = Select kube-system, precisely which page you'll go to will depend on what was selected in the left menu when you switched namespaces, but in my case it took me to an overview page.
 
-![dashboard-overview-kube-system](images/dashboard-overview-kube-system.png)
+  ![dashboard-overview-kube-system](images/dashboard-overview-kube-system.png)
 
-Let's switch to see the details of the workspace, Click `Workloads` on the left menu
+  - Let's switch to see the details of the workspace, Click `Workloads` on the left menu
 
-![dashboard-overview-kube-system-workloads](images/dashboard-overview-kube-system-workloads.png)
+  ![dashboard-overview-kube-system-workloads](images/dashboard-overview-kube-system-workloads.png)
 
 You can use the Kubernetes dashboard to navigate the relationships between the resources. Let's start by looking at the services in the kube-system namespace
 
-Click `Services in the `Service` section on the left menu
+  - Click `Services in the `Service` section on the left menu
 
-If you scroll down the page to services you'll see the kubentes-dashboard service listed, 
+  - If you scroll down the page to services you'll see the kubentes-dashboard service listed, 
 
-![dashboard-overview-kube-system-services](images/dashboard-overview-kube-system-services.png)
+  ![dashboard-overview-kube-system-services](images/dashboard-overview-kube-system-services.png)
 
-Click on the service name `kubernetes-dashboard` to get the details of the service, including the pods it's running on.
+  - Click on the service name `kubernetes-dashboard` to get the details of the service, including the pods it's running on.
 
-![dashboard-service-dashboard](images/dashboard-service-dashboard.png)
+  ![dashboard-service-dashboard](images/dashboard-service-dashboard.png)
 
 (You may have to scroll down to see the pods list and some other details)
 
-If you click the `Deployments` in the `Workloads` section of the left menu you'll see the deployments list (the dashboard, coredns and auto-scaler services) 
+  - If you click the `Deployments` in the `Workloads` section of the left menu you'll see the deployments list (the dashboard, coredns and auto-scaler services) 
 
-![dashboard-deployments-list](images/dashboard-deployments-list.png)
+  ![dashboard-deployments-list](images/dashboard-deployments-list.png)
 
-click on the kubernetes-dashboard deployment to look into the detail of the deployment and you'll see the deployment details, including the list of replica sets that are in use. We'll look into the old / new distinction when we look at rolling upgrades) 
+  - Click on the kubernetes-dashboard deployment to look into the detail of the deployment and you'll see the deployment details, including the list of replica sets that are in use. We'll look into the old / new distinction when we look at rolling upgrades) 
 
-![dashboard-deployment-dashboard](images/dashboard-deployment-dashboard.png)
+  ![dashboard-deployment-dashboard](images/dashboard-deployment-dashboard.png)
 
-Scroll down until you can see the replica set section
+  - Scroll down until you can see the replica set section
 
-![dashboard-deployment-dashboard-replica-sets-list](images/dashboard-deployment-dashboard-replica-sets-list.png)
+  ![dashboard-deployment-dashboard-replica-sets-list](images/dashboard-deployment-dashboard-replica-sets-list.png)
 
-Click on the replica set name (kubernetes-dashboard-699cc9f655 in this case) then scroll down a bit to see the pods in the replica set. 
+  - Click on the replica set name (kubernetes-dashboard-699cc9f655 in this case) then scroll down a bit to see the pods in the replica set. 
 
-![dashboard-replicaset-dashboard](images/dashboard-replicaset-dashboard.png)
+  ![dashboard-replicaset-dashboard](images/dashboard-replicaset-dashboard.png)
 
-In this case there's only one pod (kubernetes-dashboard-699cc9f655-jz4ph in this case, yours will vary) so click on that to see the details of the pod. 
+  - In this case there's only one pod (kubernetes-dashboard-699cc9f655-jz4ph in this case, yours will vary) so click on that to see the details of the pod. 
 
-![dashboard-pod-dashboard](images/dashboard-pod-dashboard.png)
+  ![dashboard-pod-dashboard](images/dashboard-pod-dashboard.png)
 
 Using kubernetes-dashboard to look at a pod provides several useful features, we can look at any log data it's generated (output the pod has written to stderr or stdout) 
 
-Click the Logs button on the upper right - ![dashboard-logs-icon](images/dashboard-logs-icon.png)
+  - Click the Logs button on the upper right - ![dashboard-logs-icon](images/dashboard-logs-icon.png)
 
 That displays the logs for the dashboard pod
 
-![dashboard-logs-dashboard](images/dashboard-logs-dashboard.png)
+  ![dashboard-logs-dashboard](images/dashboard-logs-dashboard.png)
 
 This displays the log data which can be very useful when debugging.  Of course it's also possible to use kubectl to download logs info if you wanted to rather than just displaying it in the browser.
 
@@ -606,21 +635,23 @@ For this lab we're going to use an nginx based Ingress controller. The nginx bas
 
 Firstly we need to create a namespace for the ingress controller.
 
-- Run the following command :
+  23. Run the following command :
+  
   - `kubectl create namespace ingress-nginx`
-    ```
+  
+  ```
     namespace/ingress-nginx created
-    ```
+```
 
 As we will be providing a secure TLS protected connection we need to create a certificate to protect the connection. In a **production** environment this would be accomplished by going to a certificate authority and having them issue a certificate. This however can take time as certificates are (usually) based on a DNS name and a commercial provider may well require that you prove your organizations identity before issuing a certificate.
 
 To enable the lab to complete in a reasonable time we will therefore be generating our own self-signed certificate. For a lab environment that's fine, but in a production environment you wouldn't do this.
 
-- Run the following command to generate a certificate.
+  24. Run the following command to generate a certificate.
 
   - `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=nginxsvc/O=nginxsvc"`
 
-```
+  ```
 Generating a 2048 bit RSA private key
 ............................+++
 ............................................................................................+++
@@ -630,22 +661,21 @@ writing new private key to 'tls.key'
  
 The certificate needs to be in a Kubernetes secret, we'll look at these in more detail, but for now :
 
-- Run the following command to save the certificate as a secret in the ingress-nginx namespace
+  25. Run the following command to save the certificate as a secret in the ingress-nginx namespace
 
   - `kubectl create secret tls tls-secret --key tls.key --cert tls.crt -n ingress-nginx`
  
-```
+  ```
 secret/tls-secret created
 ```
 
 
-- Run the following command : 
-
-- Install **ingress-nginx** using Helm 3:
+  26. Run the following command to install **ingress-nginx** using Helm 3:
+  
   -  `helm install ingress-nginx stable/nginx-ingress -n ingress-nginx --version 1.41.3 --set rbac.create=true --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-tls-secret"=tls-secret --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-ssl-ports"=443`
 
 
-```
+  ```
 NAME: ingress-nginx
 LAST DEPLOYED: Fri Jul  3 12:06:33 2020
 NAMESPACE: ingress-nginx
@@ -660,14 +690,16 @@ You can watch the status by running 'kubectl --namespace ingress-nginx get servi
 
 <Additional output removed for ease of reading>
 ```
+
 This will install the ingress controller in the default namespace.
 
 Because the Ingress controller is a service, to make it externally available it still needs a load balancer with an external port. Load balancers are not provided by Kubernetes, instead Kubernetes requests that the external framework delivered by the environment provider create a load balancer. Creating such a load balancer *may* take some time for the external framework to provide. 
 
-- To see the progress in creating the Ingress service type :
+  27. To see the progress in creating the Ingress service type :
+  
   -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-nginx-ingress-controller`
 
-```
+  ```
 NAME                                     TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)                      AGE   SELECTOR
 ingress-nginx-nginx-ingress-controller   LoadBalancer   10.111.0.168   130.61.15.77 80:31934/TCP,443:31827/TCP   61s   app=nginx-ingress,component=controller,release=ingress-nginx
 ```
@@ -675,45 +707,45 @@ In this case we can see that the load balancer has been created and the external
 
 In the helm command you'll have seen a couple of `--set`` options.  These are oci specific annotations (more on annotations later) which tell Kubernetes to setup the load balancer using the TLS secret we created earlier and to use port 443 for encrypted connections (the standard https port)
 
-**Make a note of this external IP address, you'll be using it a lot!**
+  28. **Make a note of this external IP address, you'll be using it a lot!**
 
 As we are having the load balancer act as the encryption termination point, and internal to the cluster we are not using encryption we need to update the load balancer to tell is that once is has terminated the secure connection is should pass on the request internally using an http, not https.
 
-Open up the OCI Cloud UI in your web browser, using the "hamburger: menu navigate to `Core Infrastructure` section then `Networking then select `Load Balancers`
+  29. Open up the OCI Cloud UI in your web browser, using the "hamburger: menu navigate to `Core Infrastructure` section then `Networking then select `Load Balancers`
 
-![hamburger-menu-select-loadbalancer](images/hamburger-menu-select-loadbalancer.png)
+  ![hamburger-menu-select-loadbalancer](images/hamburger-menu-select-loadbalancer.png)
 
-Locate the row for **your** load balancer with the IP address you got above, in this case that's for a load balancer named `5da95ea3-6993-4e3b-8d09-a6da655b3eae` but it **will** be different for you!
+  30. Locate the row for **your** load balancer with the IP address you got above, in this case that's for a load balancer named `5da95ea3-6993-4e3b-8d09-a6da655b3eae` but it **will** be different for you!
 
-Click on the load balancer name to open it's details
+  31. Click on the load balancer name to open it's details
 
-![load-balancer-overview](images/load-balancer-overview.png)
+  ![load-balancer-overview](images/load-balancer-overview.png)
 
-Locate the resources section on the lower left side
+  32. Locate the resources section on the lower left side
 
-![load-balancer-resources](images/load-balancer-resources.png)
+  ![load-balancer-resources](images/load-balancer-resources.png)
 
-Click on the `Listeners` option
+  33. Click on the `Listeners` option
 
-![load-balancer-listeners](images/load-balancer-listeners.png)
+  ![load-balancer-listeners](images/load-balancer-listeners.png)
 
 In the list of listeners look at the line TCP-443, notice that it is set to uses SSL (right hand column) and that it's backend set (where it sends traffic to) is set to TCP-443, we need to change that.
 
-Click on the three dots on the right hand side of the **TCP-443** row
+  34. Click on the three dots on the right hand side of the **TCP-443** row
 
-![load-balancer-listeners-edit](images/load-balancer-listeners-edit.png)
+  ![load-balancer-listeners-edit](images/load-balancer-listeners-edit.png)
 
-Click the `Edit` option in the resulting menu
+  35. Click the `Edit` option in the resulting menu
 
-![load-balancer-edit-listener-chose-backend-set](images/load-balancer-edit-listener-chose-backend-set.png)
+  ![load-balancer-edit-listener-chose-backend-set](images/load-balancer-edit-listener-chose-backend-set.png)
 
-In the popup locate the BackendSet option, click on it and select the `TCP-80` option
+  36. In the popup locate the BackendSet option, click on it and select the `TCP-80` option
 
-Click the `Update Listener`
+  37. Click the `Update Listener`
 
-![load-balancer-update-in-progress](images/load-balancer-update-in-progress.png)
+  ![load-balancer-update-in-progress](images/load-balancer-update-in-progress.png)
 
-You'll be presented with a `Work in progress` menu, for now just click the `Close` button and the update will continue in the background
+  38. You'll be presented with a `Work in progress` menu, for now just click the `Close` button and the update will continue in the background
 
 <details><summary><b>Scripting the listener change</b></summary>
 
@@ -750,9 +782,11 @@ Kubernetes supports the concept of namespaces, these logically split the cluster
 
 In a production cluster where you may have many applications running composed of many microservices having separate namespaces is basically essential to avoid mistakes and misunderstandings that could impact the service operation.
 
-- Create a namespace for your projects and setup the environment to make it the default, to make it easier we have created a script called create-namespace.sh that does this for you. You must use **your initials** as a parameter (for example in my case that's `tg-helidon`)
-  -  `cd $HOME/helidon-kubernetes/base-kubernetes`
-  -  `bash create-namespace.sh <your-initials>-helidon`
+  1. Create a namespace for your projects and setup the environment to make it the default, to make it easier we have created a script called create-namespace.sh that does this for you. You must use **your initials** as a parameter (for example in my case that's `tg-helidon`, **but yours will probably differ !**)
+  
+  1a.  `cd $HOME/helidon-kubernetes/base-kubernetes`
+  
+  1b.  `bash create-namespace.sh <your-initials>-helidon`
   
 ```
 Deleting old tg-helidon namespace
@@ -763,11 +797,11 @@ Context "docker-desktop" modified.
 ```
 The script tries to delete any existing namespace with that name, creates a new one, and sets it as a default. The output above was using tg-helidon as the namespace, but of course you will have used your initials and so will see them in the output instead of tg.
 
-We can check the namespace has been created by listing all namespaces:
+  2. We can check the namespace has been created by listing all namespaces:
 
--  `kubectl get namespace`
+  -  `kubectl get namespace`
 
-```
+  ```
 NAME              STATUS   AGE
 default           Active   2d23h
 docker            Active   2d23h
@@ -776,11 +810,11 @@ kube-public       Active   2d23h
 kube-system       Active   2d23h
 tg-helidon        Active   97s
 ```
-If we look into the namespace we've just created we'll see it contains nothing yet:
+  3. If we look into the namespace we've just created we'll see it contains nothing yet:
 
--  `kubectl get all`
+  -  `kubectl get all`
 
-```
+  ```
 No resources found in tg-helidon namespace.
 ```
 
@@ -870,11 +904,11 @@ You need to define the services before defining anything else (e.g. deployments,
 </details>
 
 
-The servicesClusterIP.yaml file in the defines the cluster services for us. We can apply it to make the changes
+  4. The servicesClusterIP.yaml file in the defines the cluster services for us. We can apply it to make the changes
 
-- `kubectl apply -f servicesClusterIP.yaml`
+  - `kubectl apply -f servicesClusterIP.yaml`
 
-```
+  ```
 service/storefront created
 service/stockmanager created
 service/zipkin created
@@ -882,11 +916,11 @@ service/zipkin created
 
 Note that the service defines the endpoint, it's not actually running any code for your service yet.
 
-To see the services we can use kubectl :
+  5. To see the services we can use kubectl :
 
-- `kubectl get services`
+  - `kubectl get services`
 
-```
+  ```
 NAME           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
 stockmanager   ClusterIP   10.110.57.74    <none>        8081/TCP,9081/TCP   2m15s
 storefront     ClusterIP   10.96.208.163   <none>        8080/TCP,9080/TCP   2m16s
@@ -929,9 +963,11 @@ PS I know in this lab we've used a load balancer for the dashboard (and will do 
 
 We have already installed the Ingress controller which actually operates the ingress service and configured the associated load balancer. You can see this by looking at the services.  The ingress service is in the ingress-nginx namespace, so we have to specify that :
 
--  `kubectl get services -n ingress-nginx`
+  6. Let's look at the Ingress services
 
-```
+  -  `kubectl get services -n ingress-nginx`
+
+  ```
 NAME                                          TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
 ingress-nginx-nginx-ingress-controller        LoadBalancer   10.111.0.168    130.61.15.77  80:31934/TCP,443:31827/TCP   4h9m
 ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <none>        80/TCP                       4h9m
@@ -939,14 +975,17 @@ ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <no
 
 
 
-- Note the **External IP address** 
-- You will need to use this address to access **your** services in the rest of this lab
+  7. Note the **External IP address** 
+  
+You will need to use this address to access **your** services in the rest of this lab
 
-For the moment there are no actual ingress rules defined yet, we can see this using kubectl:
+For the moment there are no actual ingress rules defined yet, 
 
--  `kubectl get ingress`
+  8. Let's use kubectl to confirm we have no rules yet
 
-```
+  -  `kubectl get ingress`
+
+  ```
 No resources found in tg-helidon namespace.
 ```
 
@@ -1029,10 +1068,11 @@ One simple solution however is to modify the load balancer settings to block non
 </details>
 
 
-- Apply the Ingress Config file : 
+  9. Let's create the Ingress rules by applying the Ingress Config file : 
+  
   -  `kubectl apply -f ingressConfig.yaml`
 
-```
+  ```
 ingress.networking.k8s.io/zipkin created
 ingress.networking.k8s.io/storefront created
 ingress.networking.k8s.io/stockmanager created
@@ -1043,11 +1083,11 @@ ingress.networking.k8s.io/storefront-management created
 ingress.networking.k8s.io/storefront-openapi created
 ```
 
-We can see the resulting ingresses using kubectl
+  10. We can see the resulting ingresses using kubectl
 
--  `kubectl get ingress`
+  -  `kubectl get ingress`
 
-```
+  ```
 NAME                      HOSTS   ADDRESS   PORTS   AGE
 stockmanager              *                 80      47s
 stockmanager-management   *                 80      47s
@@ -1059,7 +1099,7 @@ zipkin                    *                 80      47s
 ```
 One thing that you may have noticed is that the ingress controller is running in the ingress-nginx namespae, but when we create the rules we are using the namespace we specified (in this case tg_helidon) This is because the rule needs to be in the same namespace as the service it's defining the connection two, but the ingress controller service exists once for the cluster (we could have more pods if we wanted, but for this lab it's perfectly capable of running all we need) We could put the ingress controller into any namespace we chose, kube-system might be a good choice in a production environment. If we wanted different ingress controllers then for nginx at any rate the --watch-namespace option restricts the controller to only look for ingress rules in specific namespaces.
 
-If you look at the rules in the ingressConfig.yaml file you'll see they setup the following mappings
+  11. Edit the ingressConfig.yaml file you'll see the rules in it sets up the following mappings
 
 Direct mappings
 
@@ -1081,11 +1121,11 @@ Direct mappings
 
 Notice the different ports in use on the target.
 
-Find the external IP address the ingress controller is running on :
+  12. If you didn;t write it down earlier find the external IP address the ingress controller is running on :
 
--  `kubectl get service -n ingress-nginx`
+  -  `kubectl get service -n ingress-nginx`
 
-```
+  ```
 NAME                                          TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
 ingress-nginx-nginx-ingress-controller        LoadBalancer   10.111.0.168    132.18.12.23     80:31934/TCP,443:31827/TCP   5h50m
 ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <none>        80/TCP                       5h50m
@@ -1099,11 +1139,11 @@ The image below was going to the ingress-nginx namespace (that being the one the
 
 ![Ingress controller service endpoints](images/ingress-controller-service-endpoints.png)
 
-We now have a working endpoint, let's try accessing it using curl - expect an error!
+  13. We now have a working endpoint, let's try accessing it using curl - expect an error!
 
--  `curl -i -k -X GET https://<ip address>/sf`
+  -  `curl -i -k -X GET https://<ip address>/sf`
 
-```
+  ```
 HTTP/2 503 
 server: nginx/1.17.8
 date: Fri, 27 Mar 2020 09:20:42 GMT
@@ -1130,11 +1170,11 @@ Previously we didn't use the -k flag or https when testing in the Helidon labs. 
 
 We got a **service unavailable** error. This is because that web page is recognised as an ingress rule, but there are no pods able to deliver the service. This isn't a surprise as we haven't started them yet!
 
-If we tried to go to a URL that's not defined we will as expected get a **404 error**:
+  14. If we tried to go to a URL that's not defined we will as expected get a **404 error**:
 
--  `curl -i -k -X GET https://<ip address>/unknowningress`
+  -  `curl -i -k -X GET https://<ip address>/unknowningress`
 
-```
+  ```
 HTTP/2 404 
 server: nginx/1.17.8
 date: Fri, 27 Mar 2020 09:22:24 GMT
@@ -1188,17 +1228,17 @@ In The Helidon labs we provided the database details via Java system properties 
 
 We will of course be using a Kubernetes secret to hold them (they are sensitive, so placing them in a deployment yaml file which might be accessible by many folks would also be a bad idea) **You** need to update them with the setting for **your** database
 
-- Switch to the **$HOME/helidon-kubernetes/configurations/stockmanagerconf** directory
+  1. Switch to the **$HOME/helidon-kubernetes/configurations/stockmanagerconf** directory
 
-- **Edit** the file `databaseConnectionSecret.yaml`
+  2. **Edit** the file `databaseConnectionSecret.yaml`
 
-- Locate the `url` (in the `stringData` section)
+  3. Locate the `url` (in the `stringData` section)
 
-```yaml
+  ```yaml
   url: jdbc:oracle:thin:@<database connection name>?TNS_ADMIN=./Wallet_ATP
 ```
 
-- Replace `<database connection name>` with the connection name for **your** database you got from the `tnsnames.ora` file earlier. In my case that was `tg_high`, **but yours will be different**
+  4. Replace `<database connection name>` with the connection name for **your** database you got from the `tnsnames.ora` file earlier. In my case that was `tg_high`, **but yours will be different**
 
 For **me** tha line looked like this, **YOURS WILL BE DIFFERENT**
 
@@ -1208,7 +1248,7 @@ For **me** tha line looked like this, **YOURS WILL BE DIFFERENT**
 
 If you used a different username or password then you will need to update those fields as well.
 
-- Save the changes to the file and exit the editor
+  5. Save the changes to the file and exit the editor
 
 We will create the secret using a script later.
 
@@ -1233,11 +1273,11 @@ Here we're telling Kubernetes to look in the `stockmanagerdb` secret for a data 
 
 #### Creating the secrets
 
-- Run the following command to create the secrets:
+  6. Run the following command to create the secrets:
+  
   -  `bash create-secrets.sh`
 
-
-```
+  ```
 Deleting existing store front secrets
 sf-conf
 Deleting existing stock manager secrets
@@ -1265,15 +1305,17 @@ sm-wallet-atp         Opaque                                7      1s
 
 ```
 
+Feel free to look at the script, it just uses kubectl to ussue commands, we just script it to reduce the amount of copy-and-paste
+
 If you had made a mistake editing the file or get an error when executing it just re-edit the *create-secrets.sh* script and run it again, it will reset to a known state before creating the secrets again so running it multiple times is safe. 
 
 If you want to modify a secret then you simply use kubectl to edit it with the new values (or delete it, then add it's replacement). When a secret is modified (and if you've told Helidon to look for changes) then changes to the secret will be reflected as changes in the configuration. Depending on how your code accesses those, the change may be picked up by your existing code, or you may need to restart the pod(s) using the updated secrets.
 
-Listing the secrets is simple:
+  7. Listing the secrets is simple:
 
--  `kubectl get secrets`
+  -  `kubectl get secrets`
 
-```
+  ```
 NAME                  TYPE                                  DATA   AGE
 default-token-7tk9z   kubernetes.io/service-account-token   3      5m31s
 sf-conf-secure        Opaque                                1      5m8s
@@ -1283,11 +1325,11 @@ sm-wallet-atp         Opaque                                7      5m9s
 
 
 
-To see the content of a secret :
+  8. To see the content of a specific secret :
 
--  `kubectl get secret sm-conf-secure -o yaml`
+  -  `kubectl get secret sm-conf-secure -o yaml`
 
-```
+  ```
 apiVersion: v1
 data:
   stockmanager-database.yaml: amF2YXg6CiAgICBzcWw6CiAgICAgICAgRGF0YVNvdXJjZToKICAgICAgICAgICAgc3RvY2tMZXZlbERhdGFTb3VyY...
@@ -1309,9 +1351,11 @@ type: Opaque
 
 The contents of the secret is base64 encoded, to see the actual content we need to use a base64 decoder, in the following replace <your secret payload> with the stockmanager-security.yaml data in result from above, (it starts c2VjdXJpdHk in this example) : 
 
--  `echo <your secret payload> | base64 -d -i -`
+  9. To get the secret in plain test
 
-```
+  -  `echo <your secret payload> | base64 -d -i -`
+
+  ```
 security:
   providers:
     # enable the "ABAC" security provider (also handles RBAC)
@@ -1331,13 +1375,17 @@ security:
 ```
 The dashboard is actually a lot easier in this case. 
 
-In the dashboard UI
-- Chose **your** namespace in the namespace selector (upper left) tg-helidon in my case, but yours may differ
-- Click on the `Secrets` choice in the `Config and Store` section of the left hand menu.
-- Select the sf-conf entry to see the list of files in the secret
-- Click on the eye icon next to the storefront-security.yaml to see the contents of the secret.
+  10. In the dashboard UI
+  
+  11. Chose **your** namespace in the namespace selector (upper left) tg-helidon in my case, but yours may differ
 
-![dashboard-secrets-stockmanager-security](images/dashboard-secrets-stockmanager-security.png)
+  12. Click on the `Secrets` choice in the `Config and Store` section of the left hand menu.
+
+  13. Select the sf-conf entry to see the list of files in the secret
+
+  14. Click on the eye icon next to the storefront-security.yaml to see the contents of the secret.
+
+  ![dashboard-secrets-stockmanager-security](images/dashboard-secrets-stockmanager-security.png)
 
 ### Config Maps
 
@@ -1360,9 +1408,11 @@ For example (**don't type this**) `$ kubectl create configmap sf-config-map --fr
 
 In the $HOME/helidon-kubernetes/base-kubernetes folder there is a script create-configmaps.sh. We have created this to help you setup the configuration maps (though you can of course do this by hand instead of creating a script). If you run this script it will delete existing config maps and create an up to date config for us :
 
--  `bash create-configmaps.sh `
+  15. Run the script to create the condig maps
 
-```
+  -  `bash create-configmaps.sh `
+
+  ```
 Deleting existing config maps
 sf-config-map
 configmap "sf-config-map" deleted
@@ -1382,21 +1432,23 @@ sm-config-map   2      0s
 
 ```
 
-To get the list of config maps we need to ask kubectl or look at the config maps in the dashbaord:
+As with the secretd we are using a script to make it easier, feel free to look at the contents of the script, you'll see it's kubectl command that select any old entries (if they exist) then creates new ones.
 
--  `kubectl get configmaps`
+  16. To get the list of config maps we need to ask kubectl or look at the config maps in the dashbaord:
 
-```
+  -  `kubectl get configmaps`
+
+  ```
 NAME            DATA   AGE
 sf-config-map   2      37s
 sm-config-map   2      37s
 ```
 
-We can get more details by getting the data in JSON or YAML, in this case I'm extracting it using YAML as that's the origional data format:
+  17. We can get more details by getting the data in JSON or YAML, in this case I'm extracting it using YAML as that's the origional data format:
 
--  `kubectl get configmap sf-config-map -o=yaml`
+  -  `kubectl get configmap sf-config-map -o=yaml`
 
-```
+  ```
 apiVersion: v1
 data:
   storefront-config.yaml: |-
@@ -1551,11 +1603,11 @@ If you did the Helidon and Docker labs and want to use your own images you creat
 **IMPORTANT**
 The config files of the storefront and stockmanager refer to the location in the docker repo and any security keys that you used when setting up the labs. So you'll need to edit the deployment files to reflect the location of **your** images.
 
-- Make sure you are in the folder **helidon-kubernetes**
+  - Make sure you are in the folder **helidon-kubernetes**
 
-- Open the file **stockmanager-deployment.yaml** 
+  - Open the file **stockmanager-deployment.yaml** 
 
-  - Edit the line specifying the image to reflect *your* docker image location for the stockmanager.  The example below shows the config if you chose *tg_repo* as the name, but of course you will have chosen something different!
+   - Edit the line specifying the image to reflect *your* docker image location for the stockmanager.  The example below shows the config if you chose *tg_repo* as the name, but of course you will have chosen something different!
 
 ```yaml
     spec:
@@ -1564,14 +1616,14 @@ The config files of the storefront and stockmanager refer to the location in the
             image: fra.ocir.io/oractdemeabdmnative/tg_repo/stockmanager:0.0.1
 ```
 
-- Repeat this operation for the file **storefront-deployment.yaml**
+  - Repeat this operation for the file **storefront-deployment.yaml**
   
-  - Edit the line specifying the image to reflect *your* docker image location for the storefront.
+   - Edit the line specifying the image to reflect *your* docker image location for the storefront. Make sure to use the **storefront** image of course!
   
 
 We need to tell Kubernetes what secret to use when retrieving the docker images from the repository, the imagePullSecrets key allows us to pass this information on. 
 
-Find the commented line for the image pull secret and uncomment it so it looks like this 
+Find the commented section for the image pull secret and uncomment it so it looks like this 
 
 ```yaml
       imagePullSecrets:
@@ -1605,21 +1657,21 @@ Once you have got this information please save it in a notepad or something as y
 
 The OCIR region code is based on the IATA code for the city hosting the region, for example Frankfurt has an IATA core of `fra` and Amsterdam is `ams`. Unfortunately some cities (e.g. London) have multiple airports, in others the IATA airport code refers to an old name for the city, or the airport itself is not directly named after the city it serves, so we need to look the right code up based on our region.
 
-To determine your region look at the top of your Oracle Cloud GUI in the web browser and you'll see your current region.
+  - To determine your region look at the top of your Oracle Cloud GUI in the web browser and you'll see your current region.
 
-![](images/region-name.png)
+  ![](images/region-name.png)
 
-If you click on the name you'll get a list of regions enabled for your tenancy and your home region
+  - If you click on the name you'll get a list of regions enabled for your tenancy and your home region
 
-![](images/regions-list.png)
+  ![](images/regions-list.png)
 
 You can see here in this example we're using the Frankfurt region, which is also our home region.
 
 Now go to the [OCIR Availability By Region list.](https://docs.cloud.oracle.com/en-us/iaas/Content/Registry/Concepts/registryprerequisites.htm#Availab)
 
-Locate your region on the list and then to the right identify the region code, for example we can see below in the case of Frankfurt the OCIR region code to use is `fra` for Sydney it's `syd`
+  - Locate your region on the list and then to the right identify the region code, for example we can see below in the case of Frankfurt the OCIR region code to use is `fra` for Sydney it's `syd`
 
-![](images/fra.png)
+  ![](images/fra.png)
 
 
 
@@ -1708,12 +1760,13 @@ You will be using the details you gathered for the docker login.
 
 </details>
 
-The `deploy.sh` script just does a sequence of commands to apply the deployment configuration files, for example `kubectl apply -f zipkin-deployment.yaml --record=true` You could of course issues these commands by hand if you liked, but we're using a script here to save typo probems, and also because it's good practice to scritp this type of thing, so you know **exactly** the command that was run - which can be useful if you need to **exactly** reproduce it (which of course in a production environment you would!)
+The `deploy.sh` script just does a sequence of commands to apply the deployment configuration files, for example `kubectl apply -f zipkin-deployment.yaml --record=true` You could of course issues these commands by hand if you liked, but we're using a script here to save typo probems, and also because it's good practice to script this type of thing, so you know **exactly** the command that was run - which can be useful if you need to **exactly** reproduce it (which of course in a production environment you would!)
 
-- Now run the deploy.sh script
+  1. Now run the deploy.sh script
+  
   -  `bash deploy.sh`
 
-```
+  ```
 Creating zipkin deployment
 deployment.apps/zipkin created
 Creating stockmanager deployment
@@ -1743,7 +1796,7 @@ replicaset.apps/zipkin-88c48d8b9         1         1         0       0s
 
 ```
 
-The output includes the results of running the kubectl get all command. As it's been run immediately after we applied the files what we are seeing is the intermediate state of the environment.
+The output includes the results of running the kubectl get all command. As it's been run immediately after we applied the files what we are seeing is the intermediate state of the environment before everything is fully deployed.
 
 ---
 
@@ -1816,10 +1869,11 @@ Is we look at the Kubernetes dashboard we will see similar information. There is
 </details>
 
 
-- Now lets look at the logs of the pods you have launched (replace the ID shown here with the exact ID of your pod)
+  2. Now lets look at the logs of the pods you have launched (replace the ID shown here with the exact ID of your pod)
+  
   -  `kubectl logs  --follow storefront-68bbb5dbd8-vp578`
 
-```
+  ```
 2019.12.29 17:40:04 INFO com.oracle.labs.helidon.storefront.Main Thread[main,5,main]: Starting server
 2019.12.29 17:40:06 INFO org.jboss.weld.Version Thread[main,5,main]: WELD-000900: 3.1.1 (Final)
 2019.12.29 17:40:06 INFO org.jboss.weld.Bootstrap Thread[main,5,main]: WELD-ENV-000020: Using jandex for bean discovery
@@ -1829,8 +1883,7 @@ Is we look at the Kubernetes dashboard we will see similar information. There is
 2019.12.29 17:40:13 INFO com.oracle.labs.helidon.storefront.Main Thread[main,5,main]: Running on http://localhost:8080/store
 ```
 
-- Type **Ctrl-C** to stop kubectl and return to the command prompt.
-
+  3. Type **Ctrl-C** to stop kubectl and return to the command prompt.
 
 
 In the dashboard you can click the logs button on the upper right to open a log viewer page
@@ -1839,10 +1892,11 @@ In the dashboard you can click the logs button on the upper right to open a log 
 
 We can interact with the deployment using the public side of the ingress (it's load ballancer),  use kubectl to see the public IP address of the ingress controlers load ballancer, or the services section of the dashboard.
 
-- Show the services :
+  4. If you can't remember it get the external IP address of the load balancer 
+  
   -  `kubectl get services -n ingress-nginx`
 
-```
+  ```
 NAME                                          TYPE           CLUSTER-IP      EXTERNAL-IP    PORT(S)                      AGE
 ingress-nginx-nginx-ingress-controller        LoadBalancer   10.111.0.168    132.145.232.69 80:31934/TCP,443:31827/TCP   2d4h
 ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <none>         80/TCP                       2d4h
@@ -1850,10 +1904,11 @@ ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <no
 
 The External_IP column displays the external address. 
 
-- Let's try to get some data - **you might get an error** (replace <external IP> with the ingress controllers load ballancer you got earlier)
+  5. Let's try to get some data - **you might get an error** (replace <external IP> with the ingress controllers load ballancer you got earlier)
+  
   -  `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
 
-```
+  ```
 HTTP/2 200 
 server: nginx/1.17.8
 date: Fri, 27 Mar 2020 09:19:00 GMT
@@ -1864,8 +1919,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 [{"itemCount":100,"itemName":"Book"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":200,"itemName":"Pencil"},{"itemCount":5000,"itemName":"Pin"},{"itemCount":5000,"itemName":"Pins"}]
 ```
 
-- If you get **424 failed dependency** or timeouts it's because the services are doing their lazy initialization, 
-  - Wait a minute or so and retry the request
+If you get **424 failed dependency** or timeouts it's because the services are doing their lazy initialization, wait a minute or so and retry the request
   
 <details><summary><b>How to find out what pods are connected to a service</b></summary>
 
@@ -1916,8 +1970,9 @@ This will populate the database for you so you have some test data.
 
 And to see what's happening when we made the request we can look into the pods logs. Here we use --tail=5 to limit the logs output to the last 5 lines of the storefront pod
 
-- Looking at the logs now:
-  - kubectl logs storefront-68bbb5dbd8-vp578 --tail=5
+  6. Looking at the logs now - remember to replace the storefront pod id (`storefront-68bbb5dbd8-vp578` in this case) with **the pod id you got earlier** (from the `kubectl get all`)
+  
+  - `kubectl logs storefront-68bbb5dbd8-vp578 --tail=5`
 
 ```
 2019.12.29 18:05:14 INFO com.netflix.config.sources.URLConfigurationSource Thread[helidon-2,5,server]: To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
@@ -1927,10 +1982,11 @@ And to see what's happening when we made the request we can look into the pods l
 2019.12.29 18:05:24 INFO com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[hystrix-io.helidon.microprofile.faulttolerance-1,5,server]: Found 5 items
 ```
 
-- And also on the stockmanager pod
+  7. And also on the stockmanager pod, you also need to replace the pod id !
+  
   -  `kubectl logs stockmanager-d6cc5c9b7-bbjdp  --tail=20`
 
-```
+  ```
 $ kubectl logs stockmanager-d6cc5c9b7-bbjdp  --tail=20
 http://localhost:8081/stocklevel
 2019.12.29 18:05:15 INFO com.arjuna.ats.arjuna Thread[helidon-1,5,server]: ARJUNA012170: TransactionStatusManager started on port 36319 and host 127.0.0.1 with service com.arjuna.ats.arjuna.recovery.ActionStatusService
@@ -1963,34 +2019,39 @@ Using the logs function on the dashboard we'd see the same output, but you'd pro
 
 As we are running zipkin and have an ingress setup to let us access the zipkin pod let's look at just to show it working. 
 
-- Open your browser
-- Go to the ingress end point for your cluster, for example http://<external IP>/zipkin (replace with *your* ingress controllers Load balancer IP address)
+  8. Open your browser
+  
+  9. Go to the ingress end point for your cluster, for example http://<external IP>/zipkin (replace with *your* ingress controllers Load balancer IP address)
 
-- In the browser, accept a self signed certificate.
+  10. In the browser, accept a self signed certificate. The mechanism varies per browser and sometimes version, but below worked as of Summer 2020.
+  
   - In Safari you will be presented with a page saying "This Connection Is Not Private" Click the "Show details" button, then you will see a link titled `visit this website` click that, then click the `Visit Website` button on the confirmation pop-up. To update the security settings you may need to enter a password, use Touch ID or confirm using your Apple Watch.
+  
   - In Firefox once the security risk page is displayed click on the "Advanced" button, then on the "Accept Risk and Continue" button
+  
   - In Chrome once the "Your connection is not private" page is displayed click the advanced button, then you may see a link titled `Proceed to ....(unsafe)` click that. 
   
 We have had reports that some versions of Chrome will not allow you to override the page like this, for Chrome 83 at least one solution is to click in the browser window and type the words `thisisunsafe` (copy and past doesn't seem to work, you need to actually type it). Alternatively use a different browser.
 
-![Zipkin query](images/zipkin-initial-query.png)
+  ![Zipkin query](images/zipkin-initial-query.png)
 
-- Click the `Run Query` button to get the traces list
+  11. Click the `Run Query` button to get the traces list
 
 In my case I had made two requests before the lazy initialization sorted everything out, so there are a total of three traces.
 
-![List of traces in Zipkin](images/zipkin-traces-list.png)
+  ![List of traces in Zipkin](images/zipkin-traces-list.png)
 
-- Select the most recent trace and retrieve the data from that
+  13. Select the most recent trace and retrieve the data from that
 
-![Stock listing trace in Zipkin](images/zipkin-trace.png)
+  ![Stock listing trace in Zipkin](images/zipkin-trace.png)
 
 Of course the other services are also available, for example we can get the minimum change using the re-writer rules
 
-- Consult minimum change (replace <external IP> with your address)
+  14. Consult minimum change (replace <external IP> with your address)
+  
   -  `curl -i -k -X GET https://<external IP>/sf/minimumChange`
 
-```
+  ```
 HTTP/2 200 
 server: nginx/1.17.8
 date: Fri, 27 Mar 2020 09:56:25 GMT
@@ -2003,9 +2064,11 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 And in this case we are going to look at data on the admin port for the stock management service and get it's readiness data
 
-- Readiness call: `curl -i -k -X GET https://<external IP>/smmgt/health/ready`
+  15. Test the Readiness call
+  
+  - `curl -i -k -X GET https://<external IP>/smmgt/health/ready`
 
-```
+  ```
 HTTP/2 200 
 server: nginx/1.17.8
 date: Fri, 27 Mar 2020 09:56:57 GMT
@@ -2019,10 +2082,11 @@ strict-transport-security: max-age=15724800; includeSubDomains
 ## Step 7: Updating your external configuration
 We saw in the helidon labs that it's possible to have the helidon framework monitor the configuration files and trigger a refresh of the configuration data if something changed. Let's see how that works in Kubernetes.
 
-- Get the status resource data :
+  1. Get the status resource data 
+  
   -  `curl -i -k -X GET https://<external IP>/sf/status`
 
-```
+  ```
 HTTP/2 200 
 server: nginx/1.17.8
 date: Fri, 27 Mar 2020 09:57:31 GMT
@@ -2037,13 +2101,22 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 We've mounted the sf-config-map (which contains the contents of storefront-config.yaml file) onto /conf. Let's use a command to connect to the running pod (remember your storefront pod will have a different id so use kubectl get pods to retrieve that) and see how it looks in there, then exit the connection
 
-- Execute these commands :
+  2. Execute these commands :
+  
   -  `kubectl exec -it storefront-588b4d69db-w244b -- /bin/bash`
-  - You are now inside the container.  Type the following commands here:
-    -  `ls /conf`
-    -  `cat /conf/storefront-config.yaml`
+  
+You are now inside the container.  Type the following commands here:
 
-    ```
+  -  `ls /conf`
+   
+  ```
+storefront-config.yaml
+storefront-network.yaml
+```
+   
+  -  `cat /conf/storefront-config.yaml`
+
+   ```
     app:
       storename: "My Shop"
       minimumdecrement: 2
@@ -2051,49 +2124,55 @@ We've mounted the sf-config-map (which contains the contents of storefront-confi
     tracing:
       service: "storefront"
       host: "zipkin"
-    ```
-    
-    -  Exit the pod :  `exit`
-    
-    
+```
 
-As expected we see the contents of our config file. Let's use the dashboard to modify that data
+  5. Exit the pod :  
+  
+  - `exit`
 
-- Open the dashboard
-- Select your namespace in the selector on the upper left
-- Click on `Config Maps` in the `Config and Storage` section of the left menu
+As expected we see the contents of our config firectory and the storefront-config.yaml. Let's use the dashboard to modify that data
 
-![Config Maps list in namespace](images/config-maps-list.png)
+  6. Open the dashboard
+  
+  7. Select your namespace in the selector on the upper left
+  
+  8. Click on `Config Maps` in the `Config and Storage` section of the left menu
 
-- Then click on our config map (sf-config-map) to see the details and contents
+  ![Config Maps list in namespace](images/config-maps-list.png)
 
-![Config Maps details](images/config-map-orig-details.png)
+  9. Then click on our config map (sf-config-map) to see the details and contents
+
+  ![Config Maps details](images/config-map-orig-details.png)
 
 As we'd expect it has our contents (You may have a different storename than `My Shop` if you changed the storefront-config.yaml file before creating the config map)
 
-- Click the **Edit icon** (upper right) ![dashboard-edit-icon](images/dashboard-edit-icon.png) to get an on-screen editor where we can change the yaml that represents the map. 
+  10. Click the **Edit icon** (upper right) ![dashboard-edit-icon](images/dashboard-edit-icon.png) to get an on-screen editor where we can change the yaml that represents the map. 
 
-![Config Maps in editor](images/config-map-editor-initial.png)
+  ![Config Maps in editor](images/config-map-editor-initial.png)
 
-- Locate the **storename** attribute in the data.storefront-config.yaml section. 
+  11. Locate the **storename** attribute in the data.storefront-config.yaml section. 
 
-- Now edit the text and **change** the text `My Shop` to something else, here I've changed it to `Tims shop` . Be sure to change only the `My Shop` text, not the quote characters or other things (you don't want to create corrupt YAML which will be rejected).
+  12. Now edit the text and **change** the text `My Shop` to something else, here I've changed it to `Tims shop` . Be sure to change only the `My Shop` text, not the quote characters or other things (you don't want to create corrupt YAML which will be rejected).
 
+  ![Config Maps changed in editor](images/config-map-editor-updated.png)
 
-![Config Maps changed in editor](images/config-map-editor-updated.png)
-
-- Click on the update button to save your changes
+  13. Click on the update button to save your changes
 
 You'll see the changes reflected in the window. If you made any changes which caused syntax errors then you'll get an error message and the changes will be discarded, in that case re-edit the config map, being careful to only change the `My Shop` text.
 
-![Config Maps updated details](images/config-map-updated-details.png)
+  ![Config Maps updated details](images/config-map-updated-details.png)
 
 Now let's return to the pod and see what's happened
 
-- Re-connect to the pod: `kubectl exec -it storefront-588b4d69db-w244b -- /bin/bash`
-  - In the pod, run : `cat /conf/storefront-config.yaml`
+  14. Re-connect to the pod
+  
+  - `kubectl exec -it storefront-588b4d69db-w244b -- /bin/bash`
+  
+  15. In the pod, run 
+  
+  - `cat /conf/storefront-config.yaml`
 
-    ```
+  ```
     app:
       storename: "Tims Shop"
       minimumdecrement: 2
@@ -2101,17 +2180,21 @@ Now let's return to the pod and see what's happened
     tracing:
       service: "storefront"
       host: "zipkin"
-    ```
+```
 
-  - Exit the pod :   `exit`
+  16. Exit the pod 
+
+  - `exit`
 
 The storefront-config.yaml file has now changed to reflect the modifications you made to the config map. Note that it usually seems to take between 30 - 60  seconds for the change to propogate into the pod, so if you don't see the change immediately wait a short time then retry.
 
 If we now get the status resource data again it's also updated
 
-- Query the status: `curl -i -k -X GET https://<external IP>/sf/status`
+  17. Query the status
+  
+  - `curl -i -k -X GET https://<external IP>/sf/status`
 
-```bash
+  ```
 HTTP/2 200 
 server: nginx/1.17.8
 date: Fri, 27 Mar 2020 09:57:31 GMT

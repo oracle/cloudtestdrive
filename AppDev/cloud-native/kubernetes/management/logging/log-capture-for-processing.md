@@ -57,28 +57,31 @@ To process log data in a consistent manner we need to get all of the data into o
 
 As with elsewhere in the labs we'll do this module in it's own namespace, so first we have to create one.
 
-- In the cloud console type :
+  1. In the cloud console type 
+  
   - `kubectl create namespace logging`
   
-```
+  ```
 namespace/logging created
 ```
 
 Now let's use helm to install the elastic search engine into the logging namespace
 
-- First if you haven't already done it add the bitnami help repository
+  2. First if you haven't already done it add the bitnami help repository
 
-- `helm repo add bitnami https://charts.bitnami.com/bitnami`
-```
+  - `helm repo add bitnami https://charts.bitnami.com/bitnami`
+  
+  ```
 "bitnami" has been added to your repositories
 ```
 
 Note that depending on what modules you have already done you may get a message that `"bitnami" already exists with the same configuration, skipping` This is fine.
 
-- Update the repository cache
+  3. Update the repository cache
+  
   - `helm repo update`
 
-```
+  ```
 Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "kubernetes-dashboard" chart repository
 ...Successfully got an update from the "bitnami" chart repository
@@ -86,10 +89,11 @@ Hang tight while we grab the latest from your chart repositories...
 Update Complete. ⎈ Happy Helming!⎈ 
 ```
 
-- In the cloud console type :
+  4. Now we can actually install elastic search. In the cloud console type
+  
   - `helm install elasticsearch bitnami/elasticsearch --namespace logging --version 12.7.3`
 
-```
+  ```
 NAME: elasticsearch
 LAST DEPLOYED: Wed Apr 22 15:05:25 2020
 NAMESPACE: logging
@@ -115,10 +119,11 @@ Note the DNS name, in this case it's `elasticsearch-client.logging.svc`
 
 Let's check on the installation, note that is can take a few mins for the elastic search to be loaded and installed.
 
-- In the cloud console type :
+  5. In the cloud console type 
+  
   - `kubectl get all -n logging`
 
-```
+  ```
 NAME                                        READY   STATUS     RESTARTS   AGE
 pod/elasticsearch-client-5597688787-mq8qx   0/1     Running    0          55s
 pod/elasticsearch-client-5597688787-vzgk6   0/1     Running    0          56s
@@ -144,12 +149,15 @@ statefulset.apps/elasticsearch-master   0/3     56s
 
 Normally you wouldn't do this as the elastic search is an internal service that's accessed using other services that do analysis, but as we're going to be connecting to it externally to see how it's been working we're going to create an ingress that will let us access it.
 
-- Switch to the `$HOME/helidon-kubernetes/management/logging` directory
+  6. Switch to the logging scripts directory.
+  
+  - `cd $HOME/helidon-kubernetes/management/logging` 
 
-- Apply the ingress file by typing :
+  7. Apply the ingress file by typing 
+  
   - `kubectl apply -f ingressElasticSearch.yaml`
 
-```
+  ```
 ingress.networking.k8s.io/elasticsearch created
 ```
 
@@ -171,23 +179,25 @@ look at the `ingress-nginx-nginx-ingress-controller` row, IP address inthe `EXTE
 
 </details>
 
-- In a web browser go to the web page `https://<External IP>/elastic/_cat`  (remember the one below is **my** ip address **you need to use yours**)
+  8. In a web browser go to the web page `https://<External IP>/elastic/_cat`  (remember the one below is **my** ip address **you need to use yours**)
 
-- If needed in the browser, accept a self signed certificate.
+  9. If needed in the browser, accept a self signed certificate. The mechanism varies by browser and version, but as of September 2020 the following worked with the most recent (then) browser version.
+  
   - In Safari you will be presented with a page saying "This Connection Is Not Private" Click the "Show details" button, then you will see a link titled `visit this website` click that, then click the `Visit Website` button on the confirmation pop-up. To update the security settings you may need to enter a password, use Touch ID or confirm using your Apple Watch.
+  
   - In Firefox once the security risk page is displayed click on the "Advanced" button, then on the "Accept Risk and Continue" button
+  
   - In Chrome once the "Your connection is not private" page is displayed click the advanced button, then you may see a link titled `Proceed to ....(unsafe)` click that. 
   
 We have had reports that some versions of Chrome will not allow you to override the page like this, for Chrome 83 at least one solution is to click in the browser window and type the words `thisisunsafe` (copy and past doesn't seem to work, you need to actually type it). Alternatively use a different browser.
 
-
-![](images/ES-catalogue-endpoints.png)
+  ![](images/ES-catalogue-endpoints.png)
 
 We can see that the elastic search service is up and running, let's see what data it holds
 
-- In a web browser (remember to substitute **your** IP address) look at the indices in the service
+  10. In a web browser (remember to substitute **your** IP address) look at the indices in the service
 
-![](images/ES-no-indices.png)
+  ![](images/ES-no-indices.png)
 
 Well, it's empty! Of course that shouldn't be a surprise, we've not put any log data in it yet!
 
@@ -230,26 +240,30 @@ We have added a volume mount entry and associated volume to bring in the log fil
 Finally we have changes the namespace from kube-system to logging, this is really just for convenience as this is an optional lab module, and we didn't want to complicate following modules with text along the lines of "If you've done the logging module you'll see xxxx in kube-system, but if you haven't you'll see yyyy" Also it's generally good practice to separate things by their function.
 
 Let's create the daemonset
-- Make sure you are in the `$HOME/helidon-kubernetes/management/logging` directory
-- In the OCI Cloud Shell terminal type :
+
+  11. Make sure you are in the `$HOME/helidon-kubernetes/management/logging` directory
+  
+  12. In the OCI Cloud Shell terminal type
+  
   - `kubectl apply -f fluentd-daemonset-elasticsearch-rbac.yaml`
 
-```
+  ```
 serviceaccount/fluentd created
 clusterrole.rbac.authorization.k8s.io/fluentd created
 clusterrolebinding.rbac.authorization.k8s.io/fluentd created
 daemonset.apps/fluentd created
 ```
-Let's make sure that everything has started
-- In the OCI Cloud Shell type :
+
+  13. Let's make sure that everything has started. In the OCI Cloud Shell type
+
   - `kubectl get daemonsets -n logging`
 
-```
+  ```
 NAME      DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
 fluentd   3         3         3       3            3           <none>          3m4s
 ```
 
-We can see that there are 3 pods, why 3 ? That's the number of nodes in this cluster, it may vary if your cluster has a different number of nodes.
+We can see that there are 3 pods, why 3 ? That's the number of nodes in the cluster I was using to create this module, and the daemonset runs one pod on each node. If your cluster has a different number of nodes the number of pods will of course vary.
 
 Let's look at the distribution of the fluent instances, we could do this using kubectl commands, for example  
 
@@ -285,11 +299,18 @@ The address is in the EXTERNAL-IP column, in this case it's 132.145.231.23 **but
 
 Open the Kubernetes dashboard
 
-- In a web browser go to the dashboard (remember this is my IP address, yours will be different) `https://132.145.231.23`
+  14. In a web browser on your laptop go to the dashboard (remember this is my IP address, yours will be different) 
+  
+  ```
+https://132.145.231.23
+ ```
 
-- If prompted in the browser, accept the self signed certificate.
+  15. If prompted in the browser, accept the self signed certificate. The mechanism varies by browser and version, but as of September 2020 the following worked with the most recent (then) browser version.
+  
   - In Safari you will be presented with a page saying "This Connection Is Not Private" Click the "Show details" button, then you will see a link titled `visit this website` click that, then click the `Visit Website` button on the confirmation pop-up. To update the security settings you may need to enter a password, use Touch ID or confirm using your Apple Watch.
+  
   - In Firefox once the security risk page is displayed click on the "Advanced" button, then on the "Accept Risk and Continue" button
+  
   - In Chrome once the "Your connection is not private" page is displayed click the advanced button, then you may see a link titled `Proceed to ....(unsafe)` click that. 
   
 We have had reports that some versions of Chrome will not allow you to override the page like this, for Chrome 83 at least one solution is to click in the browser window and type the words `thisisunsafe` (copy and past doesn't seem to work, you need to actually type it). Alternatively use a different browser.
@@ -299,7 +320,8 @@ If you are presented with the login page use the Token option and the dashboard 
 
 <details><summary><b>If you've forgotten your dashboard user token</b></summary>
 
-- Visualize the token of the newly created user:
+- Retrieve the token of the dashboard user:
+
   - ```
     kubectl -n kube-system describe secret `kubectl -n kube-system get secret | grep dashboard-user | awk '{print $1}'`
     ```
@@ -327,24 +349,25 @@ ca.crt:     1025 bytes
 
 </details>
 
-- Click on the `nodes` option in the `cluster` section of the UI menu on the left
+  15. Click on the `nodes` option in the `cluster` section of the UI menu on the left
 
-![dashboard-nodes-menu](images/dashboard-nodes-menu.png)
+  ![dashboard-nodes-menu](images/dashboard-nodes-menu.png)
 
-Once you have logged in go to the nodes list (Click nodes on the upper left)
+  16. Once you have logged in go to the nodes list (Click nodes on the upper left)
 
-![](images/dashboard-nodes-list.png)
+  ![](images/dashboard-nodes-list.png)
 
 My cluster has 3 nodes, so there are three entries, but yours may have a different number of nodes, and thus entries.
 
 In the Oracle Kubertnetes Environment the nodes are names based on their IP address, so 10.0.10.2, 10.0.10.3, and 10.0.10.4 in the case of this cluster.
 
-- Click on one of the node names, in this case I chose the 10.0.10.2 node
-![](images/dashboard-node-details.png)
+  17. Click on one of the node names, in this case I chose the 10.0.10.2 node
+
+  ![](images/dashboard-node-details.png)
 
 The dashboard is showing the overview of the node, if we scroll down further we'll see the list of the pods running on it.
 
-![](images/dashboard-node-pods.png)
+  ![](images/dashboard-node-pods.png)
 
 The fluentd pod is running, along with a number of others, for example the elaxtic search pods, others are system pods, and our application.
 
@@ -354,10 +377,9 @@ If you look at all of the other nodes you'll find that there is a fluentd pod on
 
 If we go back and look at the Elastic search list of indices now we can see that some data has been added (the `?v=true` means that column headings are included the the returned data
 
-- In a web browser go to the web page `https://<External IP>/elastic/_cat/indices?v=true`  (remember the one below is **my** ip address **you need to use yours**)
+  1. In a web browser go to the web page `https://<External IP>/elastic/_cat/indices?v=true`  (remember the one below is **my** ip address **you need to use yours**)
 
-
-![](images/ES-some-indicies.png)
+  ![](images/ES-some-indicies.png)
 
 There is an index for each days data. In this case I had started the services yesterday, so data for two days was added, however you may well see only a single entry.
 
@@ -365,26 +387,29 @@ We can have a look at the data from a specific day
 
 I've used the index for the data gathered most recently, as can be seen in the index listing that's `logstash-2020.04.23` **but yours will be different**
 
-For example the URL `https://<External IP>/elastic/logstash-2020.04.23/_search`  (remember the one below is **my** ip address **you need to use yours**)
+  2. Let's look at the captured data. Look at the incexies list and chose one
+  
+  3. Go to the URL `https://<External IP>/elastic/logstash-<YYYY-MM-DD>/_search`  (remember the one below is **my** ip address **you need to use yours**, adjust YYYY-MM-DD to one of the entries in the indexes list).
 
-![](images/ES-quick-log-query.png)
+  ![](images/ES-quick-log-query.png)
 
 There's a lot of data here (and depending on which browser yu use it may be nicely formated, or a pure text dump) but this has been running most of the day as I wrote this module, most interesting is that in the hits.total section we can see that there were 66177 entries, and we can see that (in this case) entry 0 is a warning from fluentd about the log data generated by the coredns container.
 
 Of course we can focus in on specific entries if we want, in this case we're going to look for entries which have the container_name of storefront
 
-For example the URL `https://<External IP>/elastic/logstash-2020.04.23/_search?q=kubernetes.container_name:storefront`  (remember the one below is **my** ip address **you need to use yours**)
+  4.Try the URL `https://<External IP>/elastic/logstash-<YYYY-MM-DD>/_search?q=kubernetes.container_name:storefront`  (remember the one below is **my** ip address **you need to use yours**, adjust YYYY-MM-DD to one of the entries in the indexes list).
 
-![](images/ES-search-empty-storefront.png)
+  ![](images/ES-search-empty-storefront.png)
 
 It may be empty, or you may get log messages (will really depend on if you'de used it on the chosen day)
 
 If you haven't generated any log messages from the storefront container since we setup up the log capture just do some requests to the stock manager service which will generate log data
 
-- In the OCI Cloud Shell terminal type (remember to replace the <external IP> with the IP address for the ingress controller for your service):
+  5. In the OCI Cloud Shell terminal type (remember to replace the <external IP> with the IP address for the ingress controller for your service)
+  
   - `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
   
-```
+  ```
 HTTP/1.1 200 OK
 Server: nginx/1.17.8
 Date: Thu, 23 Apr 2020 18:38:50 GMT
@@ -396,9 +421,9 @@ Strict-Transport-Security: max-age=15724800; includeSubDomains
 [{"itemCount":100,"itemName":"Book"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":500,"itemName":"Pencil"},{"itemCount":5000,"itemName":"Pins"}]
 ```
 
-Do this several times, then look at the log URL again
+  6. Do this several times, then look at the log URL again
 
-![](images/ES-search-storefront-data.png)
+  ![](images/ES-search-storefront-data.png)
 
 Now you will can see that there is data in the system, there were 12 hits.
 
@@ -433,10 +458,11 @@ The Kubernetes documentation has a [section covering logging](https://kubernetes
 
 If you are in a trial tenancy there are limitations on how many Load Balancers and other resources you can have in use at any time, and you may need them for other modules. The simplest way to release the resources used in his module (including the load balancer) is to delete the entire namespace.
 
-- In the OCI Cloud shell type 
+  1. In the OCI Cloud shell type 
+  
   - `kubectl delete namespace logging`
   
-```
+  ```
 namespace "logging" deleted
 ```
   

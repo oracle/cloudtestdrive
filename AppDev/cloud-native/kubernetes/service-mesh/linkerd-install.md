@@ -53,7 +53,7 @@ Most Service mesh implementations are open source to some level, but currently o
 
 Currently there is no agreed standard on how to manage a service mesh, or even exactly what it does, though the [CNCF Service Mesh Interface project](https://smi-spec.io/)  is starting to define one. 
 
-## Step 2L What does that mean as an cluster operator or administrator?
+## Step 2: What does that mean as an cluster operator or administrator?
 
 Well the short version is that you need to be careful in choosing the right service mesh to meet your needs!
 
@@ -71,7 +71,7 @@ Factors to consider are functionality, if it's fully or partially open source, w
 
 The important thing is to define your requirements before selecting a service mesh.
 
-## Step 4: How to install a a service mesh ?
+## Step 4: How to install the Linkerd service mesh ?
 
 For the purposes of this lab we've chosen to use Linkerd as it's a long standing service mesh implementation and is the only CNCF supported service mesh project (at the time of writing.) It also has a reputation for being simple to install and use. The Linkerd website has an [FAQ on the differences](https://linkerd.io/2/faq/#whats-the-difference-between-linkerd-and-istio) and open source implications
 
@@ -85,10 +85,11 @@ It's worth noting that Linkerd can also be installed using its [helm chart](http
 
 As linkerd is not a core Kubernetes component it's not included in the Oracle OCI Shell, so we need to do that first.
 
-- In the OCI Cloud Shell type the follwing
+  1. In the OCI Cloud Shell type the follwing
+  
   - `curl -sL https://run.linkerd.io/install | sh`
   
-```
+  ```
 Downloading linkerd2-cli-stable-2.8.1-linux...
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
@@ -118,23 +119,25 @@ Looking for more? Visit https://linkerd.io/2/next-steps
   
 Warning, this may take a while to run, in my case it usually takes around 30 seconds, but sometimes has taken as long as 20 mins if for some reason the download was not fast.
   
-Now we need to add the linkerd command to our path
-
-- In the OCI Cloud Shell type :
+  2. Now we need to add the linkerd command to our path. In the OCI Cloud Shell type 
+  
   - `export PATH=$PATH:$HOME/.linkerd2/bin`
   
 This is only a temporary change, that applies to the current OCI Cloud shell session. To make it permanent we need to edit the $HOME/.bashrc file
 
-- Use your preferred editor (vi, vim, nano etc.) edit $HOME/.bashrc
+  3. Use your preferred editor (vi, vim, nano etc.) edit $HOME/.bashrc
 
-- At the end of the file add and new line containing `export PATH=$PATH:$HOME/.linkerd2/bin`
+  4. At the end of the file add and new line containing 
 
-Lastly let's check the status of the linkerd installation
+  ```
+export PATH=$PATH:$HOME/.linkerd2/bin
+```
 
-- In the OCI Cloud Shell type
+  5. Lastly let's check the status of the linkerd installation. In the OCI Cloud Shell type
+  
   - `linkerd version`
 
-```
+  ```
 Client version: stable-2.8.1
 Server version: unavailable
 ```
@@ -148,10 +151,11 @@ Though we have the linkerd client application we still need to install the linke
 
 Firstly let's make sure that the cluster meets the requirements to deploy linkerd
 
-- In the OCI Cloud shell type :
+  6. In the OCI Cloud shell type :
+  
   - `linkerd check --pre`
   
-```
+  ```
 kubernetes-api
 --------------
 √ can initialize the client
@@ -197,7 +201,8 @@ The pre-install check that the Kubernetes cluster (and the configuration of kube
 
 The linkerd control plan process used the linkerd command to generate the configuration yaml, which is then processed by kubectl. 
 
-- In the OCI Cloud Shell type
+  7.  In the OCI Cloud Shell type
+  
   - `linkerd install | kubectl apply -f -`
   
 ```
@@ -277,7 +282,8 @@ There is a lot of output here, we've only seen the beginning of it above
 
 Let's check that the linkerd command can talk to the control plane
 
-- In the OCI Cloud Shell type
+  8. In the OCI Cloud Shell type
+  
   - `linkerd version`
 
 ```
@@ -291,10 +297,11 @@ We can see the version information (this was correct at the time of writing, you
 
 Linkerd creates it's own namespace so we can check what's in there using kubectl 
 
-- In the OCI Cloud shell type 
+  10. In the OCI Cloud shell type 
+  
   - `kubectl get namespaces`
 
-```
+  ```
 NAME              STATUS   AGE
 default           Active   29d
 ingress-nginx     Active   28d
@@ -311,10 +318,11 @@ tg-helidon        Active   27d
 
 And we can see what's in the linkerd namespace
 
-- In the OCI Cloud shell type
+  11. In the OCI Cloud shell type
+  
   - `kubectl get all -n linkerd`
 
-```
+  ```
 NAME                                         READY   STATUS    RESTARTS   AGE
 pod/linkerd-controller-78fffbdb88-97fhv      2/2     Running   0          18m
 pod/linkerd-destination-7cc99c9b7c-hzpwv     2/2     Running   0          18m
@@ -372,7 +380,8 @@ Linkerd has created a number of items, but note that all of the pods have 2 inst
 
 Let's get linkerd to check that it's been installed correctly and everything is running.
 
-- In the OCI Cloud Shell type
+  12. In the OCI Cloud Shell type
+  
   - `linkerd check`
   
 ```
@@ -468,18 +477,23 @@ The first thing we need to do is to remove the restriction in the linkerd web fr
 
 edit the linkerd web deployment yaml normally would not do
 
-- In the OCI Cloud shell type
+  1. In the OCI Cloud shell type
+  
   - `kubectl edit deployment linkerd-web -n linkerd`
   
-- In the spec.template.spec.containers.args locate the line that is like `- -enforced-host=^(localhost|127\\.0\\.0\\.1|linkerd-web\\.linkerd\\.svc\\.cluster\\.local|linkerd-web\\.linkerd\\.svc|\\[::1\\])(:\\d+)?$`
+  2. In the spec.template.spec.containers.args locate the line that is like 
+  
+```
+- -enforced-host=^(localhost|127\\.0\\.0\\.1|linkerd-web\\.linkerd\\.svc\\.cluster\\.local|linkerd-web\\.linkerd\\.svc|\\[::1\\])(:\\d+)?$
+```
 
-- Remove all of the value section of the line after the `=` the new line will look like
+  3. Remove all of the value section of the line after the `=` the new line will look like
 
 ``` 
         - -enforced-host=
 ```
 
-- Save the changes
+  4. Save the changes
 
 kubectl will pick them up and apply them, Kubernetes will restart the linkerd-web deployment with the new arguments and linkerd-web will no longer enforce the check on the hostnames.
 
@@ -490,7 +504,8 @@ Curiously the linkerd-web ingress does not by default use a TLS certificate to e
 
 Fortunately for us when we first setup our ingress controller and load balancer we installed a certificate in the load balancer for SSL / TLS connections, so we can just use that for the inkerd SSL/TLS endpoint as well. 
 
-- Move to the `$HOME/helidon-kubernetes/service-mesh` directory
+  5. Move to the `$HOME/helidon-kubernetes/service-mesh` directory
+  
   - `cd $HOME/helidon-kubernetes/service-mesh`
 
 ### Create a login password to secure the connection
@@ -499,19 +514,21 @@ The default configuration for the linkerd-web service includes a password of adm
 
 First let's create a password file for the admin user. In the example below I'm using `ZaphodBeeblebrox` as the password, but please feel free to change this if you like
 
-- In the OCI Cloud Shell type
+  6. In the OCI Cloud Shell type
+  
   - `htpasswd -c -b auth admin ZaphodBeeblebrox`
 
-```
+  ```
 Adding password for user admin
 ```
 
 Now having create the password file we need to add it to Kuberntes as a secret so the ingress controller can use it.
 
-- In the OCI Cloud Shell type
+  7. In the OCI Cloud Shell type
+  
   - `kubectl create secret generic linkerd-web-ingress-auth -n linkerd --from-file=auth`
 
-```
+  ```
 secret/web-ingress-auth created
 ```
 
@@ -527,7 +544,8 @@ If specified the TLS secret we defined above so the connection is secure
 
 Though these are not perfect they do ensure that users need to be authenticated and that their authentication details are protected by using an encrypted connection.
 
-- In the OCI Cloud Shell type
+  8. In the OCI Cloud Shell type
+  
   - `kubectl apply -f linkerd-ingress.yaml`
   
 ```
@@ -536,7 +554,7 @@ ingress.networking.k8s.io/web-ingress created
 
 Now you can go to the ingress ip address for the linkerd UI
 
-- In your laptop web browser go to `https://<external IP>`
+  9. In your laptop web browser go to `https://<external IP>`
 
 <details><summary><b>If you need to remind yourself of the external IP if your ingress controller</b></summary>
 
@@ -558,7 +576,8 @@ look at the `ingress-nginx-nginx-ingress-controller` row, IP address inthe `EXTE
 
 You will probably be challenged as you have a self signed certificate.
 
-- In the browser, accept a self signed certificate.
+  10. In the browser, accept a self signed certificate. There are several way you may need to do this and they vary by browser and version. as of the time of writing (Sept 2020) the following worked using the browsers on MacOs
+  
   - In Safari you will be presented with a page saying "This Connection Is Not Private" Click the "Show details" button, then you will see a link titled `visit this website` click that, then click the `Visit Website` button on the confirmation pop-up. To update the security settings you may need to enter a password, use Touch ID or confirm using your Apple Watch.
   - In Firefox once the security risk page is displayed click on the "Advanced" button, then on the "Accept Risk and Continue" button
   - In Chrome once the "Your connection is not private" page is displayed click the advanced button, then you may see a link titled `Proceed to ....(unsafe)` click that. 
@@ -568,26 +587,28 @@ We have had reports that some versions of Chrome will not allow you to override 
 
 Next you will be presented with the login challenge. The image below was captured using Safari, different browsers have slightly different looks, but the basic content is the same.
 
-![](images/linkerd-web-login.png)
+  ![](images/linkerd-web-login.png)
 
-Login with `admin` as the username, for the password use the one you used when creating the login password above. Some browsers offer the change to remember the password details for later use. Feel free to do so if you like, or if you prefer you can re-enter the username and password when prompted by the browser.
+  11. Login with `admin` as the username, for the password use the one you used when creating the login password above. Some browsers offer the change to remember the password details for later use. Feel free to do so if you like, or if you prefer you can re-enter the username and password when prompted by the browser.
 
 You'll be presented with the linkerd-web main page
 
-![](images/linkerd-web-main-page.png)
+  ![](images/linkerd-web-main-page.png)
 
 Let's also check you can access the grafana dashboard that's been installed by linkerd
 
-- In your web browser go to `https://<externalIP>/grafana` Note if you did not save the username / password details you may be prompted to re-enter them
+  12. In your web browser go to `https://<externalIP>/grafana` Note if you did not save the username / password details you may be prompted to re-enter them
 
 I have found that for some versions of Firefox that grafana complains about reverse-proxy settings. You may find that you need to use chrome or safari to access the grafana page.
 
-![](images/linkerd-grafana-initial-topline.png)
+  ![](images/linkerd-grafana-initial-topline.png)
 
 <details><summary><b>Other options for linkerd access</b></summary>
 
 
 Exposing linkerd via an ingress allows anyone who has access to the external point of the ingress to access it. This may be required due to the way your organization operates, but you can also restrict access to the linkerd UI by using the linkerd command to setup a secure tunnel for you.
+
+You need to have the linkerd client installed on your machine.
 
 On your local laptop (which must already be configured with the appropriate Kuberntes configuration and other credentials your provider may require)
 
@@ -619,10 +640,11 @@ You can of course do this by editing the namespace directly via the yaml file th
 
 First let's see what this looks like
 
-- in the OCI shell type the following, replacing <ns name> with your namespace :
-  `kubectl get namespace <ns name> -o yaml`
+  13. in the OCI shell type the following, replacing <ns name> with your namespace 
   
-```
+  - `kubectl get namespace <ns name> -o yaml`
+  
+  ```
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -668,10 +690,11 @@ tg-helidon        Active   35d
 
 We can use the linkerd command to add the annotations, first let's just see what it does
 
-- In the OCI Cloud shell type the following replacing `<ns-name>` with your namespace name
+  14. In the OCI Cloud shell type the following replacing `<ns-name>` with your namespace name
+  
   - `kubectl get namespace <ns-name> -o yaml | linkerd inject -`
 
-```
+  ```
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -697,11 +720,11 @@ The text `namespace "tg-helidon" injected` is just for information, it doesn't a
 
 Let's have kubectl apply the change
 
-- In the OCI Cloud shell type the following replacing `<ns-name>` with your namespace name
+  15. In the OCI Cloud shell type the following replacing `<ns-name>` with your namespace name
+  
   - `kubectl get namespace <ns-name> -o yaml | linkerd inject - | kubectl replace -f -`
   
-```
-
+  ```
 namespace "tg-helidon" injected
 
 namespace/tg-helidon configured
@@ -729,10 +752,11 @@ We can of course delete and recreate the deployments which will restart the pods
 
 Let's get the list of deplpyments
 
-- In the OCI Cloud shell type :
+  16. In the OCI Cloud shell type 
+  
   - `kubectl get deployments`
 
-```
+  ```
 NAME           READY   UP-TO-DATE   AVAILABLE   AGE
 stockmanager   1/1     1            1           14d
 storefront     1/1     1            1           14d
@@ -743,11 +767,11 @@ We can see in this case we have deployments for stockmanager, storefront and zip
 
 Sadly there doesn't seem to be a way to restart all of the deployments in a namespace (maybe that will be added in a future Kubernetes release) so we have to restart each one individually.
 
-- In the OCI Cloud shell type the following, if you have additional deployments add them to the list
+  17. In the OCI Cloud shell type the following, if you have additional deployments from other optional modules in these labs add them to the list or re-run with the namespace for those deployments
 
   - `kubectl rollout restart deployments storefront stockmanager zipkin`
 
-```
+  ```
 deployment.apps/storefront restarted
 deployment.apps/stockmanager restarted
 deployment.apps/zipkin restarted
@@ -757,8 +781,9 @@ deployment.apps/zipkin restarted
 
 Restarting the pods triggered linkerd to do it's automatic update of the pod adding the proxy. It actually also added something called an `init container` which is a container that is run as the pod starts up. The init container actually re-writes the networking configuration in the main application pod to send all connections to the the proxy. 
 
-- In the OCI Cloud shell type the following, if you have additional deployments add them to the list
-  - ` kubectl get pods
+- In the OCI Cloud shell type the following
+  
+  - ` kubectl get pods`
   
 ```
 NAME                            READY   STATUS    RESTARTS   AGE
@@ -1108,22 +1133,24 @@ Of course we also want to have the traffic from the ingress controller protected
 Let's do the same process for that namespace
 
 First update the ingress-nginix namespace
-- In the OCI Cloud shell type :
+
+  18. In the OCI Cloud shell type :
 
   - `kubectl get namespace ingress-nginx -o yaml | linkerd inject - | kubectl replace -f -`
 
-```
+  ```
 namespace "ingress-nginx" injected
 
 namespace/ingress-nginx replaced
 ```
 
 Now get the list of deployments in the ingress-nginx namespace
-- In the OCI Cloud shell type :
+
+  19. In the OCI Cloud shell type :
 
   - `kubectl get deployments -n ingress-nginx`
 
-```
+  ```
 NAME                                          READY   UP-TO-DATE   AVAILABLE   AGE
 ingress-nginx-nginx-ingress-controller        1/1     1            1           35d
 ingress-nginx-nginx-ingress-default-backend   1/1     1            1           35d
@@ -1132,11 +1159,11 @@ ingress-nginx-nginx-ingress-default-backend   1/1     1            1           3
 And next update them so the proxy will be added.
 
 
-- In the OCI Cloud shell type :
+  20. In the OCI Cloud shell type :
 
   - `kubectl rollout restart deployments -n ingress-nginx ingress-nginx-nginx-ingress-controller ingress-nginx-nginx-ingress-default-backend`
 
-```
+  ```
 deployment.apps/ingress-nginx-nginx-ingress-controller restarted
 deployment.apps/ingress-nginx-nginx-ingress-default-backend restarted
 ```
@@ -1164,10 +1191,11 @@ The address is in the EXTERNAL-IP column, in this case it's 130.61.195.102 **but
 </details>
 
 
-- In the OCI Cloud Shell terminal type the following, be prepared for an error (remember to replace `<external IP>` with the IP address for your ingress controller)
+  21. In the OCI Cloud Shell terminal type the following, be prepared for an error (remember to replace `<external IP>` with the IP address for your ingress controller)
+  
   - `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
   
-```
+  ```
 HTTP/1.1 200 OK
 Server: nginx/1.17.8
 Date: Thu, 23 Apr 2020 18:38:50 GMT
@@ -1183,7 +1211,7 @@ As you have restarted the services you may get 424 failed dependency errors as t
 
 Let's go and look at the dashboards again
 
-- In your laptop web browser go to `https://<external IP>` (replace `<external IP>` with the IP address of your ingress controller)
+  22. In your laptop web browser go to `https://<external IP>` (replace `<external IP>` with the IP address of your ingress controller)
 
 You may get a certificate warning again, in which case follow the procedures for your browser to accept the self signed certificate
 
@@ -1195,27 +1223,29 @@ You can now see the main page of the linkerd UI
 
 Good news! We can see that there is http traffic in the ingress-ngnix namespace and TCP traffic in the tg-helidon namespace (your namespace will of course be different)
 
-If we go to the Grafana page 
+  23. If we go to the Grafana page in your laptop web browser go to 
+  
+  ```
+  https://<external IP>/grafana
+  ```
 
-- In your laptop web browser go to `https://<external IP>/grafana`
-
-![](images/linkerd-grafana-topline-after-services-enabled.png)
+  ![](images/linkerd-grafana-topline-after-services-enabled.png)
 
 In some rare situations Grafana may not show all of the namespaces and services, I'm not sure exactly why, but I think it gets occasionally gets confused by times and timezones. And it will only show information (including summaries) of the display range.
 
-Let's adjust the visualization range to cover the last 12 hours. In the upper right you will see the time range selection
+  24. Let's adjust the visualization range to cover the last 12 hours. In the upper right you will see the time range selection
 
-![](images/linkerd-grafana-time-range-selected.png)
+  ![](images/linkerd-grafana-time-range-selected.png)
 
 In this case it's showing `May 20,2020,12:00:00 to May 22,2020 11:59:59` but it might also be showing a relative time range like `Last 5 minutes`
 
-- Click time range to get the selection choice 
+  25. Click time range to get the selection choice 
 
-![](images/linkerd-grafana-time-range-selection.png)
+  ![](images/linkerd-grafana-time-range-selection.png)
 
-- Click the `Last 12 hours` option
+  26. Click the `Last 12 hours` option
 
-![](images/linkerd-grafana-topline-after-services-enabled-last-12-hours.png)
+  ![](images/linkerd-grafana-topline-after-services-enabled-last-12-hours.png)
 
 We can see that there are three namespaces being monitored and 14 deployments. You may need to play around a bit with the time range in the UI to get the proper details.
 
