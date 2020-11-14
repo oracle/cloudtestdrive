@@ -544,6 +544,7 @@ Of course in a production environment you'd probably have a separate folder cont
 </details>
 
 ## Step 4: Pushing your images to a container repository
+
 The docker container images are currently only held locally, that's not good if you want to distribute them or run them in other locations. We can save the images in an external repository, This could be public - e.g. dockerhub.com, private to your organization or in a cloud registry like the Oracle OCIR. Note that if you wanted to there are docker image save and docker image load commands that will save and load image files from a tar ball, but that's unlikely to be as easy to use as a repository, especially when trying to manage distribution across a large enterprise environment.
 
 ### Getting your docker credentials and other information
@@ -651,9 +652,13 @@ You will have gathered the information needed in the previous step.
 where :
 
 - `<region-code>` : 3-letter code of the region you are using
+
 - `<mytenancystoragenamespace>` : name of your tenancy's Object Storage namespace
+
 - `<myusername>` : user name you used to register for your cloud account, usually an email address
+
 - `<auth token>`: Auth token you associated with your username
+
 
 For example a completed version may look like this (this is only an example, use your own values) 
 
@@ -840,6 +845,7 @@ You can now re-run the images that have been pushed the cloud.
 (Usual output from the storefront starting) 
 
 
+
 ## Step 5: Cleaning up
 
 This is the end of this section of the lab, let's stop the running images
@@ -855,6 +861,7 @@ This is the end of this section of the lab, let's stop the running images
   -  `docker stop zipkin`
 
 ## Summary
+
 Congratulations, you are now able to run your microservices on Docker, separate the configuration from the container, and push the container to a repository
 
 If you are doing only the Helidon and Docker lab you've finished. If you're doing the "mega" lab then it's time to start with the **Kubernetes labs introduction**
