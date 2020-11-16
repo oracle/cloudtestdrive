@@ -38,7 +38,7 @@ The main class we will be using is **StorefrontResource.java**.   Locate it in t
   
   - Open the project *helidon-labs-storefront*
   
-  - Expand *src/main/java*, then *resources*, then double-click *StoreFrontResource.java*
+  - Expand *src/main/java*, then the *com.oracle.labs.helidon.storefront* package, then the *resources* package, then double-click *StoreFrontResource.java*
   
   ![](images/eclipse-first-project.png)
 
@@ -291,7 +291,9 @@ import javax.ws.rs.ApplicationPath;
 </details>
 
 
-  10. Save your changes to the StorefrontResource file with Control-s, or you can save all your changes to all files by hitting this icon: <img src="images/eclipse-save2.png" style="zoom:33%;" />
+  10. Save your changes to the StorefrontResource file with Control-s, or you can save all your changes to all files with Shift-Control-S or by hitting this icon:
+  
+  ![](images/eclipse-save2.png)
 
 <details><summary><b>Do I really need an Application class ?</b></summary>
 
@@ -612,7 +614,7 @@ If we try with a user / password, in this case username jill, password password 
 
   6. Now try with this **Curl command**, the -u tell curl to encode the username / password that follows and add them to the request as the authentication header.
 
-  `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
+  - `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
 
 Result:
 
@@ -989,7 +991,7 @@ The actual creation of the instances is handled for us by Helidon, we just need 
 
 </details>
 
-  1. In the storefront application, navigate to the folder **data** and open the file **MinimumChange.java**
+  1. In the storefront application, navigate to the package **data** and open the class **MinimumChange.java**
   
   2. Make the class **ApplicationScoped**, so only one instance no matter how often it's used in the application by adding an annotation to the class:
   
@@ -1230,7 +1232,7 @@ The `@Inject` on  constructor means to use this constructor when creating instan
 
   19. **Save** this change and **restart** the program
 
-  20. Request the value for minimum change,  we'll see that it has a value of 4 (which comes from a config property)
+  20. Request the value for minimum change,  we'll see that it has a value of 4 (which comes from a config property set in the microprofile-config.properties file)
 
   -  `curl -i -X GET http://localhost:8080/minimumChange`
 
@@ -1245,7 +1247,6 @@ content-length: 1
 ```
 
 <details><summary><b>Where does that value come from?</b></summary>
-
 
 Helidon by default looks for properties in the Java system properties (-D on the java command) then environment variables, then a resource called `META-INF/microprofile-config.properties` in it's classpath. You can override this, in which case it will look in the Java system properties, then environment variables, then the locations you specify in local files and the class path. Note that if you do specify locations then the `META-INF/microprofile-config.properties` is not included automatically.
 
@@ -1337,6 +1338,8 @@ Note the `conf/storefront-config.yaml` config source is optional, if the file is
 
 Here we are using a file for configuration information, but later when we look at databases we will see how we can use other sources like environment variables or Java system properties. 
 
+We are deliberately using a programmatic way to setup the config files here, but another option is to use a meta-config, which is basically a config file that tells Helidon where to look for the config files. This is used in some of the other lab modules if you want to see how it's done.
+
 
 <details><summary><b>What formats can the config parser process ?</b></summary>
 
@@ -1368,8 +1371,6 @@ Helidon allows you to bring in configuration from a file in the class path (in t
 - A directory, the names of files in the directory are matched against the desired configuration property name, then if a match is found the contents of the file is used as the configuration property value, useful for very large properties (e.g. an html template file!)
 
 - A URL, it's retrieved then the contents treated as if they were a file
-
-You can even if you want have a meta configuration file that defines the actual configuration sources to use.
 
 Finally you can if you want use code to modify the configuration dynamically.
 
@@ -1626,7 +1627,7 @@ Let's **force an error**.
 
   1. Open **StorefrontResource.java**
 
-  2. Change the instantiation of the stockManager so it's now null and doesn't use the dummy implementation:
+  2. Change the instantiation of the stockManager so it's now null and doesn't use the dummy implementation we've been using so far
 
   ```java
 	private StockManager stockManager = null;
@@ -1726,7 +1727,7 @@ Helidon has another approach error handling we're going to look at here that doe
 
   8. Navigate to folder *resources* and open the file **StorefrontResource.java**
   
-  9. Add the annotation `@Fallback(StorefrontFallbackHandler.class)`
+  9. Locate the reserverStock method and add the annotation `@Fallback(StorefrontFallbackHandler.class)`
 
   ```java
 	@POST

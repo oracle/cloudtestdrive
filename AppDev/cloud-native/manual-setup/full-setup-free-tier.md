@@ -190,14 +190,20 @@ If you are in an **instructor led lab** the instructor may have already done thi
   7. Chose the most recent option for the database version, allocate 1 OCPU and 1 GB of storage (this lab only requires a very small database)
 
   8. Turn off auto scaling
+  
+  9. Enter the admin password, there are rules for what this shoudl look like, they will appear under the password field.
+  
+  10. Confirm the admin password
 
-  9. Make sure that the `Allow secure access from everywhere` is enabled.
+  11. Make sure that the `Allow secure access from everywhere` is enabled.
 
-  10. Chose the `License included` option
+  12. For a trial tenancy chose the `BYOL License` option, for a paid tenancy chose the `License included` option (Unless your organization already has enough available suitable licenses)
 
 Be sure to remember the **admin password**, save it in a notes document for later reference.
 
-  11. Once the instance is running go to the database details page, on the center left of the general information column there will be the label OCID and the start of the OCID itself. Click the **Copy** just to the left and then save the ODIC together with the password.
+  13. Click the `Create Autonomous Database` button
+
+  14. Once the instance is running go to the database details page, on the center left of the general information column there will be the label OCID and the start of the OCID itself. Click the **Copy** just to the left and then save the ODIC together with the password.
 
 
 
@@ -209,9 +215,9 @@ Be sure to remember the **admin password**, save it in a notes document for late
 
   3. Open up the **SQL Developer Web** console
 
-  4. Login as admin, using the appropriate password
+  4. Login as ADMIN, using the password you just chose
 
-  5. Copy and paste the below SQL instructions:
+  5. Copy and paste the below SQL instructions into the top section of the page:
 
   ```
 CREATE USER HelidonLabs IDENTIFIED BY H3lid0n_Labs;
@@ -248,7 +254,7 @@ Note sometimes the import image page does not refresh once the image is imported
 
   ![](images/create-instance-from-custom-image.png)
 
-  6. Name the instance based on the image version so you can track what version of the lab you are following. If multiple people are sharing the same tennacy you may want to put your initials in there as well e.g. `H-K8S-Lab-A-Helidon-2020-009-07-tg`
+  6. Name the instance based on the image version so you can track what version of the lab you are following. If multiple people are sharing the same tennacy you may want to put your initials in there as well e.g. `H-K8S-Lab-A-Helidon-2020-29-10-tg`
 
   7. Expand the **Show Shape, Network and Storage Options** selection if it's not visible
 
@@ -268,8 +274,8 @@ Leave all the other settings in the network section as they are
 
   13. Check the **Assign a public IP address** option is selected
   
-  14. Leave the boot volume settings unchanged
-
+  14. Leave the boot volume settings unchanged (On some newer versions of the UI this may be below the SSH keys section, but you still don't change it)
+  
 ![](images/create-instance-second-part.png)
 
   15. Scroll down to the **Add SSH Key** section
@@ -478,7 +484,7 @@ To enable us to update the code used by the labs without having to update the De
 
   ![](images/40-open-firefox-menu.png)
 
-  2. Go to the URL `https://github.com/CloudTestDrive/cloud-native-setup` - Do this in the browser **in the virtual machine**
+  2. In the browser **in the virtual machine** go to the URL `https://github.com/CloudTestDrive/cloud-native-setup` 
 
   3. Click the `Code` button
 
@@ -500,7 +506,7 @@ When the download is complete the Firefox download icon will turn completely blu
 
 ### 9b. Importing the downloaded zip file
 
-  6. Switch back to Eclipse
+  6. Switch back to Eclipse **Do not** close the Firefox window (that may cause it to delete the download file)
 
   7. Click the `File` menu, then `Import`
 
@@ -596,7 +602,7 @@ We can check that Lombok has been installed
 
   ![](images/68-lombok-access-eclipse-about-menu.png)
 
-  28. You may need to scroll down in the `About` popup, but towards the end you should see the Lombok installation confirmation (in this case 1.18.12)
+  28. You may need to scroll down in the `About` popup, but towards the end you should see the Lombok installation confirmation (in this case 1.18.12 / Envious Ferret, though updates to the lab may use a newer version)
 
   ![](images/69-lombok-installed-version.png)
 

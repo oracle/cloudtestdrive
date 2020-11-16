@@ -664,7 +664,9 @@ For example a completed version may look like this (this is only an example, use
 
 **Important** The auth token being used for the password may well contain characters with special meaning to the shell, so it's important to include it in single quotes as in the example below ( ' )
 
-`docker login fra.ocir.io --username=cdtemeabdnse/oracleidentitycloudservice/my.email@you.server.com --password='q)u70[]eUkM1u}zu;:[L'`
+```
+docker login fra.ocir.io --username=cdtemeabdnse/oracleidentitycloudservice/my.email@you.server.com --password='q)u70[]eUkM1u}zu;:[L'
+```
 
 Enter the command with **your** details into a terminal in the virtual machine to login to the OCIR.
 

@@ -56,11 +56,11 @@ To save you from having to completely create all of the Eclipse projects and cla
 
 ### 2a. Downloading the code zip file.
 
-  1. Open the Firefox web browser in the virtual machine - Click `Applications` then `Internet` then `Firefox`
+  1. In the **virtual machine** open the Firefox web browser in the virtual machine - Click `Applications` then `Internet` then `Firefox`
 
   ![](images/40-open-firefox-menu.png)
 
-  2. Go to the URL `https://github.com/CloudTestDrive/helidon-labs` - Do this in the browser **in the virtual machine**
+  2. In the browser **in the virtual machine** go to the URL `https://github.com/CloudTestDrive/helidon-labs`
 
   3. Click the `Code` button
 
@@ -70,7 +70,7 @@ To save you from having to completely create all of the Eclipse projects and cla
 
   ![](images/42-github-download-code.png)
 
-  5. If a save options menu may be displayed Click the `Save file` option, then `OK`
+  5. If a save options menu is displayed Click the `Save file` option, then `OK`
 
   ![](images/43-github-download-save-file.png)
 
@@ -94,7 +94,7 @@ When the download is complete the Firefox download icon will turn completely blu
 
   ![](images/52-eclipse-import-archive.png)
 
-  10. On the left menu chose `Downloads` then in the resulting list chose the download you just made - it should be called `helidon-labs-master.zip` Note that though the image here only shows a single file in your VM there may be other files depending on which other steps you have already done.
+  10. On the left menu chose `Downloads` then in the resulting list chose the download you just made - it should be called `helidon-labs-master.zip` Note that though the image here only shows a single file in your downloads there may be other files (the setup and DB wallet for example) depending on which other steps you have already done.
 
   11. Click the `Open` button
 
@@ -104,7 +104,7 @@ When the download is complete the Firefox download icon will turn completely blu
 
   ![](images/54-eclipse-import-final-stage.png)
 
-Eclipse will import the projects and start importing the Maven dependencies. Note that depending on the steps y0u have already taken you may see other projects in the projects list.
+Eclipse will import the projects and start importing the Maven dependencies. Note that depending on the steps you have already taken you may see other projects in the projects list.
 
   ![](images/55-eclipse-import-progress.png)
 
