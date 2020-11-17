@@ -322,16 +322,20 @@ The Run configurations popup will create and display a new configuration
 Note that in this case it is named `Main (2)` but that may vary
 
   8. Click the name `Main (2)` in this case (but yours may vary) and name this configuration `stockmanager`
+  
+  9. Make sure that the project is set to `helidon-labs-stockmanager`
+  
+  10. Make sure that the Main slass is set to `com.oracle.labs.helidon.stockmanager.Main`
 
   ![](images/eclipse-run-configurations-new-config-named.png)
 
-  9. Now click on the `args` tab (this is just below the name)
+  11. Now click on the `args` tab (this is just below the name)
 
 The Run configurations popup will now switch to the arguments tab (this may have been abbreviated to `args` in the UI
 
   ![](images/eclipse-run-configurations-new-config-args.png)
 
-  10. Copy the text below into a notepad or ASCII text editor you will need to make some changes to it before you use it. (Do **not** use a word processor like Microsoft Word or anything that makes the text "pretty" as they replace the `-` characters automatically with a non ASCII visually longer version, and that won't work) 
+  12. Copy the text below into a notepad or ASCII text editor you will need to make some changes to it before you use it. (Do **not** use a word processor like Microsoft Word or anything that makes the text "pretty" as they replace the `-` characters automatically with a non ASCII visually longer version, and that won't work) 
 
 Be careful not to add any newlines or extra spaces, tabs etc. Note that this is a long line, and you may have to scroll in the text box to see all of it.
 
@@ -339,7 +343,7 @@ Be careful not to add any newlines or extra spaces, tabs etc. Note that this is 
 -Djavax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.url=jdbc:oracle:thin:@<database connection name>?TNS_ADMIN=./Wallet_ATP -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.user=HelidonLabs -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.password=H3lid0n_Labs -Dhibernate.dialect=org.hibernate.dialect.Oracle10gDialect -Dhibernate.hbm2ddl.auto=update
 ```
 
-  11. In the test editor replace `<database connection name>` with the name of your database connection, in my case that's `tg_high`, **yours will be different** 
+  13. In the test editor replace `<database connection name>` with the name of your database connection, in my case that's `tg_high`, **yours will be different** 
 
   - Make sure you replace the entire thing including `<` and `>`
 
@@ -351,22 +355,22 @@ As an example for **my** database it looks like this, **but yours will vary**
 -Djavax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.url=jdbc:oracle:thin:@tg_high?TNS_ADMIN=./Wallet_ATP -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.user=HelidonLabs -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.password=H3lid0n_Labs -Dhibernate.dialect=org.hibernate.dialect.Oracle10gDialect -Dhibernate.hbm2ddl.auto=update
 ```
 
-  12. Copy the updated text
+  14. Copy the updated text
 
-  13. In the `VM Arguments` file of the Run configurations popup paste the **updated** text
+  15. In the `VM Arguments` file of the Run configurations popup paste the **updated** text
 
   ![](images/eclipse-run-configurations-new-config-args-with-vm.png)
 
-  14. Click the `Apply` button to save the changes
+  16. Click the `Apply` button to save the changes
 
-  15. Click the `Close` button to exit the Run configurations popup.
+  17. Click the `Close` button to exit the Run configurations popup.
  
 In case you wanted to see how to use the a config file for the database settings there is an example in example-config-data/stockmanager-database.yaml file. This isn't actually an imported part of the config files, but it shows you how it could be done using a config file.
 
 
 Using Helidon to create our PersistenceContext will also ensure that the entity manager is correctly shutdown when the program exits so we won't have any unused resources hanging around in the database.
 
-  16. Run the **Main** class of the project (right-click on **Main.java**, *Run As*, then *Java Application*).
+  18. Run the **Main** class of the project (right-click on **Main.java**, *Run As*, then *Java Application*).
 
 ---
 
@@ -399,7 +403,7 @@ The result should show the application listening on http://localhost:8081
 2020.01.05 18:30:33 INFO com.oracle.labs.helidon.stockmanager.Main Thread[main,5,main]: http://localhost:8081
 ```
 
-  17. Use curl to see what's there
+  19. Use curl to see what's there
 
   -  `curl -i -X GET -u jack:password http://localhost:8081/stocklevel`
 
@@ -431,7 +435,7 @@ Of course in a production environment you wouldn't want the database changing un
 
 </details>
 
-  18. Let's try to create some stock items - **error expected**:
+  20. Let's try to create some stock items - **error expected**:
 
   -  `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pins/5000`
 
