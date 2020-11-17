@@ -26,9 +26,9 @@ You need to have completed the `Communicating between microservices with Helidon
 
 ## Step 1: Why care about operations ?
 
-One thing that many developers used to forget is that once they have finished writing code it still has to run and be maintained. With the introduction of DevOps a lot of developers suddenly found they were the ones being woken up in the middle of the night to fix problems in their code. That changes the perception somewhat and now many developers are acutely aware that they will have ongoing involvement in the code well after the time it compiles cleanly and passed the text suite.
+One thing that many developers used to forget is that once they have finished writing code it still has to run and be maintained. With the introduction of DevOps a lot of developers suddenly found they were the ones being woken up in the middle of the night to fix problems in their code. That changes the perception somewhat and now many developers are acutely aware that they will have ongoing involvement in the code well after the time it compiles cleanly and passed the test suite.
 
-To help maintain and operate systems after they have been released a lot of information is needed, especially in situations where a bug may be on one service, but not show up until the resulting data has passed through several other microservcies. 
+To help maintain and operate systems after they have been released a lot of information is needed, especially in situations where a bug may be on one service, but not show up until the resulting data has passed through several other microservices. 
 
 Equally performance information is key to understanding how well the services are running, and in the event of a performance problem which specific microservice it it that's got the problem!
 
@@ -47,13 +47,28 @@ In the VM you have docker installed and running, so to start zipkin:
 
   1. Open a terminal on your Linux desktop
   
-  2. Run the following command in a terminsl of your VM to start Zipkin in a container:
+  2. Run the following command in a terminal of your VM to start Zipkin in a container:
   
   - `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin:2.22.0`
 
   ```
-Starting zipkin docker image in detached mode
-d12b253c50b7793ca8e3eb64658efead336fa3880d3df040f12152b57347f067
+Unable to find image 'openzipkin/zipkin:2.22.0' locally
+Trying to pull repository docker.io/openzipkin/zipkin ... 
+2.22.0: Pulling from docker.io/openzipkin/zipkin
+188c0c94c7c5: Pull complete 
+83b546a0aa9f: Pull complete 
+6590a03e44cb: Pull complete 
+191153915ba8: Pull complete 
+3c70ec14e7fc: Pull complete 
+598fd661c65f: Pull complete 
+06458562a6a5: Pull complete 
+ca79758f3569: Pull complete 
+698b89937939: Pull complete 
+85014952e781: Pull complete 
+4c6d8bff9e55: Pull complete 
+Digest: sha256:7f85762573af407b2cffe7c796412218aebf05e6a0acca594448fa0e41de9e26
+Status: Downloaded newer image for openzipkin/zipkin:2.22.0
+413188a06bd102e55e5f0231c28063ad8f9175ede1f53dce51044d97a9825ab9
 ```
 
 <details><summary><b>What's with the number after the image name ?</b></summary>
@@ -70,7 +85,7 @@ Other reasons may be that you are in an industry like the aerospace sector or fi
 
   3. Now open a browser in the **Virtual machine desktop** 
 
-  4. Navigate to : http://localhost:9411/zipkin/ 
+  4. Open a browser **in the VM** navigate to : http://localhost:9411/zipkin/ 
 
   ![zipkin-initial](images/zipkin-initial.png)
 
@@ -78,7 +93,7 @@ Now you need to add the zipkin packages to the pom.xml file for **both** the sto
 
   5. For **both** the storefront and stockmanager projects open the pom.xml file, this is in the top level of the project, towards the end of the files for the project.
 
-  6. Look for the dependency `helidon-tracing-zipkin` in **each** pom.xml file, you may want to use the search facility (Control-F) to look for zipkin, it will be towards the end of the dependencies section. You will find a section that has been commented out and looks like the following
+  6. Look for the dependency `helidon-tracing-zipkin` in **each** pom.xml file, you may want to use the search facility (Control-F) to look for zipkin, it will be towards the end of the dependencies section. You will find a section that has been commented out and looks like the following (The way the file is formated may mean this is on one line, or spread across multiple lines)
 
   ```xml
 		<!-- tracing calls -->
@@ -92,7 +107,7 @@ Now you need to add the zipkin packages to the pom.xml file for **both** the sto
 
   7. Remove the `<!--` and `-->` around the dependency ONLY
 
-The result will look like 
+The result will look something like, if it's all on one line that's fins as long as the `<!--` and `-->` around the dependency have been removed)
   
 ```xml
 		<!-- tracing calls -->
@@ -177,7 +192,7 @@ content-length: 37
 
 We can see that this request was a lot faster at 1.8761 seconds
 
-  19.Click on the trace row zipkin will display the full details of our trace.
+  19.Click on the `Show` on the trace row zipkin will display the full details of our trace.
 
   ![zipkin-trace-details](images/zipkin-trace-details.png)
 
@@ -241,14 +256,6 @@ That's it, you don't need to do anything else, Helidon will automatically genera
 
 </details>
 
-<details><summary><b>What's with all the metrics starting `application_ft` ?</b></summary>
-
-In an earlier lab we setup a fall back on the listAllStock and reserveStock methods. The fault tolerance system will automatically create metrics to determine how often fault are encountered, time taken and so on.
-
----
-
-</details>
-
   4. Restart the storefront service.
 
   5. Now look at the metrics endpoint :
@@ -279,6 +286,7 @@ vendor:requests_meter_fifteen_min_rate_per_second 0.0
 ```
 
 It'a **lot** of data, but it's broken up into sections.
+
 
 <details><summary><b>Diving into the tracing details</b></summary>
 
@@ -321,7 +329,7 @@ Lastly you'll see there are quite a lot that start `application:ft_`
 application:ft_com_oracle_labs_helidon_storefront_resources_storefront_resource_failed_list_stock_item_invocations_total 0
 ```
 
-These are generated automatically because we've enabled fault tolerance, the ft_ counters keep track of how many dined the fallback has been called, if the fallback returned useful data or itself generated an exception and so on.
+These are generated automatically because we've enabled fault tolerance, the ft_ counters keep track of how many times the fallback has been called, if the fallback returned useful data or itself generated an exception and so on.
 
 As we only just restarted the storefront it's not a surprise that these are all zero.
 
@@ -329,6 +337,15 @@ As we only just restarted the storefront it's not a surprise that these are all 
 
 </details>
 
+
+
+<details><summary><b>What's with all the metrics starting `application_ft` ?</b></summary>
+
+In an earlier lab we setup a fall back on the listAllStock and reserveStock methods. The fault tolerance system will automatically create metrics to determine how often fault are encountered, time taken and so on.
+
+---
+
+</details>
 
 ### Limiting the output
 
@@ -378,27 +395,25 @@ content-length: 148
 
   ```
 HTTP/1.1 200 OK
-Content-Type: text/plain;charset=UTF-8
-Date: Mon, 6 Jan 2020 16:59:03 GMT
+Content-Type: text/plain
+Date: Tue, 17 Nov 2020 17:24:07 GMT
 connection: keep-alive
-content-length: 22467
+content-length: 15212
 
-# TYPE base:classloader_current_loaded_class_count counter
-# HELP base:classloader_current_loaded_class_count Displays the number of classes that are currently loaded in the Java virtual machine.
-base:classloader_current_loaded_class_count 9941
-...
-...
-# TYPE base:thread_max_count counter
-# HELP base:thread_max_count Displays the peak live thread count since the Java virtual machine started or peak was reset. This includes daemon and non-daemon threads.
-base:thread_max_count 83
-# TYPE application:com_oracle_labs_helidon_storefront_resources_storefront_resource_storefront_resource counter
-# HELP application:com_oracle_labs_helidon_storefront_resources_storefront_resource_storefront_resource 
-application:com_oracle_labs_helidon_storefront_resources_storefront_resource_storefront_resource 5
+# TYPE application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_StorefrontResource_total counter
+# HELP application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_StorefrontResource_total 
+application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_StorefrontResource_total 5
+# TYPE application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_failedListStockItem_total counter
+# HELP application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_failedListStockItem_total 
+application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_failedListStockItem_total 0
+# TYPE application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_listAllStock_total counter
+# HELP application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_listAllStock_total 
+application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_listAllStock_total 5
 ...
 ...
 ```
 
-We can see that now 5 requests in total have been made to the storefront resource, and 5 requests to the listAllStock method, the others have had none. If we were looking for a place to optimize things then perhaps we might like to consider looking at that method first!
+We can see that now 5 requests in total have been made to the storefront resource (`application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_StorefrontResource_total`), and 5 requests to the listAllStock method (`application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_listAllStock_total`), the others have had none. If we were looking for a place to optimize things then perhaps we might like to consider looking at that method first!
 
 
 Why port 9080 ? Well you may recall that in the helidon core lab we defined the network as having two ports, one for the main application on port 8080 and another for admin functions on port 9080, we then specified that metrics (and health which we'll see later) were in the admin category so they are on the admin port. It's useful to split these things so we don't risk the core function of the microservice getting mixed up with operation data.  
