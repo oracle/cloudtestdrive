@@ -52,7 +52,7 @@ To run this part of the lab you need the working storefront and stockmanager mic
   4b. Check in the output if there is an entry named **zipkin**:
   
    ```
-  e3a7df18cd77        openzipkin/zipkin   "/busybox/sh run.sh"   3 seconds ago       Up 2 seconds        9410/tcp, 0.0.0.0:9411->9411/tcp   zipkin
+  e3a7df18cd77        openzipkin/zipkin   "/busybox/sh run.sh"   2 hours ago       Up 2 hours        9410/tcp, 0.0.0.0:9411->9411/tcp   zipkin
   ```
   
   4c. If the entry is **missing**, relaunch it
@@ -208,7 +208,7 @@ Successfully tagged storefront:latest
 
 For your convenience in the future there are scripts buildStockmanagerLocalExternalConfig.sh and buildStorefrontLocalExternalConfig.sh in the helidon-labs-stockmanager and helidon-labs-storefront directories that will run a mvn build and the appropriate docker commands.
 
-You will need to run each script from within the relevant directory (so buildStockmanagerLocalExternalConfig.sh in the helidon-labs-stockmanager directory and buildStorefrontLocalExternalConfig.sh form the helidon-labs-storefront directory) as that's where maven and docker looks for the code and content.
+You will need to run each script from within the relevant directory (so buildStockmanagerLocalExternalConfig.sh in the helidon-labs-stockmanager directory and buildStorefrontLocalExternalConfig.sh from the helidon-labs-storefront directory) as that's where maven and docker looks for the code and content.
 
 Initially the scripts may take a few mins to run if docker needs to download the appropriate base layers, but once they are downloaded it should speed up. It's best to let one build finish before starting the next one as it can re-use the content downloaded by the previous script.
 
@@ -216,7 +216,7 @@ If you look at the scripts you will see that they run the maven package process 
 
 You can explore the containers by running them to give you shell access (This is why we used a larger docker base image that includes a shell and other Unix utilities, in production you'd use a minimal image). 
 
-  9. Run the container:
+  9. In the stockmanager terminal run the stockmanager container you just created:
   
   -  `docker run --tty --interactive --rm --entrypoint=/bin/bash stockmanager`
 
@@ -288,7 +288,7 @@ docker run --tty --interactive --volume `pwd`/Wallet_ATP:/Wallet_ATP --volume `p
 ```
   
 
-As before we find ourselves in the container and the root directory looks the same, but the other directories now have content
+As before we find ourselves in the container and the root directory looks the same, but the other directories now have content.
 
   14. Let's Look around again
 
@@ -331,6 +331,8 @@ cwallet.sso  ewallet.p12  keystore.jks	ojdbc.properties  sqlnet.ora  tnsnames.or
   15. Exit the container. Inside the container type 
   
   - `exit`
+  
+ We have added the configuration to the container, but without having to hard code it into the image. Of course this means that if we change the content of the files in the directories that those changes will be reflected inside the container. 
 
 ### What about the database configuration ?
 
@@ -347,7 +349,7 @@ Docker provides several ways to do this, for example you can specify each indivi
 
 For this lab the scripts that will run the stockmanager use the --env-file approach, so we need to make sure that the file reflects the database connection details.
 
-  16. Switch to the terminal for the **stockmanager** project directory
+  16. Make sure you are in the terminal for the **stockmanager** project directory
 
   17. Edit the `database-env` file 
 
@@ -434,7 +436,7 @@ To save having to copy and paste (or type!) each time there are scripts runStore
 
 This script uses a docker command to locates the IP addresses of the containers running dependencies (for stockmanager this is zipkin, and for the storefront this is zipkin and stockmanager) and injects the IP addresses and suitable hostnames into the containers as it starts them using the --add-host option to the docker run command.
 
-The script also used the --publish flag to the docker run command this sets up a port connection from the specified port on the host OS to the specified port within the container. This is how we make a network service available to outside the docker container.
+The script also uses the --publish flag to the docker run command this sets up a port connection from the specified port on the host OS to the specified port within the container. This is how we make a network service available to outside the docker container.
 
 **If you have not stopped the stockmanager and storefront applications you were running in the helidon labs then they will have ownership of the ports** 
 
@@ -465,7 +467,7 @@ As the storefront depends on the stockmanager (and both depend on zipkin) it's i
   
   Keep the terminal window open to see any log info it generates
   
-  4.Switch to the terminal for the **storefront** project directory
+  4. Switch to the terminal for the **storefront** project directory
   
   5. Run the **Storefront** container via script
   
@@ -528,7 +530,7 @@ If you want to see the traces in zipkin use the URL http://localhost:9411/zipkin
 
 To stop the containers do Ctrl-C in each of the windows, or in a separate terminal use docker to stop them
 
-  8. Stop the containers:
+  8. Stop the containers, in the terminal you used for the curl command run
   
   -  `docker stop storefront stockmanager`
 
