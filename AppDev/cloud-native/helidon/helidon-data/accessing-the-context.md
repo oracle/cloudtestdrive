@@ -106,7 +106,7 @@ content-length: 1832
 {"departmentName":"My Shop","itemCount":5000,"itemName":"pin","operationId":1,"operationTs":"2020-04-01T14:52:39.336Z[UTC]","operationType":"CREATE","operationUser":"Unknown","succeded":true}]
 ```
 
-The example output above will of course vary from the output you get (and I've formated it a bit), but it shows that for the last operation we have extracted the users name for the audit record.
+The example output above will of course vary from the output you get (and I've formated it a bit), but it shows that for the last operation (in this case that's at the top of the output) we have extracted the users name for the audit record.
 
 To be complete update the adjustStockLevel and deleteStockItem methods in the same way, their updated method signatures and initial lines of code are below
 
