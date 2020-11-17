@@ -29,7 +29,7 @@ You need to have completed the `Operations support with Helidon` module.
 
 Most cloud native platforms (and Kubernetes in particular) need to know if a microservices is running at all, if it's capable of responding to requests and if it has access to all the dependent services it needs to operate. In the event that these conditions are not fulfilled the cloud native platform will take steps like re-starting a microservice instance, or stopping sending it requests for a short while.
 
-The exercises in this section show how you can use Helidon to directly support the cloud native capabilities that Kubernetes uses. It does not directly cover using them in Kubernetes however, but if you're doing the microservices in kubernetes sections of the workshop then this will make sense when you do it.
+The exercises in this section show how you can use Helidon to directly support the cloud native capabilities that Kubernetes uses. It does not directly cover using them in Kubernetes however, but if later on you're doing the microservices in Kubernetes modules then this will make sense when you do it.
 
 **Monitoring and metrics**
 Kubernetes does not itself have built in monitoring tools, however many users of Kubernetes use Prometheus which can use the /metrics API Helidon provides and we saw in the operations section of these labs to extract data on the operation and performance of a microservice, then Grafana is used to visualise the metrics retrieved from Prometheus.
@@ -37,7 +37,9 @@ Kubernetes does not itself have built in monitoring tools, however many users of
 ## Step 2: Health
 Helidon has built in health info as standard. By default this is available on the same port as the service, but our runtime config (conf/storefront-network.yaml) separates these  onto different ports (8080 for the service, 9080 for the non service) 
 
-  1.Look at the details of the default health service
+  1. If the storefront and stockmanager are not running start them.
+
+  2.Look at the details of the default health service
   
   -  `curl -i -X GET http://localhost:9080/health`
 
@@ -51,7 +53,7 @@ content-length: 460
 {"outcome":"UP","status":"UP","checks":[{"name":"deadlock","state":"UP","status":"UP"},{"name":"diskSpace","state":"UP","status":"UP","data":{"free":"1.40 TB","freeBytes":1534390464512,"percentFree":"76.69%","total":"1.82 TB","totalBytes":2000796545024}},{"name":"heapMemory","state":"UP","status":"UP","data":{"free":"919.13 MB","freeBytes":963775960,"max":"16.00 GB","maxBytes":17179869184,"percentFree":"99.36%","total":"1.00 GB","totalBytes":1073741824}}]}
 ```
 
-The default info contains information on the microservices use of resources (CPU, Memory , disk usage and so on)
+The default info contains information on the microservices use of resources (CPU, Memory , disk usage and so on) This information could be gathered and processed by a managment tool to see if there was a approaching problem due to memory leaks, lack of storage etc.
 
 ## Step 3: Liveness
 Services like kubenetes will know if a microservice has crashed as the application will have exited, but detecting that the service is not properly responding to requests is harder. Eventually most programs will get into some kind of resource starvation request like a deadlock. Cloud native platforms like Kubernetes have `liveness` tests which check to see if the microservice is alive (e.g. not in deadlock) If the service is not responding then the cloud native platform can restart it.
@@ -152,9 +154,9 @@ Readiness is a way to let the microservices runtime determine if a service has e
 
 </details>
 
-  5. In the storefront project navigate to the package **com.oracle.labs.helidon.storefront.health** Open the file **ReadinessChecker.java**
+  1. In the storefront project navigate to the package **com.oracle.labs.helidon.storefront.health** Open the file **ReadinessChecker.java**
   
-  6. Add the following annotation to the class ReadinessChecker
+  2. Add the following annotation to the class ReadinessChecker
   
   - `@Readiness`
 
@@ -179,9 +181,9 @@ import org.eclipse.microprofile.health.Readiness;
 
 </details>
 
-  7. Save your changes and **restart** the storefront
+  3. Save your changes and **restart** the storefront
 
-  8. Call the URL that goes direct to the storefront ready state:
+  4. Call the URL that goes direct to the storefront ready state:
   
   -  `curl -i -X GET http://localhost:9080/health/ready`
 
@@ -199,9 +201,9 @@ The readiness check is informing us that the service is ready and can process re
 
 Let's check that the service can indeed inform us of an issue - the backend storemanager not being available in this case :
 
-  9. On the **Eclipse console tab**, switch to the **stockmanager** tab, then use the **Stop** button to stop the **stockmanager** process and stop it.
+  5. On the **Eclipse console tab**, switch to the **stockmanager** tab, then use the **Stop** button to stop the **stockmanager** process and stop it.
 
-  10. Now let's make another readiness request to the storefront :
+  6. Now let's make another readiness request to the storefront :
 
   -  `curl -i -X GET http://localhost:9080/health/ready`
 
@@ -217,9 +219,9 @@ connection: keep-alive
 
 The service is "DOWN" as it can't process requests properly, so a cloud native platform like Kubernetes would no longer send requests to this instance.
 
-  11. Restart the stockmanager 
+  7. Restart the stockmanager 
   
-  12. Wait a short time (we need the stock maager to start and the storefront readiness check to kick in) and then rerun the readiness check:
+  8. Wait a short time (we need the stock manager to start and be available for the storefront readiness check) and then rerun the readiness check:
   
   -  `curl -i -X GET http://localhost:9080/health/ready`
 
