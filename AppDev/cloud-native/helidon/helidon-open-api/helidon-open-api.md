@@ -49,8 +49,6 @@ In the case of Microprofile (and this Helidon as a Microprofile implementation) 
 
 ## Step 2: Defining the API documentation in your code
 
-<details><summary><b>A Note on annotation processing and jandex</b></summary>
-
 When a system like Helidon MP runs the annotations you've applied to your code need to be identified so they can be processed. This is done automatically for you by the runtime, and annotation processors are called to perform whatever actions you have specified (e.g. setting up a start / stop on a timer on entry / exit form a method)
 
 There are two ways to identify the annotations in your code:
@@ -65,10 +63,6 @@ To build the index Heldion uses a tool called jandex (Java ANnotaiton inDEXer) t
 
 Because running JANDEX can take a lot of time (relatively speaking) you don't want to run it each time you make a change to a source code file in Eclipse, so it needs to be specifically run to generate the index when operating in Eclipse. We will shortly see how that is done.
 
----
-
-</details>
-
 ## Step 3: Annotating the Storefront
 In this module we will be adding annotations to describe the storefront service and the data it consumes and returns. In a production environment you may chose to limit what's documented and restrict it to only the public API elements intended to be seen outside your project (this will of course be up to you how you do this, but in general it's good practice not to document something that can't be seen externally)
 
@@ -76,7 +70,9 @@ You may of course chose to document other services, for example the stockmanager
 
 ### Accessing the OpenAPI documentation
 
-  1. The generated OpenAPI documentation can be accessed using curl
+  1. Make sure that the storefront microservcies is running.
+  
+  2. The generated OpenAPI documentation can be accessed using curl
 
   - `curl http://localhost:8080/openapi`
 
@@ -94,7 +90,7 @@ Of course at the moment we haven't actually build anything in it (if you see out
 
 Firstly we shall define what the top level service provides, this can be done on any of the classes managed by the content and dependency injection syb-system, but it seems most relevant to place the annotations on the StorefrontApplication class.
 
-  2. Open the **StorefrontApplication.java file**, and add the following @OpenAPIDefiniton annotation on the *class declaration* itself:
+  3. Open the **StorefrontApplication.java file**, and add the following @OpenAPIDefiniton annotation on the *class declaration* itself:
   
   ```java
     @OpenAPIDefinition(info = @Info(title = "StorefrontApplication", description = "Acts as a simple stock level tool for a post room or similar", version = "0.0.1"))
@@ -141,7 +137,7 @@ Because of this the jandex index needs to be built to reflect the OpenAPI annota
 
 First we need to create a run configuration to create this goal
 
-  1. Select the helidon-labs-storefront project, click right -> Run As -> Maven Build .... 
+  1. Select the helidon-labs-storefront project (this is the project title in the explorer) click right -> Run As -> Maven Build .... (Chose the version with the dots)
 
   ![](images/maven-build-config-menu.png)
 
@@ -204,7 +200,7 @@ In the console tab you'll see output similar to the following
 
 ```
 
-Note that the version numbers may differ.
+The version numbers may differ.
 
 Towards the end of the output you can see that the Maven jandex plugin is run.
 
@@ -1094,7 +1090,7 @@ paths:
 We can see that there is a lot more into on the `/store/reserveStock` REST endpoint, and also on the argument, we can see that it's required and also a description.
 
 ### Documenting the error status codes 
-Of course not every REST API call returns successfully, there may be problems, for example in the case of the `reserveStock` method it might throw a `UnknownItemException` In an earlier module we put an `@Fallback` annotation on the method directing Helidon to pass exceptions a handler class which convertc them into relevant http status codes, in this case an `UnknownItemException` is converted into a 404 / Not Found status. But we need a way to document this and the other returns a client may reasonably be expected to handle.
+Of course not every REST API call returns successfully, there may be problems, for example in the case of the `reserveStock` method it might throw a `UnknownItemException` In an earlier module we put an `@Fallback` annotation on the method directing Helidon to pass exceptions a handler class which converts them into relevant http status codes, in this case an `UnknownItemException` is converted into a 404 / Not Found status. But we need a way to document this and the other returns a client may reasonably be expected to handle.
 
   20. Add the following additional `@APIResponse` annotations to the reserveStock method
 
