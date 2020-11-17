@@ -120,7 +120,7 @@ Let's do this for real.
 
   1. The **stockmanager** service should still be running, if not then please start it.
 
-  2. In project **helidon-labs-storefront**, navigate to folder **src/main/java**, then **restclients** and open the file **StockManager.java**
+  2. In project **helidon-labs-storefront**, navigate to folder **src/main/java**, then the package  **com.oracle.labs.helidon.storefront** then the package **restclients** and open the file **StockManager.java**
 
 First let's look at the StockManager interface.
 
@@ -175,6 +175,8 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 </details>
 
+We have just told the Helidon framework that when injected into a class that behind the scenes it should create a new class, based on this interface that does all or the communications work for us. Helidon will locate information on how the proxy behaves in the config setup (using the config key) Look at the `Details on annotations` for more information.
+
 <details><summary><b>Details on the annotations</b></summary>
 
 The annotation tells Helidon that this is something that can be used as a REST client, the configKey parameter to the annotation tells Helidon that the configuration settings (URL to use and so on) will be in the configuration properties with property names starting with StockManager.  
@@ -207,14 +209,17 @@ As you can probably guess this is for the REST client com.oracle.labs.helidon.st
 
 Good question, best practice is that normally you would define code like the interface which is common to multiple projects in a separate project and both the StockManager and Storefront projects would import it. This also allows you to properly use the Java modules.
 
-In fact for some code in this lab (e.g. the ItemDetails class) that is common we do exactly that. However that means you have to manage three separate projects (common, storefront and stockmanager) and remember to build and push the common project to the local Maven repository when changes are made. When we tested the lab we found this caused a lot of confusion, so for the purposes of the lab only we have included it in the storefront project. Normally of course you would not do this and would follow the best practice.
+In fact for some code in this lab (e.g. the ItemDetails class) that is common we do exactly that. However that means you have to manage three separate projects (common, storefront and stockmanager) and remember to build and push the common project to the local Maven repository when changes are made. When we tested the lab we found this caused a lot of confusion, so for the purposes of the lab only we have included it in the storefront project. Normally of course you would not do this and would follow the Java best practice.
+
+There is however also a good argument that we should not share any classes between microservices as the REST API and over the wire data (I.e. JSON / XML) is the key element that defines communications, and that by having common code we are breaking the independence of the microservices. This is one of those things where you have to carefully consider the benefits and disadvantages. Personally if I was creating a new set of microservices I would follow the micrservices approach of keeping things separate, but if I was decomposing existing code which uses a common interface between the calling and called classes (especially which may already be in Java modules) then I would continue to share the code, at least in the short term.
 
 ---
 
 </details> 
 
-## Step 2: Creating the REST client.
-It's possible to manually create a REST client using the interface, but it's far better to let Helidon use the @RestClient coupled with @Inject to do this for us. That way we don't have to worry about closing the client to reclaim resources and so on.
+## Step 2: Creating the REST client instance.
+
+It's possible to manually create a REST client from a code perspective using a RestClientBuilder and the interface (this is how you would add add it to existing code as shown in the optional module `Communicating from non Helidon clients`, but it's far better to let Helidon use the @RestClient coupled with @Inject to do this for us. That way we don't have to worry about closing the client to reclaim resources and so on.
 
   1. Navigate to the **resources** folder and open the file **StorefrontResource.java**
 
@@ -251,19 +256,21 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 Now when the StorefrontResource class is initialized the Helidon runtime will dynamically create (if needed, or use an existing instance as appropriate depending on the scope) a proxy implementation that looks like the interface, but under the covers does all of the work to make the REST calls and process the response into the returned objects.
 
-Basically this looks pretty simple in comparison to making all of the http requests by hand!
+Basically this looks pretty simple in comparison to making all of the http requests by hand, and that is especially true if you had already created an interface to abstract the client code!
 
   5. **Save the changes** to the files
 
   6. **Run** the storefront main class.
   
-  7. Is it's not already running run the stockmanager main class.
+  7. If it's not still running run the stockmanager main class.
 
   8. Let's try accessing the storefront service using curl. Expect an error
 
   -  `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
 
-If you look at the log output of the **storefront** main class you will find a long stack trace, at the top of which will be the request to list stock, followed by a line that there was a `Unknown error, status code 401`
+The curl response will give you a 424 error (Failed Dependency) because it can't communicate with the stockmanager servcie, but why is that ? We need to look at the storefront logs to find out.
+
+Looking at the log output of the **storefront** main class you will find a long stack trace, at the top of which will be the request to list stock, followed by a line that there was a `Unknown error, status code 401`
 
   ```
 ...
@@ -303,7 +310,7 @@ This contains the security setting used by the storefront service. The `http-bas
             hosts: ["*"]
 ```
 
-It is **absolutely critical** that you maintain the indentation shown (this is achieved with spaces, not tabs allowed). The `outbound` should line up with the `users` section, the hypnen in `- name` should be under the `t` in `outbound` and `hosts` should line up with `name`
+It is **absolutely critical** that you maintain the indentation shown (this is achieved with spaces, not tabs allowed). The `outbound` should line up with the `users` section, the hypen in `- name` should be under the `t` in `outbound` and `hosts` should line up with `name`
 
 This setting tells the `http-basic-auth` provider to transfer the inbound credentials to the outbound requests regardless of the host the request is going to.
 
@@ -338,7 +345,7 @@ It may take a few seconds to respond to this first request as there is a lot of 
 
 <details><summary><b>Got an error ?</b></summary>
 
-It's possible that the services may take longer to do their initial initialization that the timeouts. (The initialization is done on demand) If this happens you may get an error. Wait a short while and retry, hopefully the initialization will have been completed then.
+It's possible that the services may take longer to do their initial initialization that the timeout allows, especially as multiple services and the database connection are all involved here. (The initialization is done on demand) If this happens you may get an error. Wait a short while and retry, hopefully the initialization will have been completed then.
 
 ---
 
@@ -412,12 +419,12 @@ public class TransferClientHeaders implements ClientHeadersFactory {
 
 ### Talking to non Helidon REST services
 
-If you have a non Helidon micro-service and want to talk to it from a Helidon MP client just create an appropriate interface to represent the REST service and then follow the approach above to create the proxy implementations of the interface and use it.
+If you have a non Helidon micro-service and want to talk to it from a Helidon MP client just create an appropriate interface to represent the REST service and then follow the @Inject and @RestClient approach we just followed to create the proxy implementations of the interface and use it.
 
 
 ## Step 3: Non Helidon MP clients of a micro service, also known as My monolith is not decomposed yet
 
-Of course here we've been assuming that this is a Helidon MP micro-service talking to another Helidon MP micro-service. But it's quite possible (even probable) that you are actually going to be making a gradual transition of your monolithic applications to micro-services and will be splitting of bits of the monolith at a time. In those cases you want to be able to connect your remaining monolith to the new micro-service while making as few changes to the monolith as possible. In that case you can still use the approach of defining an interface for your micro-service and then creating a proxy implementation. Your original code just continues to use the proxy which it thinks is the real local object, not a remote micro-service, the only code changed required in the origional monolith code is to crate the proxy rather than instantiate a local class.
+Of course here we've been assuming that this is a Helidon MP micro-service talking to another Helidon MP micro-service. But it's quite possible (even probable) that you are actually going to be making a gradual transition of your monolithic applications to micro-services and will be splitting of bits of the monolith at a time. In those cases you want to be able to connect your remaining monolith to the new microservice while making as few changes to the monolith as possible. In that case you can still use the approach of defining an interface for your microservice and then creating a proxy implementation. Your original code just continues to use the proxy which it thinks is the real local object, not a remote microservice, the only code changed required in the original monolith code is to create the proxy rather than instantiate a local class.
 
 For more details there is a optional lab (See the main labs listing) that explores how to do this.
 
