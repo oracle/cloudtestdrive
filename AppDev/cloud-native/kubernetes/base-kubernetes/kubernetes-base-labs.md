@@ -438,11 +438,12 @@ Before we can login to the dashboard we need to get the access token for the das
 
   10. Get the token of the newly created user:
   
-   ``` `kubectl -n kube-system describe secret `kubectl -n kube-system get secret | grep dashboard-user | awk '{print $1}'`
-   ```
+  ``` 
+  kubectl -n kube-system describe secret `kubectl -n kube-system get secret | grep dashboard-user | awk '{print $1}'
+```
 
 
-   ```
+  ```
 Name:         dashboard-user-token-mhtf9
 Namespace:    kube-system
 Labels:       <none>
