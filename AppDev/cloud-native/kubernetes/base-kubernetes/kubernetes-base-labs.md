@@ -86,7 +86,7 @@ Access to the cluster is managed via a config file that by default is located in
 
   3. Open the `hamburger` menu on the upper left scroll down to the `Solutions and Platform` section
 
-  4. Click on the `Developer Services` menu option, then `Container Clusters (OKE)`
+  4. Click on the `Developer Services` menu option, then `Kubernetes Clusters`
 
   ![](images/container-oke-menu.png)
 
@@ -122,10 +122,13 @@ Note that if there was an existing Kubernetes config file (most likely because y
 Existing kubeconfig file found at /home/oracle/.kube/config and new config merged into it
 ```
 
-
+  8. Set the config file to be accessible only by you (This stops warnings from helm about it having the wrong permissions)
+  
+  - `chmod 600 $HOME/.kube/config`
+  
 Your Kubernetes config file is now downloaded into the .kube/config file
 
-  8. Verify you can access the cluster:
+  9. Verify you can access the cluster:
   
   -  `kubectl get nodes`
 
@@ -159,7 +162,7 @@ If you are using the OCI Cloud shell for **this** section of the lab (either in 
 
   1. To install the dashboard run the following command : 
   
-  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set service.type=LoadBalancer --version 2.8.0`
+  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set service.type=LoadBalancer --version 2.8.3`
 
   ```
 NAME: kubernetes-dashboard
@@ -223,7 +226,7 @@ Note that Helm does all the work needed here, it creates the service, deployment
 
   ```
 NAME                	NAMESPACE  	REVISION	UPDATED                             	STATUS  	CHART                      	APP VERSION
-kubernetes-dashboard	kube-system	1       	2019-12-24 16:16:48.112474 +0000 UTC	deployed	kubernetes-dashboard-2.8.0	     2.0.4 
+kubernetes-dashboard	kube-system	1       	2019-12-24 16:16:48.112474 +0000 UTC	deployed	kubernetes-dashboard-2.8.3	     2.0.4 
 ```
 
 We've seen it's been deployed by Helm, this doesn't however mean that the pods are actually running yet (they may still be downloading)
@@ -266,11 +269,11 @@ replicaset.apps/coredns-78f8cf49d4               1         1         1       3d2
 replicaset.apps/kube-dns-autoscaler-9f6b6c9c9    1         1         1       3d23h
 replicaset.apps/kubernetes-dashboard-bfdf5fc85   1         1         1       66s
 ```
-We see all the elements of the dashboard: a pod, a replica set, a deployment and a service.(
+We see all the elements of the dashboard: a pod, a replica set, a deployment and a service.
 
 If you want more detailed information then you can extract it, for example to get the details on the pods do the following
 
-  4.  Execute below command, replacing the ID with the ID of your pod:
+  4.  Execute below command, replacing the ID with the ID of your pod
   
   -  `kubectl get pod kubernetes-dashboard-bfdf5fc85-djnvb  -n kube-system -o yaml`
 
@@ -315,7 +318,7 @@ If you want the output in json then replace the -o yaml with -o json.
 
 If you're using JSON and want to focus in on just one section of the data structure you can use the JSONPath printer in kubectl to do this, in this case we're going to look at the image that's used for the pod
 
-  5. Get a specific element from a configuration:
+  5. Get a specific element from a configuration, replacing the pod ID of course :
   
   -  `kubectl get pod kubernetes-dashboard-bfdf5fc85-djnvb  -n kube-system -o=jsonpath='{.spec.containers[0].image}'`
 
@@ -338,7 +341,7 @@ map[app.kubernetes.io/component:kubernetes-dashboard app.kubernetes.io/instance:
 ```
 Tells us that any thing with label app.kubernetes.io/name (or /component of /instance) matching kubernetes-dashboard and label release matching kubernetes-dashboard will be part of the service
 
-  7. Get the list of pods providing the dashboard service by name:
+  7. Get the list of pods providing the dashboard service by name (the service just goes by it's name, no random identifiers added to it)
   
   -  `kubectl get pod -n kube-system --selector=app.kubernetes.io/name=kubernetes-dashboard`
 
@@ -439,7 +442,7 @@ Before we can login to the dashboard we need to get the access token for the das
   10. Get the token of the newly created user:
   
   ``` 
-  kubectl -n kube-system describe secret `kubectl -n kube-system get secret | grep dashboard-user | awk '{print $1}'
+  kubectl -n kube-system describe secret `kubectl -n kube-system get secret | grep dashboard-user | awk '{print $1}'`
 ```
 
 
@@ -670,12 +673,29 @@ The certificate needs to be in a Kubernetes secret, we'll look at these in more 
 secret/tls-secret created
 ```
 
-
-  26. Run the following command to install **ingress-nginx** using Helm 3:
+  26. Add the Kubernetes nginx based ingress repo to helm
   
-  -  `helm install ingress-nginx stable/nginx-ingress -n ingress-nginx --version 1.41.3 --set rbac.create=true --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-tls-secret"=tls-secret --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-ssl-ports"=443`
+  - `helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx`
 
+  ```
+"ingress-nginx" has been added to your repositories
+```
+  
+  27. Update the repositories with the new repo
+  
+  - `helm repo update`
+  
+```
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "kubernetes-dashboard" chart repository
+...Successfully got an update from the "ingress-nginx" chart repository
+...Successfully got an update from the "stable" chart repository
+```
 
+  28. Run the following command to install **ingress-nginx** using Helm 3:
+  
+  - `helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --version 3.10.1   --set rbac.create=true --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-tls-secret"=tls-secret --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-ssl-ports"=443`
+  
   ```
 NAME: ingress-nginx
 LAST DEPLOYED: Fri Jul  3 12:06:33 2020
@@ -696,7 +716,7 @@ This will install the ingress controller in the default namespace.
 
 Because the Ingress controller is a service, to make it externally available it still needs a load balancer with an external port. Load balancers are not provided by Kubernetes, instead Kubernetes requests that the external framework delivered by the environment provider create a load balancer. Creating such a load balancer *may* take some time for the external framework to provide. 
 
-  27. To see the progress in creating the Ingress service type :
+  29. To see the progress in creating the Ingress service type :
   
   -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-nginx-ingress-controller`
 
@@ -706,47 +726,47 @@ ingress-nginx-nginx-ingress-controller   LoadBalancer   10.111.0.168   130.61.15
 ```
 In this case we can see that the load balancer has been created and the external-IP address is available. If the External IP address is listed as `<pending>` then the load balancer is still being created, wait a short while then try the command again.
 
-In the helm command you'll have seen a couple of `--set`` options.  These are oci specific annotations (more on annotations later) which tell Kubernetes to setup the load balancer using the TLS secret we created earlier and to use port 443 for encrypted connections (the standard https port)
+In the helm command you'll have seen a couple of `--set`` options.  These are oci specific annotations (more on annotations later) which tell Kubernetes to setup the load balancer using the TLS secret we created earlier
 
-  28. **Make a note of this external IP address, you'll be using it a lot!**
+  30. **Make a note of this external IP address, you'll be using it a lot!**
 
 As we are having the load balancer act as the encryption termination point, and internal to the cluster we are not using encryption we need to update the load balancer to tell is that once is has terminated the secure connection is should pass on the request internally using an http, not https.
 
-  29. Open up the OCI Cloud UI in your web browser, using the "hamburger: menu navigate to `Core Infrastructure` section then `Networking then select `Load Balancers`
+  31. Open up the OCI Cloud UI in your web browser, using the "hamburger: menu navigate to `Core Infrastructure` section then `Networking then select `Load Balancers`
 
   ![hamburger-menu-select-loadbalancer](images/hamburger-menu-select-loadbalancer.png)
 
-  30. Locate the row for **your** load balancer with the IP address you got above, in this case that's for a load balancer named `5da95ea3-6993-4e3b-8d09-a6da655b3eae` but it **will** be different for you!
+  32. Locate the row for **your** load balancer with the IP address you got above, in this case that's for a load balancer named `5da95ea3-6993-4e3b-8d09-a6da655b3eae` but it **will** be different for you!
 
-  31. Click on the load balancer name to open it's details
+  33. Click on the load balancer name to open it's details
 
   ![load-balancer-overview](images/load-balancer-overview.png)
 
-  32. Locate the resources section on the lower left side
+  34. Locate the resources section on the lower left side
 
   ![load-balancer-resources](images/load-balancer-resources.png)
 
-  33. Click on the `Listeners` option
+  35. Click on the `Listeners` option
 
   ![load-balancer-listeners](images/load-balancer-listeners.png)
 
 In the list of listeners look at the line TCP-443, notice that it is set to uses SSL (right hand column) and that it's backend set (where it sends traffic to) is set to TCP-443, we need to change that.
 
-  34. Click on the three dots on the right hand side of the **TCP-443** row
+  36. Click on the three dots on the right hand side of the **TCP-443** row
 
   ![load-balancer-listeners-edit](images/load-balancer-listeners-edit.png)
 
-  35. Click the `Edit` option in the resulting menu
+  37. Click the `Edit` option in the resulting menu
 
   ![load-balancer-edit-listener-chose-backend-set](images/load-balancer-edit-listener-chose-backend-set.png)
 
-  36. In the popup locate the BackendSet option, click on it and select the `TCP-80` option
+  38. In the popup locate the BackendSet option, click on it and select the `TCP-80` option
 
-  37. Click the `Update Listener`
+  39. Click the `Update Listener`
 
   ![load-balancer-update-in-progress](images/load-balancer-update-in-progress.png)
 
-  38. You'll be presented with a `Work in progress` menu, for now just click the `Close` button and the update will continue in the background
+  40. You'll be presented with a `Work in progress` menu, for now just click the `Close` button and the update will continue in the background
 
 <details><summary><b>Scripting the listener change</b></summary>
 
@@ -1241,7 +1261,7 @@ We will of course be using a Kubernetes secret to hold them (they are sensitive,
 
   4. Replace `<database connection name>` with the connection name for **your** database you got from the `tnsnames.ora` file earlier. In my case that was `tg_high`, **but yours will be different**
 
-For **me** tha line looked like this, **YOURS WILL BE DIFFERENT**
+For **me** the line looked like this, **YOURS WILL BE DIFFERENT**
 
 ```yaml
   url: jdbc:oracle:thin:@tg_high?TNS_ADMIN=./Wallet_ATP
@@ -1273,6 +1293,10 @@ Here we're telling Kubernetes to look in the `stockmanagerdb` secret for a data 
 </details>
 
 #### Creating the secrets
+
+  6. Switch back to the scripts directory
+  
+  - `cd cd $HOME/helidon-kubernetes/base-kubernetes `
 
   6. Run the following command to create the secrets:
   
@@ -1409,7 +1433,7 @@ For example (**don't type this**) `$ kubectl create configmap sf-config-map --fr
 
 In the $HOME/helidon-kubernetes/base-kubernetes folder there is a script create-configmaps.sh. We have created this to help you setup the configuration maps (though you can of course do this by hand instead of creating a script). If you run this script it will delete existing config maps and create an up to date config for us :
 
-  15. Run the script to create the condig maps
+  15. Run the script to create the config maps
 
   -  `bash create-configmaps.sh `
 
