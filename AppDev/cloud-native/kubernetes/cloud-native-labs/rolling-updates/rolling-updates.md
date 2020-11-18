@@ -134,7 +134,7 @@ To do the roll out we're just going to apply the new file. Kubernetes will compa
 
   8. Apply the new config
   
-  -  `kubectl apply -f storefront-deployment-v0.0.1.yaml`
+  -  `kubectl apply -f storefront-deployment-v0.0.1.yaml --record`
 
   ```
 deployment.apps/storefront configured
@@ -159,6 +159,8 @@ REVISION  CHANGE-CAUSE
 1         kubectl apply --filename=storefront-deployment.yaml --record=true
 ```
 
+(The `--record` tells Kubernetes to keep track of the change)
+
 We can see that the previous state of the deployment resulted from us doing the initial apply. Note that the filename is specified in the rollout, as long as we version our file names we will be able to know exactly what configuration was applied to different versions of the deployment.
 
 One point to note here, these changes *only* modified the deployment roll out configuration, so there was no need for Kubernetes to actually restart any pods as those were unchanged, however additional pods may have needed to be started to meet the replica count.
@@ -176,8 +178,8 @@ To apply the new v0.0.2 image we need to upgrade the configuration again. As dis
 
 However ... for the purpose of showing how this can be done using kubectl we are going to do this using the command line, not a configuration file change. This **might** be something you'd do in a test environment, but **don't** do it in a production environment or your change management processes will almost certainly end up damaged.
 
-  11. In gthe OCI cloud shell Execute the command 
-  -  `kubectl set image deployment storefront storefront=fra.ocir.io/oractdemeabdmnative/h-k8s_repo/storefront:0.0.2`
+  11. In the OCI cloud shell Execute the command 
+  -  `kubectl set image deployment storefront storefront=fra.ocir.io/oractdemeabdmnative/h-k8s_repo/storefront:0.0.2 --record`
 
   ```
 deployment.apps/storefront image updated
@@ -313,11 +315,11 @@ One important point is that you'll see that the **old** replica set is still aro
   ```
 deployment.apps/storefront 
 REVISION  CHANGE-CAUSE
-1         kubectl apply --filename=storefront-deployment.yaml --record=true
-2         <none>
+1         kubectl apply --filename=storefront-deployment-v0.0.1.yaml --record=true
+2         kubectl set image deployment storefront storefront=fra.ocir.io/oractdemeabdmnative/h-k8s_repo/storefront:0.0.2 --record=true
 ```
 
-Note that the 2nd revision doesn't tell us what changed, another reason we should use configuration files to do this!
+Note that to get the detail of the change you have to use the --record flag
 
   17. Let's check on our deployment to make sure that the image is the v0.0.2 we expect
   
@@ -397,6 +399,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
+
   19. Now let's check the output from the StatusResource (again replace the IP address with the one for your service)
   
   -  `curl -i -k -X GET https://<external IP>/sf/status`
@@ -411,7 +414,9 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 {"name":"My Shop","alive":true,"version":"0.0.2"}
 ```
-Now the rollout has completed and all the instances are runnign the updated image as expected it's reporting version 0.0.2
+Now the rollout has completed and all the instances are running the updated image as expected it's reporting version 0.0.2
+
+If you had checked this during the rollout you would have got 0.0.1 or 0.0.2 versions returned depending on which pod you connected to and what version it was running.
 
 ## Step 3: Rolling back a update
 In this case the update worked, but what would happen if it had for some reason failed. Fortunately for us Kubernetes keeps the old replica set around, which includes the config for just this reason. 

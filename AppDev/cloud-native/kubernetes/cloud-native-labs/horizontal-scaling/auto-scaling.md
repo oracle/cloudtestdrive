@@ -43,9 +43,26 @@ For now we are going to use the simplest approach of the metrics server.
 
 ### Installing the metrics server
 
-  1. In the OCI Cloud Shell install the metrics server by typing
+  1. Install the helm char repo that contains the metrics server
   
-  - `helm install metrics-server stable/metrics-server --namespace kube-system`
+  - `helm repo add bitnami https://charts.bitnami.com/bitnami`
+  
+  2. Update the repo
+  
+  - `helm repo update`
+  
+  ```
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "kubernetes-dashboard" chart repository
+...Successfully got an update from the "ingress-nginx" chart repository
+...Successfully got an update from the "bitnami" chart repository
+...Successfully got an update from the "stable" chart repository
+
+```
+
+  3. In the OCI Cloud Shell install the metrics server by typing
+  
+  - `helm install metrics-server bitnami/metrics-server --namespace kube-system --set apiService.create=true`
 
   ```
 NAME: metrics-server
@@ -64,7 +81,7 @@ command:
 
 It will take a short time for the metrics server to start up, but you can check the progress using kubectl
 
-  2. In the OCI Cloud Shell type
+  4. In the OCI Cloud Shell type
   
   - `kubectl get deployments -n kube-system`
   
@@ -80,7 +97,7 @@ deployment.apps/metrics-server         0/1     1            0           18s
 
 Once the metrics server is running (it will have an AVAILABLE count of 1) you can get information on the state of the system
 
-  3. Let's look at how the nodes in the cluster are doing. In the OCI Cloud Shell type
+  5. Let's look at how the nodes in the cluster are doing. In the OCI Cloud Shell type
   
   - `kubectl top nodes`
 
@@ -95,7 +112,7 @@ If you get an response `error: metrics not available yet` then it just means tha
   
 Note that this was from a cluster with three nodes, depending on the size of your cluster you will see a different number of nodes output.
   
-  4. We can also see the status of the pods in terms of what they are using. In the OCI Cloud Shell type
+  6. We can also see the status of the pods in terms of what they are using. In the OCI Cloud Shell type
   
   - `kubectl top pods`
 
@@ -108,7 +125,7 @@ zipkin-7db7558998-8q2b4        1m           139Mi
 
 Note that like the other times we've used kubectl this uses the namespace configured as the default when you ran the create-namespace.sh command
 
-  5. Let's have a look at what's happening in the kube-system namespace. In the OCI Cloud Shell type
+  7. Let's have a look at what's happening in the kube-system namespace. In the OCI Cloud Shell type
   
   - `kubectl top pods -n kube-system`
 
@@ -163,11 +180,11 @@ The Column EXTERNAL-IP gives you the IP address, in this case the IP address for
 
 In the helidon-kubernetes project in the cloud-native-kubernetes/auto-scaling folder run the following. You must to replace <external IP> here with the one for your ingress controller (see the expansion section above for details of how to get this if you've forgotten)
 
-  6. Switch to the auto scling directory
+  8. Switch to the auto scaling directory
   
   - `cd $HOME/helidon-kubernetes/cloud-native-kubernetes/auto-scaling`
   
-  7. Start a load generator. In the OCI Cloud Shell
+  9. Start a load generator. In the OCI Cloud Shell (As usual replace <external IP> with the IP address of the load balancer).
   
   -  `bash generate-load.sh <external IP> 0.1`
   
@@ -185,15 +202,15 @@ Itertation 1
 
 The script will just get the stock level data, attempting to do so about 10 times a second (the 0.1 above is the time in seconds to wait after the request returns). The returned data will be displayed in the [...] (for clarity here it's been removed
 
-  8. Open up a new window on the OCI console
+  10. Open up a new window on the OCI console
   
-  9. Open up the OCI Cloud shell in the new window
+  11. Open up the OCI Cloud shell in the new window
   
 Let the script run for about 75 seconds (the iteration counter reaches over 750) This will let the load statistics level out.
 
 This will have increased the load, to see the increased load
 
-  10. In the **new** OCI Cloud Shell type
+  12. In the **new** OCI Cloud Shell type
   
   - `kubectl top pods`
   
@@ -206,7 +223,7 @@ zipkin-7db7558998-cnbjf        1m           218Mi
 
 You'll see the CPU load has increased, as the data is averaged over a short period of time you may have to wait a short while (say 30 seconds) for it to update.
 
-  11. In the **new** OCI Cloud Shell (after waiting for a little bit) type
+  13. In the **new** OCI Cloud Shell (after waiting for a little bit) type
   
   - `kubectl top pods`
   
@@ -219,7 +236,7 @@ zipkin-7db7558998-cnbjf        33m          265Mi
 
 Notice that in this particular example the CPU here for the storefront is at 251m (your number may be different). This is actually the limit allowed in the storefront deployment.yaml file, which has a resource restriction of 250 milli CPU specified. 
 
-If the load does not reach 250 then you may need to adjust the request rate, or update the storefront-deployment.yaml file and reduce the CPU limit, then undeploy and redeploy it to ensure you can hit the limit (and auto scaling will kick in once we've configured it)
+If the load does not reach 250 then you may need to adjust the request rate, or open another cloud shell in a new browser tab / window and run another load generator to ensure you can hit the limit (and auto scaling will kick in once we've configured it)
 
 ```
         resources:
@@ -230,7 +247,7 @@ If the load does not reach 250 then you may need to adjust the request rate, or 
 
 We can also get the current resource level for the container using kubectl and the jsonpath capability
 
-  12. In the OCI Cloud Shell (substitute your storefront pod name) type 
+  14. In the OCI Cloud Shell (substitute your storefront pod name) type 
   
   - `kubectl get pod storefront-79c465dc6b-x8fbl -o=jsonpath='{.spec.containers[0].resources.limits.cpu}'`
  
@@ -238,7 +255,7 @@ We can also get the current resource level for the container using kubectl and t
  250m
  ```
  
-   13. In the OCI Cloud shell window running the load generator stop it using Control-C
+   15. In the OCI Cloud shell window running the load generator stop it using Control-C
 
 <details><summary><b>Namespace level resource restrictions and implications</b></summary>
 
@@ -260,26 +277,28 @@ To fix this problem we need to add more pods, but we don't want to do this by ha
 
 Setup autoscale (normally of course this would be handled using modifications to the YAML file for the deployment)
 
-  14. In the OCI Cloud Shell create an auto scaller
+**If your CPU load was not exceeding 125** then reduce the `--cpu-percent` setting to a lower number so that it's below the required level. For example if the CPU load for the storefront was not exceeding 50 (so 20% of the allowed load on a single pod) then a setting of `--cpu-percent=15` will trigger a scaling.
+
+  16. In the OCI Cloud Shell create an auto scaller
   
-  - `kubectl autoscale deployment  storefront --min=2 --max=5 --cpu-percent=50`
+  - `kubectl autoscale deployment  storefront --min=2 --max=5 --cpu-percent=25`
   
   ```
 horizontalpodautoscaler.autoscaling/storefront autoscaled
 
 ```
-The autoscaler will attempt to achieve a target CPU load of 50%, adding or removing pods to the deployment as needed to meet that goal, but never going below two pods or above 5
+The autoscaler will attempt to achieve a target CPU load of 25%, (or whatevery you used) adding or removing pods to the deployment as needed to meet that goal, but never going below two pods or above 5
 
 
 We can see what the system has found by looking in the Horizontal Pod Autoscalers
 
-  15 In the OCI Cloud Shell type 
+  17. In the OCI Cloud Shell type 
   
   - `kubectl get horizontalpodautoscaler storefront`
 
   ```
 NAME         REFERENCE               TARGETS    MINPODS   MAXPODS   REPLICAS   AGE
-storefront   Deployment/storefront   50%/50%   2         5         2          44s
+storefront   Deployment/storefront   25%/25%   2         5         2          44s
 ```
 
 Note that because we told the auto scaler that we wanted a minimum of 2 pods the REPLICAS has already increased to 2. Because this deployment is "behind" the storefront service the service will automatically arrange for the load to be balanced across both pods for us.
@@ -289,14 +308,14 @@ Of course typing `horizontalpodautoscaler` takes some time, so kubectl has an al
 ```
 kubectl get hpa storefront
 NAME         REFERENCE               TARGETS    MINPODS   MAXPODS   REPLICAS   AGE
-storefront   Deployment/storefront   50%/50%   2         5         2          56s
+storefront   Deployment/storefront   25%/25%   2         5         2          56s
 ```
 
 A few points on the output The TARGET column tells us what the **current** load is first, this is the average across **all** the pods in the deployment, Then the target load the autoscaler will aim to achieve by adding or removing pods.
 
 You can get more detail on the autoscaler state
 
-  16. Getting the autoscaler details. In the OCI Cloud Shell type
+  18. Getting the autoscaler details. In the OCI Cloud Shell type
   
   - ` kubectl describe hpa storefront`
 
@@ -308,7 +327,7 @@ Annotations:                                           <none>
 CreationTimestamp:                                     Fri, 28 Feb 2020 19:07:36 +0000
 Reference:                                             Deployment/storefront
 Metrics:                                               ( current / target )
-  resource cpu on pods  (as a percentage of request):  50% (126m) / 50%
+  resource cpu on pods  (as a percentage of request):  25% (63m) / 25%
 Min replicas:                                          2
 Max replicas:                                          5
 Deployment pods:                                       2 current / 2 desired
@@ -323,7 +342,7 @@ Events:           <none>
 
 Now restart the load generator program. Note that you may need to change the sleep time from 0.1 to a different value if the load generated is not high enough to trigger an autoscale operation, but don't set it to low!
 
-  17. In the OCI Cloud Shell where you were running the load balancer previously (substitute the IP address for the ingress for your cluster)
+  19. In the OCI Cloud Shell where you were running the load balancer previously (substitute the IP address for the ingress for your cluster) If needed run multiple in different cloud shells.
   
   -  `bash generate-load.sh <external IP> 0.1`
 
@@ -334,11 +353,11 @@ Now restart the load generator program. Note that you may need to change the sle
 ...
 ```
 
-  18. Switch to the second cloud shell window in your browser.
+  20. Switch to the second cloud shell window in your browser.
 
 Allow a short time for the load to be recorded, then look at the load on the pods (you may have to adjust the request frequency in the script if the load does not increase enough to trigger autoscaling
 
-  19. Let's checlk there is a load. In the OCI Cloud Shell type
+  21. Let's check there is a load. In the OCI Cloud Shell type
   
   - `kubectl top pods`
 
@@ -352,18 +371,18 @@ zipkin-7db7558998-cnbjf        9m           341Mi
 
 Notice that the load on the pods has increased
 
-  20. Let's look at the autoscaler. In the OCI Cloud Shell type
+  22. Let's look at the autoscaler. In the OCI Cloud Shell type
   
   - `kubectl get horizontalpodautoscaler storefront`
 
   ```
 NAME         REFERENCE               TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
-storefront   Deployment/storefront   73%/50%   2         5         3          16m
+storefront   Deployment/storefront   43%/25%   2         5         3          16m
 ```
 
 The current load (in this case 73%) is above the 50% target. The autoscaler will have kicked in and be starting to do it's thing. 
 
-  21. Let's look at the autoscaler details. In the OCI Cloud Shell type
+  23. Let's look at the autoscaler details. In the OCI Cloud Shell type
   
   - `kubectl describe hpa storefront`
   
@@ -375,7 +394,7 @@ Annotations:                                           <none>
 CreationTimestamp:                                     Fri, 28 Feb 2020 19:07:36 +0000
 Reference:                                             Deployment/storefront
 Metrics:                                               ( current / target )
-  resource cpu on pods  (as a percentage of request):  75% (189m) / 50%
+  resource cpu on pods  (as a percentage of request):  43% (87m) / 25%
 Min replicas:                                          2
 Max replicas:                                          5
 Deployment pods:                                       3 current / 5 desired
@@ -395,63 +414,63 @@ Events:
 In fact it seems that in the time between the commands above the short term average load increased sufficiently that the autoscaler having determined it wanted three pods then updated to realize it wanted 5 pods to meet the load. In this case if we look at the pods list we can see the details there
 
 
-  22. Let's look at those pods. In the OCI Cloud Shell type
+  24. Let's look at those pods. In the OCI Cloud Shell type
   
   - `kubectl top pods`
 
   ```
 NAME                           CPU(cores)   MEMORY(bytes)   
 stockmanager-86dbc548d-b8cbl   19m          425Mi           
-storefront-79c465dc6b-2lvlr    102m         385Mi           
-storefront-79c465dc6b-br87r    89m          647Mi           
-storefront-79c465dc6b-jk5cq    131m         402Mi           
+storefront-79c465dc6b-2lvlr    64m          385Mi           
+storefront-79c465dc6b-br87r    82m          647Mi           
+storefront-79c465dc6b-jk5cq    73m          402Mi           
 storefront-79c465dc6b-m55tc    62m          428Mi           
-storefront-79c465dc6b-x8fbl    250m         1933Mi          
+storefront-79c465dc6b-x8fbl    84m          1933Mi          
 zipkin-7db7558998-cnbjf        11m          387Mi    
 ```
 
 All 5 pods are running and the service is distributing the load amongst them. Actually some of the storefront pods above are probably still in their startup phase as I gathered the above data immediately after getting the auto scale description.
 
-  23. Let's get the autoscaler summary again.In the OCI Cloud Shell type
+  25. Let's get the autoscaler summary again.In the OCI Cloud Shell type
   
   - `kubectl get hpa storefront`
   
   ```
 NAME         REFERENCE               TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
-storefront   Deployment/storefront   66%/50%   2         5         5          30m
+storefront   Deployment/storefront   30%/25%   2         5         5          30m
 ```
 
-We can see that the average load across the deployment is still over 50%, if is had not reached the maximum number of pods then the auto scaler would be trying to meet our goal of no more than 50% average load by adding additional pods.
+We can see that the average load across the deployment is still over 25%, if is had not reached the maximum number of pods then the auto scaler would be trying to meet our goal of no more than 50% average load by adding additional pods.
 
 If you want you can also see the pods being added in the Kubernetes dashboard,  
 
-  24. Open the Kubernetes Dashboard
+  26. Open the Kubernetes Dashboard
 
-  25. Make sure you are in your namespace
+  27. Make sure you are in your namespace
 
-  26. In the left menu Under workloads select `Deployments` then click on the `storefront` deployment
+  28. In the left menu Under workloads select `Deployments` then click on the `storefront` deployment
 
-  27. In the pod section you can see that in this case it's scaled to 5 pods
+  29. In the pod section you can see that in this case it's scaled to 5 pods
 
   ![](images/autoscaling-pods-increased.png)
 
-  28. Scroll down to the events section and you can seen the changes it's made
+  30. Scroll down to the events section and you can seen the changes it's made
 
   ![](images/autoscaling-dashboard-events.png)
 
-  29.You can see the pod details by opening the replica set.
+  31.You can see the pod details by opening the replica set.
 
   ![](images/autoscaling-pods-list.png)
 
-  30. In the load generator window stop the script by typing Control-C
+  32. In the load generator window(s) stop the script by typing Control-C
 
 Note that the metrics server seems to operate on a decaying average basis, so stopping the load generating script will not immediately drop the per pod load. This means that it may take some time after stopping the load generator script for the autoscaler to start removing unneeded pods.   
 
 The autoscaler tries not to "thrash" the system by starting and stopping pods all the time. Because of this it will only remove pods every few minutes rather than immediately the load becomes low, additionally it will also only remove a few pods at a time. The [autoscaler documentation](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#algorithm-details) describes the algorythm.
 
-For now let's delete the autoscaler to we can proceed with the next part of the lab
+For now let's delete the autoscaler to we can proceed with the next part of the lab with a known configuration
 
-  31. In the OCI Cloud Shell type
+  33. In the OCI Cloud Shell type
   
   - `kubectl delete hpa storefront`
 
@@ -463,7 +482,7 @@ Note that this just stops changes to the number of pods, any existing pods will 
 
 To return to the numbers of replicas originally defined we'll use kubectl
 
-  32. In the OCI Cloud Shell type
+  34. In the OCI Cloud Shell type
   
   - `kubectl scale --replicas=1 deployment storefront`
 
@@ -473,7 +492,7 @@ deployment.apps/storefront scaled
 
 Now let's check what's happening
 
-  33. In the OCI Cloud Shell type
+  35. In the OCI Cloud Shell type
   
   - `kubectl get deployment storefront`
 

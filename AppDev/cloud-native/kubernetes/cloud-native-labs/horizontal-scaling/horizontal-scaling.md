@@ -232,6 +232,8 @@ I don't know why you can even scale a replica set in this situation, but I suspe
 
 </details>
 
+## Step 2: Reset the count
+
 - To prepare for the following lab sections please go back to the storefront deployment and follow the approach described above to scale it back down to a single pod.
 
 ## End of the module, what's next ?

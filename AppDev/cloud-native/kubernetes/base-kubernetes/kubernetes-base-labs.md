@@ -718,11 +718,11 @@ Because the Ingress controller is a service, to make it externally available it 
 
   29. To see the progress in creating the Ingress service type :
   
-  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-nginx-ingress-controller`
-
+  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+  
   ```
-NAME                                     TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)                      AGE   SELECTOR
-ingress-nginx-nginx-ingress-controller   LoadBalancer   10.111.0.168   130.61.15.77 80:31934/TCP,443:31827/TCP   61s   app=nginx-ingress,component=controller,release=ingress-nginx
+NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
+ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
 ```
 In this case we can see that the load balancer has been created and the external-IP address is available. If the External IP address is listed as `<pending>` then the load balancer is still being created, wait a short while then try the command again.
 
@@ -732,7 +732,7 @@ In the helm command you'll have seen a couple of `--set`` options.  These are oc
 
 As we are having the load balancer act as the encryption termination point, and internal to the cluster we are not using encryption we need to update the load balancer to tell is that once is has terminated the secure connection is should pass on the request internally using an http, not https.
 
-  31. Open up the OCI Cloud UI in your web browser, using the "hamburger: menu navigate to `Core Infrastructure` section then `Networking then select `Load Balancers`
+  31. Open up the OCI Cloud UI in your web browser, using the "hamburger" menu navigate to `Core Infrastructure` section then `Networking then select `Load Balancers`
 
   ![hamburger-menu-select-loadbalancer](images/hamburger-menu-select-loadbalancer.png)
 
@@ -1109,16 +1109,17 @@ ingress.networking.k8s.io/storefront-openapi created
   -  `kubectl get ingress`
 
   ```
-NAME                      HOSTS   ADDRESS   PORTS   AGE
-stockmanager              *                 80      47s
-stockmanager-management   *                 80      47s
-stockmanager-status       *                 80      47s
-storefront                *                 80      47s
-storefront-management     *                 80      47s
-storefront-status         *                 80      47s
-zipkin                    *                 80      47s
+NAME                      CLASS    HOSTS   ADDRESS          PORTS   AGE
+stockmanager              <none>   *       132.145.235.17   80      23s
+stockmanager-management   <none>   *       132.145.235.17   80      22s
+stockmanager-status       <none>   *       132.145.235.17   80      22s
+storefront                <none>   *       132.145.235.17   80      23s
+storefront-management     <none>   *       132.145.235.17   80      22s
+storefront-openapi        <none>   *       132.145.235.17   80      22s
+storefront-status         <none>   *       132.145.235.17   80      23s
+zipkin                    <none>   *       132.145.235.17   80      23s
 ```
-One thing that you may have noticed is that the ingress controller is running in the ingress-nginx namespae, but when we create the rules we are using the namespace we specified (in this case tg_helidon) This is because the rule needs to be in the same namespace as the service it's defining the connection two, but the ingress controller service exists once for the cluster (we could have more pods if we wanted, but for this lab it's perfectly capable of running all we need) We could put the ingress controller into any namespace we chose, kube-system might be a good choice in a production environment. If we wanted different ingress controllers then for nginx at any rate the --watch-namespace option restricts the controller to only look for ingress rules in specific namespaces.
+One thing that you may have noticed is that the ingress controller is running in the ingress-nginx namespace, but when we create the rules we are using the namespace we specified (in this case tg_helidon) This is because the rule needs to be in the same namespace as the service it's defining the connection two, but the ingress controller service exists once for the cluster (we could have more pods if we wanted, but for this lab it's perfectly capable of running all we need) We could put the ingress controller into any namespace we chose, kube-system might be a good choice in a production environment. If we wanted different ingress controllers then for nginx at any rate the --watch-namespace option restricts the controller to only look for ingress rules in specific namespaces.
 
   11. Edit the ingressConfig.yaml file you'll see the rules in it sets up the following mappings
 
@@ -1142,7 +1143,7 @@ Direct mappings
 
 Notice the different ports in use on the target.
 
-  12. If you didn;t write it down earlier find the external IP address the ingress controller is running on :
+  12. If you didn't write it down earlier find the external IP address the ingress controller is running on :
 
   -  `kubectl get service -n ingress-nginx`
 
@@ -1249,7 +1250,9 @@ In The Helidon labs we provided the database details via Java system properties 
 
 We will of course be using a Kubernetes secret to hold them (they are sensitive, so placing them in a deployment yaml file which might be accessible by many folks would also be a bad idea) **You** need to update them with the setting for **your** database
 
-  1. Switch to the **$HOME/helidon-kubernetes/configurations/stockmanagerconf** directory
+  1. Switch to the config files directory
+  
+  - `cd $HOME/helidon-kubernetes/configurations/stockmanagerconf`
 
   2. **Edit** the file `databaseConnectionSecret.yaml`
 
@@ -1296,9 +1299,9 @@ Here we're telling Kubernetes to look in the `stockmanagerdb` secret for a data 
 
   6. Switch back to the scripts directory
   
-  - `cd cd $HOME/helidon-kubernetes/base-kubernetes `
+  - `cd $HOME/helidon-kubernetes/base-kubernetes `
 
-  6. Run the following command to create the secrets:
+  7. Run the following command to create the secrets:
   
   -  `bash create-secrets.sh`
 
@@ -1336,7 +1339,7 @@ If you had made a mistake editing the file or get an error when executing it jus
 
 If you want to modify a secret then you simply use kubectl to edit it with the new values (or delete it, then add it's replacement). When a secret is modified (and if you've told Helidon to look for changes) then changes to the secret will be reflected as changes in the configuration. Depending on how your code accesses those, the change may be picked up by your existing code, or you may need to restart the pod(s) using the updated secrets.
 
-  7. Listing the secrets is simple:
+  8. Listing the secrets is simple:
 
   -  `kubectl get secrets`
 
@@ -1350,7 +1353,7 @@ sm-wallet-atp         Opaque                                7      5m9s
 
 
 
-  8. To see the content of a specific secret :
+  9. To see the content of a specific secret :
 
   -  `kubectl get secret sm-conf-secure -o yaml`
 
@@ -1376,7 +1379,7 @@ type: Opaque
 
 The contents of the secret is base64 encoded, to see the actual content we need to use a base64 decoder, in the following replace <your secret payload> with the stockmanager-security.yaml data in result from above, (it starts c2VjdXJpdHk in this example) : 
 
-  9. To get the secret in plain test
+  10. To get the secret in plain test
 
   -  `echo <your secret payload> | base64 -d -i -`
 
@@ -1397,20 +1400,25 @@ security:
             roles: ["user"]
           - login: "joe"
             password: "password"
+        outbound:
+          - name: "propogate-to-everyone"
+            hosts: ["*"]
 ```
 The dashboard is actually a lot easier in this case. 
 
-  10. In the dashboard UI
+  11. In the dashboard UI
   
-  11. Chose **your** namespace in the namespace selector (upper left) tg-helidon in my case, but yours may differ
+  12. Chose **your** namespace in the namespace selector (upper left) tg-helidon in my case, but yours may differ
 
-  12. Click on the `Secrets` choice in the `Config and Store` section of the left hand menu.
+  13. Click on the `Secrets` choice in the `Config and Store` section of the left hand menu.
 
-  13. Select the sf-conf entry to see the list of files in the secret
+  14. Select the sf-conf-secure entry to see the list of files in the secret
 
-  14. Click on the eye icon next to the storefront-security.yaml to see the contents of the secret.
+  15. Click on the eye icon next to the storefront-security.yaml to see the contents of the secret.
 
   ![dashboard-secrets-stockmanager-security](images/dashboard-secrets-stockmanager-security.png)
+  
+For security reasons Kubernetes only stores the secrets in memory, they are not written to permenant storage.
 
 ### Config Maps
 
@@ -1785,9 +1793,13 @@ You will be using the details you gathered for the docker login.
 
 </details>
 
-The `deploy.sh` script just does a sequence of commands to apply the deployment configuration files, for example `kubectl apply -f zipkin-deployment.yaml --record=true` You could of course issues these commands by hand if you liked, but we're using a script here to save typo probems, and also because it's good practice to script this type of thing, so you know **exactly** the command that was run - which can be useful if you need to **exactly** reproduce it (which of course in a production environment you would!)
+The `deploy.sh` script just does a sequence of commands to apply the deployment configuration files, for example `kubectl apply -f zipkin-deployment.yaml --record=true` You could of course issues these commands by hand if you liked, but we're using a script here to save typo probems, and also because it's good practice to script this type of thing, so you know **exactly** the command that was run - which can be useful if you need to **exactly** reproduce it (which of course if you were deploying in a production environment you would!)
 
-  1. Now run the deploy.sh script
+  1. Switch to the helidon-kubernetes directory
+  
+  - `cd $HOME/helidon-kubernetes`
+
+  2. Now run the deploy.sh script
   
   -  `bash deploy.sh`
 
@@ -1894,7 +1906,7 @@ Is we look at the Kubernetes dashboard we will see similar information. There is
 </details>
 
 
-  2. Now lets look at the logs of the pods you have launched (replace the ID shown here with the exact ID of your pod)
+  3. Now lets look at the logs of the pods you have launched (replace the ID shown here with the exact ID of your pod)
   
   -  `kubectl logs  --follow storefront-68bbb5dbd8-vp578`
 
@@ -1907,6 +1919,8 @@ Is we look at the Kubernetes dashboard we will see similar information. There is
 
 2019.12.29 17:40:13 INFO com.oracle.labs.helidon.storefront.Main Thread[main,5,main]: Running on http://localhost:8080/store
 ```
+
+If you get an error message that the pod or container has not started then please wait a short while and try again, sometimes it can take a short time to download the image and start it running.
 
   3. Type **Ctrl-C** to stop kubectl and return to the command prompt.
 
@@ -2046,7 +2060,7 @@ As we are running zipkin and have an ingress setup to let us access the zipkin p
 
   8. Open your browser
   
-  9. Go to the ingress end point for your cluster, for example http://<external IP>/zipkin (replace with *your* ingress controllers Load balancer IP address)
+  9. Go to the ingress end point for your cluster, for example `http://<external IP>/zipkin` (replace with *your* ingress controllers Load balancer IP address)
 
   10. In the browser, accept a self signed certificate. The mechanism varies per browser and sometimes version, but below worked as of Summer 2020.
   

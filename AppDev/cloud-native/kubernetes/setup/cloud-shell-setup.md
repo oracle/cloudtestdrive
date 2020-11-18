@@ -141,7 +141,9 @@ l_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFU
 
   8. Be sure to write down the database connection name you have just found, you will need it later
 
-  9. Return to the home directory `cd $HOME`
+  9. Return to the home directory
+
+  - `cd $HOME`
 
 ## Step 4: Setting up your department Id
 

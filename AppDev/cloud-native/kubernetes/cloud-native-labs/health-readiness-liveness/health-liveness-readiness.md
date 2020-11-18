@@ -113,7 +113,7 @@ To be honest this is a bit of inside knowledge, docker images run the command th
 
 Within a second or two of the process being killed the connection to the container in the pod is terminated as the container exits.
 
-If we now try getting the data again it still responds  (replace <External IP> with the one for your service) If you get a 503 error that just means that the pod is still restarting, wait a few seconds and try again.
+If we now try getting the data again it still responds  (replace <External IP> with the one for your service) If you get a 502 or 503 error that just means that the pod is still restarting, wait a few seconds and try again.
 
   5. Try getting the data
 
@@ -567,7 +567,7 @@ In this case the pod is ready, so the grep command returns what it's found. We a
 
 And can see that the variable value (which is what's returned back to the Kubernetes readiness infrastructure) is 0. In Unix / Linux terms this means success.
 
-If you want to see what it would do if the outcome was not UP try running the command changing the UP to DOWN (or actually anything other than UP) **Important** While you can run this command in the pods shell •DO NOT• modify the yaml like this.
+If you want to see what it would do if the outcome was not UP try running the command changing the UP to DOWN like this (or actually anything other than UP). **Important** While you can run this command in the pods shell **DO NOT** modify the actual yaml files.
 
 ```
 root@storefront-b44457b4d-29jr7:/# curl -s http://localhost:9080/health/ready | grep "\"outcome\":\"DOWN\""
@@ -762,7 +762,7 @@ zipkin-88c48d8b9-vdn47          1/1     Running       0          26m
 ```
 The stock manager service is being stopped (this is quite a fast process, so it may have completed before you ran the command). After 60 seconds or so if we run kubectl to get everything we see it's gone (note this is `all`, not `pods` here)
 
-  17. Make sure that the stockmanager **pod** and **service** are terminated
+  17. Make sure that the stockmanager **pod** and **deployment** are terminated
   
   -  `kubectl get all`
 
