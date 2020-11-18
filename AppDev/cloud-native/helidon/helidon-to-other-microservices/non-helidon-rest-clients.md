@@ -158,7 +158,8 @@ You will of course need to bring in the required libraries for the rest client b
 
 ---
 
-## End of the lab, what's next
+## End of the module, what's next ?
+
 You have finished the optional lab of **Communicating from non Helidon clients**. 
 
 The next lab in the Helidon labs is **Operations support with Helidon**

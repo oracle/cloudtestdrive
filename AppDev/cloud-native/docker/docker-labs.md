@@ -864,7 +864,7 @@ This is the end of this section of the lab, let's stop the running images
   
   -  `docker stop zipkin`
 
-## Summary
+## End of the Module, what's next ?
 
 Congratulations, you are now able to run your microservices on Docker, separate the configuration from the container, and push the container to a repository
 

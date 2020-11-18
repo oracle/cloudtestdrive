@@ -681,7 +681,7 @@ Canary testing and A/B testing require a service mesh to handle the split of the
 
 </details>
 
-## End of the lab, What's next ?
+## End of the module, what's next ?
 
 You have reached the end of this section of the lab and of the core Kubernetes modules.
 

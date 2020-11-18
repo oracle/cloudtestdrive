@@ -1836,7 +1836,8 @@ Now every REST call that does not finish in 15 will generate a timed out http re
 
 Short of going and deliberately putting delays into the code for now we can't test this.
 
-## Finished the helidon core functionality
+## End of the module, what's next ?
+
 Congratulations, you've finished the core Helidon functionality section of the lab.
 
 You've seen how we can use Helidon to place a REST service environment around existing code, to make that code deliver rest services and to transfer data to and from the existing code and the REST requests / responses.

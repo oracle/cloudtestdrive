@@ -635,7 +635,8 @@ We've also seen how we can bring use @PathParam to provide us with a different w
 
 ---
 
-## End of the lab, what's next
+## End of the module, what's next ?
+
 You have finished the lab of **Databases with Helidon**. 
 
 You can now do the optional lab **Accessing the request context**

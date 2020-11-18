@@ -535,7 +535,7 @@ To delete the monitoring namespace do the following
 namespace "monitoring" deleted
 ```
 
-## End of the lab, What's next ?
+## End of the module, What's next ?
 
 You can chose from the various Kubernetes optional module sets.
 

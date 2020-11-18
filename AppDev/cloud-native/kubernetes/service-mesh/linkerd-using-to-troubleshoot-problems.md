@@ -339,7 +339,7 @@ Let's use the Kubernetes rollout mechanism to reverse our "upgrade"
 deployment.apps/stockmanager rolled back
 ```
 
-## End of the lab, What's next ?
+## End of the module, What's next ?
 
 You can chose from the remaining `Linkerd service mesh` modules or switch to one of the other Kubernetes optional module sets.
 

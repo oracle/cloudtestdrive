@@ -1210,7 +1210,8 @@ The Microprofile OpenAPI specification is available from the [Microprofile open 
 
 ---
 
-## End of the lab, what's next
+## End of the module, what's next ?
+
 You have finished the optional lab **Self documenting API support in Helidon**. 
 
 This is the end of the Helidon labs.

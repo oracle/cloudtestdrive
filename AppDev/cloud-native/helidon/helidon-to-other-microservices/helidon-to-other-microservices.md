@@ -105,6 +105,8 @@ Fortunately for us Eclipse Microprofile have created a solution for communicatin
 
 Best software development practice is to to follow the [loose coupling design patterns](https://en.wikipedia.org/wiki/Loose_coupling) so that the caller can't see the details of the implementation. In Java this is achieved using interfaces, so a developer created an interface for externally use that defines the functionality and then a separate class the implements it, this is especially true if your class is in a library class or a different package.
 
+Of course your code may not have an interface, not least of which is the remove microservice may not be written in Java, so in that case you've create an interface to represent the remote endpoint.
+
 All a developer then need to do is to have your code create a proxy for the interface (or preferably have a factory create it) and interact with the actual implementation of the micro-service using the proxy which looks like the interface, The interface is of course by definition public and (if designed properly) will not expose any of the implementation details.
 
 With Helidon and the Rest Client functionality all we need to do is to annotate the interface with details of paths and such like, add the @RegisterRestClient annotation and then inject it as a Rest client to the class that uses it. Then we can carry on in our code using the interface as if it was an interface for a local class, for example 
@@ -205,11 +207,11 @@ As you can probably guess this is for the REST client com.oracle.labs.helidon.st
 
 </details>
 
-<details><summary><b>Why is this interface in this project ? </b></summary>
+<details><summary><b>Why is this interface in this project ?</b></summary>
 
-Good question, best practice is that normally you would define code like the interface which is common to multiple projects in a separate project and both the StockManager and Storefront projects would import it. This also allows you to properly use the Java modules.
+Good question, best Java practice is that normally you would define code like the interface which is common to multiple projects in a separate project and both the StockManager and Storefront projects would import it. This also allows you to properly use the Java modules.
 
-In fact for some code in this lab (e.g. the ItemDetails class) that is common we do exactly that. However that means you have to manage three separate projects (common, storefront and stockmanager) and remember to build and push the common project to the local Maven repository when changes are made. When we tested the lab we found this caused a lot of confusion, so for the purposes of the lab only we have included it in the storefront project. Normally of course you would not do this and would follow the Java best practice.
+In fact for some code in this lab (e.g. the ItemDetails class) that is common we do exactly that, and that's a structure that may well have been used in existing Java code that's being refactored into microservices. However that means you have to manage three separate projects (common, storefront and stockmanager) and remember to build and push the common project to the local Maven repository when changes are made. When we tested the lab we found this caused a lot of confusion, so for the purposes of the lab only we have included it in the storefront project. Normally of course you would not do this and would follow the Java best practice.
 
 There is however also a good argument that we should not share any classes between microservices as the REST API and over the wire data (I.e. JSON / XML) is the key element that defines communications, and that by having common code we are breaking the independence of the microservices. This is one of those things where you have to carefully consider the benefits and disadvantages. Personally if I was creating a new set of microservices I would follow the micrservices approach of keeping things separate, but if I was decomposing existing code which uses a common interface between the calling and called classes (especially which may already be in Java modules) then I would continue to share the code, at least in the short term.
 
@@ -431,7 +433,8 @@ For more details there is a optional lab (See the main labs listing) that explor
 ---
 
 
-## End of the lab, what's next
+## End of the module, what's next ?
+
 You have finished the lab of **Communicating between microservices with Helidon**. 
 
 You can now do the optional lab **Communicating from non Helidon clients** lab

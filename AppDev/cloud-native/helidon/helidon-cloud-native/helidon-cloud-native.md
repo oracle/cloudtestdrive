@@ -239,7 +239,8 @@ As the stockmanager is now up the storefront has it's dependencies satisfied and
 
 ---
 
-## End of the lab, what's next
+## End of the module, what's next ?
+
 You have finished all the core labs in **Helidon**.  
 
 If you wish you can now do the optional **Self documenting API support in Helidon** module

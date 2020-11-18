@@ -899,7 +899,7 @@ To solve this in Kubernetes 1.18 the concept of startup probes will be introduce
 Unfortunately however the startup probes are not supported in standard versions of Kubernetes prior to 1.18, which at the time of writing was not available and this lab is not yet fully updated for that. But there is example configuration in the storefront-deployment.yaml file to show how this would would be defined (the initialDeploymentSeconds would need to be removed from the liveness and readiness configurations.
 
 
-## End of the lab, What's next ?
+## End of the module, what's next ?
 
 You have reached the end of this section of the lab. The next module is `Horizontal scaling`
 

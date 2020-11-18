@@ -472,7 +472,7 @@ You've seen that the capture of Log data for Kubernetes hosted microservices is 
 
 Although we haven't looked at the analysis of log data there are many tools available to help with that.
 
-## End of the lab, What's next ?
+## End of the module, what's next ?
 
 You can chose from the various Kubernetes optional module sets.
 

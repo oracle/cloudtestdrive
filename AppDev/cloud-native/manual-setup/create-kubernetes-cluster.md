@@ -28,7 +28,7 @@ If you are only doing the Kubernetes based labs you need to have completed the s
 
 ### Navigate to the Managed Kubernetes dashboard
 
-  1. Log into the **Cloud Console** using the URL provided, and using the username and password you created earlier.
+  1. Log into the **OCI Console** 
 
   2. Once on the **OCI infrastructure** page, click on the hamburger menu to navigate to 
   
@@ -52,11 +52,11 @@ If you are only doing the Kubernetes based labs you need to have completed the s
   
   - Make sure the compartment is **CTDOKE**
   
-  - Make sure the Kubernetes version is the highest on the list (at the time of the last update of this document in August 2020 that was 1.16.8, but it may have been updated since then)
+  - Make sure the Kubernetes version is the highest on the list (at the time of the last update of this document in November 2020 that was 1.18.10, but it may have been updated since then)
   
   - Leave the visibility type as **private**
   
-  - Set the shape to VM.Standard2.1
+  - Set the shape to VM.StandardE2.1
   
   - Set the number of nodes to be 2
 
@@ -78,9 +78,9 @@ You'll be presented with a progress option, if you want read what's happening
 
 The state will be "Creating" for **a few minutes** (usually 3-4 mins)
 
-## End of the lab, What's next ?
+## End of the cluster setup, What's next ?
 
-You can move on to the `Cloud Shell Setup for the Kubernetes Labs` module.
+You can move on to the `Cloud Shell Setup for the Kubernetes Labs` module while the cluster continues to be provisioned.
 
 ## Acknowledgements
 

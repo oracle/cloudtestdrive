@@ -88,13 +88,11 @@ To keep the secrets outside the image means that you need to get the database co
 
 We will use the OCI Cloud Shell to download the database wallet file. 
   
-  1. Get the wallet file of your database
-  
-  2. Make sure you are in the top level directory
+  1. Make sure you are in the top level directory
   
   - `cd $HOME`
   
-  3. Attention: replace the example ODIC below with the OCID of your database (if you didn't copy this when you created the database or don;t have it then if you go to the database page it will sho there with a `copy` button)
+  2. Attention: replace the example ODIC below with the OCID of your database. If you didn't copy this when you created the database or don't have it then if you go to the database page for your instance (Hamburger -> Oracle Database -> Autonomous Transaction Processing -> your instance) it will be shown there with a `copy` button)
     
   - `oci db autonomous-database generate-wallet --file Wallet.zip --password 'Pa$$w0rd' --autonomous-database-id ocid1.autonomousdatabase.oc1.eu-frankfurt-1.aa8d698erlewaiehqrfklhfoeqwfaalkdhfuieiq`
 
@@ -102,21 +100,21 @@ We will use the OCI Cloud Shell to download the database wallet file.
 Downloading file  [####################################]  100%
 ```
 
-  4. Create the wallet directory and navigate to it:
+  3. Create the wallet directory and navigate to it:
   
   - `mkdir -p $HOME/helidon-kubernetes/configurations/stockmanagerconf/Wallet_ATP`
   
   - `cd $HOME/helidon-kubernetes/configurations/stockmanagerconf/Wallet_ATP`
   
-  5. Copy the wallet file to the directory
+  4. Copy the wallet file to the directory
   
   - `cp $HOME/Wallet.zip .`
   
-  6. Unzip the wallet file
+  5. Unzip the wallet file
   
   - `unzip Wallet.zip`
   
-  7. Look at the contents of the tnsnames.ora file to get the database connection names
+  6. Look at the contents of the tnsnames.ora file to get the database connection names
   
   - `cat tnsnames.ora`
 
@@ -139,11 +137,11 @@ l_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFU
 
   You will see a list of the various connection types to your database.
 
-  8. Locate the "high" connection type to your database and take a note of the full name, in the example above that's `jleoow_high` **but yours will differ**
+  7. Locate the "high" connection type to your database and take a note of the full name, in the example above that's `jleoow_high` **but yours will differ**
 
-  9. Be sure to write down the database connection name you have just found, you will need it later
+  8. Be sure to write down the database connection name you have just found, you will need it later
 
-  10. Return to the home directory `cd $HOME`
+  9. Return to the home directory `cd $HOME`
 
 ## Step 4: Setting up your department Id
 
@@ -151,7 +149,9 @@ To allow for some lab situations where there are multiple users in the same data
 
 We need to configure the stockmanager-config.yaml file. You need to do this even if you have done the Helidon labs as the set of configuration data downloaded into the OCI Cloud Shell is generic and does not include the customizations you made in the Helidon labs 
 
-  1. Navigate into the folder $HOME/helidon-kubernetes/configurations/stockmanagerconf/conf
+  1. Navigate into the folder 
+  
+  - `cd $HOME/helidon-kubernetes/configurations/stockmanagerconf/conf`
   
   2. Open the file **stockmanager-config.yaml**
   

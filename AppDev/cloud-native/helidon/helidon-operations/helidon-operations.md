@@ -510,7 +510,8 @@ By default any of `@Metric`, `@Timed`, `@Counted` etc. will use a name that's de
 
 ---
 
-## End of the lab, what's next
+## End of the module, what's next ?
+
 You have finished the **Operations support with Helidon** lab. 
 
 The next lab in the Helidon core labs is **Cloud Native support in Helidon**

@@ -234,7 +234,7 @@ I don't know why you can even scale a replica set in this situation, but I suspe
 
 - To prepare for the following lab sections please go back to the storefront deployment and follow the approach described above to scale it back down to a single pod.
 
-## End of the lab, What's next ?
+## End of the module, what's next ?
 
 You have reached the end of this section of the lab. The next module is `Auto scaling`
 

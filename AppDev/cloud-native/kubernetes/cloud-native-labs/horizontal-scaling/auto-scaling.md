@@ -499,7 +499,7 @@ The [autoscaler docs explain some of these](https://kubernetes.io/docs/tasks/run
 
 Autoscaler and rolling upgrades - The autoscaler will correctly operate in conjunction with rolling upgrades.
 
-## End of the lab, What's next ?
+## End of the module, what's next ?
 
 You have reached the end of this section of the lab. The next module is `Rolling Updates`
 

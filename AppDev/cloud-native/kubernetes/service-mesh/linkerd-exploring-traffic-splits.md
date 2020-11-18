@@ -928,7 +928,7 @@ Of course splitting by header is assuming that the headers are correctly passed 
 
 The service mesh standard also defines capabilities that allow you to apply access controls within the mesh, so for example restricting access to the /metrics endpoint to prometheus would prevent unauthorized applications trying to get details of how your system was running.
 
-## End of the lab, What's next ?
+## End of the module, What's next ?
 
 You can chose from the remaining `Linkerd service mesh` modules or switch to one of the other Kubernetes optional module sets.
 

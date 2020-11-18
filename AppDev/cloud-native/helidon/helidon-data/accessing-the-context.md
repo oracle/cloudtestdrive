@@ -143,7 +143,8 @@ The entire StockResource class is covered by the @Transational annotation. This 
 
 ---
 
-## End of the lab, what's next
+## End of the module, what's next ?
+
 You have finished the optional lab of **Accesing the request context with Helidon**. 
 
 The next lab in the Helidon labs is **Communicating between microservcies with Helidon**

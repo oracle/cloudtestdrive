@@ -181,7 +181,7 @@ namespace "test" deleted
 
 Now you have completed the uninstall process
 
-## End of the lab, What's next ?
+## End of the module, What's next ?
 
 You can chose from the other Kubernetes optional module sets.
 

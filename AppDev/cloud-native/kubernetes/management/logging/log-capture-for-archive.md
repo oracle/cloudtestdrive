@@ -688,7 +688,7 @@ We have seen how you can capture log data for long term storage, in this case us
 
 Of course if the cost savings of the long term storage are outweighed by the time taken to retrieve the log data (maybe you're only holding it for a few days and it's being used often in that time) then you can use the standard storage tier which os more expensive, but offers immediate access.
 
-## End of the lab, What's next ?
+## End of the module, what's next ?
 
 You can chose from the various Kubernetes optional module sets.
 

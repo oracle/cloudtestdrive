@@ -42,14 +42,14 @@ The OCI Cloud Shell has helm already installed for you, however it does not know
   - `helm repo add stable https://kubernetes-charts.storage.googleapis.com/`
   
   ```
-    "stable" has been added to your repositories
+"stable" has been added to your repositories
 ```
   2. Now add the dashboard repo
   
   - `helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/`
   
-    ```
-    "kubernetes-dashboard" has been added to your repositories
+  ```
+"kubernetes-dashboard" has been added to your repositories
  ```
  
   3. To can get the current list of repositories run the following command :
@@ -2223,9 +2223,9 @@ Also when deploying in Kubernetes you should create roles and users for performi
 
 ---
 
-## End of the lab, What's next ?
+## End of the module, what's next ?
 
-You have reached the end of this lab section, the next section is `Cloud Native with Kubernetes`
+You have reached the end of this module, the next section is `Cloud Native with Kubernetes`
 
 ## Acknowledgements
 

@@ -554,7 +554,7 @@ Do the following
 namespace "monitoring" deleted
 ```
 
-## End of the lab, What's next ?
+## End of the module, what's next ?
 
 You can move on to the `Visualizing with Grafana` module which builds on this module, or chose from the various Kubernetes optional module sets.
 

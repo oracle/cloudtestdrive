@@ -1249,7 +1249,7 @@ In this case it's showing `May 20,2020,12:00:00 to May 22,2020 11:59:59` but it 
 
 We can see that there are three namespaces being monitored and 14 deployments. You may need to play around a bit with the time range in the UI to get the proper details.
 
-## End of the lab, What's next ?
+## End of the module, What's next ?
 
 You can chose from the remaining `Linkerd service mesh` modules or switch to one of the other Kubernetes optional module sets.
 

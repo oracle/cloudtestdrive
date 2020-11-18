@@ -368,7 +368,7 @@ Feel free to explore the dashboards if you like, the Linkerd Health dashboard pr
 
   1. In the OCI cloud shell stop the load generator using Control-C
   
-## End of the lab, What's next ?
+## End of the module, What's next ?
 
 You can chose from the remaining `Linkerd service mesh` modules or switch to one of the other Kubernetes optional module sets.
 
