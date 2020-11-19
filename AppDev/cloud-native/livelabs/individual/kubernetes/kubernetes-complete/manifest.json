@@ -38,7 +38,7 @@
         },
         {
           "title": "Part 4: Rolling Updates",
-          "filename": "../../../../kubernetes/cloud-native-labs/holling-updates/rolling-updates.md"
+          "filename": "../../../../kubernetes/cloud-native-labs/rolling-updates/rolling-updates.md"
         },
         {
           "title": "Optional 1a: Prometheus for metrics capture",
