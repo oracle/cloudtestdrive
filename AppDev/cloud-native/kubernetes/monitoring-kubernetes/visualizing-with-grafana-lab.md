@@ -39,13 +39,15 @@ For this lab we will use a small subset of the open source features only.
 ## Step 2: Installing Grafana
 Like many other Kubernetes services Grafana can be installed using helm. By default the helm chart does not create a volume for the storage of the grafana configuration. This would be a problem in a production environment, so we're going to use the persistent storage option defined inthe helm chart for Grafana to create a storage volume. 
 
-  1. Create the Helm repository entry for Grafana
+  1. Create the Helm repository entry for Grafana 
   
   - `helm repo add bitnami https://charts.bitnami.com/bitnami`
 
  ```
 "bitnami" has been added to your repositories
 ```
+
+If you have already added the bitnami repository in another module you'll be told it's already there, that's fine.
 
   2. Update the repository cache
   
@@ -63,7 +65,7 @@ Depending on what modules you have done previously the updated repositories list
 
   3. In the OCI Cloud Shell type following command:
   
-  - `helm install grafana  bitnami/grafana --version 3.4.3 --namespace  monitoring  --set persistence.enabled=true --set service.type=LoadBalancer`
+  - `helm install grafana  bitnami/grafana --version 4.0.2 --namespace  monitoring  --set persistence.enabled=true --set service.type=LoadBalancer`
 
   ```
 NAME: grafana
@@ -86,7 +88,6 @@ NOTES:
     echo "User: admin"
     echo "Password: $(kubectl get secret grafana-admin --namespace monitoring -o jsonpath="{.data.GF_SECURITY_ADMIN_PASSWORD}" | base64 --decode)"
 ```
-  -  `helm install grafana --namespace monitoring stable/grafana --set persistence.enabled=true --set service.type=LoadBalancer --version 5.0.26`
 
 Note that normally you would not expose Grafana directly, but would use a ingress or other front end. However to do that requires setting up a reverse proxy with DNS names and getting security certificates, which can take time. Of course you'd do that in production, but for this lab we want to focus on the core Kubernetes learning stream, so we're taking the easier approach of just creating a load balancer.
  
@@ -147,9 +148,9 @@ Note the External IP address (130.61.201.103 in this case)
 
 If the external IP address says <pending> then Kubernetes hasn't finished starting the service. wait a short while and run the command again.
 
-  7. Open a web page (replace `<external IP>`) with the one you just got for the grafana service.
+  7. Open a web page (replace `<grafana ip address>`) with the one you just got for the grafana service.
   
-  - `http://<external ip>:3000`
+  - `http://<grafana ip address>:3000`
   
 I have found that for some versions of Firefox that grafana complains about reverse-proxy settings. You may find that you need to use chrome or safari to access the grafana page.
 

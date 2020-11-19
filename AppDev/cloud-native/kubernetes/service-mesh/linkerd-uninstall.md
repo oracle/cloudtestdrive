@@ -128,16 +128,15 @@ Now get the list of deployments in the ingress-nginx namespace
   - `kubectl get deployments -n ingress-nginx`
 
   ```
-NAME                                          READY   UP-TO-DATE   AVAILABLE   AGE
-ingress-nginx-nginx-ingress-controller        1/1     1            1           35d
-ingress-nginx-nginx-ingress-default-backend   1/1     1            1           35d
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+ingress-nginx-controller   1/1     1            1           21h
 ```
 
 And next update them so the proxy will be removed.
 
   6. In the OCI Cloud shell type :
 
-  - `kubectl rollout restart deployments -n ingress-nginx ingress-nginx-nginx-ingress-controller ingress-nginx-nginx-ingress-default-backend`
+  - `kubectl rollout restart deployments -n ingress-nginx ingress-nginx-controller`
 
   ```
 deployment.apps/ingress-nginx-nginx-ingress-controller restarted

@@ -346,9 +346,9 @@ data:
 
 <details><summary><b>What's the SWITCH_LOG_FILE_INTERVAL for?</b></summary>
 
-The SWITCH_LOG_FILE_INTERVAL tells fluentd how often to switch to a new output file.
+The `SWITCH_LOG_FILE_INTERVAL` tells fluentd how often to switch to a new output file.
 
-For lab purposes we have setup the configuration with a 60 second cycle on switching log files. This is to enable us to see output in a reasonable time (the files don't show up in the object storage until they have been written and closed, then the archiving process completed. In a normal situation this would be set to a much higher value, say 3600 seconds, so the log files would switch once an hour (so if you use this config file in a production environment remember to update the SWITCH_LOG_FILE_INTERVAL value to reflect your needs).
+For lab purposes we have setup the configuration with a 60 second cycle on switching log files. This is to enable us to see output in a reasonable time (the files don't show up in the object storage until they have been written and closed, then the archiving process completed. In a normal situation this would be set to a much higher value, say 3600 seconds, so the log files would switch once an hour (so if you use this config file in a production environment remember to update the `SWITCH_LOG_FILE_INTERVAL` value to reflect your needs).
 
 ---
 

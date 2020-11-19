@@ -67,7 +67,7 @@ namespace/logging created
 
 Now let's use helm to install the elastic search engine into the logging namespace
 
-  2. First if you haven't already done it add the bitnami help repository
+  2. First if you haven't already done it add the bitnami help repository.
 
   - `helm repo add bitnami https://charts.bitnami.com/bitnami`
   
@@ -91,7 +91,7 @@ Update Complete. ⎈ Happy Helming!⎈
 
   4. Now we can actually install elastic search. In the cloud console type
   
-  - `helm install elasticsearch bitnami/elasticsearch --namespace logging --version 12.7.3`
+  - `helm install elasticsearch bitnami/elasticsearch --namespace logging --version 12.8.2`
 
   ```
 NAME: elasticsearch
@@ -179,7 +179,7 @@ look at the `ingress-nginx-nginx-ingress-controller` row, IP address inthe `EXTE
 
 </details>
 
-  8. In a web browser go to the web page `https://<External IP>/elastic/_cat`  (remember the one below is **my** ip address **you need to use yours**)
+  8. In a web browser go to the web page `https://<External IP>/elastic/_cat`  (remember the one below is **my** ip address **you need to use yours**) If you get a 503 or 502 error this means that the elastic search service is still starting up. Wait a short time then retry.
 
   9. If needed in the browser, accept a self signed certificate. The mechanism varies by browser and version, but as of September 2020 the following worked with the most recent (then) browser version.
   
@@ -196,6 +196,10 @@ We have had reports that some versions of Chrome will not allow you to override 
 We can see that the elastic search service is up and running, let's see what data it holds
 
   10. In a web browser (remember to substitute **your** IP address) look at the indices in the service
+  
+  ```
+  http://<external IP>/elastic/_cat/indices
+```
 
   ![](images/ES-no-indices.png)
 
@@ -231,7 +235,7 @@ There are a number of yaml daemonset configuration files at the [fluentd daemons
 
 What are the modifications ? 
 
-We are telling fluentd the DNS name of the elastic search service. In this case that's `elasticsearch-client.logging.svc` As we've seen previously the Kubernetes service makes this available on it's internal DNS service and distributes requests across all of the pods that are ready in the service.
+We are telling fluentd the DNS name of the elastic search service. In this case that's `elasticsearch-elasticsearch-master.logging.svc` As we've seen previously the Kubernetes service makes this available on it's internal DNS service and distributes requests across all of the pods that are ready in the service.
 
 We need to tell fluentd to ignore the systemd that's running in it's own pod, the base images used by fluentd no longer supports systemd, and if we didn't disable it we'd just get a bunch of log messages complaining that it can't access the service.
 
@@ -241,7 +245,9 @@ Finally we have changes the namespace from kube-system to logging, this is reall
 
 Let's create the daemonset
 
-  11. Make sure you are in the `$HOME/helidon-kubernetes/management/logging` directory
+  11. Make sure you are in the logging scripts directory
+  
+  - `cd $HOME/helidon-kubernetes/management/logging`
   
   12. In the OCI Cloud Shell terminal type
   
@@ -302,8 +308,8 @@ Open the Kubernetes dashboard
   14. In a web browser on your laptop go to the dashboard (remember this is my IP address, yours will be different) 
   
   ```
-https://132.145.231.23
- ```
+https://132.145.231.23/#!/login
+```
 
   15. If prompted in the browser, accept the self signed certificate. The mechanism varies by browser and version, but as of September 2020 the following worked with the most recent (then) browser version.
   
@@ -349,15 +355,15 @@ ca.crt:     1025 bytes
 
 </details>
 
-  15. Click on the `nodes` option in the `cluster` section of the UI menu on the left
+  16. Click on the `nodes` option in the `cluster` section of the UI menu on the left
 
   ![dashboard-nodes-menu](images/dashboard-nodes-menu.png)
 
-  16. Once you have logged in go to the nodes list (Click nodes on the upper left)
+You'll see the list of nodes
 
   ![](images/dashboard-nodes-list.png)
 
-My cluster has 3 nodes, so there are three entries, but yours may have a different number of nodes, and thus entries.
+I used a different cluster to get this screen grab and it had two nodes, so there are two entries, but yours may have a different number of nodes, and thus entries.
 
 In the Oracle Kubertnetes Environment the nodes are names based on their IP address, so 10.0.10.2, 10.0.10.3, and 10.0.10.4 in the case of this cluster.
 
@@ -381,23 +387,31 @@ If we go back and look at the Elastic search list of indices now we can see that
 
   ![](images/ES-some-indicies.png)
 
-There is an index for each days data. In this case I had started the services yesterday, so data for two days was added, however you may well see only a single entry.
+There is an index for each days data. In this case I had started the services yesterday, so data for two days was added (all the existing data in the logs is copied across, not just the new data after fluentd was started) however you may well see only a single entry.
 
 We can have a look at the data from a specific day
 
 I've used the index for the data gathered most recently, as can be seen in the index listing that's `logstash-2020.04.23` **but yours will be different**
 
-  2. Let's look at the captured data. Look at the incexies list and chose one
+  2. Let's look at the captured data. Look at the indecies list and chose one
   
-  3. Go to the URL `https://<External IP>/elastic/logstash-<YYYY-MM-DD>/_search`  (remember the one below is **my** ip address **you need to use yours**, adjust YYYY-MM-DD to one of the entries in the indexes list).
+  3. Go to the _search URL (remember the one below is **my** ip address **you need to use yours**, adjust YYYY-MM-DD to one of the entries in the indexes list).
+  
+  ```
+  https://<External IP>/elastic/logstash-<YYYY-MM-DD>/_search
+```
 
   ![](images/ES-quick-log-query.png)
 
-There's a lot of data here (and depending on which browser yu use it may be nicely formated, or a pure text dump) but this has been running most of the day as I wrote this module, most interesting is that in the hits.total section we can see that there were 66177 entries, and we can see that (in this case) entry 0 is a warning from fluentd about the log data generated by the coredns container.
+There's a lot of data here (and depending on which browser you use it may be nicely formated, or a pure text dump) but this has been running most of the day as I wrote this module, most interesting is that in the hits.total section we can see that there were 66177 entries, and we can see that (in this case) entry 0 is a warning from fluentd about the log data generated by the coredns container.
 
 Of course we can focus in on specific entries if we want, in this case we're going to look for entries which have the container_name of storefront
 
-  4.Try the URL `https://<External IP>/elastic/logstash-<YYYY-MM-DD>/_search?q=kubernetes.container_name:storefront`  (remember the one below is **my** ip address **you need to use yours**, adjust YYYY-MM-DD to one of the entries in the indexes list).
+  4.Try this URL to focus on the storefront container (remember the one below is **my** ip address **you need to use yours**, adjust YYYY-MM-DD to one of the entries in the indexes list).
+  
+  ```
+https://<External IP>/elastic/logstash-<YYYY-MM-DD>/_search?q=kubernetes.container_name:storefront
+```
 
   ![](images/ES-search-empty-storefront.png)
 

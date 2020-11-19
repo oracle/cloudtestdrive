@@ -100,7 +100,7 @@ Download complete!
 Validating checksum...
 Checksum valid.
 
-Linkerd stable-2.8.1 was successfully installed 🎉
+Linkerd stable-2.9.0 was successfully installed 🎉
 
 
 Add the linkerd CLI to your path with:
@@ -138,7 +138,7 @@ export PATH=$PATH:$HOME/.linkerd2/bin
   - `linkerd version`
 
   ```
-Client version: stable-2.8.1
+Client version: stable-2.9.0
 Server version: unavailable
 ```
 
@@ -282,16 +282,18 @@ There is a lot of output here, we've only seen the beginning of it above
 
 Let's check that the linkerd command can talk to the control plane
 
-  8. In the OCI Cloud Shell type
+  8. After a few mins delay for the linkerd control plane to startup, In the OCI Cloud Shell type
   
   - `linkerd version`
 
 ```
-Client version: stable-2.8.1
-Server version: stable-2.8.1
+Client version: stable-2.9.0
+Server version: stable-2.9.0
 ```
 
 Expect a short delay while the linkerd command contacts the control plane servers.
+
+If you get `Unavailable` for the server version that means the control plane is still starting, wait a short time and then re-run the command.
 
 We can see the version information (this was correct at the time of writing, you make have later versions.)
 
@@ -475,8 +477,6 @@ For ease of setting up the lab we are going to use an ingress but relax the secu
 
 The first thing we need to do is to remove the restriction in the linkerd web front end on which hosts are allowed to access the web front end. Of course you would not do this in a production system!
 
-edit the linkerd web deployment yaml normally would not do
-
   1. In the OCI Cloud shell type
   
   - `kubectl edit deployment linkerd-web -n linkerd`
@@ -504,7 +504,7 @@ Curiously the linkerd-web ingress does not by default use a TLS certificate to e
 
 Fortunately for us when we first setup our ingress controller and load balancer we installed a certificate in the load balancer for SSL / TLS connections, so we can just use that for the inkerd SSL/TLS endpoint as well. 
 
-  5. Move to the `$HOME/helidon-kubernetes/service-mesh` directory
+  5. Move to the directory containing the scripts for the service mesh lab
   
   - `cd $HOME/helidon-kubernetes/service-mesh`
 
@@ -1151,9 +1151,8 @@ Now get the list of deployments in the ingress-nginx namespace
   - `kubectl get deployments -n ingress-nginx`
 
   ```
-NAME                                          READY   UP-TO-DATE   AVAILABLE   AGE
-ingress-nginx-nginx-ingress-controller        1/1     1            1           35d
-ingress-nginx-nginx-ingress-default-backend   1/1     1            1           35d
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+ingress-nginx-controller   1/1     1            1           20h
 ```
 
 And next update them so the proxy will be added.
@@ -1161,7 +1160,7 @@ And next update them so the proxy will be added.
 
   20. In the OCI Cloud shell type :
 
-  - `kubectl rollout restart deployments -n ingress-nginx ingress-nginx-nginx-ingress-controller ingress-nginx-nginx-ingress-default-backend`
+  - `kubectl rollout restart deployments -n ingress-nginx ingress-nginx-controller`
 
   ```
 deployment.apps/ingress-nginx-nginx-ingress-controller restarted

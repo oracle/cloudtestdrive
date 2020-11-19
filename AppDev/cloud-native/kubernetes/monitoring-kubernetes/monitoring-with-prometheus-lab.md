@@ -91,9 +91,11 @@ To separate the monitoring services from the  other services we're going to put 
 
 ## Step 2: Prometheus
 
-<details><summary><b>Older versions of Kubernetes than 1.17.9</b></summary>
+<details><summary><b>Older versions of Kubernetes than 1.18.10</b></summary>
 
-We assume you are using Kubernetes 1.17.9 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the version of the prometheus helm charts (11.12.1 at the time of writing) were found to work. If you were using an older version of Kubernetes you may need to specify a particular version of the helm chart as follows :
+We assume you are using Kubernetes 1.18.10 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the 11.16.9 version of the prometheus helm charts were found to work. If you were using an older version of Kubernetes we found the following version combinations to work.
+
+Kubernetes 1.17.9 Promteheus helm chart 11.12.1 worked for us
 
 Kubernetes 1.16.9 Promteheus helm chart 11.6.8 worked for us
 
@@ -111,7 +113,7 @@ Installing Prometheus is simple, we just use helm.
 
   1. In the OCI Cloud Shell type
   
-  -  `helm install prometheus prometheus-community/prometheus --namespace monitoring --set server.service.type=LoadBalancer --version 11.12.1`
+  -  `helm install prometheus prometheus-community/prometheus --namespace monitoring --set server.service.type=LoadBalancer --version 11.16.9`
   
   ```
 NAME: prometheus
@@ -185,7 +187,7 @@ If the external IP is `<pending>` then Kubernetes is still starting the Promethe
 
 Let's go to the service web page
 
-  3. In your web browser open up (replace <Ip address> with the IP you got **for the prometheus server**)
+  3. In your web browser open up (replace <prometheus ip address> with the IP you got **for the prometheus server**)
   
   - `http://<prometheus ip address>/graph`
  
@@ -256,7 +258,7 @@ We can use kubectl to get the pod id, using a label selector to get pods with a 
 
 Don't actually do this, this is just to show how you could modify a live pod with kubectl
 
-Example only:
+Example only, do not run this:
 
 ```
 $ kubectl get pods -l "app=storefront" -o jsonpath="{.items[0].metadata.name}"
@@ -265,7 +267,7 @@ storefront-588b4d69db-w244b
 
 Now we could use kubectl to add a few annotations to the pod (this is applied immediately, and Prometheus will pick up on it in a few seconds)
 
-Example only:
+Example only, do not run this:
 
 ```
 $ kubectl annotate pod storefront-588b4d69db-w244b prometheus.io/scrape=true --overwrite
@@ -278,7 +280,7 @@ pod/storefront-588b4d69db-w244b annotated
 
 We can see what annotations there would be on the pod with kubectl (this works even if you setup the annotations using the deployment yaml file).
 
-Example only:
+Example only, do not run this:
 
 ```
 $  kubectl get pod storefront-588b4d69db-w244b -o jsonpath="{.metadata..annotations}"
@@ -288,7 +290,7 @@ map[prometheus.io/path:/metrics prometheus.io/port:9080 prometheus.io/scrape:tru
 ***However***
 In most cases we don't want these to be a temporary change, we want the Prometheus to monitor our pods if they restart (or we re-deploy)
 
-  14. Navigate to the helidon-kubernetes folder
+  14. In the OCI Cloud Shell Navigate to the helidon-kubernetes folder
   
   - `cd $HOME/helidon-kubernetes` 
   
@@ -505,7 +507,7 @@ When we did the Helidon labs we actually setup the metrics on the call to list s
 
   33. Make a few more curl requests to ensure we have some data groupings, take a short break and then make a few more.
 
-  34. Change the metric to `application_listAllStockMeter_one_min_rate_per_second`
+  34. Change the metric to `application_listAllStockMeter_one_min_rate_per_second` Click the `Execute` button
 
 We can see the number of calls to list all stock per second averaged over 1 min. This basically provides us with a view of the number of calls made to the system over time, and we can use it to identify peak loads.
 
@@ -513,7 +515,7 @@ We can see the number of calls to list all stock per second averaged over 1 min.
 
 Prometheus can also produce multi value graphs. For example in addition to the counting metrics we also setup a timer on the listAllStock method to see how long calls to it took. If we now generate a graph on the timer we see in the Console view that instead of just seeing a single entry representing the latest data, that there are actually 6 entries representing different breakdowns of the data (0.5 being the most common data, 0.999 being the least common) Of course the data you see may vary depending on your situation and how much you've already been using the services.
 
-  35. Change the metric to `application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_listAllStockTimer_seconds`
+  35. Change the metric to `application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_listAllStockTimer_seconds` Click the `Execute` button
 
   ![prometheus-list-stock-timer-quantile-console](images/prometheus-list-stock-timer-quantile-console.png)
 

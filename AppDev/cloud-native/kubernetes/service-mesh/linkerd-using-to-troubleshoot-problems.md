@@ -165,11 +165,11 @@ configmap "sm-config-map" deleted
 configmap/sm-config-map created
 ```
 
-Now we can apply the update, we'll use the Kubernetes rolling upgrade process (as we're going to want to revert this one!)
+Now we can apply the update, we'll use the Kubernetes rolling upgrade process to record the change (as we're going to want to revert this one!)
 
   12. In the OCI Cloud shell type
   
-  - `kubectl apply -f $HOME/helidon-kubernetes/service-mesh/stockmanager-deployment-broken.yaml`
+  - `kubectl apply -f $HOME/helidon-kubernetes/service-mesh/stockmanager-deployment-broken.yaml --record`
 
   ```
 deployment.apps/stockmanager configured
@@ -185,7 +185,7 @@ Now let's check that the change has applied by going direct to the stockmanager 
   
   - `curl -i -k -X GET -u jack:password https://<external IP>/sm/stocklevel`
 
-(As usual the first response may take a short while)
+(As usual the first response may take a short while, if you get a 503 error it means that the Kubernetes is waiting for the stockmanager to come online.
  
 Depending on if you get an error you'll get something similar to the following
 
@@ -271,16 +271,16 @@ We'll open the LinkerdUI and see what it's reporting.
 
   16. In your web browser go to `https://<external IP>` (replace `<external IP>` of course) If asked login with the user name admin and the password you chose when setting up the Linkerd ingress
 
-  17. Locate the HTTP metrics entry for your namespace (mine is tg-helidon, yours will have a different name)
+  17. Click on `Namespaces` in the`Cluster` section of the left menu and locate the HTTP metrics entry for your namespace (mine is tg-helidon, yours will have a different name)
 
   ![](images/linkerd-broken-overview-namespace.png)
 
-While the precise numbers will of course vary you should see that the success rate is not 100%, it's likely to be around 95% It's not a surprise, but it looks like we have a bit of a problem!
+While the precise numbers will of course vary you should see that the success rate is not 100%, it's likely to be around 90% That is not a surprise (after all we are deliberately throwing an error on about half of the calls to the stock manager) but it looks like we have a bit of a problem!
 
-<details><summary><b>Why only 95% ?</b></summary>
+<details><summary><b>Why only 90% ?</b></summary>
 
 
-Remember that here we're looking at all the HTTP REST API calls that happen in the entire namespace, including those inbound from the Ingress controller as well as calls to the Zipkin tracing, so while we'd expect to see some calls fail we wouldn't expect to see all of them.
+Remember that here we're looking at all the HTTP REST API calls that happen in the entire namespace, including those inbound from the Ingress controller as well as calls to the Zipkin tracing, so while we'd expect to see some calls fail (about half of the calls to the stockmanager) won't be hald of the overall calls.
 
 ---
 

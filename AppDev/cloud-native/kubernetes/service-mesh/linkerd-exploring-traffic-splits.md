@@ -75,7 +75,7 @@ Let's switch to the right directory
 
 First we need to make a small change to our existing stock manager deployment, adding the version number to the deployment, this will let us differentiate it from the newer version we are about to deploy.
 
-The file stockmanager-deployment-v0.0.1.yaml is our "standard deployment file atat we have used in other modules, it just has additional version attributes for the `spec.selector.matchLabels` and `spec.template.metadata.labels` sections as shown below
+The file stockmanager-deployment-v0.0.1.yaml is our "standard deployment file which we have used in other modules, it just has additional version attributes for the `spec.selector.matchLabels` and `spec.template.metadata.labels` sections as shown below
 
  ```yaml
   selector:
@@ -132,7 +132,7 @@ storefront-7667fc5fdc-5zwbr      2/2     Running   0          22h
 zipkin-7db7558998-c5b5j          2/2     Running   0          22h
 ```
 
-Let's make sure our service is still running (noe that we haven't changed the service itself, it's selector will match the old and new versions of the pod)
+Let's make sure our service is still running (note that we haven't changed the service itself, it's selector will match the old and new versions of the pod)
 
   4. In the OCI Cloud shell type the following (as usual replacing `<external IP>` with the IP address of the ingress controller service)
   
@@ -244,9 +244,9 @@ strict-transport-security: max-age=15724800; includeSubDomains
 </html>
 ```
 
-For the 0.0.2 version we get a 502 - Service Unavailable response. The ingress controller can map to the 0.0.2 service, but the 0.0.2 service has a selector which is looking for pods with a label `version: 0.0.2` and so far we haven't created any of those.
+For the 0.0.2 version we get a 503 - Service Unavailable response. The ingress controller can map to the 0.0.2 service, but the 0.0.2 service has a selector which is looking for pods with a label `version: 0.0.2` and so far we haven't created any of those.
 
-Now we have to create the traffic split. We need to do this before creating the 0.0.2 deployment because the original (un-versioned) stockmanager service is still running and being used by the storefront. The original service has a selector that will match on **any** pod with the label `app: stockmanager` **regardless*** of what the version it is. 
+Now we have to create the traffic split. We need to do this before creating the 0.0.2 deployment because the original (un-versioned) stockmanager service is still running and being used by the storefront. The original service has a selector that will match on **any** pod with the label `app: stockmanager` **regardless** of what the version it is. Once the traffic split is in place it will intercept traffic for the origional service, so only after that is it safe to create the new deployments.
 
 Looking at the spec the split is deployed on the service `stockmanager` (This is known as the `Apex Service` as it's the actual top level service) The traffic split will split the traffic sent to the `stockmanager` service between the two backend services (also known as `Leaf services`) the `stockmanagerv0-0-1` service and the `stockmanagerv0-0-2` service. In this case there are two backends, but more are possible.
 
@@ -337,7 +337,7 @@ The `@Timeout` annotation is actually on the storefront class, it will trigger i
 
 </details>
   
-Assuming you don't have a bad gateway :
+Assuming you don't have a bad gateway (if you do wait a short time and retry)
 
 You will **either** get back some real data
 
@@ -452,7 +452,7 @@ trafficsplit.split.smi-spec.io/stockmanager-canary edited
 
   ![](images/linkerd-traffic-split-canary-split-immediately-post-switch-update.png)
 
-You will see that the split is now 90 to the v0.0.1 stockmanager and 10% to the v0.0.2 stock manager
+You will see that the split is now 90 to the v0.0.1 stockmanager and 10% to the v0.0.2 stock manager. As only 10% of the requests are going to the 0.0.2 version it may take a short while for data to be displayed for it.
 
 The success rate column for the v0.0.1 is still 100%, but in this case the success rate for the 0.0.2 version is 33.33% Of course the exact number will vary depending on how many requests have been sent to it and the random behavior of it it generates an error or not. Given that the load generator is set to send one request a second, that only 10% of those are being sent to our test v0.0.2 service, and it only errors half the time only about 5% of the requests will actually have an error - so you may have to wait a bit to short time before seeing any errors
 
@@ -467,6 +467,8 @@ We can see that **in this case** the stockmanagerv0-0-2 deployment is still show
 Basically this is a pretty significant indication that our updated deployment has a problem, and should not be deployed in production! Of course this is somewhat artificial, it may be that in production your original service generates a few errors normally, and the new one is marginally better, and unless the results were very clear cut like this you'd probably monitor it for a while.
 
 If you look at the top of the page you can also see the traffic flows in the namespace as a graph, as you would expect the flow out of the storefront to **both** versions of the stockmanager.
+
+Of course all the time we've been doing this the requests have still been serviced, even if a small number have been failing.
 
 #### Stopping the load generator
 
