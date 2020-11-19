@@ -47,134 +47,108 @@ If you are in an **instructor led lab** the instructor may have already done thi
 
   ![](images/compartments.png)
 
+  
+
 **ATTENTION** : if the compartment **CTDOKE** already exists, please move to the next step on this page, Importing the image for the development vm
 
-If the **CTDOKE** compartment is not yet there, **create it** as below, if it it there jump to the **Creating the VM IMage** step : 
+  5. If the **CTDOKE** compartment is not yet there, **create it** : 
   
-  5. Click the `Create Compartment` button
+  5a. Click the `Create Compartment` button
   
-  6. Provide a name, description
+  5b. Provide a name, description
   
-  7. Chose **root** as the parent compartment
+  5c. Chose **root** as the parent compartment
   
-  8. Click the `Create Compartment` button.
-  
+  5d. Click the `Create Compartment` button.
 
-## Step 2: Creating the VM Image
+
+
+## Step 2: Import the image for the Development VM
 
 If you are in an **instructor led lab** the instructor may have already done this step for you, if so they will tell you.
 
-### Step 2a: Accessing the marketplace
-
   1. Download the image location file [from here](https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/MonolithToCloudNative/o/MonolithToCloudNativeVMDetails.txt)
-  
-  2. In the file locate the Cloud Market place URL - this will be something like `https://cloudmarketplace.oracle.com/marketplace/listing/123456` (this is an example, it won't work)
-  
-  3. Open the Cloud Marketplace URL in a new web browser tab / window.
-  
-  ![](images/cloud-marketplace-image.png)
-  
-  4. Click the **Get App** button
-  
-  5. In the Install Application page chose the region you are using
-  
-  ![](images/cloud-marketplace-install-select-region.png)
 
-I chose Frankfurt, but yours may vary
+  2. Open this file. You will see the pre-authenticated URL to the VM image and also the default VNC password set for this image
 
-<details><summary><b>If you don't know your region</b></summary>
+  3. Navigate to the **Compute** and **Custom Image** screen
 
-In your OCI Console UI page look at the upper right, you will see something like this
+  ![](images/custom-image.png)
 
-![](images/region-name.png)
+  4. On the right, make sure the **CTDOKE** compartment is selected
 
-In this case for my tenancy I'm in the Germany / Frankfurt region, but if you are using a different region it will show up there.
+  ![](images/images2.png)
 
-</details>
+**ATTENTION** : if an image with a name composed like **H-K8S-Lab-A-Helidon-2020-10-29** already exists and the date at the end (it's in the form year-month-day) is the same as **or later**  than the date above in the import URL your instructor has given you then **you are OK for this step**, please move to the next step on this page creating a virtual cloud network.
 
-  6. Click the **Sign in** button
+  5. If you do not have this image available, import it with following steps:
   
-  7. If prompted complete your OCI Cloud UI sign in, if you are not prompted do not worry.
+  5a. Click the `Import Image` button
   
-  8. In the Marketplace install page make sure that the **Version** matches the Version in the Image location file (In this image that's 2020-10-29, but if we have released an updated image then the version will be more recent.)
+  5b. Make sure the **CTDOKE** compartment is selected
   
-  9. Make sure that the **Compartment** matches the compartment you are using (probabaly `CTDOKE`)
+  5c. Name the image, probably best to have it match the name in the storage URL which will be something like H-K8S-Lab-A-Helidon-2020-10-29 as that way you will know what version of the lab you are using.
   
-  10. Review the "Oracle Standard Terms and Restrictions", then (assming you do agreee) click the **I have reviewed and accept the Oracle Standard Terms and Restrictions.** check box.
+  5d. Make sure the Operating System is set to **Linux**
   
-  11. Once you've clicked the checkbox the **Launch Instance** button will be enabled. Click it.
+  5e. Select the option `IMPORT FROM AN OBJECT STORAGE URL` 
   
-  A new browser window / tab may be opened
+  5f. Enter the **VM image URL** from the image location file you just downloaded.
   
-### Step 2b: Creating the instance
+  5g. Set the image type to **OCI**
   
-  1. Name the instance based on the image version so you can track what version of the lab you are following. If multiple people are sharing the same tennacy you may want to put your initials in there as well e.g. `H-K8S-Lab-A-Helidon-2020-29-10-tg`
-  
-  2. The **Create in compartment** should already be set to **CTDOKE**.
+  5h. Click the `Import image` option - it can take 10 to 15 minutes to finish, you can continue with the next setup actions and check it's completed before you create an instance using the image.
 
-  3. Expand the **Configure placement and hardware** selection if it's not visible
+  ![](images/import-custom-image-form.png)
 
-  4. Select an **Availability domain** (Which one doesn't matter)
+## Step 3: Creating a Virtual Cloud Network (VCN)
 
-  5. If `VM.Standard.E3.Flex` with 1 OCPU and 16GB memory is not the selected instance shape click the `Change shape` button, select the Instance type to `Virtual machine`, the Processor to `AMD Rome` and the OCPU count to `1` (This will set the memory for you) Then click `Select shape` to use this shape. (You can chose other shapes if you prefer, just at the time of writing this was the most cost effective)
+If you are in an **instructor led lab** the instructor may have already done this step for you, if so they will tell you.
 
-  ![](images/cloud-marketplace-create-instance.png)
+You need to set up a Virtual Cloud Network to run the instances of this lab on.
+
+  1. Click the `hamburger` menu
   
-  6. Expand the **Configure networking** section if it's not already expanded
+  2. In the `Core Infrastructure` section chose `Networking` and then `Virtual Cloud Networks`
   
-  7. Select the **Create New Virtual Cloud Network** option
+  3. Make sure you are using the =`CTDOKE` compartment you created
   
-  8. Name the network to match the name you gave to the instance 
+  4. Click the `Start VCN Wizzard`` button
   
-  9. Select the **Create new public subnet** option. (You can ignore the subnet name)
+  5. Chose the `VCN with Internet Connectivity` option
   
-  10. Set **both** the **Create in compartment** fields to `CTDOKE`
-
-  11. Check the **Assign a public IP address** option is selected
+  6. Click the `Start VCN Wizzard` button
   
-  ![](images/cloud-marketplace-images-setup-network.png)
-
-  12. Scroll down to the **Add SSH Key** section
-
-  13. Make sure the **Generate SSH Key Pair** option is selected
-
-  14. If you wish you can download the ssh keys by clicking on the buttons (This is not required as we will be using VNC to access the instance)
+  7. Enter a name for the VCN : **CTDVMVCN**
   
-  ![](images/create-instance-third-part.png)
+  8. Make sure that the compartment matches the compartment **CTDOKE** you just chose / created
   
-  15. Leave the boot volume settings unchanged (On some newer versions of the UI this may be below the SSH keys section, but you still don't change it)
+  9. Leave the fields in the Configure VCN and Subnets with their default values.
   
-You have finished the wizard!
+  10. If you are using a non trial tenancy and your organization requires it add the appropriate tags (click the `Show Tagging Options` to see these)
+  
+  11. Click the `Next` button
+  
+  12. Double check the information you've provided
+  
+  13. Click the `Create` button
+  
+  14. Once the VCN has been created click the `View Virtual Cloud Network` button
 
-  27. Click the **Create** button on the bottom of the wizard to initiate the creation.
 
-  28. If you get a **No SSH Access** warning you can ignore it, just click **Yes, Create Instance Anyway**
-
-Once the create button has been clicked you will see the VM details page.  Initially the state will be **Provisioning** but after a few minutes it will switch to **Running**, and you will see that a **public IP address** has been assigned.  Make a note of that IP address (The copy link next to it will copy the address into your computers copy-and-paste buffer.)
-
-  ![](images/create-instance-public-ip-address.png)
-
-While it's starting you can work on the next step  
-
-## Step 3: Adding an OCI ingress rule for VNC
+## Step 4: Adding an OCI ingress rule for VNC
 
 If you are in an **instructor led lab** the instructor may have already done this step for you, if so they will tell you.
 
 You need to be sure that the Virtual Cloud Network supports remote access using VNC.
 
-  1. Go to the VCN you created earlier, click the VCN name in the instance details page, I named mine `H-K8S-Lab-A-Helidon-2020-29-10-tg`
-  
-  ![](images/cloud-marketplace-instance-details.png)
+  1. Go to the VCN you created earlier:  **CTDVMVCN**
 
-  2. On the VNC page on the left hand side click the **Security Lists** option
+  2. On the VNC page on the left hand side click the `Security Lists` option
 
-  3. Click on the security list in the list, If there is more than one chose the one with a name something like `Default Security List for H-K8S-Lab-A-Helidon-2020-29-10-tg` (don't select the private subnet one if it's there)
-  
-  ![](images/cloud-marketplace-image-vcn-security-lists-setup.png)
+  3. Click on the security list in the list, Chose the one with a name something like `Default Security List for CTDVMVCN` (don't select the private subnet one)
 
-  4. In the security list page click the `Add Ingress Rules` button
-  
-  An "Add Ingress Rules" popup will be dieplayed
+  4. In the list click the `Add Ingress Rules` button
 
   5. Leave the `Stateless` option unchecked (This will provide for the returning traffic)
 
@@ -192,13 +166,13 @@ You need to be sure that the Virtual Cloud Network supports remote access using 
 
   12. Click the `Add Ingress Rules` button
 
-  ![](images/cloud-marketplace-install-add-ingress-rule.png)
 
-## Step 4: Setup the database.
+
+## Step 5: Setup the database.
 
 If you are in an **instructor led lab** the instructor may have already done this step for you, if so they will tell you.
 
-### 4a. Create a database
+### 5a. Create a database
 
   1. Use the Hamburger menu, and select the Database section, **Autonomous Transaction Processing**
 
@@ -232,7 +206,7 @@ Be sure to remember the **admin password**, save it in a notes document for late
 
 
 
-### 4b. Setup your database user
+### 5b. Setup your database user
 
   1. On the details page for the database, click the **Service Console** button
 
@@ -255,18 +229,85 @@ GRANT UNLIMITED TABLESPACE TO HelidonLabs;
   6. Run the script (The Page of paper with the green "run" button, identified in the image below.) if it works OK you will see a set of messages in the Script Output window saying the User has been created and grants made.
 
   ![](images/SQLDeveloper-button.png)
+
+
+## Step 6: Create a Development VM using the image you imported
+
+If you are running in your tenancy
+
+  1. Return to the Custom Compute Images menu (Hamburger menu -> Core Infrastructure section -> Compute -> Custom Images) 
+
+If you are in an **instructor led** lab, you instructor may provide you with details to locate the Developer VM image to use
+
+  2. Locate image to use which your instructor has provided or you have just imported : If you are in a shared environment and there is more than one image starting H-K8S-Lab-A-Helidon chose the one with the most recent date. (As we recommend naming the images using the date this will be the last part of the image name in the format `yyyy-mm-dd`and if you had to run the import
+
+  3. Check that the image has finished importing and the state is **Available** :
+
+Note sometimes the import image page does not refresh once the image is imported, so if it's is still displaying `Importing` then try refreshing the page.
+
+  ![](images/image-available.png)
+
+  4. Click on the three dots menu on the **right** of the row for your chosen image
+
+  5. Now click the `Create Instance` in the resulting menu
+
+  ![](images/create-instance-from-custom-image.png)
+
+  6. Name the instance based on the image version so you can track what version of the lab you are following. If multiple people are sharing the same tennacy you may want to put your initials in there as well e.g. `H-K8S-Lab-A-Helidon-2020-29-10-tg`
+
+  7. Expand the **Show Shape, Network and Storage Options** selection if it's not visible
+
+  8. Select an **Availability domain** (Which one doesn't matter)
+
+  9. If `VM.Standard.E3.Flex` with 1 OCPU and 16GB memory is not the selected instance shape click the `Change shape` button, select the Instance type to `Virtual machine`, the Processor to `AMD Rome` and the OCPU count to `1` (This will set the memory for you) Then click `Select shape` to use this shape. (You can chose other shapes if you prefer, just at the time of writing this was the most cost effective)
   
-## Step 5: Accessing the Developer VM
+  10.The *Virtual Cloud Network Compartment* should already be set to **CTDOKE**.
+
+  ![](images/create-instance-first-part.png)
+
+  11. Check the `Virtual Cloud Network Compartment` is set to `CTDOKE`
+
+  12. In the **Virtual cloud Network** dropdown,  select the **CTDVMVCN** network. 
+
+Leave all the other settings in the network section as they are
+
+  13. Check the **Assign a public IP address** option is selected
+  
+  14. Leave the boot volume settings unchanged (On some newer versions of the UI this may be below the SSH keys section, but you still don't change it)
+  
+![](images/create-instance-second-part.png)
+
+  15. Scroll down to the **Add SSH Key** section
+
+  16. Make sure the **Generate SSH Key Pair** option is selected
+
+  17. If you wish you can download the ssh keys by clicking on the buttons (This is not required as we will be using VNC to access the instance)
+  
+  ![](images/create-instance-third-part.png)
+
+You have finished the wizard!
+
+  18. Click the **Create** button on the bottom of the wizard to initiate the creation.
+
+  19. If you get a **No SSH Access** warning you can ignore it, just click `Yes, Create Instance Anyway`
+
+Once the create button has been clicked you will see the VM details page.  Initially the state will be **Provisioning** but after a few minutes it will switch to **Running**, and you will see that a **public IP address** has been assigned.  Make a note of that IP address (The copy link next to it will copy the address into your computers copy-and-paste buffer.)
+
+  ![](images/create-instance-public-ip-address.png)
+
+Give the VM a few minutes to start up it's internal services.
+
+
+
+## Step 7: Accessing the Developer VM
 
 You will be using VNC to access the developer VM. There are multiple possible clients, chose from the list below or use another if you already have it. Note that the following may require you to have some level of admin rights on your machine.
 
-### Installing a VNC viewer on MacOS
+### Installing a VNC viewer
 
 For **macOS** we recommend realVNC which can be obtained from 
 
   - https://www.realvnc.com/en/connect/download/viewer/macos/
-  
-### Installing a VNC viewer on Windows
 
 For **Windows**, suggested packages are TigerVNC viewer or TightVNC Viewer but if you already have a preferred VNC viewer you can use this. TigerVNC viewer has a simpler install process, as it is a standalone executable, but has fewer features.
 
@@ -308,31 +349,31 @@ We have provided a pre-set VNC password. If you are in a instructor led lab this
 
 While not required we do recommend that you change this password to prevent access by other people.
 
-  1. On the desktop background click right, then tak the "Open Terminal" option
+  5. On the desktop background click right, then tak the "Open Terminal" option
 
   ![](images/vnc-01-open-terminal.png)
 
-  2. In the resulting terminal window type `vncpasswd`
+  6. In the resulting terminal window type `vncpasswd`
 
-  3. At first the prompt enter your new VNC password
+  7. At first the prompt enter your new VNC password
 
-  4. At second the prompt reenter your new VNC password
+  8. At second the prompt reenter your new VNC password
 
-  5. When prompted if you want a view only password enter `n`
+  9. When prompted if you want a view only password enter `n`
 
   ![](images/vnc-02-set-vncpasswd.png)
 
 The easiest way to apply the new password is to reboot the VM
 
-  6. In the terminal enter `sudo reboot`
+  10. In the terminal enter `sudo reboot`
 
   ![](images/vnc-03-reboot.png)
 
 The VNC connection will probably drop immediately and the VNC client will try to reconnect (in which case close the VNC window) or it may just close the window for you (the specific behavior is VNC client specific.) 
 
-When the VM has rebooted (allow about 60 - 90 seconds) Open a new VNC connection, the IP address should remain the same, and at the VNC login enter the **new** VNC password you just set.
+When the VM has rebooted (allow about 60 - 90 seconds) Open a new VNC connection, the IP address shoudl remain the same, and at the VNC login enter the **new** VNC password you just set.
 
-## Step 6: Installing Eclipse in the developer VM
+## Step 8: Installing Eclipse in the developer VM
 
 We have installed a developer configuration of Oracle Linux, and added tools like Maven, git and the Java development kit. To ensure that you have the latest integrated developer environments (IDE's) and starting point source code for the labs there are a couple of steps you need to take.
 
@@ -432,11 +473,11 @@ Double click on the `Eclipse` icon on the desktop. It may look like a text page 
 
 ![](images/14-eclipse-icon.png)
 
-## Step 7: Downloading and importing the labs initial code
+## Step 9: Downloading and importing the labs initial code
 
 To enable us to update the code used by the labs without having to update the Developer VM image each time we hold the primary copy of the code in a git repository (where we can update it as the lab is enhanced) You need to download this into your development VM and import it into Eclipse
 
-### 7a. Downloading the initial setup code zip file.
+### 9a. Downloading the initial setup code zip file.
 
   1. Open the Firefox web browser - Click `Applications` then `Internet` then `Firefox`
 
@@ -462,29 +503,29 @@ When the download is complete the Firefox download icon will turn completely blu
 
   ![](images/44-github-download-complete.png)
 
-### 7b. Importing the downloaded zip file
+### 9b. Importing the downloaded zip file
 
-  1. Switch back to Eclipse **Do not** close the Firefox window (that may cause it to delete the download file)
+  6. Switch back to Eclipse **Do not** close the Firefox window (that may cause it to delete the download file)
 
-  2. Click the `File` menu, then `Import`
+  7. Click the `File` menu, then `Import`
 
   ![](images/50-eclipse-import-menu.png)
 
-  3. Open the `General` node, then chose the `Existing projects into Workspace` option. Click `Next`
+  8. Open the `General` node, then chose the `Existing projects into Workspace` option. Click `Next`
 
   ![](images/51-eclipse-import-types.png)
 
-  4. Chose the `Select archive file` radio button, then click `Browse` on that row
+  9. Chose the `Select archive file` radio button, then click `Browse` on that row
 
   ![](images/52-eclipse-import-archive.png)
 
-  5. On the left menu chose `Downloads` then in the resulting list chose the download you just made (probably called `cloud-native-setup-main.zip`)
+  10. On the left menu chose `Downloads` then in the resulting list chose the download you just made (probably called `cloud-native-setup-main.zip`)
 
-  6. Click the `Open` button
+  11. Click the `Open` button
 
   ![](images/53-eclipse-import-file-selection.png)
 
-  7. Click `Select All` to make sure all the projects are imported, then click the `Finish` button
+  12. Click `Select All` to make sure all the projects are imported, then click the `Finish` button
 
   ![](images/54-eclipse-import-final-stage.png)
 
@@ -496,23 +537,23 @@ This may take a few mins. **Do not worry if you see errors** these are to be exp
 
 Wait until the building indicator (lower right) has gone away.
 
-### 7c. Configuring Lombok
+### 9c. Configuring Lombok
 
 These labs use Lombok to do many of the "standard" functions like automatically creating constructors, getters and so on. Lombok will be covered later in the labs, but for now we need to install it into the Eclipse installation.
 
-  1. Expand the `cloud-native-setup` project (Click the little triangle to the left of the project name)
+  13. Expand the `cloud-native-setup` project (Click the little triangle to the left of the project name)
 
-  2. Expand the `Maven Dependencies` node
+  14. Expand the `Maven Dependencies` node
 
-  3. In the maven dependencies section locate the `lombok` jar file (it will have a version number after it, at the time of writing that was 1.18.10, but that may have changed as lombok updates often)
+  15. In the maven dependencies section locate the `lombok` jar file (it will have a version number after it, at the time of writing that was 1.18.10, but that may have changed as lombok updates often)
 
   ![](images/60-lombok-locate-jar-file.png)
 
-  4. Click right on the lombok jar file, then chose the `Run As` manu option, then `Java Application`
+  16. Click right on the lombok jar file, then chose the `Run As` manu option, then `Java Application`
 
   ![](images/61-run-lombok-application.png)
 
-  5. If you get a warning about errors click the `Proceed` button (the point of what we're doing is to fix them !)
+  17. If you get a warning about errors click the `Proceed` button (the point of what we're doing is to fix them !)
 
   ![](images/62-run-lombok-error-warning.png)
 
@@ -524,57 +565,57 @@ If you get a warning that Lombok cannot locate any IDE's you will have to locate
   
 If Lombok has located an IDE then skip the following steps that locate the IDE and go to step 23 in this section
 
-  6. Click the `OK` button in the warning popup
+  18. Click the `OK` button in the warning popup
 
-  7. Click the `Specify location` button
+  19. Click the `Specify location` button
 
   ![](images/64-lombok-locate-ide-option.png)
 
-  8. In the file selector popup navigate to the IDE location you noted when you installed Eclipse if you set the install path in the earlier stage this is going to be `/home/opc/eclipse`
+  20. In the file selector popup navigate to the IDE location you noted when you installed Eclipse if you set the install path in the earlier stage this is going to be `/home/opc/eclipse`
 
-  9. Select the `eclipse.ini` file
+  21. Select the `eclipse.ini` file
 
-  10. Click the `Select` button on the file chooser
+  22. Click the `Select` button on the file chooser
 
   ![](images/65-lombok-locate-eclipse.png)
 
-  11. Make sure that the eclipse installation has it's checkbox selected, then click the `Install / Update` button
+  23. Make sure that the eclipse installation has it's checkbox selected, then click the `Install / Update` button
 
   ![](images/66-lombok-install-start.png)
 
 Lombok will do the install (this is very quick) and confirm success 
 
-  12. Click the `Quit Installer` button to close the Lombok installer
+  24. Click the `Quit Installer` button to close the Lombok installer
 
   ![](images/67-lombok-install-completed.png)
 
 Once Lombok has been installed you need to exit and then start Eclipse to have it recognized (The restart option in Eclipse is not sufficient.)
 
-  13. Click the `File` menu then `Exit` (**do not chose restart**, that does not trigger the reload of the entire Eclipse environment) 
+  25. Click the `File` menu then `Exit` (**do not chose restart**, that does not trigger the reload of the entire Eclipse environment) 
 
-  14. Re-start Eclipse using the method described above, make sure it's Eclipse you are starting, not the installer.
+  26. Re-start Eclipse using the method described above, make sure it's Eclipse you are starting, not the installer.
 
 We can check that Lombok has been installed
 
-  15. Click the `Help` Menu then the `About Eclipse IDE` option
+  27. Click the `Help` Menu then the `About Eclipse IDE` option
 
   ![](images/68-lombok-access-eclipse-about-menu.png)
 
-  16. You may need to scroll down in the `About` popup, but towards the end you should see the Lombok installation confirmation (in this case 1.18.12 / Envious Ferret, though updates to the lab may use a newer version)
+  28. You may need to scroll down in the `About` popup, but towards the end you should see the Lombok installation confirmation (in this case 1.18.12 / Envious Ferret, though updates to the lab may use a newer version)
 
   ![](images/69-lombok-installed-version.png)
 
-  17. Click the `Close` button to get rid of the popup
+  29. Click the `Close` button to get rid of the popup
 
-### 7d. Updating the project configuration.
+### 9d. Updating the project configuration.
 
 Restarting eclipse so it recognizes Lombok does not always trigger a rebuild or Maven update to remove the flagged problems, so we need to do that. 
 
-  1. Select the `cloud-native-setup`  project in the project explorer. Click right on them then chose `Maven` from the menu then `Update project`
+  30. Select the `cloud-native-setup`  project in the project explorer. Click right on them then chose `Maven` from the menu then `Update project`
 
   ![](images/70-maven-update-project-menu.png)
 
-  2. Click the `Select All` button, then click the `OK` button
+  31. Click the `Select All` button, then click the `OK` button
 
   ![](images/71-maven-update-all.png)
 
@@ -584,7 +625,7 @@ When Maven finishes there may be warnings about problems (These relate to incomp
 
 
 
-## Step 8: Downloading the database Wallet file.
+## Step 10: Downloading the database Wallet file.
 
 The database Wallet file contains the details needed to connect to your database instance, it needs to be downloaded to the development VM and placed in the right location.
 
