@@ -4,7 +4,7 @@
 
 ## Introduction
 
-**Estimated module duration** 30 mins.
+**Estimated module duration** 20 mins.
 
 ### Objectives
 
