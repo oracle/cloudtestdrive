@@ -30,11 +30,11 @@ If you are only doing the Kubernetes based labs you need to have completed the s
 
   1. Log into the **OCI Console** 
 
-  2. Once on the **OCI infrastructure** page, click on the hamburger menu to navigate to 
+  2. Once on the **OCI infrastructure** page, click on the "Hamburger" menu  
   
-  3. **Developer services**, then **Container Clusters (OKE)**
+  3. Scroll down to **Solutions and Platform** section, Click **Developer services**, then **Container Clusters (OKE)**
 
-  4. In the **List Scope** section, use the dropdown to select the **CTDOKE** compartment
+  4. In the **List Scope** section, use the dropdown to select the `CTDOKE` compartment
   
   - You may have to expand the tree nodes to locate this compartment
 
@@ -48,19 +48,19 @@ If you are only doing the Kubernetes based labs you need to have completed the s
 
   7. Fill in the form with following parameters:
 
-  - In the next form name the cluster something like Helidon-Lab-YOUR-INITIALS
+  - In the next name the cluster something like `Helidon-Lab-YOUR-INITIALS`
   
-  - Make sure the compartment is **CTDOKE**
+  - Make sure the compartment is `CTDOKE`
   
   - Make sure the Kubernetes version is the highest on the list (at the time of the last update of this document in November 2020 that was 1.18.10, but it may have been updated since then)
   
-  - Leave the visibility type as **private**
+  - Leave the visibility type as **Private**
   
-  - Set the shape to VM.StandardE2.1
+  - Set the shape to VM.Standard2.1
   
   - Set the number of nodes to be 2
 
-There is no need to do anything in the `Advanced Options` section.
+There is no need to do anything in the Advanced Options section.
 
 These images are for creating a 1.16.8 cluster, they may be slightly different for later versions.
  
@@ -76,11 +76,11 @@ You'll be presented with a progress option, if you want read what's happening
 
   11. Scroll to the bottom and click the **Close** button
 
-The state will be "Creating" for **a few minutes** (usually 3-4 mins)
+The state will be "Creating" for a few minutes (usually 3-4 mins)
 
 ## End of the cluster setup, What's next ?
 
-You can move on to the `Cloud Shell Setup for the Kubernetes Labs` module while the cluster continues to be provisioned.
+You can move on to the **Cloud Shell Setup for the Kubernetes Labs** module while the cluster continues to be provisioned.
 
 ## Acknowledgements
 

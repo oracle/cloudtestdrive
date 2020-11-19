@@ -26,8 +26,8 @@ Your instructor will inform you if the VM's have already been created for you or
 
 ### Creating the Compute instance
 
-- Use the "hamburger" menu (top left, three bars)
-  - Navigate to the **core infrastructure** section
+- Use the "Hamburger" menu (top left, three bars)
+  - Navigate to the **Core infrastructure** section
   - Select **Compute**, then **Instances**
 
 ![](images/compute-instances-access.png)
@@ -35,7 +35,7 @@ Your instructor will inform you if the VM's have already been created for you or
 
 
 - Select the correct **Compartment** for this lab
-  - On the left side, under **List Scope**,  use the Compartment dropdown chose **CDTOKE** as the compartment.  You might have to click the small **+** button of the root compartment to see the list of compartments.
+  - On the left side, under **List Scope**,  use the Compartment dropdown chose `CDTOKE` as the compartment.  You might have to click the small **+** button of the root compartment to see the list of compartments.
 
 You will now see the list of instances already running in this compartment.
 

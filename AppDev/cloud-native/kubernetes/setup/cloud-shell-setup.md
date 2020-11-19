@@ -12,7 +12,7 @@ This module takes you through the process of setting up your OCI Cloud shell env
 
 ### Prerequisites
 
-You need to complete the `Create your Kubernetes cluster` module.
+You need to complete the **Create your Kubernetes cluster** module.
 
 ## Step 1: Accessing the cloud shell
 
@@ -45,9 +45,15 @@ If you are not familiar with vi this is a very short intro
 
 vi is a modal editor, there are two modes, navigating around (done using the cursor keys on your keyboard) and editing
 
-To edit navigate to the place you want to change, the `x` key on the keyboard will delete the character under the cursor, and the `i` key will switch to editing mode and start to insert in front of the cursor (you can use delete etc.) To switch back to the navigation mode then press the `Escape` key on your keyboard.
+To edit navigate to the place you want to change using the keyboard arrows, 
 
-When you have finished changing the file then press the `Escape` key on your keyboard then press `ZZ` (that's capital Z twice) to save the file and exit
+  **x** key on the keyboard will delete the character under the cursor
+	
+  **i** key will switch to editing mode and start to insert in front of the cursor (you can use delete etc.) 
+  
+  To switch back to the navigation mode then press the **Escape** key on your keyboard.
+
+When you have finished changing the file then press the **Escape** key on your keyboard then press **ZZ** (that's capital Z twice) to save the file and exit
 
 For more details on vi there is a [guide here](http://heather.cs.ucdavis.edu/~matloff/UnixAndC/Editors/ViIntro.html)
 
@@ -92,7 +98,7 @@ We will use the OCI Cloud Shell to download the database wallet file.
   
   - `cd $HOME`
   
-  2. Attention: replace the example ODIC below with the OCID of your database. If you didn't copy this when you created the database or don't have it then if you go to the database page for your instance (Hamburger -> Oracle Database -> Autonomous Transaction Processing -> your instance) it will be shown there with a `copy` button)
+  2. Attention: replace the example ODIC below with the OCID of your database. If you didn't copy this when you created the database or don't have it then if you go to the database page for your instance (Hamburger -> Oracle Database -> Autonomous Transaction Processing -> your instance) it will be shown there with a **copy** link)
     
   - `oci db autonomous-database generate-wallet --file Wallet.zip --password 'Pa$$w0rd' --autonomous-database-id ocid1.autonomousdatabase.oc1.eu-frankfurt-1.aa8d698erlewaiehqrfklhfoeqwfaalkdhfuieiq`
 
@@ -173,7 +179,7 @@ app:
  
 ## End of the setup module, What's next ?
 
-Go to the `Setting up the cluster and getting your services running in Kubernetes` lab
+Go to the **Setting up the cluster and getting your services running in Kubernetes** lab
 
 ## Acknowledgements
 

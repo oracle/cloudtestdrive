@@ -18,7 +18,7 @@ Here we will see how you can access the context of your request, in this case to
 
 ### Prerequisites
 
-You need to have completed the `Database and Helidon` module.
+You need to have completed the **Database and Helidon** module.
 
 ## Step 1: Accessing the context
 

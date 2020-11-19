@@ -25,11 +25,11 @@ This module takes you through the process of setting up your environment for the
 
 ### Prerequisites
 
-If you are doing the full labs (these include modules on Helidon and Docker) you need to have completed the steps in the `Helidon` modules (including the setup)
+If you are doing the full labs (these include modules on Helidon and Docker) you need to have completed the steps in the **Helidon** modules (including the setup)
 
-If you are only doing the Kubernetes based labs you need to have completed the steps in the `Tenancy Setup for the Kubernetes Labs` module.
+If you are only doing the Kubernetes based labs you need to have completed the steps in the **Tenancy Setup for the Kubernetes Labs** module.
 
-In both cases you need to complete the `Create your Kubernetes cluster` and `Cloud Shell Setup for the Kubernetes Labs` modules.
+In both cases you need to complete the **Create your Kubernetes cluster** and **Cloud Shell Setup for the Kubernetes Labs** modules.
 
 ## Step 1: Configure the Helm repository
 
@@ -76,17 +76,17 @@ Update Complete. ⎈ Happy Helming!⎈
 
 ## Step 2: Getting your cluster access details
 
-Access to the cluster is managed via a config file that by default is located in the $HOME/.kube folder, and is called `config`.  To check the setup, make sure to have copied your personal kubeconfig file to this location : 
+Access to the cluster is managed via a config file that by default is located in the `$HOME/.kube` folder, and is called `config`.  To check the setup, make sure to have copied your personal kubeconfig file to this location : 
 
   1. Create a directory for the Kubernetes config
   
   - `mkdir -p $HOME/.kube`
 
-  2. Open the Oracle Cloud web GUI
+  2. Open the OCI Console UI
 
-  3. Open the `hamburger` menu on the upper left scroll down to the `Solutions and Platform` section
+  3. Open the "Hamburger" menu on the upper left scroll down to the **Solutions and Platform** section
 
-  4. Click on the `Developer Services` menu option, then `Kubernetes Clusters`
+  4. Click on the **Developer Services** menu option, then **Kubernetes Clusters**
 
   ![](images/container-oke-menu.png)
 
@@ -107,12 +107,11 @@ oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.a
 ```
 
 
-  7. Click the `Copy` to get *your* config download script (the above is an example and won't work for real)
+  7. Click the **Copy** to get *your* config download script (the above is an example and won't work for real)
 
   8. Open your OCI Cloud Shell window and **paste** the line to execute it.
 
   ```
-oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaa<lots of stuff>aaa --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0
 New config written to the kubeconfig file /home/oracle/.kube/config
 ```
 
@@ -126,7 +125,7 @@ Existing kubeconfig file found at /home/oracle/.kube/config and new config merge
   
   - `chmod 600 $HOME/.kube/config`
   
-Your Kubernetes config file is now downloaded into the .kube/config file
+Your Kubernetes config file is now downloaded into the `.kube/config` file
 
   9. Verify you can access the cluster:
   
@@ -198,7 +197,7 @@ The helm options are :
 
 - `--set service.type=LoadBalancer` This tells helm to configure the Kubernetes service associated with the dashboard as being immediately accessible via a load balancer. Normally you wouldn't do this for a range of reasons (more on these later) but as this is an overview lab we're doing this to avoid having to wait for DNS name propogation getting certificates. In a production environment you would of course do that.
 
-- `--version 2.8.0` This tells helm to use a specific version of the helm chart.
+- `--version 2.8.3` This tells helm to use a specific version of the helm chart.
 
 ---
 
@@ -543,17 +542,17 @@ The first thing to remember with the dashboard is that (like kubectl) you need t
  
   ![dashboard-namespace-selector-select-kube-system](images/dashboard-namespace-selector-select-kube-system.png)
 
-  = Select kube-system, precisely which page you'll go to will depend on what was selected in the left menu when you switched namespaces, but in my case it took me to an overview page.
+  - Select kube-system, precisely which page you'll go to will depend on what was selected in the left menu when you switched namespaces, but in my case it took me to an overview page.
 
   ![dashboard-overview-kube-system](images/dashboard-overview-kube-system.png)
 
-  - Let's switch to see the details of the workspace, Click `Workloads` on the left menu
+  - Let's switch to see the details of the workspace, Click **Workloads** on the left menu
 
   ![dashboard-overview-kube-system-workloads](images/dashboard-overview-kube-system-workloads.png)
 
 You can use the Kubernetes dashboard to navigate the relationships between the resources. Let's start by looking at the services in the kube-system namespace
 
-  - Click `Services in the `Service` section on the left menu
+  - In the **Service** section on the left menu click **Services** 
 
   - If you scroll down the page to services you'll see the kubentes-dashboard service listed, 
 
@@ -565,7 +564,7 @@ You can use the Kubernetes dashboard to navigate the relationships between the r
 
 (You may have to scroll down to see the pods list and some other details)
 
-  - If you click the `Deployments` in the `Workloads` section of the left menu you'll see the deployments list (the dashboard, coredns and auto-scaler services) 
+  - If you click the **Deployments** in the **Workloads** section of the left menu you'll see the deployments list (the dashboard, coredns and auto-scaler services) 
 
   ![dashboard-deployments-list](images/dashboard-deployments-list.png)
 
@@ -635,7 +634,7 @@ Normally in a production environment you would use an ingress for the dashboard 
 </details>
 
 
-For this lab we're going to use an nginx based Ingress controller. The nginx based Ingress controller is maintained by the Kubernetes team, but there are several others that could be used in your environments if you want. There are a list of commercial and open source Ingress controllers in the [Kubernetes ingress documentation](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)
+For this lab we're going to use an nginx based Ingress controller. The nginx based Ingress controller we use here is maintained by the Kubernetes team, but there are several others that could be used in your environments if you want. There are a list of commercial and open source Ingress controllers in the [Kubernetes ingress documentation](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)
 
 Firstly we need to create a namespace for the ingress controller.
 
@@ -732,7 +731,7 @@ In the helm command you'll have seen a couple of `--set`` options.  These are oc
 
 As we are having the load balancer act as the encryption termination point, and internal to the cluster we are not using encryption we need to update the load balancer to tell is that once is has terminated the secure connection is should pass on the request internally using an http, not https.
 
-  31. Open up the OCI Cloud UI in your web browser, using the "hamburger" menu navigate to `Core Infrastructure` section then `Networking then select `Load Balancers`
+  31. Open up the OCI Cloud UI in your web browser, using the "hamburger" menu navigate to **Core Infrastructure** section then **Networking** then select **Load Balancers**
 
   ![hamburger-menu-select-loadbalancer](images/hamburger-menu-select-loadbalancer.png)
 
@@ -742,11 +741,11 @@ As we are having the load balancer act as the encryption termination point, and 
 
   ![load-balancer-overview](images/load-balancer-overview.png)
 
-  34. Locate the resources section on the lower left side
+  34. Locate the **Resources** section on the lower left side
 
   ![load-balancer-resources](images/load-balancer-resources.png)
 
-  35. Click on the `Listeners` option
+  35. Click on the **Listeners** option
 
   ![load-balancer-listeners](images/load-balancer-listeners.png)
 
@@ -756,17 +755,17 @@ In the list of listeners look at the line TCP-443, notice that it is set to uses
 
   ![load-balancer-listeners-edit](images/load-balancer-listeners-edit.png)
 
-  37. Click the `Edit` option in the resulting menu
+  37. Click the **Edit** option in the resulting menu
 
   ![load-balancer-edit-listener-chose-backend-set](images/load-balancer-edit-listener-chose-backend-set.png)
 
-  38. In the popup locate the BackendSet option, click on it and select the `TCP-80` option
+  38. In the popup locate the **BackendSet** option, click on it and select the **TCP-80** option
 
-  39. Click the `Update Listener`
+  39. Click the **Update Listener**
 
   ![load-balancer-update-in-progress](images/load-balancer-update-in-progress.png)
 
-  40. You'll be presented with a `Work in progress` menu, for now just click the `Close` button and the update will continue in the background
+  40. You'll be presented with a **Work in progress** popup, for now just click the **Close** button and the update will continue in the background
 
 <details><summary><b>Scripting the listener change</b></summary>
 
@@ -867,7 +866,7 @@ kube-system       Active   2d23h
 ```
 
 
-Once you have a namespace you can use it by adding --namespace <my namespace name> to all of your kubectl commands (otherwise the default namespace is used which is called "default"). That's a bit of a pain, but fortunately for us there is a way to tell kubectl to use a different namespace for the default
+Once you have a namespace you can use it by adding `--namespace <my namespace name>` to all of your kubectl commands (otherwise the default namespace is used which is called `default`). That's a bit of a pain, but fortunately for us there is a way to tell kubectl to use a different namespace for the default
 
 ```
 $ kubectl config set-context --current --namespace=<my namespace name>
@@ -1039,7 +1038,7 @@ spec:
           servicePort: 9411
 ```
 
-Firstly note that the api here is the networking.k8s.io/v1beta1 API. In recent versions of Kubernetes this was been changed from extensions/v1beta1 to indicate that Ingress configuration is part of the Kubernetes networking features.
+Firstly note that the api here is the `networking.k8s.io/v1beta1` API. In recent versions of Kubernetes this was been changed from `extensions/v1beta1` to indicate that Ingress configuration is part of the core Kubernetes networking features.
 
 The metadata specifies the name of the ingress (in this case zipkin) and also the annotations. Annotations are a way of specifying name / value pairs that can be monitored for my other services. In this case we are specifying that this ingress Ingress rule has a label of Kubernetes.io/ingress.class and a value of nginx. The nginx ingress controller will have setup a request in the Kubernetes infrastructure so it will detect any ingress rules with that annotation as being targeted to be processed by it. This allows us to define rules as standalone items, without having to setup and define a configuration for each rule in the ingress controller configuration itself. This annotation based approach is a simple way for services written to be cloud native to identify other Kubernetes objects and determine how to hendle them, as we will see when we look at monitoring in kubenteres.
 
@@ -1068,9 +1067,9 @@ spec:
 
 In this case the annotations section is slightly different, it still triggers nginx when the path matches, but it uses a variable so that the URL will be `/` followed by whatever matches the `$2` in the regular expression. The rule itself looks for anything that starts with /smmgt followed by the regexp which matches `/` followed by a sequence of zero or more characters OR the end of the pattern. The regexp will be extracted and substituted for `$2`. The regexp matched two fields, the first match ​`$1` is `(/|$)` which matches either / or no further characters. The 2nd part of the regexp `$2` is `(.*)` which matches zero or more characters (the . being any character and * being a repeat of zero or more).
 
-Thus **/smmgt** will result in a call to `/`, because `$1` matches no characters after /smmgt.  
+Thus `/smmgt` will result in a call to `/`, because `$1` matches no characters after `/smmgt`.  
 
-On the other hand,  **/smmgt/health/ready** will be mapped to **/health/ready** :  the `$1` is `/` and `$2` is `health/ready`, but the rewrite rule puts a / in front of `$2` thus becoming `/health/ready`) 
+On the other hand,  `/smmgt/health/ready` will be mapped to `/health/ready` :  the `$1` is `/` and `$2` is `health/ready`, but the rewrite rule puts a `/` in front of `$2` thus becoming `/health/ready`) 
 
 Note that it is possible to match multiple paths in the same ingress, and they can forward to different ports, however the re-write target (the updated URL) will be the same structure in both cases.
 
@@ -1155,9 +1154,9 @@ ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <no
 
 The external-ip will be the public ip address of the load balancer setup for the ingress controller.
 
-Or look up the ingress service in the namespace *'ingress-nginx'* in the dashboard, that will provide links to the ingress (though not the url's).
+Or look up the ingress service in the namespace `ingress-nginx` in the dashboard, that will provide links to the ingress (though not the url's).
 
-The image below was going to the ingress-nginx namespace (that being the one the Ingress ***controller*** is running in) and on the left menu selecting `Services` in the `Service` section of the dashboard. 
+The image below was going to the ingress-nginx namespace (that being the one the Ingress *controller* is running in) and on the left menu selecting **Services** in the **Service** section of the dashboard. 
 
 ![Ingress controller service endpoints](images/ingress-controller-service-endpoints.png)
 
@@ -1410,7 +1409,7 @@ The dashboard is actually a lot easier in this case.
   
   12. Chose **your** namespace in the namespace selector (upper left) tg-helidon in my case, but yours may differ
 
-  13. Click on the `Secrets` choice in the `Config and Store` section of the left hand menu.
+  13. Click on the **Secrets** choice in the **Config and Store** section of the left hand menu.
 
   14. Select the sf-conf-secure entry to see the list of files in the secret
 
@@ -1547,7 +1546,7 @@ The `spec:` section defines what we want created. Replicas means how many pods w
         app: storefront
 ```
 
-The template section defines what the pods will look like, it starts by specifying that they will all "app:storefront" as a label
+The template section defines what the pods will look like, it starts by specifying that they will all have `app:storefront` as a label
 
 
 ```yaml
@@ -1628,7 +1627,7 @@ The script deploy.sh will apply all three deployment configuration files (storef
 
 The docker images refered to in the deployment yaml files are the pre-defined images we provided.
 
-If you did the Helidon and Docker labs and want to use your own images you create there you will have to expand this `Using your own images` and follow the steps it details.
+If you did the Helidon and Docker labs and want to use your own images you create there you will have to expand this **Using your own images** and follow the steps it details.
 
 <details><summary><b>You want to use your images from the Helidon lab ?</b></summary>
 
@@ -1640,7 +1639,7 @@ The config files of the storefront and stockmanager refer to the location in the
 
   - Open the file **stockmanager-deployment.yaml** 
 
-   - Edit the line specifying the image to reflect *your* docker image location for the stockmanager.  The example below shows the config if you chose *tg_repo* as the name, but of course you will have chosen something different!
+   - Edit the line specifying the image to reflect your docker image location for the stockmanager.  The example below shows the config if you chose `tg_repo` as the name, but of course you will have chosen something different!
 
 ```yaml
     spec:
@@ -1651,7 +1650,7 @@ The config files of the storefront and stockmanager refer to the location in the
 
   - Repeat this operation for the file **storefront-deployment.yaml**
   
-   - Edit the line specifying the image to reflect *your* docker image location for the storefront. Make sure to use the **storefront** image of course!
+   - Edit the line specifying the image to reflect your docker image location for the storefront. Make sure to use the `storefront` image of course!
   
 
 We need to tell Kubernetes what secret to use when retrieving the docker images from the repository, the imagePullSecrets key allows us to pass this information on. 
@@ -1690,7 +1689,7 @@ Once you have got this information please save it in a notepad or something as y
 
 The OCIR region code is based on the IATA code for the city hosting the region, for example Frankfurt has an IATA core of `fra` and Amsterdam is `ams`. Unfortunately some cities (e.g. London) have multiple airports, in others the IATA airport code refers to an old name for the city, or the airport itself is not directly named after the city it serves, so we need to look the right code up based on our region.
 
-  - To determine your region look at the top of your Oracle Cloud GUI in the web browser and you'll see your current region.
+  - To determine your region look at the top of your OCI Console UI in the web browser and you'll see your current region.
 
   ![](images/region-name.png)
 
@@ -1711,7 +1710,7 @@ Now go to the [OCIR Availability By Region list.](https://docs.cloud.oracle.com/
 #### Determining your tenancy Object Storage Namespace
 
 - Navigate to the **Tenancy Information** screen
-  - Click the Hambueger menu
+  - Click the "Hamburger" menu
   - In the menu, scroll down to **Administration**, 
   - Click **Administration** then **Tenancy Details**
 
@@ -1727,11 +1726,11 @@ If you do not have the authentication token you will need to create a new one.
 
 OCIR uses an authentication token rather than a password. To set an authentication token you need to take the following steps. 
 
-- Click on the **Magnifying glass** on the top of your console, and enter your username.  For example, if your name was **ppan** : 
+- Click on the "Shadow" on the upper right of the console, then on the resulting menu your name, for example
 
-  ![](images/ppan.png)
+  ![](images/gui-get-username.png)
 
-- Select the user **that looks like :  oracleidentitycloudservice/(your_name)**
+This will open up your user details.
 
   ![](images/token1.png)
 
@@ -1787,7 +1786,7 @@ You will be using the details you gathered for the docker login.
 
 - Now run the file to create the secret
 
-- bash create-docker-secret.sh
+- `bash create-docker-secret.sh`
 
 ---
 
@@ -1985,6 +1984,7 @@ Your database does not have the information that was uploaded in the Helidon par
 All is not lost, you can create the information easily
 
 - Run the following command, using the external IP address you used above
+
   - `bash create-test-data.sh <external ip>`
   
 ```
@@ -2074,15 +2074,17 @@ We have had reports that some versions of Chrome will not allow you to override 
 
   ![Zipkin query](images/zipkin-initial-query.png)
 
-  11. Click the `Run Query` button to get the traces list
+  11. Click the **Run Query** button to get the traces list
 
 In my case I had made two requests before the lazy initialization sorted everything out, so there are a total of three traces.
 
   ![List of traces in Zipkin](images/zipkin-traces-list.png)
 
-  13. Select the most recent trace and retrieve the data from that
+  13. Select the most recent trace (click on it) and retrieve the data from that
 
   ![Stock listing trace in Zipkin](images/zipkin-trace.png)
+  
+We've seen that we can access the core servcies and see the zipkin traces it generates.
 
 Of course the other services are also available, for example we can get the minimum change using the re-writer rules
 
@@ -2136,9 +2138,9 @@ strict-transport-security: max-age=15724800; includeSubDomains
 {"name":"My Shop","alive":true,"version":"0.0.1"}
 ```
 
-(assuming your storefront-config.yamp file says the storename is My Shop this is what you should get back, if you changed the config file it should reflect your changes)
+(assuming your `storefront-config.yaml` file says the storename is `My Shop` this is what you should get back, if you changed the config file it should reflect your changes)
 
-We've mounted the sf-config-map (which contains the contents of storefront-config.yaml file) onto /conf. Let's use a command to connect to the running pod (remember your storefront pod will have a different id so use kubectl get pods to retrieve that) and see how it looks in there, then exit the connection
+We've mounted the `sf-config-map` (which contains the contents of `storefront-config.yaml` file) onto `/conf`. Let's use a command to connect to the running pod (remember your storefront pod will have a different id so use kubectl get pods to retrieve that) and see how it looks in there, then exit the connection
 
   2. Execute these commands :
   
@@ -2175,15 +2177,15 @@ As expected we see the contents of our config firectory and the storefront-confi
   
   7. Select your namespace in the selector on the upper left
   
-  8. Click on `Config Maps` in the `Config and Storage` section of the left menu
+  8. Click on **Config Maps** in the **Config and Storage** section of the left menu
 
   ![Config Maps list in namespace](images/config-maps-list.png)
 
-  9. Then click on our config map (sf-config-map) to see the details and contents
+  9. Then click on our config map (`sf-config-map`) to see the details and contents
 
   ![Config Maps details](images/config-map-orig-details.png)
 
-As we'd expect it has our contents (You may have a different storename than `My Shop` if you changed the storefront-config.yaml file before creating the config map)
+As we'd expect it has our contents (You may have a different storename than `My Shop` if you changed the `storefront-config.yaml` file before creating the config map)
 
   10. Click the **Edit icon** (upper right) ![dashboard-edit-icon](images/dashboard-edit-icon.png) to get an on-screen editor where we can change the yaml that represents the map. 
 
@@ -2195,7 +2197,7 @@ As we'd expect it has our contents (You may have a different storename than `My 
 
   ![Config Maps changed in editor](images/config-map-editor-updated.png)
 
-  13. Click on the update button to save your changes
+  13. Click on the **Update** button to save your changes
 
 You'll see the changes reflected in the window. If you made any changes which caused syntax errors then you'll get an error message and the changes will be discarded, in that case re-edit the config map, being careful to only change the `My Shop` text.
 
@@ -2225,7 +2227,7 @@ Now let's return to the pod and see what's happened
 
   - `exit`
 
-The storefront-config.yaml file has now changed to reflect the modifications you made to the config map. Note that it usually seems to take between 30 - 60  seconds for the change to propogate into the pod, so if you don't see the change immediately wait a short time then retry.
+The `storefront-config.yaml` file has now changed to reflect the modifications you made to the config map. Note that it usually seems to take between 30 - 60  seconds for the change to propogate into the pod, so if you don't see the change immediately wait a short time then retry.
 
 If we now get the status resource data again it's also updated
 
@@ -2264,7 +2266,7 @@ Also when deploying in Kubernetes you should create roles and users for performi
 
 ## End of the module, what's next ?
 
-You have reached the end of this module, the next section is `Cloud Native with Kubernetes`
+You have reached the end of this module, the next section is **Cloud Native with Kubernetes**
 
 ## Acknowledgements
 

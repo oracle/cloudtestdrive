@@ -22,7 +22,7 @@ Here we will see how you can use the Helidon features to transparently enable tr
 
 ### Prerequisites
 
-You need to have completed the `Communicating between microservices with Helidon` module.
+You need to have completed the **Communicating between microservices with Helidon** module.
 
 ## Step 1: Why care about operations ?
 

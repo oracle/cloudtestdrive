@@ -13,7 +13,7 @@ This is an optional reading only module, there are no exerciese to do.
 This module looks at some of the 
 
 ### Prerequisites
-You should have completed the `Setting up the cluster and getting your services running in Kubernetes` module.
+You should have completed the **Setting up the cluster and getting your services running in Kubernetes** module.
 
 
 ## Should I secure my REST API ?
@@ -79,6 +79,10 @@ Managing certificates can be a pain, especially if you have short lived certific
 ## Where to get security assistance.
 
 This section has only covered at a simple level a few of the security options. Clearly in a sensitive commercial situation you will want to conduct a thorough security assessment of your risks, ensure you have not made any common security mistakes etc. Oracle (and I'm sure other vendors and consultants) has a security assessment service that can help with this. Oracle also has automated tools that can help you monitor your OCI environment for security problems.
+
+## End of the module, what's next ?
+
+The next module is the **Cloud native availability with Kubernetes** module
 
 ## Acknowledgements
 

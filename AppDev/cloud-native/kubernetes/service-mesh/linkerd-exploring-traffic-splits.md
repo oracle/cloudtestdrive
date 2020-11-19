@@ -26,7 +26,7 @@ This module shows how to use the Linkerd traffic split functionality to do a tri
 
 ### Prerequisites
 
-You need to complete the `Rolling update` module (last of the core Kubernetes labs modules). You must have completed the `Installing the Linkerd service mesh` module. You can have done any of the other optional module sets, or any combination of the other service mesh modules.
+You need to complete the **Rolling update** module (last of the core Kubernetes labs modules). You must have completed the **Installing the Linkerd service mesh** module. You can have done any of the other optional module sets, or any combination of the other service mesh modules.
 
 ## Step 1: What is a a traffic split, and what can I do with it ?
 
@@ -417,7 +417,7 @@ Locate your namespace on the list, you'll see that it's running fine with 100% s
 
   18. Click on your namespace name (`tg-helidon` in my case) 
 
-  19. On the left menu click on `Traffic Splits`
+  19. On the left menu click on **Traffic Splits**
 
   ![](images/linkerd-traffic-split-canary-split-pre-switch-update.png)
 
@@ -456,7 +456,7 @@ You will see that the split is now 90 to the v0.0.1 stockmanager and 10% to the 
 
 The success rate column for the v0.0.1 is still 100%, but in this case the success rate for the 0.0.2 version is 33.33% Of course the exact number will vary depending on how many requests have been sent to it and the random behavior of it it generates an error or not. Given that the load generator is set to send one request a second, that only 10% of those are being sent to our test v0.0.2 service, and it only errors half the time only about 5% of the requests will actually have an error - so you may have to wait a bit to short time before seeing any errors
 
-  24. Click on `Namespaces` 
+  24. Click on **Namespaces** 
 
   25. In the HTTP Metrics list click on **your** namespace
 
@@ -519,7 +519,7 @@ If you look at the traffic split now you'll find  that it's reverted to all the 
 
 Of course it will take a short while for the statistics to catch up (**in this case** we're seeing the results of old traffic showing up in the numbers for the 0.0.2 version, which is why it shows 50% failures, even though the weight is zero) but after a short while if you go to the namespaces list you'll see everything back to 100% Success for your namespace 
 
-  30. In the linkerd UI click `Namespaces` on the upper left
+  30. In the linkerd UI click **Namespaces** on the upper left
 
   31. Click **your** namespace in the HTTP Metrics section
 
@@ -705,13 +705,13 @@ Let's look at the traffic split in the linkerd UI
   8. In your web browser go to `https://<external IP address>`
 
 
-  9. On the upper left click the namespaces dropdown (It may display `DEFAULT` or another namespace name
+  9. On the upper left click the **Namespace dropdown** (It may display `DEFAULT` or another namespace name)
 
   ![](images/linkerd-namespaces-menu.png)
 
   10. Click **your namespace** in the list (tg-helidon in my case, but yours should be different)
 
-  11. On the left menu in the configuration section click `Traffic Splits`
+  11. On the left menu in the configuration section click **Traffic Splits**
 
   ![](images/linkerd-traffic-splits-menu-option.png)
 
@@ -725,7 +725,7 @@ This Shows the traffic split details
 
   ![](images/linkerd-traffic-splits-fault-injector-details-initial.png)
 
-We can see the details of the traffic split, the `Apex Service` indicates the service the traffic split is operating on, the `Leaf service` shows where the traffic will be split to and the `Weight` indicates the probability of that split option, in this case it's 500/1000 in each case. Of course you could potentially have additional splits.
+We can see the details of the traffic split, the **Apex Service** indicates the service the traffic split is operating on, the **Leaf service** shows where the traffic will be split to and the **Weight** indicates the probability of that split option, in this case it's 500/1000 in each case. Of course you could potentially have additional splits.
 
 Keep this page open
 
@@ -766,21 +766,21 @@ Here we see that 66.67% of the requests to the traffic split had failed (the bar
 
 Of course this is useful, but in this case all it's telling us is that the `zipkin` service always works and the `fault-injector-zipkin` service always fails. What does that mean for the requests to the zipkin service.
 
-  14. In the `Tools` section on the  left menu click on `Routes`
+  14. In the **Tools** section on the  left menu click on **Routes**
 
-  15. In the `Namespace` dropdown chose the name of **your** namespace (tg-helidon in the example below)
+  15. In the **Namespace dropdown** chose the name of **your** namespace (tg-helidon in the example below)
 
-  16. In the `Resource` dropdown chose `deployment`
+  16. In the **Resource** dropdown chose **Deployment**
 
-  17. In the `To Namespace` dropdown chose the name of **your** namespace (tg-helidon in the example below)
+  17. In the **To Namespace** dropdown chose the name of **your** namespace (tg-helidon in the example below)
 
-  18. In the `To resource` dropdown chose `deployment/zipkin`
+  18. In the **To resource** dropdown chose `deployment/zipkin`
 
   ![](images/linkerd-traffic-split-route-spec.png)
 
 This will generate reports from any deployment to the `zipkin` deployment (it is of course possible to look at specific deployments, but this shows us a good overview)
 
-  19. Click the `Start` button
+  19. Click the **Start** button
 
   20. In the OCI cloud shell Make multiple curl requests of the form 
   
@@ -932,7 +932,7 @@ The service mesh standard also defines capabilities that allow you to apply acce
 
 ## End of the module, What's next ?
 
-You can chose from the remaining `Linkerd service mesh` modules or switch to one of the other Kubernetes optional module sets.
+You can chose from the remaining **Linkerd service mesh** modules or switch to one of the other Kubernetes optional module sets.
 
 ## Acknowledgements
 

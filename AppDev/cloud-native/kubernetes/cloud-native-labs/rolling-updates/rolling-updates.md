@@ -23,7 +23,7 @@ This module demonstrates how the rolling update capabilities in Kubernetes can b
 
 ### Prerequisites
 
-You need to complete the `Auto Scaling` module.
+You need to complete the **Auto Scaling** module.
 
 ## Step 1: Why Rolling updates
 
@@ -48,13 +48,13 @@ Kubernetes aims to keep a service running during the rolling upgrade, it does th
 
 We are going to once again edit the storefront-deployment.yaml file to give Kubernetes some rules to follow when doing a rolling upgrade. Importantly however we're going to edit a *Copy* of the file so we have a history.
 
-  1. In the OCI Cloud Shell navigate to the folder **$HOME/helidon-kubernetes**
+  1. In the OCI Cloud Shell navigate to the folder `$HOME/helidon-kubernetes`
 
   2. Copy the storefront-deployment yaml file:
   
   -  `cp storefront-deployment.yaml storefront-deployment-v0.0.1.yaml`
 
-  3. Edit the new file **storefront-deployment-v0.0.1.yaml**
+  3. Edit the new file `storefront-deployment-v0.0.1.yaml`
 
 The current contents of the section of the file looks like this:
 
@@ -130,6 +130,7 @@ spec:
 
 
 ### Actually doing the rollout
+
 To do the roll out we're just going to apply the new file. Kubernetes will compare that to the old config and update appropriately.
 
   8. Apply the new config

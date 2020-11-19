@@ -14,7 +14,7 @@ Here we will see how you can use a Helidon RESTClient in your existing Java code
 
 ### Prerequisites
 
-You need to have completed the `Communicating between microservcies with Helidon` module.
+You need to have completed the **Communicating between microservcies with Helidon** module.
 
 ## Step 1: RESTClient without all of Helidon
 

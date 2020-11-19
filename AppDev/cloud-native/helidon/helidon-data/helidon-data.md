@@ -23,7 +23,7 @@ Here we will see how we can use Helidon CDI to get an EntityManager to access a 
 
 ### Prerequisites
 
-You need to have completed the `Core Helidon` module.
+You need to have completed the **Core Helidon** module.
 
 <details><summary><b>Introduction to Databases</b></summary>
 

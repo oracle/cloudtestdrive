@@ -23,7 +23,7 @@ Here we will see how Helidon can provide information to operational frameworks t
 
 ### Prerequisites
 
-You need to have completed the `Operations support with Helidon` module.
+You need to have completed the **Operations support with Helidon** module.
 
 ## Step 1: Is it running ?
 

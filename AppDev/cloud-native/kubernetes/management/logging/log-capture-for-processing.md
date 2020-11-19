@@ -24,7 +24,7 @@ This module shows how to install and configure the log capture tool Fluentd, and
 
 ### Prerequisites
 
-You need to complete the `Rolling update` module (last of the core Kubernetes labs modules). You can have done any of the other optional module sets. The `log capture for archive` module is also optional.
+You need to complete the **Rolling update** module (last of the core Kubernetes labs modules). You can have done any of the other optional module sets. The **Log capture for archive** module is also optional.
 
 ## Step 1: Log capture for processing and analysis
 
@@ -355,7 +355,7 @@ ca.crt:     1025 bytes
 
 </details>
 
-  16. Click on the `nodes` option in the `cluster` section of the UI menu on the left
+  16. Click on the **nodes** option in the **cluster** section of the UI menu on the left
 
   ![dashboard-nodes-menu](images/dashboard-nodes-menu.png)
 
@@ -395,7 +395,7 @@ I've used the index for the data gathered most recently, as can be seen in the i
 
   2. Let's look at the captured data. Look at the indecies list and chose one
   
-  3. Go to the _search URL (remember the one below is **my** ip address **you need to use yours**, adjust YYYY-MM-DD to one of the entries in the indexes list).
+  3. Go to the `_search` URL (remember **you need to use your** IP address, adjust YYYY-MM-DD to one of the entries in the indexes list).
   
   ```
   https://<External IP>/elastic/logstash-<YYYY-MM-DD>/_search

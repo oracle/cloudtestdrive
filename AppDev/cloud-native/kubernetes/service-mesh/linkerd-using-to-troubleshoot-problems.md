@@ -26,7 +26,7 @@ This module shows how to use Linkerd to see identify problems in the traffic bet
 
 ### Prerequisites
 
-You need to complete the `Rolling update` module (last of the core Kubernetes labs modules). You must have completed the `Installing the Linkerd service mesh` module. You can have done any of the other optional module sets, or any combination of the other service mesh modules.
+You need to complete the **Rolling update** module (last of the core Kubernetes labs modules). You must have completed the **Installing the Linkerd service mesh** module. You can have done any of the other optional module sets, or any combination of the other service mesh modules.
 
 ## Step 1: What the service mesh brings to troubleshooting
 
@@ -271,7 +271,7 @@ We'll open the LinkerdUI and see what it's reporting.
 
   16. In your web browser go to `https://<external IP>` (replace `<external IP>` of course) If asked login with the user name admin and the password you chose when setting up the Linkerd ingress
 
-  17. Click on `Namespaces` in the`Cluster` section of the left menu and locate the HTTP metrics entry for your namespace (mine is tg-helidon, yours will have a different name)
+  17. Click on **Namespaces** in the **Cluster** section of the left menu and locate the **HTTP metrics** entry for your namespace (mine is tg-helidon, yours will have a different name)
 
   ![](images/linkerd-broken-overview-namespace.png)
 
@@ -298,23 +298,23 @@ We can see that it's the stockmanager service that has a problem, the rest are a
 
 Now we can see that it's the inbound requests on the stockmanager that's the problem, the outbound ones are working fine, and (in this case) there is one pod that has the problem (if there were multiple pods you wild see them listed, and might be able to see if the problem was pod specific, or a problem across all pods in the deployment)
 
-  20. Now look at the Live calls section
+  20. Now look at the **Live calls** section
 
   ![](images/linkerd-broken-live-calls.png)
 
 We can see that the from deploy/storefront to /stocklevel call is the one that's generating a lot of failures
 
-  21. Click on the `Tap` icon ![](images/linkerd-tap-icon.png) for this row to access the call history
+  21. Click on the **Tap** icon ![](images/linkerd-tap-icon.png) for this row to access the call history
 
-  22. Click the `Start` button at the top of this page and wait for a few calls to come in, then click the `Stop` button
+  22. Click the **Start** button at the top of this page and wait for a few calls to come in, then click the **Stop** button
 
   ![](images/linkerd-broken-tap-list.png)
 
-  23. Locate a row where the HTTP status is 500, click the `Expand` icon ![](images/linkerd-tap-expand-icon.png)
+  23. Locate a row where the HTTP status is 500, click the down arrow / Expand" icon ![](images/linkerd-tap-expand-icon.png)
 
   ![](images/linkerd-broken-tap-details.png)
 
-You can now see the details of the failed call. Click the `Close` button on the lower right to close this popup.
+You can now see the details of the failed call. Click the **Close** button on the lower right to close this popup.
 
 ### Diagnostics summary
 

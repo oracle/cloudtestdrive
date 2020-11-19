@@ -144,7 +144,7 @@ In the TCP Metrics section the columns are :
 
 Let's now look at the specific data for your namespace. 
 
-  5. In the HTTP metrics section click on the **name** of your namespace (mine is `tg-helidon`, but yours will be different)
+  5. In the **HTTP metrics** section click on the **name** of your namespace (mine is `tg-helidon`, but yours will be different)
 
   ![](images/linkerd-app-namespace-top-of-page.png)
 
@@ -212,19 +212,19 @@ So far we've seen what's happening on the pods, but as the service mesh is a lay
   ![](images/linkerd-tools-selection.png)
 
 
-  9. Click on the `Top` option
+  9. Click on the **Top** option
 
-We switch to the `Top` screen
+We switch to the Top screen
 
   ![](images/linkerd-top-empty.png)
 
 Here we can have a look at the REST API calls being made to / from a service.
 
-  10. Click on the `Namespace`, select **your** namespace from the list
+  10. Click on the **Namespace**, select **your** namespace from the list
 
   ![](images/linkerd-top-select-namespace.png)
 
-  11. Click on the `Resource` section (this may have been updated when you selected a namespace) 
+  11. Click on the **Resource** section (this may have been updated when you selected a namespace) 
 
   12. Select `deloyment/storefront` from the list
 
@@ -232,7 +232,7 @@ Here we can have a look at the REST API calls being made to / from a service.
 
 Note that the UI is displaying what the query would be if you ran the linkerd command manually, in this case it's `linkerd top deployment/storefront --namespace tg-helidon` This helps you understand how you could write scripts to gather information if you liked)
 
-  13. Click the `Start` button (when you selected the resource it may have automatically started, in which case **do not** click the `Stop` button)
+  13. Click the **Start** button (when you selected the resource it may have automatically started, in which case **do not** click the `Stop` button)
 
   14. Wait a short while for requests to be made and data to be gathered
 
@@ -242,15 +242,15 @@ We can now see that the storefront deployment has been receiving requests from t
 
 You may also see requests to /status, /metrics and /health/live These are the Kubernetes framework checking to ensure that the pod is alive and ready, and Prometheus gathering performance metrics.
 
-  15. Click the `Tap` icon ![](images/linkerd-tap-icon.png) on the right of the `To stockmanager` row
+  15. Click the **Tap** icon ![](images/linkerd-tap-icon.png) on the right of the `To stockmanager` row
 
   ![](images/linkerd-tap-intro.png)
 
-This is the `Tap` page, it let's us look at individual requests so we can see how things are going, and also diagnose problems.If it's not obvious you could also get to it by clicking the `Tap` menu option in the tools section on the left hand menu.
+This is the Tap page, it let's us look at individual requests so we can see how things are going, and also diagnose problems. If it's not obvious you could also get to it by clicking the **Tap** menu option in the tools section on the left hand menu.
 
 For now we are not going to change any of these settings as we're just exploring, but you can see there are options to filter the requests, for example only looking at HTTP PUT rather than all requests
 
-  16. Click the `Start` button
+  16. Click the **Start** button
 
 Wait a short while for requests to be made and data to be gathered
 
@@ -258,7 +258,7 @@ Wait a short while for requests to be made and data to be gathered
 
 We see the results as they are generated, let's look at them
 
-  17. Click the `Stop` button 
+  17. Click the **Stop** button 
 
   18. Click on the "down arrow" - at the start of each row to the left of the `Direction` column
 
@@ -272,7 +272,7 @@ Finally let's have a quick look at the status of the linkerd control plane itsel
 
 We've currently been looking at the services, deployments and pods within the namespaces, we need to switch to the control plane view.
 
-  19. Click `Control Plane` on the upper left.
+  19. Click **Control Plane** on the upper left.
 
   ![](images/linkerd-select-namespace.png)
 
@@ -326,7 +326,7 @@ This takes us to a details page for our namespace. It's showing us the page for 
 
   ![](images/grafana-my-namespace-change-deployment.png)
 
-  4. Hover your mouse above the `Latency` graph on the right
+  4. Hover your mouse above the **Latency** graph on the right
 
   ![](images/grafana-my-namespace-stockmanager-latency.png)
 
@@ -336,7 +336,7 @@ Grafana is showing us an overview in the first few sets of panels. There are how
 
   ![](images/grafana-my-namespace-stockmanager-expander.png)
 
-  5. Click on the `>` to the left of the `Inbound TCP Metrics` heading
+  5. Click on the **>** to the left of the **Inbound TCP Metrics** heading
 
   ![](images/grafana-my-namespace-stockmanager-inbound-tcp.png)
 
@@ -370,7 +370,7 @@ Feel free to explore the dashboards if you like, the Linkerd Health dashboard pr
   
 ## End of the module, What's next ?
 
-You can chose from the remaining `Linkerd service mesh` modules or switch to one of the other Kubernetes optional module sets.
+You can chose from the remaining **Linkerd service mesh** modules or switch to one of the other Kubernetes optional module sets.
 
 ## Acknowledgements
 

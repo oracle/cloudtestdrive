@@ -23,7 +23,7 @@ Here we will see how you can use a Helidon RESTClient in your Helidon code to ac
 
 ### Prerequisites
 
-You need to have completed the `Databases with Helidon` module.
+You need to have completed the **Databases with Helidon** module.
 
 ## Step 1: Service to service communications
 

@@ -27,7 +27,7 @@ This module shows us how Helidon supports the creation of OpenAPI documents base
 
 ### Prerequisites
 
-You need to have completed the `Cloud Native support in Helidon` module.
+You need to have completed the **Cloud Native support in Helidon** module.
 
 ## Step 1: Why have a self describing API ?
 

@@ -18,7 +18,7 @@ This video is an introduction to the Kubernetes labs setup - for people who have
 
 </details>
 
-This page explains the steps to set up your **Oracle Cloud Tenancy** so you are ready to run the **C. Helidon lab**. 
+This page explains the steps to set up your **Oracle Cloud Tenancy** so you are ready to run the Kubernetes modules. 
 
 If you have completed the Helidon labs then you will have already setup the compartment and ATP database, so you can return to the main lab.
 
@@ -26,28 +26,28 @@ If you have completed the Helidon labs then you will have already setup the comp
 
 ## Step 1: Create the CTDOKE compartment
 
-  1. Click the `hamburger` menu (three bars on the upper left)
+  1. Click the "Hamburger" menu (three bars on the upper left)
 
-  2. Scroll down the list to the `Governance and Administration` section
+  2. Scroll down the list to the **Governance and Administration** section
 
-  3. Under the `Identity` option chose `Compartments`
+  3. Under the **Identity** option chose **Compartments**
 
   4. You should see a screen that looks like this : 
 
   ![](images/compartments.png)
 
   
-**ATTENTION** : if the compartment **CTDOKE** already exists, please move to the next major step on this page, setting up the database
+**ATTENTION** : if the compartment `CTDOKE` already exists, please move to the next major step on this page, setting up the database
 
-  5. If the **CTDOKE** compartment is not yet there, **create it** : 
+  5. If the `CTDOKE` compartment is not yet there, **create it** : 
   
-  5a. Click the `Create Compartment` button
+  5a. Click the **Create Compartment** button
   
   5b. Provide a name, description
   
-  5c. Chose **root** as the parent compartment
+  5c. Chose `root` as the parent compartment
   
-  5d. Click the `Create Compartment` button.
+  5d. Click the **Create Compartment** button.
 
   ![](images/create-compartment.png)
 
@@ -55,23 +55,23 @@ If you have completed the Helidon labs then you will have already setup the comp
 
 ### 2a. Create the database
 
-  1. Use the Hamburger menu, and select the Database section, **Autonomous Transaction Processing**
+  1. Use the "Hamburger" menu, and select the **Oracle Database** section, then **Autonomous Transaction Processing**
 
   ![](images/db-01-atp-menu.png)
 
 This will switch to the database management page. Note that depending on your tenancy and if others are also using the list of existing database may be empty or differ from what's shown here.
 
-  2. Make sure the **CTDOKE** compartment is selected
+  2. Make sure the `CTDOKE` compartment is selected
 
-  3. Click **Create DB**
+  3. Click **Create Autonomous Database** button
 
   ![](images/db-02-atp-compartment-create.png)
 
   4. Fill in the form, and make sure to give the DB a unique name and display name for you (use your name or initials) in case multiple users are running the lab on this tenancy.
 
-  5. Make the workload type `Transaction Processing` 
+  5. Make the workload type **Transaction Processing**
 
-  6. Set the deployment type `Shared Infrastructure` 
+  6. Set the deployment type **Shared Infrastructure**
 
   ![](images/db-03-atp-create-form-identity.png)
 
@@ -81,21 +81,21 @@ This will switch to the database management page. Note that depending on your te
 
   ![](images/db-04-atp-create-form-config.png)
 
-  9. Enter an admin password, be sure to remember it. The current rules are must have at least one number, one upper case, and one lower case letter, if the password does not meet the ruels you will get a error displayed when you switch to the next field.
+  9. Enter an admin password, be sure to remember it. The current rules are must have at least one number, one upper case, and one lower case letter, if the password does not meet the rules you will get a error displayed when you switch to the next field.
 
   10. Re-enter the password you chose in the confirm password box
 
   ![](images/db-05-atp-create-form-password.png)
 
-  11. Make sure that the `Allow secure access from everywhere` is enabled.
+  11. Make sure that the **Allow secure access from everywhere** is enabled.
 
-  12. Chose the `License included` option
+  12. Chose the **License included** option
 
   ![](images/db-06-atp-create-form-access-and-license.png)
 
-As a reminder - Be sure to remember the **admin password**, save it in a notes document for later reference.
+As a reminder - Be sure to remember the admin password, save it in a notes document for later reference.
 
-  13. Click the `Create Autonomous Database` button at the bottom of the page.
+  13. Click the **Create Autonomous Database** button at the bottom of the page.
 
   ![](images/db-10-atp-creation-in-progress.png)
 
@@ -113,21 +113,19 @@ The database will start to be provisioned. This may take a short while, once it 
 ### 2b. Setup your user in the database
 
 
-  16. Now the instance is running click on the tools tab, then SQL Developer Web button
+  16. Now the instance is running click on the **Tools** tab, then **Open SQL Developer Web** button
 
   ![](images/db-20-atp-access-sql-developer-web.png)
 
-This will open the SQLDeveloper web login page
+This will open the SQL Developer web login page
 
-  17. Login as ADMIN (it's case senitive), using the appropriate password.
+  17. Login as ADMIN (it's case sensitive), using the appropriate password.
 
   ![](images/db-21-sql-developer-web-login.png)
 
   18. Click the `x` on the intro message popup - or if you want to read them just click all the way through them.
 
 Once the intro messages are gone you'll get to the main screen
-
-
 
   19. Copy and paste the below SQL instructions into the worksheet (highlighted in red in the image below)
 
@@ -151,7 +149,7 @@ If it works OK you will see a set of messages in the Script Output section of th
 
 ## End of the setup
 
-Go to the `Create your Kubernetes cluster` lab
+Go to the **Create your Kubernetes cluster** lab
 
 ## Acknowledgements
 

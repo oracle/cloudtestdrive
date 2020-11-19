@@ -25,7 +25,7 @@ This module explores how you can configure Kubernetes to automatically scale the
 
 ### Prerequisites
 
-You need to complete the `Horizontal Scaling` module.
+You need to complete the **Horizontal Scaling** module.
 
 ## Step 2: Horizontal autoscaling - based on CPU load or Memory usage
 
@@ -448,13 +448,13 @@ If you want you can also see the pods being added in the Kubernetes dashboard,
 
   27. Make sure you are in your namespace
 
-  28. In the left menu Under workloads select `Deployments` then click on the `storefront` deployment
+  28. In the left menu Under workloads select **Deployments** then click on the `storefront` deployment
 
-  29. In the pod section you can see that in this case it's scaled to 5 pods
+  29. In the **Pods** section you can see that in this case it's scaled to 5 pods
 
   ![](images/autoscaling-pods-increased.png)
 
-  30. Scroll down to the events section and you can seen the changes it's made
+  30. Scroll down to the **Events** section and you can seen the changes it's made
 
   ![](images/autoscaling-dashboard-events.png)
 

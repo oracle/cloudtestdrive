@@ -24,7 +24,7 @@ This module shows how to install and configure the log capture tool Fluentd, and
 
 ### Prerequisites
 
-You need to complete the `Rolling update` module (last of the core Kubernetes labs modules). You can have done any of the other optional module sets. The `log capture for processing` module is also optional.
+You need to complete the **Rolling update** module (last of the core Kubernetes labs modules). You can have done any of the other optional module sets. The **log capture for processing** module is also optional.
 
 ## Step 1: Capturing data to archive it
 
@@ -174,9 +174,9 @@ We need to have security keys to access the S3 compliant storage API. Access tho
 
   ![](images/User-profile-resources.png)
 
-  13. Click on the `Customer Secret Keys` in the resources section.
+  13. Click on the **Customer Secret Keys** in the resources section.
 
-The table changes to showing the `Customer Secret Keys` table
+The table changes to showing the **Customer Secret Keys** table
 
   ![](images/User-profile-customer-secret-keys.png)
 
@@ -192,15 +192,15 @@ To generate a new Customer Secret Key
 
   15. Provide a name that you'll be able to remember, in this case I'm using `MySecretKey` but you chose your own
 
-  16. Click the `Generate Secret Key` button, to get the system to generate a key pair for you.
+  16. Click the **Generate Secret Key** button, to get the system to generate a key pair for you.
 
   ![](images/User-profile-save-secret-key.png)
 
 **VITALLY IMPORTANT**
 
-  17. Click the `Copy` link to copy the secret key, be sure to paste it into a texteditor or somewhere safe (this is a secret key, so it needs to be protected against access). **You cannot retrieve it at any point once this popup is closed** 
+  17. Click the **Copy** link to copy the secret key, be sure to paste it into a texteditor or somewhere safe (this is a secret key, so it needs to be protected against access). **You cannot retrieve it at any point once this popup is closed** 
 
-  18. **ONLY** after you'ce copied and saved the secret key click the `Close` button
+  18. **ONLY** after you'ce copied and saved the secret key click the **Close** button
 
   ![](images/User-profile-secret-key-list.png)
 
@@ -208,13 +208,13 @@ You'll see the newly generated key in the list (remember in this case I had an e
 
 You now need to get the access key (this is the other part of the generated key pair)
 
-  19. Click on the `Access key` for the key you just generated, if you have multiple keys remember to chose the key you just generated (the name you chose will help you)
+  19. Click on the **Access key** for the key you just generated, if you have multiple keys remember to chose the key you just generated (the name you chose will help you)
 
   ![](images/User-profile-get-access-key.png)
 
-  20. Click on the `Copy` link to get a copy of the key, save this in a text editor or something.
+  20. Click on the **Copy** link to get a copy of the key, save this in a text editor or something.
 
-You have now gathered the information we need to write data into the Objact Storage Service.
+You have now gathered the information we need to write data into the Object Storage Service.
 
 ### Create the storage bucket
 
@@ -223,7 +223,7 @@ You can let the S3 integration just create the storage bucket, but the scenario 
 <details><summary><b>What's the difference between Standard and Archive tiers?</b></summary>
 
 
-The `Standard` storage tier is designed for immediate access, the `Archive` tier is designed for infrequent access, may have a time delay (up to an hour) between requesting and being able to access the data. There is a significant cost difference between the two storage tiers, at the time of writing this document (early May 2020)  for the Object storage service data in the archive tier was 1/10th the cost of standard tier in terms of GB data stored / month.
+The **Standard** storage tier is designed for immediate access, the **Archive** tier is designed for infrequent access, may have a time delay (up to an hour) between requesting and being able to access the data. There is a significant cost difference between the two storage tiers, at the time of writing this document (early May 2020)  for the Object storage service data in the archive tier was 1/10th the cost of standard tier in terms of GB data stored / month.
 
 Though it is an implementation detail (and I genuinely don't know if this is the case or not) it is highly likely that data placed in archive storage is actually held on magnetic tape, not disk. To make the data available for access the tape must be loaded into a tape drive from it's slot in the tape library (and there may be a delay for a tape drive to be available). Then the tape drivers has to wind the tape to the right position to read the data (think of the old cassete tapes you may have has in your car when you wanted to locate a particular song - tapes are linear access devices, **not** true random access devices). Then the drive has to read the data into a cache to make it available for access. All of this takes time and if you want to load data on a tape that is currently being used to write other data then you will also have to wait for the current write operations to complete before the tape can be repositioned to access your data. Thus there are several reasons why it can take a while to make archive data available for retrieval. For more information on tape libraries (the large libraries are impressive beasts and can hold over 100,000 tapes each).
 
@@ -239,7 +239,7 @@ Let's create our storage bucket.
 
   21. Log in to the OCI console in your web browser
 
-  22. Click on the "Hamburger" menu, then under Core Infastructure click on `Object Storage` then `Object Storage` 
+  22. Click on the "Hamburger" menu, then in the **Core Infastructure** section click on **Object Storage** then **Object Storage** 
 
   ![](images/Object-storage-hamburger-menu.png)
 
@@ -255,15 +255,15 @@ You will now see a list of buckets in this compartment, In this case there is ju
 
 We're going to create a new bucket set for archive storage
 
-  24. Click the `Create Bucket` button.
+  24. Click the **Create Bucket** button.
 
-  25. In the popup name the bucket **<YOUR INITIALS>**-FLUENTD For fluentd to write to this bucket the name **must** be entirely in UPPER CASE and you **must** replace <YOUR INITIALS> with something unique to you!
+  25. In the popup name the bucket `<YOUR INITIALS>-FLUENTD` For fluentd to write to this bucket the name **must** be entirely in UPPER CASE and you **must** replace <YOUR INITIALS> with something unique to you!
 
   26. Change the storage tier option to **archive**
 
   ![](images/Object-storage-create-bucket.png)
 
-  27. Click the `Create Bucket` button
+  27. Click the **Create Bucket** button
 
 Note, if the bucket name must be unique across your entire tenancy in the region, if it's not (even if the other bucket is in a different compartment) you will not be able to create it and will have to try again using a different name.
 
@@ -271,7 +271,7 @@ You will now see the list of buckets in your compartment. Remember that in my ca
 
   ![](images/Object-storage-after-create-bucket.png)
 
-Note that the storage tier for the new bucket (named TG-FLUENTD in this case **but yours will vary**) is `Archive` This means all data will be held in a long term storage model which is much cheaper, but may take time to become available when requested.
+Note that the storage tier for the new bucket (named TG-FLUENTD in this case **but yours will vary**) is **Archive** This means all data will be held in a long term storage model which is much cheaper, but may take time to become available when requested.
 
 ### Setting up the log monitoring.
 
@@ -288,7 +288,6 @@ The `fluentd-s3-configmap.yaml` contains a config map with the specific settings
 The `fluentd-daemonset-oss-rbac.yaml` configures the cluster role, service account, binding between the two and also the details of the daemonset that gathers the log data and writes it to the S3 compatible storage service. The daemon set uses the values that are set in the `fluentd-s3-configmap.yaml` for it's environment variables (look at the file for the details of how the environment variables are defined in terms of config map entries). This means we won't need to change the daemon set configuration / it's yaml file if we want to change those settings.
 
 <details><summary><b>How does Kubernetes know where to get the environment variable values ?</b></summary>
-
 
 The container template in the daemon set description has a section that allows the definition of environment variables. These can come from many different sources, including constant values, config maps and secrets.
 
@@ -336,8 +335,8 @@ metadata:
   name: fluentd-s3-config
   namespace: logging
 data:
-  ACCESS_KEY: "225c7ab16d07465e2503714e724863ea552e11b0"
-  ACCESS_SECRET: "bgUdGT20T4KpFh5bkJR0pYBwxR4xsiz2utj3f+W2mJ8="
+  ACCESS_KEY: "225c7ab16d07465e1234567e724863ea552e11b0"
+  ACCESS_SECRET: "bgUdGT20T4KpFh5bkJR0pYBwxR4size2utj3f+W2mJ8="
   BUCKET_NAME: "TG-FLUENTD"
   REGION: "eu-frankfurt-1"
   STORAGE_END_POINT: "https://oractdemeabdmnative.compat.objectstorage.eu-frankfurt-1.oraclecloud.com"
@@ -508,7 +507,7 @@ Lots more output
 ...
 ```
 
-The log data shows is the sources whish fluentd is scanning looking for the log data, The match section is the contents of the config map we specified in `fluentd-to-ooss-configmap.yaml` but nots that there are values for items like `s3-bucket` which reflect the settings we provided in the `fluentd-s3-configmap.yaml` file of our environment specific settings.
+The log data shows is the sources whish fluentd is scanning looking for the log data, The match section is the contents of the config map we specified in `fluentd-to-ooss-configmap.yaml` but note that there are values for items like `s3-bucket` which reflect the settings we provided in the `fluentd-s3-configmap.yaml` file of our environment specific settings.
 
 <details><summary><b>If the log is reporting an unexpected error</b></summary>
 
@@ -577,25 +576,25 @@ You can see the list of logs that have been saved. Note that all of them have a 
 
 Let's start the process to restore from the archive.
 
-  3. Click the selection checkbox next to **one** of the entries. Then click the `More Actions` button and chose `Restore` from the menu
+  3. Click the selection checkbox next to **one** of the entries. Then click the **More Actions** button and chose **Restore** from the menu
 
   ![](images/Object-storage-select-for-restore.png)
 
-Note that the `Restore` and `Delete` buttons are now enabled.
+Note that the **Restore** and **Delete** buttons are now enabled.
 
-  4. Click the `Restore` button, the confirm restore popup is shown
+  4. Click the **Restore** button, the confirm restore popup is shown
 
   ![](images/Object-storage-confirm-restore.png)
 
 By default the restored data is available for 24 hours before it's only available in the archive again, you can change this duration if you like, but for now we'll leave the field blank which keeps the default 24 hours download window. The storage service will be charging you the extra copy for the time it's spent online, so you want to keep that to a minimum that meets your needs
 
-  5. Click the `Restore` button and the object storage service will trigger the restore process to start.
+  5. Click the **Restore** button in the popup and the object storage service will trigger the restore process to start.
 
   ![](images/Object-storage-restore-in-process.png)
 
 You can see that the status is now `Restoring`. Of course there is also a REST API to allow you to automate this process if you wanted in a production environment.
 
-It can take several hours for the restore process to complete, especially if you chose multiple objects (remember we chose `Archive` as the storage tier as we wanted to show how to do long term cost effective storage of log data, and the archive tier is far more cost effective compared to the `Standard` tier, but the balance of that is the time to restore if you need to access the data. 
+It can take several hours for the restore process to complete, especially if you chose multiple objects (remember we chose **Archive** as the storage tier as we wanted to show how to do long term cost effective storage of log data, and the archive tier is far more cost effective compared to the **Standard** tier, but the balance of that is the time to restore if you need to access the data. 
 
 If you want to progress with the lab then you can do so and come back to this section later to look at the restored data.
 
@@ -607,7 +606,7 @@ Once the restore process has completed you will see that the objects state becom
 
   ![](images/Object-storage-restored-object-menu.png)
 
-  7. Click the `Download` option on this menu
+  7. Click the **Download** option on this menu
 
 Your web browser will start to download the object and depending on the web browser you will get a download options popup. This is the one I got when doing a similar download using Firefox on MacOS Catalina
 
@@ -645,11 +644,11 @@ In the Object bucket details screen
 
 - Check that you have the right storage bucket, if you have a commercial or production tenancy you will not be popular if you delete someone else's data!
 
-- Click the checkbox next to the `Name` heading at the top of the objects table
+- Click the checkbox next to the **Name** heading at the top of the objects table
 
 ![](images/Object-storage-select-all.png)
 
-- Click the `Delete` button.
+- Click the **Delete** button.
 
 Confirm
 
@@ -659,18 +658,18 @@ Once you have deleted all of the captured log data objects than you can also del
 Make sure you are in the bucket and it is empty
 ![](images/Object-storage-bucket-delete.png)
 
-- Click on the `Delete` button above the bucket details
+- Click on the **Delete** button above the bucket details
 
 You will be presented with a confirmation screen
 ![](images/Object-storage-bucket-delete-confirmation.png)
 
-- Click the `Delete` button to confirm.
+- Click the **Delete** button to confirm.
 
 Only if the bucket is empty will the delete process complete. If it's not then you will get the following error
 
 ![](images/Object-storage-delete-non-empty-bucket-refusal.png)
 
-Even though it seems you can press `Delete` anyway this won't have any effect (Yes, this seems odd to me as well). Click on the `Cancel` button and make sure you have selected all the objects and deleted them, then try to delete the bucket again.
+Even though it seems you can press **Delete** anyway this won't have any effect (Yes, this seems odd to me as well). Click on the **Cancel** button and make sure you have selected all the objects and deleted them, then try to delete the bucket again.
 
 Once the bucket has been successfully deleted you will be returned to the list of buckets in the S3 compatibility compartment (`JAM` in my case)
 

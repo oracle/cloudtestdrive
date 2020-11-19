@@ -488,8 +488,9 @@ content-length: 184
 ```
 This call should return the entries you added earlier. 
 
-- You **may** will get a `424 Failed dependency` message:  it's because the lazy initialization has taken a while as the back end request has times out (remember the @Timeout annotation on the StorefrontResouce is set to 15 seconds!) 
-  - Just re-run the request a few times till you get the expected response
+You **may** still get a `424 Failed dependency` message:  it's because the lazy initialization has taken a while as the back end request has times out (remember the @Timeout annotation on the StorefrontResouce is set to 15 seconds!) 
+
+If you do just re-run the request a few times till you get the expected response
 
 
 The outputs for the storefront and stockmanager containers will display the log data generated as the operation was performed.

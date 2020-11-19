@@ -25,7 +25,7 @@ This module shows how to install the data capture tool Prometheus and how to con
 
 ### Prerequisites
 
-You need to complete the `Rolling update` module (last of the core Kubernetes labs modules). You can have done any of the other optional module sets.
+You need to complete the **Rolling update** module (last of the core Kubernetes labs modules). You can have done any of the other optional module sets.
 
 ## Step 1: Explaining Monitoring in Kubernetes
 
@@ -197,11 +197,11 @@ You'll see the Initial prometheus graph page as below.
 
 Let's check that Prometheus is scraping some data. 
 
-  4. Click the "Insert Metric At Cursor" button
+  4. Click the **Insert Metric At Cursor** button
   
 You will see a *lot* of possible choices exploring the various services built into Kubernetes (Including apiserver, Core DNS, Container stats, the number of various Kubernetes objects like secrets, pods, configmaps and so on).
 
-  5. In the dropdown select `kubelet_http_requests_total`  
+  5. In the dropdown find and celect select `kubelet_http_requests_total`  
   
   6. Click the **Execute** button. 
 
@@ -215,7 +215,7 @@ or a graph
 
 ![prometheus-http-requests-total-graph](images/prometheus-kubelet-http-requests-total-graph.png)
 
-  7. Click the "Graph" or "Console" buttons to switch between them
+  7. Click the **Graph** or **Console** tab names to switch between them
 
 The Kubelet is the code that runs in the worker nodes to perform management actions like starting pods and the like, we can therefore be reasonably confident it'll be available to select.
 
@@ -230,15 +230,15 @@ The problem we have is that (currently) Prometheus is not collecting any data fr
 
 We can see what services Prometheus is currently scraping :
 
-  10. Click on the Status menu (top of the screen) :
+  10. Click on the **Status** menu (top of the screen) :
 
   ![Choosing service discovery](images/prometheus-chosing-service-discovery.png)
 
-  11. Then select Service Discovery
+  11. Then select **Service Discovery**
 
   ![The initial service discovery screen](images/prometheus-service-discovery-initial.png)
 
-  12. Click on the "Show More" button next to the Kubernetes-pods line (this is the 2nd reference to Kubernetes pods, the 1st is just a link that takes you to the 2nd one it it's not on the screen)
+  12. Click on the **Show More** button next to the Kubernetes-pods line (this is the 2nd reference to Kubernetes pods, the 1st is just a link that takes you to the 2nd one it it's not on the screen)
 
 You will be presented with a list of all of the pods in the system and the information that Prometheus has gathered about them (it does this by making api calls to the api server in the same way kubectl does)
 
@@ -258,7 +258,7 @@ We can use kubectl to get the pod id, using a label selector to get pods with a 
 
 Don't actually do this, this is just to show how you could modify a live pod with kubectl
 
-Example only, do not run this:
+This gets the pod name - Example only, do not run this:
 
 ```
 $ kubectl get pods -l "app=storefront" -o jsonpath="{.items[0].metadata.name}"
@@ -267,7 +267,7 @@ storefront-588b4d69db-w244b
 
 Now we could use kubectl to add a few annotations to the pod (this is applied immediately, and Prometheus will pick up on it in a few seconds)
 
-Example only, do not run this:
+These arr annotations to the live pot - Example only, do not run this:
 
 ```
 $ kubectl annotate pod storefront-588b4d69db-w244b prometheus.io/scrape=true --overwrite
@@ -280,7 +280,7 @@ pod/storefront-588b4d69db-w244b annotated
 
 We can see what annotations there would be on the pod with kubectl (this works even if you setup the annotations using the deployment yaml file).
 
-Example only, do not run this:
+This lists the pod annotations - Example only, do not run this:
 
 ```
 $  kubectl get pod storefront-588b4d69db-w244b -o jsonpath="{.metadata..annotations}"
@@ -294,7 +294,7 @@ In most cases we don't want these to be a temporary change, we want the Promethe
   
   - `cd $HOME/helidon-kubernetes` 
   
-  15. Edit the file **storefront-deployment.yaml**
+  15. Edit the file `storefront-deployment.yaml`
   
   16. Locate the pod annotations (part of the spec / template / metadata section) which are currently commented out :
 
@@ -329,7 +329,7 @@ Be **very** careful to only remove the # character and **no other whitespace**.
 
   18. Save the changes in this file
   
-  19. Edit the file **stockmanager-deployment.yaml** so it now has a pod annotations section that looks like 
+  19. Edit the file `stockmanager-deployment.yaml` so it now has a pod annotations section that looks like 
 
   ```
  template:
@@ -454,11 +454,11 @@ Now we have configured Prometheus to scrape the data from our services we can lo
 
   25. Return to the Graph page in the Prometheus web page
   
-  26. Click on the Graph button at the top of the page.
+  26. Click on the **Graph** tab.
 
   27. In the Expression box use the auto complete function by typing the start of `application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_listAllStock_total` or select it from the list under the **Insert metric at cursor** button.
 
-  28. Click the Execute button.
+  28. Click the **Execute** button.
 
 If you're on the graph screen you'll probabaly see a pretty boring graph
 
@@ -489,7 +489,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
   31. Go back to the Prometheus browser window
   
-  32. Reload the page and make sure you're on the console tab
+  32. Reload the page and make sure you're on the **Console** tab
 
 We see that our changes have been applied.  Note it may take up to 60 seconds for Prometheus to get round to scraping the metrics form the service, it doesn't do it continuously as that may put a significant load on the services it's monitoring.
 
@@ -507,7 +507,7 @@ When we did the Helidon labs we actually setup the metrics on the call to list s
 
   33. Make a few more curl requests to ensure we have some data groupings, take a short break and then make a few more.
 
-  34. Change the metric to `application_listAllStockMeter_one_min_rate_per_second` Click the `Execute` button
+  34. Change the metric to `application_listAllStockMeter_one_min_rate_per_second` Click the **Execute** button
 
 We can see the number of calls to list all stock per second averaged over 1 min. This basically provides us with a view of the number of calls made to the system over time, and we can use it to identify peak loads.
 
@@ -515,7 +515,7 @@ We can see the number of calls to list all stock per second averaged over 1 min.
 
 Prometheus can also produce multi value graphs. For example in addition to the counting metrics we also setup a timer on the listAllStock method to see how long calls to it took. If we now generate a graph on the timer we see in the Console view that instead of just seeing a single entry representing the latest data, that there are actually 6 entries representing different breakdowns of the data (0.5 being the most common data, 0.999 being the least common) Of course the data you see may vary depending on your situation and how much you've already been using the services.
 
-  35. Change the metric to `application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_listAllStockTimer_seconds` Click the `Execute` button
+  35. Change the metric to `application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_listAllStockTimer_seconds` Click the **Execute** button
 
   ![prometheus-list-stock-timer-quantile-console](images/prometheus-list-stock-timer-quantile-console.png)
 

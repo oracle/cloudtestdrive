@@ -25,7 +25,7 @@ This module takes you through the Kubernetes functionality for detecting failed 
 
 ### Prerequisites
 
-You need to complete the `Setting up the cluster and getting your services running in Kubernetes` module.
+You need to complete the **Setting up the cluster and getting your services running in Kubernetes** module.
 
 ## Step 1: Kubernetes and pod health
 
@@ -367,7 +367,7 @@ Events:
 
 It's started and no unexpected events!
 
-Now is the time to explain that "Not frozen ..." text in the status. To enable us to actually simulate the service having a deadlock or resource starvation problem there's a bit of a cheat in the storefront LivenessChecker code :
+Now is the time to explain that `Not frozen ...` text in the status. To enable us to actually simulate the service having a deadlock or resource starvation problem there's a bit of a cheat in the storefront LivenessChecker code :
 
 ```
 	@Override
@@ -416,7 +416,7 @@ Let's see what happens in this case.
   
   15. Once in the cloud account open an OCI Cloud Shell in the new window
 
-  16. Log in to the your container and create the /frozen file  (replace the pod Id with yours)
+  16. Log in to the your container and create the `/frozen` file  (replace the pod Id with yours)
   
   -  `kubectl exec -ti storefront-b44457b4d-29jr7 -- /bin/bash`
   
@@ -436,7 +436,7 @@ In the logs we see the following
 Weld SE container 53fe34a2-0291-4b72-a00e-966bab7ab2ad shut down by shutdown hook
 ```
 
-Kubectl tells us there's been a problem and a pod has done a restart for us (the kubectl connection to the pod will have terminated when the pod restsrted)
+Kubectl tells us there's been a problem and a pod has done a restart for us (the kubectl connection to the pod will have terminated when the pod restarted)
 
   18. Check the pod status
   
@@ -555,7 +555,7 @@ Now try it out:
 {"outcome":"UP","status":"UP","checks":[{"name":"storefront-ready","state":"UP","status":"UP","data":{"storename":"My Shop"}}]}
 ```
 
-In this case the pod is ready, so the grep command returns what it's found. We are not actually concerned with what the pod returns in terms of string output, we are looking for the exit code, interactivly we can find that by looking in the $? variable:
+In this case the pod is ready, so the grep command returns what it's found. We are not actually concerned with what the pod returns in terms of string output, we are looking for the exit code, interactively we can find that by looking in the $? variable:
 
   7. Inside the pod look at the output of the previous command
   
@@ -891,13 +891,72 @@ Connection: keep-alive
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
 
-### Startup probes
-You may have noticed above that we had to wait for the readiness probe to complete on a pod before it became ready, and worse we had to wait the intialDelaySeconds before we could sensibly even start testing to see if the pod was ready. This means that if we wanted to add extra pods then there is a delay before the new capacity come online and support the service, In the case of the storefront this is not to much of a problem as the service starts up fast, but for a more complex service, especially a legacy service that may have a startup time that varies a lot depending on other factors, this could be a problem, after all we want to respond to request as soon as we can.
+## Step 5: Startup probes
 
-To solve this in Kubernetes 1.18 the concept of startup probes will be introduced as a beta feature. A startup probe is a very simple probe that tests to see if the service has started running, usually at a basic level, and then starts up the liveness and readiness probes. Effectively the startupProbe means there is no longer any need for the initialDelaySeconds.
+You may have noticed above that we had to wait for the liveness probe to complete it's initial delay it started checking. As the liveness probe checks for the service running this means we can't start checking until liveness probe has started. But equally we don't want to set the initial delay of the liveness probe to be to low as it might start checking before the service is running, and then kill the service off before it's finished it's setup. In the case of the storefront this is not to much of a problem as the service starts up fast, but for a more complex service, especially a legacy service that may have a startup time that varies a lot depending on other factors, this could be a problem.
 
-Unfortunately however the startup probes are not supported in standard versions of Kubernetes prior to 1.18, which at the time of writing was not available and this lab is not yet fully updated for that. But there is example configuration in the storefront-deployment.yaml file to show how this would would be defined (the initialDeploymentSeconds would need to be removed from the liveness and readiness configurations.
+To solve this in Kubernetes 1.18 the concept of startup probes will be introduced as a beta feature. A startup probe is a very simple probe that tests to see if the service has started running, usually at a basic level, and then starts up the liveness probes. Effectively the startupProbe means there is no longer any need for the initialDelaySeconds on the liveness probe.
 
+Let's enable this.
+
+  1. Edit the `storefront-deployment.yaml` file
+  
+  2. Locate the `startupProbe:` section
+  
+  3. Remove the `#` at the beginning of each line, only remove that character, be careful not to remove anything else
+  
+The result should look like this
+
+  ```
+        # Use this to check if the pod is started this has to pass before the liveness kicks in
+        # note that this was released as beta in k8s V 1.18
+        startupProbe:
+          #Simple check to see if the status call works
+          # If must return a 200 - 399 http status code
+           httpGet:
+              path: /status
+              port: service-port
+          # No initial delay - it starts checking immediately
+          # Let it have a 5 second timeout
+           timeoutSeconds: 5
+          # allow for up to 48 failures
+           failureThreshold: 48
+          # Check every 5 seconds
+           periodSeconds: 5
+          # If after failureThreshold * periodSeconds it's not up and running then it's determined to have failed (4 mins in this case)
+```
+  
+  4. Locate the  `initialDelaySeconds:` in the `livenessprobe` section
+  
+  5. Place a `#` just before the content
+  
+The result should look like this 
+
+  ```
+        livenessProbe:
+          #Simple check to see if the liveness call works
+          # If must return a 200 - 399 http status code
+          httpGet:
+             path: /health/live
+             port: health-port
+          # Give it a few seconds to make sure it's had a chance to start up
+          #initialDelaySeconds: 120
+          # Let it have a 5 second timeout to wait for a response
+          timeoutSeconds: 5
+          # Check every 5 seconds (default is 1)
+          periodSeconds: 5
+          # Need to have 3 failures before we decide the pod is dead, not just slow
+          failureThreshold: 3
+```
+
+  6. Restart the storefront
+  
+  - `kubectl apply -f storefront-deployment.yaml`
+  ```
+deployment.apps/storefront configured
+```
+
+There isn't anything obvious happening here from a user perspective, but now if there is a problem with the deployment the liveness probe will pick it up a lot faster.
 
 ## End of the module, what's next ?
 

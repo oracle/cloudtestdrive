@@ -12,7 +12,7 @@ This module takes you through the process of setting up your development virtual
 
 ### Prerequisites
 
-You need to have completed the steps in the `Setting up your tenancy` module.
+You need to have completed the steps in the **Setting up your tenancy** module.
 
 ## Step 1: Configuring the VM hosts file.
 
@@ -186,7 +186,7 @@ We now need to locate the wallet connection details.
 
 ## End of the setup
 
-Congratulations, you have successfully setup your VM with the template code. 
+Congratulations, you have successfully setup your VM with the template code. You can now start on the **Core Helidon** module.
 
 ## Acknowledgements
 

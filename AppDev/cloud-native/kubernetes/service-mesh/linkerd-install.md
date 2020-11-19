@@ -27,7 +27,7 @@ This module shows how to install and configure the Linkerd service mesh, and ena
 
 ### Prerequisites
 
-You need to complete the `Rolling update` module (last of the core Kubernetes labs modules). You can have done any of the other optional module sets.
+You need to complete the **Rolling update** module (last of the core Kubernetes labs modules). You can have done any of the other optional module sets.
 
 ## Step 1: What is a service mesh
 
@@ -1242,7 +1242,7 @@ In this case it's showing `May 20,2020,12:00:00 to May 22,2020 11:59:59` but it 
 
   ![](images/linkerd-grafana-time-range-selection.png)
 
-  26. Click the `Last 12 hours` option
+  26. Click the **Last 12 hours** option
 
   ![](images/linkerd-grafana-topline-after-services-enabled-last-12-hours.png)
 
