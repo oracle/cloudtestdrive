@@ -36,9 +36,9 @@ The main class we will be using is **StorefrontResource.java**.   Locate it in t
 
   2. Navigate to the **StorefrontResource** class:
   
-  - Open the project **helidon-labs-storefront**
+  3. Open the project **helidon-labs-storefront**
   
-  - Expand **src/main/java**, then the **com.oracle.labs.helidon.storefront** package, then the **resources** package, then double-click **StoreFrontResource.java**
+  4. Expand **src/main/java**, then the **com.oracle.labs.helidon.storefront** package, then the **resources** package, then double-click **StoreFrontResource.java**
   
   ![](images/eclipse-first-project.png)
 
@@ -58,14 +58,14 @@ Enough on Lombok. Let's get to the Helidon work!
 </details>
 
 
-### Make the list stock REST Service available
+### Step 1a: Make the list stock REST Service available
 The first thing a REST service must do is provide a REST end point that can be called. Helidon makes this process very easy.
 
 For our first bit of Helidon work we're going to REST enable a Java method that returns data and doesn't take any input.
 
 Firstly we need to tell Helidon that the StorefrontResource class responds to REST messages. 
 
-  3. On top of the **StorefrontResource** **class definition** add the following 2 annotations:
+  1. On top of the **StorefrontResource** **class definition** add the following 2 annotations:
   
   ```java
 @Path("/store")
@@ -110,7 +110,7 @@ The `@RequestScoped` annotation means that the Helidon framework will create a n
 
 Helidon will now REST enable the class, but it needs to know what specific methods will be REST endpoints.
 
-  4. Scroll to the **listAllStock** method in the **StorefrontResource.java** file
+  2. Scroll to the **listAllStock** method in the **StorefrontResource.java** file
 
 ```java
 	public Collection<ItemDetails> listAllStock() {
@@ -141,7 +141,7 @@ In a capability introduced in Helidon 2.0 the Helidon framework  will automatica
 
 </details>
 
-  5. Add the following annotations on the **listAllStock** method:
+  3. Add the following annotations on the **listAllStock** method:
 
   ```java
 @GET
@@ -162,7 +162,7 @@ public Collection<ItemDetails> listAllStock() {
 	log.info("Requesting listing of all stock");
 ```
 
-  6. Save the changes you've just made, Control-s will do this.
+  4. Save the changes you've just made, Control-s will do this.
 
 <details><summary><b>Java Imports</b></summary>
 
@@ -194,12 +194,13 @@ This Produces annotation is very important to understand. It means that the fram
 
 
 
-### But how does the framework know what to make available?
+### Step 1b: How does the framework know what to make available?
+
 We've updated a single class, but in a traditional Java program something else would be calling that class and starting the rest of the program. We need to have a class that does that for us and tells Helidon that this is a class we want enabled as a REST service.
 
 The com.oracle.labs.helidon.storefront.Main class starts the process. We're going to look into sections of this in more detail soon, but the key point here is that the main method of the com.oracle.labs.helidon.storefront.Main class creates a Helidon server instance. Let's have a quick look at that.
 
-  7. Open the file **Main.java**, located in the project **helidon-labs-storefront**, and in the folder **src/main/java**
+  1. Open the file **Main.java**, located in the project **helidon-labs-storefront**, and in the folder **src/main/java**
 
   ```java
 	public static void main(final String[] args) throws IOException {
@@ -236,13 +237,13 @@ The problem with using CDI to do this however is that you won't have the chance 
 
 </details>
 
-### How does Helidon know what classes it needs to create REST endpoints for ?
+### Step 1c: How does Helidon know what classes it needs to create REST endpoints for ?
 
 We need to define a new class which extents the `Application` to provide this information. Helidon will scan for classes that implement `Application` and then use the `getClasses()` method to build the full set of classes it will process.
 
-  8. Locate and open the class **StorefrontApplication**
+  1. Locate and open the class **StorefrontApplication**
 
-  9. add the following 2 annotations:
+  2. add the following 2 annotations:
 
   ```java
     @ApplicationScoped
@@ -291,7 +292,7 @@ import javax.ws.rs.ApplicationPath;
 </details>
 
 
-  10. Save your changes to the StorefrontResource file with Control-s, or you can save all your changes to all files with Shift-Control-S or by hitting this icon:
+  3. Save your changes to the StorefrontResource file with Control-s, or you can save all your changes to all files with Shift-Control-S or by hitting this icon:
   
   ![](images/eclipse-save2.png)
 
@@ -317,15 +318,15 @@ Note that in some cases you may still need an Application class however. For the
 
 </details>
 
-### Running the storefront program.
+### Step 1d: Running the storefront program.
 
-  11. Locate the file **Main.java**. 
+  1. Locate the file **Main.java**. 
 
-  12. Right-click on it and chose **Run As**, then **Java Application**
+  2. Right-click on it and chose **Run As**, then **Java Application**
 
   ![Eclipse Run Storefront Application Main Class](images/eclipse-run-storefront-main.png)
 
-  Eclipse may automatically switch to the console for you, but if not in the lower portion of the screen below the Java code window click the "Console" tab
+  3. Eclipse may automatically switch to the console for you, but if not in the lower portion of the screen below the Java code window click the **Console** tab
 
   ![Eclipse console tab](images/eclipse-run-console-tab.png)
 
@@ -340,9 +341,9 @@ Note that in some cases you may still need an Application class however. For the
 
 On the last line of the output, we can see the URL that our server is running on http://localhost:8080 (8080 is the port we've chosen in the Heldion config, we'll look at this later)
 
-  13. Open a Terminal window on the desktop (click right on the Linux desktop in the client VM and take the Terminal option)
+  4. Open a Terminal window on the desktop (click right on the Linux desktop in the client VM and take the Terminal option)
 
-  14. Issue the following **curl** command to test the REST endpoint
+  5. Issue the following **curl** command to test the REST endpoint
   
   - ` curl -i -X GET http://localhost:8080/store/stocklevel`
 
@@ -367,18 +368,18 @@ In the Eclipse console tab you'll see the request being processed
 
 We've got data! Admittedly this is using fake data for now for testing purposes, but it's always a good idea to do that so you have predictable data to run your test cases against (the test data is for now generated using the com.oracle.labs.helidon.storefront.dummy.StockManagerDummy)
 
-  15. **Stop** the service by clicking on the square stop button on the console tab
+  6. **Stop** the service by clicking on the square stop button on the console tab
 
   ![eclipse-stop-console-tab](images/eclipse-stop-console-tab.png)
 
 Congratulations on creating your first REST API of the lab!
 
-### Make the reserveStock REST service available
+### Step 1e: Make the reserveStock REST service available
 We've seen how simple it is to make a existing Java method REST enabled and how to use the framework to start up a server for us. The next step is to look at how we REST enable a Java method that needs to take parameters from the REST request to do it's processing.
 
-  16. Re-open the file **StorefrontResource.java** 
+  1. Re-open the file **StorefrontResource.java** 
 
-  17. locate the **reserveStockItem** method.
+  2. locate the **reserveStockItem** method.
 
   ```java
 	public ItemDetails reserveStockItem(ItemRequest itemRequest)
@@ -452,9 +453,9 @@ Basically in addition to running the server and configuring things Helidon is no
 
 </details>
 
-  19. Save the changes to the **StorefrontResource.java** file
+  3. Save the changes to the **StorefrontResource.java** file
 
-  20. Run the **storefront.Main** class by clicking right on it, then choosing the **Run As** sub menu and **Java Application**
+  4. Run the **storefront.Main** class by clicking right on it, then choosing the **Run As** sub menu and **Java Application**
 
 <details><summary><b>Did you have an error running it ?</b></summary>
 
@@ -482,7 +483,7 @@ Once you see the server running line
 
 Then we can use curl to test it.
 
-  21. To get the initial set of data in a terminal type
+  5. To get the initial set of data in a terminal type
 
   - `curl -i -X GET http://localhost:8080/store/stocklevel`
 
@@ -504,7 +505,7 @@ Note that we have 12 Pencils
 
 Now we'll use curl to send a REST request that will reserve 4 pencils (Note we have to specify the content type in the header, this is an http standard thing)
 
-  22. Reserve 4 pencils:
+  6. Reserve 4 pencils:
 
   - `curl -i -X POST -H "Content-Type:application/json" -d '{"requestedItem":"Pencil", "requestedCount":4}' http://localhost:8080/store/reserveStock`
 
@@ -522,7 +523,7 @@ content-length: 35
 
 The returned object represents the updated view of the Pencil stock, as expected it's no longer 12 pencils, but 8.
 
-  23. Check this calling the **stocklevel** method again:
+  7. Check this calling the **stocklevel** method again:
 
   - `curl -i -X GET http://localhost:8080/store/stocklevel`
 
@@ -977,7 +978,9 @@ We'll look at what the StatusResource is used for later
 
 ## Step 4: Content and Dependency Injection
 
-### Injecting classes and resources
+Here we look at ways to automatically have the Helidon framework create and assign instance for us.
+
+### Step 4a: Injecting classes and resources
 
 <details><summary><b>Sharing resources between classes</b></summary>
 
@@ -1167,7 +1170,7 @@ This time the request worked as the business logic in the StorefrontResource cla
 Of course there are lots of situations where you'd want to use dependency injection like this which are different situations, for example you may just not want to have to deal with constructors!
 
 
-### Constructors and Injecting properties from configuration
+### Step 4b: Constructors and Injecting properties from configuration
 
 <details><summary><b>Some theory</b></summary>
 
@@ -1184,9 +1187,9 @@ Fortunately for us Helidon can get values to use for a constructor from the conf
 </details>
 
 
-  17. In package `data`, open the file `MinimumChange.java`
+  1. In package `data`, open the file `MinimumChange.java`
   
-  18. Add an additional constructor after the no args constructor:
+  2. Add an additional constructor after the no args constructor:
 
   ```java
     @Inject
@@ -1231,9 +1234,9 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 The `@Inject` on  constructor means to use this constructor when creating instances for use with `@Inject` annotation on a field (Yes it would have been nicer if the two uses had different names).  The syntax `@ConfigProperty(name = "app.minimumchange")` tells Helidon to locate the property `app.minimumchange` in the Helidon configuration system.
 
 
-  19. **Save** this change and **restart** the program
+  3. **Save** this change and **restart** the program
 
-  20. Request the value for minimum change,  we'll see that it has a value of 4 (which comes from a config property set in the microprofile-config.properties file)
+  4. Request the value for minimum change,  we'll see that it has a value of 4 (which comes from a config property set in the microprofile-config.properties file)
 
   -  `curl -i -X GET http://localhost:8080/minimumChange`
 
@@ -1257,7 +1260,7 @@ By convention the `microprofile-config.properties` is the place where you put de
 
 You would use default property values for things that probably need to have a value, and there is a sensible default value that can be chosen, but in some situation would change. For example the minimum size of a password might have a default value (say 8 characters), but in some situations your users may want to override it (say requiring a minimum password of 12 characters). There are of course some values that should **not** have a default value, for example a database password should be set for each deployment, the program should error immediately without a deployment specific DB password (rather than some random error part way through processing) and absolutely should not be packaged up where anyone can see it.
 
-  21. Open the `META-INF/microprofile-config.properties` in Eclipse, this is in the `src/main/resources` folder.
+  5. Open the `META-INF/microprofile-config.properties` in Eclipse, this is in the `src/main/resources` folder.
 
 Amongst other content it has a line `microprofile-config.properties`
 
@@ -1300,11 +1303,11 @@ To support this the `@ConfigProperty` annotation has an additional option called
 Let's go an add a new config file to the list!
 
 
-  22. Open the file `Main.java` in the `src/main/java` folder, then the `com.oracle.labs.helidon.storefront` package
+  6. Open the file `Main.java` in the `src/main/java` folder, then the `com.oracle.labs.helidon.storefront` package
 
-  23. Locate the `buildConfig` method at the end of the file
+  7. Locate the `buildConfig` method at the end of the file
 
-  24. Add the `conf/storefront-config.yaml` source as the **first element** in the list of property sources to scan.
+  8. Add the `conf/storefront-config.yaml` source as the **first element** in the list of property sources to scan.
   
   -  `configSourcesToScan.add(ConfigSources.file("conf/storefront-config.yaml").optional().build());`
 
@@ -1403,7 +1406,7 @@ Note that if you want to your code can expressly disable the system properties a
 
 We'll see later in the Kubernetes labs why we're using configuration files in the conf and confsecure directories, but it does demonstrate that you don't need to have all of your config in the same place
 
-  25. Look at the conf/storefront-config.yaml file, 
+  9. Look at the conf/storefront-config.yaml file, 
 
   ```yaml
 app:
@@ -1416,9 +1419,9 @@ It has two active properties, the minimumchange of 2 here will override the defa
 Configuration properties are stored as basic strings and Helidon will convert them automatically to numbers, booleans and the other basic Java types. If you need to have a configuration property converted into a different type (say an object representing an IP address) then you can create a converter that is given the String from the configuration properties and returns the new object type. This way you can place any type you have (or can write) a converted for as a property.
 
 
-  26. **Save** the changes to the files, **stop** and **restart** the program. 
+  10. **Save** the changes to the files, **stop** and **restart** the program. 
 
-  27. Let's check that the minimum change value is now 2:
+  11. Let's check that the minimum change value is now 2:
   
   -  `curl -i -X GET http://localhost:8080/minimumChange`
 
@@ -1619,7 +1622,7 @@ We will look more in the the services like health that are available on the admi
 
 When working in a distributed set of microservices you are operating in a networked environment, and that introduced a potential set of faults that are different from just accessing a local object instance. 
 
-### Handling failures
+### Step 7a: Handling failures
 It's a fact of life that problems sometimes occur. We saw in the console output earlier that the reserveStockItem method will throw a MinimumChangeException if the request does not exceed the specified minimum change.
 
 The problem is that at the moment all the caller gets to find out is that there's been a 500 server error. That's not a lot of help debugging things!
@@ -1723,12 +1726,12 @@ connection: keep-alive
 At least now the caller is getting something useful!
 
 
-### Handling code exceptions
+### Step 7b: Handling code exceptions
 Helidon has another approach error handling we're going to look at here that does let us get a *lot* of information around the error and why it happened. Unfortunately there isn't a simple way for the developer to process that data, but let's see an example of it.
 
-  8. Navigate to `resources` package and open the file `StorefrontResource.java`
+  1. Navigate to `resources` package and open the file `StorefrontResource.java`
   
-  9. Locate the reserverStock method and add the annotation `@Fallback(StorefrontFallbackHandler.class)`
+  2. Locate the reserverStock method and add the annotation `@Fallback(StorefrontFallbackHandler.class)`
 
   ```java
 	@POST
@@ -1759,9 +1762,9 @@ import org.eclipse.microprofile.faulttolerance.Fallback;
 
 This annotation means the in the event of an exception Helidon will call a method on the handler class (look at the class if you like) which generates a response for you. It has available lots more info on what the error cause was.
 
-  11. Let's save the change and run the program, 
+  3. Let's save the change and run the program, 
 
-  12. Make a call to the reserveStockItem REST API endpoint:
+  4. Make a call to the reserveStockItem REST API endpoint:
   
   -  `curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":6}' http://localhost:8080/store/reserveStock`
 
@@ -1804,9 +1807,9 @@ Fallbacks - we've already looked at these
 
 It's hard to actually simulate these in action without writing code to deliberately trigger a problem, but we're going to show how to define a timeout.
 
-  12. Open the file `StorefrontResource.java` class 
+  5. Open the file `StorefrontResource.java` class 
   
-  13. Add the annotation 
+  6. Add the annotation 
   
   - `@Timeout(value = 15, unit = ChronoUnit.SECONDS)`
 

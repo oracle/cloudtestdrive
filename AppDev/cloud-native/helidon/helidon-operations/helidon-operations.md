@@ -209,7 +209,9 @@ Now on the right we can see the details of this sub request, made from the store
 ## Step 3: Metrics
 Tracking solutions like Zipkin can provide us with detail on how a single request is processed, but they are not going to be able to tell us how many requests were made, and what the distribution of requests per second is. This is the kind of thing that is needed by the operations team to understand how the microservice is being used, and where enhancements may be a good idea (especially where to focus development work for performance enhancements)
 
-The pom.xml will need to be updated for the metrics, that's already been done for you here.
+### Step 3a: Counting calls
+
+The pom.xml would usually need to be updated for the metrics, that's already been done for you here.
 
   1. Go to the project **Storefront**, and navigate to folder **resources**
   
@@ -347,9 +349,11 @@ In an earlier lab we setup a fall back on the listAllStock and reserveStock meth
 
 </details>
 
-### Limiting the output
+### Step 3b: Limiting the output of the metrics request
 
-  6. If you like you can limit the scope of the returned metrics by specifying the scope in the request:
+There is a lot of data returned, including system data, let's see how we can limit that to just our application
+
+  1. If you like you can limit the scope of the returned metrics by specifying the scope in the request:
 
   -  `curl -i -X GET http://localhost:9080/metrics/application`
 
@@ -371,11 +375,11 @@ Of if you're only interested in a specific metric you can just retrieve that, pr
 
 
 
-### With real counter data
+### Step 3c: Testing with real counter data
 
 Let's make a couple of list stock requests, then look at the list_all_stock counter
 
-  7. Run the following command 5 times : 
+  1. Run the following command 5 times : 
   
   -  `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
 
@@ -389,7 +393,7 @@ content-length: 148
 [{"itemCount":5000,"itemName":"pin"},{"itemCount":136,"itemName":"Pencil"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":100,"itemName":"Book"}]
 ```
 
-  8. Now let's look at the metrics (I removed a bunch of unneeded output here to focus on the counters):
+  2. Now let's look at the metrics (I removed a bunch of unneeded output here to focus on the counters):
 
   -  `curl -i -X GET http://localhost:9080/metrics/`
 
@@ -418,14 +422,14 @@ We can see that now 5 requests in total have been made to the storefront resourc
 
 Why port 9080 ? Well you may recall that in the helidon core lab we defined the network as having two ports, one for the main application on port 8080 and another for admin functions on port 9080, we then specified that metrics (and health which we'll see later) were in the admin category so they are on the admin port. It's useful to split these things so we don't risk the core function of the microservice getting mixed up with operation data.  
 
-### Other types of metrics
+### Step 3d: Other types of metrics
 There are other types of metrics, for examples times. 
 
-  9. Open the file **StorefrontResource.java**
+  1. Open the file **StorefrontResource.java**
 
-  10. Locate the method **listAllStock**
+  2. Locate the method **listAllStock**
 
-  11. Add a counter, timer and a meter annotation:
+  3. Add a counter, timer and a meter annotation:
 
   ```java
     @Counted(name = "stockReporting")
@@ -465,7 +469,7 @@ The *absolute=true* on the meter means that the class name won't be prepended, i
 
 
 
-  12. Now **restart** the **storefront** and make a few calls
+  4. Now **restart** the **storefront** and make a few calls
 
   -  `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
 
@@ -479,7 +483,7 @@ content-length: 148
 [{"itemCount":5000,"itemName":"pin"},{"itemCount":136,"itemName":"Pencil"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":100,"itemName":"Book"}]
 ```
 
-  13	. Now let's get the details specific to our named meter by specifying it in the metrics data request:
+  5	. Now let's get the details specific to our named meter by specifying it in the metrics data request:
 
   -  `curl -i -X GET http://localhost:9080/metrics/application/listAllStockMeter`
 
@@ -503,7 +507,7 @@ application:list_all_stock_meter_five_min_rate_per_second 0.014179223683357264
 application:list_all_stock_meter_fifteen_min_rate_per_second 0.005264116322948982
 ```
 
-### Combining counters, metrics, timers and so on
+### Step 3e: Combining counters, metrics, timers and so on
 You can have multiple annotations on your class / methods as you've just seen, but be careful that you don't get naming collisions, if you do your program will likely fail to start.
 
 By default any of `@Metric`, `@Timed`, `@Counted` etc. will use a name that's depending on the class / method name, it does **not** append the type of thing it's actually measuring. So if you had `@Counted` on the class and `@Timed` a class (or `@Counted` and `@Timed` on a particular method) then there would be a naming clash between the two of them. It's best to get into the habit of naming these, and putting the type in the name. Then you also get the additional benefit of being able to easily extract it using the metrics url like `http://localhost:9080/metrics/application/listAllStockMeter`

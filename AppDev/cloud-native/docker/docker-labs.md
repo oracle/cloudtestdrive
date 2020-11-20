@@ -94,7 +94,7 @@ Initially you might think that the easiest thing to do when creating a docker im
 
 To get around this docker provides a mechanism called volumes to have configuration files stored externally and injected into the container at run time.
 
-### Externalising the configuration
+### Step 2a: Externalising the configuration
 The following is an example of the approach taken when separating the executable from the configuration. 
 
 Firstly you'll need to create a docker image that contains the required executable elements. We've actually set up tooling to support this using jib (Java Image Builder), which is a Maven plugin - you've been using Maven already to manage dependencies, though you may not have realized this.
@@ -334,7 +334,7 @@ cwallet.sso  ewallet.p12  keystore.jks	ojdbc.properties  sqlnet.ora  tnsnames.or
   
  We have added the configuration to the container, but without having to hard code it into the image. Of course this means that if we change the content of the files in the directories that those changes will be reflected inside the container. 
 
-### What about the database configuration ?
+### Step 2b: What about the database configuration ?
 
 In the Helidon labs we specified the database configuration using Java system properties, e.g. entries like 
 
@@ -349,9 +349,9 @@ Docker provides several ways to do this, for example you can specify each indivi
 
 For this lab the scripts that will run the stockmanager use the --env-file approach, so we need to make sure that the file reflects the database connection details.
 
-  16. Make sure you are in the terminal for the **stockmanager** project directory
+  1. Make sure you are in the terminal for the **stockmanager** project directory
 
-  17. Edit the `database-env` file 
+  2. Edit the `database-env` file 
 
 It will look like the following
 
@@ -364,17 +364,17 @@ hibernate.dialect=org.hibernate.dialect.Oracle10gDialect
 hibernate.hbm2ddl.auto=update
 ```
 
-  18. On the line starting `javax.sql.DataSource.stockmanagerDataSource.dataSource.url` you need to replace `<database connection name>` with the name of your high connection, e.g. tg_high **Your** connection name will be different (unless of course your database is called tg)
+  3. On the line starting `javax.sql.DataSource.stockmanagerDataSource.dataSource.url` you need to replace `<database connection name>` with the name of your high connection, e.g. tg_high **Your** connection name will be different (unless of course your database is called tg)
 
   - If you created the database user with a different username and password you will need to replace those as well.
 
-  19. Save the changes 
+  4. Save the changes 
 
 To check that the environment variables are correctly set use the `runBashContainer.sh` script in the `helidon-labs-stockmanager` project. This basically does the docker run command above, using the environment variables and volumes.
 
 Run the container with the configuration attached:
 
-  20. In the VM shell type
+  5. In the VM shell type
 
   - `bash runBashContainer.sh`
 
@@ -386,7 +386,7 @@ bash-4.2#
     
 Once in the container look at the environment (we're going to sort the output to make it easier)
 
-  21. In the container shell type :
+  6. In the container shell type :
 
   - `printenv | sort`
   
@@ -411,7 +411,7 @@ _=/usr/bin/printenv
 (The precise details may vary of course)
 You can see the environment variables we have set (in this case it is of course using `tg_high` for the DB connection name in the URL, **yours will be different**
 
-  22. Exit the container by typing in the container
+  7. Exit the container by typing in the container
 
   - `exit`
 
@@ -550,7 +550,7 @@ Of course in a production environment you'd probably have a separate folder cont
 
 The docker container images are currently only held locally, that's not good if you want to distribute them or run them in other locations. We can save the images in an external repository, This could be public - e.g. dockerhub.com, private to your organization or in a cloud registry like the Oracle OCIR. Note that if you wanted to there are docker image save and docker image load commands that will save and load image files from a tar ball, but that's unlikely to be as easy to use as a repository, especially when trying to manage distribution across a large enterprise environment.
 
-### Getting your docker credentials and other information
+### Step 4a: Getting your docker credentials and other information
 
 There are a few details (registry id, authentication tokens and the like) you will need to get before you push your images. Note that this is needed for the Oracle Cloud Infrastructure Registry, if you use another registry the details needed there may differ.
 
@@ -574,15 +574,15 @@ The OCIR region code is based on the IATA code for the city hosting the region, 
 
   ![](images/region-name.png)
 
-  1a. If you click on the name you'll get a list of regions enabled for your tenancy and your home region
+  2. If you click on the name you'll get a list of regions enabled for your tenancy and your home region
 
   ![](images/regions-list.png)
 
 You can see here in this example we're using the Frankfurt region, which is also our home region.
 
-  1b. Now go to the [OCIR Availability By Region list.](https://docs.cloud.oracle.com/en-us/iaas/Content/Registry/Concepts/registryprerequisites.htm#Availab)
+  3. Now go to the [OCIR Availability By Region list.](https://docs.cloud.oracle.com/en-us/iaas/Content/Registry/Concepts/registryprerequisites.htm#Availab)
 
-  1c. Locate your region on the list and then to the right identify the region code, for example we can see below in the case of Frankfurt the OCIR region code to use is `fra` for Sydney it's `syd`
+  4. Locate your region on the list and then to the right identify the region code, for example we can see below in the case of Frankfurt the OCIR region code to use is `fra` for Sydney it's `syd`
 
   ![](images/fra.png)
 
@@ -590,38 +590,38 @@ You can see here in this example we're using the Frankfurt region, which is also
 
 #### Determining your tenancy Object Storage Namespace
 
-  2. Navigate to the **Tenancy Information** screen
+  1. Navigate to the **Tenancy Information** screen
 
-  2a. Click the Hamburger menu
+  2. Click the Hamburger menu
   
-  2b. In the menu, scroll down to **Administration**, 
+  3. In the menu, scroll down to **Administration**, 
   
-  2c. Click **Administration** then **Tenancy Details**
+  4. Click **Administration** then **Tenancy Details**
   
 
   ![](images/objstor.png) 
 
-  2d. Note down the **Object Storage Namespace** of your tenancy, in the example above this is `frjqogy3byob` **but yours will be different** (this is what we mean when we say mytenancystoragenamespace in these labs)
+  5. Note down the **Object Storage Namespace** of your tenancy, in the example above this is `frjqogy3byob` **but yours will be different** (this is what we mean when we say mytenancystoragenamespace in these labs)
 
   
 
 #### Getting your Authentication Token
 
-  3. OCIR uses an authentication token rather than a password. To set an authentication token you need to take the following steps. 
+  1. OCIR uses an authentication token rather than a password. To set an authentication token you need to take the following steps. 
 
-  3a. Click on the **Magnifying glass** on the top of your console, and enter your username.  For example, if your name was **ppan** : 
+  2. Click on the **Magnifying glass** on the top of your console, and enter your username.  For example, if your name was **ppan** : 
 
   ![](images/ppan.png)
 
-  3b. Select the user **that looks like :  oracleidentitycloudservice/(your_name)**
+  3. Select the user **that looks like :  oracleidentitycloudservice/(your_name)**
 
   ![](images/token1.png)
 
-  3c. Select **Token** in the right-hand menu, then click the button **Create Token**.
+  4. Select **Token** in the right-hand menu, then click the button **Create Token**.
 
-  3c1. Enter a name for the token
+  5. Enter a name for the token
 
-  3c2. Use the **Copy** button to copy the token in your buffer, and **immediately paste it** in a notebook of your choice, you cannot retrieve it once you've closed this popup and you will need this later.
+  6. Use the **Copy** button to copy the token in your buffer, and **immediately paste it** in a notebook of your choice, you cannot retrieve it once you've closed this popup and you will need this later.
 
   ![](images/token2.png)
 
@@ -632,9 +632,9 @@ You can see here in this example we're using the Frankfurt region, which is also
 
 You now need to chose a name for your repository,this is a combination of the OCIR registry and tenancy you determined above and a repo name you chose. 
 
-An OCIR repo name looks like \<OCIR region code\>.ocir.io/\<Object Storage Namespace\>/\<repo_name\>
+An OCIR repo name looks like `<OCIR region code>ocir.io/<Object Storage Namespace>/<repo_name>`
 
-  4. Chose something unique **TO YOU** e.g. your initials : tg_repo 
+  1. Chose something unique **TO YOU** e.g. your initials : tg_repo 
 
   - this must be in **lower case** and can **only contain letters, numbers, underscore and hyphen**
 
@@ -642,13 +642,13 @@ The ultimate full repository name will look something like `fra.ocir.io/oractdem
 
 
 
-### Docker login in to the Oracle Container Image Registry (OCIR)
+### Step 4b: Docker login in to the Oracle Container Image Registry (OCIR)
 
 We need to tell docker your username and password for the registry. 
 
 You will have gathered the information needed in the previous step. 
 
-  5. You just need to execute the login command, of course you need to substitute the fields
+  1. You just need to execute the login command, of course you need to substitute the fields
 
   - `docker login <region-code>.ocir.io --username=<mytenancystoragenamespace>/oracleidentitycloudservice/<myusername> --password='<auth token>'`
 
@@ -673,15 +673,15 @@ docker login fra.ocir.io --username=cdtemeabdnse/oracleidentitycloudservice/my.e
 
 Enter the command with **your** details into a terminal in the virtual machine to login to the OCIR.
 
-### Pushing the images
+### Step 4c: Pushing the images
 
 You need to update **both** of the `repoStockmanagerConfig.sh` and `repoStorefrontConfig.sh scripts` in the helidon-labs-stockmanager and helidon-labs-storefront directories to reflect your chosen details.
 
-  6. Switch to the terminal for the **storefront** project directory
+  1. Switch to the terminal for the **storefront** project directory
 
 As for some instructor labs there are may be many attendees doing the lab in the same tenancy, to allow for that we need to separate the different images out, so we're also going to use your initials / name / something unique 
 
-  7. Open file **repoStorefrontConfig.sh** and edit the repo name to reflect **your** region, tenancy and initials
+  2. Open file **repoStorefrontConfig.sh** and edit the repo name to reflect **your** region, tenancy and initials
 
   - Example for region `Frankfurt`, in the `oractdemeabdmnative` tenancy with initials `tg` you might have : 
 
@@ -691,9 +691,9 @@ As for some instructor labs there are may be many attendees doing the lab in the
     echo Using repository $REPO
 ```
 
-  8. Switch to the terminal for the **stockmanager** project directory
+  3. Switch to the terminal for the **stockmanager** project directory
 
-  9. Open file **repoStockmanagerConfig.sh** and edit the repo name again as above
+  4. Open file **repoStockmanagerConfig.sh** and edit the repo name again as above
 
 ---
 
@@ -772,9 +772,9 @@ Notice that for the second example layers all already exist, so nothing needs to
 
 Let's actually push the images.
 
-  10. Switch to the terminal for the **stockmanager** project directory
+  5. Switch to the terminal for the **stockmanager** project directory
 
-  11. Run the script to build the image and push it to the repo
+  6. Run the script to build the image and push it to the repo
   
   - `bash buildStockmanagerPushToRepo.sh`
  
@@ -810,9 +810,9 @@ build and pushed with tags 0.0.1
 
 The script will do the build then push the container images. The first time you push the image to the repository it may take a while because you've pushing all of the layers in the runtime, the next time however only changed layers will need to be pushed.
 
-  12. Once it's finished switch to the terminal for the **storefront** project directory
+  7. Once it's finished switch to the terminal for the **storefront** project directory
 
-  13. Run the script to build the image and push it to the repo
+  8. Run the script to build the image and push it to the repo
   
   - `bash buildStorefrontPushToRepo.sh`
 
@@ -830,26 +830,38 @@ If during the docker push stage you get image upload denied errors then it means
 </details>
 
 
+### Step 4d: Running the pushed images
 
 You can now re-run the images that have been pushed the cloud.
 
-  14. Switch to the terminal for the **storefront** project directory
+  1. Switch to the terminal for the **storefront** project directory
 
-  15. Run the image you just pushed
+  2. Run the image you just pushed
 
   - `bash runStockmanagerRepo.sh`
 
 (Usual output from the stockmanager starting) 
 
-  16. Wait for it to start, switch to the terminal for the **storefront** project directory
+  3. Wait for it to start, switch to the terminal for the **storefront** project directory
 
-  17. Run the image you just pushed
+  4. Run the image you just pushed
 
   - `bash runStorefrontRepo.sh`
 
 (Usual output from the storefront starting) 
 
+  5. Make a request to confirm it works
+  
+  -  `curl -i -X GET -u jack:password http://localhost:8080/store/stocklevel`
 
+  ```
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Mon, 23 Dec 2019 16:45:36 GMT
+connection: keep-alive
+content-length: 184
+[{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
+```
 
 ## Step 5: Cleaning up
 

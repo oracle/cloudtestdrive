@@ -202,9 +202,11 @@ Assuming you entered the details correctly it will report that it's done the sav
 
   ![grafana-home-datasource-done](images/grafana-home-datasource-done.png)
   
-##  Step 3: Creating our first dashboard
+## Step 3: Creating our first dashboard
 
 We now need to configure a dashboard that will display data for us.
+
+### Step 3a: Create our initial visualisation
 
   1. Click the **Create your first dashboard** button to start the process
 
@@ -337,43 +339,47 @@ For now (as there is only a single set of numeric data) we are going to leave th
 Now we see our dashboard with a graph panel
 
    ![grafana-new-dashboard-first-panel-completed](images/grafana-new-dashboard-first-panel-completed.png)
+   
+### Step 3b: Adding a second panel
 
 Of course this looks pretty basic, It's good to see how many requests we're getting, but let's add an additional panel to give us a history of how many requests we've had . 
 
-  19. Click on the  **Add Panel** icon on the upper right ![grafana-add-panel-icon](images/grafana-add-panel-icon.png) 
+  1. Click on the  **Add Panel** icon on the upper right ![grafana-add-panel-icon](images/grafana-add-panel-icon.png) 
 
   ![grafana-dashboard-add-second-panel](images/grafana-dashboard-add-second-panel.png)
 
-  20. Click the **Add new panel** button
+  2. Click the **Add new panel** button
 
-  21. In the metrics field, enter following (you can copy and paste if you wish)
+  2. In the metrics field, enter following (you can copy and paste if you wish)
 
   - `avg(application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_listAllStockTimer_mean_seconds)` 
 
 
   ![grafana-dashboard-add-second-panel-timer-mean-seconds](images/grafana-dashboard-add-second-panel-timer-mean-seconds.png)
 
-  22. In the **Visualization** section on the right hand menu. If it's not already selected chose **Graph** as the type
+  4. In the **Visualization** section on the right hand menu. If it's not already selected chose **Graph** as the type
   
-  23. In the **Display** section on the right hand menu. Set the **Draw Modes** to have both **Bars** and **Lines** enabled
+  5. In the **Display** section on the right hand menu. Set the **Draw Modes** to have both **Bars** and **Lines** enabled
 
   ![grafana-dashboard-add-second-panel-visualization](images/grafana-dashboard-add-second-panel-visualization.png)
 
-  24. Move to the **Settings** section at the top of the right hand menu 
+  6. Move to the **Settings** section at the top of the right hand menu 
 
-  25. Title the panel **Response Times**
+  7. Title the panel **Response Times**
 
   ![grafana-dashboard-add-second-panel-general](images/grafana-dashboard-add-second-panel-general.png)
 
-  26. Hit the **Apply** button to return to the New Dashboard
+  8. Hit the **Apply** button to return to the New Dashboard
 
   ![grafana-dashboard-added-second-panel](images/grafana-dashboard-added-second-panel.png)
+  
+### Step 3c: Adding a different type of visualisation
 
 We're going to add a 3rd panel with a different visualization type, using a dial graph that gives us a view of the most recent data.
 
-  27. Click the add panel icon then the **Add New Panel** button
+  1. Click the add panel icon then the **Add New Panel** button
 
-  28. Enter for **metrics**
+  2. Enter for **metrics**
   
   -  `application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_listAllStockTimer_mean_seconds`
 
@@ -381,31 +387,31 @@ We're going to add a 3rd panel with a different visualization type, using a dial
 
 On the Visualizations section of the right hand menu we're going for a different visualization type. 
 
-  29. In the **Visualization** section on the right hand menu 
+  3. In the **Visualization** section on the right hand menu 
 
-  30. Chose the **Gauge** option, the display will update to show a gauge.
+  4. Chose the **Gauge** option, the display will update to show a gauge.
 
   ![grafana-visualization-options-guage](images/grafana-visualization-options-gauge.png)
 
-  31. In the **Display** section make sure that both **Labels** and **Markers** are enabled
+  5. In the **Display** section make sure that both **Labels** and **Markers** are enabled
 
   ![grafana-visualization-options-guage-display](images/grafana-visualization-options-gauge-display.png)
 
-  32. We now need to define the fields and thresholds. At the top of the right hand menu select **Field**
+  6. We now need to define the fields and thresholds. At the top of the right hand menu select **Field**
 
   ![grafana-gauge-field-section](images/grafana-gauge-field-section.png)
 
-  33. In the field section set the title to be **Current Response Time** the Unit to be seconds (under time in the dropdown) and set the **Min** to be 0 and **Max** to be 5
+  7. In the field section set the title to be **Current Response Time** the Unit to be seconds (under time in the dropdown) and set the **Min** to be 0 and **Max** to be 5
 
   ![grafana-visualization-options-gauge-field](images/grafana-visualization-options-gauge-field.png)
 
-  34. In the Threshold section, click the **Add threshold** button
+  8. In the Threshold section, click the **Add threshold** button
 
 You can see there are now three thresholds
 
   ![grafana-visualization-options-gauge-thresholds-added](images/grafana-visualization-options-gauge-thresholds-added.png)
 
-  35. In the text boxes representing the thresholds 
+  9. In the text boxes representing the thresholds 
   
   - Set the Red threshold to be 0.1 
   
@@ -415,52 +421,56 @@ Note that as you enter the values the order of the boxes may change.
 
   ![grafana-visualization-options-gauge-thresholds-adjusted](images/grafana-visualization-options-gauge-thresholds-adjusted.png)
 
-  36. At the top of the right menu switch back to the **Panel**
+  10. At the top of the right menu switch back to the **Panel**
 
-  37. Remove any text in the panel title
+  11. Remove any text in the panel title
 
   ![grafana-visualization-options-gauge-final](images/grafana-visualization-options-gauge-final.png)
 
-  38. Click the **Apply** to return to the New Dashboard
+  12. Click the **Apply** to return to the New Dashboard
 
   ![grafana-three-panel-dashboard-colums](images/grafana-three-panel-dashboard-colums.png)
+  
+### Step 3d: Organising the dashboard
+
+We can see what data we're getting, but it's not that easy to look at.
 
 Let's Re-arrange the panels a bit. 
 
-  39. Click on the working of the middle panels title (Response Times) and drag it to the right of the gauge panel.
+  1. Click on the working of the middle panels title (Response Times) and drag it to the right of the gauge panel.
 
   ![grafana-three-panel-dashboard-grid](images/grafana-three-panel-dashboard-grid.png)
 
 We need to rename our panel, after all "New dashboard" is not especially descriptive. 
 
-  40. Click on the dashboard settings icon ![grafana-dashboard-settings-icon](images/grafana-dashboard-settings-icon.png) on the upper right of the window
+  2. Click on the dashboard settings icon ![grafana-dashboard-settings-icon](images/grafana-dashboard-settings-icon.png) on the upper right of the window
 
-  41. In the settings page give it a name, let's use `Stock Listing performance`, provide a description, and *disable* the editing option
+  3. In the settings page give it a name, let's use `Stock Listing performance`, provide a description, and *disable* the editing option
 
-  42. Then click the **Save Dashboard** button
+  4. Then click the **Save Dashboard** button
 
   ![grafana-dashboard-settings](images/grafana-dashboard-settings.png)
 
-  43. In the popup name the dashboard `Stock Listing performance` then chose to save it 
+  5. In the popup name the dashboard `Stock Listing performance` then chose to save it 
 
   ![grafana-dashboard-save-dialogue](images/grafana-dashboard-save-dialogue.png)
 
 Confirm if prompted (Note you cannot save to the name of an existing dashboard)
 
-  44. Click the **Back** Arrow to exit the settings
+  6. Click the **Back** Arrow to exit the settings
 
   ![grafana-dashboard-settings-exit](images/grafana-dashboard-settings-exit.png)
 
 Now we have our dashboard let's set the auto refresh so as new data becomes available it will be displayed.
 
-  45. Next to the **Refresh** icon click the menu to open up the auto-refresh options list
+  7. Next to the **Refresh** icon click the menu to open up the auto-refresh options list
 
   - Chose 1 min
 
   ![grafana-dashboard-auto-refresh](images/grafana-dashboard-auto-refresh.png)
 
 
-  46. Make a few requests using curl to generate some new data (replace <external IP> with that of the ingress controller you were using earlier)
+  8. Make a few requests using curl to generate some new data (replace <external IP> with that of the ingress controller you were using earlier)
   
   -  `curl -i -k -X GET -u jack:password https://1<external IP/store/stocklevel`
   
@@ -481,7 +491,7 @@ Within a min or two (remember Helidon, Prometheus and Grafana need to capture an
 
 Let's look in a bit more close up
 
-  47. Using the **Duration dropdown** in the upper right change the duration to be the last 5 mins ![grafana-duration-dropdown-5-mins](images/grafana-duration-dropdown-5-mins.png)
+  9. Using the **Duration dropdown** in the upper right change the duration to be the last 5 mins ![grafana-duration-dropdown-5-mins](images/grafana-duration-dropdown-5-mins.png)
 
 Now we can see more details
 

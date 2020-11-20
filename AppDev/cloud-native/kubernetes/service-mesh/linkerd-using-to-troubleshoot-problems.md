@@ -46,7 +46,7 @@ Well fortunately for us I have build a version of the Stock Manager that can be 
 
 ## Step 2: Using a service mesh to troubleshoot
 
-### Start the load generator
+### Step 2a: Start the load generator
 
 The first thing we need is some load so we can see what the service mesh is doing, there is a load generator script we can use to do this
 
@@ -92,11 +92,11 @@ Note, the OCI Cloud Shell session will terminate (and thus kill off the load gen
 
 If that happens while you are doing the service mesh labs the solution is to connect back to the OCI CLoud shell and restart the load generator
 
-### Viewing the load
+### Step 2b: Viewing the load
 
 Let's just check that the load is running fine
 
-  3. In your web browser go to `https://<external IP>`
+  1. In your web browser go to `https://<external IP>`
 
 You may be challenged as you have a self signed certificate. Follow the normal procedures in your browser to accept the connection and proceed.
 
@@ -104,13 +104,13 @@ Next you may be presented with the login challenge.
 
 ![](images/linkerd-web-login.png)
 
-  4. If you are, login with `admin` as the username, for the password use the one you used when creating the login password during the linkerd installation in the previous module.
+  2. If you are, login with `admin` as the username, for the password use the one you used when creating the login password during the linkerd installation in the previous module.
 
 You'll be presented with the linkerd-web main page, unlike when you saw this previously now it's showing load for your services.
 
   ![](images/linkerd-web-main-apps-load.png)
 
-  5. Click on the page for your namespace (tg-helidon in my case)
+  3. Click on the page for your namespace (tg-helidon in my case)
 
   ![](images/linkerd-namespace-running-ok.png)
 
@@ -118,15 +118,15 @@ We can see that the services are running with a 100% success rate.
 
 For now let's stop the load generator while we deploy our "broken" service
 
-  6. In the OCI cloud shell stop the load generator using Control-C
+  4. In the OCI cloud shell stop the load generator using Control-C
  
-### Deploying our broken service
+### Step 2c: Deploying our broken service
 
 We are going to edit one of the configurations for the stock manager to specify that we want a 50% failure rate on requests to the stock manager. The deliberately "broken" stockmanager will pay attention to this, but the normal one will not.
 
-  7. In the OCI Cloud Shell use your preferred editor (vi, nano etc.) to edit `$HOME/helidon-kubernetes/configurations/stockmanagerconf/conf/stockmanager-config.yaml`
+  1. In the OCI Cloud Shell use your preferred editor (vi, nano etc.) to edit `$HOME/helidon-kubernetes/configurations/stockmanagerconf/conf/stockmanager-config.yaml`
 
-  8. Add the following to the end of the file on a line of it's own, not that this is **not** indented 
+  2. Add the following to the end of the file on a line of it's own, not that this is **not** indented 
   
 ```
 errorgenerationrate: 0.5
@@ -146,11 +146,11 @@ tracing:
 errorgenerationrate: 0.5
 ```
 
-  9. Save the updated file
+  3. Save the updated file
 
 Strangely `kubectl` doesn't seem to have a mechanism to replace a config map that's been created using multiple files in a directory, so we will have to delete and then re-create the stockmanager
 
-  10. In the OCI Cloud shell type
+  4. In the OCI Cloud shell type
   
   - `kubectl delete configmap sm-config-map`
   
@@ -158,7 +158,7 @@ Strangely `kubectl` doesn't seem to have a mechanism to replace a config map tha
 configmap "sm-config-map" deleted
 ```
 
-  11. In the OCI Cloud shell type
+  5. In the OCI Cloud shell type
   - `kubectl create configmap sm-config-map --from-file=$HOME/helidon-kubernetes/configurations/stockmanagerconf/conf`
 
   ```
@@ -167,7 +167,7 @@ configmap/sm-config-map created
 
 Now we can apply the update, we'll use the Kubernetes rolling upgrade process to record the change (as we're going to want to revert this one!)
 
-  12. In the OCI Cloud shell type
+  6. In the OCI Cloud shell type
   
   - `kubectl apply -f $HOME/helidon-kubernetes/service-mesh/stockmanager-deployment-broken.yaml --record`
 
@@ -181,7 +181,7 @@ This is basically the same stockmanager code that was created in the Helidon lab
   
 Now let's check that the change has applied by going direct to the stockmanager and seeing how it behaves, remember that we said that 0.5 (so 50%) of the requests should generate an error.
 
-  13. In the OCI Cloud shell type the following (remember to replace `<external IP>` )
+  7. In the OCI Cloud shell type the following (remember to replace `<external IP>` )
   
   - `curl -i -k -X GET -u jack:password https://<external IP>/sm/stocklevel`
 
@@ -218,7 +218,7 @@ Repeat the request several times and you should see that approximately half the 
 
 Now try making the request a few times to the storefront service
 
-  14. In the OCI Cloud shell type the following (remember to replace `<external IP>` )
+  8. In the OCI Cloud shell type the following (remember to replace `<external IP>` )
   
   - `curl -i -k -X GET -u jack:password https://<EXTERNAL IP>/store/stocklevel`
   
@@ -254,7 +254,7 @@ As before repeat this a few times, approximately half the time it will succeed a
 
 Restart the load generator
 
-  15. In the OCI Cloud shell type (remember to replace `<external IP>` with the IP address of your ingress service
+  9. In the OCI Cloud shell type (remember to replace `<external IP>` with the IP address of your ingress service
   - `bash generate-service-mesh-load.sh <external IP> 2 `
   
  ```
@@ -265,13 +265,13 @@ Restart the load generator
 
 As previously if the OCI shell stops then you will need to re-open is and re-start the load generator.
 
-### Looking at the results using the service mesh
+### Step 2d: Looking at the results using the service mesh
 
 We'll open the LinkerdUI and see what it's reporting.
 
-  16. In your web browser go to `https://<external IP>` (replace `<external IP>` of course) If asked login with the user name admin and the password you chose when setting up the Linkerd ingress
+  1. In your web browser go to `https://<external IP>` (replace `<external IP>` of course) If asked login with the user name admin and the password you chose when setting up the Linkerd ingress
 
-  17. Click on **Namespaces** in the **Cluster** section of the left menu and locate the **HTTP metrics** entry for your namespace (mine is tg-helidon, yours will have a different name)
+  2. Click on **Namespaces** in the **Cluster** section of the left menu and locate the **HTTP metrics** entry for your namespace (mine is tg-helidon, yours will have a different name)
 
   ![](images/linkerd-broken-overview-namespace.png)
 
@@ -286,53 +286,55 @@ Remember that here we're looking at all the HTTP REST API calls that happen in t
 
 </details>
 
-  18. Click on the name of your namespace to access it.
+  3. Click on the name of your namespace to access it.
 
   ![](images/linkerd-broken-detailed-namespace.png)
 
 We can see that it's the stockmanager service that has a problem, the rest are all reporting 100% success
 
-  19. Click on the stockmanager **in the deployments list** then scroll down so you can see the inbound and outbound HTTP metrics, pods and the live calls
+  4. Click on the stockmanager **in the deployments list** then scroll down so you can see the inbound and outbound HTTP metrics, pods and the live calls
 
   ![](images/linkerd-broken-detailed-service.png)
 
 Now we can see that it's the inbound requests on the stockmanager that's the problem, the outbound ones are working fine, and (in this case) there is one pod that has the problem (if there were multiple pods you wild see them listed, and might be able to see if the problem was pod specific, or a problem across all pods in the deployment)
 
-  20. Now look at the **Live calls** section
+  5. Now look at the **Live calls** section
 
   ![](images/linkerd-broken-live-calls.png)
 
 We can see that the from deploy/storefront to /stocklevel call is the one that's generating a lot of failures
 
-  21. Click on the **Tap** icon ![](images/linkerd-tap-icon.png) for this row to access the call history
+  6. Click on the **Tap** icon ![](images/linkerd-tap-icon.png) for this row to access the call history
 
-  22. Click the **Start** button at the top of this page and wait for a few calls to come in, then click the **Stop** button
+  7. Click the **Start** button at the top of this page and wait for a few calls to come in, then click the **Stop** button
 
   ![](images/linkerd-broken-tap-list.png)
 
-  23. Locate a row where the HTTP status is 500, click the down arrow / Expand" icon ![](images/linkerd-tap-expand-icon.png)
+  8. Locate a row where the HTTP status is 500, click the down arrow / Expand" icon ![](images/linkerd-tap-expand-icon.png)
 
   ![](images/linkerd-broken-tap-details.png)
 
 You can now see the details of the failed call. Click the **Close** button on the lower right to close this popup.
 
-### Diagnostics summary
+### Step 2e: Diagnostics summary
 
 Of course this is only showing us the network part of the troubleshooting process, but it's given us a lot of useful information to we can easily understand where the problems might be, and at least some information as to the details surrounding the failures. It's a lot better than just getting a `424 Failed Dependency` result!
 
 
 ## Step 3: Resetting the environment
 
+So we have a clean environment for the next moduels you may do we need to reset the environment so it's consistent.
 
-### Stopping the load generator
+**Stopping the load generator**
 
-- In the OCI cloud shell stop the load generator using Control-C
+  1. In the OCI cloud shell stop the load generator using Control-C
 
-### Removing the failing service
+**Removing the failing service**
 
 Let's use the Kubernetes rollout mechanism to reverse our "upgrade"
 
-- In the OCI Cloud Shell type
+  2. In the OCI Cloud Shell type
+  
   - `kubectl rollout undo deployment stockmanager`
 
 ```

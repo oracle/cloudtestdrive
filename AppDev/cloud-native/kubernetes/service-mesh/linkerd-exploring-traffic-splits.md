@@ -44,7 +44,7 @@ This module was written using the information in the [Linkerd fault injection pa
 
 ## Step 2: Canary deployments with a service mesh traffic split
 
-### What is a canary deployment ?
+### Step 2a: What is a canary deployment ?
 
 A canary deployment is a method of doing a small trial deployment, operating within the overall production infrastructure, and if the trial works you can expand it, if the trial deployment fails then it can be removed.
 
@@ -57,7 +57,7 @@ Historically canaries were used in underground mines as they were far more sensi
 
 </details>
 
-### What are we going to do ?
+### Step 2b: What are we going to do ?
 
 In this lab we are going to go through the process of **manually** performing a canary deployment, along with recovering it. We're doing this manually so you get the full details of what's happening, however normally you would use automated tools like [Flagger](https://flagger.app) or [Spinaker](https://www.spinnaker.io/) to actually perform the steps for you (and at a much finer granularity)
 
@@ -65,7 +65,9 @@ We are going to deploy a version of the stockmanager service that deliberately b
 
 More importantly we are going to do this while keeping the stockmanager service online all the time.
 
-The order here is important, this is because the basic stockmanager service is only looking for deployments which match the selector of `app: stockmanager`, so if we were to just roll out the new version then the service would match the old and new versions.
+### Step 2c: Identifying the deployments
+
+The order here is important, this is because the basic stockmanager service is only looking for deployments which match the selector of `app: stockmanager`, so if we were to just roll out the new version then the service would match the old and new versions. To do that we need a way to identify the different **versions** of a dpeloyment
 
 Let's switch to the right directory
 
@@ -103,7 +105,7 @@ The file stockmanager-deployment-v0.0.1.yaml is our "standard deployment file wh
 
 Unfortunately since Kubernetes 1.17 we cannot just update the deployment with the new configuration as the labels for a deployment are set when it's created, so we'll have to delete and re-apply it. 
 
-  1. Let's remove the old deployment. In the OCI Cloud shell type
+  2. Let's remove the old deployment. In the OCI Cloud shell type
 
   - `kubectl delete deployment stockmanager` 
 
@@ -111,7 +113,7 @@ Unfortunately since Kubernetes 1.17 we cannot just update the deployment with th
 deployment/stockmanager: deleted
 ```
 
-  2. And create the new one. In the OCI Cloud Shell type 
+  3. And create the new one. In the OCI Cloud Shell type 
 
   - `kubectl apply -f stockmanager-deployment-v0.0.1.yaml`
   
@@ -121,7 +123,7 @@ deployment.apps/stockmanager created
 
 If we have a look at the pods we'll see that the stockmanager deployment has been restarted, and we have a new pod
 
-  3. In the OCI Cloud shell type
+  4. In the OCI Cloud shell type
   - ` kubectl get pods`
 
 ```
@@ -134,7 +136,7 @@ zipkin-7db7558998-c5b5j          2/2     Running   0          22h
 
 Let's make sure our service is still running (note that we haven't changed the service itself, it's selector will match the old and new versions of the pod)
 
-  4. In the OCI Cloud shell type the following (as usual replacing `<external IP>` with the IP address of the ingress controller service)
+  5. In the OCI Cloud shell type the following (as usual replacing `<external IP>` with the IP address of the ingress controller service)
   
   - `curl -i -k  -u jack:password https://<external IP>/store/stocklevel`
 
@@ -150,6 +152,8 @@ strict-transport-security: max-age=15724800; includeSubDomains
 ```
 
 As the pod has restarted you may have a delay or have to retry the request as the database connection is established.
+
+### Step 2d: Create versioned services
 
 Now we have a mechanism to differentiate between the old and new versions of the service we're going to create two new service definitions, one having a selector that matches the  0.0.1 version of the stockmanager service and one for the 0.0.2 version. (We haven't actually deployed the 0.0.2 version, that comes later)
 
@@ -177,7 +181,7 @@ spec:
 ```
 
 
-  5. Let's deploy the 0.0.1 service version. In the OCI Cloud shell type the following
+  1. Let's deploy the 0.0.1 service version. In the OCI Cloud shell type the following
   
   - `kubectl apply -f stockmanager-v0.0.1-service.yaml`
 
@@ -185,7 +189,7 @@ spec:
 service/stockmanagerv0-0-1 created
 ```
 
-  6. And the 0.0.1 service version. In the OCI CLoud shell type the following
+  2. And the 0.0.1 service version. In the OCI CLoud shell type the following
   
   - `kubectl apply -f stockmanager-v0.0.2-service.yaml`
 
@@ -195,7 +199,7 @@ service/stockmanagerv0-0-2 created
 
 **For demonstration purposes only** I have supplied a couple of ingress configurations that will let us see the difference between the two versions. In a normal canary deployment you would **not** do this, but in the lab it helps make clear what's happening.
 
-  7. In the OCI CLoud shell type the following
+  3. In the OCI CLoud shell type the following
   
   - `kubectl apply -f stockmanager-canary-ingress.yaml`
 
@@ -206,7 +210,7 @@ ingress.networking.k8s.io/stockmanager-v0-0-2 created
 
 These ingresses connect to the versioned services, not the original stockmanager which does not have a version in it's selector
 
-  8. Let's check them out. Firstly the 0.0.1 specific version. In the OCI CLoud shell type the following
+  4. Let's check them out. Firstly the 0.0.1 specific version. In the OCI CLoud shell type the following
   
   - `curl -i -k  -u jack:password https://<external IP>/stockmanagerv0-0-1/stocklevel`
 
@@ -223,7 +227,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 Accessing the 0.0.1 version the ingress connects to the 0.0.1 service which has the 0.0.1 version of the pods in it's selector. As we earlier updated the existing deployment with this there is a active set of pods behind it and we get results as we'd expect
 
-  9. Now let's try the 0.0.2 version (expect an error)
+  5. Now let's try the 0.0.2 version (expect an error)
   
   - `curl -i -k  -u jack:password https://<external IP>/stockmanagerv0-0-2/stocklevel`
 
@@ -246,9 +250,11 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 For the 0.0.2 version we get a 503 - Service Unavailable response. The ingress controller can map to the 0.0.2 service, but the 0.0.2 service has a selector which is looking for pods with a label `version: 0.0.2` and so far we haven't created any of those.
 
-Now we have to create the traffic split. We need to do this before creating the 0.0.2 deployment because the original (un-versioned) stockmanager service is still running and being used by the storefront. The original service has a selector that will match on **any** pod with the label `app: stockmanager` **regardless** of what the version it is. Once the traffic split is in place it will intercept traffic for the origional service, so only after that is it safe to create the new deployments.
+### Step 2e: Creating the traffic split
 
-Looking at the spec the split is deployed on the service `stockmanager` (This is known as the `Apex Service` as it's the actual top level service) The traffic split will split the traffic sent to the `stockmanager` service between the two backend services (also known as `Leaf services`) the `stockmanagerv0-0-1` service and the `stockmanagerv0-0-2` service. In this case there are two backends, but more are possible.
+Now we have to create the traffic split. We need to do this before creating the 0.0.2 deployment because the original (un-versioned) stockmanager service is still running and being used by the storefront. The original service has a selector that will match on **any** pod with the label `app: stockmanager` **regardless** of what the version it is. Once the traffic split is in place it will intercept traffic for the original service, so only after that is it safe to create the new deployments.
+
+We are going to deploy out split on the service `stockmanager` (This is known as the `Apex Service` as it's the actual top level service) The traffic split will split the traffic sent to the `stockmanager` service between the two backend services (also known as `Leaf services`) the `stockmanagerv0-0-1` service and the `stockmanagerv0-0-2` service. In this case there are two backends, but of course you can have more if you need to.
 
 As we can see below, that breakdown sends all the traffic to the v0.0.1 version and none to the v0.0.2 version, we need to do this because we haven't setup any pods for the 0.0.2 service yet, so it couldn't respond to requests.
 
@@ -280,7 +286,7 @@ By having a weight of 0 on the 0.0.2 split it means that no requests will be sen
 
 </details>
 
-  10. Let's apply the traffic split we just looked at. In the OCI Cloud shell type
+  1. Let's apply the traffic split we just looked at. In the OCI Cloud shell type
   
   - `kubectl apply -f stockmanager-canary-traffic-split.yaml`
   
@@ -292,7 +298,7 @@ As the traffic split is now in place and it's intercepting requests to the origi
 
 We can confirm this by making a few requests
 
-  11. In the OCI Cloud shell type (remember to replace `<external IP>` with your Ingress IP address)
+  2. In the OCI Cloud shell type (remember to replace `<external IP>` with your Ingress IP address)
   
   - `curl -i -k  -u jack:password https://<external IP>/store/stocklevel`
   
@@ -311,7 +317,7 @@ Do this a few times and you'll see all of the requests succeeding
 
 Now we have confirmed that the original setup is working as it should be we can safely setup the 0.0.2 pods
 
-  12. In the OCI Shell type
+  3. In the OCI Shell type
   
   - `kubectl apply -f stockmanager-deployment-v0.0.2.yaml`
 
@@ -322,7 +328,7 @@ deployment.apps/stockmanagerv0-0-2 created
 After waiting a short while for the new deployment to start we can check that the new version is configured using the 0.0.2 ingress. We are using the "broken" version of the stockmanager service we saw in the troubleshooting module, so expect some errors
  
 
-  13. In the OCI Cloud Shell type (remember to replace `<external IP>` with your Ingress IP address)
+  4. In the OCI Cloud Shell type (remember to replace `<external IP>` with your Ingress IP address)
   
   - `curl -i -k  -u jack:password https://<external IP>/stockmanagerv0-0-2/stocklevel`
   
@@ -366,13 +372,13 @@ If you do this a few times you will find that about half of the requests succeed
 
 Now we've seen that the services are behaving as expected let's start up the load generator
 
-  14. Open a new window using tour OCI account and start a cloud shell
+  5. Open a new window using your OCI account and start a cloud shell
   
-  15. In the **new** OCI Cloud shell go to the script directory
+  6. In the **new** OCI Cloud shell go to the script directory
   
   - `cd $HOME/helidon-kubernetes/service-mesh`
   
-  16. Start the load generator - (remember to replace `<external IP>` with the IP address of your ingress service
+  7. Start the load generator - (remember to replace `<external IP>` with the IP address of your ingress service
   
   - `bash generate-service-mesh-load.sh <external IP> 1 &`
   
@@ -388,7 +394,7 @@ Note, the OCI Cloud Shell session will terminate (and thus kill off the load gen
 
 We can use the Linkerd web UI to see how the traffic is working
 
-  17. In your laptop web browser go to `https://<external IP>`
+  8. In your laptop web browser go to `https://<external IP>`
 
 If needed accept that it's a self signed certificate and login as `admin` with password you set when installing linkerd
 
@@ -415,21 +421,25 @@ Locate your namespace on the list, you'll see that it's running fine with 100% s
 
   ![](images/linkerd-traffic-split-canary-main-pre-switchupdate.png)
 
-  18. Click on your namespace name (`tg-helidon` in my case) 
+  9. Click on your namespace name (`tg-helidon` in my case) 
 
-  19. On the left menu click on **Traffic Splits**
+  10. On the left menu click on **Traffic Splits**
 
   ![](images/linkerd-traffic-split-canary-split-pre-switch-update.png)
 
 As you'd expect we can see all the traffic is going to the 0.0.1 version and it's all successful. Keep this page open
 
-Now let's adjust the split
+### Step 2f: Sending data to our new service
 
-  20. In the OCI Cloud shell type
+At the moment we're sending the data to the 0.0.1 service, but now we want to start sending some date to a 0.0.2 version and see how well it does.
+
+Let's adjust the split
+
+  1. In the OCI Cloud shell type
   
   - `kubectl edit trafficsplit stockmanager-canary`
   
-  21. Go down to the backends section and for the service stockmanagerv-0-0-2 change the weight to 10
+  2. Go down to the backends section and for the service stockmanagerv-0-0-2 change the weight to 10
 
 The result will look like this (the order of the elements may vary)
 
@@ -442,13 +452,13 @@ The result will look like this (the order of the elements may vary)
     weight: 10
 ```
 
-  22. Save the file
+  3. Save the file
 
   ```
 trafficsplit.split.smi-spec.io/stockmanager-canary edited
 ```
 
-  23. Go back to the traffic split on the linkerd browser page
+  4. Go back to the traffic split on the linkerd browser page
 
   ![](images/linkerd-traffic-split-canary-split-immediately-post-switch-update.png)
 
@@ -456,9 +466,9 @@ You will see that the split is now 90 to the v0.0.1 stockmanager and 10% to the 
 
 The success rate column for the v0.0.1 is still 100%, but in this case the success rate for the 0.0.2 version is 33.33% Of course the exact number will vary depending on how many requests have been sent to it and the random behavior of it it generates an error or not. Given that the load generator is set to send one request a second, that only 10% of those are being sent to our test v0.0.2 service, and it only errors half the time only about 5% of the requests will actually have an error - so you may have to wait a bit to short time before seeing any errors
 
-  24. Click on **Namespaces** 
+  5. Click on **Namespaces** 
 
-  25. In the HTTP Metrics list click on **your** namespace
+  6. In the HTTP Metrics list click on **your** namespace
 
   ![](images/linkerd-traffic-split-canary-deployments-post-split-update.png)
 
@@ -470,11 +480,11 @@ If you look at the top of the page you can also see the traffic flows in the nam
 
 Of course all the time we've been doing this the requests have still been serviced, even if a small number have been failing.
 
-#### Stopping the load generator
+Once you've finished looking at the split we need to stop the load generator
 
-  26. In the OCI cloud shell where you are running the load balancer stop the generator using Control-C
+  7. In the OCI cloud shell where you are running the load balancer stop the generator using Control-C
 
-### It's failed, but what if it had worked ?
+### Step 2g: It's failed, but what if it had worked ?
 
 If it had worked then you would gradually adjust the traffic split, over time sending more traffic to the new deployment. Once it was taking all of the load then you could remove the deployment for the old version, and the associated service.
 
@@ -484,17 +494,15 @@ During this entire time period the overall stockmanager service would still have
 
 Remember, we've been doing this as a **manual** process to show you what's actually happening, in most cases where you have a CI/CD pipeline you'd use automation to manage the canary process, and it would perform the steps needed to completely switch to the new version automatically.
 
-### We've discovered the new version is broken, what to do ?
-
-#### Immediate actions
+### Step 2h : We've discovered the new version is broken, what to do ?
 
 Well obviously in the short term we don't want a broken version of the service if we have a working one, so the absolute first thing we need to do is to remove the new version from the traffic-split
 
-  27. In the OCI Cloud shell type
+  1. In the OCI Cloud shell type
   
   - `kubectl edit trafficsplit stockmanager-canary`
   
-  28. Go down to the backends section and for the service stockmanagerv-0-0-2 change the weight to 0
+  2. Go down to the backends section and for the service stockmanagerv-0-0-2 change the weight to 0
 
 The result will look like this (the order of the elements may vary)
 
@@ -507,7 +515,7 @@ The result will look like this (the order of the elements may vary)
     weight: 0
 ```
 
-  29. Save the file which will update the traffic split
+  3. Save the file which will update the traffic split
 
 ```
 trafficsplit.split.smi-spec.io/stockmanager-canary edited
@@ -519,9 +527,9 @@ If you look at the traffic split now you'll find  that it's reverted to all the 
 
 Of course it will take a short while for the statistics to catch up (**in this case** we're seeing the results of old traffic showing up in the numbers for the 0.0.2 version, which is why it shows 50% failures, even though the weight is zero) but after a short while if you go to the namespaces list you'll see everything back to 100% Success for your namespace 
 
-  30. In the linkerd UI click **Namespaces** on the upper left
+  4. In the linkerd UI click **Namespaces** on the upper left
 
-  31. Click **your** namespace in the HTTP Metrics section
+  5. Click **your** namespace in the HTTP Metrics section
 
   ![](images/linkerd-traffic-split-canary-namespace-bit-after-post-reversion.png)
 
@@ -533,13 +541,13 @@ Now there are lot's of actions you can take, what **we** are going to do soon is
 
 Another option is if you have some idea as to the cause of the fault and can fix it quickly, in that case you'd probably create a new image and re-deploy it, that way you'd just need to update the traffic split to start sending some traffic to the updated "new" version.
 
-### Resetting to our initial state
+### Step 2i: Resetting to our initial state
 
 In this case (and this is probably what the CI/CD connected automation would do) we'll just remove everything. You do of course need to do this in the right order, or there may be a short period where the original stockmanager service would map onto both the old and new versions (and thus the new broken version may be sent requests).
 
 I've put a small a script in place to do this for us
 
-  32. In the OCI Cloud Shell type
+  1. In the OCI Cloud Shell type
   
   - `bash stop-canary.sh`
 
@@ -574,7 +582,7 @@ We will do this by creating a fault injection service, this will respond to **al
 
 This is a very simple example of [Chaos Engineering](https://principlesofchaos.org)
 
-### Setup the fault injection service
+### Step 3a: Setup the fault injection service
 
 Switch to the service mesh directory
 
@@ -668,7 +676,7 @@ Connection: keep-alive
 
 OK, the 504 / Gateway Time-out response is generated as we expect.
 
-### Deploy the traffic split
+### Step 3b: Deploy the traffic split
 
 So far all we've done is to create a service that generates 504 errors, not much use by itself! We need to look at the traffic split to redirect some of the traffic for the original service to this new one.
 
@@ -692,7 +700,7 @@ The weight indicates how many requests of the service should go to each backend,
 
 OK, now we know what it is let's deploy it.
 
-  7. In the OCI Cloud shell type 
+  1. In the OCI Cloud shell type 
   
   - `kubectl apply -f  fault-injector-traffic-split.yaml`
   
@@ -702,16 +710,15 @@ trafficsplit.split.smi-spec.io/fault-injector-split created
 
 Let's look at the traffic split in the linkerd UI
 
-  8. In your web browser go to `https://<external IP address>`
+  2. In your web browser go to `https://<external IP address>`
 
-
-  9. On the upper left click the **Namespace dropdown** (It may display `DEFAULT` or another namespace name)
+  3. On the upper left click the **Namespace dropdown** (It may display `DEFAULT` or another namespace name)
 
   ![](images/linkerd-namespaces-menu.png)
 
-  10. Click **your namespace** in the list (tg-helidon in my case, but yours should be different)
+  4. Click **your namespace** in the list (tg-helidon in my case, but yours should be different)
 
-  11. On the left menu in the configuration section click **Traffic Splits**
+  5. On the left menu in the configuration section click **Traffic Splits**
 
   ![](images/linkerd-traffic-splits-menu-option.png)
 
@@ -721,7 +728,7 @@ You will be shown the traffic splits page
 
 This Shows the traffic split details
 
-  12. Click on the name of the traffic-split `fault-injector`
+  6. Click on the name of the traffic-split `fault-injector`
 
   ![](images/linkerd-traffic-splits-fault-injector-details-initial.png)
 
@@ -729,9 +736,11 @@ We can see the details of the traffic split, the **Apex Service** indicates the 
 
 Keep this page open
 
+### Step 3c: Testing what happens
+
 Let's generate some requests to see what happens
 
-  13. In the OCI Cloud Shell type (Be prepared for an error)
+  1. In the OCI Cloud Shell type (Be prepared for an error)
   
   - `curl -i -k  -u jack:password https://<external ip>/store/stocklevel`
 
@@ -766,27 +775,27 @@ Here we see that 66.67% of the requests to the traffic split had failed (the bar
 
 Of course this is useful, but in this case all it's telling us is that the `zipkin` service always works and the `fault-injector-zipkin` service always fails. What does that mean for the requests to the zipkin service.
 
-  14. In the **Tools** section on the  left menu click on **Routes**
+  2. In the **Tools** section on the  left menu click on **Routes**
 
-  15. In the **Namespace dropdown** chose the name of **your** namespace (tg-helidon in the example below)
+  3. In the **Namespace dropdown** chose the name of **your** namespace (tg-helidon in the example below)
 
-  16. In the **Resource** dropdown chose **Deployment**
+  4. In the **Resource** dropdown chose **Deployment**
 
-  17. In the **To Namespace** dropdown chose the name of **your** namespace (tg-helidon in the example below)
+  5. In the **To Namespace** dropdown chose the name of **your** namespace (tg-helidon in the example below)
 
-  18. In the **To resource** dropdown chose `deployment/zipkin`
+  6. In the **To resource** dropdown chose `deployment/zipkin`
 
   ![](images/linkerd-traffic-split-route-spec.png)
 
 This will generate reports from any deployment to the `zipkin` deployment (it is of course possible to look at specific deployments, but this shows us a good overview)
 
-  19. Click the **Start** button
+  7. Click the **Start** button
 
-  20. In the OCI cloud shell Make multiple curl requests of the form 
+  8. In the OCI cloud shell Make multiple curl requests of the form 
   
   - `curl -i -k  -u jack:password https://<external ip>/store/stocklevel`
   
-  21. Looking at the Linkerd UI we can see the result.
+  9. Looking at the Linkerd UI we can see the result.
 
   ![](images/linkerd-traffic-split-route-results.png)
 
@@ -882,7 +891,7 @@ In this case we can find (within a lot of other stuff) the error log details whe
 
 We've seen that the traffic split has let us inject a fault so that the zipkin service is not available, our clients have continued as expected, but what would happens if we inject a fault such that the stockmanager itself becomes unavailable ?
 
-### What about more serious faults
+### Step 3d: What about more serious faults
 
 Disrupting access to zipkin is an example of where there is a fault that is not causing a problem to the overall service.
 
@@ -890,7 +899,7 @@ If we had however done this to the stock manager service (when we looked at cana
 
 In **some** cases one service failing cannot be recovered from directly. We could however have instructed the service mesh that when the stockmanager has a problem then [it should retry the request.](https://linkerd.io/2/tasks/configuring-retries/) This would mean that for intermittent errors the retry might have succeeded.
 
-### What about the Kubernetes health services ? 
+### Step 3e: What about the Kubernetes health services ? 
 
 You may be concerned about the impact of traffic splits on the health of the underlying service, after all if we're redirecting requests to the 504 error generator doesn't this mean that the readiness and liveness checks would start restarting the containers. 
 
@@ -900,15 +909,15 @@ The same should also apply to the deployment defined actions like prometheus met
 
 Of course there are some actions that might be impacted, for example if you had a service that you used for your own data gathering, going to a endpoint that was behind the traffic split then that may start failing, but most folks would use the standard Kuernetes components
 
-### Hum, this could cause me customer problems
+### Step 3f: Hum, this could cause me customer problems
 
 You probably don't want to start doing this type of chaos engineering on your production environments until you've tested it thoroughly in your dev and test environments. However there is another option here, you could use header based requests to identify "test traffic, and just make sure you chode a header that wouldn't normally come from your real customers.
 
-### Cleaning up the fault injection
+### Step 3g: Cleaning up the fault injection
 
-For now let's remove the Traffic split and the fault-injector components we created.
+For now let's remove the Traffic split and the fault-injector components we created. I have created a simple script that removes them for us.
 
-  23. In the OCI Cloud shell type
+  1. In the OCI Cloud shell type
   
   - `bash stop-fault-injection.sh`
 

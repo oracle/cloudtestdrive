@@ -100,6 +100,8 @@ Fluentd is an open source solution to processing the log data, it's basically an
 
 We will be using one of the built in output plug-ins of Fluentd that allows us to write to storage solutions that provide a Amazon Simple Storage Service (S3) compatible interface. In this case we will be writing the data to the Oracle Object Storage Service, but you could of course use other compatible services.
 
+### Step 3a: Gathering the required information
+
 The first thing we need to do is to gather a bit of data about the storage service to configure the fluentd output plugin.
 
 We need to provide five pieces of information, The region ID and the storage service endpoint URL. The keys (Secret and public) that as a pair give access to the storage API and the name of the storage bucket to hold the saved data.
@@ -216,7 +218,7 @@ You now need to get the access key (this is the other part of the generated key 
 
 You have now gathered the information we need to write data into the Object Storage Service.
 
-### Create the storage bucket
+### Step 3b: Create the storage bucket to hold the logs
 
 You can let the S3 integration just create the storage bucket, but the scenario we are looking at here is for the long term retention of the log data for occasional access, in that case you want the cheapest possible storage, and for that you need the archive storage tier for the storage bucket. This is not the default tier so it needs to be set when the Oracle Object Storage Service bucket is created. The archive tier does mean that there is a delay to retrieve the data (Archive after all is about long term efficient storage of the data) so if you were planning on doing something with the data directly (For example uploading into the Oracle log analytics service) as you'd be transferring them once they were uploaded to the storage service, and probably only retaining them for a short while after that you would use the standard tier.
 
@@ -237,9 +239,9 @@ Here we're using the archive tier as that's the most cost effective for long ter
 
 Let's create our storage bucket. 
 
-  21. Log in to the OCI console in your web browser
+  1. Log in to the OCI console in your web browser
 
-  22. Click on the "Hamburger" menu, then in the **Core Infastructure** section click on **Object Storage** then **Object Storage** 
+  2. Click on the "Hamburger" menu, then in the **Core Infastructure** section click on **Object Storage** then **Object Storage** 
 
   ![](images/Object-storage-hamburger-menu.png)
 
@@ -247,7 +249,7 @@ This will take you to the storage service page
 
   ![](images/Object-storage-compartment-selection.png)
 
-  23. Make sure in the compartments list you have selected the compartment used for the Amazon S3 Compatibility (this was shown in the tenancy details earlier). This may be `root` if there isn't a S3 compatibility compartment specified for the tenancy
+  3. Make sure in the compartments list you have selected the compartment used for the Amazon S3 Compatibility (this was shown in the tenancy details earlier). This may be `root` if there isn't a S3 compatibility compartment specified for the tenancy
 
 You will now see a list of buckets in this compartment, In this case there is just one called `TG` In your tenancy there may be a zero or more existing buckets.
 
@@ -255,15 +257,15 @@ You will now see a list of buckets in this compartment, In this case there is ju
 
 We're going to create a new bucket set for archive storage
 
-  24. Click the **Create Bucket** button.
+  4. Click the **Create Bucket** button.
 
-  25. In the popup name the bucket `<YOUR INITIALS>-FLUENTD` For fluentd to write to this bucket the name **must** be entirely in UPPER CASE and you **must** replace <YOUR INITIALS> with something unique to you!
+  5. In the popup name the bucket `<YOUR INITIALS>-FLUENTD` For fluentd to write to this bucket the name **must** be entirely in UPPER CASE and you **must** replace <YOUR INITIALS> with something unique to you!
 
-  26. Change the storage tier option to **archive**
+  6. Change the storage tier option to **archive**
 
   ![](images/Object-storage-create-bucket.png)
 
-  27. Click the **Create Bucket** button
+  7. Click the **Create Bucket** button
 
 Note, if the bucket name must be unique across your entire tenancy in the region, if it's not (even if the other bucket is in a different compartment) you will not be able to create it and will have to try again using a different name.
 
@@ -273,9 +275,9 @@ You will now see the list of buckets in your compartment. Remember that in my ca
 
 Note that the storage tier for the new bucket (named TG-FLUENTD in this case **but yours will vary**) is **Archive** This means all data will be held in a long term storage model which is much cheaper, but may take time to become available when requested.
 
-### Setting up the log monitoring.
+### Step 3c: Configuring the log monitoring process.
 
-  28. In the OCI Cloud shell Change to the logging folder.
+  1. In the OCI Cloud shell Change to the logging folder.
   
   - `cd $HOME/helidon-kubernetes/managmenent/logging`
 
@@ -312,7 +314,7 @@ in the `env:` section we see the name of the environment variable (`SWITCH_LOG_F
 
 </details>
 
-  29. You will need to edit the `fluentd-s3-configmap.yaml` file and update it with the values you gathered earlier. Remember to keep the values in double quotes.
+  1. You will need to edit the `fluentd-s3-configmap.yaml` file and update it with the values you gathered earlier. Remember to keep the values in double quotes.
 
   - ACCESS_KEY - This is the OCI access key
 
@@ -353,11 +355,11 @@ For lab purposes we have setup the configuration with a 60 second cycle on switc
 
 </details>
 
-### Actually starting the log capture
+### Step 3d: Actually starting the log capture
 
 First we will create the `fluentd-config-to-ooss` config map, this is in the `fluentd-to-ooss-configmap.yaml` This is the basic configuration of fluentd and tells it to output to the S3 service, it just used environment variable place holders for the actual setting details though, the Kubernetes runtime will replace those with the actual values from the environment when the configuration map is added to the pod as it starts.
 
-  30. In the OCI Cloud Shell type 
+  1. In the OCI Cloud Shell type 
   
   - `kubectl apply -f fluentd-to-ooss-configmap.yaml`
 
@@ -383,7 +385,7 @@ data:
 
 Now let's apply the configuration settings specific to our environment we just setup. These are the settings used to setup the environment variables inside the the daemonset configuration
 
-  31. In the OCI Cloud Shell type 
+  2. In the OCI Cloud Shell type 
   
   - `kubectl apply -f fluentd-s3-configmap.yaml`
   
@@ -393,7 +395,7 @@ configmap/fluentd-s3-config configured
 
 Finally let's start the daemonset itself
 
-  32. In the OCI Cloud Shell type 
+  3. In the OCI Cloud Shell type 
   
   - `kubectl apply -f fluentd-daemonset-ooss-rbac.yaml`
 
@@ -405,7 +407,7 @@ daemonset.apps/fluentd-to-ooss created
 ```
 Let's make sure that everything has started
 
-  33. In the OCI Cloud Shell type 
+  4. In the OCI Cloud Shell type 
   
   - `kubectl get daemonsets -n logging`
 
@@ -418,7 +420,7 @@ We can see that there are 2 instances running, this is because the cluster I am 
 
 Let's get the specifics of the pods
 
-  34. In the OCI Cloud Shell type 
+  5. In the OCI Cloud Shell type 
   
   - `kubectl get pods -n logging`
   
@@ -441,7 +443,7 @@ You may occasionally see a fluentd pod with status CrashLoopBackOff, this is usu
 
 Let's look at the logs from one of these pods, in this case I'm going to use `fluentd-to-ooss-fgx4s` but of course the pod name you have will be different.
 
-  35. In the OCI Cloud Shell type 
+  6. In the OCI Cloud Shell type 
   
   - `kubectl logs -n logging fluentd-to-ooss-fgx4s`
 
@@ -512,7 +514,7 @@ The log data shows is the sources whish fluentd is scanning looking for the log 
 <details><summary><b>If the log is reporting an unexpected error</b></summary>
 
 
-You may find that the log is reporitng an error similar to this :
+You may find that the log is reporting an error similar to this :
 
   ```
   [error]: #0 unexpected error error_class=Aws::S3::Errors::BucketAlreadyExists error="Either the bucket 'TG-FLCOMPAT' in namespace 'oractdemeabdmnative' already exists or you are not authorized to create it"`
@@ -537,7 +539,7 @@ It may be that the bucket name is already in use (though this should have genera
 
 Do some requests to the storefront service which will generate log data
 
-  35. In the OCI Cloud Shell terminal type (remember to replace the <external IP> with the IP address for the ingress controller for your service)
+  7. In the OCI Cloud Shell terminal type (remember to replace the <external IP> with the IP address for the ingress controller for your service)
   
   - `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
   
@@ -681,7 +683,7 @@ Of course there is also a REST API to allow you to automate this process if you 
 
 </details>
 
-### Summary
+## Summary
 
 We have seen how you can capture log data for long term storage, in this case using fluentd and saving the data to the Oracle Object Storage Service as archived objects. 
 

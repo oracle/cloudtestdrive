@@ -37,27 +37,27 @@ This video is an introduction to this section of the lab. Once you've watched it
 
 If you are in an **instructor led lab** the instructor may have already done this step for you, if so they will tell you.
 
-  1. Click the `hamburger` menu (three bars on the upper left)
+  1. Click the "Hamburger" menu (three bars on the upper left)
 
-  2. Scroll down the list to the `Governance and Administration` section
+  2. Scroll down the list to the **Governance and Administration** section
 
-  3. Under the `Identity` option chose `Compartments`
+  3. Under the **Identity** option chose **Compartments**
 
   4. You should see a screen that looks like this : 
 
   ![](images/compartments.png)
 
-**ATTENTION** : if the compartment **CTDOKE** already exists, please move to the next step on this page, Importing the image for the development vm
+**ATTENTION** : if the compartment `CTDOKE` already exists, please move to the next step on this page, Importing the image for the development vm
 
-If the **CTDOKE** compartment is not yet there, **create it** as below, if it it there jump to the **Creating the VM IMage** step : 
+If the `CTDOKE` compartment is not yet there, **create it** as below, if it it there jump to the **Creating the VM IMage** step : 
   
-  5. Click the `Create Compartment` button
+  5. Click the **Create Compartment** button
   
   6. Provide a name, description
   
-  7. Chose **root** as the parent compartment
+  7. Chose `Root` as the parent compartment
   
-  8. Click the `Create Compartment` button.
+  8. Click the **Create Compartment** button.
   
 
 ## Step 2: Creating the VM Image
@@ -68,7 +68,7 @@ If you are in an **instructor led lab** the instructor may have already done thi
 
   1. Download the image location file [from here](https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/MonolithToCloudNative/o/MonolithToCloudNativeVMDetails.txt)
   
-  2. In the file locate the Cloud Market place URL - this will be something like `https://cloudmarketplace.oracle.com/marketplace/listing/123456` (this is an example, it won't work)
+  2. In the file you just downloaded locate the Cloud Market place URL - this will be something like `https://cloudmarketplace.oracle.com/marketplace/listing/123456` (this is an example, it won't work)
   
   3. Open the Cloud Marketplace URL in a new web browser tab / window.
   
@@ -100,7 +100,7 @@ In this case for my tenancy I'm in the Germany / Frankfurt region, but if you ar
   
   9. Make sure that the **Compartment** matches the compartment you are using (probabaly `CTDOKE`)
   
-  10. Review the "Oracle Standard Terms and Restrictions", then (assming you do agreee) click the **I have reviewed and accept the Oracle Standard Terms and Restrictions.** check box.
+  10. Review the "Oracle Standard Terms and Restrictions", then (assuming you do agree) click the **I have reviewed and accept the Oracle Standard Terms and Restrictions.** check box.
   
   11. Once you've clicked the checkbox the **Launch Instance** button will be enabled. Click it.
   
@@ -110,13 +110,13 @@ In this case for my tenancy I'm in the Germany / Frankfurt region, but if you ar
   
   1. Name the instance based on the image version so you can track what version of the lab you are following. If multiple people are sharing the same tennacy you may want to put your initials in there as well e.g. `H-K8S-Lab-A-Helidon-2020-29-10-tg`
   
-  2. The **Create in compartment** should already be set to **CTDOKE**.
+  2. The **Create in compartment** should already be set to `CTDOKE`.
 
   3. Expand the **Configure placement and hardware** selection if it's not visible
 
   4. Select an **Availability domain** (Which one doesn't matter)
 
-  5. If `VM.Standard.E3.Flex` with 1 OCPU and 16GB memory is not the selected instance shape click the `Change shape` button, select the Instance type to `Virtual machine`, the Processor to `AMD Rome` and the OCPU count to `1` (This will set the memory for you) Then click `Select shape` to use this shape. (You can chose other shapes if you prefer, just at the time of writing this was the most cost effective)
+  5. If `VM.Standard.E3.Flex` with 1 OCPU and 16GB memory is not the selected instance shape click the **Change shape** button, set the Instance type to **Virtual machine**, the Processor to **AMD Rome** and the OCPU count to `1` (This will set the memory for you) Then click **Select shape** to use this shape. (You can chose other shapes if you prefer, just at the time of writing this was the most cost effective)
 
   ![](images/cloud-marketplace-create-instance.png)
   
@@ -172,25 +172,25 @@ You need to be sure that the Virtual Cloud Network supports remote access using 
   
   ![](images/cloud-marketplace-image-vcn-security-lists-setup.png)
 
-  4. In the security list page click the `Add Ingress Rules` button
+  4. In the security list page click the **Add Ingress Rules** button
   
   An "Add Ingress Rules" popup will be dieplayed
 
-  5. Leave the `Stateless` option unchecked (This will provide for the returning traffic)
+  5. Leave the **Stateless** option unchecked (This will provide for the returning traffic)
 
-  6. Leave the `SOURCE TYPE` as CIDR
+  6. Leave the **SOURCE TYPE** as `CIDR`
 
-  7. In the `SOURCE CIDR` enter `0.0.0.0/0` (basically the entire internet, in a production you might limit to your organizations address range)
+  7. In the **SOURCE CIDR** enter `0.0.0.0/0` (basically the entire internet, in a production you might limit to your organizations address range)
 
-  8. Leave the `protocol` as `TCP`
+  8. Leave the **Protocol** as `TCP`
 
-  9. Leave the `SOURCE PORT RANGE` blank
+  9. Leave the **SOURCE PORT RANGE** blank
 
-  10. Set the `DESTINATION PORT RANGE` as `5800-5910`
+  10. Set the **DESTINATION PORT RANGE** as `5800-5910`
 
-  11. Set the `DESCRIPTION` to be VNC
+  11. Set the **DESCRIPTION** to be `VNC`
 
-  12. Click the `Add Ingress Rules` button
+  12. Click the **Add Ingress Rules** button
 
   ![](images/cloud-marketplace-install-add-ingress-rule.png)
 
@@ -202,33 +202,33 @@ If you are in an **instructor led lab** the instructor may have already done thi
 
   1. Use the Hamburger menu, and select the Database section, **Autonomous Transaction Processing**
 
-  2. Click **Create DB**
+  2. Click **Create Autonomous Database**
 
-  3. Make sure the **CTDOKE** compartment is selected
+  3. Make sure the `CTDOKE` compartment is selected
 
-  4. Fill in the form, and make sure to give the DB a unique name for you in case multiple users are running the lab on this tenancy.
+  4. Fill in the form, and make sure to set a unique display and database name for you in case multiple users are running the lab on this tenancy. For example `HK8STG` (where `TG` are my initials, use yours of course)
 
-  5. Make the workload type `Transaction Processing` 
+  5. Make the workload type **Transaction Processing** 
 
-  6. Set the deployment type `Shared Infrastructure` 
+  6. Set the deployment type **Shared Infrastructure**
 
-  7. Chose the most recent option for the database version, allocate 1 OCPU and 1 GB of storage (this lab only requires a very small database)
+  7. Chose the most recent database in the **Chose database version** selector, allocate 1 OCPU and 1 GB of storage (this lab only requires a very small database)
 
-  8. Turn off auto scaling
+  8. Turn off **Auto scaling**
   
-  9. Enter the admin password, there are rules for what this shoudl look like, they will appear under the password field.
+  9. Enter the **Admin password**, there are rules for what this should look like, they will appear under the password field.
   
-  10. Confirm the admin password
+  10. Enter the password again in the **Confirm password** field
 
-  11. Make sure that the `Allow secure access from everywhere` is enabled.
+  11. Make sure that the **Allow secure access from everywhere** option is enabled.
 
-  12. For a trial tenancy chose the `BYOL License` option, for a paid tenancy chose the `License included` option (Unless your organization already has enough available suitable licenses)
+  12. For a trial tenancy chose the **BYOL License** option, for a paid tenancy chose the **License included** option (Unless your organization already has enough available suitable licenses, in which case you can use the **BYOL** option)
 
 Be sure to remember the **admin password**, save it in a notes document for later reference.
 
-  13. Click the `Create Autonomous Database` button
+  13. Click the **Create Autonomous Database** button
 
-  14. Once the instance is running go to the database details page, on the center left of the general information column there will be the label OCID and the start of the OCID itself. Click the **Copy** just to the left and then save the ODIC together with the password.
+  14. Once the instance is running go to the database details page, on the center left of the general information column there will be the label **OCID** and  part of the OCID itself. Click the **Copy** just to the right and then save the ODIC (and if like me you are forgetful also the admin password.)
 
 
 
@@ -308,7 +308,7 @@ We have provided a pre-set VNC password. If you are in a instructor led lab this
 
 While not required we do recommend that you change this password to prevent access by other people.
 
-  1. On the desktop background click right, then tak the "Open Terminal" option
+  1. On the desktop background click right, then the **Open Terminal** option
 
   ![](images/vnc-01-open-terminal.png)
 
@@ -340,27 +340,27 @@ There are many IDE's available. We have chosen Eclipse as it's open source licen
 
 We have installed the Eclipse installer and places a short cut to it on the desktop. It will look like 
 
-  1. Double click on the `eclipse-installer` icon on the desktop. This will open the installer. It may look like a text page and be named `eclipse-installer.desktop` rather than the icon shown below, if it does still click it. You may be warned it's and `Untrusted application launcher`, if this happens click the `Trust and launch` option. **Do not** click the Post Eclipse Installer icon.
+  1. Double click on the **eclipse-installer** icon on the desktop. This will open the installer. It may look like a text page and be named `eclipse-installer.desktop` rather than the icon shown below, if it does still click it. You may be warned it's an **Untrusted application launcher**, if this happens click the **Trust and launch** option. **Do not** click the Post Eclipse Installer icon.
  
   ![](images/04-eclipse-installer-icon.png)
 
 The Eclipse installer will start.
 
-  2. Select the `Eclipse IDE for Enterprise Java Developers` option
+  2. Select the **Eclipse IDE for Enterprise Java Developers** option
 
   ![](images/05-eclipse-installer-selection.png)
 
 The installer switched to the next page
 
-  3. Select the `/usr/lib/jvm/java-11-openjdk` in the Java JVM dropdown ** DO NOT PRESS INSTALL YET**
+  3. In the **Java JVM dropdown** Select the `/usr/lib/jvm/java-11-openjdk`  ** DO NOT PRESS INSTALL YET**
  
-  4. Set the install path to be `/home/opc`
+  4. Set the **Install Path** to be `/home/opc`
 
   ![](images/06-eclipse-installer-selections.png)
  
-  5. Then click the `Install` button
+  5. Then click the **Install** button
  
-  6. Assuming you agree with it click `Accept Now` on the license page. (If you don't agree with the license you can install your own IDE but all of the instructions are on the basis of using Eclipse.)
+  6. Assuming you agree with it click **Accept Now** on the license page. (If you don't agree with the license you can install your own IDE but all of the instructions are on the basis of using Eclipse.)
  
   ![](images/07-eclipse-installer-license.png)
  
@@ -368,25 +368,25 @@ The installer progress will be displayed
  
   ![](images/08-eclipse-installer-progress.png)
  
-  7. You **may** be presented with warnings about unsigned content, if you are click the `Accept` button
+  7. You **may** be presented with warnings about unsigned content, if you are click the **Accept** button
  
   ![](images/09-eclipse-installer-unsigned-warning.png)
  
-  8. You **may** be presented with warnings about certificates. If you are click the `Select All` button, then the `Accept Selected` button (this is not enabled until certifcates have been selected)
+  8. You **may** be presented with warnings about certificates. If you are click the **Select All** button, then the **Accept Selected** button (this is not enabled until certificates have been selected)
   
   ![](images/10-eclipse-installer-accept-unsigned.png)
   
-  9. On completion close the installer window (X on the upper right.) **Do not** click the `Launch` button.
+  9. On completion close the installer window (X on the upper right.) **Do not** click the Launch button.
  
   ![](images/11-eclipse-installer-finished-install-path.png)
 
-  10. Click `No` on the exit launcher page that's displayed
+  10. Click **No** on the exit launcher page that's displayed to confirm you do not want to launch Eclipse at this point.
 
   ![](images/12-eclipse-installer-finished-exit-without-launching.png)
 
 We're now going to run a script that tidies up the desktop and creates an eclipse desktop icon
 
-  11. Double click on the `Post Eclipse Installer` icon on the desktop. This will run the script. It may look like a text page and be called `posteclipseinstal.desktop` rather than the icon shown below, if it does still click it. You may be warned it's an `Untrusted application launcher`, if this happens click the `Trust and launch` option.
+  11. Double click on the **Post Eclipse Installer** icon on the desktop. This will run the script. It may look like a text page and be called `posteclipseinstal.desktop` rather than the icon shown below, if it does still click it. You may be warned it's an **Untrusted application launcher**, if this happens click the **Trust and launch** option.
 
   ![](images/13-post-eclipse-installer-icon.png)
 
@@ -394,7 +394,7 @@ If the eclipse installation was in the right place then the two desktop icons wi
 
 Note that sometimes the Eclipse installer will create it's own desktop icon to start Eclipse. This does not happen every time, but if it does create one you can also use that icon to start Eclipse as well.
 
-  12. Double click on the `Eclipse` icon on the desktop. It may look like a text page rather than the icon shown below, if it does still click it. You may be warned it's an `Untrusted application launcher`, if this happens click the `Trust and launch` option.
+  12. Double click on the **Eclipse** icon on the desktop. It may look like a text page rather than the icon shown below, if it does still click it. You may be warned it's an **Untrusted application launcher**, if this happens click the **Trust and launch** option.
 
   ![](images/14-eclipse-icon.png)
 
@@ -404,15 +404,15 @@ As Eclipse starts you will be presented with a start up "splash" then workspace 
 
   ![](images/20-eclipse-start-workspace-selection.png)
 
-  14. Click the `use this as the default and do not ask again` option, then the `Launch` button
+  14. Click the **Use this as the default and do not ask again** option, then the **Launch** button
 
   ![](images/20a-eclipse-start-default-workspace-selection.png)
 
-You will be presented with the Eclipse startup. This may include a welcome page. You can close it by clicking the `x` as per normal with sub windows.
+You will be presented with the Eclipse startup. This may include a welcome page. You can close it by clicking the **x** as per normal with sub windows.
 
   ![](images/21-eclipse-welcome-page.png)
 
-  15. You can close the `Donate` , `Outline` and `Task list` tabs to get the most usage from the screen.
+  15. You can close the **Donate**, **Outline** and **Task list** tabs to get the most usage from the screen.
 
   ![](images/22-eclipse-donate-page.png)
 
@@ -422,13 +422,13 @@ This image shows you the empty Eclipse workspace with the non required tabs all 
 
 We need to configure Eclipse to display the course files in a hierarchical manner (this is so it matches the images you will have in the lab instructions, if you prefer to use the Eclipse  "Flat" view then you can ignore this step)
 
-  16. Click on the Three dots in the Project Explorer panel, then take the `Package Presentation` menu option and click the radio button for `Hierarchical`
+  16. Click on the Three dots in the Project Explorer panel, then take the **Package Presentation** menu option and click the radio button for **Hierarchical**
 
   ![](images/24-eclipse-package-presentation-hierarchical.png)
 
 ### How to re-open Eclipse if you close it
 
-Double click on the `Eclipse` icon on the desktop. It may look like a text page rather than the icon shown below, if it does still click it. You may be warned it's an `Untrusted application launcher`, if this happens click the `Trust and launch` option.
+Double click on the **Eclipse** icon on the desktop. It may look like a text page rather than the icon shown below, if it does still click it. You may be warned it's an **Untrusted application launcher**, if this happens click the **Trust and launch** option.
 
 ![](images/14-eclipse-icon.png)
 
@@ -438,23 +438,23 @@ To enable us to update the code used by the labs without having to update the De
 
 ### 7a. Downloading the initial setup code zip file.
 
-  1. Open the Firefox web browser - Click `Applications` then `Internet` then `Firefox`
+  1. Open the Firefox web browser - Click **Applications** (at the top of the screen) then **Internet** then **Firefox**
 
   ![](images/40-open-firefox-menu.png)
 
   2. In the browser **in the virtual machine** go to the URL `https://github.com/CloudTestDrive/cloud-native-setup` 
 
-  3. Click the `Code` button
+  3. Click the **Code** button
 
   ![](images/41-github-project-page.png)
 
-  4. Click the `Download ZIP` option
+  4. Click the **Download ZIP** option
 
   ![](images/42-github-download-code.png)
 
 A save options menu may be displayed
 
-  5. Click the `Save file` option, then `OK`
+  5. Click the **Save file** option, then **OK**
 
   ![](images/43-github-download-save-file.png)
 
@@ -466,29 +466,29 @@ When the download is complete the Firefox download icon will turn completely blu
 
   1. Switch back to Eclipse **Do not** close the Firefox window (that may cause it to delete the download file)
 
-  2. Click the `File` menu, then `Import`
+  2. Click the **File** menu, then **Import**
 
   ![](images/50-eclipse-import-menu.png)
 
-  3. Open the `General` node, then chose the `Existing projects into Workspace` option. Click `Next`
+  3. Open the **General** node, then chose the **Existing projects into Workspace** option. Click **Next**
 
   ![](images/51-eclipse-import-types.png)
 
-  4. Chose the `Select archive file` radio button, then click `Browse` on that row
+  4. Chose the **Select archive file** radio button, then click **Browse** on that row
 
   ![](images/52-eclipse-import-archive.png)
 
-  5. On the left menu chose `Downloads` then in the resulting list chose the download you just made (probably called `cloud-native-setup-main.zip`)
+  5. On the left menu chose **Downloads** then in the resulting list chose the download you just made (probably called `cloud-native-setup-main.zip`)
 
-  6. Click the `Open` button
+  6. Click the **Open** button
 
   ![](images/53-eclipse-import-file-selection.png)
 
-  7. Click `Select All` to make sure all the projects are imported, then click the `Finish` button
+  7. Click **Select All** to make sure all the projects are imported, then click the **Finish** button
 
   ![](images/54-eclipse-import-final-stage.png)
 
-Eclipse will import the projects and start importing the Maven dependencies. Expect to see errors listed on the Eclipse `Problems` tab, and projects marked as having errors (red indicators) in the Project Explorer. 
+Eclipse will import the projects and start importing the Maven dependencies. Expect to see errors listed on the Eclipse Problems tab, and projects marked as having errors (red indicators) in the Project Explorer. 
 
   ![](images/55-eclipse-import-finished.png)
 
@@ -504,29 +504,29 @@ These labs use Lombok to do many of the "standard" functions like automatically 
 
   2. Expand the `Maven Dependencies` node
 
-  3. In the maven dependencies section locate the `lombok` jar file (it will have a version number after it, at the time of writing that was 1.18.10, but that may have changed as lombok updates often)
+  3. In the maven dependencies section locate the `lombok` jar file (it will have a version number after it, at the time of writing that was 1.18.12, but that may have changed as lombok updates often)
 
   ![](images/60-lombok-locate-jar-file.png)
 
-  4. Click right on the lombok jar file, then chose the `Run As` manu option, then `Java Application`
+  4. Click right on the `lombok` jar file, then chose the **Run As** menu option, then **Java Application**
 
   ![](images/61-run-lombok-application.png)
 
-  5. If you get a warning about errors click the `Proceed` button (the point of what we're doing is to fix them !)
+  5. If you get a warning about errors click the **Proceed** button (the point of what we're doing is to fix them !)
 
   ![](images/62-run-lombok-error-warning.png)
 
 After a short while the lombok UI will be displayed.
 
-If you get a warning that Lombok cannot locate any IDE's you will have to locate it manually, follow these steps in that case
+If you get a warning that Lombok cannot locate any IDE's you will have to locate it manually, follow the rest of steps in that case
 
   ![](images/63-lombok-cant-locate-ide-warning.png)
   
-If Lombok has located an IDE then skip the following steps that locate the IDE and go to step 23 in this section
+If Lombok has located an IDE then skip the following steps that locate the IDE and go to step 11. in this section
 
-  6. Click the `OK` button in the warning popup
+  6. Click the **OK** button in the warning popup
 
-  7. Click the `Specify location` button
+  7. Click the **Specify location** button
 
   ![](images/64-lombok-locate-ide-option.png)
 
@@ -534,47 +534,47 @@ If Lombok has located an IDE then skip the following steps that locate the IDE a
 
   9. Select the `eclipse.ini` file
 
-  10. Click the `Select` button on the file chooser
+  10. Click the **Select** button on the file chooser
 
   ![](images/65-lombok-locate-eclipse.png)
 
-  11. Make sure that the eclipse installation has it's checkbox selected, then click the `Install / Update` button
+  11. Make sure that the eclipse installation has it's checkbox selected, then click the **Install / Update** button
 
   ![](images/66-lombok-install-start.png)
 
 Lombok will do the install (this is very quick) and confirm success 
 
-  12. Click the `Quit Installer` button to close the Lombok installer
+  12. Click the **Quit Installer** button to close the Lombok installer
 
   ![](images/67-lombok-install-completed.png)
 
 Once Lombok has been installed you need to exit and then start Eclipse to have it recognized (The restart option in Eclipse is not sufficient.)
 
-  13. Click the `File` menu then `Exit` (**do not chose restart**, that does not trigger the reload of the entire Eclipse environment) 
+  13. Click the **File** menu then **Exit** (**do not chose restart**, that does not trigger the reload of the entire Eclipse environment) 
 
   14. Re-start Eclipse using the method described above, make sure it's Eclipse you are starting, not the installer.
 
 We can check that Lombok has been installed
 
-  15. Click the `Help` Menu then the `About Eclipse IDE` option
+  15. Click the **Help** Menu then the **About Eclipse IDE** option
 
   ![](images/68-lombok-access-eclipse-about-menu.png)
 
-  16. You may need to scroll down in the `About` popup, but towards the end you should see the Lombok installation confirmation (in this case 1.18.12 / Envious Ferret, though updates to the lab may use a newer version)
+  16. You may need to scroll down in the About popup, but towards the end you should see the Lombok installation confirmation (in this case 1.18.12 / Envious Ferret, though updates to the lab may use a newer version)
 
   ![](images/69-lombok-installed-version.png)
 
-  17. Click the `Close` button to get rid of the popup
+  17. Click the **Close** button to get rid of the popup
 
 ### 7d. Updating the project configuration.
 
 Restarting eclipse so it recognizes Lombok does not always trigger a rebuild or Maven update to remove the flagged problems, so we need to do that. 
 
-  1. Select the `cloud-native-setup`  project in the project explorer. Click right on them then chose `Maven` from the menu then `Update project`
+  1. Select the `cloud-native-setup`  project in the project explorer. Click right on them then chose **Maven** from the menu then **Update project**
 
   ![](images/70-maven-update-project-menu.png)
 
-  2. Click the `Select All` button, then click the `OK` button
+  2. Click the **Select All** button, then click the **OK** button
 
   ![](images/71-maven-update-all.png)
 
@@ -594,31 +594,31 @@ The easiest way to get the database Wallet file into your virtual machine is to 
   
   2. Login to the Oracle Cloud Console
   
-  3. Open the `hamburger` menu (three bars on the top left)
+  3. Open the "Hamburger" menu (three bars on the top left)
   
-  4. Scroll down (if needed) to the `Database` section. Click on the `Autonomous Transaction Processing` menu option
+  4. Scroll down (if needed) to the **Database** section. Click on the **Autonomous Transaction Processing** menu option
   
-  5. If you need to select the **CTDOKE** compartment you created earlier in the Compartment selector on the left side of the page.
+  5. If you need to select the `CTDOKE` compartment you created earlier in the Compartment selector on the left side of the page.
   
   6. Click on your database name in the list (it's a link)
   
-  7. On the database page click the `DB Connection` button
+  7. On the database page click the **DB Connection** button
   
 This will display a Database connection details popup
 
-  8. Leave the `Wallet type` as `Instance connection`
+  8. Leave the **Wallet type** as `Instance connection`
   
-  9. Click the `Download Wallet` button
+  9. Click the **Download Wallet** button
   
   10. A password pop-up will be displayed. Enter and confirm a password, this is used to encrypt some of the details.
   
-  11. Once your password is accepted and confirmed click the `Download` button
+  11. Once your password is accepted and confirmed click the **Download** button
   
-  12. If you are asked what to do with the file make sure you chose the `Save file` option
+  12. If you are asked what to do with the file make sure you chose the **Save file** option
   
-  13. The wallet file will start to download and the password pop-up will disappear and you'll be returned to the `Database connection` pop-up
+  13. The wallet file will start to download and the password pop-up will disappear and you'll be returned to the **Database connection** pop-up
   
-  14. Click `Close` on the `Database Connection` popup
+  14. Click **Close** on the **Database Connection** popup
 
 
 

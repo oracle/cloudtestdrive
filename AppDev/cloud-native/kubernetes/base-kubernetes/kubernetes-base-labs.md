@@ -152,6 +152,8 @@ The latest version of helm is helm 3. This is a client side only program that is
 
 Fortunately for us helm 3 is installed within the OCI Cloud Shell, but if later on you want to use your own laptop to manage a Kubernetes cluster [here are the instructions for a local install of helm](https://helm.sh/docs/intro/install/)
 
+### Step 3a: Installing the Kubernetes dashboard
+
 Our first use of helm is to install the kubernetes-dashboard.
 
 Setting up the Kubernetes dashboard (or any) service using helm is pretty easy. it's basically a simple command. 
@@ -349,15 +351,15 @@ NAME                                    READY   STATUS    RESTARTS   AGE
 kubernetes-dashboard-bfdf5fc85-djnvb   1/1     Running   0          43m
 ```
 
-### Accessing the Kubernetes dashboard
+### Step 3b: Accessing the Kubernetes dashboard
 
 First we're going to need create a user to access the dashboard. This involves creating the user, then giving it the kubernetes-dashbaord role that helm created for us when it installed the dashbaord chart.
 
-  8. Go to the helidon-kubernetes project folder, then the base-kubernetes directory
+  1. Go to the helidon-kubernetes project folder, then the base-kubernetes directory
   
   -  `cd  $HOME/helidon-kubernetes/base-kubernetes`
   
-  9. Create the user and role
+  2. Create the user and role
   
   -  `kubectl apply -f dashboard-user.yaml`
 
@@ -438,7 +440,7 @@ Sadly (for me at least) YAML has been pretty widely adopted for use with Kuberne
 
 Before we can login to the dashboard we need to get the access token for the dashboard-user. We do this using kubectl
 
-  10. Get the token of the newly created user:
+  3. Get the token of the newly created user:
   
   ``` 
   kubectl -n kube-system describe secret `kubectl -n kube-system get secret | grep dashboard-user | awk '{print $1}'`
@@ -462,15 +464,15 @@ eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiw
 ca.crt:     1025 bytes
 ```
 
-  11. Copy the contents of the token (in this case the `eyJh........W5iA` text, but it *will* vary in your environment). 
+  4. Copy the contents of the token (in this case the `eyJh........W5iA` text, but it *will* vary in your environment). 
   
-  12. Save it in a plain text editor on your laptop for easy use later in the lab
+  5. Save it in a plain text editor on your laptop for easy use later in the lab
 
 As the OCI Cloud Shell runs in a web browser and is not itself a web browser we need to setup access so that the kubernetes-dashboard is available to your web browser on your laptop. This would normally be a problem as it would be running on a network that it internal to the cluster. 
 
 Fortunately for us helm is a very powerful mechanism for configuring services, and when we used the helm command to install the dashboard we told it that the service.type was LoadBalancer, this will automatically setup a load balancer for us, making the dashbaord service visible on the public internet, we just need the IP address to use.
 
-  13. To get the IP address of the dashboard load balancer run the following command
+  6. To get the IP address of the dashboard load balancer run the following command
   
   - `kubectl get service kubernetes-dashboard -n kube-system`
   
@@ -482,14 +484,14 @@ Fortunately for us helm is a very powerful mechanism for configuring services, a
 The IP address of the load balancer is in the EXTERNAL-IP column. Note that this can take a few minutes to be assigned, so it it's listed as <pending> just re-run the `kubectl get` command after a short while
 
 
-### Looking around the dashboard.
+### Step 3c: Looking around the dashboard.
 In several of the labs we're going to be using the dashboard, so let's look around it a bit to get familiar with it's operation.
 
-  14. Open a web browser and using the IP address you got above and go to 
+  1. Open a web browser and using the IP address you got above and go to 
   
   - `https://<load balancer ip address>/#!/login`
 
-  15. In the browser, accept a self signed certificate the mechanism varies by browser and version, but as of August 2020 the following worked.
+  2. In the browser, accept a self signed certificate the mechanism varies by browser and version, but as of August 2020 the following worked.
   
   - In Safari you will be presented with a page saying "This Connection Is Not Private" Click the "Show details" button, then you will see a link titled `visit this website` click that, then click the `Visit Website` button on the confirmation pop-up. To update the security settings you may need to enter a password, use Touch ID or confirm using your Apple Watch.
   
@@ -501,13 +503,13 @@ We have had reports that some versions of Chrome will not allow you to override 
 
 You'll now be presented with the login screen for the dashboard.
 
-  16. Click the radio button for the **Token**
+  3. Click the radio button for the **Token**
   
-  17. Enter the token for the admin-user you retrieved earlier
+  4. Enter the token for the admin-user you retrieved earlier
   
-  18. Accept to save the password if given the option, it'll make things easier on the next login
+  5. Accept to save the password if given the option, it'll make things easier on the next login
   
-  20. Press **Sign In**
+  6. Press **Sign In**
 
   ![dashboard-login-completed](images/dashboard-login-completed.png)
 
@@ -519,11 +521,11 @@ You now should see the **Overview** dashboard :
 
 Note that some options on the left menu have a little N by them (if you hover your mouse it becomes "Namespaced") This is a reminder that this menu item (or in the case of Workloads, Service, and Config and storage) will display / allow you to manage stuff that is namespace specific. 
 
-  21. To select a namespace use the dropdown on the upper right of the web page.
+  7. To select a namespace use the dropdown on the upper right of the web page.
 
   ![dashboard-namespace-selector](images/dashboard-namespace-selector.png)
 
-  22. Initially it will probably say default, if you click on it you will get a choice of namespaces.
+  7. Initially it will probably say default, if you click on it you will get a choice of namespaces.
 
   ![dashboard-namespace-selector-chose](images/dashboard-namespace-selector-chose.png)
 
@@ -612,7 +614,7 @@ Outside a lab environment you may well want to take a little longer to configure
 </details>
 
 
-### Ingress for accepting external data
+### Step 3d: Starting an Ingress controller for accepting external data
 
 
 There is one other core service we need to install before we can start running our microservices, the Ingress controller. An Ingress controller provides the actual ingress capability, but it also needs to be configured (we will look at that later).
@@ -638,7 +640,7 @@ For this lab we're going to use an nginx based Ingress controller. The nginx bas
 
 Firstly we need to create a namespace for the ingress controller.
 
-  23. Run the following command :
+  1. Run the following command :
   
   - `kubectl create namespace ingress-nginx`
   
@@ -650,7 +652,7 @@ As we will be providing a secure TLS protected connection we need to create a ce
 
 To enable the lab to complete in a reasonable time we will therefore be generating our own self-signed certificate. For a lab environment that's fine, but in a production environment you wouldn't do this.
 
-  24. Run the following command to generate a certificate.
+  2. Run the following command to generate a certificate.
 
   - `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=nginxsvc/O=nginxsvc"`
 
@@ -664,7 +666,7 @@ writing new private key to 'tls.key'
  
 The certificate needs to be in a Kubernetes secret, we'll look at these in more detail, but for now :
 
-  25. Run the following command to save the certificate as a secret in the ingress-nginx namespace
+  3. Run the following command to save the certificate as a secret in the ingress-nginx namespace
 
   - `kubectl create secret tls tls-secret --key tls.key --cert tls.crt -n ingress-nginx`
  
@@ -672,7 +674,7 @@ The certificate needs to be in a Kubernetes secret, we'll look at these in more 
 secret/tls-secret created
 ```
 
-  26. Add the Kubernetes nginx based ingress repo to helm
+  4. Add the Kubernetes nginx based ingress repo to helm
   
   - `helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx`
 
@@ -680,7 +682,7 @@ secret/tls-secret created
 "ingress-nginx" has been added to your repositories
 ```
   
-  27. Update the repositories with the new repo
+  5. Update the repositories with the new repo
   
   - `helm repo update`
   
@@ -691,7 +693,7 @@ Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "stable" chart repository
 ```
 
-  28. Run the following command to install **ingress-nginx** using Helm 3:
+  6. Run the following command to install **ingress-nginx** using Helm 3:
   
   - `helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --version 3.10.1   --set rbac.create=true --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-tls-secret"=tls-secret --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-ssl-ports"=443`
   
@@ -715,7 +717,7 @@ This will install the ingress controller in the default namespace.
 
 Because the Ingress controller is a service, to make it externally available it still needs a load balancer with an external port. Load balancers are not provided by Kubernetes, instead Kubernetes requests that the external framework delivered by the environment provider create a load balancer. Creating such a load balancer *may* take some time for the external framework to provide. 
 
-  29. To see the progress in creating the Ingress service type :
+  7. To see the progress in creating the Ingress service type :
   
   -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
   
@@ -727,45 +729,45 @@ In this case we can see that the load balancer has been created and the external
 
 In the helm command you'll have seen a couple of `--set`` options.  These are oci specific annotations (more on annotations later) which tell Kubernetes to setup the load balancer using the TLS secret we created earlier
 
-  30. **Make a note of this external IP address, you'll be using it a lot!**
+  8. **Make a note of this external IP address, you'll be using it a lot!**
 
 As we are having the load balancer act as the encryption termination point, and internal to the cluster we are not using encryption we need to update the load balancer to tell is that once is has terminated the secure connection is should pass on the request internally using an http, not https.
 
-  31. Open up the OCI Cloud UI in your web browser, using the "hamburger" menu navigate to **Core Infrastructure** section then **Networking** then select **Load Balancers**
+  9. Open up the OCI Cloud UI in your web browser, using the "hamburger" menu navigate to **Core Infrastructure** section then **Networking** then select **Load Balancers**
 
   ![hamburger-menu-select-loadbalancer](images/hamburger-menu-select-loadbalancer.png)
 
-  32. Locate the row for **your** load balancer with the IP address you got above, in this case that's for a load balancer named `5da95ea3-6993-4e3b-8d09-a6da655b3eae` but it **will** be different for you!
+  10. Locate the row for **your** load balancer with the IP address you got above, in this case that's for a load balancer named `5da95ea3-6993-4e3b-8d09-a6da655b3eae` but it **will** be different for you!
 
-  33. Click on the load balancer name to open it's details
+  11. Click on the load balancer name to open it's details
 
   ![load-balancer-overview](images/load-balancer-overview.png)
 
-  34. Locate the **Resources** section on the lower left side
+  12. Locate the **Resources** section on the lower left side
 
   ![load-balancer-resources](images/load-balancer-resources.png)
 
-  35. Click on the **Listeners** option
+  13. Click on the **Listeners** option
 
   ![load-balancer-listeners](images/load-balancer-listeners.png)
 
 In the list of listeners look at the line TCP-443, notice that it is set to uses SSL (right hand column) and that it's backend set (where it sends traffic to) is set to TCP-443, we need to change that.
 
-  36. Click on the three dots on the right hand side of the **TCP-443** row
+  14. Click on the three dots on the right hand side of the **TCP-443** row
 
   ![load-balancer-listeners-edit](images/load-balancer-listeners-edit.png)
 
-  37. Click the **Edit** option in the resulting menu
+  15. Click the **Edit** option in the resulting menu
 
   ![load-balancer-edit-listener-chose-backend-set](images/load-balancer-edit-listener-chose-backend-set.png)
 
-  38. In the popup locate the **BackendSet** option, click on it and select the **TCP-80** option
+  16. In the popup locate the **BackendSet** option, click on it and select the **TCP-80** option
 
-  39. Click the **Update Listener**
+  17. Click the **Update Listener**
 
   ![load-balancer-update-in-progress](images/load-balancer-update-in-progress.png)
 
-  40. You'll be presented with a **Work in progress** popup, for now just click the **Close** button and the update will continue in the background
+  18. You'll be presented with a **Work in progress** popup, for now just click the **Close** button and the update will continue in the background
 
 <details><summary><b>Scripting the listener change</b></summary>
 
@@ -794,9 +796,11 @@ echo y | oci lb listener update  --load-balancer-id=$LB_OCID --listener-name=TCP
 
 Note that in a production environment you might want to extend the encryption by encrypting traffic between the load balancer and the ingress controller, and also between the microservices using a servcie mesh (which is a later optional lab).
 
-## Step 4: Services and Ingress rules
+## Step 4: Namespace, Services and Ingress rules
 
 You now have the basic environment to deploy services, and we've looked at how to use the Kubernetes dashboard and the kubectl command line.
+
+### Step 4a: Creating a namespace to work in
 
 Kubernetes supports the concept of namespaces, these logically split the cluster up, effectively into multiple virtual clusters. It's similar to having different directories to store documents for different projects, and like directories you can have multiple namespaces. In this case you are going to be using your own cluster, but having a separate namespace splits your work from the system functions (those are in a namespace called kube-system). We're not going to be using it in this lab, but namespaces can also be used to control management of the cluster by role based access control to specific namespaces, and to control resource usage in Kubernetes enabling you to limit the usage of resources used by the pods in a namespace (memory, CPU etc). It's also possible to restrict resources on individual pods and we'll look at that later.
 
@@ -804,9 +808,9 @@ In a production cluster where you may have many applications running composed of
 
   1. Create a namespace for your projects and setup the environment to make it the default, to make it easier we have created a script called create-namespace.sh that does this for you. You must use **your initials** as a parameter (for example in my case that's `tg-helidon`, **but yours will probably differ !**)
   
-  1a.  `cd $HOME/helidon-kubernetes/base-kubernetes`
+  2.  `cd $HOME/helidon-kubernetes/base-kubernetes`
   
-  1b.  `bash create-namespace.sh <your-initials>-helidon`
+  3.  `bash create-namespace.sh <your-initials>-helidon`
   
 ```
 Deleting old tg-helidon namespace
@@ -817,7 +821,7 @@ Context "docker-desktop" modified.
 ```
 The script tries to delete any existing namespace with that name, creates a new one, and sets it as a default. The output above was using tg-helidon as the namespace, but of course you will have used your initials and so will see them in the output instead of tg.
 
-  2. We can check the namespace has been created by listing all namespaces:
+  4. We can check the namespace has been created by listing all namespaces:
 
   -  `kubectl get namespace`
 
@@ -830,7 +834,7 @@ kube-public       Active   2d23h
 kube-system       Active   2d23h
 tg-helidon        Active   97s
 ```
-  3. If we look into the namespace we've just created we'll see it contains nothing yet:
+  5. If we look into the namespace we've just created we'll see it contains nothing yet:
 
   -  `kubectl get all`
 
@@ -879,14 +883,11 @@ Of course the Kubernetes dashboard also understands namespaces. If you go to the
 </details>
 
 
-### Creating Services
+### Step 4b: Creating Services
 
-The next step is to create services:  a description of a set of microservice instances and the port(s) they listen on. 
+The next step is to create services. A service effectively defines a logical endpoint that has a internal dns name inside the cluster and a virtual IP address bound to that name to enable communication to a service. It's also internal load balancer in that if there are multiple pods for a service it will switch between the pods, and also will remove pods from it's load balancer if they are not operating properly (We'll look at this side of a service later on). 
 
 <details><summary><b>Explaining the service concept in Kubernetes</b></summary>
-
-
-A service effectively defines a logical endpoint that has a internal dns name inside the cluster and a virtual IP address bound to that name to enable communication to a service. It's also internal load balancer in that if there are multiple pods for a service it will switch between the pods, and also will remove pods from it's load balancer if they are not operating properly (We'll look at this side of a service later on).
 
 Services determine what pods they will talk to using selectors. Each pod had meta data comprised of multiple name / value pairs that can be searched on (e.g. type=dev, type=test, type=production, app=stockmanager etc.) The service has a set of labels it will match on (within the namespace) and gets the list of pods that match from Kubernetes and uses that information to setup the DNS and the virtual IP address that's behind the DNS name. The Kubernetes system uses a round robin load balancing algorithm to distribute requests if there are multiple pods with matching labels that are able to accept requests (more on that later) 
 
@@ -924,7 +925,7 @@ You need to define the services before defining anything else (e.g. deployments,
 </details>
 
 
-  4. The servicesClusterIP.yaml file in the defines the cluster services for us. We can apply it to make the changes
+  1. The servicesClusterIP.yaml file in the defines the cluster services for us. We can apply it to make the changes
 
   - `kubectl apply -f servicesClusterIP.yaml`
 
@@ -936,7 +937,7 @@ service/zipkin created
 
 Note that the service defines the endpoint, it's not actually running any code for your service yet.
 
-  5. To see the services we can use kubectl :
+  2. To see the services we can use kubectl :
 
   - `kubectl get services`
 
@@ -953,10 +954,9 @@ We can of course also use the kuberntes dashboard. Open the dashboard and make s
 
 If however you click on the service name in the services list in the dashboard you'll see that there are no endpoints, or pods associated with the service. This is because we haven't (yet) started any pods with labels that match those specified in the selector of the services.
 
-### Accessing your services using an ingress rule
+### Step 4c: Accessing your services using an ingress rule
 
 <details><summary><b>Introduction</b></summary>
-
 
 Services can configure externally visible load balancers for you, however this is not recommended for several reasons if using REST type access. 
 
@@ -983,7 +983,7 @@ PS I know in this lab we've used a load balancer for the dashboard (and will do 
 
 We have already installed the Ingress controller which actually operates the ingress service and configured the associated load balancer. You can see this by looking at the services.  The ingress service is in the ingress-nginx namespace, so we have to specify that :
 
-  6. Let's look at the Ingress services
+  1. Let's look at the Ingress services
 
   -  `kubectl get services -n ingress-nginx`
 
@@ -995,13 +995,13 @@ ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <no
 
 
 
-  7. Note the **External IP address** 
+  2. Note the **External IP address** 
   
 You will need to use this address to access **your** services in the rest of this lab
 
 For the moment there are no actual ingress rules defined yet, 
 
-  8. Let's use kubectl to confirm we have no rules yet
+  3. Let's use kubectl to confirm we have no rules yet
 
   -  `kubectl get ingress`
 
@@ -1088,7 +1088,7 @@ One simple solution however is to modify the load balancer settings to block non
 </details>
 
 
-  9. Let's create the Ingress rules by applying the Ingress Config file : 
+  4. Let's create the Ingress rules by applying the Ingress Config file : 
   
   -  `kubectl apply -f ingressConfig.yaml`
 
@@ -1103,7 +1103,7 @@ ingress.networking.k8s.io/storefront-management created
 ingress.networking.k8s.io/storefront-openapi created
 ```
 
-  10. We can see the resulting ingresses using kubectl
+  5. We can see the resulting ingresses using kubectl
 
   -  `kubectl get ingress`
 
@@ -1120,7 +1120,7 @@ zipkin                    <none>   *       132.145.235.17   80      23s
 ```
 One thing that you may have noticed is that the ingress controller is running in the ingress-nginx namespace, but when we create the rules we are using the namespace we specified (in this case tg_helidon) This is because the rule needs to be in the same namespace as the service it's defining the connection two, but the ingress controller service exists once for the cluster (we could have more pods if we wanted, but for this lab it's perfectly capable of running all we need) We could put the ingress controller into any namespace we chose, kube-system might be a good choice in a production environment. If we wanted different ingress controllers then for nginx at any rate the --watch-namespace option restricts the controller to only look for ingress rules in specific namespaces.
 
-  11. Edit the ingressConfig.yaml file you'll see the rules in it sets up the following mappings
+  6. Edit the ingressConfig.yaml file you'll see the rules in it sets up the following mappings
 
 Direct mappings
 
@@ -1142,7 +1142,7 @@ Direct mappings
 
 Notice the different ports in use on the target.
 
-  12. If you didn't write it down earlier find the external IP address the ingress controller is running on :
+  7. If you didn't write it down earlier find the external IP address the ingress controller is running on :
 
   -  `kubectl get service -n ingress-nginx`
 
@@ -1160,7 +1160,7 @@ The image below was going to the ingress-nginx namespace (that being the one the
 
 ![Ingress controller service endpoints](images/ingress-controller-service-endpoints.png)
 
-  13. We now have a working endpoint, let's try accessing it using curl - expect an error!
+  8. We now have a working endpoint, let's try accessing it using curl - expect an error!
 
   -  `curl -i -k -X GET https://<ip address>/sf`
 
@@ -1191,7 +1191,7 @@ Previously we didn't use the -k flag or https when testing in the Helidon labs. 
 
 We got a **service unavailable** error. This is because that web page is recognised as an ingress rule, but there are no pods able to deliver the service. This isn't a surprise as we haven't started them yet!
 
-  14. If we tried to go to a URL that's not defined we will as expected get a **404 error**:
+  9. If we tried to go to a URL that's not defined we will as expected get a **404 error**:
 
   -  `curl -i -k -X GET https://<ip address>/unknowningress`
 
@@ -1243,7 +1243,7 @@ There are also more specific secrets used for TLS certificates and pulling docke
 </details>
 
 
-#### Configuring the database connection details
+### Step5a: Configuring the database connection details
 
 In The Helidon labs we provided the database details via Java system properties using the command line. We don't want to do that here as it we would have to place them in the image (making it insecure, and also hard to update) To get around that (and to show the flexibility of the Helidon framework) here we will be specifying them using environment variables, because Helidon uses a hierarchy of sources for the configuration we don't even need to change the code to do this!
 
@@ -1294,13 +1294,13 @@ Here we're telling Kubernetes to look in the `stockmanagerdb` secret for a data 
 
 </details>
 
-#### Creating the secrets
+### Step 5b: Creating the secrets
 
-  6. Switch back to the scripts directory
+  1. Switch back to the scripts directory
   
   - `cd $HOME/helidon-kubernetes/base-kubernetes `
 
-  7. Run the following command to create the secrets:
+  2. Run the following command to create the secrets:
   
   -  `bash create-secrets.sh`
 
@@ -1338,7 +1338,7 @@ If you had made a mistake editing the file or get an error when executing it jus
 
 If you want to modify a secret then you simply use kubectl to edit it with the new values (or delete it, then add it's replacement). When a secret is modified (and if you've told Helidon to look for changes) then changes to the secret will be reflected as changes in the configuration. Depending on how your code accesses those, the change may be picked up by your existing code, or you may need to restart the pod(s) using the updated secrets.
 
-  8. Listing the secrets is simple:
+  3. Listing the secrets is simple:
 
   -  `kubectl get secrets`
 
@@ -1352,7 +1352,7 @@ sm-wallet-atp         Opaque                                7      5m9s
 
 
 
-  9. To see the content of a specific secret :
+  4. To see the content of a specific secret :
 
   -  `kubectl get secret sm-conf-secure -o yaml`
 
@@ -1378,7 +1378,7 @@ type: Opaque
 
 The contents of the secret is base64 encoded, to see the actual content we need to use a base64 decoder, in the following replace <your secret payload> with the stockmanager-security.yaml data in result from above, (it starts c2VjdXJpdHk in this example) : 
 
-  10. To get the secret in plain test
+  5. To get the secret in plain test
 
   -  `echo <your secret payload> | base64 -d -i -`
 
@@ -1405,21 +1405,21 @@ security:
 ```
 The dashboard is actually a lot easier in this case. 
 
-  11. In the dashboard UI
+  6. In the dashboard UI
   
-  12. Chose **your** namespace in the namespace selector (upper left) tg-helidon in my case, but yours may differ
+  7. Chose **your** namespace in the namespace selector (upper left) tg-helidon in my case, but yours may differ
 
-  13. Click on the **Secrets** choice in the **Config and Store** section of the left hand menu.
+  8. Click on the **Secrets** choice in the **Config and Store** section of the left hand menu.
 
-  14. Select the sf-conf-secure entry to see the list of files in the secret
+  9. Select the sf-conf-secure entry to see the list of files in the secret
 
-  15. Click on the eye icon next to the storefront-security.yaml to see the contents of the secret.
+  10. Click on the eye icon next to the storefront-security.yaml to see the contents of the secret.
 
   ![dashboard-secrets-stockmanager-security](images/dashboard-secrets-stockmanager-security.png)
   
 For security reasons Kubernetes only stores the secrets in memory, they are not written to permenant storage.
 
-### Config Maps
+### Step 5c: Config Maps
 
 <details><summary><b>Intro to Kubernetes Config Maps</b></summary>
 
@@ -1440,7 +1440,7 @@ For example (**don't type this**) `$ kubectl create configmap sf-config-map --fr
 
 In the $HOME/helidon-kubernetes/base-kubernetes folder there is a script create-configmaps.sh. We have created this to help you setup the configuration maps (though you can of course do this by hand instead of creating a script). If you run this script it will delete existing config maps and create an up to date config for us :
 
-  15. Run the script to create the config maps
+  1. Run the script to create the config maps
 
   -  `bash create-configmaps.sh `
 
@@ -1466,7 +1466,7 @@ sm-config-map   2      0s
 
 As with the secretd we are using a script to make it easier, feel free to look at the contents of the script, you'll see it's kubectl command that select any old entries (if they exist) then creates new ones.
 
-  16. To get the list of config maps we need to ask kubectl or look at the config maps in the dashbaord:
+  2. To get the list of config maps we need to ask kubectl or look at the config maps in the dashbaord:
 
   -  `kubectl get configmaps`
 
@@ -1476,7 +1476,7 @@ sf-config-map   2      37s
 sm-config-map   2      37s
 ```
 
-  17. We can get more details by getting the data in JSON or YAML, in this case I'm extracting it using YAML as that's the origional data format:
+  3. We can get more details by getting the data in JSON or YAML, in this case I'm extracting it using YAML as that's the origional data format:
 
   -  `kubectl get configmap sf-config-map -o=yaml`
 

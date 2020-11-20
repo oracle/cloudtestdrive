@@ -80,27 +80,27 @@ When the download is complete the Firefox download icon will turn completely blu
 
 ### 2b. Importing the downloaded zip file
 
-  6. Switch back to Eclipse
+  1. Switch back to Eclipse
 
-  7. Click the `File` menu, then `Import`
+  2. Click the `File` menu, then `Import`
 
   ![](images/50-eclipse-import-menu.png)
 
-  8. Open the `General` node, then chose the `Existing projects into Workspace` option. Click `Next`
+  3. Open the `General` node, then chose the `Existing projects into Workspace` option. Click `Next`
 
   ![](images/51-eclipse-import-types.png)
 
-  9. Chose the `Select archive file` radio button, then click `Browse` on that row
+  4. Chose the `Select archive file` radio button, then click `Browse` on that row
 
   ![](images/52-eclipse-import-archive.png)
 
-  10. On the left menu chose `Downloads` then in the resulting list chose the download you just made - it should be called `helidon-labs-master.zip` Note that though the image here only shows a single file in your downloads there may be other files (the setup and DB wallet for example) depending on which other steps you have already done.
+  5. On the left menu chose `Downloads` then in the resulting list chose the download you just made - it should be called `helidon-labs-master.zip` Note that though the image here only shows a single file in your downloads there may be other files (the setup and DB wallet for example) depending on which other steps you have already done.
 
-  11. Click the `Open` button
+  6. Click the `Open` button
 
   ![](images/53-eclipse-import-file-selection.png)
 
-  12. Click `Select All` to make sure all the projects are imported, then click the `Finish` button
+  7. Click `Select All` to make sure all the projects are imported, then click the `Finish` button
 
   ![](images/54-eclipse-import-final-stage.png)
 
@@ -114,7 +114,7 @@ This may take a few mins. **Do not worry if you see errors during this process**
 
 The `helidon-labs-common` project contains classes that are used by both the storefront and stockmanager projects. We need to build that project to the Maven repository so it can be used later on.
 
-  13.Click right on the `helidon-labs-common` project, then chose the `Run as` menu option, then `Maven install`
+  1 .Click right on the `helidon-labs-common` project, then chose the `Run as` menu option, then `Maven install`
 
   ![](images/80-helidon-labs-common-menu-maven-install.png)
 

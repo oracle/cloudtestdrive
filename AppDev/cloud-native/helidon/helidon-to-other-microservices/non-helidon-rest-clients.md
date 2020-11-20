@@ -4,7 +4,7 @@
 
 ## Introduction
 
-This is an optional module **with no coding** , if you do not wish to do it please continue with the rest of your lab.
+This is an optional module **with no coding** though it does contain code examples, if you do not wish to do it please continue with the rest of your lab.
 
 **Estimated module duration** 10 mins.
 

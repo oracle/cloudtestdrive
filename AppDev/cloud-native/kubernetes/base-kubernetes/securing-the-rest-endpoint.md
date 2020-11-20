@@ -4,7 +4,7 @@
 
 ## Introduction
 
-This is an optional reading only module, there are no exerciese to do.
+This is an optional reading only module, there are no exercises to do.
 
 **Estimated module duration** 5 mins.
 

@@ -43,7 +43,7 @@ As a general observation though it may be tempting to just go in and modify the 
 
 So far we've been stopping our services (the undeploy.sh script deletes the deployments) and then creating new ones (the deploy.sh script applies the deployment configurations for us) This results in service down time, and we don't want that. But before we can switch to properly using rolling upgrades there are a few bits of configuration we should do
 
-#### Pod counts
+### Step 2a: Defining the rolling upgrade
 Kubernetes aims to keep a service running during the rolling upgrade, it does this by starting new pods to run the service, then stopping old ones once the new ones are ready. Through the magic of services and using labels as selectors the Kubernetes run time adds and removed pods from the service. This will work with a deployment whose replica sets only contain a single pod (the new pod will be started before the old one is stopped) but if your service contains multiple pods it will use some configuration rules to try and manage the process in a more balanced manner and sticking reasonably closely to the number of pods you've asked for (or the auto scaler has).
 
 We are going to once again edit the storefront-deployment.yaml file to give Kubernetes some rules to follow when doing a rolling upgrade. Importantly however we're going to edit a *Copy* of the file so we have a history.
@@ -129,11 +129,11 @@ spec:
   7. Save the changes
 
 
-### Actually doing the rollout
+### Step 2b: Applying the rollout strategy
 
 To do the roll out we're just going to apply the new file. Kubernetes will compare that to the old config and update appropriately.
 
-  8. Apply the new config
+  1. Apply the new config
   
   -  `kubectl apply -f storefront-deployment-v0.0.1.yaml --record`
 
@@ -141,7 +141,7 @@ To do the roll out we're just going to apply the new file. Kubernetes will compa
 deployment.apps/storefront configured
 ```
 
-  9.  We can have a look at the status of the rollout
+  2.  We can have a look at the status of the rollout
   -  `kubectl rollout status deployment storefront`
 
   ```
@@ -150,7 +150,7 @@ deployment "storefront" successfully rolled out
 
 If you get a message along the lines of `Waiting for deployment "storefront" rollout to finish: 3 of 4 updated replicas are available...` this just means that the roll out is still in progress, once it's complete you should see the success message.
 
-  10. Let's also look at the history of this and previous roll outs:
+  3. Let's also look at the history of this and previous roll outs:
 
   -  `kubectl rollout history  deployment storefront`
 
@@ -173,20 +173,20 @@ Of course normally you would make a change, test it and build it, then push to t
 For this lab we are focusing on Helidon and Kubernetes, not the entire CI/CD chain so like any good cooking program we're going to use a v0.0.2 image that we created for you. For the purposes of this module the image is basically the same as the v0.0.1 version, except it reports it's version as 0.0.2 
 
 
-### Applying our new image
+Applying our new image
 
 To apply the new v0.0.2 image we need to upgrade the configuration again. As discussed above this we would *normally* and following best practice do this by creating a new version of the deployment yaml file (say storefront-deploymentv0.0.2.yaml to match the container and code versions)
 
 However ... for the purpose of showing how this can be done using kubectl we are going to do this using the command line, not a configuration file change. This **might** be something you'd do in a test environment, but **don't** do it in a production environment or your change management processes will almost certainly end up damaged.
 
-  11. In the OCI cloud shell Execute the command 
+  1. In the OCI cloud shell Execute the command 
   -  `kubectl set image deployment storefront storefront=fra.ocir.io/oractdemeabdmnative/h-k8s_repo/storefront:0.0.2 --record`
 
   ```
 deployment.apps/storefront image updated
 ```
 
-  12. Let's look at the status of our setup during the roll out
+  2. Let's look at the status of our setup during the roll out
   
   -  `kubectl get all`
 
@@ -227,7 +227,7 @@ Finally if we look at the pods themselves we see that there are five storefront 
 
 Basically what Kuberntes has done is created a new replica set and started some new pods in it by adjusting the number of pod replicas in each set, maintaining the overall count of having 3 pods available at all times, and only one additional pod over the replica count set in the deployment. Over time as those new pods come online in the new replica set **and** pass their readiness test, then they can provide the service and the **old** replica set will be reduced by one pod, allowing another new pod to be started. At all times there are 3 pods running.
 
-  13. Rerun the status command a few times to see the changes 
+  3. Rerun the status command a few times to see the changes 
   
   -  `kubectl get all`
 
@@ -260,7 +260,7 @@ replicaset.apps/storefront-79d7d954d6     4         4         2       63s
 replicaset.apps/zipkin-88c48d8b9          1         1         1       29m
 ```
 
-  14. Kubectl provides an easier way to look at the status of our rollout
+  4. Kubectl provides an easier way to look at the status of our rollout
 
   - `kubectl rollout status deployment storefront`
 
@@ -277,7 +277,7 @@ Kubectl provides us with a monitor which updates over time. Once all of the depl
 
 During the rollout if you had accessed the status page for the storefront (on /sf/status) you would sometimes have got a version 0.0.1 in the response, and other times 0.0.2 This is because during the rollout there are instances of both versions running.
 
-  15. If we look at the setup now we can see that the storefront is running only the new pods, and that there are 4 pods providing the service.
+  5. If we look at the setup now we can see that the storefront is running only the new pods, and that there are 4 pods providing the service.
 
   -  `kubectl get all`
 
@@ -309,7 +309,7 @@ replicaset.apps/zipkin-88c48d8b9          1         1         1       30m
 
 One important point is that you'll see that the **old** replica set is still around, even though it hasn't got any pods assigned to it. This is because it still holds the configuration that was in place before if we wanted to rollback (we'll see this later)
 
-  16. if we now look at the history we see that there have been two sets of changes
+  6. if we now look at the history we see that there have been two sets of changes
   
   -  `kubectl rollout history deployment storefront`
 
@@ -322,7 +322,7 @@ REVISION  CHANGE-CAUSE
 
 Note that to get the detail of the change you have to use the --record flag
 
-  17. Let's check on our deployment to make sure that the image is the v0.0.2 we expect
+  7. Let's check on our deployment to make sure that the image is the v0.0.2 we expect
   
   -  `kubectl describe deployment storefront`
 
@@ -386,7 +386,7 @@ Events:
 
 We see the usual deployment info, the Image is indeed the new one we specified (in this case `fra.ocir.io/oractdemeabdmnative/h-k8s_repo/storefront:0.0.2`) and the events log section shows us the various stages of rolling out the update.
 
-  18. We should of course check that our update is correctly delivering a service (replace the IP address with one for your service)
+  8. We should of course check that our update is correctly delivering a service (replace the IP address with one for your service)
   
   - `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
 
@@ -401,7 +401,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
 
-  19. Now let's check the output from the StatusResource (again replace the IP address with the one for your service)
+  9. Now let's check the output from the StatusResource (again replace the IP address with the one for your service)
   
   -  `curl -i -k -X GET https://<external IP>/sf/status`
 

@@ -43,12 +43,13 @@ Just because the data is available doesn't mean we can analyse it, something nee
 Once you have the data you need to be able to process it to visualize it and also report any alerts of problems.
 
 
-### Monitoring and visualization software
-For this lab we are going to use a very simple monitoring, using the metrics in our microservices and the standard capabilities in the Kubernetes core services to generate data.  Then we'll use the Prometheus to extract the data and Grafana to display it.
+## Step 2: Preparing for installing Prometheus
+
+For this lab we are going to do some very simple monitoring, using the metrics in our microservices and the standard capabilities in the Kubernetes core services to generate data.  Then we'll use the Prometheus to extract the data and Grafana to display it.
 
 These tools are of course not the only ones, but they are very widely used, and are available as Open Source projects.
 
-### Configuring Helm
+### Step 2a: Configuring Helm
 
 We need to specify the Helm repository for Prometheus
 
@@ -76,10 +77,10 @@ Update Complete. ⎈Happy Helming!⎈
   
 Depending on which other modules you have done you may see differences in the repositories in the update list
 
-### Namespace for the monitoring and visualization software
+### Step 2b: Create a Namespace for the monitoring and visualization software
 To separate the monitoring services from the  other services we're going to put them into a new namespace. 
 
-  3. Type the following to create the namespace
+  1. Type the following to create the namespace
   
   -  `kubectl create namespace monitoring`
 
@@ -89,7 +90,7 @@ To separate the monitoring services from the  other services we're going to put 
 
 
 
-## Step 2: Prometheus
+## Step 3: Prometheus
 
 <details><summary><b>Older versions of Kubernetes than 1.18.10</b></summary>
 
@@ -108,6 +109,8 @@ To specify a specific older version use the version keyword in your help command
 ---
 
 </details>
+
+### Step 3a: Installing Prometheus
 
 Installing Prometheus is simple, we just use helm.
 
@@ -225,26 +228,26 @@ Note that the precise details shown will of course vary, especially if you've on
   
   9. Use the << and >> buttons to move the time window around within the overall data set (of course these may not be much use if you haven't got much data, but have a play if you like)
 
-### Specifying services to scrape
+### Step 3b: Specifying services to scrape
 The problem we have is that (currently) Prometheus is not collecting any data from our services. Of course we may find info on the clusters behavior interesting, but our own services would be more interesting!
 
 We can see what services Prometheus is currently scraping :
 
-  10. Click on the **Status** menu (top of the screen) :
+  1. Click on the **Status** menu (top of the screen) :
 
   ![Choosing service discovery](images/prometheus-chosing-service-discovery.png)
 
-  11. Then select **Service Discovery**
+  2. Then select **Service Discovery**
 
   ![The initial service discovery screen](images/prometheus-service-discovery-initial.png)
 
-  12. Click on the **Show More** button next to the Kubernetes-pods line (this is the 2nd reference to Kubernetes pods, the 1st is just a link that takes you to the 2nd one it it's not on the screen)
+  3. Click on the **Show More** button next to the Kubernetes-pods line (this is the 2nd reference to Kubernetes pods, the 1st is just a link that takes you to the 2nd one it it's not on the screen)
 
 You will be presented with a list of all of the pods in the system and the information that Prometheus has gathered about them (it does this by making api calls to the api server in the same way kubectl does)
 
   ![prometheus-pods-lists-initial](images/prometheus-pods-lists-initial.png)
 
-  13. Scroll down to find the entries for the storefront and stockmanager pods. 
+  4. Scroll down to find the entries for the storefront and stockmanager pods. 
 
 If the pod is exposing multiple ports there may be multiple entries for the same pod as Prometheus is checking every port it can to see if there are metrics available.  The image below shows the entries for the storefront on ports 8080 and 9080:
 
@@ -290,13 +293,13 @@ map[prometheus.io/path:/metrics prometheus.io/port:9080 prometheus.io/scrape:tru
 ***However***
 In most cases we don't want these to be a temporary change, we want the Prometheus to monitor our pods if they restart (or we re-deploy)
 
-  14. In the OCI Cloud Shell Navigate to the helidon-kubernetes folder
+  5. In the OCI Cloud Shell Navigate to the helidon-kubernetes folder
   
   - `cd $HOME/helidon-kubernetes` 
   
-  15. Edit the file `storefront-deployment.yaml`
+  6. Edit the file `storefront-deployment.yaml`
   
-  16. Locate the pod annotations (part of the spec / template / metadata section) which are currently commented out :
+  7. Locate the pod annotations (part of the spec / template / metadata section) which are currently commented out :
 
   ```
    metadata:
@@ -311,7 +314,7 @@ In most cases we don't want these to be a temporary change, we want the Promethe
       - name: storefront
 ```
 
-  17. Remove the comment symbol (the #) in front of the annotations so the section now looks like
+  8. Remove the comment symbol (the #) in front of the annotations so the section now looks like
    
   ```
    metadata:
@@ -327,9 +330,9 @@ In most cases we don't want these to be a temporary change, we want the Promethe
 ```
 Be **very** careful to only remove the # character and **no other whitespace**.
 
-  18. Save the changes in this file
+  9. Save the changes in this file
   
-  19. Edit the file `stockmanager-deployment.yaml` so it now has a pod annotations section that looks like 
+  10. Edit the file `stockmanager-deployment.yaml` so it now has a pod annotations section that looks like 
 
   ```
  template:
@@ -345,7 +348,7 @@ Be **very** careful to only remove the # character and **no other whitespace**.
       - name: stockmanager
 ```
 
-  20. Now run the script **undeploy.sh** to remove the deployments
+  11. Now run the script **undeploy.sh** to remove the deployments
   
   -  `bash undeploy.sh`
 
@@ -374,7 +377,7 @@ replicaset.apps/zipkin-88c48d8b9         1         1         1       8h
 ```
 This script just does a kubectl delete -f on each of the deployments. 
 
-  21. Now recreate the deployments
+  12. Now recreate the deployments
   
   -  `bash deploy.sh `
 
@@ -411,7 +414,7 @@ This script just does a kubectl apply -f on each of the deployments.
 
 If we use kubectl to get the status after a short while (the pods may have to wait for their readiness probes to be operational) we'll see everything is working as expected and the pods are Running
 
-  22. View status: `kubectl get all`
+  13. View status: `kubectl get all`
 
   ```
 NAME                               READY   STATUS    RESTARTS   AGE
@@ -437,34 +440,34 @@ replicaset.apps/zipkin-88c48d8b9         1         1         1       79s
 
 Note we are doing an undeploy and deploy to ensure we have a known state. If we'd just re-done the deploy only, Kubernetes would have acted like it was an upgrade of the deployments and we'd have seen pods terminating, while new ones were being created and additional replica sets. We saw how this actually works in the rolling upgrade lab.
 
- 23. Return to your browser and reload the Prometheus Status page
+  14. Return to your browser and reload the Prometheus Status page
 
 You will see that there are 2 pods showing as being discovered, previously it was 0
 
   ![prometheus-pods-list-updated](images/prometheus-pods-list-updated.png)
 
-  24. Click on the **show more** button next to the kubernetes-pods label
+  15. Click on the **show more** button next to the kubernetes-pods label
 
 You can see that the storefront pod (port 9080) and stockmanager (port 9081) pods are no longer being dropped and there is now data in the target labels column. The actual data services for storefont (port 8080) and stockmanager (port 8081) are however still dropped.
 
   ![prometheus-pods-storefront-updated](images/prometheus-pods-storefront-updated.png)
 
-### Let's look at our captured data
+### Step 3c: Let's look at our captured data
 Now we have configured Prometheus to scrape the data from our services we can look at the data it's been capturing.
 
-  25. Return to the Graph page in the Prometheus web page
+  1. Return to the Graph page in the Prometheus web page
   
-  26. Click on the **Graph** tab.
+  2. Click on the **Graph** tab in the lower section.
 
-  27. In the Expression box use the auto complete function by typing the start of `application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_listAllStock_total` or select it from the list under the **Insert metric at cursor** button.
+  3. In the Expression box use the auto complete function by typing the start of `application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_listAllStock_total` or select it from the list under the **Insert metric at cursor** button.
 
-  28. Click the **Execute** button.
+  4. Click the **Execute** button.
 
 If you're on the graph screen you'll probabaly see a pretty boring graph
 
   ![prometheus-list-stock-empty](images/prometheus-list-stock-empty-graph.png)
 
-  29.Look at the **console view** to see a bit more information:
+  5.Look at the **console view** to see a bit more information:
 
   ![prometheus-list-stock-empty-console](images/prometheus-list-stock-empty-console.png)
 
@@ -472,7 +475,7 @@ If we look at the data we can see that the retrieved value is 0 (it may be anoth
 
 Let's make a few calls to list the stock and see what we get
 
-  30. Execute the following command a few times, **replacing <external IP> with your Ingress endpoint (not the prometheus IP):**
+  6. Execute the following command a few times, **replacing <external IP> with your Ingress endpoint (not the prometheus IP):**
   
   -  `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
 
@@ -487,9 +490,9 @@ strict-transport-security: max-age=15724800; includeSubDomains
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
 
-  31. Go back to the Prometheus browser window
+  7. Go back to the Prometheus browser window
   
-  32. Reload the page and make sure you're on the **Console** tab
+  8. Reload the page and make sure you're on the **Console** tab
 
 We see that our changes have been applied.  Note it may take up to 60 seconds for Prometheus to get round to scraping the metrics form the service, it doesn't do it continuously as that may put a significant load on the services it's monitoring.
 
@@ -505,9 +508,9 @@ In this case you can see a set of 9 requests, you may of course have done a diff
 
 When we did the Helidon labs we actually setup the metrics on the call to list stock to not just generate an absolute count of calls, but to also calculate how man calls were begin made over a time interval. 
 
-  33. Make a few more curl requests to ensure we have some data groupings, take a short break and then make a few more.
+  9. Make a few more curl requests to ensure we have some data groupings, take a short break and then make a few more.
 
-  34. Change the metric to `application_listAllStockMeter_one_min_rate_per_second` Click the **Execute** button
+  10. Change the metric to `application_listAllStockMeter_one_min_rate_per_second` Click the **Execute** button
 
 We can see the number of calls to list all stock per second averaged over 1 min. This basically provides us with a view of the number of calls made to the system over time, and we can use it to identify peak loads.
 
@@ -515,13 +518,13 @@ We can see the number of calls to list all stock per second averaged over 1 min.
 
 Prometheus can also produce multi value graphs. For example in addition to the counting metrics we also setup a timer on the listAllStock method to see how long calls to it took. If we now generate a graph on the timer we see in the Console view that instead of just seeing a single entry representing the latest data, that there are actually 6 entries representing different breakdowns of the data (0.5 being the most common data, 0.999 being the least common) Of course the data you see may vary depending on your situation and how much you've already been using the services.
 
-  35. Change the metric to `application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_listAllStockTimer_seconds` Click the **Execute** button
+  11. Change the metric to `application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_listAllStockTimer_seconds` Click the **Execute** button
 
   ![prometheus-list-stock-timer-quantile-console](images/prometheus-list-stock-timer-quantile-console.png)
 
 We can see that 50% of the requests are within 0.12 seconds, and 99.9% are within 0.47 seconds.
 
-  36. The graph is also a lot more interesting, especially if we enabled the stacked mode
+  12. The graph is also a lot more interesting, especially if we enabled the stacked mode
 
   ![prometheus-list-stock-timer-quantile-graph](images/prometheus-list-stock-timer-quantile-graph.png)
 
@@ -531,7 +534,8 @@ Prometheus has a number of mathematical functions we can apply to the graphs it 
 
 It's also possible to do things like separate out pods that are being used for testing (say they have a deployment type of test rather than production) or many other parameters. If you want more details there is a link to the Prometheus Query language description in the further-information document
 
-### But it's not a very good visualization
+**But it's not a very good visualization**
+
 Prometheus was not designed to be a high end graphing tool, the graphs cannot for instance be saved so you can get back to them later. For that we need to move on to the next lab and have a look at the capabilities of Grafana
 
 ---

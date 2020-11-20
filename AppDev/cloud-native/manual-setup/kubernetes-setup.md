@@ -53,7 +53,7 @@ If you have completed the Helidon labs then you will have already setup the comp
 
 ## Step 2: Setup the database
 
-### 2a. Create the database
+### Step 2a. Create the database
 
   1. Use the "Hamburger" menu, and select the **Oracle Database** section, then **Autonomous Transaction Processing**
 
@@ -110,24 +110,25 @@ The database will start to be provisioned. This may take a short while, once it 
   15. Open a document and paste the OCID, you will need this later in the setup.
 
 
-### 2b. Setup your user in the database
+### Step 2b. Setup your user in the database
 
+We need to configure the database user so it matches the lab instructions
 
-  16. Now the instance is running click on the **Tools** tab, then **Open SQL Developer Web** button
+  1. Now the instance is running click on the **Tools** tab, then **Open SQL Developer Web** button
 
   ![](images/db-20-atp-access-sql-developer-web.png)
 
 This will open the SQL Developer web login page
 
-  17. Login as ADMIN (it's case sensitive), using the appropriate password.
+  2. Login as `ADMIN` (it's case sensitive), using the password you chose earlier in the database setup.
 
   ![](images/db-21-sql-developer-web-login.png)
 
-  18. Click the `x` on the intro message popup - or if you want to read them just click all the way through them.
+  3. Click the **X** on the intro message popup - or if you want to read them just click all the way through them.
 
 Once the intro messages are gone you'll get to the main screen
 
-  19. Copy and paste the below SQL instructions into the worksheet (highlighted in red in the image below)
+  4. Copy and paste the below SQL instructions into the worksheet (highlighted in red in the image below)
 
   ```
 CREATE USER HelidonLabs IDENTIFIED BY H3lid0n_Labs;
@@ -139,12 +140,11 @@ GRANT UNLIMITED TABLESPACE TO HelidonLabs;
 
   ![](images/db-22-sql-developer-web-worksheet.png)
 
-  20. Then Run the script (The Page of paper with the green "run" button.) 
+  5. Then Run the script (The Page of paper with the green "run" button.) 
 
 If it works OK you will see a set of messages in the Script Output section of the screen (highlighted in red below) saying the User has been created and grants made.
 
   ![](images/db-23-sql-developer-web-script-output.png)
-
 
 
 ## End of the setup

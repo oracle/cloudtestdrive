@@ -32,7 +32,7 @@ You need to complete the `Rolling update` module (last of the core Kubernetes la
 
 We've seen how to install and run the service mesh, we're now doing to look at how to use it.
 
-### Starting a load generator
+### Step 1a: Starting a load generator
 
 The first thing we need is some load so we can see what the service mesh is doing, there is a load generator script we can use to do this
 
@@ -79,9 +79,9 @@ Note, the OCI Cloud Shell session will terminate (and thus kill off the load gen
 
 If that happens while you are doing the service mesh labs the solution is to connect back to the OCI CLoud shell and restart the load generator
 
-### Viewing the load
+### Step 1b: Viewing the load
 
-  3. In your laptop web browser go to `https://<external IP>`
+  1. In your laptop web browser go to `https://<external IP>`
 
 You may be challenged as you have a self signed certificate. Follow the normal procedures in your browser to accept the connection and proceed.
 
@@ -89,7 +89,7 @@ Next you may be presented with the login challenge.
 
 ![](images/linkerd-web-login.png)
 
-  4. If you are login with `admin` as the username, for the password use the one you used when creating the login password during the linkerd installation in the previous module.
+  2. If you are login with `admin` as the username, for the password use the one you used when creating the login password during the linkerd installation in the previous module.
 
 You'll be presented with the linkerd-web main page, unlike when you saw this previously now it's showing load for your services.
 
@@ -140,11 +140,11 @@ In the TCP Metrics section the columns are :
 
 </details>
 
-#### Namespace specific load
+### Step 1c: Namespace specific load
 
 Let's now look at the specific data for your namespace. 
 
-  5. In the **HTTP metrics** section click on the **name** of your namespace (mine is `tg-helidon`, but yours will be different)
+  1. In the **HTTP metrics** section click on the **name** of your namespace (mine is `tg-helidon`, but yours will be different)
 
   ![](images/linkerd-app-namespace-top-of-page.png)
 
@@ -181,7 +181,7 @@ We can see reporting details on a number of Kubernetes objects within the namesp
 
 There are details on the deployments and also specific pods. 
 
-  6. If we scroll down a bit we can see further information.
+  2. If we scroll down a bit we can see further information.
 
   ![](images/linkerd-app-namespace-bottom-of-page.png)
 
@@ -193,7 +193,7 @@ This may seem pointless, but it's actually very important if we look at this fro
 
 Let's look at what the pod is specifically doing, in the pods section 
 
-  7. Click on the stock manager pod, in my case that's stockmanager-6b5d4897fc-t2ddz but of course yours will be different
+  3. Click on the stock manager pod, in my case that's stockmanager-6b5d4897fc-t2ddz but of course yours will be different
 
   ![](images/linkerd-pod-stats.png)
 
@@ -203,16 +203,16 @@ Firstly we can see the other pods that are talking to this stock manager pod (th
 
 Below that we can the specific details. There's a lot of data we can see about the message flows and volumes, even in a simple setup like this one.
 
-### What network traffic is happening ?
+### Step 1d: What network traffic is happening ?
 
 So far we've seen what's happening on the pods, but as the service mesh is a layer 7 proxy it knows what's happening within the requests. Note in mid October 2020 as I was testing this module I found this section of the lab works best with Chrome, some features did work in Firefox. The live monitoring features did not work in Safari. Those browsers may have been updated since then of course.
 
-  8. On the left hand menu in the tools section 
+  1. On the left hand menu in the tools section 
 
   ![](images/linkerd-tools-selection.png)
 
 
-  9. Click on the **Top** option
+  2. Click on the **Top** option
 
 We switch to the Top screen
 
@@ -220,21 +220,21 @@ We switch to the Top screen
 
 Here we can have a look at the REST API calls being made to / from a service.
 
-  10. Click on the **Namespace**, select **your** namespace from the list
+  3. Click on the **Namespace**, select **your** namespace from the list
 
   ![](images/linkerd-top-select-namespace.png)
 
-  11. Click on the **Resource** section (this may have been updated when you selected a namespace) 
+  4. Click on the **Resource** section (this may have been updated when you selected a namespace) 
 
-  12. Select `deloyment/storefront` from the list
+  5. Select `deloyment/storefront` from the list
 
   ![](images/linkerd-top-select-resource.png)
 
 Note that the UI is displaying what the query would be if you ran the linkerd command manually, in this case it's `linkerd top deployment/storefront --namespace tg-helidon` This helps you understand how you could write scripts to gather information if you liked)
 
-  13. Click the **Start** button (when you selected the resource it may have automatically started, in which case **do not** click the `Stop` button)
+  6. Click the **Start** button (when you selected the resource it may have automatically started, in which case **do not** click the `Stop` button)
 
-  14. Wait a short while for requests to be made and data to be gathered
+  7. Wait a short while for requests to be made and data to be gathered
 
   ![](images/linkerd-top-running.png)
 
@@ -242,7 +242,7 @@ We can now see that the storefront deployment has been receiving requests from t
 
 You may also see requests to /status, /metrics and /health/live These are the Kubernetes framework checking to ensure that the pod is alive and ready, and Prometheus gathering performance metrics.
 
-  15. Click the **Tap** icon ![](images/linkerd-tap-icon.png) on the right of the `To stockmanager` row
+  8. Click the **Tap** icon ![](images/linkerd-tap-icon.png) on the right of the `To stockmanager` row
 
   ![](images/linkerd-tap-intro.png)
 
@@ -250,7 +250,7 @@ This is the Tap page, it let's us look at individual requests so we can see how 
 
 For now we are not going to change any of these settings as we're just exploring, but you can see there are options to filter the requests, for example only looking at HTTP PUT rather than all requests
 
-  16. Click the **Start** button
+  9. Click the **Start** button
 
 Wait a short while for requests to be made and data to be gathered
 
@@ -258,27 +258,27 @@ Wait a short while for requests to be made and data to be gathered
 
 We see the results as they are generated, let's look at them
 
-  17. Click the **Stop** button 
+  10. Click the **Stop** button 
 
-  18. Click on the "down arrow" - at the start of each row to the left of the `Direction` column
+  11. Click on the "down arrow" - at the start of each row to the left of the `Direction` column
 
   ![](images/linkerd-tap-details.png)
 
 We can now see the details of the request. Note that we **do not** see the content of the request, only the header information (content could of course contain private information, admittedly the basic auth can easily be reversed, but in a production rather than a lab environment you's use something like JWT or OAUTH2.) We can however see the duration of the request, and other information that could be very useful in diagnosing  problems (something we will look at in another module)
 
-### Status of linkerd itself
+### Step 1e: Status of linkerd itself
 
 Finally let's have a quick look at the status of the linkerd control plane itself
 
 We've currently been looking at the services, deployments and pods within the namespaces, we need to switch to the control plane view.
 
-  19. Click **Control Plane** on the upper left.
+  1. Click **Control Plane** on the upper left.
 
   ![](images/linkerd-select-namespace.png)
 
 It's not a surprise, but we can now see the details of the control plane :-)
 
-![](images/linkerd-control-plane.png)
+  ![](images/linkerd-control-plane.png)
 
 In the control plane we can see the deployments, the green dots indicate all is well with the services, to the right of that we have a summary of the actual installation. Then there is the list of all of the namespaces currently part of the mesh (this is clickable in the same way as the namespaces list we saw at the start of this module.)
 

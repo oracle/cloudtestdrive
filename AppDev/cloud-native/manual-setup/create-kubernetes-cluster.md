@@ -20,13 +20,13 @@ Creating a Managed Kubernetes cluster on the Oracle Cloud.
 
 ### Prerequisites
 
-If you are doing the full labs (these include modules on Helidon and Docker) you need to have completed the steps in the `Helidon` modules (including the setup)
+If you are doing the full labs (these include modules on Helidon and Docker) you need to have completed the steps in the **Helidon** modules (including the setup)
 
-If you are only doing the Kubernetes based labs you need to have completed the steps in the `Tenancy Setup for the Kubernetes Labs` module.
+If you are only doing the Kubernetes based labs you need to have completed the steps in the **Tenancy Setup for the Kubernetes Labs** module.
 
 ## Step 1: Creating your Kubernetes cluster
 
-### Navigate to the Managed Kubernetes dashboard
+### Step 1a: Navigate to the Managed Kubernetes dashboard
 
   1. Log into the **OCI Console** 
 
@@ -44,21 +44,21 @@ If you are only doing the Kubernetes based labs you need to have completed the s
 
 
 
-### Creating the cluster
+### Step 1b: Creating the cluster
 
-  7. Fill in the form with following parameters:
+Fill in the form with following parameters:
 
-  - In the next name the cluster something like `Helidon-Lab-YOUR-INITIALS`
+  1. Set the cluster **Name** to be something like `Helidon-Lab-YOUR-INITIALS`
   
-  - Make sure the compartment is `CTDOKE`
+  2.  Make sure the **Compartment** is `CTDOKE`
   
-  - Make sure the Kubernetes version is the highest on the list (at the time of the last update of this document in November 2020 that was 1.18.10, but it may have been updated since then)
+  3.  Make sure the **Kubernetes version** is the highest on the list (at the time of the last update of this document in November 2020 that was 1.18.10, but it may have been updated since then)
   
-  - Leave the visibility type as **Private**
+  4. Check the **Visibility type** is **Private**
   
-  - Set the shape to VM.Standard2.1
+  5. Set the **Shape** dropdown to VM.Standard2.1
   
-  - Set the number of nodes to be 2
+  6. Set the **Number of nodes** to be 2
 
 There is no need to do anything in the Advanced Options section.
 
@@ -66,15 +66,15 @@ These images are for creating a 1.16.8 cluster, they may be slightly different f
  
   ![](images/create-k8s-cluster.png)
 
-  8. Click the Next button to go to the review page.
+  7. Click the **Next** button to go to the review page.
 
-  9. On the review page check the details you have provided are correct
+  8. On the review page check the details you have provided are correct
 
-  10. Click the Create Cluster button.
+  9. Click the **Create Cluster** button.
 
 You'll be presented with a progress option, if you want read what's happening
 
-  11. Scroll to the bottom and click the **Close** button
+  10. Scroll to the bottom and click the **Close** button
 
 The state will be "Creating" for a few minutes (usually 3-4 mins)
 

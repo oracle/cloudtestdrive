@@ -26,11 +26,11 @@ Strictly speaking this is not part of Helidon, but part of the larger Java EE sp
 
 We will be working in the helidon-stockmanager project and modifying the com.oracle.labs.helidon.stockmanager.resources.StockResource class, adding annotations to the createStockLevel, adjustStockLevel and deleteStockItem methods and extracting the user identity.
 
-### Available contexts
+### Step 1a: Available contexts
 
 There are several different types of context that can be injected. Here we will be looking at the SecurityContext (easy access to the requests security information) but there are others, the most useful of which allows you access to the requests Http Headers. For a full list of the contexts that can be injected see the [J2EE Java Doc for @Context](https://docs.oracle.com/javaee/7/api/javax/ws/rs/core/Context.html)
 
-### Injecting the context
+### Step 1b: Injecting the context
 
 As you might expect we use dependency injection to automatically add the context to method call. Let's add it to the createStockLevel method
 

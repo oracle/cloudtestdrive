@@ -100,7 +100,9 @@ Please make sure that for now you have **stopped** the **storefront** applicatio
 
 ## Step 2: Overview of the classes
 
-### Quick overview of the database functionality
+Let's have a look at the classes we're going to be using.
+
+### Step2a: Quick overview of the database functionality
 The com.oracle.labs.helidon.stockmanager.resources.StockmanagerResource class is the primary class we'll be working with in this lab. If you're not familiar with JPA however there are some other classes you should look at.
 
 The classes in the com.oracle.labs.helidon.stockmanager.database package represent the actual structure of the database. In the database configuration we tell the JPA, JTA layers these are the classes we want the database to represent. You'll see that they have some annotations on them, some of which will be familiar. Let's look at the StockLevel class first:
@@ -194,18 +196,18 @@ It is important to note that each item retrieved from or saved to the database u
 
 
 
-### Using path parameters for methods
+### Step 2b: Using path parameters for methods
 In the Storefront object we were processing Java objects directly as out method arguments (the helidon framework was converting them to / from JSON for us) 
 
 For the StockmanagerResource we are using @PathParams.  A path param is basically part of the URL that can contain data, for example a GET method with a `@Path("/stocklevel/{item}")` when called with /stockLevel/Pencil would extract the Pencil and make it available as the PathParam "item"
 
 Let's look at the StockResource.createStockLevel method to see how this works
 
-  4. Navigate to folder **resources**
+  1. Navigate to folder **resources**
 
-  5. Open file **StockResource.java**
+  2. Open file **StockResource.java**
 
-  6.Locate the method **createStockLevel** approximately in the middle of the file
+  3.Locate the method **createStockLevel** approximately in the middle of the file
 
   ```java
 @Path("/{itemName}/{itemCount}")
@@ -225,7 +227,7 @@ Other possible sources for the params are @QueryParam and @FormsParam. Which one
 
 ## Step 3: Accessing the database
 
-### Getting an entity manager
+### Step 3a: Getting an entity manager
 JPA requires an entity manager to do the work of interacting with the database for us. Historically however that would require code like the following which is in the StockResource constructor.
 
 ```java
@@ -283,7 +285,7 @@ import javax.persistence.PersistenceContext;
 
 Note that the name of the persistence context is defined as a hard coded String, and there is no mechanism for it to be injected via a config property. However, this is not as restrictive as it seems, the name just refers to entries in the persistence.xml file, which itself uses configuration data from the Helidon configuration system, so if we do want to change the database details we can achieve that by modifying the config, and that can be done without source code modifications.
 
-### Configuring the database
+### Step 3b: Configuring the database
 
 Helidon CDI configures the JPA / JTA (transaction system) for us and creates the Entity manager. The JPA / JTA uses the classpath resource META-INF/persistence.xml to define what classes will be persisted, however we don't want to encode things like the database access details in something that's part of the jar file distribution, somewhat of a security risk!
 
@@ -297,21 +299,21 @@ If you are using a database provided by an instructor then they will give you th
 
 We are now going to configure the Eclipse run configuration to add the database connection properties every time the java command is called to run our Main class.
 
-  4. In the Eclipse navigator window on (on the left) select the stockmanager main class
+  1. In the Eclipse navigator window on (on the left) select the stockmanager main class
 
   ![](images/eclipse-select-stockmanager-main.png)
 
-  5. Now click the right mouse button and in the resulting menu navigate to `Run As`, then `Run configurations`
+  2. Now click the right mouse button and in the resulting menu navigate to `Run As`, then `Run configurations`
 
   ![](images/eclipse-select-run-configurations.png)
 
 The run configurations popup appears
 
-  6. In the left side of the Run Configurations popup select `Java Applications`
+  3. In the left side of the Run Configurations popup select `Java Applications`
 
   ![](images/eclipse-run-configuration-select-java-application.png)
 
-  7. Click the new configuration button, this looks like a blank page at the top of the left hand list
+  4. Click the new configuration button, this looks like a blank page at the top of the left hand list
 
   ![](images/eclipse-run-configuration-new-config.png)
 
@@ -321,21 +323,21 @@ The Run configurations popup will create and display a new configuration
 
 Note that in this case it is named `Main (2)` but that may vary
 
-  8. Click the name `Main (2)` in this case (but yours may vary) and name this configuration `stockmanager`
+  5. Click the name `Main (2)` in this case (but yours may vary) and name this configuration `stockmanager`
   
-  9. Make sure that the project is set to `helidon-labs-stockmanager`
+  6. Make sure that the project is set to `helidon-labs-stockmanager`
   
-  10. Make sure that the Main slass is set to `com.oracle.labs.helidon.stockmanager.Main`
+  7. Make sure that the Main slass is set to `com.oracle.labs.helidon.stockmanager.Main`
 
   ![](images/eclipse-run-configurations-new-config-named.png)
 
-  11. Now click on the `args` tab (this is just below the name)
+  8. Now click on the `args` tab (this is just below the name)
 
 The Run configurations popup will now switch to the arguments tab (this may have been abbreviated to `args` in the UI
 
   ![](images/eclipse-run-configurations-new-config-args.png)
 
-  12. Copy the text below into a notepad or ASCII text editor you will need to make some changes to it before you use it. (Do **not** use a word processor like Microsoft Word or anything that makes the text "pretty" as they replace the `-` characters automatically with a non ASCII visually longer version, and that won't work) 
+  9. Copy the text below into a notepad or ASCII text editor you will need to make some changes to it before you use it. (Do **not** use a word processor like Microsoft Word or anything that makes the text "pretty" as they replace the `-` characters automatically with a non ASCII visually longer version, and that won't work) 
 
 Be careful not to add any newlines or extra spaces, tabs etc. Note that this is a long line, and you may have to scroll in the text box to see all of it.
 
@@ -343,7 +345,7 @@ Be careful not to add any newlines or extra spaces, tabs etc. Note that this is 
 -Djavax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.url=jdbc:oracle:thin:@<database connection name>?TNS_ADMIN=./Wallet_ATP -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.user=HelidonLabs -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.password=H3lid0n_Labs -Dhibernate.dialect=org.hibernate.dialect.Oracle10gDialect -Dhibernate.hbm2ddl.auto=update
 ```
 
-  13. In the test editor replace `<database connection name>` with the name of your database connection, in my case that's `tg_high`, **yours will be different** 
+  10. In the test editor replace `<database connection name>` with the name of your database connection, in my case that's `tg_high`, **yours will be different** 
 
   - Make sure you replace the entire thing including `<` and `>`
 
@@ -355,22 +357,22 @@ As an example for **my** database it looks like this, **but yours will vary**
 -Djavax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.url=jdbc:oracle:thin:@tg_high?TNS_ADMIN=./Wallet_ATP -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.user=HelidonLabs -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.password=H3lid0n_Labs -Dhibernate.dialect=org.hibernate.dialect.Oracle10gDialect -Dhibernate.hbm2ddl.auto=update
 ```
 
-  14. Copy the updated text
+  11. Copy the updated text
 
-  15. In the `VM Arguments` file of the Run configurations popup paste the **updated** text
+  12. In the `VM Arguments` file of the Run configurations popup paste the **updated** text
 
   ![](images/eclipse-run-configurations-new-config-args-with-vm.png)
 
-  16. Click the `Apply` button to save the changes
+  13. Click the `Apply` button to save the changes
 
-  17. Click the `Close` button to exit the Run configurations popup.
+  14. Click the `Close` button to exit the Run configurations popup.
  
 In case you wanted to see how to use the a config file for the database settings there is an example in example-config-data/stockmanager-database.yaml file. This isn't actually an imported part of the config files, but it shows you how it could be done using a config file.
 
 
 Using Helidon to create our PersistenceContext will also ensure that the entity manager is correctly shutdown when the program exits so we won't have any unused resources hanging around in the database.
 
-  18. Run the **Main** class of the project (right-click on **Main.java**, *Run As*, then *Java Application*).
+  15. Run the **Main** class of the project (right-click on **Main.java**, *Run As*, then *Java Application*).
 
 ---
 
@@ -403,7 +405,7 @@ The result should show the application listening on http://localhost:8081
 2020.01.05 18:30:33 INFO com.oracle.labs.helidon.stockmanager.Main Thread[main,5,main]: http://localhost:8081
 ```
 
-  19. Use curl to see what's there
+  16. Use curl to see what's there
 
   -  `curl -i -X GET -u jack:password http://localhost:8081/stocklevel`
 
@@ -435,7 +437,7 @@ Of course in a production environment you wouldn't want the database changing un
 
 </details>
 
-  20. Let's try to create some stock items - **error expected**:
+  17. Let's try to create some stock items - **error expected**:
 
   -  `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pins/5000`
 
@@ -448,7 +450,7 @@ Date: Sun, 5 Jan 2020 18:54:43 GMT
 connection: keep-alive
 ```
 
-Look at the console tab and you will see that the code generates an error
+  18. Look at the console tab and you will see that the code generates an error
 
   ```
 2020.01.05 18:54:46 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator Thread[helidon-1,5,server]: HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.JBossStandAloneJtaPlatform]

@@ -51,9 +51,11 @@ This is good, but with in a distributed architecture a single request may (almos
 
 </details>
 
+## Step 2: Setting up Elastic search
+
 To process log data in a consistent manner we need to get all of the data into one place. We're going to use [fluentd](https://www.fluentd.org/) to capture the data and send it to  an Elastic search instance deployed in our Kubernetes cluster in the initial example below, but there are many other options.
 
-## Step 2: Installing elastic search
+### Step 2a: Installing elastic search
 
 As with elsewhere in the labs we'll do this module in it's own namespace, so first we have to create one.
 
@@ -145,15 +147,15 @@ statefulset.apps/elasticsearch-data     0/2     56s
 statefulset.apps/elasticsearch-master   0/3     56s
 ```
 
-### Create an ingress to allow external access to the elastic search
+### Step 2b: Create an ingress to allow external access to the elastic search
 
 Normally you wouldn't do this as the elastic search is an internal service that's accessed using other services that do analysis, but as we're going to be connecting to it externally to see how it's been working we're going to create an ingress that will let us access it.
 
-  6. Switch to the logging scripts directory.
+  1. Switch to the logging scripts directory.
   
   - `cd $HOME/helidon-kubernetes/management/logging` 
 
-  7. Apply the ingress file by typing 
+  2. Apply the ingress file by typing 
   
   - `kubectl apply -f ingressElasticSearch.yaml`
 
@@ -179,9 +181,9 @@ look at the `ingress-nginx-nginx-ingress-controller` row, IP address inthe `EXTE
 
 </details>
 
-  8. In a web browser go to the web page `https://<External IP>/elastic/_cat`  (remember the one below is **my** ip address **you need to use yours**) If you get a 503 or 502 error this means that the elastic search service is still starting up. Wait a short time then retry.
+  3. In a web browser go to the web page `https://<External IP>/elastic/_cat`  (remember the one below is **my** ip address **you need to use yours**) If you get a 503 or 502 error this means that the elastic search service is still starting up. Wait a short time then retry.
 
-  9. If needed in the browser, accept a self signed certificate. The mechanism varies by browser and version, but as of September 2020 the following worked with the most recent (then) browser version.
+  4. If needed in the browser, accept a self signed certificate. The mechanism varies by browser and version, but as of September 2020 the following worked with the most recent (then) browser version.
   
   - In Safari you will be presented with a page saying "This Connection Is Not Private" Click the "Show details" button, then you will see a link titled `visit this website` click that, then click the `Visit Website` button on the confirmation pop-up. To update the security settings you may need to enter a password, use Touch ID or confirm using your Apple Watch.
   
@@ -195,7 +197,7 @@ We have had reports that some versions of Chrome will not allow you to override 
 
 We can see that the elastic search service is up and running, let's see what data it holds
 
-  10. In a web browser (remember to substitute **your** IP address) look at the indices in the service
+  5. In a web browser (remember to substitute **your** IP address) look at the indices in the service
   
   ```
   http://<external IP>/elastic/_cat/indices
@@ -205,7 +207,7 @@ We can see that the elastic search service is up and running, let's see what dat
 
 Well, it's empty! Of course that shouldn't be a surprise, we've not put any log data in it yet!
 
-### Capturing the log data from the micro-services
+### Step 2c: Capturing the log data from the micro-services
 
 Kubernetes writes the log data it captures to files on the host that's running the node. To get the data we therefore need to run a program on every node that accesses the log files and sends them to the storage (elastic search in this case)
 
@@ -245,11 +247,11 @@ Finally we have changes the namespace from kube-system to logging, this is reall
 
 Let's create the daemonset
 
-  11. Make sure you are in the logging scripts directory
+  1. Make sure you are in the logging scripts directory
   
   - `cd $HOME/helidon-kubernetes/management/logging`
   
-  12. In the OCI Cloud Shell terminal type
+  2. In the OCI Cloud Shell terminal type
   
   - `kubectl apply -f fluentd-daemonset-elasticsearch-rbac.yaml`
 
@@ -260,7 +262,7 @@ clusterrolebinding.rbac.authorization.k8s.io/fluentd created
 daemonset.apps/fluentd created
 ```
 
-  13. Let's make sure that everything has started. In the OCI Cloud Shell type
+  3. Let's make sure that everything has started. In the OCI Cloud Shell type
 
   - `kubectl get daemonsets -n logging`
 
@@ -305,13 +307,13 @@ The address is in the EXTERNAL-IP column, in this case it's 132.145.231.23 **but
 
 Open the Kubernetes dashboard
 
-  14. In a web browser on your laptop go to the dashboard (remember this is my IP address, yours will be different) 
+  4. In a web browser on your laptop go to the dashboard (remember this is my IP address, yours will be different) 
   
   ```
 https://132.145.231.23/#!/login
 ```
 
-  15. If prompted in the browser, accept the self signed certificate. The mechanism varies by browser and version, but as of September 2020 the following worked with the most recent (then) browser version.
+  5. If prompted in the browser, accept the self signed certificate. The mechanism varies by browser and version, but as of September 2020 the following worked with the most recent (then) browser version.
   
   - In Safari you will be presented with a page saying "This Connection Is Not Private" Click the "Show details" button, then you will see a link titled `visit this website` click that, then click the `Visit Website` button on the confirmation pop-up. To update the security settings you may need to enter a password, use Touch ID or confirm using your Apple Watch.
   
@@ -355,7 +357,7 @@ ca.crt:     1025 bytes
 
 </details>
 
-  16. Click on the **nodes** option in the **cluster** section of the UI menu on the left
+  6. Click on the **nodes** option in the **cluster** section of the UI menu on the left
 
   ![dashboard-nodes-menu](images/dashboard-nodes-menu.png)
 
@@ -367,7 +369,7 @@ I used a different cluster to get this screen grab and it had two nodes, so ther
 
 In the Oracle Kubertnetes Environment the nodes are names based on their IP address, so 10.0.10.2, 10.0.10.3, and 10.0.10.4 in the case of this cluster.
 
-  17. Click on one of the node names, in this case I chose the 10.0.10.2 node
+  7. Click on one of the node names, in this case I chose the 10.0.10.2 node
 
   ![](images/dashboard-node-details.png)
 
