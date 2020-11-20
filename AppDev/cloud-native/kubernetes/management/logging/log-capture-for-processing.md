@@ -28,6 +28,8 @@ You need to complete the **Rolling update** module (last of the core Kubernetes 
 
 ## Step 1: Log capture for processing and analysis
 
+Developers create log entries for a reason, but as we've seen so far they are not that easy to get at in Kubernetes.
+
 <details><summary><b>The problem with log data in a distributed cloud native environment</b></summary>
 
 
@@ -409,7 +411,7 @@ There's a lot of data here (and depending on which browser you use it may be nic
 
 Of course we can focus in on specific entries if we want, in this case we're going to look for entries which have the container_name of storefront
 
-  4.Try this URL to focus on the storefront container (remember the one below is **my** ip address **you need to use yours**, adjust YYYY-MM-DD to one of the entries in the indexes list).
+  4. Try this URL to focus on the storefront container (remember the one below is **my** ip address **you need to use yours**, adjust YYYY-MM-DD to one of the entries in the indexes list).
   
   ```
 https://<External IP>/elastic/logstash-<YYYY-MM-DD>/_search?q=kubernetes.container_name:storefront

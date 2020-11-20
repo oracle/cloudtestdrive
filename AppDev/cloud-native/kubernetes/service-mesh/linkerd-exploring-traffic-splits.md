@@ -791,7 +791,7 @@ This will generate reports from any deployment to the `zipkin` deployment (it is
 
   7. Click the **Start** button
 
-  8. In the OCI cloud shell Make multiple curl requests of the form 
+  8. In the OCI cloud shell make multiple curl requests of the form 
   
   - `curl -i -k  -u jack:password https://<external ip>/store/stocklevel`
   

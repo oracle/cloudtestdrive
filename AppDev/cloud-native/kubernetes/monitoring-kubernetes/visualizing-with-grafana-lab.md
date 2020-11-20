@@ -130,13 +130,13 @@ Of course **your** password will vary, this is just an example
 
 We need some data to look at, so :
 
-  5. Using the OCI Cloud Shell or your laptop, make a few requests using curl to generate some new data (replace <external IP> with that of the ingress controller you were using earlier)
+  6. Using the OCI Cloud Shell or your laptop, make a few requests using curl to generate some new data (replace <external IP> with that of the ingress controller you were using earlier)
   
   -  `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
 
 We need to open a web page to the Grafana service. To do that we need to get the IP address of the load balancer.
 
-  6. Run the following command (here we are limiting to just the grafana service)
+  7. Run the following command (here we are limiting to just the grafana service)
   
   - `kubectl get service grafana -n monitoring`
 
@@ -148,7 +148,7 @@ Note the External IP address (130.61.201.103 in this case)
 
 If the external IP address says <pending> then Kubernetes hasn't finished starting the service. wait a short while and run the command again.
 
-  7. Open a web page (replace `<grafana ip address>`) with the one you just got for the grafana service.
+  8. Open a web page (replace `<grafana ip address>`) with the one you just got for the grafana service.
   
   - `http://<grafana ip address>:3000`
   
@@ -168,29 +168,29 @@ We have had reports that some versions of Chrome will not allow you to override 
 You'll be presented with the Grafana login window
   ![grafana-login](images/grafana-login.png)
 
-  8. Enter **admin** as the user name and then use the Grafana password you copied a few moments ago. 
+  9. Enter **admin** as the user name and then use the Grafana password you copied a few moments ago. 
 
-  9. Press enter to login and go to the Grafana initial config page
+  10. Press enter to login and go to the Grafana initial config page
 
   ![grafana-initial-setup](images/grafana-initial-setup.png)
 
 Before we can do anything useful with Grafana we need to provide it with some data. 
 
-  10. Click the **Add Your First Data Source** icon to start this process
+  11. Click the **Add Your First Data Source** icon to start this process
 
   ![grafana-possible-data-sources](images/grafana-possible-data-sources.png)
 
-  11. Select **Prometheus**  from the list, then when the UI displays it click the **Select** button
+  12. Select **Prometheus**  from the list, then when the UI displays it click the **Select** button
 
   ![grafana-configure-prometheus-data-source](images/grafana-configure-prometheus-data-source.png)
 
-  12. In the **URL** field we need to enter the details we got then we installed Prometheus. Enter the URL 
+  13. In the **URL** field we need to enter the details we got then we installed Prometheus. Enter the URL 
   
   -  `http://prometheus-server.monitoring.svc.cluster.local`
 
 Leave the other values unchanged
 
-  13. Scroll down and click the **Save & Test** button at the bottom of the screen. 
+  14. Scroll down and click the **Save & Test** button at the bottom of the screen. 
 
   ![grafana-configure-prometheus-data-source-save-and-test](images/grafana-configure-prometheus-data-source-save-and-test.png)
 
@@ -198,7 +198,7 @@ Assuming you entered the details correctly it will report that it's done the sav
 
   ![grafana-configure-prometheus-data-source-saved](images/grafana-configure-prometheus-data-source-saved.png)
 
-  14. Click the **Grafana logo** ![grafana-logo](images/grafana-logo.png) at the top left to return to the Grafana home page
+  15. Click the **Grafana logo** ![grafana-logo](images/grafana-logo.png) at the top left to return to the Grafana home page
 
   ![grafana-home-datasource-done](images/grafana-home-datasource-done.png)
   

@@ -146,9 +146,9 @@ In this case for my tenancy I'm in the Germany / Frankfurt region, but if you ar
   
 You have finished the wizard!
 
-  27. Click the **Create** button on the bottom of the wizard to initiate the creation.
+  16. Click the **Create** button on the bottom of the wizard to initiate the creation.
 
-  28. If you get a **No SSH Access** warning you can ignore it, just click **Yes, Create Instance Anyway**
+  17. If you get a **No SSH Access** warning you can ignore it, just click **Yes, Create Instance Anyway**
 
 Once the create button has been clicked you will see the VM details page.  Initially the state will be **Provisioning** but after a few minutes it will switch to **Running**, and you will see that a **public IP address** has been assigned.  Make a note of that IP address (The copy link next to it will copy the address into your computers copy-and-paste buffer.)
 

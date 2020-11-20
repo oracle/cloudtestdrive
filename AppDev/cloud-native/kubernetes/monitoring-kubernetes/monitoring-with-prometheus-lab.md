@@ -31,15 +31,15 @@ You need to complete the **Rolling update** module (last of the core Kubernetes 
 
 Monitoring a service in Kubernetes involves three components
 
-**1. Generating the monitoring data**
+**A. Generating the monitoring data**
 This is mostly done by the service itself, the metrics capability we created when building the Helidon labs are an example of this.
 
 Core Kubernetes services may also provide the ability to generate data, for example the Kubernetes DNS service can report on how many lookups it's performed.
 
-**2. Capturing the data**
+**B. Capturing the data**
 Just because the data is available doesn't mean we can analyse it, something needs to extract it from the services, and store it. 
 
-**3. Processing and Visualizing the data**
+**C. Processing and Visualizing the data**
 Once you have the data you need to be able to process it to visualize it and also report any alerts of problems.
 
 
@@ -204,7 +204,7 @@ Let's check that Prometheus is scraping some data.
   
 You will see a *lot* of possible choices exploring the various services built into Kubernetes (Including apiserver, Core DNS, Container stats, the number of various Kubernetes objects like secrets, pods, configmaps and so on).
 
-  5. In the dropdown find and celect select `kubelet_http_requests_total`  
+  5. In the dropdown find and select select `kubelet_http_requests_total`  
   
   6. Click the **Execute** button. 
 

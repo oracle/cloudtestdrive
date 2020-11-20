@@ -153,6 +153,7 @@ You need to open a terminal window in the Development VM
   - `cp $HOME/Downloads/Wallet_*.zip .`
 
   7. Unpack the wallet 
+  
   - `unzip Wallet_*.zip`
 
 We now need to locate the wallet connection details.

@@ -1243,7 +1243,7 @@ There are also more specific secrets used for TLS certificates and pulling docke
 </details>
 
 
-### Step5a: Configuring the database connection details
+### Step 5a: Configuring the database connection details
 
 In The Helidon labs we provided the database details via Java system properties using the command line. We don't want to do that here as it we would have to place them in the image (making it insecure, and also hard to update) To get around that (and to show the flexibility of the Helidon framework) here we will be specifying them using environment variables, because Helidon uses a hierarchy of sources for the configuration we don't even need to change the code to do this!
 
@@ -1921,7 +1921,7 @@ Is we look at the Kubernetes dashboard we will see similar information. There is
 
 If you get an error message that the pod or container has not started then please wait a short while and try again, sometimes it can take a short time to download the image and start it running.
 
-  3. Type **Ctrl-C** to stop kubectl and return to the command prompt.
+  4. Type **Ctrl-C** to stop kubectl and return to the command prompt.
 
 
 In the dashboard you can click the logs button on the upper right to open a log viewer page
@@ -1930,7 +1930,7 @@ In the dashboard you can click the logs button on the upper right to open a log 
 
 We can interact with the deployment using the public side of the ingress (it's load ballancer),  use kubectl to see the public IP address of the ingress controlers load ballancer, or the services section of the dashboard.
 
-  4. If you can't remember it get the external IP address of the load balancer 
+  5. If you can't remember it get the external IP address of the load balancer 
   
   -  `kubectl get services -n ingress-nginx`
 
@@ -1942,7 +1942,7 @@ ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <no
 
 The External_IP column displays the external address. 
 
-  5. Let's try to get some data - **you might get an error** (replace <external IP> with the ingress controllers load ballancer you got earlier)
+  6. Let's try to get some data - **you might get an error** (replace <external IP> with the ingress controllers load ballancer you got earlier)
   
   -  `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
 
@@ -2009,7 +2009,7 @@ This will populate the database for you so you have some test data.
 
 And to see what's happening when we made the request we can look into the pods logs. Here we use --tail=5 to limit the logs output to the last 5 lines of the storefront pod
 
-  6. Looking at the logs now - remember to replace the storefront pod id (`storefront-68bbb5dbd8-vp578` in this case) with **the pod id you got earlier** (from the `kubectl get all`)
+  7. Looking at the logs now - remember to replace the storefront pod id (`storefront-68bbb5dbd8-vp578` in this case) with **the pod id you got earlier** (from the `kubectl get all`)
   
   - `kubectl logs storefront-68bbb5dbd8-vp578 --tail=5`
 
@@ -2021,7 +2021,7 @@ And to see what's happening when we made the request we can look into the pods l
 2019.12.29 18:05:24 INFO com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[hystrix-io.helidon.microprofile.faulttolerance-1,5,server]: Found 5 items
 ```
 
-  7. And also on the stockmanager pod, you also need to replace the pod id !
+  8. And also on the stockmanager pod, you also need to replace the pod id !
   
   -  `kubectl logs stockmanager-d6cc5c9b7-bbjdp  --tail=20`
 
@@ -2058,11 +2058,11 @@ Using the logs function on the dashboard we'd see the same output, but you'd pro
 
 As we are running zipkin and have an ingress setup to let us access the zipkin pod let's look at just to show it working. 
 
-  8. Open your browser
+  9. Open your browser
   
-  9. Go to the ingress end point for your cluster, for example `http://<external IP>/zipkin` (replace with *your* ingress controllers Load balancer IP address)
+  10. Go to the ingress end point for your cluster, for example `http://<external IP>/zipkin` (replace with *your* ingress controllers Load balancer IP address)
 
-  10. In the browser, accept a self signed certificate. The mechanism varies per browser and sometimes version, but below worked as of Summer 2020.
+  11. In the browser, accept a self signed certificate. The mechanism varies per browser and sometimes version, but below worked as of Summer 2020.
   
   - In Safari you will be presented with a page saying "This Connection Is Not Private" Click the "Show details" button, then you will see a link titled `visit this website` click that, then click the `Visit Website` button on the confirmation pop-up. To update the security settings you may need to enter a password, use Touch ID or confirm using your Apple Watch.
   
@@ -2074,7 +2074,7 @@ We have had reports that some versions of Chrome will not allow you to override 
 
   ![Zipkin query](images/zipkin-initial-query.png)
 
-  11. Click the **Run Query** button to get the traces list
+  12. Click the **Run Query** button to get the traces list
 
 In my case I had made two requests before the lazy initialization sorted everything out, so there are a total of three traces.
 
@@ -2146,7 +2146,9 @@ We've mounted the `sf-config-map` (which contains the contents of `storefront-co
   
   -  `kubectl exec -it storefront-588b4d69db-w244b -- /bin/bash`
   
-You are now inside the container.  Type the following commands here:
+You are now inside the container.  Let's look atround
+
+  3. Inside the container type
 
   -  `ls /conf`
    
@@ -2154,7 +2156,9 @@ You are now inside the container.  Type the following commands here:
 storefront-config.yaml
 storefront-network.yaml
 ```
-   
+
+  4. Inside the container type
+  
   -  `cat /conf/storefront-config.yaml`
 
    ```

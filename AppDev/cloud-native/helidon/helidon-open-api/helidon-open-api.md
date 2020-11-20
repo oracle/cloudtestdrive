@@ -156,13 +156,13 @@ First we need to create a run configuration to create this goal
 
   ![](images/maven-build-config-menu.png)
 
-  2. Update the popup with the following
+Update the popup with the following
 
-  2a. set the name to be `helidon-labs-storefront (process-classes)` (if you chose something else it's fine, just remember to use that later on)
+  2. set the **Name** to be `helidon-labs-storefront (process-classes)` (if you chose something else it's fine, just remember to use that later on)
 
-  2b. In the goals enter `process-classes`
+  3. In the **Goals** enter `process-classes`
 
-  2c. Click `Apply` then `Close`
+  4. Click **Apply** then `Close`
 
   ![](images/maven-build-config-process-classes.png)
 
@@ -219,8 +219,11 @@ The version numbers may differ.
 
 Towards the end of the output you can see that the Maven jandex plugin is run.
 
-## Step 5:  Viewing the initial OpenAPI spec
-Now we've added an annotation covering the initial contents and built the index let's look at it. You must have created the jandex index as described above and stopped any existing instances (there is no need to have the stockmanager running, but if it already is don't worry)
+## Step 5:  Ths default OpenAPI document
+
+Now we've added an annotation covering the initial contents and built the index let's look at basic document. You must have created the jandex index as described above and stopped any existing instances (there is no need to have the stockmanager running, but if it already is don't worry)
+
+### Step 5a: Viewing the initial OpenAPI spec
 
   1. Start the storefront service running using the Main class as before, this will cause the jandex.idx file to be read.
 
@@ -322,7 +325,7 @@ If you just saw the basic info that was returned when you initially did a curl t
 
 </details>
 
-### Step 5a: What does this output mean ?
+### Step 5ba: What does this output mean ?
 In summary it means that adding the @OpenAPIDefinition triggered Helidon to scan the jandex index for classes references by the application, looking for REST endpoints (@GET, @POST etc. annotations). Helidon then builds a OpenAPI document that returns the YAML description. Note that the precise order of the major sections may change (it depends on the order the annotations are processed) so you may see the `components:` section before or after the `info: or `path` section
 
   1. First locate the `info:` section. 
@@ -598,7 +601,7 @@ For the rest of the lab documentation I'm going to stick with yaml as it's a bit
 </details>
 
 
-### Step 5b: To many paths, how do we hide private ones ?
+### Step 5c: To many paths, how do we hide private ones ?
 This has given us the entire API, but the /status is probably not relevant to external callers. (As we'll see in the Kubernetes sections it's more for the internal operation of the cluster and availability than something an client would call. So we need a way to remove some end-points from the output.
 
   1. Open the src/main/resources/META-INF/microprofile-config.properties file
@@ -1138,9 +1141,9 @@ The updated method declaration should now look like this (comments omitted for c
 				+ itemRequest.getRequestedItem());
 ```
 
-  21. Stop the storefront, rebuild the index, and re-start the storefront service as usual
+  2. Stop the storefront, rebuild the index, and re-start the storefront service as usual
 
-  22. Get the updated documentation, in a terminal window type
+  3. Get the updated documentation, in a terminal window type
 
   - `curl -i http://localhost:8080/openapi`
   

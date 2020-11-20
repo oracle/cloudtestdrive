@@ -39,15 +39,15 @@ If you have completed the Helidon labs then you will have already setup the comp
   
 **ATTENTION** : if the compartment `CTDOKE` already exists, please move to the next major step on this page, setting up the database
 
-  5. If the `CTDOKE` compartment is not yet there, **create it** : 
+If the `CTDOKE` compartment is not yet there, **create it** : 
   
-  5a. Click the **Create Compartment** button
+  5. Click the **Create Compartment** button
   
-  5b. Provide a name, description
+  6. Provide a name, description
   
-  5c. Chose `root` as the parent compartment
+  7. Chose `root` as the parent compartment
   
-  5d. Click the **Create Compartment** button.
+  8. Click the **Create Compartment** button.
 
   ![](images/create-compartment.png)
 

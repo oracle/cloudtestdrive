@@ -632,7 +632,7 @@ service/zipkin         ClusterIP   10.104.81.126   <none>        9411/TCP       
 
 Now let's deploy them again, run the deploy.sh script, be prepared to run kubectl get all within a few seconds of the deploy finishing.
 
-  12. Run the deploy script 
+  11. Run the deploy script 
   
   -  `bash deploy.sh`
 
@@ -665,7 +665,7 @@ replicaset.apps/storefront-74cd999d8      1         1         0       0s
 replicaset.apps/zipkin-88c48d8b9          1         1         0       0s
 ```
 
-  13. **Immediately** run the command in the OCI cloud shell
+  12. **Immediately** run the command in the OCI cloud shell
   
   - `kubectl get all`
 
@@ -728,7 +728,7 @@ What happens if a request is made to the service while before the pod is ready ?
 
 To see what happens if the readiness probe does not work we can simply undeploy the stock manager service.
 
-  14. First let's check it's running fine  (replace the <external IP> with the one for your service, and be prepared for a short delay as we'd just restarted everything)
+  13. First let's check it's running fine  (replace the <external IP> with the one for your service, and be prepared for a short delay as we'd just restarted everything)
   
   - `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
 
@@ -743,14 +743,14 @@ Connection: keep-alive
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
 
-  15. Now let's use kubectl to undeploy just the stockmanager service
+  14. Now let's use kubectl to undeploy just the stockmanager service
   
   -  `kubectl delete -f stockmanager-deployment.yaml`
 
   ```
 deployment.apps "stockmanager" deleted
 ```
-  16. Let's check the pods status
+  15. Let's check the pods status
   
   -  `kubectl get pods`
 
@@ -762,7 +762,7 @@ zipkin-88c48d8b9-vdn47          1/1     Running       0          26m
 ```
 The stock manager service is being stopped (this is quite a fast process, so it may have completed before you ran the command). After 60 seconds or so if we run kubectl to get everything we see it's gone (note this is `all`, not `pods` here)
 
-  17. Make sure that the stockmanager **pod** and **deployment** are terminated
+  16. Make sure that the stockmanager **pod** and **deployment** are terminated
   
   -  `kubectl get all`
 
@@ -788,7 +788,7 @@ replicaset.apps/zipkin-88c48d8b9       1         1         1       28m
 
 Something else has also happened though, the storefront service has no pods in the ready state, neither does the storefront deployment and replica set. The readiness probe has run against the storefront pod and when the probe checked the results it found that the storefront pod was not in a position to operate, because the service it depended on (the stock manager) was no longer available. 
 
-  18. Let's try accessing the service (replace <external IP> with the one for your service)
+  17. Let's try accessing the service (replace <external IP> with the one for your service)
   
   -  `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
 
@@ -810,7 +810,7 @@ Connection: keep-alive
 ```
 The service is giving us a 503 Service Temporarily Unavailable message. Well to be precise this is coming from the Kubernetes as it can't find a storefront service that is in the ready state.
 
-  19. Let's start the stockmager service using kubectl again
+  18. Let's start the stockmager service using kubectl again
   
   -  `kubectl apply -f stockmanager-deployment.yaml`
 
@@ -820,7 +820,7 @@ deployment.apps/stockmanager created
 
 Now let's see what's happening with our deployments 
 
-  20. **Immediately** let's look at the situation
+  19. **Immediately** let's look at the situation
   
   -  `kubectl get all`
 
@@ -848,7 +848,7 @@ replicaset.apps/zipkin-88c48d8b9          1         1         1       33m
 
 The stockmanager is running, but the storefront is still not ready, and it won't be until the readiness check is called again and determines that it's ready to work.
 
-  21. Looking at the kubectl output about 120 seconds later:
+  20. Looking at the kubectl output about 120 seconds later:
   
   -  `kubectl get all`
 
@@ -876,7 +876,7 @@ replicaset.apps/zipkin-88c48d8b9          1         1         1       35m
 
 The storefront readiness probe has kicked in and the services are all back in the ready state once again  (replace <external IP> with the one for your service)
 
-  22. Check the service is responding properly now
+  21. Check the service is responding properly now
   
   - `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
 

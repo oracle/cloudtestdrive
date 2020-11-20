@@ -27,7 +27,7 @@ This module explores how you can configure Kubernetes to automatically scale the
 
 You need to complete the **Horizontal Scaling** module.
 
-## Step 2: Horizontal autoscaling - based on CPU load or Memory usage
+## Step 1: Horizontal autoscaling - based on CPU load or Memory usage
 
 We've seen how we can increase (or decrease) the number of pods underlying a service and that the service will automatically balance the load across the pods for us as the pod count changes.
 
@@ -41,7 +41,7 @@ Note that it's also possible to use Prometheus as a data source which will allow
 
 For now we are going to use the simplest approach of the metrics server.
 
-### Step 2a: Installing the metrics server
+### Step 1a: Installing the metrics server
 
   1. Install the helm char repo that contains the metrics server
   
@@ -93,7 +93,7 @@ deployment.apps/kubernetes-dashboard   1/1     1            1           15m
 deployment.apps/metrics-server         0/1     1            0           18s
 ```
 
-### Step 2b: Using the captured metrics
+### Step 1b: Using the captured metrics
 
 Once the metrics server is running (it will have an AVAILABLE count of 1) you can get information on the state of the system
 
@@ -271,7 +271,7 @@ Importantly, if you have a ResourceQuota like CPU or memory usage applied to a n
 
 As an aside if you do the above for the zipkin pod you'll see that it has no resource constraint in place, so it can use as much CPU as the cluster allows for a pod by default
 
-## Step 3: Configuring the autoscaler
+## Step 2: Configuring the autoscaler
 
 That we have hit the limit is almost certainly a problem, it's quite likely that the performance of the service is limited out because of this. Of course it may be that you have made a deliberate decision to limit the service, possibly to avoid overloading the back end database (though as it's an ATP database it can scale automatically for you if the load gets high)
 
@@ -433,7 +433,7 @@ zipkin-7db7558998-cnbjf        11m          387Mi
 
 All 5 pods are running and the service is distributing the load amongst them. Actually some of the storefront pods above are probably still in their startup phase as I gathered the above data immediately after getting the auto scale description.
 
-  10. Let's get the autoscaler summary again.In the OCI Cloud Shell type
+  10. Let's get the autoscaler summary again. In the OCI Cloud Shell type
   
   - `kubectl get hpa storefront`
   
@@ -446,25 +446,25 @@ We can see that the average load across the deployment is still over 25%, if is 
 
 If you want you can also see the pods being added in the Kubernetes dashboard,  
 
-  12. Open the Kubernetes Dashboard
+  11. Open the Kubernetes Dashboard
 
-  13. Make sure you are in your namespace
+  12. Make sure you are in your namespace
 
-  14. In the left menu Under workloads select **Deployments** then click on the `storefront` deployment
+  13. In the left menu Under workloads select **Deployments** then click on the `storefront` deployment
 
-  15. In the **Pods** section you can see that in this case it's scaled to 5 pods
+  14. In the **Pods** section you can see that in this case it's scaled to 5 pods
 
   ![](images/autoscaling-pods-increased.png)
 
-  16. Scroll down to the **Events** section and you can seen the changes it's made
+  15. Scroll down to the **Events** section and you can seen the changes it's made
 
   ![](images/autoscaling-dashboard-events.png)
 
-  17.You can see the pod details by opening the replica set.
+  16. You can see the pod details by opening the replica set.
 
   ![](images/autoscaling-pods-list.png)
 
-  18. In the load generator window(s) stop the script by typing Control-C
+  17. In the load generator window(s) stop the script by typing Control-C
 
 Note that the metrics server seems to operate on a decaying average basis, so stopping the load generating script will not immediately drop the per pod load. This means that it may take some time after stopping the load generator script for the autoscaler to start removing unneeded pods.   
 
@@ -472,7 +472,7 @@ The autoscaler tries not to "thrash" the system by starting and stopping pods al
 
 For now let's delete the autoscaler to we can proceed with the next part of the lab with a known configuration
 
-  19. In the OCI Cloud Shell type
+  18. In the OCI Cloud Shell type
   
   - `kubectl delete hpa storefront`
 
@@ -484,7 +484,7 @@ Note that this just stops changes to the number of pods, any existing pods will 
 
 To return to the numbers of replicas originally defined we'll use kubectl
 
-  20. In the OCI Cloud Shell type
+  19. In the OCI Cloud Shell type
   
   - `kubectl scale --replicas=1 deployment storefront`
 
@@ -494,7 +494,7 @@ deployment.apps/storefront scaled
 
 Now let's check what's happening
 
-  21. In the OCI Cloud Shell type
+  20. In the OCI Cloud Shell type
   
   - `kubectl get deployment storefront`
 

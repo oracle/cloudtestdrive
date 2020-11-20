@@ -43,19 +43,19 @@ Make sure you keep track of which terminal is in which directory !
 
 To run this part of the lab you need the working storefront and stockmanager microservices (as per the Helidon labs) connected to the database.
 
-  4. Make sure the zipkin container is running. You may have done this in the previous lab chapter and left it running. 
+Make sure the zipkin container is running. You may have done this in the previous lab chapter and left it running. 
   
-  4a. To check if it is already running type :
+  4. To check if it is already running type :
 
    - `docker ps`
   
-  4b. Check in the output if there is an entry named **zipkin**:
+  5. Check in the output if there is an entry named **zipkin**:
   
    ```
   e3a7df18cd77        openzipkin/zipkin   "/busybox/sh run.sh"   2 hours ago       Up 2 hours        9410/tcp, 0.0.0.0:9411->9411/tcp   zipkin
   ```
   
-  4c. If the entry is **missing**, relaunch it
+  6. If the entry is **missing**, relaunch it
   
   - `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin:2.22.0`
 
@@ -222,9 +222,9 @@ You can explore the containers by running them to give you shell access (This is
 
 This command creates a docker container running the shell which is connected to your terminal. Once you're running in the container you can look around
 
-  10. Take a look inside the container
+Let's take a look inside the container
   
-  10a. Inside the container type 
+  19. Inside the container type 
 
   - `ls`
 
@@ -234,25 +234,25 @@ bin   confsecure  home	media  proc  sbin  tmp	Wallet_ATP
 boot  dev	  lib	mnt    root  srv   usr
 ```
 
-  10b. Inside the container type 
+  11. Inside the container type 
 
   - `ls Wallet_ATP` 
 
 (No output)
 
-  10c. Inside the container type 
+  12. Inside the container type 
   
   - `ls conf` 
 
 (No output)
 
-  10d. Inside the container type 
+  13. Inside the container type 
   
   - `ls confsecure` 
 
 (No output)
 
-  11. Now exit the container - Inside the container type
+  14. Now exit the container - Inside the container type
 
   -  `exit`
 
@@ -279,9 +279,9 @@ The docker flags are handled as following,
 
 Let's use docker volumes (the docker --volume flag) to inject the configuration for us, each volume argument is the host file system name (this needs to be an absolute pathname) and the location inside the container to mount it. 
 
-  12. Switch to the terminal for the **stockmanager** project directory
+  15. Switch to the terminal for the **stockmanager** project directory
 
-  13. Run the container with the volumes attached:
+  16. Run the container with the volumes attached:
     
    ```
 docker run --tty --interactive --volume `pwd`/Wallet_ATP:/Wallet_ATP --volume `pwd`/conf:/conf --volume `pwd`/confsecure:/confsecure  --rm --entrypoint=/bin/bash stockmanager
@@ -290,9 +290,9 @@ docker run --tty --interactive --volume `pwd`/Wallet_ATP:/Wallet_ATP --volume `p
 
 As before we find ourselves in the container and the root directory looks the same, but the other directories now have content.
 
-  14. Let's Look around again
+Let's Look around again
 
-  14a. Inside the container type 
+  17. Inside the container type 
   
    - `ls`
   
@@ -301,7 +301,7 @@ root@bc7d4ae0666b:/# ls
 Wallet_ATP  app  app.yml  bin  boot  conf  confsecure dev	etc  home  lib	lib64  media  mnt  opt	proc  root  run  sbin  srv  sys  tmp  usr  var
 ```
   
-  14b. Inside the container type 
+  18. Inside the container type 
   
    - `ls conf`
   
@@ -310,7 +310,7 @@ root@bc7d4ae0666b:/# ls /conf
 stockmanager-config.yaml  stockmanager-network.yaml 
 ```
   
-  14c. Inside the container type 
+  19. Inside the container type 
   
    - `ls confsecure`
   
@@ -319,7 +319,7 @@ stockmanager-config.yaml  stockmanager-network.yaml
 stockmanager-security.yaml
 ```
   
-  14d. Inside the container type 
+  20. Inside the container type 
   
   - `ls Wallet_ATP`
 
@@ -328,7 +328,7 @@ root@bc7d4ae0666b:/# ls /Wallet_ATP
 cwallet.sso  ewallet.p12  keystore.jks	ojdbc.properties  sqlnet.ora  tnsnames.ora  truststore.jks
 ```
 
-  15. Exit the container. Inside the container type 
+  21. Exit the container. Inside the container type 
   
   - `exit`
   
@@ -465,7 +465,7 @@ As the storefront depends on the stockmanager (and both depend on zipkin) it's i
 
   - `bash runStockmanagerLocalExternalConfig.sh`
   
-  Keep the terminal window open to see any log info it generates
+Keep the terminal window open to see any log info it generates
   
   4. Switch to the terminal for the **storefront** project directory
   
