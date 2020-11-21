@@ -169,13 +169,13 @@ You may recall in the Helidon labs (if you did them) we created a liveness probe
 
   1. Navigate to the **$HOME/helidon-kubernetes** folder
   
-    - `cd $HOME/helidon-kubernetes`
+  - `cd $HOME/helidon-kubernetes`
   
   2. Stop the existing deployments
 
-    -  `bash undeploy.sh`
-
-  ```
+  - `bash undeploy.sh`
+  
+```
 Deleting storefront deployment
 deployment.apps "storefront" deleted
 Deleting stockmanager deployment
