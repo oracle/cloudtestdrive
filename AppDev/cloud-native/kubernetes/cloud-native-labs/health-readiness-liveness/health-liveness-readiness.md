@@ -167,11 +167,11 @@ Fortunately Kubernetes provides a mechanism to handle this as well. This mechani
 
 You may recall in the Helidon labs (if you did them) we created a liveness probe, this is an example of Helidon is designed to work in cloud native environments.
 
- 1/ Navigate to the **$HOME/helidon-kubernetes** folder
+  1 Navigate to the **$HOME/helidon-kubernetes** folder
 
   - `cd $HOME/helidon-kubernetes`
   
- 2/ Stop the existing deployments
+  2 Stop the existing deployments
 
   - `bash undeploy.sh`
   
