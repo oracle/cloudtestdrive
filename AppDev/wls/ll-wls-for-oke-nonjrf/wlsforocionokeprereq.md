@@ -6,7 +6,15 @@
 
 ## Objective
 
-If you want go through the *WebLogic for OKE using Oracle Cloud Marketplace* Workshop using your cloud environment, follow this guide to setup some prerequisites.
+This Lab will walk you through the steps to set up a WebLogic environment running on a Kubernetes cluster, using the **WebLogic for OKE** Markerplace stack.  This stack will provision both the Managed Kubernetes instance as well as WebLogic running on top of this OKE instance.
+
+To run these labs you will need access to an Oracle Cloud Account.  
+
+<u>We assume you are using your own Oracle Cloud Tenancy,</u> either via a **Free Tier**, using a **Pay-as-you-Go** account, or using the **Corporate account** of your organization.  
+
+==> If you do not have an account yet, you can obtain  an Oracle Free Tier account by [clicking here.](https://signup.oraclecloud.com/?sourceType=:em:lw:rce:cpo::RC_WWMK201103P00026:EMEAHOL1Dec)
+
+Next, follow the steps described below.
 
 
 
