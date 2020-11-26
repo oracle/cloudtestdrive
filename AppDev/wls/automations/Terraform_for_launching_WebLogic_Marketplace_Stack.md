@@ -153,6 +153,8 @@ resource "oci_marketplace_accepted_agreement" "test_accepted_agreement" {
 }
 ```
 
+A sample terraform configuration can be found in the folder **wls_stack** of this repository, you just need to fill in your authentication info and tenancy ocid's to try this out.
+
 
 
 ## Option 1 : Running the default stack
@@ -167,10 +169,10 @@ Alternatively you can continue the automation, by switching to the **OCI CLI** t
 
 ### Create the Stack
 
-Below you can see the command to create the stack, using the zip file of the Stack definition you previously downloaded, and the target comportment OCID. 
+Below you can see the command to create the stack, using the zip file of the Stack definition you previously downloaded, and the target compartment OCID. 
 
 ```
-oci resource-manager stack create --config-source stack.zip --compartment-id ocid1.compartment.oc1..aaasdfaaausdzb7lz3gy2ofjxdxisdfsdfsdffdsq6nt4zl35f5u6fm4gld53q
+oci resource-manager stack create --config-source stack.zip --compartment-id ocid1.compartment.oc1..your_compartment_ocid
 ```
 
 Next you need to set all the parameters of the stack, as these would normally be asked interactively when staring a new Job.  Easiest way to do this is using a JSON formatted file with all elements included.  Below you can see a sample of the file:
@@ -335,4 +337,12 @@ resource "oci_core_instance" "MyWLS" {
   }
 }
 ```
+
+A sample terraform configuration can be found in the folder **wls_image** of this repository, you just need to fill in your authentication info and tenancy ocid's to try this out.
+
+Attention : You need to run this script 2 times : 
+
+- a first time to obtain the stack parameters, with the file **image_subscription.tff** not taken into account (Terraform will ignore the .tff files)
+- then download the stack and fill in the 3 missing parameters in the file **image_subscription.tff**, then rename the file to **image_subscription.tf** for terraform to take it into account
+- Now run your `terraform apply` a second time, and the image will be created.
 

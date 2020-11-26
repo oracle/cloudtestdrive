@@ -1,0 +1,77 @@
+
+# Hard coded, and to be copied out of the Stack Definition downloaded in step 1
+variable "instance_image_id" {
+default = "ocid1.image.oc1..ocid_to_copy_from_stack"
+}
+
+# Hard coded, and to be copied out of the Stack Definition downloaded in step 1
+variable "mp_listing_id" {
+default = "ocid1.appcataloglisting.oc1..ocid_to_copy_from_stack"
+}
+
+# Hard coded, and to be copied out of the Stack Definition downloaded in step 1
+variable "mp_listing_resource_version" {
+default = "version_to_copy_from_stack"
+}
+
+
+#Get Image Agreement
+resource "oci_core_app_catalog_listing_resource_version_agreement" "mp_image_agreement" {
+  listing_id               = var.mp_listing_id
+  listing_resource_version = var.mp_listing_resource_version
+}
+
+#Accept Terms and Subscribe to the image, placing the image in a particular compartment
+resource "oci_core_app_catalog_subscription" "mp_image_subscription" {
+  compartment_id           = var.compartment_ocid
+  eula_link                = oci_core_app_catalog_listing_resource_version_agreement.mp_image_agreement.eula_link
+  listing_id               = oci_core_app_catalog_listing_resource_version_agreement.mp_image_agreement.listing_id
+  listing_resource_version = oci_core_app_catalog_listing_resource_version_agreement.mp_image_agreement.listing_resource_version
+  oracle_terms_of_use_link = oci_core_app_catalog_listing_resource_version_agreement.mp_image_agreement.oracle_terms_of_use_link
+  signature                = oci_core_app_catalog_listing_resource_version_agreement.mp_image_agreement.signature
+  time_retrieved           = oci_core_app_catalog_listing_resource_version_agreement.mp_image_agreement.time_retrieved
+
+  timeouts {
+    create = "20m"
+  }
+}
+
+data "oci_core_app_catalog_listing_resource_version" "test_catalog_listing" {
+  listing_id = oci_core_app_catalog_listing_resource_version_agreement.mp_image_agreement.listing_id
+  resource_version = oci_core_app_catalog_listing_resource_version_agreement.mp_image_agreement.listing_resource_version
+}
+
+# Gets the partner image subscription
+data "oci_core_app_catalog_subscriptions" "mp_image_subscription" {
+  compartment_id = var.compartment_ocid
+  listing_id = var.mp_listing_id
+  filter {
+    name = "listing_resource_version"
+    values = [var.mp_listing_resource_version]
+  }
+}
+
+
+resource "oci_core_instance" "Image_instance" {
+  availability_domain = data.oci_core_subnets.mysubnets.subnets[0].availability_domain
+  compartment_id      = var.compartment_ocid
+  display_name        = "jle-wls"
+  shape               = var.compute_shape
+
+  create_vnic_details {
+    subnet_id        = data.oci_core_subnets.mysubnets.subnets[0].id
+    display_name     = "jle-wls"
+    hostname_label   = "jle-wls"
+  }
+
+
+  source_details {
+    source_id   = data.oci_core_app_catalog_listing_resource_version.test_catalog_listing.listing_resource_id
+    source_type = "image"
+  }
+  lifecycle {
+    ignore_changes = [
+      source_details[0].source_id,
+    ]
+  }
+}
