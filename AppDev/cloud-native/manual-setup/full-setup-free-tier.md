@@ -461,6 +461,8 @@ LombokHelloWorld(hello=World)
 [INFO] ------------------------------------------------------------------------
 ```
 
+  5. Once the script has completed (this may take a few mins) then close the terminal window.
+
 ### Step 6c: Starting Eclipse for the first time
 
 Note that sometimes the Eclipse installer will create it's own desktop icon to start Eclipse. This does not happen every time, but if it does create one you can also use that icon to start Eclipse as well.
