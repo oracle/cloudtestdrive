@@ -398,7 +398,7 @@ We're now going to run a script that tidies up the desktop and creates an eclips
 
   ![](images/13-post-eclipse-installer-icon.png)
 
-If the eclipse installation was in the right place then the two desktop icons will disappear and be replaced with an `Eclipse` icon. If the Eclipse installation was in the wrong place then it will exit immediately without making any changes. In that case re-run the installer and ensure you use `/home/opc` as the Eclipse installation path.
+If the eclipse installation was in the right place then the two desktop icons will disappear and be replaced with an `Eclipse` icon (**Do not start eclipse now**). If the Eclipse installation was in the wrong place then it will exit immediately without making any changes. In that case re-run the installer and ensure you use `/home/opc` as the Eclipse installation path.
 
 To enable us to update the labs without having to update the Developer VM image each time we hold the setup code in a git repository (where we can update it as the lab is enhanced) You need to download this into your development VM and run the setup script.
 
