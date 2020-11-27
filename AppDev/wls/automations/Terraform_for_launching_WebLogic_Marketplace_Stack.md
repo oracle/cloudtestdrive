@@ -2,10 +2,11 @@
 
 Using Marketplace to launch Marketplace Images is one thing, and a few blogs have already been written on that topic.  But what about automating the launch of a Marketplace **Stack**, in particular a "Pay-as-you-go" stack like WebLogic ?
 
-This article will explore two options to automate and customize your Marketplace stacks:
+This article will explore three options to automate and customize your Marketplace stacks:
 
-1.  Automating the launch of a full Stack using the provided scripts without the need to go through the interactive console, using Terraform and a bit of OCI CLI,
-2. Launching an individual Pay-as-you-go image that is part of a stack with full control of the setup process, using Terraform and a bit of scripting
+1.  Automating the **launch of a WebLogic Stack** using the provided scripts without the need to go through the interactive console, using Terraform and a bit of OCI CLI,
+2. Launching an **individual Pay-as-you-go image** that is part of a stack with full control of the setup process, using Terraform and a bit of scripting
+3.  Adding a **WebLogic Pay-as-you-go Node Pool** to an existing OKE cluster, thus allowing to easily switch an existing custom setup of WebLogic running on OKE into a pay-as-you-go type of consumption
 
 As you will see, I encountered some limitations, notably the ability to create a new Resource Manager Stack  using Terraform, as well as some metadata that is missing from the Marketplace stacks to easily create the corresponding images, but I was able to work around these issues, albeit not always in the most elegant way.
 
@@ -346,3 +347,132 @@ Attention : You need to run this script 2 times :
 - then download the stack and fill in the 3 missing parameters in the file **image_subscription.tff**, then rename the file to **image_subscription.tf** for terraform to take it into account
 - Now run your `terraform apply` a second time, and the image will be created.
 
+
+
+## Option 3 : Convert a Customer WebLogic setup running on OKE into Pay-as-you-go
+
+For customers that already have done the work of setting up their own configuration of WebLogic running on OKE, and have **not** used the marketplace images, it is now possible to migrate their setup into a **Pay-as-you-go** UC consuming instance, by simply switching the WLS configuration onto a new Node Pool that is running the UCM licensed (and billed) marketplace image.
+
+The basic principle has already been used in Option 2 of this article : obtain the required "Terms and Conditions" agreements using Terraform, download the Marketplace stack to obtain the OCID's of the correct images.  But instead of spinning up a compute instance, we will now add a node pool to an existing cluster.
+
+Of course you can integrate this logic in your existing automation scripts, allowing you to spin up from scratch a new environment using your existing automation, but nowbased on UC consuming Node Pools.  
+
+For the sake of example, I will do this on an existing running Kubernetes cluster.
+
+### Get the T&C agreements in place
+
+First we need to obtain the required T&C agreements and the URL to the WLS for OKE stack you require (this can be Enterprise Edition or Suite).  This is basically the exact same operation as demonstrated in the previous examples, but now using a different image name as a filter:
+
+```
+# DATA 1 - Get a list of element in Marketplace, using filters, eg name of the stack
+data "oci_marketplace_listings" "test_listings" {
+  name = ["Oracle WebLogic Server Enterprise Edition for OKE UCM"]
+  compartment_id = var.compartment_ocid
+}
+```
+
+As a result, you will obtain the usual URL to the Stack configuration in the **Data 4** element.
+
+Download and unzip the stack, and locate the values you need to subscribe to the image : 
+
+- Open the file **mp-subscription-variables.tf**
+
+  - Locate the lines defining the variable **mp_wls_node_pool_image_id**, and note the default value of the image OCID.
+
+  - Locale the lines defining the **mp_wls_node_pool_listing_id** and note down the App Catalog Listing OCID
+
+  - Locate the line containing the **mp_wls_node_pool_listing_resource_version**, this is a value that looks like :
+    `20.4.1-201103061109`
+
+
+### Setting up the agreement for the image
+
+As already described in Option 2, you can now use these variables to subscribe to this image : 
+
+- Get the partner image subscription data
+
+  ```
+  data "oci_core_app_catalog_subscriptions" "mp_image_subscription" {
+    #Required
+    compartment_id = var.compartment_ocid
+  
+    #Optional
+    listing_id = var.mp_listing_id
+    filter {
+      name = "listing_resource_version"
+      values = [var.mp_listing_resource_version]
+    }
+  }
+  ```
+
+  
+
+- Obtain the Image Agreement using the parameters we just located : 
+
+  ```
+  #Get Image Agreement
+  resource "oci_core_app_catalog_listing_resource_version_agreement" "mp_image_agreement" {
+    listing_id               = var.mp_listing_id
+    listing_resource_version = var.mp_listing_resource_version
+  }
+  ```
+
+- Agree to the Terms and Conditions:
+
+  ```
+  #Accept Terms and Subscribe to the image, placing the image in a particular compartment
+  resource "oci_core_app_catalog_subscription" "mp_image_subscription" {
+    compartment_id           = var.compartment_ocid
+    eula_link                = oci_core_app_catalog_listing_resource_version_agreement.mp_image_agreement[0].eula_link
+    listing_id               = oci_core_app_catalog_listing_resource_version_agreement.mp_image_agreement[0].listing_id
+    listing_resource_version = oci_core_app_catalog_listing_resource_version_agreement.mp_image_agreement[0].listing_resource_version
+    oracle_terms_of_use_link = oci_core_app_catalog_listing_resource_version_agreement.mp_image_agreement[0].oracle_terms_of_use_link
+    signature                = oci_core_app_catalog_listing_resource_version_agreement.mp_image_agreement[0].signature
+    time_retrieved           = oci_core_app_catalog_listing_resource_version_agreement.mp_image_agreement[0].time_retrieved
+  
+    timeouts {
+      create = "20m"
+    }
+  }
+  ```
+
+### Creating the Node Pool
+
+With all the element we have collected, you can now spin up a new node pool in an existing OKE cluster.  All you need is the OKE OCID as well as the workernode subnet OCID.
+
+Below a sample of the code required to do this :
+
+```
+locals {
+    oke_id = "ocid1.cluster.oc1.eu-frankfurt-1.ocid_of_existing OKE"
+    subnet_id = "ocid1.subnet.oc1.eu-frankfurt-1.ocid_of_worker_subnet"
+	}
+	
+resource "oci_containerengine_node_pool" "K8S_pool1" {
+	cluster_id = local.oke_id
+	compartment_id = var.compartment_ocid
+
+  kubernetes_version = "v1.18.10"
+	name = "wls_uc_pool"
+	node_shape = var.compute_shape
+
+	node_config_details {
+	
+		dynamic "placement_configs" {
+				for_each = local.ad_nums2
+				content {
+	  		availability_domain = placement_configs.value
+	  		subnet_id           = local.subnet_id
+					}
+			}
+   size = 1
+	}
+  node_source_details {
+    image_id    = data.oci_core_app_catalog_listing_resource_version.test_catalog_listing.listing_resource_id
+    source_type = "IMAGE"
+  }
+}
+
+```
+
+Rerun the Terraform script with the image_subscription.tf file included and your cluster will be extended with a new node pool.  Optionally you can shut down other node pools to only run on this infrastructure, or you can choose to "pin" your WLS pods onto the UC-based node pools, using the labeling mechanism supported by the WebLogic operator. 
