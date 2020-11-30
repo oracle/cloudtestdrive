@@ -1,5 +1,3 @@
-
-
 # WebLogic for OKE - stack creation
 
 ### Creating the stack and provisioning the WebLogic Infrastructure
@@ -69,7 +67,7 @@ Fill in information for **WebLogic Server on Container Cluster (OKE)**:
 
     
 
-  - On Windows, use `Ctrl+INSERT` to copy the highlighted aria as in the above example
+  - On Windows, use `Ctrl+INSERT` to copy the highlighted area as in the above example
 
   - On Mac, you can simply use `command+c`
 
@@ -101,6 +99,7 @@ Next, in the **Container Cluster (OKE) Configuration** Section:
 - **Nodes in the Node Pool for Non-WebLogic Pods**: *2*
 - **Pods CIDR**: leave default
 - **Services CIDR**: leave default
+- **Kubernetes Secret Encryption**: leave default (unchecked)
 
 ![](images/wlsforocionoke/image-080.png) 
 
@@ -128,7 +127,7 @@ On **Network** configuration:
 
 
 
-Scroll down and leave *No Database* for **Database** configuration. We'll provision a Non-JRF WebLogic Domain.
+Scroll down and leave **Provision with JRF** unchecked to skip database configuration. We'll provision a Non-JRF WebLogic Domain.
 
 For the **File System** choose one of the Availability Domain. A File System and a Mount Target will be created in that particular AD. From Service Limits perspective, choose one that allows creation of new Shared File System resources.
 
@@ -145,6 +144,12 @@ Last part of the Stack configuration is addressing connectivity to OCI Registry 
 For the **Secrets OCID For Registry Authentication Token** use the OCID of the WLS Registry Secret created in the prerequisites lab:
 
 ![](images/wlsforocionoke/image-130.png)
+
+
+
+Finally, leave **OCI Policies** option checked and the provisioning scripts will create required policies for reading Secrets from the Vault:
+
+![](images/wlsforocionoke/image-135.png)
 
 
 
@@ -412,7 +417,7 @@ On Windows:
 > netstat -a
 ```
 
-(look for port `TCP    127.0.0.1:1088` line)
+(look for `TCP    127.0.0.1:1088` line)
 
 
 
@@ -427,7 +432,7 @@ Open **Firefox** browser, go to  *Options*, scroll down to *Network Settings* an
 Once done that, open a new browser tab and navigate to WebLogic Admin Console:
 
 ```
-http://<private load balancer ip>://console
+http://<private load balancer ip>/console
 ```
 
 
@@ -447,7 +452,7 @@ Navigate to *Environments* > *Servers* to check for the running Managed Servers.
 In another browser tab, open the Jenkins console:
 
 ```
-http://<private load balancer ip>://jenkins
+http://<private load balancer ip>/jenkins
 ```
 
 
@@ -466,7 +471,7 @@ Once done that, a Success message appears. Click on the *Go back to the top page
 
 This leads us to the Jenkins Dashboard page displaying several pre-configured Pipelines that will help us manage the WebLogic for OKE. 
 
-Don't forget that with WebLogic running on top of Kubernetes, any change to the running WebLogic Domain (like domain configuration, deploying/undeploying applications or managing Managed Servers) it's not recommended and it's not a best practice. Everything has to be done through the CI/CD flows that will update the WebLogic Domain model, push the WebLogic Image to OCI Registry and then re-create the Kubernetes Pods.
+Don't forget that with WebLogic running on top of Kubernetes, any change to the running WebLogic Domain (like domain configuration, deploying/un-deploying applications or managing Managed Servers) it's not recommended and it's not a best practice. Everything has to be done through the CI/CD flows that will update the WebLogic Domain model, push the WebLogic Image to OCI Registry and then re-create the Kubernetes Pods.
 
 ![](images/wlsforocionoke/image-470.png)
 
