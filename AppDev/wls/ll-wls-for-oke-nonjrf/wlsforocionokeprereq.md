@@ -24,6 +24,8 @@ Take note of the compartment **OCID**:
 
 The Compartment name is referred as **CTDOKE** in the Hands on Labs.
 
+**Note:** If you <u>are</u> an Oracle **Cloud Infrastructure administrator** or if you are <u>using</u> a **Oracle Cloud Trial Account** (in which case you are an OCI administrator by default), you may **skip** steps **1.1** and **1.2** as no root or compartment level policies are required to run the Hands on Labs.
+
 
 
 ### 1.1 Required root level policies for WebLogic for OKE
@@ -198,7 +200,7 @@ Go to *Secrets* submenu of the Vault Information page and create an new Secret:
 
 
 
-Setup a name for the OCI Secret; choose previously created Encryption Key (**WLSKey**) in the *Encryption Key* dropdown. If you leave default value for *Secret Type Template* (**Plain-Text**), you have to enter the plain-text WebLogic Admin password in the *Secret Contents* aria. If you switch to **Base64** template, you need to provide the password pre-encoded in base64.
+Setup a name for the OCI Secret; choose previously created Encryption Key (**WLSKey**) in the *Encryption Key* dropdown. With default option for *Secret Type Template* (**Plain-Text**), you have to enter the WebLogic Admin password as-is (the plain-text) in the *Secret Contents* aria. If you switch to **Base64** secret type template, you need to provide the WebLogic Admin password pre-encoded in base64.
 
 
 
