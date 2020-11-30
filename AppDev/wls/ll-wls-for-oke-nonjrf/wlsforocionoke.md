@@ -1,5 +1,3 @@
-
-
 # WebLogic for OKE - stack creation
 
 ### Creating the stack and provisioning the WebLogic Infrastructure
@@ -69,7 +67,7 @@ Fill in information for **WebLogic Server on Container Cluster (OKE)**:
 
     
 
-  - On Windows, use `Ctrl+INSERT` to copy the highlighted aria as in the above example
+  - On Windows, use `Ctrl+INSERT` to copy the highlighted area as in the above example
 
   - On Mac, you can simply use `command+c`
 
