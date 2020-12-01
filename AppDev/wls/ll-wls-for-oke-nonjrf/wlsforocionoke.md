@@ -489,7 +489,7 @@ Accessing the Admin host can be done:
 Either option, an easy way to connect directly to Admin host by jumping though the Bastion host is to use ssh `ProxyCommand` feature. The ssh command should look like this:
 
 ```
-ssh -i <path_to_private_key> -o ProxyCommand="ssh -W %h:%p –i <path_to_private_key> opc@<bastion_public_ip>" opc@<admin_host_private_ip>
+ssh -i <path_to_private_key> -o ProxyCommand="ssh -W %h:%p -i <path_to_private_key> opc@<bastion_public_ip>" opc@<admin_host_private_ip>
 ```
 
 
