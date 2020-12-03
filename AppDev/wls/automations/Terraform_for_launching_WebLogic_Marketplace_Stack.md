@@ -154,7 +154,7 @@ resource "oci_marketplace_accepted_agreement" "test_accepted_agreement" {
 }
 ```
 
-A sample terraform configuration can be found in the folder **wls_stack** of this repository, you just need to fill in your authentication info and tenancy ocid's to try this out.
+A **sample terraform configuration** can be found in the folder [wls_stack](wls_stack) of this repository, you just need to fill in your authentication info and tenancy ocid's to try this out.
 
 
 
@@ -339,7 +339,7 @@ resource "oci_core_instance" "MyWLS" {
 }
 ```
 
-A sample terraform configuration can be found in the folder **wls_image** of this repository, you just need to fill in your authentication info and tenancy ocid's to try this out.
+A **sample terraform configuration** can be found in the folder [wls_image](wls_image) of this repository, you just need to fill in your authentication info and tenancy ocid's to try this out.
 
 Attention : You need to run this script 2 times : 
 
@@ -475,4 +475,33 @@ resource "oci_containerengine_node_pool" "K8S_pool1" {
 
 ```
 
-Rerun the Terraform script with the image_subscription.tf file included and your cluster will be extended with a new node pool.  Optionally you can shut down other node pools to only run on this infrastructure, or you can choose to "pin" your WLS pods onto the UC-based node pools, using the labeling mechanism supported by the WebLogic operator. 
+Please make sure to use the **same version** for the Node pool as the version of the Kubernetes Cluster you are attaching it to. 
+
+Rerun the Terraform script with the image_subscription.tf file included and your cluster will be extended with a new node pool.  You can now shut down the old node pools, to only run on your new Node pool.
+
+An **example of the Terrafor script** can be found in the folder [wls_nodepool](wls_nodepool)
+
+### Pinning your WebLogic Pods to the new Node Pool
+
+Alternatively you can use the "pinning" mechanism to only run your WebLogic pods on this new "Pay-as-you-go" infrastructure, while keeping other node pools in your cluster for non-WLS workloads.  
+
+To achieve this we will be using node labels and the **nodeSelector** parameter in the WebLogic Domain definition file deployed on the cluster.
+
+- Label your nodes that are running the Pay-as-you-go WebLogic image:
+
+  ```
+  kubectl label nodes 130.61.84.41 licensed-for-weblogic=true
+  ```
+
+- Change the definition file of your WebLogic domain to include the **nodeSelector** parameter in the **serverPod** section:
+
+  ```
+  serverPod:
+    env:
+    [...]
+    nodeSelector:
+      licensed-for-weblogic: true
+  ```
+
+- Update your domain definition file on the cluster and your WebLogic pods should start migrating to the labeled nodes !
+
