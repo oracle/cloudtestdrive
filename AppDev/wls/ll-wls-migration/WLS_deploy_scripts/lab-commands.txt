@@ -1,0 +1,157 @@
+#!/bin/bash
+#### clean all previous configuration
+####
+docker rm -f $(docker ps -a -q)
+docker image prune -f
+docker network rm test
+docker container ls -a 
+
+cd
+rm -rf  WLS_deploy_scripts
+git clone https://github.com/eugsim1/WLS_deploy_scripts.git
+cd WLS_deploy_scripts
+
+###
+### build the images for the lab
+cd /home/oracle/WLS_deploy_scripts
+find  . -type f -iname "*.sh" -exec chmod +x {} \;
+cd /home/oracle/WLS_deploy_scripts/source-12213-domain
+./build-docker-image.sh
+cd /home/oracle/WLS_deploy_scripts/target-12214-domain
+./build-docker-image.sh
+###
+### create a network for the docker containers
+###
+docker network create -d bridge test
+docker run -d -P --name test_sshd_target --network test -p 9001:7001 -p 10001:8001 12214-domain:latest
+export DOCKER_PORT_TARGET=`docker port test_sshd_target 22/tcp`
+export DOCKER_PORT_TARGET=`echo $DOCKER_PORT_TARGET | sed 's/0.0.0.0://g'`
+echo $DOCKER_PORT_TARGET
+###
+###
+docker run -d -P --name test_sshd --network test -p 7001:7001 -p 8001:8001 12213-domain-home-in-image-wdt:latest
+export DOCKER_PORT_SOURCE=`docker port test_sshd 22/tcp`
+export DOCKER_PORT_SOURCE=`echo $DOCKER_PORT_SOURCE | sed 's/0.0.0.0://g'`
+echo $DOCKER_PORT_SOURCE
+docker container ls -a
+
+### 
+### in this configuration the source domain exposes the console to 7001 and the Managed server to 8001
+### the target server will run on 9001 for the console and 10001 for the admin server
+###
+
+### start the migration
+### log to the source server
+cd /home/oracle/WLS_deploy_scripts/source-12213-domain
+ssh -i keys/wls_rsa  \
+-o "UserKnownHostsFile=/dev/null" \
+-o "StrictHostKeyChecking=no"  oracle@localhost -p $DOCKER_PORT_SOURCE
+### 
+### start the admin server => this is not manadatory
+###
+nohup $DOMAIN_HOME/startWebLogic.sh &
+###
+### log in the console IP of the hosts:7001/console weblogic/welcome1
+###
+
+### go to the scripts directory and execute the discovery of the domain
+###
+cd WLS_deploy_scripts
+
+cat discover_domain.sh
+
+./discover_domain.sh
+###
+### create a zip file with all the articats
+###
+./create_zip_from_discovery.sh
+###
+### copy the file to the target server
+###
+scp -i ~/.ssh/wls_rsa  -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" \
+/home/oracle/WLS_deploy_scripts/discovery_files.zip \
+oracle@test_sshd_target:/home/oracle/WLS_deploy_scripts/discovery_files.zip && clear
+clear
+####
+####
+#### at this point you have discovered a domain, created the templates, copied to the target server 
+#### the next step is to log into the target server and create a domain based on the captured configuration
+####
+####
+#### from the source docker server log into the docker target server as oracle
+####
+####
+ssh -i ~/.ssh/wls_rsa  -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no"  oracle@test_sshd_target
+####
+####
+#### go to the deployment scripts directory
+#### unzip the discovery files, create the account/password for the new weblogic server
+####
+cd /home/oracle/WLS_deploy_scripts
+ls -la 
+unzip discovery_files.zip
+####
+#### before to create the domain remover the old one (cleanup )
+####
+####
+cd /home/oracle/WLS_deploy_scripts
+
+rm -rf $DOMAIN_HOME
+mkdir -p $DOMAIN_HOME
+
+#### create the new admin user, with the password
+####
+cat<<'EOF'>discovery_files/source.properties
+AdminPassword=welcome1
+AdminUserName=weblogic
+EOF
+cat discovery_files/source.properties
+
+### you might want to change some setting of the original yaml file
+### for this demo we will use the same settings as on the source domain
+###
+cp discovery_files/source.yaml discovery_files/source.yaml-bck
+###
+### create the domain creation script
+###
+
+cat<<'EOF'> create_new_domain.sh
+#### https://github.com/oracle/weblogic-deploy-tooling/blob/master/site/create.md
+#### create a domain_home
+export WLST_PATH=/u01/oracle/oracle_common
+createDomain.sh \
+-oracle_home $ORACLE_HOME \
+-java_home $JAVA_HOME \
+-domain_home $DOMAIN_HOME \
+-domain_type WLS \
+-variable_file discovery_files/source.properties \
+-model_file   discovery_files/source.yaml \
+-archive_file discovery_files/source.zip \
+-wlst_path    $WLST_PATH
+EOF
+
+cat create_new_domain.sh
+chmod u+x create_new_domain.sh
+
+### 
+### launch the creation tool and notice the creation steps
+### if all steps are executed from this script then the domain will be created without errors
+### beware the typos !!
+###
+./create_new_domain.sh
+###
+### go to the new domain directory and inspect the different files before to start the admin server
+###
+cd $DOMAIN_HOME
+###
+### start the admin server on the new target, noticed now the new version of the weblogc werver on the console
+###
+###
+nohup $DOMAIN_HOME/startWebLogic.sh & 
+###
+### take your browser and go the IP_of _host_server:9001/console the docker container exposes the port of the wls admin
+### server 7001 to 9001 this is done one the lauch of the container !
+###
+###
+
+

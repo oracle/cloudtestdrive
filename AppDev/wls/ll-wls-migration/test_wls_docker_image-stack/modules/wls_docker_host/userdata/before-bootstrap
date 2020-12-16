@@ -1,0 +1,73 @@
+#!/bin/bash
+sudo su<<EOS
+touch /tmp/init.log
+chmod ugo+rw /tmp/init.log
+
+
+
+
+cp /etc/selinux/config /etc/selinux/config-orig
+sed s/SELINUX=enforcing/SELINUX=disabled/g -i /etc/selinux/config
+
+echo "opc ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+echo "oracle ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+setenforce Permissive
+getenforce
+setenforce 0
+
+echo "before yum" >> /tmp/init.log
+
+yum install -y oracle-database-preinstall-19c
+yum-config-manager --enable repository ol7_latest ol7_uekr4  ol7_addons
+yum install docker-engine docker-cli -y
+yum install oracle-database-preinstall-19c* -y
+yum install -y git
+systemctl start docker
+systemctl enable docker
+
+docker info >> /tmp/init.log
+sudo usermod -aG docker oracle
+
+echo "after docker install" >> /tmp/init.log
+### install docker-compose
+curl -L https://github.com/docker/compose/releases/download/1.27.4/docker-compose-Linux-x86_64 -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+export PATH=/usr/local/bin:$PATH
+docker-compose -version
+
+cat<<'EOF'>/etc/docker/daemon.json
+{
+  "features": { "buildkit": true },
+  "experimental": true
+}
+EOF
+systemctl restart docker 
+systemctl status docker
+systemctl restart docker
+
+
+
+echo "Creating oracle ssh folder" >> /tmp/init.log
+
+mkdir -p /home/oracle/.ssh
+cp -R /home/opc/.ssh /home/oracle
+chmod -R go-rwx /home/oracle/.ssh
+chown -R oracle:oinstall /home/oracle/.ssh
+ls -la  /home/oracle/.ssh
+
+
+
+echo "Added keys to auth keys" >> /tmp/init.log
+systemctl stop firewalld 
+systemctl disable firewalld
+
+
+
+mkdir -p  /u01
+chown -R oracle:oinstall /u01
+
+
+chmod ugo+rw /tmp/init.log
+mv /etc/yum/vars/ociregion /tmp/yumfile
+
+EOS

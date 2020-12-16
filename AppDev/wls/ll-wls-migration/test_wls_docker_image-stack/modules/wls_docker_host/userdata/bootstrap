@@ -1,0 +1,114 @@
+#!/bin/bash
+echo "Reset the iptables" >> /tmp/init.log
+# Reset the iptables to open the firewall ports on the local VM
+# Access to ports is controlled from OCI Security rules
+# Setup firewall rules to allow TCP traffic on all ports
+####iptables -P INPUT ACCEPT
+####iptables -P FORWARD ACCEPT
+####iptables -P OUTPUT ACCEPT
+####iptables -t nat -F
+####iptables -t mangle -F
+####iptables -F
+####iptables -X
+#iptables-save > /dev/null 2>&1
+####iptables -A INPUT -m state --state NEW -m tcp -p tcp --dport 1:65535 -j ACCEPT
+#firewall-cmd --permanent --direct --passthrough ipv4 "-I INPUT 4 -p tcp -m state --state NEW -m tcp --dport 1:65535 -j ACCEPT"
+
+sudo su - oracle <<EOS
+mkdir -p /home/oracle/stage/installers 
+ls  -la /home/oracle/stage/installers >> /tmp/bootstrp.log
+cd stage
+### remove eany previous installs of the weblogic tools
+###
+rm -rf imagetool.zip imagetool
+###
+cd /home/oracle/stage/installers
+wget https://github.com/oracle/weblogic-image-tool/releases/download/release-1.9.5/imagetool.zip  --append-output=imagetool-logfile 
+
+echo "A" | unzip imagetool.zip
+echo "alias imagetool=\"imagetool.sh\"" >> /home/oracle/.bashrc
+###source  /home/oracle/.bashrc
+###
+
+cd /home/oracle/stage/installers
+wget https://github.com/oracle/weblogic-deploy-tooling/releases/download/release-1.9.5/weblogic-deploy.zip --append-output=weblogic-deploy-logfile
+
+
+cd /home/oracle/stage/installers
+wget https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/_dHz8Soh0u9mwpQpOsft2LruC3R57R3If_wX3NyQ0CmV2WzKlf__5GIvXwchwjq7/n/oraseemeatechse/b/ords/o/jdk-8u261-linux-x64.tar.gz \
+--append-output=jdk-8u261-linux-x64.tar.gz-logfile
+tar -xvf jdk-8u261-linux-x64.tar.gz
+mv jdk1.8.0_261 /u01/.
+
+cp /home/oracle/.bashrc /home/oracle/.bashrc-bck
+echo "export PATH=/u01/jdk1.8.0_261/bin:/home/oracle/stage/installers/imagetool/bin:$PATH" >>        /home/oracle/.bashrc
+echo "export CLASSPATH=/u01/jdk1.8.0_261:$CLASSPATH" >> /home/oracle/.bashrc
+echo "export JAVA_HOME=/u01/jdk1.8.0_261" >> /home/oracle/.bashrc
+
+
+
+
+cat /home/oracle/.bashrc
+source /home/oracle/.bashrc
+java -version
+
+cd /home/oracle/stage/installers
+mkdir -p /home/oracle/stage/installers/keys
+rm -rf keys/*
+cp /home/oracle/.ssh/authorized_keys keys/.
+ssh-keygen -t rsa -f keys/wls_rsa -q -P ""
+cd keys
+cp authorized_keys authorized_keys-bck
+cat wls_rsa.pub >> authorized_keys
+cat authorized_keys
+
+cd /home/oracle/stage/installers
+cat<<'EOF'> wls.rsp
+[ENGINE]
+Response File Version=1.0.0.0.0
+[GENERIC]
+ORACLE_HOME=/u01/oracle
+INSTALL_TYPE=WebLogic Server
+MYORACLESUPPORT_USERNAME=
+MYORACLESUPPORT_PASSWORD=<SECURE VALUE>
+DECLINE_SECURITY_UPDATES=true
+SECURITY_UPDATES_VIA_MYORACLESUPPORT=false
+PROXY_HOST=
+PROXY_PORT=
+PROXY_USER=
+PROXY_PWD=<SECURE VALUE>
+COLLECTOR_SUPPORTHUB_URL=
+EOF
+
+cd /home/oracle/stage/installers
+cat<<'EOF'>oraInst.loc
+inventory_loc=/u01/oracle/oraInventory
+inst_group=oinstall
+EOF
+
+cd /home/oracle/stage/installers
+
+wget https://raw.githubusercontent.com/eugsim1/WLS_imagetool_scripts/main/DiscoverDemoDomain.properties \
+--append-output=DiscoverDemoDomain.properties-logfile
+
+wget https://raw.githubusercontent.com/eugsim1/WLS_imagetool_scripts/main/DiscoveredDemoDomain.yaml \
+--append-output=DiscoveredDemoDomain.yaml-logfile
+
+wget  https://github.com/eugsim1/WLS_imagetool_scripts/raw/main/DiscoveredDemoDomain.zip \
+--append-output=DiscoveredDemoDomain.zip-logfile
+
+wget https://raw.githubusercontent.com/eugsim1/WLS_imagetool_scripts/main/letsEncryptCerts.jks \
+--append-output=letsEncryptCerts.jks-logfile
+
+### get the weblogic distribution
+wget https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/-sGORB3Oct5CuS-z7OOVe90wQhj24vUPjOguI52-K0CgRfG3E2XbNLyVWEG3_JT7/n/oraseemeatechse/b/ords/o/fmw_12.2.1.4.0_wls_Disk1_1of1.zip \
+--append-output=fmw_12.2.1.4.0_wls_Disk1_1of1.zip-logfile
+
+echo "===========">> /tmp/init.log
+echo $PATH >> /tmp/init.log
+java -version 2>> /tmp/init.log
+imagetool >> /tmp/init.log
+
+EOS
+
+

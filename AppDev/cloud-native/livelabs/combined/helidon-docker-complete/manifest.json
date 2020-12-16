@@ -1,0 +1,60 @@
+{
+    "tutorials": [
+        {
+          "title": "Prerequisites",
+          "filename":"https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/cloud-login/pre-register-free-tier-account.md"
+        },
+        {
+          "title": "Labs introduction",
+          "filename":"combined-helidon-docker-complete.md"
+        },
+        {
+          "title": "Setup your tenancy",
+          "filename":"../../../manual-setup/full-setup-free-tier.md"
+        },
+        {
+          "title": "Setup for the Helidon Labs",
+          "filename":"../../../helidon/setup/setup.md"
+        },
+        {
+          "title": "Helidon - Part 1: Core Helidon ",
+          "filename": "../../../helidon/helidon-core/helidon-core.md"
+        },
+		{
+          "title": "Helidon - Part 2: Database and Helidon",
+          "filename": "../../../helidon/helidon-data/helidon-data.md"
+        },
+		{
+          "title": "Helidon - Optional Part 2a: Accessing the request context",
+          "filename": "../../../helidon/helidon-data/accessing-the-context.md"
+        },
+		{
+          "title": "Helidon - Part 3: Communicating between microservices with Helidon",
+          "filename": "../../../helidon/helidon-to-other-microservices/helidon-to-other-microservices.md"
+        },
+		{
+          "title": "Helidon - Optional Part 3a: Communicating from non Helidon clients",
+          "filename": "../../../helidon/helidon-to-other-microservices/non-helidon-rest-clients.md"
+        },
+        {
+          "title": "Helidon - Part 4: Operations support with Helidon",
+          "filename": "../../../helidon/helidon-operations/helidon-operations.md"
+        },
+        {
+          "title": "Helidon - Part 5: Cloud Native support in Helidon",
+          "filename": "../../../helidon/helidon-cloud-native/helidon-cloud-native.md"
+        },
+        {
+          "title": "Helidon Optional Labs",
+          "filename": "../../../spacer-manifest-entry.md"
+        },
+        {
+          "title": "Helidon - Optional lab 1: Self documenting API support in Helidon",
+          "filename": "../../../helidon/helidon-open-api/helidon-open-api.md"
+        },
+        {
+          "title": "Docker - Docker lab",
+          "filename": "../../../docker/docker-labs.md"
+        }
+    ]
+}

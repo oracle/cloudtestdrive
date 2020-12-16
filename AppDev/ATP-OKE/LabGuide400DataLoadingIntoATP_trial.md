@@ -52,12 +52,14 @@ unzip Wallet.zip -d Wallet
     WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY=$TNS_ADMIN)))
     ```
 
+  - Save the change
+  
   - This will allow us to simply set the environment variable $TNS_ADMIN to the correct path.
 
 - Reposition yourself in the root directory of your project
 
   ```
-  cd ..
+  cd $HOME/dev/ATPDocker
   ```
 
 - On the command line, add the new files to the git repository, commit them and push them to Visual Builder Studio with the following commands:
@@ -80,7 +82,9 @@ git push
 
 
 
-- Your wallet is now visible in Visual Builder Studio - you might have to refresh your browser window to see the changes
+- Your Wallet is now visible in Visual Builder Studio - you might have to refresh your browser window to see the changes
+
+Note We did change a file in the Wallet directory, but didn't re-zip it before pushing the changes back to the git repo. That's because the SQLcl step of the build process uses the basic zipped file without the Sqlnet changes, but when we use the aone application (which we'll come to later) we want to change the config using the TNS_ADMIN environment variable, and the driver for that uses the non zipped files. Basically the change we made will be used later in the labs, but this is a good time to make the change and avoid a second git push later on.
 
 <img src="images/400/wallet_added.png" style="zoom:50%;" />
 
@@ -117,8 +121,8 @@ git push
 
 
 - Fill in the parameters:
-  - username of the ATP instance : **admin**
-  - password of the ATP instance
+  - username of your ATP database instance : **admin**
+  - password of your ATP database instance
   - The location of the credentials file incide the repo. E.g. **Wallet.zip**
   - your connect string, for example **jleoow_high**, where *jleoow* is the name of the database.
     Check out your **tnsnames.ora** file inside the wallet folder for a list of available connections.
@@ -132,7 +136,7 @@ git push
 
 ![](./images/400/build-now-2.png)
 
-In case this is the first build job in your environment, the startup of the Build engine might take up to 10 minutes to complete.  You will notice the build to be "Waiting for Executioner"
+In case this is the first build job in your environment, the startup of the Build engine might take up to 10 minutes to complete. This is because it it creating the virtual machine to process the build, installing the operating system and the build software (Kubectl, docker, etc.) we specified previously.  During this time you will notice the build to be "Waiting for Executioner"
 
 ![](./images/400/waiting-1.png)
 

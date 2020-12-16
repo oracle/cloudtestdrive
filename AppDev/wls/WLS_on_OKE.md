@@ -103,6 +103,7 @@ We will be using an Oracle Cloud Managed Kubernetes cluster to deploy weblogic.
 
     - Name : the name of your cluster.  We will be using the name *WlsOkeLab_(your_initials)* in this tutorial.  Please replace (your_initials) by a 3-letter code, for example Abc
     - Choose the CTDOKE compartment if it is available in the tenancy.
+    - Version : latest version validated with this lab is **1.18.10**.  Note: you may see older vrsions in some screendumps,please use latest version as specified on this line.
     - Select **Public** worker nodes
     - Choose the shape VM_Standard2.1
     - **Remark**: you might have to check available compute shapes on your tenancy.  You can do this by visualizing the **Service Limits** on the "Administration" , "Tenancy Details" page.
@@ -216,9 +217,21 @@ EOF
   cd weblogic-kubernetes-operator/
   ```
 
+- Pull down some required docker images
+
+  ```
+  docker pull oracle/weblogic-kubernetes-operator:3.1.0
+  docker pull traefik:2.2.1
+  ```
+
 - Set up Helm:
 
-  `helm repo add stable https://kubernetes-charts.storage.googleapis.com/`
+  ```
+  helm repo add traefik https://containous.github.io/traefik-helm-chart/
+  helm repo update
+  ```
+
+  
 
 - Create a namespace for the traefik loadbalancer:
 
@@ -227,13 +240,12 @@ EOF
 - Then execute the Helm chart:
 
   ```
-  helm install traefik-operator stable/traefik \
+  helm install traefik-operator traefik/traefik \
       --namespace traefik \
       --values kubernetes/samples/charts/traefik/values.yaml \
-      --set "kubernetes.namespaces={traefik}" \
-      --wait
+      --set "kubernetes.namespaces={traefik}"
   ```
-  
+
 - Validate the Traefik service is up and running
 
   ```
@@ -261,16 +273,19 @@ EOF
   ```bash
   helm install sample-weblogic-operator kubernetes/charts/weblogic-operator \
     --namespace sample-weblogic-operator-ns \
-    --set image=oracle/weblogic-kubernetes-operator:3.0.0 \
+    --set image=oracle/weblogic-kubernetes-operator:3.1.0 \
     --set serviceAccount=sample-weblogic-operator-sa \
-    --set "domainNamespaces={}" \
+    --set "enableClusterRoleBinding=true" \
+    --set "domainNamespaceSelectionStrategy=LabelSelector" \
+    --set "domainNamespaceLabelSelector=weblogic-operator\=enabled" \
     --wait
   ```
 
-- Verify that the operator’s pod is running, by listing the pods in the operator’s namespace. You should see one for the operator.
+- Verify that the operator’s pod is running, by listing the pods in the operator’s namespace. You should see one for the operator, and look at the log file of the operator:
   
   ```bash
     kubectl get pods -n sample-weblogic-operator-ns
+    kubectl logs -n sample-weblogic-operator-ns -c weblogic-operator deployments/weblogic-operator
   ```
   
 - Create namespace where your WebLogic will run and that can host one or more domains:
@@ -279,14 +294,10 @@ EOF
 kubectl create namespace sample-domain1-ns
   ```
   
-- Use `helm` to configure the operator to manage domains in this namespace:
+- As we have set up the operator to use labels, it suffices to add the correct label to the new namespace to have it monitored by the operator:
 
   ```bash
-helm upgrade sample-weblogic-operator  kubernetes/charts/weblogic-operator \
-      --namespace sample-weblogic-operator-ns \
-      --reuse-values \
-      --set "domainNamespaces={sample-domain1-ns}" \
-      --wait
+kubectl label ns sample-domain1-ns weblogic-operator=enabled
   ```
   
 - Configure Traefik to manage Ingresses created in this namespace:

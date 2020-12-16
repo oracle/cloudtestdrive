@@ -1,0 +1,12 @@
+{
+    "tutorials": [
+        {
+            "title": "Verrazzano lab - Introduction and prerequisites",
+            "filename": "verrazzanointroprereq.md"
+        },
+        {
+            "title": "Verrazzano lab - Lab steps",
+            "filename": "verrazzanolab.md"
+        }
+    ]
+}

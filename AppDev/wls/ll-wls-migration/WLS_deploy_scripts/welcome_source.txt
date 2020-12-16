@@ -1,0 +1,13 @@
+###############################################################################
+##                     this is the SOURCE wls domain                         ##
+##      THESE ARE USEFULL INFORMATIONS FOR YOUR LAB                          ##
+##      There is one test domain created for the migration tests             ##
+##                                                                           ##
+##     execute the discovery script to create the artifacts from your domain ##
+##      transfer them to the target server and create a clone domain         ##
+##                                                                           ##
+##                                                                           ##
+###############################################################################
+
+
+

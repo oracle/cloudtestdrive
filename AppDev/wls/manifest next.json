@@ -1,0 +1,8 @@
+{
+    "tutorials": [
+        {
+            "title": "Overview of WebLogic labs",
+            "filename": "./README.md"
+        }
+    ]
+}

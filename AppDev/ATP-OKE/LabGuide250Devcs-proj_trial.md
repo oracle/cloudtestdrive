@@ -85,7 +85,7 @@ In this section, you’ll provision a complete development platform for your tea
 
   - Choose **Import Existing Repository** under **Initial content**
 
-  - Enter https://github.com/CloudTestDrive/ATPDocker.git in the text box: 
+  - Enter https://github.com/CloudTestDrive/ATPDocker.git (make sure there is no whitespace at the start or finish if copy and pasting) in the text box: 
 
     <img src="images/150/image010-3.png" style="zoom:50%;" />
 

@@ -1,0 +1,122 @@
+###
+### we will use the DOCKER_BUILDKIT=1 feature to accelarate the build time of the image
+### https://docs.docker.com/develop/develop-images/build_enhancements/
+###
+
+###
+### build a new image from the previous 
+###
+export ORACLE_SUPORT_USER=YOUR_SUPPORT_ID
+echo "YOUR_PASSWD" > passwd.txt
+cd /home/oracle/stage/installers/
+docker system prune -f
+docker images
+
+
+rm -rf build_args_update_from_image
+export FROM_IMAGE=frm_dockerfile_build_commands_step2_corr_part2
+export TARGET_NEW_IMAGE="fra.ocir.io/eugsim/wls:12.2.1.4.0-psu"
+echo ${TARGET_NEW_IMAGE}
+echo ${FROM_IMAGE}
+##fra.ocir.io/eugsim/wls:12.2.1.4.0-psu
+
+cat<<EOF> build_args_update_from_image
+update
+--tag=${TARGET_NEW_IMAGE}:latest
+--fromImage=${FROM_IMAGE}
+--dryRun
+--pull
+--chown=oracle:root
+--latestPSU
+--user $ORACLE_SUPORT_USER
+--passwordFile passwd.txt
+EOF
+cat build_args_update_from_image
+
+imagetool @build_args_update_from_image  > frm_dockerfile_update_from_image
+
+##inspect the dockerfile
+
+cat frm_dockerfile_update_from_image
+
+### if ther is a failure inspect the source image
+#docker container run --rm -it --name ${FROM_IMAGE} ${FROM_IMAGE} /bin/bash
+
+DOCKER_BUILDKIT=1  docker image build  \
+--tag ${TARGET_NEW_IMAGE}  \
+--force-rm=true \
+--file  frm_dockerfile_update_from_image .
+
+
+
+docker image ls -a
+docker image prune -f
+docker container run --rm \
+-it --name test_PSU_update \
+${TARGET_NEW_IMAGE} /bin/bash
+
+docker container run --rm -d -P -p 7001:7001 -p 7002:7002 -p 8001:8001 \
+-it --name test_PSU_update $IMAGE_NAME
+docker container rm -f test_PSU_update
+docker container run -d -P -p 7001:7001 -p 7002:7002 -p 8001:8001 \
+-it --name test_PSU_update \
+--user=root \
+$IMAGE_NAME "/usr/sbin/sshd -D"
+
+
+
+
+export DOCKER_PORT_TARGET=`docker port test_PSU_update 22/tcp`
+echo $DOCKER_PORT_TARGET
+export DOCKER_PORT_TARGET=`echo $DOCKER_PORT_TARGET | sed 's/0.0.0.0://g'`
+echo $DOCKER_PORT_TARGET
+ssh -i keys/wls_rsa \
+ -o "UserKnownHostsFile=/dev/null" \
+ -o "StrictHostKeyChecking=no"  \
+ oracle@localhost  -p $DOCKER_PORT_TARGET
+
+
+export IMAGE_NAME=image_tool_12.2.1.4.0_update_from_image
+docker container rm $IMAGE_NAME -f
+
+docker image rmi $IMAGE_NAME  -f
+docker container rm $IMAGE_NAME -f
+docker container run  -it --name ${IMAGE_NAME}_admin $IMAGE_NAME /bin/bash
+
+
+################################
+########## BEGIN DOCKERFILE ##########
+#
+# Copyright (c) 2019, 2020, Oracle and/or its affiliates.
+#
+# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+#
+#
+
+FROM frm_dockerfile_build_commands_step2_corr_part2 as FINAL_BUILD
+USER root
+
+ENV OPATCH_NO_FUSER=true
+
+
+LABEL com.oracle.weblogic.imagetool.buildid="230f091f-1b19-4d06-a444-e488f35d1c07"
+
+USER oracle
+
+    COPY --chown=oracle:root p28186730_139424_Generic.zip /tmp/imagetool/opatch/
+    RUN cd /tmp/imagetool/opatch \
+    && /u01/jdk/bin/jar -xf /tmp/imagetool/opatch/p28186730_139424_Generic.zip \
+    && /u01/jdk/bin/java -jar /tmp/imagetool/opatch/6880880/opatch_generic.jar -silent -ignoreSysPrereqs -force -novalidation oracle_home=/u01/oracle \
+    && rm -rf /tmp/imagetool
+
+    COPY --chown=oracle:root patches/* /tmp/imagetool/patches/
+
+    RUN /u01/oracle/OPatch/opatch napply -silent -oh /u01/oracle -phBaseDir /tmp/imagetool/patches \
+    && /u01/oracle/OPatch/opatch util cleanup -silent -oh /u01/oracle \
+    && rm -rf /tmp/imagetool
+
+
+
+
+########## END DOCKERFILE ##########
+
