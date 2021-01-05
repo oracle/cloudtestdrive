@@ -73,7 +73,7 @@ If prompted, sign in to the **Drone Permits App**  using the WORKSHOPATP usernam
 
   ![](images/page-5.png " ")
 
-3. Open one of the Drone Flight requests. Notice how we only have a textual address here at the moment, without coordinates.
+2. Open one of the Drone Flight requests. Notice how we only have a textual address here at the moment, without coordinates.
 
     ![](images/page-5-flight-request.png " ")
 
@@ -177,7 +177,7 @@ In our (simplified) example we will only look at the first row, and ignore any a
 
 
 
-- **Event**: `elocation_geocoder_success`
+- **Event**: elocation_geocoder_success
 
 - **Selection type**: JavaScript Expression
 
@@ -193,7 +193,7 @@ In our (simplified) example we will only look at the first row, and ignore any a
 
 15. On the Action tab:
 
-    - **Action**: "Execute PL/SQL Code".
+    - **Action**: "Execute Server Side Code".
     
 - Add the following PL/SQL:
   
@@ -228,11 +228,10 @@ In our (simplified) example we will only look at the first row, and ignore any a
           :P6_PERMIT := sqlerrm;
   end;
   ```
-
-
-- **Items to Return**: "P6_PERMIT".
+  
+     - **Items to Return**: "P6_PERMIT".
     
-- **Fire on Initialization**: Off.
+     - **Fire on Initialization**: Off.
     
        
 
@@ -264,7 +263,7 @@ Oracle Autonomous database comes preconfigured with Oracle Spatial. Highlights o
 
 In our case we will verify that the coordinate of the proposed drone flight is not within any urban area by using the [Oracle Spatial operators](https://docs.oracle.com/database/121/SPATL/spatial-operators.htm#SPATL110). The operator `SDO_ANYINTERACT` will check if the coordinate overlaps/is inside any of the urban area polygons.
 
-1. Go back to the PL/SQL that's executed when the web service returns its result (edit the "Drone Flight Request - Details" page, then go to the Dynamic Actions tab and select the Execute PL/SQL Code under the TRUE
+1. Go back to the PL/SQL that's executed when the web service returns its result (edit the "Drone Flight Request - Details" page, then go to the Dynamic Actions tab and select the Execute Server-side Code under the TRUE
 
   ![](./images/geocoding_02_handle_result4.png " ")
 
@@ -292,8 +291,7 @@ In our case we will verify that the coordinate of the proposed drone flight is n
         close c_geocoded_address;
         if lon is not null and lat is not null then
             result := result || 'Address found: ' || '[' || lat || ',' || lon || ']';
-
-            /* Added code for urban area check */
+        --Added code for urban area check
             coordinates := MDSYS.SDO_GEOMETRY(2001, 4326, MDSYS.SDO_POINT_TYPE(lon, lat, NULL), NULL, NULL);
             SELECT COUNT(*) INTO overlap_count
             FROM URBAN_AREA_UK "t2"
@@ -303,10 +301,9 @@ In our case we will verify that the coordinate of the proposed drone flight is n
             else
                 result := result || ' - NO FLY ZONE';
             end if;
-            /* End of added code for urban area check */
-
+            --End of added code for urban area check
         else
-          result := result || 'Address not found';
+      result := result || 'Address not found';
         end if;
         :P6_PERMIT := result;
     exception
@@ -314,7 +311,7 @@ In our case we will verify that the coordinate of the proposed drone flight is n
             :P6_PERMIT := sqlerrm;
     end;
     ```
-
+    
 3. Run the "Drone Flight Requests - Interactive Report" page.
 
   ![](./images/select-page-5.png " ")
@@ -346,7 +343,7 @@ In our case we will verify that the coordinate of the proposed drone flight is n
 
 ## Acknowledgements
 * **Author** - Jeroen Kloosterman, Technology Product Strategy Manager, Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center
-* **Last Updated By/Date** - Tom McGinn, Database Innovations Architect, Database Product Management, July 2020
+* **Last Updated By/Date** - Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center, January 2021
 
 ## Need Help?
 Please submit feedback or ask for help using our [LiveLabs Support Forum](https://community.oracle.com/tech/developers/categories/oracle-apex-development-workshops). Please click the **Log In** button and login using your Oracle Account. Click the **Ask A Question** button to the left to start a *New Discussion* or *Ask a Question*.  Please include your workshop name and lab name.  You can also include screenshots and attach files.  Engage directly with the author of the workshop.
