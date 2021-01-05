@@ -37,14 +37,7 @@ Helm is the tool we will be using to install standard software into Kubernetes. 
 
 The OCI Cloud Shell has helm already installed for you, however it does not know what repositories to use for the helm charts. We need to tell helm what repositories to use.
 
-  1. Run the following command to add the core stable repo to helm :
-  
-  - `helm repo add stable https://kubernetes-charts.storage.googleapis.com/`
-  
-  ```
-"stable" has been added to your repositories
-```
-  2. Now add the dashboard repo
+  1. Run the following command to add the dashboard repo to helm
   
   - `helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/`
   
@@ -52,24 +45,22 @@ The OCI Cloud Shell has helm already installed for you, however it does not know
 "kubernetes-dashboard" has been added to your repositories
  ```
  
-  3. To can get the current list of repositories run the following command :
+  2. To can get the current list of repositories run the following command :
   
   - `helm repo list`
   
   ```                                            
-NAME                    URL                                              
-stable                  https://kubernetes-charts.storage.googleapis.com/
+NAME                    URL         
 kubernetes-dashboard    https://kubernetes.github.io/dashboard/  
 ```
     
-  4. Lastly let's update the helm cache, run the following command :
+  3. Lastly let's update the helm cache, run the following command :
   
   - `helm repo update`
 
   ```
 Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "kubernetes-dashboard" chart repository
-...Successfully got an update from the "stable" chart repository
 Update Complete. ⎈ Happy Helming!⎈ 
 ```
 
@@ -690,7 +681,6 @@ secret/tls-secret created
 Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "kubernetes-dashboard" chart repository
 ...Successfully got an update from the "ingress-nginx" chart repository
-...Successfully got an update from the "stable" chart repository
 ```
 
   6. Run the following command to install **ingress-nginx** using Helm 3:

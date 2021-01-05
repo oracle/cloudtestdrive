@@ -2,13 +2,9 @@
 While writing these labs I came across many web pages. Ones that I think are especially useful are detailed in the sections below
 
 ## Helm
-Helm has been used here to install a number of Kubernetes servcies. See [Helm website](https://helm.sh) for details and if you need to download it there are details in the [Helm web page](https://helm.sh/docs/intro/install/)
+Helm has been used here to install a number of Kubernetes services. See [Helm website](https://helm.sh) for details and if you need to download it there are details in the [Helm web page](https://helm.sh/docs/intro/install/)
 
-If you download Helm version 3 it does not come with a pre-configured chart repository, but the master repo maintained by the helm team (and the one used to download the charts used in the labs) can be added using the following command
-
-```
-helm repo add stable https://kubernetes-charts.storage.googleapis.com/
-```
+If you download Helm version 3 it does not come with a pre-configured chart repository. The master repo used to be at `kubernetes-charts.storage.googleapis.com` however in late 2020 it was deprecated when the help project stopped maintaining it's chart repo, so you may experience access problems, as well as it not containing current charts. Charts are now managed by the individual projects / companies (e.g. `https://kubernetes.github.io/dashboard/` for the dashboard). There are some companies that maintain a collection of helm charts from multiple other sources which may be suitable if you can't find the individual project charts (E.g. The Bitnami helm chart repo at `https://charts.bitnami.com/bitnami`) 
 
 ## Ingress
 For more information on [Nginx Ingress](https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-ingress-guide-nginx-example.html) (this also looks in more detail at the benefits / disadvantages of using an Ingress vs Load Balancer)
