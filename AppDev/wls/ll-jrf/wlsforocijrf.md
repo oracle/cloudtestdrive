@@ -4,7 +4,7 @@
 
 ## Objective
 
-This Hands on Lab will go through the process of creating a non JRF type of WebLogic for OCI Instance - using Oracle Cloud Marketplace - and through the steps of deploying a simple application.
+This Hands on Lab will go through the process of creating a JRF type of WebLogic for OCI Instance - using Oracle Cloud Marketplace - and through the steps of deploying of some sample applications.
 
 
 
@@ -84,8 +84,8 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
   
   - **Secrets OCID for WebLogic Server Admin Password**: 
   
-    - Enter the OCID of the Secret that was set up earlier for this.  If you if you are using the CTD (Cloud Test Drive) environment, this OCID might be in a document provided by your instructor.
-      - A bit of context: the WebLogic Server Admin Password it's stored in an OCI Vault as an OCI Secret (encrypted with an OCI Encryption Key); during WebLogic Domain creation, the provisioning scripts will setup the admin password by getting it from the OCI Secret instead of having it as a Terraform variable; in a similar way - if talking about an JRF enabled domains - the database admin password will be referred from an OCI Secret
+    - Enter the OCID of the <u>WebLogic Admin Secret</u> that was set up earlier for this.  If you if you are using the CTD (Cloud Test Drive) environment, this OCID might be in a document provided by your instructor.
+      - A bit of context: the WebLogic Server Admin Password it's stored in an OCI Vault as an OCI Secret (encrypted with an OCI Encryption Key); during WebLogic Domain creation, the provisioning scripts will setup the admin password by getting it from the OCI Secret instead of having it as a Terraform variable; in a similar way - for JRF enabled domains - the database admin password will be referred from an OCI Secret
       
   
       
@@ -124,18 +124,47 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 
 - Leave Identity Cloud Service Integration **unchecked** as default (no integration) 
-- Leave **OCI Policies** checked, as a Dynamic Group containing the WebLogic Compute nodes will be created automatically alongside policies for letting them access the Secrets from Vault
+- Leave **OCI Policies** checked, as a Dynamic Group containing the WebLogic Compute nodes will be created automatically alongside policies for letting them access the Secrets from OCI Vault
 
 ![](images/wlscnonjrfwithenv/image153.png)
 
 
-- Leave **Provision with JRF** unchecked, as we will not associate this WLS instance with a database
-- Leave **Configure Application Datasource** also unchecked, as we will not use application datasources
+- Check **Provision with JRF**. In the *Database* section choose:
 
-![](images/wlscnonjrfwithenv/image155.png)
+  - Database Strategy: **Autonomous Transaction Processing Database**
+  - Autonomous DB System Compartment: **CTDOKE** (or the compartment name where the ATP database was provisioned)
+  - Autonomous Database name: **WLSATPBDB**
+  - Secrets OCID for Autonomous Database Admin Password:
+
+    - Enter the OCID of the <u>DB Admin Secret</u> that was set up earlier for this.  If you if you are using the CTD (Cloud Test Drive) environment, this OCID might be in a document provided by your instructor
+  - Autonomous Database Service level: **low** (default option)
+
+![image-20210117160118326](images/wlscnonjrfwithenv/image160.png)
 
 
-- Review the Stack configuration and Click **Create**:
+
+
+- Check **Configure Application Datasource**. We have a quick option to pre-configure the WebLogic Domain with a ready to use Application Datasource.
+
+![image-20210117161400912](images/wlscnonjrfwithenv/image162.png)
+
+
+
+- Set:
+  - Application Database Strategy: **Autonomous Transaction Processing Database**
+  - Compartment: **CTDOKE** (or the compartment name where the ATP database was provisioned)
+  - Autonomous Database name: **WLSATPBDB**
+  - Secrets OCID for Autonomous Application Database User Password:
+
+    - Enter the OCID of the <u>Sample Application Schema Secret</u> that was set up earlier for this.  If you if you are using the CTD (Cloud Test Drive) environment, this OCID might be in a document provided by your instructor
+  - Autonomous Database Service level: **tp**
+
+![image-20210117161450978](images/wlscnonjrfwithenv/image164.png)
+
+
+
+
+- Review the Stack configuration and click **Create**:
 
 ![](images/wlscnonjrfwithenv/image170.png)
 
@@ -205,25 +234,133 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 - The out of the box deployed sample application is being served through a secured SSL Load Balancer Listener:
 
-![](images/wlscnonjrfwithenv/image400.png)
+![](images/wlscnonjrfwithenv/image395.png)
 
 
 
-## Step 2. [Optional] Deploy custom simple sample application
+## Step 2. Change Load Balancer Cookie persistence type
 
-- Let's go back to the WebLogic Server admin console to deploy our sample web application:
-
-![](images/wlscnonjrfwithenv/image410.png)
+Before deploying the sample ADF Application, we need to change the way Session Persistence is handled by the Public Load Balancer. By default, the Public Load Balancer comes pre-configured to use *Load Balancer cooking persistence*. But as in our case - as in any ADF application case actually - as the sample ADF application generates its own cookie (**JSESSIONID**), we need to instruct the Load Balancer to use *Application cookie persistence*.
 
 
 
-- Go to *Domain Structure* menu, *Deployments*; **Lock & Edit** to switch to edit mode; Click **Install**:
+- In the OCI Console navigate to *Core Infrastructure* -> *Networking* -> *Load Balancers*:
+
+![image-20210117204440511](images/wlscnonjrfwithenv/image800.png)
+
+
+
+- Identify the Load Balancer created by the WebLogic Stack and click on it (contains the Stack resource name prefix setup during WebLogic Stack configuration):
+
+![image-20210117205102040](images/wlscnonjrfwithenv/image810.png) 
+
+
+
+- In the *Resources* section, click on **Backend Sets**; click on the backend set:
+
+![image-20210117205154277](images/wlscnonjrfwithenv/image820.png)
+
+
+
+- Click on **Edit**:
+
+![image-20210117205504439](images/wlscnonjrfwithenv/image830.png)
+
+
+
+- We see that, by default, the Backend Set has Session Persistence enabled using load balancer cookie persistence:
+
+![image-20210117183948693](images/wlscnonjrfwithenv/image840.png)
+
+
+
+- Change to **Enable application cookie persistence**; Set *Cookie Name* to **JSESSIONID**; Click on **Update Backend Set**:
+
+![image-20210117184034878](images/wlscnonjrfwithenv/image850.png)
+
+
+
+- A Work Request has been created and shortly the Backend Set configuration shall be updated:
+
+![image-20210117184105827](images/wlscnonjrfwithenv/image860.png)
+
+
+
+## Step 3. Deploy sample ADF application
+
+- Let's go back to the WebLogic Server admin console:
+
+![image-20210117211129722](images/wlscnonjrfwithenv/image400.png)
+
+
+
+- Before we deploy the ADF application, let's have a look at the Application Datasource that has been created with WebLogic Server; From *Domain Structure* go to *Services* -> *Data Sources*:
+
+![image-20210117211532183](images/wlscnonjrfwithenv/image401.png)
+
+
+
+- The Datasource it's called **APPDBDataSource**. We need to change the *JNDI Name* as our sample ADF application uses **jdbc/adfappds** to lookup for datasource and get database connections. Click on the datasource:
+
+![image-20210117212224972](images/wlscnonjrfwithenv/image402.png)
+
+
+
+- To change the *JNDI Name* we need to *Lock* the WebLogic Console Session. Click on **Lock & Edit** in the upper left corner:
+
+![image-20210117212436274](images/wlscnonjrfwithenv/image403.png)
+
+
+
+- Change *JNDI Name* to  **jdbc/adfappds** and click **Save**:
+
+![image-20210117212733419](images/wlscnonjrfwithenv/image404.png)
+
+
+
+- Click on **Activate Changes** to save and close the WebLogic Console Editing Session:
+
+![image-20210117212844552](images/wlscnonjrfwithenv/image405.png)
+
+
+
+- The change has been recorded, but we need also to restart the Datasource. Click on *View changes and restarts* (upper left corner):
+
+![image-20210117213058670](images/wlscnonjrfwithenv/image406.png)
+
+
+
+- Switch to *Restart Checklist*:
+
+![image-20210117213448644](images/wlscnonjrfwithenv/image407.png)
+
+
+
+- Select the **AppDBDataSource** and click on **Restart**:
+
+![image-20210117213605274](images/wlscnonjrfwithenv/image408.png)
+
+
+
+- Click **Yes**:
+
+![image-20210117213733501](images/wlscnonjrfwithenv/image409.png)
+
+
+
+- The Datasource will be restarted shortly:
+
+![image-20210117213906680](images/wlscnonjrfwithenv/image410.png)
+
+
+
+- Now, to deploy the ADF application, go to *Domain Structure* menu, *Deployments*; **Lock & Edit** to switch to edit mode; Click **Install**:
 
 ![](images/wlscnonjrfwithenv/image420.png)
 
 
 
-Follow **Upload your files** link and upload provided [SampleWebApp.war](resources/SampleWebApp.war) web archive file:
+- Follow **Upload your files** link and upload provided [SampleWebApp.war](resources/SampleWebApp.war) web archive file:
 
 ![](images/wlscnonjrfwithenv/image430.png)
 
@@ -281,25 +418,45 @@ Follow **Upload your files** link and upload provided [SampleWebApp.war](resourc
 
  ![](images/wlscnonjrfwithenv/image520.png)
 
+
+
 - Click on the link to test this sample application:
 
 ![](images/wlscnonjrfwithenv/image530.png)
 
 
 
-- This is just another sample application, but you can deploy any other application; Congratulations!
+- This is just a sample ADF application, but you can deploy any other application; Congratulations!
 
 
 
-## Step 3. [Optional] Deploy sample ADF Application (Web Components Only)
+## Step 4. [Optional] Deploy ADF Faces Rich Client Components Demo Application
 
-Lorem ipsum
+If you want to explore the ADF Faces components at runtime, the ADF Faces development team at Oracle created a component demo that showcases the various components and framework capabilities and allows you to try different property settings on the selected component. The components demo is provided with full source code and is a great way to learn how to work with the components in general. 
+
+![img](images/wlscnonjrfwithenv/image700.png)
 
 
 
-## Step 4. Deploy custom sample ADF Application with Business Components
+First, download the [faces-12.2.1.4.0.war](https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/ll-wls-bucket/o/faces-12.2.1.4.0.war) application web archive. Then, in a similar way as at **Step 2**, install the faces-12.2.1.4.0.war as an application. 
 
-Lorem ipsum
+Then, from *Deployments* -> *Control* tab start the application:
+
+![image-20210117182752892](images/wlscnonjrfwithenv/image710.png)
+
+
+
+Once *Active*, another browser tab navigate to *https://< public load balancer IP >/faces-12.2.2.1.0/*:
+
+![image-20210117184328628](images/wlscnonjrfwithenv/image720.png)
+
+
+
+The **Tag Guide** is the entry link to the component demo and shows a list of ADF Faces components that you can select to further explore. Each component demo is launched in a browser that has a split screen layout. The split screen's right content area has a property inspector functionality that you can use to set properties for the individual component. Note that the right content area might be closed so that you have to drag it open before using it. Also of interest is that in addition to the rich client components, the data visualization components which allow you to graphically represent your data are also present in this listing.
+
+The **Feature Demos** include a variety of demonstrations for the frameworks capabilities including a rich set of demos for the data visualization components, active data services, drag and drop and other client behaviors.
+
+A demo of interest should be the **Styles** demo. Users frequently get confused by which part of a component is styled by the **inlineStyle** attribute and which part is styled by the **contentStyle** attribute. The demo also contains a skinning demonstration that allows developers to play with various skin definitions per component.
 
 
 

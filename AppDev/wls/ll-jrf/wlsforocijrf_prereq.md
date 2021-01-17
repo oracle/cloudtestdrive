@@ -98,13 +98,117 @@ If you don't have visibility and/or you don't have admin rights for your tenancy
 
 
 
-## Step 2. Create OCI Secret for WebLogic Admin password
+##  Step 2. Provision Repository Database and Database Objects
 
-When you provision WebLogic for you need to pass the WebLogic Admin password. An OCI Secret is required for this.  
+When deploying a JRF enabled WebLogic domain, a database repository is required. We will use Autonomous Transaction Processing - ATP - Database. As in the next part we'll deploy a sample ADF application that requires a database table and some records data, we will create the DB schema in advance.
 
 
 
-### 2.1 Create a Security Vault
+### 2.1 Provision ATP Database
+
+Go to *Oracle Database* > *Autonomous Transaction Processing*:
+
+![image-20210114171638999](images/wlscnonjrfwithenvprereq/image800.png)
+
+
+
+Choose to create a new Autonomous Database:
+
+![image-20210114172314072](images/wlscnonjrfwithenvprereq/image810.png)
+
+
+
+Give it a meaningful name, for example **WLSATPDB**; Keep default workload type **Transaction Processing**:
+
+![image-20210114172446183](images/wlscnonjrfwithenvprereq/image820.png)
+
+
+
+Scroll down and keep default setting for:
+
+- Deployment type: **Shared Infrastructure**
+- Database version: **19c**
+- OCPU count: **1**
+- Storage (TB): **1**
+- Auto scaling: *Enabled*
+
+![image-20210114172619280](images/wlscnonjrfwithenvprereq/image825.png)
+
+
+
+Next setup a password for the ADMIN user: must be 12 to 30 characters and contain at least one uppercase letter, one lowercase letter, and one number. The password cannot contain the double quote (") character or the username "admin.
+
+Keep default setting to **Allow secure access from everywhere**; this will provision ATP database with public endpoints (access can still be restricted by allowing incoming traffic from trusted IP addresses or whitelisted Virtual Cloud Networks):
+
+![image-20210114173010547](images/wlscnonjrfwithenvprereq/image830.png)
+
+
+
+For the last step choose **License included** for license type and click on **Create Autonomous Database**:
+
+![image-20210114173250626](images/wlscnonjrfwithenvprereq/image840.png)
+
+
+
+The provisioning process will start:
+
+![image-20210114173640278](images/wlscnonjrfwithenvprereq/image850.png)
+
+
+
+After a few minutes the Database should be available:
+
+![image-20210114175111264](images/wlscnonjrfwithenvprereq/image860.png)
+
+
+
+### 2.2 Prepare DB Objects
+
+Once the ATP database available, we can use the SQL Developer Web to created a DB schema and some required tables and data needed in the next part.
+
+Go to *Service Console*:
+
+![image-20210115164832314](images/wlscnonjrfwithenvprereq/image900.png)
+
+
+
+From *Development* submenu open **SQL Developer Web**:
+
+![image-20210115164927335](images/wlscnonjrfwithenvprereq/image910.png)
+
+
+
+This will open in a new tab the SQL Developer Web Login screen. Use **ADMIN** and the password setup when provisioning the ATP Database:
+
+![image-20210115165141623](images/wlscnonjrfwithenvprereq/image920.png)
+
+
+
+Once logged in, you can follow a waking tour to discover the main user interface feature: 
+
+![image-20210115165248013](images/wlscnonjrfwithenvprereq/image930.png)
+
+
+
+Once ready, copy and paste the contents of **this** sql file into *Worksheet* window:
+
+![image-20210115165623766](images/wlscnonjrfwithenvprereq/image940.png)
+
+
+
+Execute the script by clicking the *Run script* play button. All statements should execute with success:
+
+![image-20210115170204221](images/wlscnonjrfwithenvprereq/image950.png)
+
+
+
+## Step 3. Create OCI Secrets
+
+When you provision WebLogic for you need to pass the WebLogic Admin password and the Database Admin Password. Two OCI Secrets are required for this.  
+
+
+
+### 3.1 Create a Security Vault
 
 Go to *Governance and Administration* > *Security* > Vault
 
@@ -130,7 +234,7 @@ Take a look at the Vault Information:
 
 
 
-### 2.2 Create an Encryption Key
+### 3.2 Create an Encryption Key
 
 Go to *Master Encryption Keys* submenu of the Vault Information page and create an new Key:
 
@@ -150,7 +254,7 @@ The new key should be listed as *Enabled*:
 
 
 
-### 2.3 Create an OCI Secret
+### 3.3 Create an OCI Secret for the WebLogic Admin password
 
 Go to *Secrets* submenu of the Vault Information page and create an new Secret:
 
@@ -178,7 +282,33 @@ Click on the Secret name and take note of its **OCID**. We need to provide this 
 
 
 
-##  Step 3. Create ssh keys
+### 3.4 Create an OCI Secret for the Database Admin password
+
+In the same way as in previous step, create a new OCI secret for your ATP Admin user Password. Instead of the WebLogic Admin password, pass the ADMIN password created during ATP Instance provisioning. Give it a name, for example **ATPDBSecret**
+
+![image-20210117170830059](images/wlscnonjrfwithenvprereq/image740.png)
+
+
+
+Click on the new Secret name (**ATPDBSecret**) and take note of its **OCID**. We need to provide this value in the WebLogic for OCI Stack configuration form.
+
+
+
+### 3.5 Create an OCI Secret for the Sample Application Schema password
+
+We need to create one more OCI secret, for the Sample Application Schema password. As we'll see in the next part, when creating the WebLogic Stack, we have an option to create in advance an Application Datasource on WebLogic Domain. To securely pass the Schema password, we need to create an OCI secret.
+
+In the same way as in previous step, create a new OCI secret for the Sample Application Schema (*ADFAPP*). Give it a name, for example **ADFAppSecret**. Setup the **Welcome1234#** password (or a custom password if you have changed the default password setup in the SQL script executed earlier).
+
+![image-20210117220132168](images/wlscnonjrfwithenvprereq/image750.png)
+
+
+
+Click on the new Secret name (**ADFAppSecret**) and take note of its **OCID**. We need to provide this value in the WebLogic for OCI Stack configuration form.
+
+
+
+##  Step 4. Create ssh keys
 
 You need to generate a public and private ssh key pair. During provisioning using Marketplace, you have to specify the ssh public key that will be associated with each of the WebLogic VM nodes.
 
@@ -230,11 +360,4 @@ The key's randomart image is:
 
 
 
-##  Step 4. Provision ATP Database
-
-Lorem Ipsum (WLSATP)
-
-
-
-
-You should be able now to run the Hands on Lab on your own cloud environment.
+You should be prepared now to run the Hands on Lab on your own cloud environment.
