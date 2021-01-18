@@ -1,4 +1,4 @@
-# WebLogic for OCI - JRF prerequisites
+# WebLogic for OCI (JRF) - prerequisites
 
 ### Prerequisites for using own environment
 
@@ -24,9 +24,11 @@ Take note of the compartment **OCID**:
 
 The Compartment name is referred as **CTDOKE** in the Hands on Lab.
 
+! If <u>you are an OCI Administrator</u> (as, for example, the owner of a **free tier** cloud account) you may **skip** next sections of this step.
 
 
-### 1.1 Required root level policies for WebLogic for OCI
+
+### 1.1 [Non-Admins only] Required root level policies for WebLogic for OCI
 
 You must be an Oracle Cloud Infrastructure <u>administrator</u>, or <u>be granted some root-level permissions</u>, in order to create domains with Oracle WebLogic Server for Oracle Cloud Infrastructure.
 
@@ -54,7 +56,7 @@ Allow group MyGroup to use cloud-shell in tenancy
 
 
 
-### 1.2 Required compartment level policies for WebLogic for OCI
+### 1.2 [Non-Admins only] Required compartment level policies for WebLogic for OCI
 
 If <u>you are not an Oracle Cloud Infrastructure administrator</u>, you must be given management access to resources in the compartment in which you want to create a domain.
 
@@ -126,11 +128,11 @@ Give it a meaningful name, for example **WLSATPDB**; Keep default workload type 
 
 Scroll down and keep default setting for:
 
-- Deployment type: **Shared Infrastructure**
-- Database version: **19c**
-- OCPU count: **1**
-- Storage (TB): **1**
-- Auto scaling: *Enabled*
+- **Deployment type**: *Shared Infrastructure*
+- **Database version**: *19c*
+- **OCPU count**: *1*
+- **Storage (TB)**: *1*
+- **Auto scaling**: *Enabled*
 
 ![image-20210114172619280](images/wlscnonjrfwithenvprereq/image825.png)
 
@@ -284,7 +286,7 @@ Click on the Secret name and take note of its **OCID**. We need to provide this 
 
 ### 3.4 Create an OCI Secret for the Database Admin password
 
-In the same way as in previous step, create a new OCI secret for your ATP Admin user Password. Instead of the WebLogic Admin password, pass the ADMIN password created during ATP Instance provisioning. Give it a name, for example **ATPDBSecret**
+In the same way as in previous step, create a new OCI secret for your ATP Admin user Password. Instead of the WebLogic Admin password, pass the ADMIN password created during ATP Instance provisioning. Give Secret a name, for example **ATPDBSecret**
 
 ![image-20210117170830059](images/wlscnonjrfwithenvprereq/image740.png)
 
@@ -298,7 +300,7 @@ Click on the new Secret name (**ATPDBSecret**) and take note of its **OCID**. We
 
 We need to create one more OCI secret, for the Sample Application Schema password. As we'll see in the next part, when creating the WebLogic Stack, we have an option to create in advance an Application Datasource on WebLogic Domain. To securely pass the Schema password, we need to create an OCI secret.
 
-In the same way as in previous step, create a new OCI secret for the Sample Application Schema (*ADFAPP*). Give it a name, for example **ADFAppSecret**. Setup the **Welcome1234#** password (or a custom password if you have changed the default password setup in the SQL script executed earlier).
+In the same way as in previous step, create a new OCI secret for the Sample Application Schema (*ADFAPP*). Give Secret a name, for example **ADFAppSecret**. Setup the **Welcome1234#** password (or a custom password if you have changed the default password setup in the SQL script executed earlier).
 
 ![image-20210117220132168](images/wlscnonjrfwithenvprereq/image750.png)
 
@@ -315,6 +317,10 @@ You need to generate a public and private ssh key pair. During provisioning usin
 We will be using the **Cloud Shell** to generate the keys in this tutorial.
 
 - Open your Cloud Console by clicking on the **>** icon
+
+![image-20210118165439208](images/wlscnonjrfwithenvprereq/image200.png)
+
+
 
 - Create a directory to contain your keys
 
