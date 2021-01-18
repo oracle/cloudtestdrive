@@ -1,0 +1,16 @@
+{
+    "tutorials": [
+        {
+            "title": "Introduction to the lab",
+            "filename": "./wlsforocijrf_intro.md"
+        },
+        {
+            "title": "Prerequisites",
+            "filename": "./wlsforocijrf_prereq.md"
+        },
+        {
+            "title": "Instantiate a WebLogic for OCI as a VM",
+            "filename": "./wlsforocijrf.md"
+        }
+    ]
+}
