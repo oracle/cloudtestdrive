@@ -300,7 +300,7 @@ Before deploying the sample ADF Application, we need to change the way Session P
 
 
 
-- The Datasource it's called **APPDBDataSource**. We need to change the *JNDI Name* as our sample ADF application uses **jdbc/adfappds** to lookup for datasource and get database connections. Click on the datasource:
+- The Datasource it's called **APPDBDataSource**. We need to change the *JNDI Name* as our sample ADF application required **jdbc/adfappds** to lookup for datasource and get database connections. Click on the datasource:
 
 ![image-20210117212224972](images/wlscnonjrfwithenv/image402.png)
 
@@ -360,7 +360,7 @@ Before deploying the sample ADF Application, we need to change the way Session P
 
 
 
-- Follow **Upload your files** link and upload provided [SampleWebApp.war](resources/SampleWebApp.war) web archive file:
+- Follow **Upload your files** link and upload provided [SampleADFApplication.ear](https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/ll-wls-bucket/o/SampleADFApplication.ear) enterprise archive file:
 
 ![](images/wlscnonjrfwithenv/image430.png)
 
@@ -378,7 +378,7 @@ Before deploying the sample ADF Application, we need to change the way Session P
 
 
 
-- Leave default setting and click **Next**:
+- Leave default settings and click **Next**:
 
 ![](images/wlscnonjrfwithenv/image460.png)
 
@@ -402,31 +402,31 @@ Before deploying the sample ADF Application, we need to change the way Session P
 
 
 
-- Select the *SampleWebApp* web application and click **Start** -> **Serving all requests**; Click **Next** in the following screen:
+- Select the *SampleADFApplication* enterprise application and click **Start** -> **Serving all requests**; Click **Yes** in the following screen:
 
 ![](images/wlscnonjrfwithenv/image500.png)
 
 
 
-- The *SampleWebApp* web application is in the *Active* State now:
+- The *SampleADFApplication* enterprise application is in the *Active* State now:
 
 ![](images/wlscnonjrfwithenv/image510.png)
 
 
 
-- Now, test this new application at *https://< public load balancer IP >/SampleWebApp/*
+- Now, test this application at *https://< public load balancer IP >/sampleADFApplication/*
 
- ![](images/wlscnonjrfwithenv/image520.png)
+![](images/wlscnonjrfwithenv/image520.png)
 
 
 
-- Click on the link to test this sample application:
+- As we can see, calendar entries are coming from the ATP database. Play with the ADF Calendar Component, for example switch to *List view*:
 
 ![](images/wlscnonjrfwithenv/image530.png)
 
 
 
-- This is just a sample ADF application, but you can deploy any other application; Congratulations!
+- This is just a sample ADF application, but you can deploy any other applications; Congratulations!
 
 
 
@@ -438,15 +438,15 @@ If you want to explore the ADF Faces components at runtime, the ADF Faces develo
 
 
 
-First, download the [faces-12.2.1.4.0.war](https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/ll-wls-bucket/o/faces-12.2.1.4.0.war) application web archive. Then, in a similar way as at **Step 2**, install the faces-12.2.1.4.0.war as an application. 
+- First, download the [faces-12.2.1.4.0.war](https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/ll-wls-bucket/o/faces-12.2.1.4.0.war) application web archive. Then, in a similar way as at **Step 2**, install the faces-12.2.1.4.0.war as an application. 
 
-Then, from *Deployments* -> *Control* tab start the application:
+- Then, from *Deployments* -> *Control* tab start the application:
 
 ![image-20210117182752892](images/wlscnonjrfwithenv/image710.png)
 
 
 
-Once *Active*, another browser tab navigate to *https://< public load balancer IP >/faces-12.2.2.1.0/*:
+- Once *Active*, another browser tab navigate to *https://< public load balancer IP >/faces-12.2.2.1.0/*:
 
 ![image-20210117184328628](images/wlscnonjrfwithenv/image720.png)
 
@@ -464,15 +464,15 @@ A demo of interest should be the **Styles** demo. Users frequently get confused 
 
 If you don't plan to use the WebLogic Domain anymore, to spare tenancy resources, the quickest way to delete the resources created during this lab is to run *Terraform Destroy*  on the Stack.
 
-Navigate to *Solutions and Platform* > *Resource Manager* > *Stacks*, identify and click on the Stack name you have created at the beginning of this lab.
+- Navigate to *Solutions and Platform* > *Resource Manager* > *Stacks*, identify and click on the Stack name you have created at the beginning of this lab.
 
-By running the *Destroy* action, a Terraform job will kick off and delete all created resources.
+- By running the *Destroy* action, a Terraform job will kick off and delete all created resources.
 
 ![](images/wlscnonjrfwithenv/image600.png)
 
 
 
-When the job ends, you should see a similar log output:
+- When the job ends, you should see a similar log output:
 
 ![](images/wlscnonjrfwithenv/image610.png)
 
@@ -480,6 +480,6 @@ When the job ends, you should see a similar log output:
 
 You can check that the Compute Instances and the Block Volumes have been terminated.
 
-At the end you can also delete the Stack:
+- At the end you can also delete the Stack:
 
 ![](images/wlscnonjrfwithenv/image620.png)

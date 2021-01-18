@@ -100,7 +100,7 @@ If you don't have visibility and/or you don't have admin rights for your tenancy
 
 ##  Step 2. Provision Repository Database and Database Objects
 
-When deploying a JRF enabled WebLogic domain, a database repository is required. We will use Autonomous Transaction Processing - ATP - Database. As in the next part we'll deploy a sample ADF application that requires a database table and some records data, we will create the DB schema in advance.
+When deploying a JRF enabled WebLogic domain, a database repository is required. We will use Autonomous Transaction Processing - ATP - Database. As in the next part we'll deploy a sample ADF application that requires a database table and some records data, we should create the DB schema in advance.
 
 
 
@@ -164,7 +164,7 @@ After a few minutes the Database should be available:
 
 ### 2.2 Prepare DB Objects
 
-Once the ATP database available, we can use the SQL Developer Web to created a DB schema and some required tables and data needed in the next part.
+Once the ATP database available, we can use the SQL Developer Web tool to created a DB schema and some required tables and records needed in the next part.
 
 Go to *Service Console*:
 
@@ -190,7 +190,7 @@ Once logged in, you can follow a waking tour to discover the main user interface
 
 
 
-Once ready, copy and paste the contents of **this** sql file into *Worksheet* window:
+Once ready, copy and paste the contents of **[this](https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/ll-wls-bucket/o/adf_app_db_script.sql)** sql file into *Worksheet* window:
 
 ![image-20210115165623766](images/wlscnonjrfwithenvprereq/image940.png)
 
