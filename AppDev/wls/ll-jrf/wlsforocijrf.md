@@ -96,11 +96,13 @@ This Hands on Lab will go through the process of creating a JRF type of WebLogic
 
 - Don't change WebLogic Server Advanced Configuration
 
-- Choose the same *CTDOKE* Compartment
-
 - WebLogic Server Network parameters:
 
-  - Choose **Create New VCN**
+  - Choose *Create New VCN*
+
+  - Choose the same *CTDOKE* Compartment
+
+  - Give a name to the Virtual Cloud Network
 
     ![](images/wlsvcn1.png)
 
@@ -112,10 +114,14 @@ This Hands on Lab will go through the process of creating a JRF type of WebLogic
 
     ![](images/wlsvcn2.png)
 
+  - Tick to **Enable Access to Administration Console**:
+  
+    ![image-20210119080943656](images/wlsvcn4.png)
+  
   - Tick to **Provision Load Balancer**
-
+  
     - **Load Balancer Shape**: *100Mbps*
-
+  
     ![](images/wlsvcn3.png)
 
 
