@@ -75,6 +75,8 @@ Allow group MyGroup to manage vaults in compartment MyCompartment
 Allow group MyGroup to manage keys in compartment MyCompartment
 Allow group MyGroup to manage secret-family in compartment MyCompartment
 Allow group MyGroup to read metrics in compartment MyCompartment
+Allow group MyGroup to manage autonomous-transaction-processing-family in compartment MyDBCompartment
+Allow group MyGroup to manage database-family in compartment MyDBCompartment
 ```
 
 
@@ -110,19 +112,19 @@ When deploying a JRF enabled WebLogic domain, a database repository is required.
 
 Go to *Oracle Database* > *Autonomous Transaction Processing*:
 
-![image-20210114171638999](images/wlscnonjrfwithenvprereq/image800.png)
+![](images/wlscnonjrfwithenvprereq/image800.png)
 
 
 
 Choose to create a new Autonomous Database:
 
-![image-20210114172314072](images/wlscnonjrfwithenvprereq/image810.png)
+![](images/wlscnonjrfwithenvprereq/image810.png)
 
 
 
 Give it a meaningful name, for example **WLSATPDB**; Keep default workload type **Transaction Processing**:
 
-![image-20210114172446183](images/wlscnonjrfwithenvprereq/image820.png)
+![](images/wlscnonjrfwithenvprereq/image820.png)
 
 
 
@@ -134,7 +136,7 @@ Scroll down and keep default setting for:
 - **Storage (TB)**: *1*
 - **Auto scaling**: *Enabled*
 
-![image-20210114172619280](images/wlscnonjrfwithenvprereq/image825.png)
+![](images/wlscnonjrfwithenvprereq/image825.png)
 
 
 
@@ -142,25 +144,25 @@ Next setup a password for the ADMIN user: must be 12 to 30 characters and contai
 
 Keep default setting to **Allow secure access from everywhere**; this will provision ATP database with public endpoints (access can still be restricted by allowing incoming traffic from trusted IP addresses or whitelisted Virtual Cloud Networks):
 
-![image-20210114173010547](images/wlscnonjrfwithenvprereq/image830.png)
+![](images/wlscnonjrfwithenvprereq/image830.png)
 
 
 
 For the last step choose **License included** for license type and click on **Create Autonomous Database**:
 
-![image-20210114173250626](images/wlscnonjrfwithenvprereq/image840.png)
+![](images/wlscnonjrfwithenvprereq/image840.png)
 
 
 
 The provisioning process will start:
 
-![image-20210114173640278](images/wlscnonjrfwithenvprereq/image850.png)
+![](images/wlscnonjrfwithenvprereq/image850.png)
 
 
 
 After a few minutes the Database should be available:
 
-![image-20210114175111264](images/wlscnonjrfwithenvprereq/image860.png)
+![](images/wlscnonjrfwithenvprereq/image860.png)
 
 
 
@@ -170,37 +172,37 @@ Once the ATP database available, we can use the SQL Developer Web tool to create
 
 Go to *Service Console*:
 
-![image-20210115164832314](images/wlscnonjrfwithenvprereq/image900.png)
+![](images/wlscnonjrfwithenvprereq/image900.png)
 
 
 
 From *Development* submenu open **SQL Developer Web**:
 
-![image-20210115164927335](images/wlscnonjrfwithenvprereq/image910.png)
+![](images/wlscnonjrfwithenvprereq/image910.png)
 
 
 
 This will open in a new tab the SQL Developer Web Login screen. Use **ADMIN** and the password setup when provisioning the ATP Database:
 
-![image-20210115165141623](images/wlscnonjrfwithenvprereq/image920.png)
+![](images/wlscnonjrfwithenvprereq/image920.png)
 
 
 
 Once logged in, you can follow a waking tour to discover the main user interface feature: 
 
-![image-20210115165248013](images/wlscnonjrfwithenvprereq/image930.png)
+![](images/wlscnonjrfwithenvprereq/image930.png)
 
 
 
 Once ready, copy and paste the contents of **[this](https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/ll-wls-bucket/o/adf_app_db_script.sql)** sql file into *Worksheet* window:
 
-![image-20210115165623766](images/wlscnonjrfwithenvprereq/image940.png)
+![](images/wlscnonjrfwithenvprereq/image940.png)
 
 
 
 Execute the script by clicking the *Run script* play button. All statements should execute with success:
 
-![image-20210115170204221](images/wlscnonjrfwithenvprereq/image950.png)
+![](images/wlscnonjrfwithenvprereq/image950.png)
 
 
 
@@ -268,19 +270,19 @@ Setup a name for the OCI Secret; choose previously created Encryption Key (**WLS
 
 > The password must start with a letter, should be between 8 and 30 characters long, should contain at least one number, and, optionally, any number of the special characters ($ # _).
 
-![image-20200526091220470](images/wlscnonjrfwithenvprereq/image710.png)
+![](images/wlscnonjrfwithenvprereq/image710.png)
 
 
 
 Shortly, the Secret should be listed as *Active*:
 
-![image-20200526091948283](images/wlscnonjrfwithenvprereq/image720.png)
+![](images/wlscnonjrfwithenvprereq/image720.png)
 
 
 
 Click on the Secret name and take note of its **OCID**. We need to provide this value in the WebLogic for OCI Stack configuration form:
 
-![image-20200526092054260](images/wlscnonjrfwithenvprereq/image730.png)
+![](images/wlscnonjrfwithenvprereq/image730.png)
 
 
 
@@ -288,7 +290,7 @@ Click on the Secret name and take note of its **OCID**. We need to provide this 
 
 In the same way as in previous step, create a new OCI secret for your ATP Admin user Password. Instead of the WebLogic Admin password, pass the ADMIN password created during ATP Instance provisioning. Give Secret a name, for example **ATPDBSecret**
 
-![image-20210117170830059](images/wlscnonjrfwithenvprereq/image740.png)
+![](images/wlscnonjrfwithenvprereq/image740.png)
 
 
 
@@ -302,7 +304,7 @@ We need to create one more OCI secret, for the Sample Application Schema passwor
 
 In the same way as in previous step, create a new OCI secret for the Sample Application Schema (*ADFAPP*). Give Secret a name, for example **ADFAppSecret**. Setup the **Welcome1234#** password (or a custom password if you have changed the default password setup in the SQL script executed earlier).
 
-![image-20210117220132168](images/wlscnonjrfwithenvprereq/image750.png)
+![](images/wlscnonjrfwithenvprereq/image750.png)
 
 
 
@@ -318,7 +320,7 @@ We will be using the **Cloud Shell** to generate the keys in this tutorial.
 
 - Open your Cloud Console by clicking on the **>** icon
 
-![image-20210118165439208](images/wlscnonjrfwithenvprereq/image200.png)
+![](images/wlscnonjrfwithenvprereq/image200.png)
 
 
 
