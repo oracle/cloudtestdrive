@@ -120,7 +120,7 @@ This Hands on Lab will go through the process of creating a JRF type of WebLogic
   
   - Tick to **Provision Load Balancer**
   
-    - **Load Balancer Shape**: *100Mbps*
+    - **Load Balancer Minimum and Maximum Bandwidth**: keep defaults
   
     ![](images/wlsvcn3.png)
 
@@ -140,14 +140,14 @@ This Hands on Lab will go through the process of creating a JRF type of WebLogic
   - **Secrets OCID for Autonomous Database Admin Password**: Enter the OCID of the <u>DB Admin Secret</u> that was set up earlier for this.  If you if you are using the CTD (Cloud Test Drive) environment, this OCID might be in a document provided by your instructor
   - **Autonomous Database Service level**: *low* (default option)
 
-![image-20210117160118326](images/wlscnonjrfwithenv/image160.png)
+![](images/wlscnonjrfwithenv/image160.png)
 
 
 
 
 - Check **Configure Application Datasource**. We have a quick option to pre-configure the WebLogic Domain with a ready to use Application Datasource.
 
-![image-20210117161400912](images/wlscnonjrfwithenv/image162.png)
+![](images/wlscnonjrfwithenv/image162.png)
 
 
 
@@ -155,10 +155,11 @@ This Hands on Lab will go through the process of creating a JRF type of WebLogic
   - **Application Database Strategy**: *Autonomous Transaction Processing Database*
   - **Compartment**: *CTDOKE* (or the compartment name where the ATP database was provisioned)
   - **Autonomous Database** name: *WLSATPBDB*
+  - **Autonomous Application Database User Name**: *ADFAPP*
   - **Secrets OCID for Autonomous Application Database User Password**: Enter the OCID of the <u>Sample Application Schema Secret</u> that was set up earlier for this.  If you if you are using the CTD (Cloud Test Drive) environment, this OCID might be in a document provided by your instructor
   - **Autonomous Database Service level**: *tp*
 
-![image-20210117161450978](images/wlscnonjrfwithenv/image164.png)
+![8](images/wlscnonjrfwithenv/image164.png)
 
 
 
@@ -243,43 +244,43 @@ Before deploying the sample ADF Application, we need to change the way Session P
 
 - In the OCI Console navigate to *Core Infrastructure* -> *Networking* -> *Load Balancers*:
 
-![image-20210117204440511](images/wlscnonjrfwithenv/image800.png)
+![](images/wlscnonjrfwithenv/image800.png)
 
 
 
 - Identify the Load Balancer created by the WebLogic Stack and click on it (contains the Stack resource name prefix setup during WebLogic Stack configuration):
 
-![image-20210117205102040](images/wlscnonjrfwithenv/image810.png) 
+![](images/wlscnonjrfwithenv/image810.png) 
 
 
 
 - In the *Resources* section, click on **Backend Sets**; click on the backend set:
 
-![image-20210117205154277](images/wlscnonjrfwithenv/image820.png)
+![](images/wlscnonjrfwithenv/image820.png)
 
 
 
 - Click on **Edit**:
 
-![image-20210117205504439](images/wlscnonjrfwithenv/image830.png)
+![](images/wlscnonjrfwithenv/image830.png)
 
 
 
 - We see that, by default, the Backend Set has Session Persistence enabled using load balancer cookie persistence:
 
-![image-20210117183948693](images/wlscnonjrfwithenv/image840.png)
+![](images/wlscnonjrfwithenv/image840.png)
 
 
 
 - Change to *Enable application cookie persistence*; Set **Cookie Name** to *JSESSIONID*; Click on **Update Backend Set**:
 
-![image-20210117184034878](images/wlscnonjrfwithenv/image850.png)
+![](images/wlscnonjrfwithenv/image850.png)
 
 
 
 - A Work Request has been created and shortly the Backend Set configuration shall be updated:
 
-![image-20210117184105827](images/wlscnonjrfwithenv/image860.png)
+![](images/wlscnonjrfwithenv/image860.png)
 
 
 
@@ -287,67 +288,67 @@ Before deploying the sample ADF Application, we need to change the way Session P
 
 - Let's go back to the WebLogic Server admin console:
 
-![image-20210117211129722](images/wlscnonjrfwithenv/image400.png)
+![](images/wlscnonjrfwithenv/image400.png)
 
 
 
 - Before we deploy the ADF application, let's have a look at the Application Data Source that has been created with WebLogic Server; From *Domain Structure* go to *Services* -> *Data Sources*:
 
-![image-20210117211532183](images/wlscnonjrfwithenv/image401.png)
+![](images/wlscnonjrfwithenv/image401.png)
 
 
 
 - The Data Source it's named **APPDBDataSource**. We need to change the *JNDI Name* as our sample ADF application requires **jdbc/adfappds** to lookup for data source and get database connections. Click on the data source:
 
-![image-20210117212224972](images/wlscnonjrfwithenv/image402.png)
+![](images/wlscnonjrfwithenv/image402.png)
 
 
 
 - To change the *JNDI Name* we need to *Lock* the WebLogic Console Session. Click on **Lock & Edit** in the upper left corner:
 
-![image-20210117212436274](images/wlscnonjrfwithenv/image403.png)
+![](images/wlscnonjrfwithenv/image403.png)
 
 
 
 - Change *JNDI Name* to  **jdbc/adfappds** and click **Save**:
 
-![image-20210117212733419](images/wlscnonjrfwithenv/image404.png)
+![](images/wlscnonjrfwithenv/image404.png)
 
 
 
 - Click on **Activate Changes** to save and close the WebLogic Console Editing Session:
 
-![image-20210117212844552](images/wlscnonjrfwithenv/image405.png)
+![](images/wlscnonjrfwithenv/image405.png)
 
 
 
 - The change has been recorded, but we need also to restart the Datasource. Click on *View changes and restarts* (upper left corner):
 
-![image-20210117213058670](images/wlscnonjrfwithenv/image406.png)
+![](images/wlscnonjrfwithenv/image406.png)
 
 
 
 - Switch to *Restart Checklist*:
 
-![image-20210117213448644](images/wlscnonjrfwithenv/image407.png)
+![](images/wlscnonjrfwithenv/image407.png)
 
 
 
 - Select the **AppDBDataSource** and click on **Restart**:
 
-![image-20210117213605274](images/wlscnonjrfwithenv/image408.png)
+![](images/wlscnonjrfwithenv/image408.png)
 
 
 
 - Click **Yes**:
 
-![image-20210117213733501](images/wlscnonjrfwithenv/image409.png)
+![](images/wlscnonjrfwithenv/image409.png)
 
 
 
 - The Datasource will be restarted shortly:
 
-![image-20210117213906680](images/wlscnonjrfwithenv/image410.png)
+![](images/wlscnonjrfwithenv/image410.png)
 
 
 
@@ -439,13 +440,13 @@ If you want to explore the ADF Faces components at runtime, the ADF Faces develo
 
 - Then, from *Deployments* -> *Control* tab start the application:
 
-![image-20210117182752892](images/wlscnonjrfwithenv/image710.png)
+![](images/wlscnonjrfwithenv/image710.png)
 
 
 
 - Once *Active*, another browser tab navigate to *https://< public load balancer IP >/faces-12.2.2.1.0/*:
 
-![image-20210117184328628](images/wlscnonjrfwithenv/image720.png)
+![](images/wlscnonjrfwithenv/image720.png)
 
 
 
