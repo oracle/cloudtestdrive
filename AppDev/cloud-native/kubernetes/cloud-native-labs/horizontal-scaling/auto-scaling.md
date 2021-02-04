@@ -519,7 +519,7 @@ The [autoscaler docs explain some of these](https://kubernetes.io/docs/tasks/run
 ## Step 4: Other forms of AutoScaling
 Here we have looked a how to have Kubernetes create new pods based on load (horizontal auto scaling). 
 
-OKE also supports vertical auto scaling (increasing the allowed resource limits on a pod) and to allow for situations where a pod may not sale horizontaly that well. 
+OKE also supports vertical auto scaling (increasing the allowed resource limits on a pod) and to allow for situations where a pod may not sale horizontally that well. 
 
 There is another form of auto scaling which can be enabled called cluster autoscaling, this monitors the cluster to see if it's got any pods that can't be deployed because there are no workers with enough suitable capacity, it will create new worker nodes as needed and if there are to many worker nodes for the overall load in the cluster it will shuffle pods of nodes and stop the node.
 
