@@ -98,7 +98,7 @@ watch kubectl get pod
 
 http://workerIP:30002
 
-![image](pics/hello-from-github.PNG)
+![image](pics/app-2.PNG)
 
 Fantastic! You now know how to take control of the reconcile process if you need to do some maintenance on your repository.
 
