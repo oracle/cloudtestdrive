@@ -24,7 +24,9 @@ output:
 which: no shasum in (/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.275.b01-0.el7_9.x86_64/bin/:/opt/oracle/sqlcl/bin:/usr/lib/oracle/19.5/client64/bin:/home/oci/.pyenv/plugins/pyenv-virtualenv/shims:/home/oci/.pyenv/shims:/home/oci/.pyenv/bin:/opt/rh/rh-ruby25/root/usr/local/bin:/opt/rh/rh-ruby25/root/usr/bin:/opt/rh/rh-maven35/root/usr/bin:/opt/rh/rh-dotnet31/root/usr/bin:/opt/rh/rh-dotnet31/root/usr/sbin:/home/oci/bin:/opt/oracle/sqlcl/bin:/opt/gradle/gradle-6.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/daniel_kag/.composer/vendor/bin:/home/daniel_kag/.dotnet/tools)
 ```
 
-2.	Install Flux controllers on your OKE cluster
+
+2.	Install Flux controllers on your OKE cluster (Before installing, it may fail if your worker nodes are not up and running usually you need to wait 5~10 minutes, 
+until your Kubernetes cluster is fully provisioned) 
 ```
 ./flux install 
 ```
