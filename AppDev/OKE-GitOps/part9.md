@@ -12,7 +12,7 @@ The kubeseal utility uses asymmetric crypto to encrypt secrets that only the con
 1.	Let's start – first step Install Kubeseal , open CloudShell and run the following Commands: 
 ```
 wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.14.1/kubeseal-linux-amd64 -O kubeseal
-chmod +x Kubeseal
+chmod +x kubeseal
 ```
 
 2.	At startup, the sealed-secrets controller generates a 4096-bit RSA key pair and persists the private and public keys as Kubernetes secrets in the flux-system namespace. 
