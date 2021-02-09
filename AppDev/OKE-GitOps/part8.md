@@ -204,9 +204,9 @@ default-hello-kubernetes-784d569bb5-5s66w   1/1     Running            0        
 ```
 
 Observe events in kubernetes dashboard (after ~1m)
-
+```
 Helm upgrade failed: timed out waiting for the condition
-
+```
 Observe flux dashboard for Failing Reconcilers is equal to 1
 
 Don't worry about the broken pod, we configured remediation in the YAML and the deployment will heal itself. 
