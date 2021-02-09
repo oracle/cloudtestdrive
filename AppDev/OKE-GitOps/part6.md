@@ -52,7 +52,13 @@ iv.	Fill filename **myconfig.yaml** to Name your file... field
 v.	Copy & Paste myconfig.yaml content to text area and click on **Commit change** on the bottom of the page.
 
 
-3.	Define a ConfigMap resource from which to take the values
+3. Set watching for pods:
+
+```
+watch kubectl get pod
+```
+
+4.	Define a ConfigMap resource from which to take the values
 
 i.	Open **oracle-gitops-workshop** repository in your GitHub webpage
 
