@@ -36,15 +36,15 @@ Click on **Launch Workflow**
 ![image](pics/create-cluster-screen-2.PNG)
 
        
-4.	In the following menu, you will have some parameters you will need to change for our workshop. 
-Name: "Give your cluster a name, you can use **my-kube-cluster** or something else"
-Compartment: "This is the compartment you want to create the cluster in" 
-Kubernetes Version: "Leave it as the latest version available"
-Choose Visibility Type: **Public**
-(Will need the nodes, to have public access, for Grafana and the dashboard – later)
-Shape: for our workshop I suggest choosing a small shape like **VM.Standard1.1** or **VM.Standard1.2**, 
-the shape defines the amount of CPU per each worker node. 
-Number of Nodes:  **3** (Leave it with 3 worker nodes) 
+4.	In the following menu, you will have some parameters you will need to change for our workshop:
+* Name: "Give your cluster a name, you can use **my-kube-cluster** or something else"
+* Compartment: "This is the compartment you want to create the cluster in" 
+* Kubernetes Version: "Leave it as the latest version available"
+* Choose Visibility Type: **Public**
+* (Will need the nodes, to have public access, for Grafana and the dashboard – later)
+* Shape: for our workshop I suggest choosing a small shape like **VM.Standard1.1** or **VM.Standard1.2**, 
+* the shape defines the amount of CPU per each worker node. 
+* Number of Nodes:  **3** (Leave it with 3 worker nodes) 
 
 Now click on **Next**.
 
