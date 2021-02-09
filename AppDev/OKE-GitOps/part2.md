@@ -26,7 +26,7 @@ which: no shasum in (/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.275.b01-0.el7_9.x86_6
 
 
 2.	Install Flux controllers on your OKE cluster (Before installing, it may fail if your worker nodes are not up and running usually you need to wait 5~10 minutes, 
-until your Kubernetes cluster is fully provisioned) 
+until your Kubernetes cluster is fully provisioned - if it continues to fail, check your nodes status from the cloud console: Develeoper Services > Kubernetes Clusters) 
 ```
 ./flux install 
 ```
