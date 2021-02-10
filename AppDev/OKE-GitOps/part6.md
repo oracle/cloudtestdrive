@@ -7,7 +7,7 @@ These values always have a lower priority than the values inlined in the HelmRel
 
 Use cases:
 
-1.	Your values can became after the actual installation
+1.	Your values can became after the actual installation -> You want to link the values later(optional values)
 
 2.	You want manage the values separated, so you will have separated git history on your values configmap filename
 
