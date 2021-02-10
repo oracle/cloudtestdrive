@@ -59,9 +59,9 @@ Below an example of a setup with private networks and a Database:
 
 
 
-## 2. Using a corporate Tenancy
+## 3. Using a corporate Tenancy
 
-**If you are running this lab via a Free Tier Tenancy**, you will be the administrator of that Tenancy, and have all the required rights to run this lab.  A Free Tier also has the required service limits to instantiate all the objects you will need.
+**If you are running this lab via a Free Tier tenancy**, you will be the administrator of that tenancy, and have all the required rights to run this lab.  A Free Tier also has the required service limits to instantiate all the objects you will need.
 
 ==> In this case **you can skip the remainder steps on this page**.
 
