@@ -1,16 +1,21 @@
 # WebLogic for OCI (JRF) - prerequisites
 
-### Prerequisites for using own environment
+### Step 1 - Prepare your tenancy for the lab
 
 
 
 ## Objective
 
-If you want go through the Hands on Lab (*WebLogic for OCI Instance - JRF using Oracle Cloud Marketplace*) using your cloud environment, follow this guide to setup some prerequisites. If you are going to use the Cloud Test Drive environment (CTD) provided by an Oracle instructor, you can skip this part of the Lab.
+In this first step of the lab we will prepare your tenancy to be able to create the WebLogic instance and deploy your ADF application:
+
+- Create a compartment
+- Provision an Oracle Autonomous Database
+- Create a Vault, an encryption key and a few secrets
+- Create an ssh key pair for your compute nodes
 
 
 
-## Step 1. Prepare OCI Compartment
+## 1. Create an OCI Compartment for the lab
 
 When provisioning WebLogic for OCI through Marketplace, you need to specify an OCI Compartment where all resources will be created.
 
@@ -24,85 +29,9 @@ Take note of the compartment **OCID**:
 
 The Compartment name is referred as **CTDOKE** in the Hands on Lab.
 
-! If <u>you are an OCI Administrator</u> (as, for example, the owner of a **free tier** cloud account) you may **skip** next sections of this step.
 
 
-
-### 1.1 [Non-Admins only] Required root level policies for WebLogic for OCI
-
-You must be an Oracle Cloud Infrastructure <u>administrator</u>, or <u>be granted some root-level permissions</u>, in order to create domains with Oracle WebLogic Server for Oracle Cloud Infrastructure.
-
-When you create a domain, Oracle WebLogic Server for Oracle Cloud Infrastructure creates a dynamic group and root-level policies that allow the compute instances in the domain to:
-
-- Access keys and secrets in Oracle Cloud Infrastructure Vault
-- Access the database wallet if you're using Oracle Autonomous Transaction Processing (JRF-enabled domains)
-
-
-
-In case <u>you are not an OCI administrator</u> and you cannot create dynamic-groups or you cannot create policies at root compartment level, please contact your OCI administrator and request that one  of the groups your cloud user is part of to have the following grants in place:
-
-```
-Allow group MyGroup to manage dynamic-groups in tenancy
-Allow group MyGroup to manage policies in tenancy
-Allow group MyGroup to use tag-namespaces in tenancy
-Allow group MyGroup to inspect tenancies in tenancy
-```
-
-Also, to be able to use the Cloud Shell you need also:
-
-```
-Allow group MyGroup to use cloud-shell in tenancy
-```
-
-
-
-### 1.2 [Non-Admins only] Required compartment level policies for WebLogic for OCI
-
-If <u>you are not an Oracle Cloud Infrastructure administrator</u>, you must be given management access to resources in the compartment in which you want to create a domain.
-
-Your Oracle Cloud Infrastructure user must have management access for Marketplace applications, Resource Manager stacks and jobs, compute instances, and block storage volumes. If you want Oracle WebLogic Server for Oracle Cloud Infrastructure to create resources for a domain like networks and load balancers, you must also have management access for these resources.
-
-A policy that entitles your OCI user to have the minimum management access for your compartment, needs to have the following grants in place:
-
-```
-Allow group MyGroup to manage instance-family in compartment MyCompartment
-Allow group MyGroup to manage virtual-network-family in compartment MyCompartment
-Allow group MyGroup to manage volume-family in compartment MyCompartment
-Allow group MyGroup to manage load-balancers in compartment MyCompartment
-Allow group MyGroup to manage orm-family in compartment MyCompartment
-Allow group MyGroup to manage app-catalog-listing in compartment MyCompartment
-Allow group MyGroup to manage vaults in compartment MyCompartment
-Allow group MyGroup to manage keys in compartment MyCompartment
-Allow group MyGroup to manage secret-family in compartment MyCompartment
-Allow group MyGroup to read metrics in compartment MyCompartment
-Allow group MyGroup to manage autonomous-transaction-processing-family in compartment MyDBCompartment
-Allow group MyGroup to manage database-family in compartment MyDBCompartment
-```
-
-
-
-### 1.3 Service limits
-
-Going through the hands on lab you will create the following main components in your tenancy:
-
-- two Compute instances
-- one Virtual Cloud Network (VCN)
-- one Load Balancer
-- one Vault
-- reserve two Public IPs
-
-Check your tenancy Service limits, current usage (*Governance and Administration* > *Governance* > *Limits, Quotas and Usage*) and make sure you have enough room for: 
-
-- Compute Service: VM.Standard2.1 (you may consider choosing a specific AD)
-- Virtual Cloud Network Service: Virtual Cloud Networks
-- Virtual Cloud Network Service: Reserved Public IP
-- LbaaS Service: 100Mbps Load Balancer
-
-If you don't have visibility and/or you don't have admin rights for your tenancy, reach out to your administrator.
-
-
-
-##  Step 2. Provision Repository Database and Database Objects
+##  2. Provision Repository Database and Database Objects
 
 When deploying a JRF enabled WebLogic domain, a database repository is required. We will use Autonomous Transaction Processing - ATP - Database. As in the next part we'll deploy a sample ADF application that requires a database table and some records data, we should create the DB schema in advance.
 
@@ -206,13 +135,19 @@ Execute the script by clicking the *Run script* play button. All statements shou
 
 
 
-## Step 3. Create OCI Secrets
+## 3. Create OCI Secrets
 
-When you provision WebLogic for you need to pass the WebLogic Admin password and the Database Admin Password. Two OCI Secrets are required for this.  
+When you provision a WebLogic instance you need to specify the WebLogic Admin password and the Database Admin Password. For security reasons, passing these passwords in a readable format into the instance creation script is a bad idea.  Oracle Cloud provides a solution for this problem via the **OCI Vault**.
+
+A **vault** will contain **encryption keys** that are used to encrypt and decrypt secret content, and also the  **secrets** that contain the actual content you want to secure - in this case the admin passwords of the database and the WebLogic instance.
 
 
 
-### 3.1 Create a Security Vault
+<img src="/Users/jleemans/dev/github/jle/cloudtestdrive/AppDev/wls/ll-jrf/images/image-20210210230107847.png" alt="image-20210210230107847" style="zoom: 33%;" />
+
+
+
+### 3.1 Create a Vault
 
 Go to *Governance and Administration* > *Security* > Vault
 
