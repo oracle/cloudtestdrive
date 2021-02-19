@@ -48,17 +48,17 @@ The Transparent Data Encryption (TDE) option takes care of all the details. To p
   	```
   	<copy>select * from V$TABLESPACE;</copy>
   	```
-
-	![](./images/tablespacesdata.png " ")
+  	
+  	![](./images/tablespacesdata.png " ")
 
 3. When we check the encryption status of both tablespaces, we find that by default they are encrypted.
 
   	```
   	<copy>select tablespace_name, status, encrypted from USER_TABLESPACES;</copy>
   	```
-	![](./images/tablespaceenc.png " ")
-
-	It is even more important to know that this status cannot change: any attempt to change their encrypted status in the Cloud will result in failure.
+  	![](./images/tablespaceenc.png " ")
+  	
+  	It is even more important to know that this status cannot change: any attempt to change their encrypted status in the Cloud will result in failure.
 
 ## **STEP 3**: Securing our sensitive information using data redaction
 Even if the access to our application stays internal in our organization, sometimes data is allowed to be obtained only partially, with restrictions or even transformed. Data redaction is a powerful tool to enhance data governance security at the user level. Now we will create a new schema, configure it and populate it with the data we need to leverage data redaction in an APEX application.
@@ -84,7 +84,7 @@ Even if the access to our application stays internal in our organization, someti
   	```
   	<copy>select * from redact.credit_card;</copy>
   	```
-	![](./images/creditcarddata.png " ")
+  	![](./images/creditcarddata.png " ")
 
 ## **STEP 4**: Create Secure APEX Application
 
@@ -92,11 +92,11 @@ Even if the access to our application stays internal in our organization, someti
 
 2. Click **Administration Services**.
 
-  ![](./images/screenshot1.png " ")
+  ![](./images/admin_services_login.png " ")
 
 3. Enter your admin password.
 
-  ![](./images/screenshot2.png " ")
+  ![](./images/admin_services_login_01.png " ")
 
 4. Click **Create Workspace**
 
@@ -134,10 +134,13 @@ Even if the access to our application stays internal in our organization, someti
 
 	![](./images/selectReportPage.png " ")
 
-13. Enter "Credit Card" as the name of the new page and click on the List icon to the right of "Table or View". Select the CREDIT\_CARD table from the list. Under Advanced, select "Set as Home Page" and click **Add Page**.
+13. Enter "Credit Card" as the name of the new page and click on the List icon to the right of "Table or View". Select the CREDIT\_CARD table from the list.
 
-	![](./images/addReportPage.png " ")
-	![](./images/apexPageReady.png " ")
+    ![](./images/addReportPage.png " ")
+
+    Expand the Advanced options and select *Set as Home Page* and then select **Add Page.**
+
+    ![](./images/apexPageReady.png " ")
 
 14. The configuration is ready and now we can create our app. Click **Create Application** at the bottom of the window. When the app is ready.
 
@@ -151,7 +154,7 @@ Even if the access to our application stays internal in our organization, someti
 
 	![](./images/RedactApp.png " ")
 
-16. Go back to SQL Developer Web and run the following PL/SQL snippet to create the proper policy on it:
+16. Go back to SQL Developer Web, login as the ADMIN user and run the following PL/SQL snippet to create the proper policy on it:
 
   	```
   	<copy>BEGIN
@@ -178,7 +181,10 @@ Even if the access to our application stays internal in our organization, someti
   - You have learned how to leverage the data redaction from the Advanced Security feature in order to protect your sensitive data in your application even before it leaves your ATP.
 
 ## Acknowledgements
-* **Author** - Juan Cabrera Eisman, Senior Technology Solution Engineer, Oracle Digital, Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center
-* **Last Updated By/Date** - Tom McGinn, Database Innovations Architect, Database Product Management, July 2020
+* **Author** - Juan Cabrera Eisman, Senior Technology Solution Engineer, Oracle Digital, Melanie Ashworth-March, Master Principal Sales Consultant, EMEA Oracle Solution Center
+* **Last Updated By/Date** - Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center, January 2021
 
-See an issue?  Please open up a request [here](https://github.com/oracle/learning-library/issues).   Please include the workshop name and lab in your request.
+## Need Help?
+Please submit feedback or ask for help using our [LiveLabs Support Forum](https://community.oracle.com/tech/developers/categories/oracle-apex-development-workshops). Please click the **Log In** button and login using your Oracle Account. Click the **Ask A Question** button to the left to start a *New Discussion* or *Ask a Question*.  Please include your workshop name and lab name.  You can also include screenshots and attach files.  Engage directly with the author of the workshop.
+
+If you do not have an Oracle Account, click [here](https://profile.oracle.com/myprofile/account/create-account.jspx) to create one.
