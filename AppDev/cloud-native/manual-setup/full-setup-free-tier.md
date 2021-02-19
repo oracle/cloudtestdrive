@@ -241,8 +241,14 @@ Be sure to remember the **admin password**, save it in a notes document for late
   3. Open up the **SQL Developer Web** console
 
   4. Login as ADMIN, using the password you just chose
+  
+  5. Click on 'SQL' to open the **SQL Developer tool** 
+  
+![](images/db-21a-sql-developer-sql-access.png)
 
-  5. Copy and paste the below SQL instructions into the top section of the page:
+  You may get introduction info guiding you through the page, just close that if it's displayed.
+
+  6. Copy and paste the below SQL instructions into the top section of the page:
 
   ```
 CREATE USER HelidonLabs IDENTIFIED BY H3lid0n_Labs;
@@ -258,7 +264,7 @@ GRANT UNLIMITED TABLESPACE TO HelidonLabs;
   
 ## Step 5: Accessing the Developer VM
 
-Access to the Developer VM is via a VNC client, this allows us to provide direct access tot he desktop and enables easy use of the developer tools.
+Access to the Developer VM is via a VNC client, this allows us to provide direct access to the desktop and enables easy use of the developer tools. If you do not already have a VNC client on your computer you will need to install one.
 
 ### Step 5a: Installing a VNC client
 
@@ -310,7 +316,7 @@ Once you have logged in you will see the Linux desktop, it will look similar to 
 
 We have provided a pre-set VNC password. If you are in a instructor led lab this may have been provided to you by your lab instructor, or it may be in the image location file you downloaded earlier.
 
-While not required we do recommend that you change this password to prevent access by other people.
+While not required we do recommend that you change this password to prevent access by other people, this is especially important if you plan on leaving the VM running for a while.
 
   1. On the desktop background click right, then the **Open Terminal** option
 
@@ -361,6 +367,8 @@ The installer switched to the next page
   3. In the **Java JVM dropdown** Select the `/usr/lib/jvm/java-11-openjdk`  ** DO NOT PRESS INSTALL YET**
  
   4. Set the **Install Path** to be `/home/opc`
+  
+  (It's really important that you do this, otherwise you'll have to manually setup a lot of the following)
 
   ![](images/06-eclipse-installer-selections.png)
  
@@ -552,7 +560,7 @@ Congratulations, you have successfully prepared your tenancy to do the labs, the
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
 * **Author** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, November 2020
+* **Last Updated By** - Tim Graves, February 2021
 
 ## Need Help ?
 
