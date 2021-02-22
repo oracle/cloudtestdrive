@@ -1932,7 +1932,7 @@ ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <no
 
 The External_IP column displays the external address. 
 
-  6. Let's try to get some data - **you might get an error** (replace <external IP> with the ingress controllers load ballancer you got earlier)
+  6. Let's try to get some data - **you might get an error** (replace <external IP> with the ingress controllers load ballancer you got earlier) If you only get a response of `[]` it's fine, you'll just need to setup the test data (expand the section below for details)
   
   -  `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
 
@@ -1948,25 +1948,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 ```
 
 If you get **424 failed dependency** or timeouts it's because the services are doing their lazy initialization, wait a minute or so and retry the request
-  
-<details><summary><b>How to find out what pods are connected to a service</b></summary>
 
-
-The service definition maps onto the actual pods in the dpeloyments using the selector as seen above. To find out exactly what pods match the selectors for a service 
-
-- `kubectl get endpoints`
-
-```
-NAME           ENDPOINTS                           AGE
-stockmanager   10.244.0.68:8081,10.244.0.68:9081   26d
-storefront     10.244.1.75:9080,10.244.1.75:8080   26d
-zipkin         10.244.0.67:9411                    26d
-```
-
----
-
-</details>
-  
 <details><summary><b>If you only get `[]` not a list of items</b></summary>
 
 Your database does not have the information that was uploaded in the Helidon part of the labs, or if you did the Helidon labs then you probabaly are using a different department name.
@@ -1993,9 +1975,31 @@ All is not lost, you can create the information easily
 
 This will populate the database for you so you have some test data.
 
+If you can run the curl command above you'll see the data you just added
+
 ---
 
 </details>
+  
+<details><summary><b>How to find out what pods are connected to a service</b></summary>
+
+
+The service definition maps onto the actual pods in the dpeloyments using the selector as seen above. To find out exactly what pods match the selectors for a service 
+
+- `kubectl get endpoints`
+
+```
+NAME           ENDPOINTS                           AGE
+stockmanager   10.244.0.68:8081,10.244.0.68:9081   26d
+storefront     10.244.1.75:9080,10.244.1.75:8080   26d
+zipkin         10.244.0.67:9411                    26d
+```
+
+---
+
+</details>
+  
+
 
 And to see what's happening when we made the request we can look into the pods logs. Here we use --tail=5 to limit the logs output to the last 5 lines of the storefront pod
 
