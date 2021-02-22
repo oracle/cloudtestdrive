@@ -492,6 +492,8 @@ In several of the labs we're going to be using the dashboard, so let's look arou
   
 We have had reports that some versions of Chrome will not allow you to override the page like this, for Chrome 83 at least one solution is to click in the browser window and type the words `thisisunsafe` (copy and past doesn't seem to work, you need to actually type it). Alternatively use a different browser.
 
+(Of course if you were doing this in a real deployment you's use a real certificate so wouldn't have to worry about a self-signed certificate causing browser problems).
+
 You'll now be presented with the login screen for the dashboard.
 
   3. Click the radio button for the **Token**
