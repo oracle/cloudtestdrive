@@ -123,12 +123,16 @@ This will open the SQL Developer web login page
   2. Login as `ADMIN` (it's case sensitive), using the password you chose earlier in the database setup.
 
   ![](images/db-21-sql-developer-web-login.png)
-
-  3. Click the **X** on the intro message popup - or if you want to read them just click all the way through them.
+  
+  3. Chose **SQL**  in the **Development** section
+  
+  ![](images/db-21a-sql-developer-web-selection.png)
+  
+  4. If the intro messages popup are displayed (this is uauslly the first time you've opened the tool) then click **X** in the popups to dismiss them - or if you want to read them just click all the way through them.
 
 Once the intro messages are gone you'll get to the main screen
 
-  4. Copy and paste the below SQL instructions into the worksheet (highlighted in red in the image below)
+  5. Copy and paste the below SQL instructions into the worksheet (highlighted in red in the image below)
 
   ```
 CREATE USER HelidonLabs IDENTIFIED BY H3lid0n_Labs;
@@ -140,7 +144,7 @@ GRANT UNLIMITED TABLESPACE TO HelidonLabs;
 
   ![](images/db-22-sql-developer-web-worksheet.png)
 
-  5. Then Run the script (The Page of paper with the green "run" button.) 
+  6. Then Run the script (The Page of paper with the green "run" button.) 
 
 If it works OK you will see a set of messages in the Script Output section of the screen (highlighted in red below) saying the User has been created and grants made.
 
