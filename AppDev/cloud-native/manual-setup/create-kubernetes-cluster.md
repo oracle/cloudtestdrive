@@ -54,27 +54,29 @@ Fill in the form with following parameters:
   
   3.  Make sure the **Kubernetes version** is the highest on the list (at the time of the last update of this document in November 2020 that was 1.18.10, but it may have been updated since then)
   
-  4. Check the **Visibility type** is **Private**
+  4. If given the choice make sure that the **Kubernetes API Endpoint** is set to **Public Endpoint**
+
+  5. Check the **Kubernetes Worker Node Subnet** is set to **Private Workers**
   
-  5. Set the **Shape** dropdown to VM.Standard2.1
+  6. Set the **Shape** dropdown to VM.Standard2.1
   
-  6. Set the **Number of nodes** to be 2
+  7. Set the **Number of nodes** to be 2
 
 There is no need to do anything in the Advanced Options section.
 
-These images are for creating a 1.16.8 cluster, they may be slightly different for later versions.
+These images are for creating a 1.18.10 cluster, they may be slightly different for later versions.
  
   ![](images/create-k8s-cluster.png)
 
-  7. Click the **Next** button to go to the review page.
+  8. Click the **Next** button to go to the review page.
 
-  8. On the review page check the details you have provided are correct
+  9. On the review page check the details you have provided are correct
 
-  9. Click the **Create Cluster** button.
+  10. Click the **Create Cluster** button.
 
 You'll be presented with a progress option, if you want read what's happening
 
-  10. Scroll to the bottom and click the **Close** button
+  11. Scroll to the bottom and click the **Close** button
 
 The state will be "Creating" for a few minutes (usually 3-4 mins)
 
