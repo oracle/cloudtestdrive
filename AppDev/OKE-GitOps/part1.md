@@ -48,7 +48,7 @@ the shape defines the amount of CPU per each worker node.
 
 Now click on **Next**.
 
-![image](pics/kube-cluster3.png)
+![image](pics/kube-cluster-3.PNG)
 
 5.	Review and click on **Create Cluster**
 
