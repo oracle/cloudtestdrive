@@ -31,7 +31,7 @@ During this day you will be able to experience the various cloud services hands-
 
 + **WebLogic for OCI** marketplace to automate setting up WebLogic with VM's on Oracle Cloud
   
-+ Run the [non-JRF version of the lab](https://oracle.github.io/cloudtestdrive/AppDev/wls/ll-nonjrf), (no database setup)
+  + Run the [non-JRF version of the lab](https://oracle.github.io/cloudtestdrive/AppDev/wls/ll-nonjrf), (no database setup)
   + Run the [JRF version of the lab](https://oracle.github.io/cloudtestdrive/AppDev/wls/ll-jrf) including database creation and deployment of an ADF application
   
 + ***New!*** [WebLogic for OKE](https://oracle.github.io/cloudtestdrive/AppDev/wls/ll-wls-for-oke-nonjrf/) - running WLS on Kubernetes via Marketplace
