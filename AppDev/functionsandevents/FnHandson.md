@@ -42,7 +42,9 @@ The Fn project CLI will allow you to develop Functions code locally on your VM a
 
 Run the following command to install the Fn project CLI on your VM
 
-*curl -LSs https://raw.githubusercontent.com/fnproject/cli/master/install | sh*
+```bash
+curl -LSs https://raw.githubusercontent.com/fnproject/cli/master/install | sh
+```
 
 Once installed you’ll see the Fn CLI version printed out.
 
