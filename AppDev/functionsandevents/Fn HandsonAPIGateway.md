@@ -38,11 +38,11 @@ Ensure that the asterisk is by the context named oci.
 ```
 CURRENT	NAME	PROVIDER	API URL							        
 	    default	default		http://localhost:8080
-*	    oci	    oracle		https://functions.eu-frankfurt-1.oraclecloud.com
+*	    oci	    oracle		https://functions.uk-london-1.oraclecloud.com
 ```
 
 Deploy the function:
-In the example command below be sure to replace the *NN* with your specific user id
+In the example command below be sure to **replace** the *NN* with **your specific user id**
 
 
 > $ fn --verbose deploy --app imagecatalogapp***NN***

@@ -15,8 +15,9 @@ This folder contains the lab for running WLS for OCI as a VM, using the JRF inst
 Alternatively, you can visit the normal GitHub .md files of the lab in this folder:
 
 - [Introduction](wlsforocijrf_intro.md)
-- [Prerequisites](wlsforocijrf_prereq.md)
-- [Instance Creation](wlsforocijrf.md)
+- [Prepare your tenancy for the lab](wlsforocijrf_prereq.md): create a compartment, a vault with secrets, and an Autonomous database
+- [Instance Creation](wlsforocijrf.md): create a WebLogic instance, customize the Loadbalancer, and deploy an ADF application
+- [Optional steps](wlsforocijrfopt.md): deploy a more complex ADF application, and destroy the resources you created in the lab
 
 
 
