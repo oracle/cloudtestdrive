@@ -42,14 +42,16 @@ The Fn project CLI will allow you to develop Functions code locally on your VM a
 
 Run the following command to install the Fn project CLI on your VM
 
-*curl -LSs https://raw.githubusercontent.com/fnproject/cli/master/install | sh*
+```bash
+curl -LSs https://raw.githubusercontent.com/fnproject/cli/master/install | sh
+```
 
 Once installed you’ll see the Fn CLI version printed out.
 
 You should see something similar to the following displayed (although likely with a later version number):
 
 ``` txt
-fn version 0.5.92
+fn version 0.6.2
         ______
        / ____/___
       / /_  / __ \
@@ -57,10 +59,9 @@ fn version 0.5.92
     /_/   /_/ /_/`
 ```
 
-### Self Registration & Logging in to OCI Console
+### Logging in to OCI Console
 
-A new functions application will be used to host the function that will get invoked when a image is uploaded. This can be created via the Fn CLI or via the OCI Functions console, we will use the latter. 
-Before you can use the OCI console and utilise the services within, you will need to complete a self registration process.
+A new functions application will be used to host the function that will get invoked when an image is uploaded. This can be created via the Fn CLI or via the OCI Functions console, we will use the latter. 
 
 Log in to the OCI console at [https://console.eu-frankfurt-1.oraclecloud.com](https://console.eu-frankfurt-1.oraclecloud.com/).
 
@@ -68,13 +69,29 @@ Enter the tenancy name provided in the lab details and then log in with your ass
 
 **If you do not have these details please let the organisers know.**
 
-![Tenant Name](image2019-9-23_14-13-50.png)
+Enter the tenancy name:
 
-![Logging In](image2019-9-23_14-15-12.png)
+![image-20210225103703644](image-20210225103703644.png)
 
-You will need to reset the password on first login so go ahead and do that. The password and user will be removed at the end of the workshop so to keep things simple go ahead and create your own password or use Welcome#### if you cant think of anything.
 
-![Reset Password](image2019-9-23_14-17-44.png)
+
+Then expand the down arrow to the right of "Oracle Cloud Infrastructure Direct Sign-In":
+
+![](image-20210225103908210.png)
+
+This will reveal the OCI IAM native user log in form: 
+
+![image-20210225104022010](image-20210225104022010.png)
+
+Enter the username and password provided to you:
+
+![image-20210225104812587](image-20210225104812587.png)
+
+
+
+You will need to reset the password on first login so go ahead and do that. The password and user will be removed at the end of the workshop so to keep things simple go ahead and create your own password or use Welcome1#### if you cant think of anything.
+
+![](image-20210225104933694.png)
 
 Once logged in, in the top right hand corner click the user avatar ![image2019-8-28_6-10-53](image2019-8-28_6-10-53.png) and then in the menu that is displayed, select your username which will appear under the heading titled 'Profile'.
 
@@ -82,7 +99,7 @@ Once logged in, in the top right hand corner click the user avatar ![image2019-8
 
 Click on your username to navigate to the user detail page.
 
-This demonstrates that you have been able to successfully log in and that the self registration process has completed.
+This demonstrates that you have been able to successfully log in and gain access to the OCI console.
 
 We will return to the OCI console to configure the Functions and Events services later in the lab. 
 
@@ -119,20 +136,20 @@ We now need to provide the api-url to the new context in order for Fn to communi
 Issue the following command to do this.
 
 ```
-$ fn update context api-url https://functions.eu-frankfurt-1.oraclecloud.com
+$ fn update context api-url https://functions.uk-london-1.oraclecloud.com
 ```
 
 We need to configure the appropriate Oracle Cloud docker registry (OCIR) which will be used to push the packaged Functions docker image to.
 
 Issue the following command. **NOTE**:
 
-- You will need to replace the _NN_ with **your** student number (01 - 10)
+- You will need to **replace** the _NN_ with **your** student number (01 - 10)
 
-- You will need to replace _tenancyname_ with the tenancy name given at the start of the lab in the student handout
+- You will need to **replace** _tenancyname_ with **the tenancy name given at the start of the lab** in the student handout
 
 
 ```
-$ fn update context registry fra.ocir.io/tenancyname/fnworkshopNN
+$ fn update context registry lhr.ocir.io/tenancyname/fnworkshopNN
 ```
 
 Finally we need to allow the Fn context for oci to utilise the oci cli configuration located in ~/.oci/config. This OCI config file has been set up automatically in your VM and this simply tells the Fn context to use that configuration. To do this issue the following command:
@@ -183,7 +200,7 @@ If no applications have been created yet, you should see output similar to below
 No apps found
 NAME	ID
 ```
-If you get errors please let the organisers of the workshop know.
+You may see Functions applications that belong to other students. If you get errors please let the organisers of the workshop know.
 
 ### Configure Docker to use the Oracle Cloud Image Registry configured in the new context
 
@@ -204,19 +221,19 @@ Then perform the following command:
 
 **NOTE** 
 
-You will need to replace _tenancyname_ with the tenancy name given at the start of the lab in the student handout
+You will need to **replace** _tenancyname_ with **the tenancy name given at the start of the lab** in the student handout
 
 ```
-$ docker login fra.ocir.io/tenancyname
+$ docker login lhr.ocir.io/tenancyname
 ```
 
 When prompted enter your _tenancyname_/apiuser 
 
-**NOTE** The user will be apiuser but the _tenancyname_ will be the one you are using and were assigned at the start of the lab
+**NOTE** The user will be apiuser but **the _tenancyname_ will be the one you are using and were assigned at the start of the lab**
 
 ```
 tenancyname/apiuser
-eg: oractdemeaoci/apiuser
+eg: oscemea001/apiuser
 ```
 
 When prompted for your password paste in the 'Auth token' that you copied to the clipboard.
@@ -224,17 +241,17 @@ When prompted for your password paste in the 'Auth token' that you copied to the
 Here is an example of what you should see when successfully logged in to the remote OCI registry:
 
 ```
-Username:oractdemeaoci/apiuser
+Username:oscemea001/apiuser
 Password:
 Login Succeeded
 ```
 ### Verify Object Storage Bucket
 
-Within the OCI console at [https://console.eu-frankfurt-1.oraclecloud.com](https://console.eu-frankfurt-1.oraclecloud.com/) where you logged in earlier, you now need to verify that an object storage bucket has been created and assigned to you and has the correct configuration in order to emit events.
+Within the OCI console at https://console.uk-london-1.oraclecloud.com/ where you logged in earlier, you now need to verify that an object storage bucket has been created and assigned to you and has the correct configuration in order to emit events.
 
-In the OCI Console if not already done, change the region to the Frankfurt region in the grey bar across the top of the console. Select the region drop down and pick "Germany Central (Frankfurt)".
+In the OCI Console, change the region to the London region in the grey bar across the top of the console. Select the region drop down and pick "UK South (London)".
 
-![image2019-10-1_16-4-41](image2019-10-1_16-4-41.png)
+![](image-20210225111045456.png)
 
 In the browser session where you logged into the OCI Console look for the ![image2019-8-28_11-40-56](image2019-8-28_11-40-56.png) menu in the top left hand of the screen and press it.
 
@@ -275,15 +292,11 @@ From the list presented hover your mouse over 'Developer Services and more optio
 
 Press your mouse on 'Functions'
 
-Before we can use Functions we need to select a compartment to utilise and you will be presented with a screen similar to this:
+Before we can use Functions we need to select the **fnworkshopstudent** compartment to utilise and you will be presented with a screen similar to this:
 
 ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-10-1_16-6-12.png](image2019-10-1_16-6-12.png)
 
-
-This lab is run for students in a number of OCI tenancies where the compartments used can vary. 
-Please refer to the student handout you received at the beginning of this lab for the specific compartment to use and how to find it.
-
-You will now be presented with the Functions User Interface where we will create a new application. As you are sharing this compartment with other delegates you may well already see applications listed.
+You will now be presented with the Functions home page where we will create a new application. As you are sharing this compartment with other delegates you may well already see applications listed.
 
 Create a new application by pressing on the button ![Oracle Solution Center EMEA > Fn Handson: Functions and Events > image2019-8-28_12-23-5.png](image2019-8-28_12-23-5.png)
 
@@ -301,13 +314,9 @@ The **subnet** Fn Public Subnet (Regional) can then be selected.
 
 ![Function App Subnet choice](fnsubnetchoice.png)
 
-Under logging policy select "LOG TO OBJECT STORAGE", this will facilitate debugging if needed. 
-
-Please refer to [Appendix C](AppendixC.md) if you would like to see more detail on using the logging.
-
 The screen will look similar to the example below with a different application name depending on your delegate id.
 
-![](image.png)
+![](image-20210225111956750.png)
 
 Hit 'Create' when done. Confirm your new application is listed in the compartment.
 
@@ -451,7 +460,7 @@ The Database REST endpoint will be configured as a configuration variable in the
 We will also add another configuration variable. Issue the following command **again replacing *NN* with your student number**:
 
 
-> fn config app imagecatalogapp***NN*** imageUrl https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/
+> fn config app imagecatalogapp***NN*** imageUrl https://objectstorage.uk-london-1.oraclecloud.com/n/
 
 
 These configuration variables will be read as environment variables within the function and can be read in whatever code the function is implemented in. 
@@ -498,7 +507,7 @@ $ fn --verbose deploy --app imagecatalogappNN
 
 You should see the familiar Docker and Maven build output and finally a message that the function has updated with a new image.
 
-This deploy takes a little time to complete (roughly 2-3 minutes)
+This deploy takes a little time to complete (roughly 2-3 minutes) as it is pushing the resulting Docker image to the OCIR registry. 
 
 The deployment should complete with messages similar to this below:
 
