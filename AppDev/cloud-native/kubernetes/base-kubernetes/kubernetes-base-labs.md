@@ -760,6 +760,8 @@ In the list of listeners look at the line TCP-443, notice that it is set to uses
   ![load-balancer-update-in-progress](images/load-balancer-update-in-progress.png)
 
   18. You'll be presented with a **Work in progress** popup, for now just click the **Close** button and the update will continue in the background
+  
+**Note** In some situations (for example the Ingress controller gets re-installed) these changes to the load balancer are reset, if you get errors like "400 THe plain http request was sent to an https port" this has happened, and you'll need to redo the load balancer configuration. Of course in a production environment with real, not self signed certificates this is not an issue as you'd be using https throughout, but for this lab we don't have the time needed for setting up the infrastructure to get and deploy proper certificates.
 
 <details><summary><b>Scripting the listener change</b></summary>
 
