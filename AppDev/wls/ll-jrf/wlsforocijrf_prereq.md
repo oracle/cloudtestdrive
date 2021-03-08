@@ -143,7 +143,7 @@ A **vault** will contain **encryption keys** that are used to encrypt and decryp
 
 
 
-<img src="/Users/jleemans/dev/github/jle/cloudtestdrive/AppDev/wls/ll-jrf/images/image-20210210230107847.png" alt="image-20210210230107847" style="zoom: 33%;" />
+<img src="images/image-20210210230107847.png" alt="image-20210210230107847" style="zoom: 33%;" />
 
 
 
