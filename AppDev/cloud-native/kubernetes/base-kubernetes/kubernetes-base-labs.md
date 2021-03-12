@@ -771,9 +771,11 @@ The following commands do absolutely no error checking, or waiting for the load 
 
 The [oci command](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cliconcepts.htm) used here allows you to manage aspects of the oci environment, you can also run it in your laptop if you want (follow the instructions at the link to download and configure it). The oci command is **very** powerful and has a lot of options (on the OCI shell type `oci --help` to see them) The script also uses the [jq command](https://stedolan.github.io/jq) which is in the OCI Cloud shell, you can download it from the jq site if you wanted it on your own system.
 
+Note this assumes that you are using the CTDOKE compartment in the root compartment.
+
 ```bash
 echo Getting the Load balancer IP address from Kubernetes
-LB_IP=`kubectl get service ingress-nginx-nginx-ingress-controller -n ingress-nginx -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'`
+LB_IP=`kubectl get service ingress-nginx-controller  -n ingress-nginx -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'`
 echo Load balancer IP is $LB_IP
 echo Getting the CTDOKE compartment ocid from oci
 COMPARTMENT_OCID=`oci iam compartment list --name CTDOKE | jq -j '.data[0].id'`
