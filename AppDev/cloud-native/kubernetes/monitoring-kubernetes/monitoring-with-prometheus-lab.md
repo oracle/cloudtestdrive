@@ -115,7 +115,7 @@ Installing Prometheus is simple, we just use helm.
 
   1. In the OCI Cloud Shell type
   
-  -  `helm install prometheus prometheus-community/prometheus --namespace monitoring --set server.service.type=LoadBalancer --version 11.16.9`
+  -  `helm install prometheus prometheus-community/prometheus --namespace monitoring --set server.service.type=LoadBalancer --version 13.6.0`
   
   ```
 NAME: prometheus
