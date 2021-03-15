@@ -283,7 +283,7 @@ Switch to **Connection Pool** tab and copy the entire **URL** value:
 
 In the  `wlsapps.yaml`  file replace the **URL** value with the string just copied from the data source connection pool page. Make sure to escape the double quotes (**"**) characters in the string value by adding another double quote characters in front, as in the above example (before the **CN** and after **US** values):
 
-> URL: 'jdbc:oracle:thin:@(description=(retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_wlsatpdb_low.adb.oraclecloud.com))(security=(ssl_server_cert_dn=**"**"CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US**"**")))'
+> *"*"CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US*"*"
 
 
 
@@ -333,33 +333,41 @@ While waiting, we should do one more configuration for the ADF application to ru
 
 Access the *Admin Compute Host* (check the previous lab for how to do that) and list the Kubernetes Ingress Resources:
 
-> $ kubectl get ingress -A
+```
+$ kubectl get ingress -A
+```
 
 
 
 We should see tree distinct ones:
 
-> NAMESPACE            NAME                        CLASS    HOSTS   ADDRESS         PORTS   AGE
-> jenkins-ns           jenkins-dashboard-ingress   <none>   *       10.0.3.4        80      6d3h
-> wlsoke02-domain-ns   wls-admin-ingress           <none>   *       10.0.3.4        80      6d3h
-> wlsoke02-domain-ns   wls-cluster-ingress         <none>   *       193.122.49.85   80      6d3h
+```
+NAMESPACE            NAME                        CLASS    HOSTS   ADDRESS         PORTS   AGE
+jenkins-ns           jenkins-dashboard-ingress   <none>   *       10.0.3.4        80      6d3h
+wlsoke02-domain-ns   wls-admin-ingress           <none>   *       10.0.3.4        80      6d3h
+wlsoke02-domain-ns   wls-cluster-ingress         <none>   *       193.122.49.85   80      6d3h
+```
 
 
 
 The `wls-cluster-ingress` handles the external traffic, and we can see that it’s using a different NGINX Ingress Controller instance:
 
-> $ kubectl get ingress -A -o custom-columns=NAME:.metadata.name,CLASS:.metadata.annotations."kubernetes\.io/ingress\.class"
-> NAME                        CLASS
-> jenkins-dashboard-ingress   nginx
-> wls-admin-ingress           nginx
-> wls-cluster-ingress         nginx-applications
+```
+$ kubectl get ingress -A -o custom-columns=NAME:.metadata.name,CLASS:.metadata.annotations."kubernetes\.io/ingress\.class"
+NAME                        CLASS
+jenkins-dashboard-ingress   nginx
+wls-admin-ingress           nginx
+wls-cluster-ingress         nginx-applications
+```
 
 
 
 To setup session persistence, we need to add at least two annotations to the `wls-cluster-ingress` Ingress:
 
-> nginx.ingress.kubernetes.io/affinity: cookie
-> nginx.ingress.kubernetes.io/affinity-mode: persistent
+```
+nginx.ingress.kubernetes.io/affinity: cookie
+nginx.ingress.kubernetes.io/affinity-mode: persistent
+```
 
 
 
@@ -369,9 +377,11 @@ To edit the Ingress:
 
 
 
-> kubectl edit ingress wls-cluster-ingress -n wlsoke02-domain-ns
+```
+$ kubectl edit ingress wls-cluster-ingress -n wlsoke02-domain-ns
+```
 
-(instead of the example **wlsoke02-domain-ns** namespace, use the weblogic domain namespace corresponding to your Kubernetes cluster; see `$ kubectl get ingress -A` above command output)
+(instead of the example **wlsoke02-domain-ns** namespace, use the weblogic domain namespace corresponding to your Kubernetes cluster; see `kubectl get ingress -A` above command output)
 
 
 
@@ -470,15 +480,19 @@ status:
 
 List the Ingress again; the host value should be present:
 
-> kubectl get ingress wls-cluster-ingress -n wlsoke02-domain-ns
-> NAME                  CLASS    HOSTS    ADDRESS         PORTS   AGE
-> wls-cluster-ingress   <none>   wlsoke   193.122.49.85   80      6d3h
+```
+kubectl get ingress wls-cluster-ingress -n wlsoke02-domain-ns
+NAME                  CLASS    HOSTS    ADDRESS         PORTS   AGE
+wls-cluster-ingress   <none>   wlsoke   193.122.49.85   80      6d3h
+```
 
 
 
 Add a new entry in your local machine `/etc/hosts` file to map the Public Load Balancer IP address with the **wlsoke** hostname, for example:
 
-> 193.122.49.85	wlsoke 
+```
+193.122.49.85	wlsoke 
+```
 
 (for Windows machines, you can find the **hosts** file in `C:\Windows\System32\drivers\etc` directory)
 
