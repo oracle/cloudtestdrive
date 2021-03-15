@@ -165,7 +165,7 @@ WebLogic Sample Application up & running:
 
 ## Step 2. Deploy custom ADF Application
 
-In the second step of this Hands on Lab we will use the *update-domain* Pipeline to deploy a custom ADF application.
+In the second step of this Hands on Lab we will use the *update-domain* Pipeline to deploy a custom ADF application alongside required database data source.
 
 Let's inspect the required Build Parameters to launch this Pipeline:
 
@@ -263,7 +263,7 @@ appDeployments:
 
 
 
-**Note 1**: For the *'adfapp-ds'* datasource and *'SampleADFApplication'* application **Target** attributes, replace **wlsoke02-cluster** value for the Cluster name with the WebLogic Cluster name in your specific environment. To get it, connect to WebLogic Admin Console and navigate to *Clusters* page:
+**Note 1**: For the *'adfapp-ds'* datasource and *'SampleADFApplication'* application **Target** attributes, replace **wlsoke02-cluster** value with the WebLogic Cluster name in your specific environment. To get it, connect to WebLogic Admin Console and navigate to *Clusters* page:
 
 ![](images/wlsforocionokedeploy/image-220.png)
 
@@ -281,7 +281,7 @@ Switch to **Connection Pool** tab and copy the entire **URL** value:
 
 
 
-In the  `wlsapps.yaml`  file replace the **URL** value with the string just copied from the data source connection pool page. Make sure to escape the double quotes (**"**) characters in the string value by adding another double quote character in front, as in the above example (before the **CN** and after **US** values):
+In the  `wlsapps.yaml`  file replace the **URL** value with the string just copied from the data source connection pool page. Make sure to escape the double quotes (**"**) characters in the string value by adding another double quote characters in front, as in the above example (before the **CN** and after **US** values):
 
 > URL: 'jdbc:oracle:thin:@(description=(retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_wlsatpdb_low.adb.oraclecloud.com))(security=(ssl_server_cert_dn=**"**"CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US**"**")))'
 
@@ -294,6 +294,12 @@ In the  `wlsapps.yaml`  file replace the **URL** value with the string just copi
 - javax.net.ssl.trustStorePassword
 - javax.net.ssl.keyStore
 - javax.net.ssl.keyStorePassword
+
+
+
+You can find the values here:
+
+![image-20210315110254863](images/wlsforocionokedeploy/image-226.png)
 
 
 
@@ -365,7 +371,7 @@ To edit the Ingress:
 
 > kubectl edit ingress wls-cluster-ingress -n wlsoke02-domain-ns
 
-(instead of the example **wlsoke02-domain-ns** namespace, use the weblogic domain namespace corresponding to your Kubernetes cluster)
+(instead of the example **wlsoke02-domain-ns** namespace, use the weblogic domain namespace corresponding to your Kubernetes cluster; see `$ kubectl get ingress -A` above command output)
 
 
 
@@ -458,7 +464,7 @@ status:
 **Editing notes**:
 
 - add the two annotations before the existing *nginx.ingress.kubernetes.io/configuration-snippet* annotation
-- add the *host* entry before the **http** entry with a dash (**-**) in front; remove the dash from **http** entry 
+- add the *host* entry before the **http** entry with a dash (**-**) in front; remove the dash from the **http** entry 
 
 
 
@@ -470,7 +476,7 @@ List the Ingress again; the host value should be present:
 
 
 
-Add a new entry in your local machine `/etc/hosts` file to map the Public Load Balancer IP address with the **wlsoke** hostname:
+Add a new entry in your local machine `/etc/hosts` file to map the Public Load Balancer IP address with the **wlsoke** hostname, for example:
 
 > 193.122.49.85	wlsoke 
 
