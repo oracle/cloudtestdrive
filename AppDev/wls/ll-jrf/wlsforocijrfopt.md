@@ -19,7 +19,7 @@ If you want to explore the ADF Faces components at runtime, the ADF Faces develo
 
 
 
-- First, download the [faces-12.2.1.4.0.war](https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/ll-wls-bucket/o/faces-12.2.1.4.0.war) application web archive. Then, in a similar way as at step **Deploy sample ADP application**, install the faces-12.2.1.4.0.war application. 
+- First, download the [faces-12.2.1.4.0.war](https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/ll-wls-bucket/o/faces-12.2.1.4.0.war) application web archive. Then, in a similar way as at step **Deploy sample ADF application**, install the faces-12.2.1.4.0.war application. 
 
 - Then, from *Deployments* -> *Control* tab start the application:
 

@@ -1,4 +1,4 @@
-# WebLogic for OKE - removal
+# WebLogic for OKE - optional
 
 ### Deleting the WebLogic Infrastructure
 
