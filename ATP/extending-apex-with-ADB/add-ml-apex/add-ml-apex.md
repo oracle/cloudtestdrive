@@ -6,6 +6,10 @@ The product is called "Y Box Games". Our fictional company has been moderately s
 
 We will use [Apache Zeppelin](http://www.oracle.com/technetwork/database/options/oml/overview/index.html), which comes pre-installed with the autonomous database. This will be our frontend for the Machine Learning algorithms in the database. For more background on machine learning in the database see [Oracle Advanced Analytics documentation](https://docs.oracle.com/en/database/oracle/oracle-database/12.2/dmapi/mining-fuctions.html#GUID-3BC8FD92-9B6A-4612-A458-7E5FFDDC5EA7).
 
+Watch our short video that explains Lab 3 - Add Machine Learning to APEX:
+
+[](youtube:QbHboPzCeAU)
+
 Estimated Time: 60 minutes
 
 ### Objectives

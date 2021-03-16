@@ -3,6 +3,10 @@
 In this lab we will extend an existing APEX application with geospatial functionality. Imagine a fictional use case where citizens that wish to fly a drone have to formally request this. The APEX application will be used by an institution to process these requests and decide whether the drone-flight is allowed.
 A drone flight will be allowed when its location is not within an urban area.
 
+Watch our short video that explains Lab 2 - Add Spatial to APEX:
+
+[](youtube:VebYSVmFols)
+
 Estimated Time: 60 minutes
 
 ### Objectives

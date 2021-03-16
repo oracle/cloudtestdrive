@@ -8,6 +8,10 @@ Transparent Data Encryption and Data Redaction are two very powerful features to
 
 In this lab, we will take a walkthrough around some of the improvements that the ATP provides to APEX developers, in areas such as performance, monitoring and security.
 
+Watch our short video that explains Lab 4 - Add Security to APEX:
+
+[](youtube:sJDQg_l6fPY)
+
 Estimated Time: 45 minutes
 
 ### Objectives
