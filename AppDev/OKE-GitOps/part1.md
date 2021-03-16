@@ -43,7 +43,7 @@ Click on **Launch Workflow**
 * Choose Kubernetes API Endpoint : **Public Endpoint**
 * Choose Kubernetes Worker Nodes : **Public Workers**
 (Will need the nodes, to have public access, for Grafana and the dashboard – later, 
-there are other implementations - just for simplicity we use it like this)
+there are other implementations - just for simplicity we use it like this, but we can use a load balancer as well)
 * Shape: for our workshop I suggest choosing a small shape like **VM.Standard1.1** or **VM.Standard1.2**, 
 the shape defines the amount of CPU per each worker node. 
 * Number of Nodes:  **3** (Leave it with 3 worker nodes) 
