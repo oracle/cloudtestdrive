@@ -81,7 +81,7 @@ Now we are going to set a secured public access to nodes as well as opening the 
 
 ![image](pics/choose-seclist.PNG)
        
-6.	Now the security list for the node network will open, you will want to update the 0.0.0.0/0 to your IP address, because you don't want it to be open for the whole internet. Go to the bottom of the security list and check the rule with the following destination port range: 30000-32767 (These are the Nodeports Kubernetes uses to expose service through worker node access) 
+6.	Now the security list for the node network will open, you will want to update the 0.0.0.0/0 to your IP address, because you don't want it to be open for the whole internet. Go to the bottom of the security list and check the rule with the following destination port range: 30000-30003 (These are the Nodeports Kubernetes uses to expose service through worker node access) 
 after you checked the rule, click on the edit button.
 
 ![image](pics/edit-rule.PNG)
