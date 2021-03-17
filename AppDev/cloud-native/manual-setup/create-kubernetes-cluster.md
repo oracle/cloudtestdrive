@@ -28,19 +28,19 @@ If you are only doing the Kubernetes based labs you need to have completed the s
 
 ### Step 1a: Navigate to the Managed Kubernetes dashboard
 
-  1. Log into the **OCI Console** 
+  A. Log into the **OCI Console** 
 
-  2. Once on the **OCI infrastructure** page, click on the "Hamburger" menu  
+  B. Once on the **OCI infrastructure** page, click on the "Hamburger" menu  
   
-  3. Scroll down to **Solutions and Platform** section, Click **Developer services**, then **Container Clusters (OKE)**
+  C. Scroll down to **Solutions and Platform** section, Click **Developer services**, then **Container Clusters (OKE)**
 
-  4. In the **List Scope** section, use the dropdown to select the `CTDOKE` compartment
+  D. In the **List Scope** section, use the dropdown to select the `CTDOKE` compartment
   
   - You may have to expand the tree nodes to locate this compartment
 
-  5. Click the **Create Cluster** button at the top of the clusters list
+  E. Click the **Create Cluster** button at the top of the clusters list
 
-  6. Choose the option for the **Quick Create**, then click the **Launch workflow** button
+  F. Choose the option for the **Quick Create**, then click the **Launch workflow** button
 
 
 
@@ -48,37 +48,41 @@ If you are only doing the Kubernetes based labs you need to have completed the s
 
 Fill in the form with following parameters:
 
-  1. Set the cluster **Name** to be something like `Helidon-Lab-YOUR-INITIALS`
+  A. Set the cluster **Name** to be something like `Helidon-Lab-YOUR-INITIALS`
   
-  2.  Make sure the **Compartment** is `CTDOKE`
+  B.  Make sure the **Compartment** is `CTDOKE`
   
-  3.  Make sure the **Kubernetes version** is the highest on the list (at the time of the last update of this document in November 2020 that was 1.18.10, but it may have been updated since then)
+  C.  Make sure the **Kubernetes version** is the highest on the list (at the time of the last update of this document in March 2021 that was 1.19.7, but it may have been updated since then)
   
-  4. If given the choice make sure that the **Kubernetes API Endpoint** is set to **Public Endpoint**
+  D. Make sure that the **Kubernetes API Endpoint** is set to **Public Endpoint**
 
-  5. Check the **Kubernetes Worker Node Subnet** is set to **Private Workers**
+  E. Check the **Kubernetes Worker Node Subnet** is set to **Private Workers**
+
+These images are for creating a 1.19.7 cluster, they may be slightly different for later versions.
+
+  ![](images/create-k8s-cluster-a.png)
   
-  6. Set the **Shape** dropdown to VM.Standard2.1
+  F. Set the **Shape** dropdown to VM.Standard.E3.Flex and the number of OCPU's to 1 (this should set the memory to 16GB automatically)
   
-  7. Set the **Number of nodes** to be 2
+  G. Set the **Number of nodes** to be 3
 
 There is no need to do anything in the Advanced Options section.
 
-These images are for creating a 1.18.10 cluster, they may be slightly different for later versions.
+These images are for creating a 1.19.7 cluster, they may be slightly different for later versions.
  
-  ![](images/create-k8s-cluster.png)
+  ![](images/create-k8s-cluster-b.png)
 
-  8. Click the **Next** button to go to the review page.
+  H. Click the **Next** button to go to the review page.
 
-  9. On the review page check the details you have provided are correct
+  I. On the review page check the details you have provided are correct
 
-  10. Click the **Create Cluster** button.
+  J. Click the **Create Cluster** button.
 
 You'll be presented with a progress option, if you want read what's happening
 
-  11. Scroll to the bottom and click the **Close** button
+  K. Scroll to the bottom and click the **Close** button
 
-The state will be "Creating" for a few minutes (usually 3-4 mins)
+The state will be "Creating" for a short while (usually 3-4 mins)
 
 ## End of the cluster setup, What's next ?
 
