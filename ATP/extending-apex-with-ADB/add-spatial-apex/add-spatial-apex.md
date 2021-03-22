@@ -183,7 +183,7 @@ In our (simplified) example we will only look at the first row, and ignore any a
 
 - **JavaScript Expression**: `document`
 
-  
+
 
   ![](./images/geocoding_01_set_when_properties.png " ")
 
@@ -194,9 +194,9 @@ In our (simplified) example we will only look at the first row, and ignore any a
 15. On the Action tab:
 
     - **Action**: "Execute PL/SQL Code".
-    
+
 - Add the following PL/SQL:
-  
+
   ```plsql
   declare
       cursor c_geocoded_address
@@ -231,10 +231,10 @@ In our (simplified) example we will only look at the first row, and ignore any a
 
 
 - **Items to Return**: "P6_PERMIT".
-    
+
 - **Fire on Initialization**: Off.
-    
-       
+
+
 
   ![](./images/geocode_return_permit.png " ")
 
@@ -347,8 +347,3 @@ In our case we will verify that the coordinate of the proposed drone flight is n
 ## Acknowledgements
 * **Author** - Jeroen Kloosterman, Technology Product Strategy Manager, Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center
 * **Last Updated By/Date** - Tom McGinn, Database Innovations Architect, Database Product Management, July 2020
-
-## Need Help?
-Please submit feedback or ask for help using our [LiveLabs Support Forum](https://community.oracle.com/tech/developers/categories/oracle-apex-development-workshops). Please click the **Log In** button and login using your Oracle Account. Click the **Ask A Question** button to the left to start a *New Discussion* or *Ask a Question*.  Please include your workshop name and lab name.  You can also include screenshots and attach files.  Engage directly with the author of the workshop.
-
-If you do not have an Oracle Account, click [here](https://profile.oracle.com/myprofile/account/create-account.jspx) to create one.
