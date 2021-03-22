@@ -37,14 +37,7 @@ Helm is the tool we will be using to install standard software into Kubernetes. 
 
 The OCI Cloud Shell has helm already installed for you, however it does not know what repositories to use for the helm charts. We need to tell helm what repositories to use.
 
-  1. Run the following command to add the core stable repo to helm :
-  
-  - `helm repo add stable https://kubernetes-charts.storage.googleapis.com/`
-  
-  ```
-"stable" has been added to your repositories
-```
-  2. Now add the dashboard repo
+  1. Run the following command to add the dashboard repo to helm
   
   - `helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/`
   
@@ -52,24 +45,22 @@ The OCI Cloud Shell has helm already installed for you, however it does not know
 "kubernetes-dashboard" has been added to your repositories
  ```
  
-  3. To can get the current list of repositories run the following command :
+  2. To can get the current list of repositories run the following command :
   
   - `helm repo list`
   
   ```                                            
-NAME                    URL                                              
-stable                  https://kubernetes-charts.storage.googleapis.com/
+NAME                    URL         
 kubernetes-dashboard    https://kubernetes.github.io/dashboard/  
 ```
     
-  4. Lastly let's update the helm cache, run the following command :
+  3. Lastly let's update the helm cache, run the following command :
   
   - `helm repo update`
 
   ```
 Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "kubernetes-dashboard" chart repository
-...Successfully got an update from the "stable" chart repository
 Update Complete. ⎈ Happy Helming!⎈ 
 ```
 
@@ -501,6 +492,8 @@ In several of the labs we're going to be using the dashboard, so let's look arou
   
 We have had reports that some versions of Chrome will not allow you to override the page like this, for Chrome 83 at least one solution is to click in the browser window and type the words `thisisunsafe` (copy and past doesn't seem to work, you need to actually type it). Alternatively use a different browser.
 
+(Of course if you were doing this in a real deployment you's use a real certificate so wouldn't have to worry about a self-signed certificate causing browser problems).
+
 You'll now be presented with the login screen for the dashboard.
 
   3. Click the radio button for the **Token**
@@ -690,7 +683,6 @@ secret/tls-secret created
 Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "kubernetes-dashboard" chart repository
 ...Successfully got an update from the "ingress-nginx" chart repository
-...Successfully got an update from the "stable" chart repository
 ```
 
   6. Run the following command to install **ingress-nginx** using Helm 3:
@@ -768,6 +760,8 @@ In the list of listeners look at the line TCP-443, notice that it is set to uses
   ![load-balancer-update-in-progress](images/load-balancer-update-in-progress.png)
 
   18. You'll be presented with a **Work in progress** popup, for now just click the **Close** button and the update will continue in the background
+  
+**Note** In some situations (for example the Ingress controller gets re-installed) these changes to the load balancer are reset, if you get errors like "400 THe plain http request was sent to an https port" this has happened, and you'll need to redo the load balancer configuration. Of course in a production environment with real, not self signed certificates this is not an issue as you'd be using https throughout, but for this lab we don't have the time needed for setting up the infrastructure to get and deploy proper certificates.
 
 <details><summary><b>Scripting the listener change</b></summary>
 
@@ -777,9 +771,11 @@ The following commands do absolutely no error checking, or waiting for the load 
 
 The [oci command](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cliconcepts.htm) used here allows you to manage aspects of the oci environment, you can also run it in your laptop if you want (follow the instructions at the link to download and configure it). The oci command is **very** powerful and has a lot of options (on the OCI shell type `oci --help` to see them) The script also uses the [jq command](https://stedolan.github.io/jq) which is in the OCI Cloud shell, you can download it from the jq site if you wanted it on your own system.
 
+Note this assumes that you are using the CTDOKE compartment in the root compartment.
+
 ```bash
 echo Getting the Load balancer IP address from Kubernetes
-LB_IP=`kubectl get service ingress-nginx-nginx-ingress-controller -n ingress-nginx -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'`
+LB_IP=`kubectl get service ingress-nginx-controller  -n ingress-nginx -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'`
 echo Load balancer IP is $LB_IP
 echo Getting the CTDOKE compartment ocid from oci
 COMPARTMENT_OCID=`oci iam compartment list --name CTDOKE | jq -j '.data[0].id'`
@@ -1942,7 +1938,7 @@ ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <no
 
 The External_IP column displays the external address. 
 
-  6. Let's try to get some data - **you might get an error** (replace <external IP> with the ingress controllers load ballancer you got earlier)
+  6. Let's try to get some data - **you might get an error** (replace <external IP> with the ingress controllers load ballancer you got earlier) If you only get a response of `[]` it's fine, you'll just need to setup the test data (expand the section below for details)
   
   -  `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
 
@@ -1958,25 +1954,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 ```
 
 If you get **424 failed dependency** or timeouts it's because the services are doing their lazy initialization, wait a minute or so and retry the request
-  
-<details><summary><b>How to find out what pods are connected to a service</b></summary>
 
-
-The service definition maps onto the actual pods in the dpeloyments using the selector as seen above. To find out exactly what pods match the selectors for a service 
-
-- `kubectl get endpoints`
-
-```
-NAME           ENDPOINTS                           AGE
-stockmanager   10.244.0.68:8081,10.244.0.68:9081   26d
-storefront     10.244.1.75:9080,10.244.1.75:8080   26d
-zipkin         10.244.0.67:9411                    26d
-```
-
----
-
-</details>
-  
 <details><summary><b>If you only get `[]` not a list of items</b></summary>
 
 Your database does not have the information that was uploaded in the Helidon part of the labs, or if you did the Helidon labs then you probabaly are using a different department name.
@@ -2003,9 +1981,31 @@ All is not lost, you can create the information easily
 
 This will populate the database for you so you have some test data.
 
+If you can run the curl command above you'll see the data you just added
+
 ---
 
 </details>
+  
+<details><summary><b>How to find out what pods are connected to a service</b></summary>
+
+
+The service definition maps onto the actual pods in the dpeloyments using the selector as seen above. To find out exactly what pods match the selectors for a service 
+
+- `kubectl get endpoints`
+
+```
+NAME           ENDPOINTS                           AGE
+stockmanager   10.244.0.68:8081,10.244.0.68:9081   26d
+storefront     10.244.1.75:9080,10.244.1.75:8080   26d
+zipkin         10.244.0.67:9411                    26d
+```
+
+---
+
+</details>
+  
+
 
 And to see what's happening when we made the request we can look into the pods logs. Here we use --tail=5 to limit the logs output to the last 5 lines of the storefront pod
 

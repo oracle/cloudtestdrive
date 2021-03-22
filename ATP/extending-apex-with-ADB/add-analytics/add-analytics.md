@@ -64,10 +64,10 @@ Our starting point is an existing time entry application used by a fictional IT 
   Login using the password that you used when creating the workspace.
 
 2. Click **Time Registrations**. Have a look at the Time Registrations screen. This shows a list of employees, customers and time entry.
-  ![](./images/time_registrations.png " ")
+    ![](./images/time_registrations.png " ")
 
 3. Next, click **HOME** and have a look at the Customer Report screen.
-  ![](./images/open_customer_report.png " ")
+    ![](./images/open_customer_report.png " ")
 
   Later on in this workshop we will come back to the Customers page and embed an OAC Data Visualization into it.
 
@@ -196,22 +196,22 @@ Imagine we ask ourselves "Which employees work the most hours as a consultant an
   Imagine we ask ourselves "Are the employees that work the most hours also the ones that earn most money for our company?"
 
 4. Create a Revenue field. Right-click **My Calculations** and select **Add Calculation**.
-  ![](./images/12_create_calculation_1.png " ")
+    ![](./images/12_create_calculation_1.png " ")
 
 5. Drag the `NUMBER_OF_HOURS` and `HOURLY_RATE` fields into the formula space.
-  ![](./images/12_create_calculation_2.png " ")
+    ![](./images/12_create_calculation_2.png " ")
 
 6. Create the following formula: `HOURLY_RATE * NUMBER_OF_HOURS` and name the new field `Revenue`. Click **Save**.
-  ![](./images/12_create_calculation_3.png " ")
+    ![](./images/12_create_calculation_3.png " ")
 
 7. Now duplicate the original chart, by right selecting it, then click **Edit** and select **Duplicate Visualization**.
-  ![](./images/13_duplicate_visualization_1.png " ")
+    ![](./images/13_duplicate_visualization_1.png " ")
 
   The result is:
   ![](./images/13_duplicate_visualization_2.png " ")
 
 8. On the newly created chart, replace `NUMBER_OF_HOURS` with the new `Revenue` field. You can do this by a drag-and-drop of the `Revenue` field on `NUMBER_OF_HOURS`.
-  ![](./images/13_duplicate_visualization_3.png " ")
+    ![](./images/13_duplicate_visualization_3.png " ")
 
 9. Finally, change the aggregation method of Revenue by selecting the new chart, then click **Revenue** and setting the "Aggregation Method" to "Sum" and "By" to "Id".
 
@@ -254,10 +254,10 @@ The training information is not stored in our APEX Time and Labour application. 
   ![](./images/16_add_dataset.png " ")
 
 3. Click **Create Data Set**
-  ![](./images/16_add_dataset_2.png " ")
+    ![](./images/16_add_dataset_2.png " ")
 
 4. Drag the training Excel file on top of the icon.
-  ![](./images/16_add_dataset_3.png " ")
+    ![](./images/16_add_dataset_3.png " ")
 
   You see that the file contains information on which employee has start/finished the training.
 
@@ -271,24 +271,24 @@ The training information is not stored in our APEX Time and Labour application. 
   ![](./images/concatenate-first-last.png " ")
 
 6. Rename the newly created column to "Trainee Name", click on **First Name** in the With section and select **Last Name**.
-  ![](./images/concatenate-first-last-2.png " ")
+    ![](./images/concatenate-first-last-2.png " ")
 
 7. Click **Save**.
 
   ![](./images/16_add_dataset_7.png " ")
 
 8. Apply the change to the Data Set.
-  ![](./images/16_add_dataset_20.png " ")
+    ![](./images/16_add_dataset_20.png " ")
 
 9. Now we will link the two Data Sets. Click **Data Diagram** in the bottom.
-  ![](./images/16_add_dataset_8.png " ")
+    ![](./images/16_add_dataset_8.png " ")
 
 10. Create a new relationship by clicking on **0**.
 
   ![](images/click-on-zero.png " ")
 
 11. Click  **Add Another Match** and select `Trainee Name `from **traininghistory** and `EMPLOYEE` from **DEM\_PROJECT_HOUR** and click **OK**.
-  ![](./images/16_add_dataset_21.png " ")
+    ![](./images/16_add_dataset_21.png " ")
 
 12. Click **Visualize** in the upper right.
 
@@ -324,10 +324,10 @@ Our goal is to integrate the "Labour" DV project inside of our APEX application.
   For security reasons, you are not allowed to add external content to reports or embed your reports in other applications unless your administrator considers it safe to do so. Only administrators can add safe domains to the whitelist. Whitelisting allows or approves access to specific content.
 
 4. Access the OAC console by selecting the menu button in the top-left of your page and then **Console.**
-  ![](./images/19_console_menu.png " ")
+    ![](./images/19_console_menu.png " ")
 
 5. Select **Safe Domains**
-  ![](./images/19_safe_domains.png " ")
+    ![](./images/19_safe_domains.png " ")
 
 6. To locate the correct URL to add to this page, open a browser to the **Service Console** for your Autonomous Database.
 
@@ -373,16 +373,16 @@ Our goal is to integrate the "Labour" DV project inside of our APEX application.
   ![](images/name-oac-region.png " ")
 
     And set its Source to:
-
+    
     ```
     <copy>&ltdiv style="height: 600px; width: 100%;"&gt
-
+    
     &ltoracle-dv project-path="{{projectPath}}" filters="{{filters}}"&gt
     &lt/oracle-dv&gt
-
+    
     &lt/div&gt</copy>
     ```
-
+    
     The result should look like this:
     ![](./images/new_region.png " ")
 
@@ -420,7 +420,7 @@ Our goal is to integrate the "Labour" DV project inside of our APEX application.
   Click **Save**.
 
 18. Test the result. Go back to the application page overview, and run the page "Customer Report".
-  ![](./images/run_customer_report.png " ")
+    ![](./images/run_customer_report.png " ")
 
 19. Click on the Edit icon for one of the customers. You will now see the OAC Data Visualization project that we created earlier, filtered by the Customer that's in context of the APEX application.
 
@@ -435,4 +435,5 @@ Our goal is to integrate the "Labour" DV project inside of our APEX application.
 
 ## Acknowledgements
 * **Author** - Juan Cabrera Eisman, Senior Technology Solution Engineer, Oracle Digital, Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center
-* **Last Updated By/Date** - Tom McGinn, Database Innovations Architect, Database Product Management, July 2020
+* **Last Updated By/Date** - Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center, January 2021
+

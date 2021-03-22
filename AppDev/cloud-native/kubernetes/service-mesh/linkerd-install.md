@@ -77,7 +77,7 @@ For the purposes of this lab we've chosen to use Linkerd as it's a long standing
 
 Linkerd is installed in two parts, the linkerd command which runs local to your environment (similar to the kubectl command) and the linkerd control pane which runs in your Kubernetes cluster (similar to the Kubernetes cluster management elements) and manages the data plane.
 
-These instructions are based on the [Getting started](https://linkerd.io/2/getting-started/) page at Linkerd.io
+These instructions are based on the [Getting started](https://linkerd.io/2.10/getting-started/) page at Linkerd.io and install Linkerd v2.10, 
 
 It's worth noting that Linkerd can also be installed using its [helm chart](https://linkerd.io/2/tasks/install-helm/) but today we're going to do it manually step by step.
 
@@ -90,7 +90,7 @@ As linkerd is not a core Kubernetes component it's not included in the Oracle OC
   - `curl -sL https://run.linkerd.io/install | sh`
   
   ```
-Downloading linkerd2-cli-stable-2.8.1-linux...
+Downloading linkerd2-cli-stable-2.10.0-linux...
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100   644  100   644    0     0   1556      0 --:--:-- --:--:-- --:--:--  1559
@@ -100,7 +100,7 @@ Download complete!
 Validating checksum...
 Checksum valid.
 
-Linkerd stable-2.9.0 was successfully installed 🎉
+Linkerd stable-2.10.0 was successfully installed 🎉
 
 
 Add the linkerd CLI to your path with:
@@ -114,7 +114,7 @@ Now run:
   linkerd check                           # validate everything worked!
   linkerd dashboard                       # launch the dashboard
 
-Looking for more? Visit https://linkerd.io/2/next-steps
+Looking for more? Visit https://linkerd.io/2.10/next-steps
 ```
   
 Warning, this may take a while to run, in my case it usually takes around 30 seconds, but sometimes has taken as long as 20 mins if for some reason the download was not fast.
@@ -138,7 +138,7 @@ export PATH=$PATH:$HOME/.linkerd2/bin
   - `linkerd version`
 
   ```
-Client version: stable-2.9.0
+Client version: stable-2.10.0
 Server version: unavailable
 ```
 
@@ -287,13 +287,13 @@ Let's check that the linkerd command can talk to the control plane
   - `linkerd version`
 
 ```
-Client version: stable-2.9.0
-Server version: stable-2.9.0
+Client version: stable-2.10.0
+Server version: stable-2.10.0
 ```
 
 Expect a short delay while the linkerd command contacts the control plane servers.
 
-If you get `Unavailable` for the server version that means the control plane is still starting, wait a short time and then re-run the command.
+If you get `Unavailable` for the server version or an error message that means the control plane is still starting, wait a short time and then re-run the command.
 
 We can see the version information (this was correct at the time of writing, you make have later versions.)
 
@@ -325,60 +325,41 @@ And we can see what's in the linkerd namespace
   - `kubectl get all -n linkerd`
 
   ```
-NAME                                         READY   STATUS    RESTARTS   AGE
-pod/linkerd-controller-78fffbdb88-97fhv      2/2     Running   0          18m
-pod/linkerd-destination-7cc99c9b7c-hzpwv     2/2     Running   0          18m
-pod/linkerd-grafana-69d75b8b74-vzvkh         2/2     Running   0          18m
-pod/linkerd-identity-845f9b5d76-r5jk5        2/2     Running   0          18m
-pod/linkerd-prometheus-65f5758466-p7wwp      2/2     Running   0          18m
-pod/linkerd-proxy-injector-f9f4786c7-hk6g9   2/2     Running   0          18m
-pod/linkerd-sp-validator-c498bbd46-fqjfc     2/2     Running   0          18m
-pod/linkerd-tap-b9dbc4959-t57b8              2/2     Running   0          18m
-pod/linkerd-web-7968b5667-dgl6j              2/2     Running   0          18m
+NAME                                          READY   STATUS    RESTARTS   AGE
+pod/linkerd-controller-b8f9df548-m45zw        2/2     Running   0          4m20s
+pod/linkerd-destination-77cc876746-vslqf      2/2     Running   0          4m19s
+pod/linkerd-identity-695d64dfdf-sgdkh         2/2     Running   0          4m20s
+pod/linkerd-proxy-injector-6d9db65bff-s77pm   2/2     Running   0          4m19s
+pod/linkerd-sp-validator-5c77df9f7b-5nkp5     2/2     Running   0          4m19s
 
-
-NAME                             TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
-service/linkerd-controller-api   ClusterIP   10.96.225.56    <none>        8085/TCP            18m
-service/linkerd-dst              ClusterIP   10.96.92.177    <none>        8086/TCP            18m
-service/linkerd-grafana          ClusterIP   10.96.170.182   <none>        3000/TCP            18m
-service/linkerd-identity         ClusterIP   10.96.74.202    <none>        8080/TCP            18m
-service/linkerd-prometheus       ClusterIP   10.96.42.237    <none>        9090/TCP            18m
-service/linkerd-proxy-injector   ClusterIP   10.96.198.234   <none>        443/TCP             18m
-service/linkerd-sp-validator     ClusterIP   10.96.40.228    <none>        443/TCP             18m
-service/linkerd-tap              ClusterIP   10.96.101.170   <none>        8088/TCP,443/TCP    18m
-service/linkerd-web              ClusterIP   10.96.135.227   <none>        8084/TCP,9994/TCP   18m
-
+NAME                                TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+service/linkerd-controller-api      ClusterIP   10.96.27.60    <none>        8085/TCP   4m20s
+service/linkerd-dst                 ClusterIP   10.96.175.38   <none>        8086/TCP   4m20s
+service/linkerd-dst-headless        ClusterIP   None           <none>        8086/TCP   4m20s
+service/linkerd-identity            ClusterIP   10.96.38.40    <none>        8080/TCP   4m20s
+service/linkerd-identity-headless   ClusterIP   None           <none>        8080/TCP   4m20s
+service/linkerd-proxy-injector      ClusterIP   10.96.46.245   <none>        443/TCP    4m19s
+service/linkerd-sp-validator        ClusterIP   10.96.193.45   <none>        443/TCP    4m19s
 
 NAME                                     READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/linkerd-controller       1/1     1            1           18m
-deployment.apps/linkerd-destination      1/1     1            1           18m
-deployment.apps/linkerd-grafana          1/1     1            1           18m
-deployment.apps/linkerd-identity         1/1     1            1           18m
-deployment.apps/linkerd-prometheus       1/1     1            1           18m
-deployment.apps/linkerd-proxy-injector   1/1     1            1           18m
-deployment.apps/linkerd-sp-validator     1/1     1            1           18m
-deployment.apps/linkerd-tap              1/1     1            1           18m
-deployment.apps/linkerd-web              1/1     1            1           18m
+deployment.apps/linkerd-controller       1/1     1            1           4m20s
+deployment.apps/linkerd-destination      1/1     1            1           4m19s
+deployment.apps/linkerd-identity         1/1     1            1           4m20s
+deployment.apps/linkerd-proxy-injector   1/1     1            1           4m19s
+deployment.apps/linkerd-sp-validator     1/1     1            1           4m19s
 
-NAME                                               DESIRED   CURRENT   READY   AGE
-replicaset.apps/linkerd-controller-78fffbdb88      1         1         1       18m
-replicaset.apps/linkerd-destination-7cc99c9b7c     1         1         1       18m
-replicaset.apps/linkerd-grafana-69d75b8b74         1         1         1       18m
-replicaset.apps/linkerd-identity-845f9b5d76        1         1         1       18m
-replicaset.apps/linkerd-prometheus-65f5758466      1         1         1       18m
-replicaset.apps/linkerd-proxy-injector-f9f4786c7   1         1         1       18m
-replicaset.apps/linkerd-sp-validator-c498bbd46     1         1         1       18m
-replicaset.apps/linkerd-tap-b9dbc4959              1         1         1       18m
-replicaset.apps/linkerd-web-7968b5667              1         1         1       18m
-
-
-
+NAME                                                DESIRED   CURRENT   READY   AGE
+replicaset.apps/linkerd-controller-b8f9df548        1         1         1       4m21s
+replicaset.apps/linkerd-destination-77cc876746      1         1         1       4m20s
+replicaset.apps/linkerd-identity-695d64dfdf         1         1         1       4m21s
+replicaset.apps/linkerd-proxy-injector-6d9db65bff   1         1         1       4m20s
+replicaset.apps/linkerd-sp-validator-5c77df9f7b     1         1         1       4m20s
 
 NAME                              SCHEDULE       SUSPEND   ACTIVE   LAST SCHEDULE   AGE
-cronjob.batch/linkerd-heartbeat   29 17 * * *    False     0        8m43s           18m
+cronjob.batch/linkerd-heartbeat   32 16 * * *    False     0        <none>          4m20s
 ```
 
-Linkerd has created a number of items, but note that all of the pods have 2 instances (for high availability) and that among other services linkerd has created it's own Prometheus and Grafana instalations.
+Linkerd has created a number of items, but note that all of the pods have 2 instances (for high availability).
 
 Let's get linkerd to check that it's been installed correctly and everything is running.
 
@@ -464,6 +445,100 @@ If the linkerd environment is not yet running the check will block until the ser
 
 You can see that everything is running fine, there is a lot more output as the check confirms that linkerd itself has all the elements it needs to operate, and it is working fine.
 
+Prior to version 2.10.0 Linkerd used to install a number of other components as standard (Prometheus, Grafana and the Linkerd dashboard) but they are now installed separately as Linkerd extensions. This allows you to setup clusters that are managed by the cli / yaml files without the overhead of the visuals. Importantly to help us with debugging the viz extentions also include the Linkerd tap service which will let us look into the requests as they flow through the service mesh.
+
+For this lab however we want to see the visuals, so let's install them. First we're going to install the underlying support for visualization.
+
+  7. In the OCI Cloud Shell type
+  
+  - `linkerd viz install | kubectl apply -f -`
+
+```
+namespace/linkerd-viz created
+clusterrole.rbac.authorization.k8s.io/linkerd-linkerd-viz-metrics-api created
+clusterrolebinding.rbac.authorization.k8s.io/linkerd-linkerd-viz-metrics-api created
+serviceaccount/metrics-api created
+serviceaccount/grafana created
+clusterrole.rbac.authorization.k8s.io/linkerd-linkerd-viz-prometheus created
+clusterrolebinding.rbac.authorization.k8s.io/linkerd-linkerd-viz-prometheus created
+serviceaccount/prometheus created
+clusterrole.rbac.authorization.k8s.io/linkerd-linkerd-viz-tap created
+clusterrole.rbac.authorization.k8s.io/linkerd-linkerd-viz-tap-admin created
+clusterrolebinding.rbac.authorization.k8s.io/linkerd-linkerd-viz-tap created
+clusterrolebinding.rbac.authorization.k8s.io/linkerd-linkerd-viz-tap-auth-delegator created
+serviceaccount/tap created
+rolebinding.rbac.authorization.k8s.io/linkerd-linkerd-viz-tap-auth-reader created
+secret/tap-k8s-tls created
+apiservice.apiregistration.k8s.io/v1alpha1.tap.linkerd.io created
+role.rbac.authorization.k8s.io/web created
+rolebinding.rbac.authorization.k8s.io/web created
+clusterrole.rbac.authorization.k8s.io/linkerd-linkerd-viz-web-check created
+clusterrolebinding.rbac.authorization.k8s.io/linkerd-linkerd-viz-web-check created
+clusterrolebinding.rbac.authorization.k8s.io/linkerd-linkerd-viz-web-admin created
+clusterrole.rbac.authorization.k8s.io/linkerd-linkerd-viz-web-api created
+clusterrolebinding.rbac.authorization.k8s.io/linkerd-linkerd-viz-web-api created
+serviceaccount/web created
+rolebinding.rbac.authorization.k8s.io/viz-psp created
+service/metrics-api created
+deployment.apps/metrics-api created
+configmap/grafana-config created
+service/grafana created
+deployment.apps/grafana created
+configmap/prometheus-config created
+service/prometheus created
+deployment.apps/prometheus created
+service/tap created
+deployment.apps/tap created
+clusterrole.rbac.authorization.k8s.io/linkerd-tap-injector created
+clusterrolebinding.rbac.authorization.k8s.io/linkerd-tap-injector created
+serviceaccount/tap-injector created
+secret/tap-injector-k8s-tls created
+mutatingwebhookconfiguration.admissionregistration.k8s.io/linkerd-tap-injector-webhook-config created
+service/tap-injector created
+deployment.apps/tap-injector created
+service/web created
+deployment.apps/web created
+```
+If you looked at the namespaces you'd see a new namespace called `linkerd-viz` has appeared, this contains the services for the visuals we just installed
+<details><summary><b>Other Linkerd extensions</b></summary>
+
+Linkerd has a number of other extensions that include things like Jeager (tracing), multi cluster support, and also support for 3rd party extensions for example the [Boyant Cloud (Which provides a hosted dash board for displaying the linkerd metrics)](https://buoyant.io/cloud)
+
+</details>
+
+Now let's make sure everything installed correctly 
+
+  8. In the OCI CLoud shell type 
+  
+  - `linkerd check`
+  
+```
+...
+(You'll see the previous check output first)
+...
+Linkerd extensions checks
+=========================
+
+linkerd-viz
+-----------
+√ linkerd-viz Namespace exists
+√ linkerd-viz ClusterRoles exist
+√ linkerd-viz ClusterRoleBindings exist
+√ tap API server has valid cert
+√ tap API server cert is valid for at least 60 days
+√ tap API service is running
+√ linkerd-viz pods are injected
+√ viz extension pods are running
+√ prometheus is installed and configured correctly
+√ can initialize the client
+√ viz extension self-check
+
+Status check results are √
+
+```
+
+At the end of the output we'll see the status of the extensions.
+
 ## Step 5: Configuring access to the linkerd UI
 
 Linkerd is managed via the linkerd command OR via it's browser based dashboard. In general you want to use the dashboard as it give you access to the Grafana instance provided by Linkerd and thus you get the visualizations.
@@ -479,7 +554,7 @@ The first thing we need to do is to remove the restriction in the linkerd web fr
 
   1. In the OCI Cloud shell type
   
-  - `kubectl edit deployment linkerd-web -n linkerd`
+  - `kubectl edit deployment web -n linkerd-viz`
   
   2. In the spec.template.spec.containers.args locate the line that is like 
   
@@ -502,7 +577,7 @@ kubectl will pick them up and apply them, Kubernetes will restart the linkerd-we
 
 Curiously the linkerd-web ingress does not by default use a TLS certificate to ensure that the connection to it is encrypted, as we will be sending passwords we want to ensure it is encrypted, to do which we need to create a TLS secret in Kubernetes that the ingress controller can use.
 
-Fortunately for us when we first setup our ingress controller and load balancer we installed a certificate in the load balancer for SSL / TLS connections, so we can just use that for the inkerd SSL/TLS endpoint as well. 
+Fortunately for us when we first setup our ingress controller and load balancer we installed a certificate in the load balancer for SSL / TLS connections, so we can just use that for the linkerd SSL/TLS endpoint as well. 
 
   5. Move to the directory containing the scripts for the service mesh lab
   
@@ -526,7 +601,7 @@ Now having create the password file we need to add it to Kuberntes as a secret s
 
   2. In the OCI Cloud Shell type
   
-  - `kubectl create secret generic linkerd-web-ingress-auth -n linkerd --from-file=auth`
+  - `kubectl create secret generic web-ingress-auth -n linkerd-viz --from-file=auth`
 
   ```
 secret/web-ingress-auth created
@@ -606,7 +681,7 @@ I have found that for some versions of Firefox that grafana complains about reve
 <details><summary><b>Other options for linkerd access</b></summary>
 
 
-Exposing linkerd via an ingress allows anyone who has access to the external point of the ingress to access it. This may be required due to the way your organization operates, but you can also restrict access to the linkerd UI by using the linkerd command to setup a secure tunnel for you.
+Exposing linkerd via an ingress allows anyone who has access to the external point of the ingress (and the password) to access it. This may be required due to the way your organization operates, but you can also restrict access to the linkerd UI by using the linkerd command to setup a secure tunnel for you.
 
 You need to have the linkerd client installed on your machine.
 

@@ -39,7 +39,7 @@ For this lab we will use a small subset of the open source features only.
 ## Step 2: Installing Grafana
 Like many other Kubernetes services Grafana can be installed using helm. By default the helm chart does not create a volume for the storage of the grafana configuration. This would be a problem in a production environment, so we're going to use the persistent storage option defined inthe helm chart for Grafana to create a storage volume. 
 
-  1. Create the Helm repository entry for Grafana 
+  1. Add the Helm repository entry for Grafana 
   
   - `helm repo add bitnami https://charts.bitnami.com/bitnami`
 
@@ -57,7 +57,6 @@ If you have already added the bitnami repository in another module you'll be tol
 Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "kubernetes-dashboard" chart repository
 ...Successfully got an update from the "bitnami" chart repository
-...Successfully got an update from the "stable" chart repository
 Update Complete. ⎈ Happy Helming!⎈ 
 ```
 

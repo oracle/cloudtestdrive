@@ -82,9 +82,8 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
   
   - **Admin user name**: *weblogic*
   
-  - **Secrets OCID for WebLogic Server Admin Password**: 
-  
-    - Enter the OCID of the Secret that was set up earlier for this.  If you if you are using the CTD (Cloud Test Drive) environment, this OCID might be in a document provided by your instructor.
+  - **Secrets OCID for WebLogic Server Admin Password**: Enter the OCID of the Secret that was set up earlier for this.  If you if you are using the CTD (Cloud Test Drive) environment, this OCID might be in a document provided by your instructor.
+
       - A bit of context: the WebLogic Server Admin Password it's stored in an OCI Vault as an OCI Secret (encrypted with an OCI Encryption Key); during WebLogic Domain creation, the provisioning scripts will setup the admin password by getting it from the OCI Secret instead of having it as a Terraform variable; in a similar way - if talking about an JRF enabled domains - the database admin password will be referred from an OCI Secret
       
   
@@ -97,25 +96,31 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 - Don't change WebLogic Server Advanced Configuration
 
-- Choose the same *CTDOKE* Compartment
-
 - WebLogic Server Network parameters:
 
-  - Choose **Create New VCN**
+  - Choose *Create New VCN*
+
+  - Choose the same *CTDOKE* Compartment
+
+  - Give a name to the Virtual Cloud Network
 
     ![](images/wlsvcn1.png)
 
   - For the Subnet Strategy:
 
-    - Create New Subnet
-    - Use Public Subnet
-    - Regional Subnet
+    - *Create New Subnet*
+    - *Use Public Subnet*
+    - *Regional Subnet*
 
     ![](images/wlsvcn2.png)
 
+  - Tick to **Enable Access to Administration Console**:
+
+    ![](images/wlsvcn4.png)
+
   - Tick to **Provision Load Balancer**
 
-    - **Load Balancer Shape**: *100Mbps*
+    - **Load Balancer Minimum and Maximum Bandwidth**: keep defaults
 
     ![](images/wlsvcn3.png)
 
@@ -135,7 +140,7 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 ![](images/wlscnonjrfwithenv/image155.png)
 
 
-- Review the Stack configuration and Click **Create**:
+- Review the Stack configuration and click **Create**:
 
 ![](images/wlscnonjrfwithenv/image170.png)
 
@@ -159,16 +164,16 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 
 
-- We can check the *Outputs* section of Job Resources and check for two important values:
-  - Sample Application URL (we can can try it at this moment, but the out of the box sample application won't load as we need to finish the SSL configuration of the Load Balancer)
-  - WebLogic Server Administration Console
+- We can check the *Outputs* section of Job Resources and see two important values:
+  - **Sample Application URL** (we can can try it at this moment, but the out of the box sample application won't load as we need to finish the SSL configuration of the Load Balancer)
+  - **WebLogic Server Administration Console**
 
 ![](images/wlscnonjrfwithenv/image210.png)
 
 
 
 - Let's check the **WLS admin console** of the newly created WebLogic Server; as we have chosen a Public Subnet for the WLS network, both Compute instances that have been created have public IPs associated.  Use the Console URL provided in the **Outputs** section as shown above
-- Login with **weblogic** username and the provided password
+- Login with **weblogic** username and the provided password:
 
 ![](images/wlscnonjrfwithenv/image220.png)
 
@@ -180,23 +185,19 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 
 
-- We can check the Compute Instances to see what has been provisioned; From general hamburger menu choose *Core Infrastructure* -> *Compute* -> *Instances*:
+- We can check the Compute Instances to see what has been provisioned; From OCI menu choose *Core Infrastructure* -> *Compute* -> *Instances*:
 
 ![](images/wlscnonjrfwithenv/image240.png)
 
 
 
-- We can see two instances having our prefix mentioned during Stack configuration; one of them runs the admin server and a managed server and the other runs the second managed server:
+- We can see two instances having our prefix setup during Stack configuration; one of them runs the WebLogic Admin server and a Managed Server and the other runs the second Managed Server:
 
 ![](images/wlscnonjrfwithenv/image250.png)
 
 
 
-- Congratulations! Your WLS domain is up&running! 
-
-
-
-- We can check now if the out of the box deployed application is loading; From the Stack Job **Outputs**, open the **Sample Application URL**; it's loading, but we have to bypass the browser warning as we're using a Self Signed Certificate;
+- We can check now if the out of the box deployed application is loading; From the Stack Job **Outputs**, open the **Sample Application URL**; it's loading, but we have to bypass the browser warning as the Public Load Balancer is configured with a Self Signed Certificate;
 - Click **Advanced** button and **Proceed to ...** to continue:
 
 
@@ -206,6 +207,8 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 - The out of the box deployed sample application is being served through a secured SSL Load Balancer Listener:
 
 ![](images/wlscnonjrfwithenv/image400.png)
+
+- Congratulations! Your WLS domain is up&running! 
 
 
 
@@ -223,7 +226,7 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 
 
-Follow **Upload your files** link and upload provided [SampleWebApp.war](resources/SampleWebApp.war) web archive file:
+- Follow **Upload your files** link and upload provided [SampleWebApp.war](resources/SampleWebApp.war) web archive file:
 
 ![](images/wlscnonjrfwithenv/image430.png)
 
@@ -241,7 +244,7 @@ Follow **Upload your files** link and upload provided [SampleWebApp.war](resourc
 
 
 
-- Leave default setting and click **Next**:
+- Leave default settings and click **Next**:
 
 ![](images/wlscnonjrfwithenv/image460.png)
 
@@ -291,19 +294,19 @@ Follow **Upload your files** link and upload provided [SampleWebApp.war](resourc
 
 
 
-## Step 3. Destroy resources
+## Step 3. [Optional] Destroy resources
 
 If you don't plan to use the WebLogic Domain anymore, to spare tenancy resources, the quickest way to delete the resources created during this lab is to run *Terraform Destroy*  on the Stack.
 
-Navigate to *Solutions and Platform* > *Resource Manager* > *Stacks*, identify and click on the Stack name you have created at the beginning of this lab.
+- Navigate to *Solutions and Platform* > *Resource Manager* > *Stacks*, identify and click on the Stack name you have created at the beginning of this lab.
 
-By running the *Destroy* action, a Terraform job will kick off and delete all created resources.
+- By running the *Destroy* Terraform Action, a Terraform job will kick off and delete all created resources.
 
 ![](images/wlscnonjrfwithenv/image600.png)
 
 
 
-When the job ends, you should see a similar log output:
+- When the job ends, you should see a similar log output:
 
 ![](images/wlscnonjrfwithenv/image610.png)
 
@@ -311,6 +314,6 @@ When the job ends, you should see a similar log output:
 
 You can check that the Compute Instances and the Block Volumes have been terminated.
 
-At the end you can also delete the Stack:
+- At the end you can also delete the Stack:
 
 ![](images/wlscnonjrfwithenv/image620.png)

@@ -16,6 +16,7 @@ During this day you will be able to experience the various cloud services hands-
   A simple lab spinning up a Kubernetes container and deploying a hello-world application 
 - [Microservices using Autonomous ATP and Managed Containers](https://oracle.github.io/cloudtestdrive/AppDev/ATP-OKE/livelabs-trial/)
   This lab will cover the complete setup of Developer Cloud, a Kubernetes Cluster and an Autonomous Database, and then build the CI/CD flow to deploy a Node-based microservice onto this infrastructure, starting from a fresh Cloud Free Trial.  If you are joining an instructor-led Cloud Test Drive lab, your instructor might ask you to follow [this](https://oracle.github.io/cloudtestdrive/AppDev/ATP-OKE/livelabs-ctdenv) alternative version of the lab.
+- ***New!***  [GitOps with Oracle Kubernetes Engine](AppDev/OKE-GitOps/README.md) (OKE) : learn how to use Oracle managed Kubernetes with the  GitOps approach, a new paradigm of implementing Continuous Delivery (CD) for cloud-native applications.
 
 + Run your first **serverless Functions** [using the Opensource FnProject](AppDev/functions/function2_lab.md) or by using the Oracle Managed service called [Oracle Functions](https://www.oracle.com/webfolder/technetwork/tutorials/infographics/oci_faas_gettingstarted_quickview/functions_quickview_top/functions_quickview/index.html#).  Or optionally [create a function from an exiting Docker](https://github.com/shaunsmith/functionslab-codeone19/blob/master/6-Container-as-Function.md) container.
 + [Functions and Events](AppDev/functionsandevents/FnHandson.md): showcasing event-driven serverless functions and an Autonomous database. 
@@ -28,14 +29,14 @@ During this day you will be able to experience the various cloud services hands-
 
 ## WebLogic Labs
 
-+ [WebLogic for OCI - VM Image](https://oracle.github.io/cloudtestdrive/AppDev/wls/ll-nonjrf) via Marketplace
-  Launch WebLogic on OCI Virtual machines, using the pre-configured image provided by Oracle in the Marketplace.
-
-+ ***New!*** [WebLogic for OKE](https://oracle.github.io/cloudtestdrive/AppDev/wls/ll-wls-for-oke-nonjrf/) - running WLS on Kubernetes via Marketplace
++ **WebLogic for OCI** marketplace to automate setting up WebLogic with VM's on Oracle Cloud
+  
+  + Run the [non-JRF version of the lab](https://oracle.github.io/cloudtestdrive/AppDev/wls/ll-nonjrf), (no database setup)
+  + Run the [JRF version of the lab](https://oracle.github.io/cloudtestdrive/AppDev/wls/ll-jrf) including database creation and deployment of an ADF application
+  
++ ***New!***  [WebLogic for OKE](https://oracle.github.io/cloudtestdrive/AppDev/wls/ll-wls-for-oke-nonjrf/) - running WLS on Kubernetes via Marketplace
   Launch WebLogic on a Managed Kubernes cluster (OKE), using the pre-configured image provided by Oracle in the Marketplace.
 
-+ ***New!*** [Verrazzano](https://oracle.github.io/cloudtestdrive/AppDev/wls/ll-verrazzano/) - deploy hybrid applications composed of WebLogic, Helidon or Coherence components
-  
 + [Running WebLogic on Docker](AppDev/wls/WLS_on_Docker.md)
   Spin up the official Oracle Docker Image for Weblogic and deploy a simple demo application on the server.
 

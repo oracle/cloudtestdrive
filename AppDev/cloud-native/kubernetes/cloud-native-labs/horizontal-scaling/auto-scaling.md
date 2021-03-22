@@ -43,7 +43,7 @@ For now we are going to use the simplest approach of the metrics server.
 
 ### Step 1a: Installing the metrics server
 
-  1. Install the helm char repo that contains the metrics server
+  1. Install a helm repo that contains the chart for the metrics server
   
   - `helm repo add bitnami https://charts.bitnami.com/bitnami`
   
@@ -56,7 +56,6 @@ Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "kubernetes-dashboard" chart repository
 ...Successfully got an update from the "ingress-nginx" chart repository
 ...Successfully got an update from the "bitnami" chart repository
-...Successfully got an update from the "stable" chart repository
 
 ```
 
@@ -510,11 +509,18 @@ The number of pods is now back to one (it may be that you get a report of 2 pods
 ## Step 3: Autoscaling on other metrics
 We have here looked at how to use CPU and memory to determine when to autoscale, that may be a good solution, or it may not. Kubernetes autoscaling can support the use of other metrics to manage autoscaling.
 
-These other metrics can be other Kuberneties metrics (known as custom metrics) for example the number of requests to the ingress controller, or (with the provision of the [Prometheus Adaptor (helm chart)](https://github.com/helm/charts/tree/master/stable/prometheus-adapter)) any metric that Prometheus gathers. This last is especially useful as it means you can autoscale on what are effectively business metrics.
+These other metrics can be other Kuberneties metrics (known as custom metrics) for example the number of requests to the ingress controller, or (with the provision of the [Prometheus Adaptor (helm chart)](https://github.com/prometheus-community/helm-charts)) any metric that Prometheus gathers. This last is especially useful as it means you can autoscale on what are effectively business metrics.
 
 It's also possible to autoscale on metrics provides from outside Kubernetes (these are known as external metrics). this is only recommended as a last resort however due to the security implications, and custom metrics are preferred.
 
 The [autoscaler docs explain some of these](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics)
+
+## Step 4: Other forms of AutoScaling
+Here we have looked a how to have Kubernetes create new pods based on load (horizontal auto scaling). 
+
+OKE also supports vertical auto scaling (increasing the allowed resource limits on a pod) and to allow for situations where a pod may not sale horizontally that well. 
+
+There is another form of auto scaling which can be enabled called cluster autoscaling, this monitors the cluster to see if it's got any pods that can't be deployed because there are no workers with enough suitable capacity, it will create new worker nodes as needed and if there are to many worker nodes for the overall load in the cluster it will shuffle pods of nodes and stop the node.
 
 ### Additional information
 

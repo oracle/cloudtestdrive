@@ -71,7 +71,7 @@ namespace/logging created
 
 Now let's use helm to install the elastic search engine into the logging namespace
 
-  2. First if you haven't already done it add the bitnami help repository.
+  2. First add the bitnami helm chart repository.
 
   - `helm repo add bitnami https://charts.bitnami.com/bitnami`
   
@@ -89,7 +89,6 @@ Note that depending on what modules you have already done you may get a message 
 Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "kubernetes-dashboard" chart repository
 ...Successfully got an update from the "bitnami" chart repository
-...Successfully got an update from the "stable" chart repository
 Update Complete. ⎈ Happy Helming!⎈ 
 ```
 

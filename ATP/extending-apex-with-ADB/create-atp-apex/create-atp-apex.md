@@ -89,4 +89,4 @@ This completes the lab setup. At this point, you know how to create an APEX Work
 
 ## Acknowledgements
 * **Author** - Juan Cabrera Eisman, Senior Technology Solution Engineer, Oracle Digital, Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center
-* **Last Updated By/Date** - Tom McGinn, Database Innovations Architect, Database Product Management, July 2020
+* **Last Updated By/Date** - Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center/ Jan 2021

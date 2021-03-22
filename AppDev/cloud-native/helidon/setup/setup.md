@@ -26,7 +26,7 @@ The cloud-native-support project you downloaded during the initial setup has a s
 
   2. In the terminal switch to the script directory
 
-  - `cd $HOME/workspace/cloud-native-setup/scripts/helidon-basics`
+  - `cd $HOME/cloud-native-setup/cloud-native-setup/scripts/helidon-basics`
 
   3. Run the script to update the hosts file
 

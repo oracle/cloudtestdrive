@@ -73,11 +73,19 @@ We will create a REST Connection which will trigger our integration, and a Servi
     * **Name**: REST-Trigger-**NN** (Replace **NN** with the number given by your trainers. Do so for all examples in this lab.)
     ![](images/lab01/img0070.png)
 
--	Click **Test, Save, Close** , in that order.
+-	Click **Test, Save** , in that order.
 
 ![](images/lab01/img0080.png)
 
+-	Then **Close** the Connection configuration:
+
+![](images/lab01/img0085.png)
+
+-	The REST connection should list as *Configured*:
+
 ![](images/lab01/img0090.png)
+
+
 
 ## **STEP 2.2:** Create the Connections - Service Cloud
 
@@ -93,25 +101,23 @@ We will create a REST Connection which will trigger our integration, and a Servi
 
 -	**Configure** with the following WSDL URL :
     ```
-	https://rnowgse11070.rightnowdemo.com/services/soap/connect/soap?wsdl
+	https://rnowgse00581.rightnowdemo.com/services/soap/connect/soap?wsdl
     ```
 
-    * Click **Configure Connectivity**
-    ![](images/lab01/img0130.png)
-
-    * Enter the **WSDL URL** and confirm by clicking **OK**
+    * Under **Connection Properties**, **Enter** the **WSDL URL**:
     ![](images/lab01/img0140.png)
 
-    * Click **Configure Security**
-        +	**Username** : Admin2
+    * In **Security** section:
+        +	**Username** : Admin1
         +	**Password**: Your trainers will provide this to you
         ![](images/lab01/img0150.png)
 
--	Click **Test, Save, Close** , in that order.
+-	Click **Test, Save** , in that order, and **Close** the Connection configuration. 
 
 You should now be able to see your new connection at the top of the list.
 
 ![](images/lab01/img0160.png)
+
 
 
 ## **STEP 3.1:** Create the Integration - Create App Driven Orchestration
@@ -237,7 +243,7 @@ For this we will use the Service Cloud Connection.
         ```
 
     * **Click** on Parameter Bindings
-    * Enter **orgName**: Initech
+    * Enter **orgName**: Brindell
 	* **Click** _Test My Query_
     
     
@@ -329,7 +335,10 @@ To manually set the status to a text – do as follows
 
 ![](images/lab01/img0450.png)
 
--	In the Expression aria at the bottom **enter** statement: Organization already exists
+-	**Switch** to *Developer View*:
+![](images/lab01/img0455.png)
+
+-	In the Expression aria at the bottom **enter** statement: "Organization already exists"
 -	**Click** Save
 
 ![](images/lab01/img0460.png)
@@ -356,7 +365,7 @@ Here we will leverage the Service Cloud Connection to create an Organization in 
 -	Call the endpoint: CreateOrg; **Click** Next
 -	**Configure** as follows
     * **Operation type**: CRUD &amp; Create
-    * Search for Org, and **select** Business Object Organization by marking it and clicking on the &quot;&gt;&quot;-icon
+    * Search for Org, and **select** Business Object *Organization* by marking it and clicking on the &quot;&gt;&quot;-icon
     * **Click** Next
     * **Click** Done
 -	**Save** the Integration
@@ -394,7 +403,10 @@ To manually set the status to a text – do as follows
 
 ![](images/lab01/img0550.png)
 
--	In the Expression aria at the bottom **enter** statement: Organization Created
+-	**Switch** to *Developer View*:
+![](images/lab01/img0555.png)
+
+-	In the Expression aria at the bottom **enter** statement: "Organization Created"
 -	**Click** Save
 
 ![](images/lab01/img0560.png)

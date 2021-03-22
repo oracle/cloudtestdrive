@@ -241,8 +241,14 @@ Be sure to remember the **admin password**, save it in a notes document for late
   3. Open up the **SQL Developer Web** console
 
   4. Login as ADMIN, using the password you just chose
+  
+  5. Click on 'SQL' to open the **SQL Developer tool** 
+  
+![](images/db-21a-sql-developer-sql-access.png)
 
-  5. Copy and paste the below SQL instructions into the top section of the page:
+  You may get introduction info guiding you through the page, just close that if it's displayed.
+
+  6. Copy and paste the below SQL instructions into the top section of the page:
 
   ```
 CREATE USER HelidonLabs IDENTIFIED BY H3lid0n_Labs;
@@ -258,15 +264,19 @@ GRANT UNLIMITED TABLESPACE TO HelidonLabs;
   
 ## Step 5: Accessing the Developer VM
 
-You will be using VNC to access the developer VM. There are multiple possible clients, chose from the list below or use another if you already have it. Note that the following may require you to have some level of admin rights on your machine.
+Access to the Developer VM is via a VNC client, this allows us to provide direct access to the desktop and enables easy use of the developer tools. If you do not already have a VNC client on your computer you will need to install one.
 
-### Installing a VNC viewer on MacOS
+### Step 5a: Installing a VNC client
+
+There are multiple possible clients, chose from the list below or use another if you already have it. Note that the following may require you to have some level of admin rights on your machine.
+
+#### Installing a VNC viewer on MacOS
 
 For **macOS** we recommend realVNC which can be obtained from 
 
   - https://www.realvnc.com/en/connect/download/viewer/macos/
   
-### Installing a VNC viewer on Windows
+#### Installing a VNC viewer on Windows
 
 For **Windows**, suggested packages are TigerVNC viewer or TightVNC Viewer but if you already have a preferred VNC viewer you can use this. TigerVNC viewer has a simpler install process, as it is a standalone executable, but has fewer features.
 
@@ -280,7 +290,7 @@ For **Windows**, suggested packages are TigerVNC viewer or TightVNC Viewer but i
 
   - When prompted, select to save the file.  Next, run the executable to install the program. This requires you have the privileges to install software on your machine
 
-### Accessing Development VM using VNC
+### Step 5b: Accessing your Development VM using VNC
 
 We are using VNC to provide you with a remote desktop, this let's us use a Integrated Development Environment for the Helidon labs.
 
@@ -294,7 +304,7 @@ You need to let your VM run for a couple of mins to fully boot and start the VNC
 
   ![](images/01-vnc-security-warning.png)
 
-  4. You will be asked to enter a password to access the virtual screen. Your instructor will have provided this or it will have been in the file with the image import URL. This is an example showing this with the Real VNC client running on a Mac
+  4. You will be asked to enter a password to access the virtual screen. Your instructor will have provided this or it will have been in the file with the marketplace URL. This is an example showing this with the Real VNC client running on a Mac
 
   ![](images/02-vnc-login.png)
 
@@ -302,11 +312,11 @@ Once you have logged in you will see the Linux desktop, it will look similar to 
 
   ![](images/03-desktop.png)
 
-### Changing the VNC Password (optional)
+### Step 5c: Changing the VNC Password (optional)
 
 We have provided a pre-set VNC password. If you are in a instructor led lab this may have been provided to you by your lab instructor, or it may be in the image location file you downloaded earlier.
 
-While not required we do recommend that you change this password to prevent access by other people.
+While not required we do recommend that you change this password to prevent access by other people, this is especially important if you plan on leaving the VM running for a while.
 
   1. On the desktop background click right, then the **Open Terminal** option
 
@@ -338,7 +348,9 @@ We have installed a developer configuration of Oracle Linux, and added tools lik
 
 There are many IDE's available. We have chosen Eclipse as it's open source licensed. As Eclipse requires the acceptance of a license we can't automate the process for you.
 
-We have installed the Eclipse installer and places a short cut to it on the desktop. It will look like 
+### Step 6a: Downloading Eclipse
+
+We have installed the Eclipse installer and places a short cut to it on the desktop.  
 
   1. Double click on the **eclipse-installer** icon on the desktop. This will open the installer. It may look like a text page and be named `eclipse-installer.desktop` rather than the icon shown below, if it does still click it. You may be warned it's an **Untrusted application launcher**, if this happens click the **Trust and launch** option. **Do not** click the Post Eclipse Installer icon.
  
@@ -355,6 +367,8 @@ The installer switched to the next page
   3. In the **Java JVM dropdown** Select the `/usr/lib/jvm/java-11-openjdk`  ** DO NOT PRESS INSTALL YET**
  
   4. Set the **Install Path** to be `/home/opc`
+  
+  (It's really important that you do this, otherwise you'll have to manually setup a lot of the following)
 
   ![](images/06-eclipse-installer-selections.png)
  
@@ -383,28 +397,95 @@ The installer progress will be displayed
   10. Click **No** on the exit launcher page that's displayed to confirm you do not want to launch Eclipse at this point.
 
   ![](images/12-eclipse-installer-finished-exit-without-launching.png)
+  
+### Step 6b: Configuring post Eclipse install
 
 We're now going to run a script that tidies up the desktop and creates an eclipse desktop icon
 
-  11. Double click on the **Post Eclipse Installer** icon on the desktop. This will run the script. It may look like a text page and be called `posteclipseinstal.desktop` rather than the icon shown below, if it does still click it. You may be warned it's an **Untrusted application launcher**, if this happens click the **Trust and launch** option.
+  1. Double click on the **Post Eclipse Installer** icon on the desktop. This will run the script. It may look like a text page and be called `posteclipseinstal.desktop` rather than the icon shown below, if it does still click it. You may be warned it's an **Untrusted application launcher**, if this happens click the **Trust and launch** option.
 
   ![](images/13-post-eclipse-installer-icon.png)
 
-If the eclipse installation was in the right place then the two desktop icons will disappear and be replaced with an `Eclipse` icon. If the Eclipse installation was in the wrong place then it will exit immediately without making any changes. In that case re-run the installer and ensure you use `/home/opc` as the Eclipse installation path.
+If the eclipse installation was in the right place then the two desktop icons will disappear and be replaced with an `Eclipse` icon (**Do not start eclipse now**). If the Eclipse installation was in the wrong place then it will exit immediately without making any changes. In that case re-run the installer and ensure you use `/home/opc` as the Eclipse installation path.
+
+To enable us to update the labs without having to update the Developer VM image each time we hold the setup code in a git repository (where we can update it as the lab is enhanced) You need to download this into your development VM and run the setup script.
+
+  2. In the VM Open a terminal
+  
+  ![Open Terminal](images/10-open-terminal.png)
+  
+  3. In the terminal execute the following command to download the latest setup
+  
+  - `git clone https://github.com/CloudTestDrive/cloud-native-setup.git`
+
+  ```
+Cloning into 'cloud-native-setup'...
+remote: Enumerating objects: 88, done.
+remote: Counting objects: 100% (88/88), done.
+remote: Compressing objects: 100% (52/52), done.
+remote: Total 88 (delta 22), reused 76 (delta 16), pack-reused 0
+Unpacking objects: 100% (88/88), done.
+```
+  
+  4. Run the setup script
+  
+  - `bash $HOME/cloud-native-setup/cloud-native-setup/scripts/setup/downloadedSetup.sh`
+  
+  ```
+Running post eclipse scripts
+Running Lombok Installer
+Getting latest version of Lombok
+--2020-11-26 18:11:41--  https://projectlombok.org/downloads/lombok.jar
+Resolving projectlombok.org (projectlombok.org)... 184.72.218.95
+Connecting to projectlombok.org (projectlombok.org)|184.72.218.95|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1914266 (1.8M) [application/java-archive]
+Saving to: \u2018lombok.jar\u2019
+
+100%[======================================>] 1,914,266   2.72MB/s   in 0.7s   
+
+2020-11-26 18:11:42 (2.72 MB/s) - \u2018lombok.jar\u2019 saved [1914266/1914266]
+
+Installing Lombok
+Configuring Eclipse to use lombok
+Running maven repo init process
+Cleaning maven environment, compiling and running test program
+[INFO] Scanning for projects...
+Downloading from central: https://repo.maven.apache.org/maven2/org/codehaus/mojo/exec-maven-plugin/3.0.0/exec-maven-plugin-3.0.0.pom
+.
+.
+.
+Lots of Maven Output
+.
+.
+.
+Downloaded from central: https://repo.maven.apache.org/maven2/commons-codec/commons-codec/1.11/commons-codec-1.11.jar (335 kB at 805 kB/s)
+LombokHelloWorld(hello=World)
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  10.692 s
+[INFO] Finished at: 2020-11-26T18:11:54Z
+[INFO] ------------------------------------------------------------------------
+```
+
+  5. Once the script has completed (this may take a few mins) then close the terminal window.
+
+### Step 6c: Starting Eclipse for the first time
 
 Note that sometimes the Eclipse installer will create it's own desktop icon to start Eclipse. This does not happen every time, but if it does create one you can also use that icon to start Eclipse as well.
 
-  12. Double click on the **Eclipse** icon on the desktop. It may look like a text page rather than the icon shown below, if it does still click it. You may be warned it's an **Untrusted application launcher**, if this happens click the **Trust and launch** option.
+  1. Double click on the **Eclipse** icon on the desktop. It may look like a text page rather than the icon shown below, if it does still click it. You may be warned it's an **Untrusted application launcher**, if this happens click the **Trust and launch** option.
 
   ![](images/14-eclipse-icon.png)
 
 As Eclipse starts you will be presented with a start up "splash" then workspace selection option. 
 
-  13. Set the eclipse workspace to be `/home/opc/workspace` (If you chose a different location you will have to remember to use that new location in many later stages.)
+  2. Set the eclipse workspace to be `/home/opc/workspace` (If you chose a different location you will have to remember to use that new location in many later stages.)
 
   ![](images/20-eclipse-start-workspace-selection.png)
 
-  14. Click the **Use this as the default and do not ask again** option, then the **Launch** button
+  3. Click the **Use this as the default and do not ask again** option, then the **Launch** button
 
   ![](images/20a-eclipse-start-default-workspace-selection.png)
 
@@ -412,7 +493,7 @@ You will be presented with the Eclipse startup. This may include a welcome page.
 
   ![](images/21-eclipse-welcome-page.png)
 
-  15. You can close the **Donate**, **Outline** and **Task list** tabs to get the most usage from the screen.
+  4. You can close the **Donate**, **Outline** and **Task list** tabs to get the most usage from the screen.
 
   ![](images/22-eclipse-donate-page.png)
 
@@ -422,169 +503,18 @@ This image shows you the empty Eclipse workspace with the non required tabs all 
 
 We need to configure Eclipse to display the course files in a hierarchical manner (this is so it matches the images you will have in the lab instructions, if you prefer to use the Eclipse  "Flat" view then you can ignore this step)
 
-  16. Click on the Three dots in the Project Explorer panel, then take the **Package Presentation** menu option and click the radio button for **Hierarchical**
+  5. Click on the Three dots in the Project Explorer panel, then take the **Package Presentation** menu option and click the radio button for **Hierarchical**
 
   ![](images/24-eclipse-package-presentation-hierarchical.png)
 
-### How to re-open Eclipse if you close it
+### Step 6d: How to re-open Eclipse if it's been closed
 
 Double click on the **Eclipse** icon on the desktop. It may look like a text page rather than the icon shown below, if it does still click it. You may be warned it's an **Untrusted application launcher**, if this happens click the **Trust and launch** option.
 
 ![](images/14-eclipse-icon.png)
 
-## Step 7: Downloading and importing the labs initial code
 
-To enable us to update the code used by the labs without having to update the Developer VM image each time we hold the primary copy of the code in a git repository (where we can update it as the lab is enhanced) You need to download this into your development VM and import it into Eclipse
-
-### 7a. Downloading the initial setup code zip file.
-
-  1. Open the Firefox web browser - Click **Applications** (at the top of the screen) then **Internet** then **Firefox**
-
-  ![](images/40-open-firefox-menu.png)
-
-  2. In the browser **in the virtual machine** go to the URL `https://github.com/CloudTestDrive/cloud-native-setup` 
-
-  3. Click the **Code** button
-
-  ![](images/41-github-project-page.png)
-
-  4. Click the **Download ZIP** option
-
-  ![](images/42-github-download-code.png)
-
-A save options menu may be displayed
-
-  5. Click the **Save file** option, then **OK**
-
-  ![](images/43-github-download-save-file.png)
-
-When the download is complete the Firefox download icon will turn completely blue
-
-  ![](images/44-github-download-complete.png)
-
-### 7b. Importing the downloaded zip file
-
-  1. Switch back to Eclipse **Do not** close the Firefox window (that may cause it to delete the download file)
-
-  2. Click the **File** menu, then **Import**
-
-  ![](images/50-eclipse-import-menu.png)
-
-  3. Open the **General** node, then chose the **Existing projects into Workspace** option. Click **Next**
-
-  ![](images/51-eclipse-import-types.png)
-
-  4. Chose the **Select archive file** radio button, then click **Browse** on that row
-
-  ![](images/52-eclipse-import-archive.png)
-
-  5. On the left menu chose **Downloads** then in the resulting list chose the download you just made (probably called `cloud-native-setup-main.zip`)
-
-  6. Click the **Open** button
-
-  ![](images/53-eclipse-import-file-selection.png)
-
-  7. Click **Select All** to make sure all the projects are imported, then click the **Finish** button
-
-  ![](images/54-eclipse-import-final-stage.png)
-
-Eclipse will import the projects and start importing the Maven dependencies. Expect to see errors listed on the Eclipse Problems tab, and projects marked as having errors (red indicators) in the Project Explorer. 
-
-  ![](images/55-eclipse-import-finished.png)
-
-This may take a few mins. **Do not worry if you see errors** these are to be expected as we haven't finished configuring the Eclipse environment yet
-
-Wait until the building indicator (lower right) has gone away.
-
-### 7c. Configuring Lombok
-
-These labs use Lombok to do many of the "standard" functions like automatically creating constructors, getters and so on. Lombok will be covered later in the labs, but for now we need to install it into the Eclipse installation.
-
-  1. Expand the `cloud-native-setup` project (Click the little triangle to the left of the project name)
-
-  2. Expand the `Maven Dependencies` node
-
-  3. In the maven dependencies section locate the `lombok` jar file (it will have a version number after it, at the time of writing that was 1.18.12, but that may have changed as lombok updates often)
-
-  ![](images/60-lombok-locate-jar-file.png)
-
-  4. Click right on the `lombok` jar file, then chose the **Run As** menu option, then **Java Application**
-
-  ![](images/61-run-lombok-application.png)
-
-  5. If you get a warning about errors click the **Proceed** button (the point of what we're doing is to fix them !)
-
-  ![](images/62-run-lombok-error-warning.png)
-
-After a short while the lombok UI will be displayed.
-
-If you get a warning that Lombok cannot locate any IDE's you will have to locate it manually, follow the rest of steps in that case
-
-  ![](images/63-lombok-cant-locate-ide-warning.png)
-  
-If Lombok has located an IDE then skip the following steps that locate the IDE and go to step 11. in this section
-
-  6. Click the **OK** button in the warning popup
-
-  7. Click the **Specify location** button
-
-  ![](images/64-lombok-locate-ide-option.png)
-
-  8. In the file selector popup navigate to the IDE location you noted when you installed Eclipse if you set the install path in the earlier stage this is going to be `/home/opc/eclipse`
-
-  9. Select the `eclipse.ini` file
-
-  10. Click the **Select** button on the file chooser
-
-  ![](images/65-lombok-locate-eclipse.png)
-
-  11. Make sure that the eclipse installation has it's checkbox selected, then click the **Install / Update** button
-
-  ![](images/66-lombok-install-start.png)
-
-Lombok will do the install (this is very quick) and confirm success 
-
-  12. Click the **Quit Installer** button to close the Lombok installer
-
-  ![](images/67-lombok-install-completed.png)
-
-Once Lombok has been installed you need to exit and then start Eclipse to have it recognized (The restart option in Eclipse is not sufficient.)
-
-  13. Click the **File** menu then **Exit** (**do not chose restart**, that does not trigger the reload of the entire Eclipse environment) 
-
-  14. Re-start Eclipse using the method described above, make sure it's Eclipse you are starting, not the installer.
-
-We can check that Lombok has been installed
-
-  15. Click the **Help** Menu then the **About Eclipse IDE** option
-
-  ![](images/68-lombok-access-eclipse-about-menu.png)
-
-  16. You may need to scroll down in the About popup, but towards the end you should see the Lombok installation confirmation (in this case 1.18.12 / Envious Ferret, though updates to the lab may use a newer version)
-
-  ![](images/69-lombok-installed-version.png)
-
-  17. Click the **Close** button to get rid of the popup
-
-### 7d. Updating the project configuration.
-
-Restarting eclipse so it recognizes Lombok does not always trigger a rebuild or Maven update to remove the flagged problems, so we need to do that. 
-
-  1. Select the `cloud-native-setup`  project in the project explorer. Click right on them then chose **Maven** from the menu then **Update project**
-
-  ![](images/70-maven-update-project-menu.png)
-
-  2. Click the **Select All** button, then click the **OK** button
-
-  ![](images/71-maven-update-all.png)
-
-Maven will go and do it's thing, that may take a while.
-
-When Maven finishes there may be warnings about problems (These relate to incomplete code you will be updating in the lab) but there shouldn't be any remaining errors.
-
-
-
-## Step 8: Downloading the database Wallet file.
+## Step 7: Downloading the database Wallet file.
 
 The database Wallet file contains the details needed to connect to your database instance, it needs to be downloaded to the development VM and placed in the right location.
 
@@ -630,7 +560,7 @@ Congratulations, you have successfully prepared your tenancy to do the labs, the
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
 * **Author** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, November 2020
+* **Last Updated By** - Tim Graves, February 2021
 
 ## Need Help ?
 

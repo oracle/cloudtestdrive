@@ -71,8 +71,8 @@ Our starting point is an existing CRM application used by a fictional company. T
   ![](./images/customer_list.png " ")
 
 4. Our goal is to upsell something to these customers. We want to alert our employee whenever he/she has a customer on the screen that is a good candidate for a particular product that we're trying to sell.
-  In practice this means that we want to add a column on this screen that shows whether it's a good idea to try to upsell to this customer.
-  This will be the topic for the rest of the lab.
+    In practice this means that we want to add a column on this screen that shows whether it's a good idea to try to upsell to this customer.
+    This will be the topic for the rest of the lab.
 
   ![](./images/customer_details_with_goal.png " ")
 
@@ -137,11 +137,11 @@ First we will set up a user for Zeppelin.
 
   ![](./images/review_input_data.png " ")
 
-  See the column "Y\_BOX\_GAMES", which tells us whether the customer already owns Y Box Games.
-  And we see many other attributes of which we believe they may have some influence on whether a customer owns Y Box Games.
-  For example, the level of education might be an influencing factor for Y Box Games ownership, and so may  Occupation, Household Size, et cetera.
+  There is the column "Y\_BOX\_GAMES", which tells us whether the customer already owns Y Box Games.
+  There are also many other attributes  which may have some influence on whether a customer owns Y Box Games.
+  For example, the level of education might be an influencing factor for Y Box Games ownership, and so may Occupation, Household Size, et cetera.
 
-  The *magic* of machine learning is that it will find out exactly what the relationships are between these variables and our target variable, Y Box Games.
+ The *magic* of machine learning is that it will find out exactly what the relationships are between these variables and our target variable, Y Box Games.
 
 3. Split the input data into two sets: 60% for training and 40% for testing.
 
@@ -156,16 +156,16 @@ First we will set up a user for Zeppelin.
     ![](./images/split_dataset.png " ")
 
 4. The model will contain the definition of the relationship between the driving attributes and the target attribute (Y Box Games).
-  Creating those relationships is done during the training phase.
-  Defining a model requires several parameters. We first store those parameters in a table. This table can have any name.
-  In our case the only parameter is the type of algorithm, in this case a decision tree model.
+    Creating those relationships is done during the training phase.
+    Defining a model can require several parameters. These parameters are stored in a table. This table can have any name.
+   In our case the only required parameter is the type of algorithm, in this case a decision tree model.
 
   Copy the following SQL to create the parameters table:
 
     ```
     <copy>CREATE TABLE N1_BUILD_SETTINGS (SETTING_NAME VARCHAR2(30), SETTING_VALUE VARCHAR2(4000));</copy>
     ```
-
+    
     ```
     <copy>INSERT INTO N1_BUILD_SETTINGS (SETTING_NAME, SETTING_VALUE) VALUES ('ALGO_NAME', 'ALGO_DECISION_TREE');</copy>
     ```
@@ -194,9 +194,9 @@ First we will set up a user for Zeppelin.
 ## **STEP 5**: Validate the results and the quality of the model
 
 1. We would like to know in what percentage of the cases, the model makes a correct prediction of Y Box Games ownership.
-  This is where the test set, that we created earlier, comes in handy. Since the test set contains real customers, we know whether they actually own Y Box Games.
-  We will verify the performance by letting our model predict Y Box Games for those same records.
-  This will allow us to verify if the predicted value of Y Box Games is the same as the actual value.
+    This is where the test set, that we created earlier comes in handy. Since the test set contains real customers, we know if they actually own Y Box Games.
+    We will verify the performance by letting our model predict Y Box Games for those same records.
+    This will allow us to verify if the predicted value of Y Box Games is the same as the actual value.
 
   First, create a new placeholder column in the test set that will hold the predicted value.
 
@@ -250,6 +250,7 @@ First we will set up a user for Zeppelin.
 
   So far we've built and validated the model.
   You can basically run the prediction in two ways:
+
   - In batch. Make a prediction for ALL customers at a certain point in time.
   - Case by case. Make a prediction per customer when it is needed. For example when opening the customer details screen.
 
@@ -314,7 +315,7 @@ First we will set up a user for Zeppelin.
 
    ![](./images/open_customer_v.png " ")
 
-  Have a look at the view definition. It basically selects all its values from the SH.CUSTOMERS table.
+  Have a look at the view definition by selecting the *SQL* tab. It basically selects all its values from the SH.CUSTOMERS table.
 
 7. We will extend the view by adding a "RECOMMENDATION" column to it.
 
@@ -337,7 +338,7 @@ First we will set up a user for Zeppelin.
   ![](./images/edit-customers-page.png " ")
 
 9. Add the "RECOMMENDATION" column in the select statement. Don't forget the comma just after the previous column.
-  Then **Save** the page.
+    Then **Save** the page.
 
   ![](./images/add_recommendation_column.png " ")
 
@@ -346,12 +347,12 @@ First we will set up a user for Zeppelin.
 1. Click **Run** to run the APEX application
 
 2. In the main screen you see that for most customers it's not recommended to try to upsell Y Box Games.
-  It's unlikely that these customers will be interested.
+    It's unlikely that these customers will be interested.
 
   ![](./images/recommendations_usually_empty.png " ")
 
 3. Now look for a customer with first name "Connor" and last name "Clark".
-  Note that in this case we see a recommendation to try to upsell Y Box Games, because the customer is very likely to be interested in this offer.
+    Note that in this case we see a recommendation to try to upsell Y Box Games, because the customer is very likely to be interested in this offer.
 
   ![](./images/interested_customer.png " ")
 
@@ -367,4 +368,4 @@ First we will set up a user for Zeppelin.
 
 ## Acknowledgements
 * **Author** - Jeroen Kloosterman, Technology Product Strategy Manager, Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center
-* **Last Updated By/Date** - Tom McGinn, Database Innovations Architect, Database Product Management, July 2020
+* **Last Updated By/Date** - Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center, January 2021
