@@ -6,6 +6,10 @@ Oracle Application Express (APEX) is a feature of Oracle Database, including the
 
 An APEX Workspace is a logical domain where you define APEX applications. Each workspace is associated with one or more database schemas (database users) which are used to store the database objects, such as tables, views, packages, and more. These database objects are generally what APEX applications are built on top of.
 
+Watch our short video that explains provisioning the Autonomous Database and Oracle APEX workspace:
+
+[](youtube:JbeHvKTKbek)
+
 Estimated Time: 15 minutes
 
 ### Objectives
