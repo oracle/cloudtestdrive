@@ -41,13 +41,15 @@ Below an example of a setup with private networks and a Database:
 
 - Open the console of your cloud tenancy via https://www.oracle.com/cloud/sign-in.html and login to your tenancy
 
-  ![](images/image010.png)
+  - **Cloud Account Name** : this is the name of your tenancy, not your username!
+  
+  <img src="images/image010.png" style="zoom:33%;" />
 
 
 
 - Choose Single Sign On:
 
-![](images/image020.png)
+<img src="images/image020.png" style="zoom:33%;" />
 
 
 

@@ -91,9 +91,11 @@ To separate the monitoring services from the  other services we're going to put 
 
 ## Step 3: Prometheus
 
-<details><summary><b>Older versions of Kubernetes than 1.18.10</b></summary>
+<details><summary><b>Older versions of Kubernetes than 1.19.7</b></summary>
 
-We assume you are using Kubernetes 1.18.10 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the 11.16.9 version of the prometheus helm charts were found to work. If you were using an older version of Kubernetes we found the following version combinations to work.
+We assume you are using Kubernetes 1.19.7 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the 11.16.9 version of the prometheus helm charts were found to work. If you were using an older version of Kubernetes we found the following version combinations to work.
+
+Kubernetes 1.18.7 Promteheus helm chart 11.12.1 worked for us
 
 Kubernetes 1.17.9 Promteheus helm chart 11.12.1 worked for us
 

@@ -10,9 +10,9 @@ This Hands on Lab will go through the process of creating a JRF type of WebLogic
 
 ## Step 2. Create WebLogic for OCI Stack
 
-- After logging in, go to Hamburger Menu, *Solutions and Platform* -> *Marketplace*:
+- After logging in, go to Hamburger Menu, *Solutions and Platform -> Marketplace -> All Application*:
 
-![](images/wlscnonjrfwithenv/image040.png)
+<img src="images/wlscnonjrfwithenv/image040.png" style="zoom:33%;" />
 
 
 
