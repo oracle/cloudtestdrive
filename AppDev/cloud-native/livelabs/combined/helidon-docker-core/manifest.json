@@ -1,14 +1,12 @@
 {
-  "workshoptitle": "Creating Microservices with Helidon MP and Docker",
-  "help": "livelabs-help-oci_us@oracle.com",
-	"tutorials": [
-        {
-          "title": "Labs introduction",
+    "tutorials": [
+      {
+        "title": "Prerequisites",
+        "filename":"https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/cloud-login/pre-register-free-tier-account.md"
+      },
+      {
+        "title": "Labs introduction",
           "filename":"combined-helidon-docker-core.md"
-        },
-        {
-          "title": "Getting Started",
-          "filename":"https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/cloud-login/pre-register-free-tier-account.md"
         },
         {
           "title": "Setup your tenancy",
@@ -22,11 +20,11 @@
           "title": "Helidon - Part 1: Core Helidon ",
           "filename": "../../../helidon/helidon-core/helidon-core.md"
         },
-		    {
+		{
           "title": "Helidon - Part 2: Database and Helidon",
           "filename": "../../../helidon/helidon-data/helidon-data.md"
         },
-		    {
+		{
           "title": "Helidon - Part 3: Communicating between microservices with Helidon",
           "filename": "../../../helidon/helidon-to-other-microservices/helidon-to-other-microservices.md"
         },
@@ -41,11 +39,6 @@
         {
           "title": "Docker - Docker lab",
           "filename": "../../../docker/docker-labs.md"
-        },
-        {
-          "title": "Need Help?",
-          "description": "Solutions to Common Problems and Directions for Receiving Live Help",
-          "filename": "https://raw.githubusercontent.com/oracle/learning-library/master/oci-library/need-help/need-help-livelabs.md"
         }
     ]
 }
