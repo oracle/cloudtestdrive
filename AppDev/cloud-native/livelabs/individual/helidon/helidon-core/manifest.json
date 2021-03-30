@@ -1,12 +1,14 @@
 {
-    "tutorials": [
-      {
-        "title": "Prerequisites",
-        "filename":"https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/cloud-login/pre-register-free-tier-account.md"
-      },
-      {
-        "title": "Labs introduction",
+  "workshoptitle": "Using Helidon to Create Microservices from a Monolith",
+  "help": "livelabs-help-oci_us@oracle.com",
+	"tutorials": [
+        {
+          "title": "Labs introduction",
           "filename":"helidon-core.md"
+        },
+        {
+          "title": "Getting Started",
+          "filename":"https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/cloud-login/pre-register-free-tier-account.md"
         },
         {
           "title": "Setup your tenancy",
@@ -35,6 +37,11 @@
         {
           "title": "Part 5: Cloud Native support in Helidon",
           "filename": "../../../../helidon/helidon-cloud-native/helidon-cloud-native.md"
+        },
+        {
+          "title": "Need Help?",
+          "description": "Solutions to Common Problems and Directions for Receiving Live Help",
+          "filename": "https://raw.githubusercontent.com/oracle/learning-library/master/oci-library/need-help/need-help-livelabs.md"
         }
     ]
 }
