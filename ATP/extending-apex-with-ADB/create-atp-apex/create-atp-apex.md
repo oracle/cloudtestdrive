@@ -8,7 +8,7 @@ An APEX Workspace is a logical domain where you define APEX applications. Each w
 
 Watch our short video that explains provisioning the Autonomous Database and Oracle APEX workspace:
 
-[](youtube:JbeHvKTKbek)
+[](youtube:vTvlLlwgZrk)
 
 Estimated Time: 15 minutes
 
