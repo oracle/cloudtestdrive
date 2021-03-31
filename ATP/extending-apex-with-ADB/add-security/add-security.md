@@ -10,7 +10,7 @@ In this lab, we will take a walkthrough around some of the improvements that the
 
 Watch our short video that explains Lab 4 - Add Security to APEX:
 
-[](youtube:sJDQg_l6fPY)
+[https://www.youtube.com/watch?v=sJDQg_l6fPY](youtube:sJDQg_l6fPY)
 
 Estimated Time: 45 minutes
 
