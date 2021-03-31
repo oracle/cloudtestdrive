@@ -16,6 +16,10 @@ In this workshop you'll learn how to provision an ATP instance and create an APE
 * Machine learning
 * Security
 
+Watch our short video that explains the features of Autonomous Database for Oracle APEX:
+
+[](youtube:TNvQUjYMwIA)
+
 ### Let's Get Started!
 
 - Click on **[Lab 1: Create an APEX Workspace](?lab=lab-1-create-apex-workspace)** to launch the first lab.
