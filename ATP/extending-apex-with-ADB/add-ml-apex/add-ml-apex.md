@@ -8,7 +8,7 @@ We will use [Apache Zeppelin](http://www.oracle.com/technetwork/database/options
 
 Watch our short video that explains Lab 3 - Add Machine Learning to APEX:
 
-[](youtube:QbHboPzCeAU)
+[https://www.youtube.com/watch?v=QbHboPzCeAU](youtube:QbHboPzCeAU)
 
 Estimated Time: 60 minutes
 
