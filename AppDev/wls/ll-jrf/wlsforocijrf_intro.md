@@ -94,9 +94,8 @@ You will need to create a number of objects in order to enable users to create W
 
 - In the example we use the name **wlslabsdyn**
 - Example rule definition :
-- ```
-  instance.compartment.id='ocid1.compartment.oc1..yourcompartmentocid'
-  ```
+  *instance.compartment.id='ocid1.compartment.oc1..yourcompartmentocid'*
+  
   where you replace the OCID by the one you noted after creating the compartment
 
 **Using IDCS for user management ?**
