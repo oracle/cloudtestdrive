@@ -71,64 +71,76 @@ Below an example of a setup with private networks and a Database:
 
 If you are running this lab on a **corporate tenancy**, you will need to ensure you are entitled with the appropriate rights and privileges, and have sufficient service limits to instantiate the objects for this lab.
 
-==> Please **validate the below elements**, probably together with the administrator of your tenancy, before attempting to run this lab.
+==> Please **validate the below elements**, probably together with the **administrator of your tenancy**, before attempting to run this lab.
 
 
 
-### 2.1 Required root level policies for WebLogic for OCI
+### 3.1 Required policies for non-Admin users
 
-You must be an Oracle Cloud Infrastructure <u>administrator</u>, or <u>be granted some root-level permissions</u>, in order to create domains with Oracle WebLogic Server for Oracle Cloud Infrastructure.
+You must be an Oracle Cloud Infrastructure <u>administrator</u> in order to perform the below set-up steps.  As we assume you are familiar with the basic activities like creating compartments and defining policies, these will not be explained in detail.  Please refer to the documentation [here](https://docs.oracle.com/en/cloud/paas/weblogic-cloud/user/you-begin-oracle-weblogic-cloud.html#GUID-C4EC8702-CB1E-4B6D-BC50-CC008F3B5247).
 
-When you create a domain, Oracle WebLogic Server for Oracle Cloud Infrastructure creates a dynamic group and root-level policies that allow the compute instances in the domain to:
+You will need to create a number of objects in order to enable users to create WebLogic instances:
 
-- Access keys and secrets in Oracle Cloud Infrastructure Vault
-- Access the database wallet if you're using Oracle Autonomous Transaction Processing (JRF-enabled domains)
+- Create a compartment
 
-In case <u>you are not an OCI administrator</u> and you cannot create dynamic-groups or you cannot create policies at root compartment level, please contact your OCI administrator and request that one  of the groups your cloud user is part of to have the following grants in place:
+  - In the below example we used the compartment name **CTDOKE**
+  - Take a note of the **OCID** of the compartment, as you will need it in the dynamic group definition
+
+- Create a group
+
+  - In the example we used the name **wlslabs**
+
+- Create a dynamic group
+
+  - In the example we use the name **wlslabsdyn**
+
+  - Example rule definition :
+
+  - ```
+    instance.compartment.id='ocid1.compartment.oc1..yourcompartmentocid'
+    ```
+
+    where you replace the OCID by the one you noted after creating the compartment
+
+- In case you want to use IDCS to manage your users, create a group in your IDCS and set up the mapping between the IDCS group and the OCI group
+
+- Create a policy statement on the root level for the group and the dynamic group
+
+Below an example of the policy statement to create :
 
 ```
-Allow group MyGroup to manage dynamic-groups in tenancy
-Allow group MyGroup to manage policies in tenancy
-Allow group MyGroup to use tag-namespaces in tenancy
-Allow group MyGroup to inspect tenancies in tenancy
-```
-
-Also, to be able to use the Cloud Shell you need also:
-
-```
-Allow group MyGroup to use cloud-shell in tenancy
-```
-
-
-
-### 2.2 Required compartment level policies for WebLogic for OCI
-
-If <u>you are not an Oracle Cloud Infrastructure administrator</u>, you must be given management access to resources in the compartment in which you want to create a domain.
-
-Your Oracle Cloud Infrastructure user must have management access for Marketplace applications, Resource Manager stacks and jobs, compute instances, and block storage volumes. If you want Oracle WebLogic Server for Oracle Cloud Infrastructure to create resources for a domain like networks and load balancers, you must also have management access for these resources.
-
-A policy that entitles your OCI user to have the minimum management access for your compartment, needs to have the following grants in place:
-
-```
-Allow group MyGroup to manage instance-family in compartment MyCompartment
-Allow group MyGroup to manage virtual-network-family in compartment MyCompartment
-Allow group MyGroup to manage volume-family in compartment MyCompartment
-Allow group MyGroup to manage load-balancers in compartment MyCompartment
-Allow group MyGroup to manage orm-family in compartment MyCompartment
-Allow group MyGroup to manage app-catalog-listing in compartment MyCompartment
-Allow group MyGroup to manage vaults in compartment MyCompartment
-Allow group MyGroup to manage keys in compartment MyCompartment
-Allow group MyGroup to manage secret-family in compartment MyCompartment
-Allow group MyGroup to read metrics in compartment MyCompartment
-Allow group MyGroup to manage autonomous-transaction-processing-family in compartment MyDBCompartment
-Allow group MyGroup to manage database-family in compartment MyDBCompartment
+Allow group wlslabs to use app-catalog-listing in compartment CTDOKE
+Allow group wlslabs to manage instance-family in compartment CTDOKE
+Allow group wlslabs to manage virtual-network-family in compartment CTDOKE
+Allow group wlslabs to manage volume-family in compartment CTDOKE
+Allow group wlslabs to manage load-balancers in compartment CTDOKE
+Allow group wlslabs to manage orm-family in compartment CTDOKE
+Allow group wlslabs to manage vaults in compartment CTDOKE
+Allow group wlslabs to manage keys in compartment CTDOKE
+Allow group wlslabs to manage secret-family in compartment CTDOKE
+Allow group wlslabs to read metrics in compartment CTDOKE
+Allow group wlslabs to inspect limits in tenancy
+Allow group wlslabs to manage all-resources IN COMPARTMENT CTDOKE
+Allow group wlslabs to read all-resources IN tenancy
+Allow group wlslabs to use cloud-shell in tenancy
+Allow dynamic-group wlslabsdyn to use secret-family in compartment CTDOKE
+Allow dynamic-group wlslabsdyn to use keys in compartment CTDOKE
+Allow dynamic-group wlslabsdyn to use vaults in compartment CTDOKE
+Allow dynamic-group wlslabsdyn to manage instance-family in compartment CTDOKE
+Allow dynamic-group wlslabsdyn to manage virtual-network-family in compartment CTDOKE
+Allow dynamic-group wlslabsdyn to manage volume-family in compartment CTDOKE
+Allow dynamic-group wlslabsdyn to manage load-balancers in compartment CTDOKE
+Allow dynamic-group wlslabsdyn to use autonomous-transaction-processing-family in compartment CTDOKE
+Allow dynamic-group wlslabsdyn to inspect database-family in compartment CTDOKE
+Allow dynamic-group wlslabsdyn use osms-managed-instances in compartment CTDOKE
+Allow dynamic-group wlslabsdyn to read instance-family in compartment CTDOKE
 ```
 
 
 
-### 2.3 Service limits
+### 3.2 Service limits
 
-Going through the hands on lab you will create the following main components in your tenancy:
+Going through the hands on lab you will create the following main components in your tenancy **for every participant**:
 
 - two Compute instances
 - one Virtual Cloud Network (VCN)
@@ -141,7 +153,7 @@ Check your tenancy Service limits, current usage (*Governance and Administration
 - Compute Service: VM.Standard2.1 (you may consider choosing a specific AD)
 - Virtual Cloud Network Service: Virtual Cloud Networks
 - Virtual Cloud Network Service: Reserved Public IP
-- LbaaS Service: 100Mbps Load Balancer
-
-If you don't have visibility and/or you don't have admin rights for your tenancy, reach out to your administrator.
+- LbaaS Service: 
+  - Flexible LB bandwidth total sum : 40Mbps 
+  - Flexible Load Balancer Count : 2
 
