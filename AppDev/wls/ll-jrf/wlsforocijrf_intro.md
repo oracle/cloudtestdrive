@@ -81,27 +81,33 @@ You must be an Oracle Cloud Infrastructure <u>administrator</u> in order to perf
 
 You will need to create a number of objects in order to enable users to create WebLogic instances:
 
-- Create a compartment
-  - In the below example we used the compartment name **CTDOKE**
-  - Take a note of the **OCID** of the compartment, as you will need it in the dynamic group definition
+**Create a compartment**
 
-- Create a group
-  
+- In the below example we used the compartment name **CTDOKE**
+- Take a note of the **OCID** of the compartment, as you will need it in the dynamic group definition
+
+**Create a group**
+
 - In the example we used the name **wlslabs**
-  
-- Create a dynamic group
-  - In the example we use the name **wlslabsdyn**
-  - Example rule definition :
-  - ```
-    instance.compartment.id='ocid1.compartment.oc1..yourcompartmentocid'
-    ```
-    where you replace the OCID by the one you noted after creating the compartment
+
+**Create a dynamic group**
+
+- In the example we use the name **wlslabsdyn**
+- Example rule definition :
+- ```
+  instance.compartment.id='ocid1.compartment.oc1..yourcompartmentocid'
+  ```
+  where you replace the OCID by the one you noted after creating the compartment
+
+**Using IDCS for user management ?**
 
 - In case you want to use IDCS to manage your users, create a group in your IDCS and set up the mapping between the IDCS group and the OCI group
 
+**Create a policy statement**
+
 - Create a policy statement on the root level for the group and the dynamic group
 
-Below an example of the policy statement to create :
+  Below an example of the policy statement to create :
 
 ```
 Allow group wlslabs to use app-catalog-listing in compartment CTDOKE
