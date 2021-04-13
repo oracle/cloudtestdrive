@@ -97,7 +97,7 @@ After a few minutes the Database should be available:
 
 ### 2.2 Prepare DB Objects
 
-Once the ATP database available, we can use the SQL Developer Web tool to created a DB schema and some required tables and records needed in the next part.
+Once the ATP database available, we can use the SQL Development Web tool to created a DB schema and some required tables and records needed in the next part.
 
 Go to *Service Console*:
 
@@ -105,19 +105,31 @@ Go to *Service Console*:
 
 
 
-From *Development* submenu open **SQL Developer Web**:
+From *Development* submenu open **Database Actions**:
 
 ![](images/wlscnonjrfwithenvprereq/image910.png)
 
 
 
-This will open in a new tab the SQL Developer Web Login screen. Use **ADMIN** and the password setup when provisioning the ATP Database:
+This will open in a new tab the Database Actions Login screen. Use **ADMIN** and click on *Next*:
+
+![](images/wlscnonjrfwithenvprereq/image915.png)
+
+
+
+Now type in the password setup during provisioning of the ATP Database:
 
 ![](images/wlscnonjrfwithenvprereq/image920.png)
 
 
 
-Once logged in, you can follow a waking tour to discover the main user interface feature: 
+Once logged in, go to **SQL** Development tool:
+
+![](images/wlscnonjrfwithenvprereq/image925.png)
+
+
+
+You can follow a waking tour to discover the main user interface features: 
 
 ![](images/wlscnonjrfwithenvprereq/image930.png)
 
