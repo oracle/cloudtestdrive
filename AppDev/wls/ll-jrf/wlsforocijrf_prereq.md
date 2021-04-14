@@ -259,7 +259,7 @@ Click on the new Secret name (**ADFAppSecret**) and take note of its **OCID**. W
 
 
 
-##  Step 4. Create ssh keys
+##  4. Create ssh keys
 
 You need to generate a public and private ssh key pair. During provisioning using Marketplace, you have to specify the ssh public key that will be associated with each of the WebLogic VM nodes.
 

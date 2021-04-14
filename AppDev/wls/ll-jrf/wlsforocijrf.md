@@ -8,7 +8,7 @@ This Hands on Lab will go through the process of creating a JRF type of WebLogic
 
 
 
-## Step 2. Create WebLogic for OCI Stack
+## 1. Create WebLogic for OCI Stack
 
 - After logging in, go to Hamburger Menu, *Solutions and Platform -> Marketplace -> All Application*:
 
@@ -250,7 +250,7 @@ This Hands on Lab will go through the process of creating a JRF type of WebLogic
 
 
 
-## Step 3. Change Load Balancer Cookie persistence type
+## 2. Change Load Balancer Cookie persistence type
 
 Before deploying the sample ADF Application, we need to change the way Session Persistence is handled by the Public Load Balancer. By default, the Public Load Balancer comes pre-configured to use *Load Balancer cooking persistence*. But in our case - or in any ADF application case actually - as the sample ADF application generates its own cookie (**JSESSIONID**), we need to instruct the Load Balancer to use *Application cookie persistence*.
 
@@ -298,7 +298,7 @@ Before deploying the sample ADF Application, we need to change the way Session P
 
 
 
-## Step 4. Deploy sample ADF application
+## 3. Deploy sample ADF application
 
 - Let's go back to the WebLogic Server admin console:
 
