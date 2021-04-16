@@ -154,7 +154,7 @@ If you are using the OCI Cloud shell for **this** section of the lab (either in 
 
   1. To install the dashboard run the following command : 
   
-  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set service.type=LoadBalancer --version 2.8.3`
+  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set service.type=LoadBalancer --version 4.0.3`
 
   ```
 NAME: kubernetes-dashboard
