@@ -24,9 +24,9 @@ Estimated Time: 15 minutes
 
 From within your Oracle Cloud environment, you will create an instance of the Autonomous Transaction Processing database service.
 
-1. From the Cloud Dashboard, select the navigation menu icon in the upper left-hand corner and then select **Autonomous Transaction Processing**.
+1. From the Cloud Dashboard, select the navigation menu icon in the upper left-hand corner, go to **Oracle Database** and then select **Autonomous Transaction Processing**.
 
-    ![](images/select-atp-in-nav-menu.png " ")
+    ![](images/select-atp-in-mega-menu.png " ")
 
 2. Click **Create Autonomous Database**.
 
@@ -93,4 +93,4 @@ This completes the lab setup. At this point, you know how to create an APEX Work
 
 ## Acknowledgements
 * **Author** - Juan Cabrera Eisman, Senior Technology Solution Engineer, Oracle Digital, Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center
-* **Last Updated By/Date** - Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center/ Jan 2021
+* **Last Updated By/Date** - Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center/ April 2021
