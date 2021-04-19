@@ -29,9 +29,9 @@ Our starting point is an unfinished APEX application.
 
 2. Open APEX. If you have don't have the direct link, click **Tools**, then click **Open APEX** on the Oracle Application Express tile.
 
-  ![](./images/click-tools.png " ")
+  ![](./images/click-apex.png " ")
 
-  ![](./images/open-apex.png " ")
+
 
 3. Login to the workspace that we created earlier. Workspace name: WORKSHOPATP, User name: WORKSHOPATP, use the password that you entered when you created the workspace.
 
@@ -345,4 +345,4 @@ In our case we will verify that the coordinate of the proposed drone flight is n
 
 ## Acknowledgements
 * **Author** - Jeroen Kloosterman, Technology Product Strategy Manager, Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center
-* **Last Updated By/Date** - Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center, January 2021
+* **Last Updated By/Date** - Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center, April 2021

@@ -34,9 +34,9 @@ Our starting point is an existing CRM application used by a fictional company. T
 
 2. Open APEX. If you have don't have the direct link, click **Tools**, then click **Open APEX** on the Oracle Application Express tile.
 
-  ![](./images/click-tools.png " ")
+  ![](./images/click-apex.png " ")
 
-  ![](./images/open-apex.png " ")
+
 
 3. Login to the workspace that we created earlier. Workspace name: WORKSHOPATP, User name: WORKSHOPATP, use the password that you entered when you created the workspace.
 
@@ -89,7 +89,7 @@ First we will set up a user for Zeppelin.
 
   ![](./images/open_service_console.png " ")
 
-2. Next, select "Administration" and "Manage ML Users".
+2. Next, select "Administration" and "Manage ML Users". You could also have opened the Manage Oracle ML Users page from the *Tools* tab on the Database Details Screen.
 
   ![](./images/manage_ml_users.png " ")
 
@@ -289,9 +289,11 @@ First we will set up a user for Zeppelin.
 
 2. Open APEX. If you have don't have the direct link, click **Tools**, then click **Open APEX** on the Oracle Application Express tile.
 
-  ![](./images/click-tools.png " ")
+  ![](./images/click-apex.png " ")
 
-  ![](./images/open-apex.png " ")
+
+
+
 
 3. Login to the workspace that we created earlier.
 
@@ -372,4 +374,4 @@ First we will set up a user for Zeppelin.
 
 ## Acknowledgements
 * **Author** - Jeroen Kloosterman, Technology Product Strategy Manager, Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center
-* **Last Updated By/Date** - Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center, January 2021
+* **Last Updated By/Date** - Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center, April 2021
