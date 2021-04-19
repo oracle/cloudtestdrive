@@ -117,7 +117,7 @@ Installing Prometheus is simple, we just use helm.
 
   1. In the OCI Cloud Shell type
   
-  -  `helm install prometheus prometheus-community/prometheus --namespace monitoring --set server.service.type=LoadBalancer --version 13.6.0`
+  -  `helm install prometheus prometheus-community/prometheus --namespace monitoring --set server.service.type=LoadBalancer --version 13.7.0`
   
   ```
 NAME: prometheus
@@ -271,7 +271,7 @@ storefront-588b4d69db-w244b
 
 Now we could use kubectl to add a few annotations to the pod (this is applied immediately, and Prometheus will pick up on it in a few seconds)
 
-These arr annotations to the live pot - Example only, do not run this:
+These are annotations to apply the live pod - Example only, do not run this:
 
 ```
 $ kubectl annotate pod storefront-588b4d69db-w244b prometheus.io/scrape=true --overwrite

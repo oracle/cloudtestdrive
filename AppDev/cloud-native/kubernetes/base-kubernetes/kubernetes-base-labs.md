@@ -687,7 +687,7 @@ Hang tight while we grab the latest from your chart repositories...
 
   6. Run the following command to install **ingress-nginx** using Helm 3:
   
-  - `helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --version 3.10.1   --set rbac.create=true --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-tls-secret"=tls-secret --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-ssl-ports"=443`
+  - `helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --version 3.29.0   --set rbac.create=true --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-tls-secret"=tls-secret --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-ssl-ports"=443`
   
   ```
 NAME: ingress-nginx

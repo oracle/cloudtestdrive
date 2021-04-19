@@ -64,7 +64,7 @@ Depending on what modules you have done previously the updated repositories list
 
   3. In the OCI Cloud Shell type following command:
   
-  - `helm install grafana  bitnami/grafana --version 4.0.2 --namespace  monitoring  --set persistence.enabled=true --set service.type=LoadBalancer`
+  - `helm install grafana  bitnami/grafana --version 5.2.10 --namespace  monitoring  --set persistence.enabled=true --set service.type=LoadBalancer`
 
   ```
 NAME: grafana
