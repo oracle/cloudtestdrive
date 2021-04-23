@@ -135,11 +135,16 @@ For the **File System** choose one of the Availability Domain. A File System and
 
 
 
-Last part of the Stack configuration is addressing connectivity to OCI Registry for storing WebLogic Domain docker images. For the **Registry User Name** put the user name, in full format. For example, if using your current user, you can get full user name by checking how it appears if you click on the upper-right profile icon:
+Last part of the Stack configuration is addressing connectivity to OCI Registry for storing WebLogic Domain docker images. 
 
-![](images/wlsforocionoke/image-120.png)
+For the **Registry User Name** please use the *fully qualified username* you noted when creating the token in the prerequisites. 
 
+- If you are using a **Single Sign-on** user via the Oracle Identity cloud service, your name will look like : `oracleidentitycloudservice/bogdaneremia@oracle.com`
+- If you are using a **Direct Sign-in** user, this will be for example `janleemans`
 
+If in doubt, you can see your full user name by clicking on the upper-right profile icon:
+
+![](images/wlsforocionokeprereq/image020.png)
 
 For the **Secrets OCID For Registry Authentication Token** use the OCID of the WLS Registry Secret created in the prerequisites lab:
 
@@ -153,7 +158,9 @@ Finally, leave **OCI Policies** option checked and the provisioning scripts will
 
 
 
-Click **Next** to review Stack Configuration and click **Create** to start executing the Stack:
+- Click **Next** to review Stack Configuration. 
+- *ATTENTION*: if you are re-running the stack after an initial failed attempt, **make sure you have cleaned out all remaining artefacts of that initial run,** as they migh interfere with this next run: compute instances, network environment, loadbalancers, etc.  
+- Click **Create** to start executing the Stack:
 
 ![](images/wlsforocionoke/image-140.png)
 
@@ -165,7 +172,14 @@ An **Apply** Terraform Job Type has started running and all infrastructure is be
 
 
 
-After a while (~20mins) the Job status turns into **Succeeded**:
+Successfully spinning up the stack typically takes *between 15 and 20 minutes.* So feel free to take a short break, but check results from time to time, because if an error occurs this the process will stop faster.  Some typical errors participants encounter:
+
+- Lack of resources in your tenancy: make sure to check you have the appropriate number of Compute and Network resources available
+- Incorrect fully qualified username: double-check the documentation on this topic
+- Incorrect password OCID (do not enter passwords in the wizard, but the OCID of the secret holding the password)
+- Not cleaning up resources from a previous run of the creation process.
+
+
 
 ![](images/wlsforocionoke/image-160.png)
 

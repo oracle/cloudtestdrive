@@ -122,6 +122,16 @@ Go to your user profile (click on your username link):
 
 ![](images/wlsforocionokeprereq/image020.png)
 
+*Important* : Note the fully qualified username as shown in the above screenshot, you will need this information later in the lab.  In the above example this is Single Sign On type of user, leveraging the Oracle Identity Cloud service : `oracleidentitycloudservice/bogdaneremia@oracle.com`
+
+Alternatively, if you are using the **Oracle Cloud Infrastructure Direct Sign-In**, you will have a profile name looking like the below screenshot:
+
+![](images/wlsforocionokeprereq/image055.png)
+
+And in this example the username is simply `janleemans`
+
+
+
 
 
 Switch to *Auth Tokens* submenu of your user profile page:
@@ -134,11 +144,15 @@ And generate a new Token:
 
 ![](images/wlsforocionokeprereq/image040.png)
 
-
-
-Copy the Auth Token immediately to a secure location from where you can retrieve it later, because you won't see the Auth Token again in the Console:
+Copy the Auth Token immediately to a secure location from where you can retrieve it later, because you won't see the Auth Token again in the Console.  You can click on **Show** to see the content of the token, and use **Copy** to copy it over to your notebook.
 
 ![](images/wlsforocionokeprereq/image050.png)
+
+The token generated in this example is the following string :
+
+```
+>}5ezj0B#C;1[c<2WN9F
+```
 
 
 
