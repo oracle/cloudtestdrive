@@ -126,7 +126,7 @@ Go to your user profile (click on your username link):
 
 Alternatively, if you are using the **Oracle Cloud Infrastructure Direct Sign-In**, you will have a profile name looking like the below screenshot:
 
-![](images/wlsforocionokeprereq/image055.png)
+![](images/wlsforocionokeprereq/image054.png)
 
 And in this example the username is simply `janleemans`
 

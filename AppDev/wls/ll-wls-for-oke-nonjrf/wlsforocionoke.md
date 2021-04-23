@@ -172,14 +172,14 @@ An **Apply** Terraform Job Type has started running and all infrastructure is be
 
 
 
-Successfully spinning up the stack typically takes *between 15 and 20 minutes.* So feel free to take a short break, but check results from time to time, because if an error occurs this the process will stop faster.  Some typical errors participants encounter:
+Successfully spinning up the stack typically takes *between 15 and 20 minutes.* So feel free to take a short break, but check results from time to time, because if an error occurs the process will stop faster.  Some typical errors participants encounter:
 
 - Lack of resources in your tenancy: make sure to check you have the appropriate number of Compute and Network resources available
 - Incorrect fully qualified username: double-check the documentation on this topic
 - Incorrect password OCID (do not enter passwords in the wizard, but the OCID of the secret holding the password)
 - Not cleaning up resources from a previous run of the creation process.
 
-
+Once the process finishes, you should see a green icon for a **Succeeded** creation:
 
 ![](images/wlsforocionoke/image-160.png)
 
