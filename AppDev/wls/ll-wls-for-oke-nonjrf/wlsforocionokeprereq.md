@@ -12,7 +12,7 @@ To run these labs you will need access to an Oracle Cloud Account.
 
 <u>We assume you are using your own Oracle Cloud Tenancy,</u> either via a **Free Tier**, using a **Pay-as-you-Go** account, or using the **Corporate account** of your organization.  
 
-==> If you do not have an account yet, you can obtain  an Oracle Free Tier account by [clicking here.](https://signup.oraclecloud.com/?sourceType=:em:lw:rce:cpo:::RC_WWMK201222P00024:EMEAHOLweblogicFeb)
+==> If you do not have an account yet, you can obtain  an Oracle Free Tier account by [clicking here.](https://signup.oraclecloud.com/?sourceType=:em:lw:rce:cpo:::RC_WWMK210324P00003:EMEAHOLweblogicApr)
 
 Next, follow the steps described below.
 
