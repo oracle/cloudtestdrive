@@ -32,80 +32,6 @@ Take note of the compartment **OCID**:
 
 The Compartment name is referred as **CTDOKE** in the Hands on Labs.
 
-**Note:** If you <u>are</u> an Oracle **Cloud Infrastructure administrator** or if you are <u>using</u> a **Oracle Cloud Trial Account** (in which case you are an OCI administrator by default), you may **skip** steps **1.1** and **1.2** as no root or compartment level policies are required to run the Hands on Labs.
-
-
-
-### 1.1 Required root level policies for WebLogic for OKE
-
-You must be an Oracle Cloud Infrastructure <u>administrator</u>, or <u>be granted some root-level permissions</u>, in order to create domains with Oracle WebLogic Server for Oracle Cloud Infrastructure on OKE.
-
-When you create a domain, Oracle WebLogic Server for OKE creates dynamic groups and root-level policies that allow the administration compute instance to:
-
-- Access keys and secrets in Oracle Cloud Infrastructure Vault
-- Access the database wallet if you're using Oracle Autonomous Transaction Processing (JRF-enabled domains)
-
-
-
-In case <u>you are not an OCI administrator</u> and you cannot create dynamic-groups or you cannot create policies at root compartment level, please contact your OCI administrator and request that one  of the groups your cloud user is part of to have the following grants in place:
-
-```
-Allow group MyGroup to manage dynamic-groups in tenancy
-Allow group MyGroup to manage policies in tenancy
-Allow group MyGroup to use tag-namespaces in tenancy
-Allow group MyGroup to inspect tenancies in tenancy
-```
-
-To be able to create and manage repositories in Oracle Cloud Infrastructure Repository:
-
-```
-Allow group MyGroup to manage repos in tenancy
-```
-
-Also, to be able to use the Cloud Shell you need:
-
-```
-Allow group MyGroup to use cloud-shell in tenancy
-```
-
-
-
-### 1.2 Required compartment level policies for WebLogic for OKE
-
-If <u>you are not an Oracle Cloud Infrastructure administrator</u>, you must be given management access to resources in the compartment in which you want to create the WebLogic domain infrastructure.
-
-Your Oracle Cloud Infrastructure user must have management access for Marketplace applications, Resource Manager stacks and jobs, Kubernetes clusters, compute instances, file systems, block storage volumes, load balancers, Key Management vaults and keys, and IAM policies. If you want Oracle WebLogic Server for OKE to create network resources for a domain, then you must also have management access for these network resources.
-
-A policy that entitles your OCI user to have all management access for your compartment, needs to have the following grant in place:
-
-```
-Allow group MyGroup to manage all-resources in compartment MyCompartment
-```
-
-
-
-### 1.3 Service limits
-
-Going through the hands on labs you will create the following main components in your tenancy:
-
-- two Compute instances
-- one OKE cluster (using another four Compute Instances for Kubernetes Nodes)
-- one Virtual Cloud Network (VCN)
-- two Load Balancers
-- one Vault
-- one File System Service and one Mount Target
-- one Public IPs in use
-
-Check your tenancy Service limits, current usage (*Governance and Administration* > *Governance* > *Limits, Quotas and Usage*) and make sure you have enough room for: 
-
-- Compute Service: Cores for Standard2 based VM and BM Instances (you may consider choosing a specific AD)
-- Container Engine: Cluster
-- Virtual Cloud Network Service: Virtual Cloud Networks
-- LbaaS Service: 100Mbps Load Balancer
-- File Storage: File System and Mount Target
-
-If you don't have visibility and/or you don't have admin rights for your tenancy, reach out to your administrator.
-
 
 
 ## Step 2. Create OCI Secrets
@@ -310,3 +236,86 @@ The key's randomart image is:
 
 
 You should be able now to run the rest of the Hands on Labs on your own cloud environment.
+
+
+
+
+
+
+
+## Step 4. [Optional] Non-trial environments policies setup
+
+In case you are using an Oracle Free Trial environment, you will be the Administrator of your tenancy and automatically be granted all rights, and all resources required for this lab are included in the Free Trial.
+
+==> **If you are running a Free Trial Tenancy, you can skip step 4**
+
+In case you are *not* the administrator of your tenancy, you need to make sure to get your tenancy administrator to set up the below policies, and ensure the service limits can accomodate the required resources for this lab.
+
+### 4.1 Required root level policies for WebLogic for OKE
+
+You must be an Oracle Cloud Infrastructure <u>administrator</u>, or <u>be granted some root-level permissions</u>, in order to create domains with Oracle WebLogic Server for Oracle Cloud Infrastructure on OKE.
+
+When you create a domain, Oracle WebLogic Server for OKE creates dynamic groups and root-level policies that allow the administration compute instance to:
+
+- Access keys and secrets in Oracle Cloud Infrastructure Vault
+- Access the database wallet if you're using Oracle Autonomous Transaction Processing (JRF-enabled domains)
+
+
+
+Please contact your OCI administrator and request that one  of the groups your cloud user is part of to have the following grants in place:
+
+```
+Allow group MyGroup to manage dynamic-groups in tenancy
+Allow group MyGroup to manage policies in tenancy
+Allow group MyGroup to use tag-namespaces in tenancy
+Allow group MyGroup to inspect tenancies in tenancy
+```
+
+To be able to create and manage repositories in Oracle Cloud Infrastructure Repository:
+
+```
+Allow group MyGroup to manage repos in tenancy
+```
+
+Also, to be able to use the Cloud Shell you need:
+
+```
+Allow group MyGroup to use cloud-shell in tenancy
+```
+
+
+
+### 4.2 Required compartment level policies for WebLogic for OKE
+
+Your Oracle Cloud Infrastructure user must have management access for Marketplace applications, Resource Manager stacks and jobs, Kubernetes clusters, compute instances, file systems, block storage volumes, load balancers, Key Management vaults and keys, and IAM policies. If you want Oracle WebLogic Server for OKE to create network resources for a domain, then you must also have management access for these network resources.
+
+A policy that entitles your OCI user to have all management access for your compartment, needs to have the following grant in place:
+
+```
+Allow group MyGroup to manage all-resources in compartment MyCompartment
+```
+
+
+
+### 4.3 Service limits
+
+Going through the hands on labs you will create the following main components in your tenancy:
+
+- two Compute instances
+- one OKE cluster (using another four Compute Instances for Kubernetes Nodes)
+- one Virtual Cloud Network (VCN)
+- two Load Balancers
+- one Vault
+- one File System Service and one Mount Target
+- one Public IPs in use
+
+Check your tenancy Service limits, current usage (*Governance and Administration* > *Governance* > *Limits, Quotas and Usage*) and make sure you have enough room for: 
+
+- Compute Service: Cores for Standard2 based VM and BM Instances (you may consider choosing a specific AD)
+- Container Engine: Cluster
+- Virtual Cloud Network Service: Virtual Cloud Networks
+- LbaaS Service: 100Mbps Load Balancer
+- File Storage: File System and Mount Target
+
+If you don't have visibility and/or you don't have admin rights for your tenancy, reach out to your administrator.
+
