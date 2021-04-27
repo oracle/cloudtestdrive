@@ -63,17 +63,11 @@ fn version 0.6.2
 
 A new functions application will be used to host the function that will get invoked when an image is uploaded. This can be created via the Fn CLI or via the OCI Functions console, we will use the latter. 
 
-Log in to the OCI console at [https://console.eu-frankfurt-1.oraclecloud.com](https://console.eu-frankfurt-1.oraclecloud.com/).
+Log in to the OCI console at https://cloud.oracle.com/?tenant=oscemea001.
 
-Enter the tenancy name provided in the lab details and then log in with your assigned username and password.
+The tenancy name should be prefilled, log in with your assigned OCI username and one-time password.
 
 **If you do not have these details please let the organisers know.**
-
-Enter the tenancy name:
-
-![image-20210225103703644](image-20210225103703644.png)
-
-
 
 Then expand the down arrow to the right of "Oracle Cloud Infrastructure Direct Sign-In":
 
