@@ -8,6 +8,10 @@ Transparent Data Encryption and Data Redaction are two very powerful features to
 
 In this lab, we will take a walkthrough around some of the improvements that the ATP provides to APEX developers, in areas such as performance, monitoring and security.
 
+Watch our short video that explains Lab 4 - Add Security to APEX:
+
+[https://www.youtube.com/watch?v=sJDQg_l6fPY](youtube:sJDQg_l6fPY)
+
 Estimated Time: 45 minutes
 
 ### Objectives
@@ -37,11 +41,17 @@ Another immediate consequence of choosing the ATP as our database is that our da
 
 The Transparent Data Encryption (TDE) option takes care of all the details. To prevent unauthorized decryption, TDE stores the encryption keys in a security module external to the database, called a keystore.
 
-1. Open SQL Developer Web. If you have don't have the direct link, go to the Service Console of the autonomous database, then Developer, then SQL Developer Web. You will need to use "ADMIN" as your user name and the password (`SecretPassw0rd`) we provided when we provisioned the instance.
+1. Open SQL Developer Web. If you have don't have the direct link, go to the Database Details page for your database. Select the **Tools** tab, then on the Database Actions tile click **Open Database Actions**
 
-  ![](./images/click-tools.png " ")
+  ![](./images/click-dbactions.png " ")
 
-  ![](./images/open-sql-dev-web.png " ")
+You will need to use "ADMIN" as your user name and the password (`SecretPassw0rd`) we provided when we provisioned the instance. Click **Sign In**
+
+  ![](./images/login-dbactions.png " ")
+
+In the *Development* Region of the *Database Actions* page select SQL. This will open SQL Developer Web.
+
+![](images/sql-dbactions.png)
 
 2. Let's first check our data tablespaces and if they are encrypted. Query our tablespaces and their encryption status. We can see that, in our example, we have two data tablespaces, which belong to tablespaces number 4 and 5.
 
@@ -182,9 +192,4 @@ Even if the access to our application stays internal in our organization, someti
 
 ## Acknowledgements
 * **Author** - Juan Cabrera Eisman, Senior Technology Solution Engineer, Oracle Digital, Melanie Ashworth-March, Master Principal Sales Consultant, EMEA Oracle Solution Center
-* **Last Updated By/Date** - Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center, January 2021
-
-## Need Help?
-Please submit feedback or ask for help using our [LiveLabs Support Forum](https://community.oracle.com/tech/developers/categories/oracle-apex-development-workshops). Please click the **Log In** button and login using your Oracle Account. Click the **Ask A Question** button to the left to start a *New Discussion* or *Ask a Question*.  Please include your workshop name and lab name.  You can also include screenshots and attach files.  Engage directly with the author of the workshop.
-
-If you do not have an Oracle Account, click [here](https://profile.oracle.com/myprofile/account/create-account.jspx) to create one.
+* **Last Updated By/Date** - Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center, April 2021

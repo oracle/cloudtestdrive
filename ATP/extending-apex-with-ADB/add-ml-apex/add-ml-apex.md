@@ -6,6 +6,10 @@ The product is called "Y Box Games". Our fictional company has been moderately s
 
 We will use [Apache Zeppelin](http://www.oracle.com/technetwork/database/options/oml/overview/index.html), which comes pre-installed with the autonomous database. This will be our frontend for the Machine Learning algorithms in the database. For more background on machine learning in the database see [Oracle Advanced Analytics documentation](https://docs.oracle.com/en/database/oracle/oracle-database/12.2/dmapi/mining-fuctions.html#GUID-3BC8FD92-9B6A-4612-A458-7E5FFDDC5EA7).
 
+Watch our short video that explains Lab 3 - Add Machine Learning to APEX:
+
+[https://www.youtube.com/watch?v=QbHboPzCeAU](youtube:QbHboPzCeAU)
+
 Estimated Time: 60 minutes
 
 ### Objectives
@@ -30,9 +34,9 @@ Our starting point is an existing CRM application used by a fictional company. T
 
 2. Open APEX. If you have don't have the direct link, click **Tools**, then click **Open APEX** on the Oracle Application Express tile.
 
-  ![](./images/click-tools.png " ")
+  ![](./images/click-apex.png " ")
 
-  ![](./images/open-apex.png " ")
+
 
 3. Login to the workspace that we created earlier. Workspace name: WORKSHOPATP, User name: WORKSHOPATP, use the password that you entered when you created the workspace.
 
@@ -85,7 +89,7 @@ First we will set up a user for Zeppelin.
 
   ![](./images/open_service_console.png " ")
 
-2. Next, select "Administration" and "Manage ML Users".
+2. Next, select "Administration" and "Manage ML Users". You could also have opened the Manage Oracle ML Users page from the *Tools* tab on the Database Details Screen.
 
   ![](./images/manage_ml_users.png " ")
 
@@ -285,9 +289,11 @@ First we will set up a user for Zeppelin.
 
 2. Open APEX. If you have don't have the direct link, click **Tools**, then click **Open APEX** on the Oracle Application Express tile.
 
-  ![](./images/click-tools.png " ")
+  ![](./images/click-apex.png " ")
 
-  ![](./images/open-apex.png " ")
+
+
+
 
 3. Login to the workspace that we created earlier.
 
@@ -368,9 +374,4 @@ First we will set up a user for Zeppelin.
 
 ## Acknowledgements
 * **Author** - Jeroen Kloosterman, Technology Product Strategy Manager, Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center
-* **Last Updated By/Date** - Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center, January 2021
-
-## Need Help?
-Please submit feedback or ask for help using our [LiveLabs Support Forum](https://community.oracle.com/tech/developers/categories/oracle-apex-development-workshops). Please click the **Log In** button and login using your Oracle Account. Click the **Ask A Question** button to the left to start a *New Discussion* or *Ask a Question*.  Please include your workshop name and lab name.  You can also include screenshots and attach files.  Engage directly with the author of the workshop.
-
-If you do not have an Oracle Account, click [here](https://profile.oracle.com/myprofile/account/create-account.jspx) to create one.
+* **Last Updated By/Date** - Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center, April 2021

@@ -154,7 +154,7 @@ If you are using the OCI Cloud shell for **this** section of the lab (either in 
 
   1. To install the dashboard run the following command : 
   
-  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set service.type=LoadBalancer --version 2.8.3`
+  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set service.type=LoadBalancer --version 4.0.3`
 
   ```
 NAME: kubernetes-dashboard
@@ -687,7 +687,7 @@ Hang tight while we grab the latest from your chart repositories...
 
   6. Run the following command to install **ingress-nginx** using Helm 3:
   
-  - `helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --version 3.10.1   --set rbac.create=true --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-tls-secret"=tls-secret --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-ssl-ports"=443`
+  - `helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --version 3.29.0   --set rbac.create=true --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-tls-secret"=tls-secret --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-ssl-ports"=443`
   
   ```
 NAME: ingress-nginx
@@ -771,9 +771,11 @@ The following commands do absolutely no error checking, or waiting for the load 
 
 The [oci command](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cliconcepts.htm) used here allows you to manage aspects of the oci environment, you can also run it in your laptop if you want (follow the instructions at the link to download and configure it). The oci command is **very** powerful and has a lot of options (on the OCI shell type `oci --help` to see them) The script also uses the [jq command](https://stedolan.github.io/jq) which is in the OCI Cloud shell, you can download it from the jq site if you wanted it on your own system.
 
+Note this assumes that you are using the CTDOKE compartment in the root compartment.
+
 ```bash
 echo Getting the Load balancer IP address from Kubernetes
-LB_IP=`kubectl get service ingress-nginx-nginx-ingress-controller -n ingress-nginx -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'`
+LB_IP=`kubectl get service ingress-nginx-controller  -n ingress-nginx -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'`
 echo Load balancer IP is $LB_IP
 echo Getting the CTDOKE compartment ocid from oci
 COMPARTMENT_OCID=`oci iam compartment list --name CTDOKE | jq -j '.data[0].id'`
@@ -2275,9 +2277,3 @@ You have reached the end of this module, the next section is **Cloud Native with
 * **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
 * **Last Updated By** - Tim Graves, November 2020
-
-## Need Help ?
-
-If you are doing this module as part of an instructor led lab then please just ask the instructor.
-
-If you are working through this module self guided then please submit feedback or ask for help using our [LiveLabs Support Forum](https://community.oracle.com/tech/developers/categories/OCI%20Native%20Development). Please click the **Log In** button and login using your Oracle Account. Click the **Ask A Question** button to the left to start a *New Discussion* or *Ask a Question*.  Please include your workshop name and lab name.  You can also include screenshots and attach files.  Engage directly with the author of the workshop.

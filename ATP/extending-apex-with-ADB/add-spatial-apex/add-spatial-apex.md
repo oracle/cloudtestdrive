@@ -3,6 +3,10 @@
 In this lab we will extend an existing APEX application with geospatial functionality. Imagine a fictional use case where citizens that wish to fly a drone have to formally request this. The APEX application will be used by an institution to process these requests and decide whether the drone-flight is allowed.
 A drone flight will be allowed when its location is not within an urban area.
 
+Watch our short video that explains Lab 2 - Add Spatial to APEX:
+
+[https://www.youtube.com/watch?v=VebYSVmFols](youtube:VebYSVmFols)
+
 Estimated Time: 60 minutes
 
 ### Objectives
@@ -25,9 +29,9 @@ Our starting point is an unfinished APEX application.
 
 2. Open APEX. If you have don't have the direct link, click **Tools**, then click **Open APEX** on the Oracle Application Express tile.
 
-  ![](./images/click-tools.png " ")
+  ![](./images/click-apex.png " ")
 
-  ![](./images/open-apex.png " ")
+
 
 3. Login to the workspace that we created earlier. Workspace name: WORKSHOPATP, User name: WORKSHOPATP, use the password that you entered when you created the workspace.
 
@@ -183,7 +187,7 @@ In our (simplified) example we will only look at the first row, and ignore any a
 
 - **JavaScript Expression**: `document`
 
-  
+
 
   ![](./images/geocoding_01_set_when_properties.png " ")
 
@@ -194,9 +198,9 @@ In our (simplified) example we will only look at the first row, and ignore any a
 15. On the Action tab:
 
     - **Action**: "Execute Server Side Code".
-    
+
 - Add the following PL/SQL:
-  
+
   ```plsql
   declare
       cursor c_geocoded_address
@@ -228,12 +232,10 @@ In our (simplified) example we will only look at the first row, and ignore any a
           :P6_PERMIT := sqlerrm;
   end;
   ```
-  
+
      - **Items to Return**: "P6_PERMIT".
     
      - **Fire on Initialization**: Off.
-    
-       
 
   ![](./images/geocode_return_permit.png " ")
 
@@ -343,9 +345,4 @@ In our case we will verify that the coordinate of the proposed drone flight is n
 
 ## Acknowledgements
 * **Author** - Jeroen Kloosterman, Technology Product Strategy Manager, Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center
-* **Last Updated By/Date** - Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center, January 2021
-
-## Need Help?
-Please submit feedback or ask for help using our [LiveLabs Support Forum](https://community.oracle.com/tech/developers/categories/oracle-apex-development-workshops). Please click the **Log In** button and login using your Oracle Account. Click the **Ask A Question** button to the left to start a *New Discussion* or *Ask a Question*.  Please include your workshop name and lab name.  You can also include screenshots and attach files.  Engage directly with the author of the workshop.
-
-If you do not have an Oracle Account, click [here](https://profile.oracle.com/myprofile/account/create-account.jspx) to create one.
+* **Last Updated By/Date** - Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center, April 2021

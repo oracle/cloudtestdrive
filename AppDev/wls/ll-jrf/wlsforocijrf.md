@@ -8,11 +8,11 @@ This Hands on Lab will go through the process of creating a JRF type of WebLogic
 
 
 
-## Step 2. Create WebLogic for OCI Stack
+## 1. Create WebLogic for OCI Stack
 
-- After logging in, go to Hamburger Menu, *Solutions and Platform* -> *Marketplace*:
+- After logging in, go to Hamburger Menu, *Solutions and Platform -> Marketplace -> All Application*:
 
-![](images/wlscnonjrfwithenv/image040.png)
+<img src="images/wlscnonjrfwithenv/image040.png" style="zoom:33%;" />
 
 
 
@@ -120,16 +120,30 @@ This Hands on Lab will go through the process of creating a JRF type of WebLogic
   
   - Tick to **Provision Load Balancer**
   
-    - **Load Balancer Minimum and Maximum Bandwidth**: keep defaults
-  
-    ![](images/wlsvcn3.png)
+    - **Load Balancer Minimum and Maximum Bandwidth**: 
+    - Set the **Maximum Bandwith = 20**
+    
+    ![](images/wlsvcn3-1.png)
 
 
 
 - Leave Identity Cloud Service Integration **unchecked** as default (no integration) 
-- Leave **OCI Policies** checked, as a Dynamic Group containing the WebLogic Compute nodes will be created automatically alongside policies for letting them read Secrets from OCI Vault
 
-![](images/wlscnonjrfwithenv/image153.png)
+  ![](images/wlsvcn5.png)
+
+  
+
+- For the **OCI Policies** checkbox you need to choose the correct option, depending on the type of tenancy you are using and the rights you have been given:
+
+  - If you are using a *Free Tier* tenancy you will be the administrator, and have all required rights.  In this case *leave this option CHECKED*, a Dynamic Group containing the WebLogic Compute nodes will be created automatically alongside policies for letting them read Secrets from OCI Vault.
+
+    ![](images/wlsvcn6.png)
+
+  - If you are using your *corporate tenancy* and your administrator has set up the required privileges in a specific compartment, *UNCHECK this option* because you don't have the rights to make these types of groups and policies yourself.
+
+    ![](images/wlsvcn7.png)
+
+
 
 
 - Check **Provision with JRF**. In the *Database* section choose:
@@ -236,7 +250,7 @@ This Hands on Lab will go through the process of creating a JRF type of WebLogic
 
 
 
-## Step 3. Change Load Balancer Cookie persistence type
+## 2. Change Load Balancer Cookie persistence type
 
 Before deploying the sample ADF Application, we need to change the way Session Persistence is handled by the Public Load Balancer. By default, the Public Load Balancer comes pre-configured to use *Load Balancer cooking persistence*. But in our case - or in any ADF application case actually - as the sample ADF application generates its own cookie (**JSESSIONID**), we need to instruct the Load Balancer to use *Application cookie persistence*.
 
@@ -284,7 +298,7 @@ Before deploying the sample ADF Application, we need to change the way Session P
 
 
 
-## Step 4. Deploy sample ADF application
+## 3. Deploy sample ADF application
 
 - Let's go back to the WebLogic Server admin console:
 

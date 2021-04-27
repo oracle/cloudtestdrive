@@ -6,6 +6,10 @@ Oracle Application Express (APEX) is a feature of Oracle Database, including the
 
 An APEX Workspace is a logical domain where you define APEX applications. Each workspace is associated with one or more database schemas (database users) which are used to store the database objects, such as tables, views, packages, and more. These database objects are generally what APEX applications are built on top of.
 
+Watch our short video that explains provisioning the Autonomous Database and Oracle APEX workspace:
+
+[https://www.youtube.com/watch?v=vTvlLlwgZrk](youtube:vTvlLlwgZrk)
+
 Estimated Time: 15 minutes
 
 ### Objectives
@@ -20,9 +24,9 @@ Estimated Time: 15 minutes
 
 From within your Oracle Cloud environment, you will create an instance of the Autonomous Transaction Processing database service.
 
-1. From the Cloud Dashboard, select the navigation menu icon in the upper left-hand corner and then select **Autonomous Transaction Processing**.
+1. From the Cloud Dashboard, select the navigation menu icon in the upper left-hand corner, go to **Oracle Database** and then select **Autonomous Transaction Processing**.
 
-    ![](images/select-atp-in-nav-menu.png " ")
+    ![](images/select-atp-in-mega-menu.png " ")
 
 2. Click **Create Autonomous Database**.
 
@@ -89,9 +93,4 @@ This completes the lab setup. At this point, you know how to create an APEX Work
 
 ## Acknowledgements
 * **Author** - Juan Cabrera Eisman, Senior Technology Solution Engineer, Oracle Digital, Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center
-* **Last Updated By/Date** - Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center/ Jan 2021
-
-## Need Help?
-Please submit feedback or ask for help using our [LiveLabs Support Forum](https://community.oracle.com/tech/developers/categories/oracle-apex-development-workshops). Please click the **Log In** button and login using your Oracle Account. Click the **Ask A Question** button to the left to start a *New Discussion* or *Ask a Question*.  Please include your workshop name and lab name.  You can also include screenshots and attach files.  Engage directly with the author of the workshop.
-
-If you do not have an Oracle Account, click [here](https://profile.oracle.com/myprofile/account/create-account.jspx) to create one.
+* **Last Updated By/Date** - Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center/ April 2021

@@ -28,9 +28,9 @@ Our starting point is an existing time entry application used by a fictional IT 
 
 2. Open APEX. If you have don't have the direct link, click **Tools**, then click **Open APEX** on the Oracle Application Express tile.
 
-  ![](./images/click-tools.png " ")
+  ![](./images/click-apex.png " ")
 
-  ![](./images/open-apex.png " ")
+
 
 3. Login to the workspace that we created earlier. Workspace name: WORKSHOPATP, User name: WORKSHOPATP, use the password that you entered when you created the workspace.
 
@@ -79,9 +79,9 @@ Imagine that the end user of the application has analytical questions about the 
 
   ![](./images/create_oac0.png " ")
 
-2. Navigate to **Solutions and Platforms** -> **Analytics** -> **Analytics Cloud**.
+2. Navigate to **Analytics & AI** -> **Analytics Cloud**.
 
-  ![](./images/create_oac1.png " ")
+  ![](./images/select-oac-in-mega-menu.png " ")
 
 3. Click **Create Instance**.
 
@@ -350,9 +350,9 @@ Our goal is to integrate the "Labour" DV project inside of our APEX application.
 
 10. Open APEX. If you have don't have the direct link, click **Tools**, then click **Open APEX** on the Oracle Application Express tile.
 
-  ![](./images/click-tools.png " ")
+  ![](./images/click-apex.png " ")
 
-  ![](./images/open-apex.png " ")
+
 
 11. Login to the workspace that we created earlier.
 
@@ -435,9 +435,5 @@ Our goal is to integrate the "Labour" DV project inside of our APEX application.
 
 ## Acknowledgements
 * **Author** - Juan Cabrera Eisman, Senior Technology Solution Engineer, Oracle Digital, Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center
-* **Last Updated By/Date** - Tom McGinn, Database Innovations Architect, Database Product Management, July 2020
+* **Last Updated By/Date** - Melanie Ashworth-March, Principal Sales Consultant, EMEA Oracle Solution Center, April 2021
 
-## Need Help?
-Please submit feedback or ask for help using our [LiveLabs Support Forum](https://community.oracle.com/tech/developers/categories/oracle-apex-development-workshops). Please click the **Log In** button and login using your Oracle Account. Click the **Ask A Question** button to the left to start a *New Discussion* or *Ask a Question*.  Please include your workshop name and lab name.  You can also include screenshots and attach files.  Engage directly with the author of the workshop.
-
-If you do not have an Oracle Account, click [here](https://profile.oracle.com/myprofile/account/create-account.jspx) to create one.

@@ -143,17 +143,25 @@ deployment.apps/ingress-nginx-nginx-ingress-controller restarted
 deployment.apps/ingress-nginx-nginx-ingress-default-backend restarted
 ```
 
-Now the data plane elements have been removed let's remove the linkerd control plane (Yes, I know that the linkerd command is install, but the kubectl command is delete, so what happens is the linkerd command generates what it would as if it were doing an install, but the kubectl command takes this input as sequence ot things to delete)
+Now the data plane elements have been removed let's remove the linkerd control plane and extensions (Yes, I know that the linkerd command is install, but the kubectl command is delete, so what happens is the linkerd command generates what it would as if it were doing an install, but the kubectl command takes this input as sequence of things to delete)
+
+  
 
   7. In the OCI Cloud shell type 
+
+  - `linkerd viz install | kubectl delete -f -`
+
+There will be lots of messages about deleting resources, you may get warnings about attempts to delete resources that are not there, these can be ignored.
+
+  8. In the OCI Cloud shell type 
 
   - `linkerd install --ignore-cluster | kubectl delete -f -`
   
 There will be lots of messages about deleting resources, you may get warnings about attempts to delete resources that are not there, these can be ignored.
 
-At the end check to see if the linkerd namespace is still there, it may have been removed, but as we added additional resources (secrets for the ingress rules and the rules themselves) it may still be there
+At the end check to see if the linkerd namespaces are still there, they may have been removed, but as we added additional resources (secrets for the ingress rules and the rules themselves) they may still be there
 
-  8. In the OCI Cloud shell type 
+  9. In the OCI Cloud shell type 
   
   - `kubectl get namespaces`
 
@@ -168,14 +176,22 @@ linkerd           Active   20d
 tg-helidon        Active   48d
 ```
 
-If you don't see `linkerd` in the list then remove you're done, if (as above) you do then remove it
+If you don't see `linkerd` or `linkerd-viz` in the list then remove you're done, if (as above) you do then remove them
 
-  9. In the OCI Cloud shell type 
+  10. In the OCI Cloud shell type 
+
+  - `kubectl delete namespace linkerd-viz`
+
+  ```
+namespace "linkerd-viz" deleted
+```
+
+  11. In the OCI Cloud shell type 
 
   - `kubectl delete namespace linkerd`
 
  ```
-namespace "test" deleted
+namespace "linkerd" deleted
 ```
 
 Now you have completed the uninstall process
@@ -189,9 +205,3 @@ You can chose from the other Kubernetes optional module sets.
 * **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
 * **Contributor** - Charles Pretzer, Bouyant, Inc for reviewing and sanity checking parts of this document.
 * **Last Updated By** - Tim Graves, November 2020
-
-## Need Help ?
-
-If you are doing this module as part of an instructor led lab then please just ask the instructor.
-
-If you are working through this module self guided then please submit feedback or ask for help using our [LiveLabs Support Forum](https://community.oracle.com/tech/developers/categories/OCI%20Native%20Development). Please click the **Log In** button and login using your Oracle Account. Click the **Ask A Question** button to the left to start a *New Discussion* or *Ask a Question*.  Please include your workshop name and lab name.  You can also include screenshots and attach files.  Engage directly with the author of the workshop.

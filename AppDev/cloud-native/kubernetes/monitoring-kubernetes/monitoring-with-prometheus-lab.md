@@ -91,9 +91,11 @@ To separate the monitoring services from the  other services we're going to put 
 
 ## Step 3: Prometheus
 
-<details><summary><b>Older versions of Kubernetes than 1.18.10</b></summary>
+<details><summary><b>Older versions of Kubernetes than 1.19.7</b></summary>
 
-We assume you are using Kubernetes 1.18.10 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the 11.16.9 version of the prometheus helm charts were found to work. If you were using an older version of Kubernetes we found the following version combinations to work.
+We assume you are using Kubernetes 1.19.7 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the 11.16.9 version of the prometheus helm charts were found to work. If you were using an older version of Kubernetes we found the following version combinations to work.
+
+Kubernetes 1.18.7 Promteheus helm chart 11.12.1 worked for us
 
 Kubernetes 1.17.9 Promteheus helm chart 11.12.1 worked for us
 
@@ -115,7 +117,7 @@ Installing Prometheus is simple, we just use helm.
 
   1. In the OCI Cloud Shell type
   
-  -  `helm install prometheus prometheus-community/prometheus --namespace monitoring --set server.service.type=LoadBalancer --version 11.16.9`
+  -  `helm install prometheus prometheus-community/prometheus --namespace monitoring --set server.service.type=LoadBalancer --version 13.7.0`
   
   ```
 NAME: prometheus
@@ -269,7 +271,7 @@ storefront-588b4d69db-w244b
 
 Now we could use kubectl to add a few annotations to the pod (this is applied immediately, and Prometheus will pick up on it in a few seconds)
 
-These arr annotations to the live pot - Example only, do not run this:
+These are annotations to apply the live pod - Example only, do not run this:
 
 ```
 $ kubectl annotate pod storefront-588b4d69db-w244b prometheus.io/scrape=true --overwrite
@@ -568,9 +570,3 @@ You can move on to the `Visualizing with Grafana` module which builds on this mo
 * **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
 * **Last Updated By** - Tim Graves, November 2020
-
-## Need Help ?
-
-If you are doing this module as part of an instructor led lab then please just ask the instructor.
-
-If you are working through this module self guided then please submit feedback or ask for help using our [LiveLabs Support Forum](https://community.oracle.com/tech/developers/categories/OCI%20Native%20Development). Please click the **Log In** button and login using your Oracle Account. Click the **Ask A Question** button to the left to start a *New Discussion* or *Ask a Question*.  Please include your workshop name and lab name.  You can also include screenshots and attach files.  Engage directly with the author of the workshop.

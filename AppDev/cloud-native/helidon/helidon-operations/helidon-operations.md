@@ -526,10 +526,3 @@ The next lab in the Helidon core labs is **Cloud Native support in Helidon**
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
 * **Last Updated By** - Tim Graves, November 2020
 
-## Need Help ?
-
-If you are doing this module as part of an instructor led lab then please just ask the instructor.
-
-If you are working through this module self guided then please submit feedback or ask for help using our [LiveLabs Support Forum](https://community.oracle.com/tech/developers/categories/OCI%20Native%20Development). Please click the **Log In** button and login using your Oracle Account. Click the **Ask A Question** button to the left to start a *New Discussion* or *Ask a Question*.  Please include your workshop name and lab name.  You can also include screenshots and attach files.  Engage directly with the author of the workshop.
-
-If you do not have an Oracle Account, click [here](https://profile.oracle.com/myprofile/account/create-account.jspx) to create one.

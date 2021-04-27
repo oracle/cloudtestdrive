@@ -97,7 +97,7 @@ After a few minutes the Database should be available:
 
 ### 2.2 Prepare DB Objects
 
-Once the ATP database available, we can use the SQL Developer Web tool to created a DB schema and some required tables and records needed in the next part.
+Once the ATP database available, we can use the SQL Development Web tool to created a DB schema and some required tables and records needed in the next part.
 
 Go to *Service Console*:
 
@@ -105,19 +105,31 @@ Go to *Service Console*:
 
 
 
-From *Development* submenu open **SQL Developer Web**:
+From *Development* submenu open **Database Actions**:
 
 ![](images/wlscnonjrfwithenvprereq/image910.png)
 
 
 
-This will open in a new tab the SQL Developer Web Login screen. Use **ADMIN** and the password setup when provisioning the ATP Database:
+This will open in a new tab the Database Actions Login screen. Use **ADMIN** and click on *Next*:
+
+![](images/wlscnonjrfwithenvprereq/image915.png)
+
+
+
+Now type in the password setup during provisioning of the ATP Database:
 
 ![](images/wlscnonjrfwithenvprereq/image920.png)
 
 
 
-Once logged in, you can follow a waking tour to discover the main user interface feature: 
+Once logged in, go to **SQL** Development tool:
+
+![](images/wlscnonjrfwithenvprereq/image925.png)
+
+
+
+You can follow a waking tour to discover the main user interface features: 
 
 ![](images/wlscnonjrfwithenvprereq/image930.png)
 
@@ -143,7 +155,7 @@ A **vault** will contain **encryption keys** that are used to encrypt and decryp
 
 
 
-<img src="/Users/jleemans/dev/github/jle/cloudtestdrive/AppDev/wls/ll-jrf/images/image-20210210230107847.png" alt="image-20210210230107847" style="zoom: 33%;" />
+<img src="images/image-20210210230107847.png" alt="image-20210210230107847" style="zoom: 33%;" />
 
 
 
@@ -247,7 +259,7 @@ Click on the new Secret name (**ADFAppSecret**) and take note of its **OCID**. W
 
 
 
-##  Step 4. Create ssh keys
+##  4. Create ssh keys
 
 You need to generate a public and private ssh key pair. During provisioning using Marketplace, you have to specify the ssh public key that will be associated with each of the WebLogic VM nodes.
 

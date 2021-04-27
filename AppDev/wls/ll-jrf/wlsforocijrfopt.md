@@ -11,7 +11,7 @@ This chapter contains 2 optional steps you can execute :
 
 
 
-## Step 5. [Optional] Deploy ADF Faces Rich Client Components Demo Application
+## 1. [Optional] Deploy ADF Faces Rich Client Components Demo Application
 
 If you want to explore the ADF Faces components at runtime, the ADF Faces development team at Oracle created a component demo that showcases the various components and framework capabilities and allows you to try different property settings on the selected component. The components demo is provided with full source code and is a great way to learn how to work with the components in general. 
 
@@ -19,7 +19,7 @@ If you want to explore the ADF Faces components at runtime, the ADF Faces develo
 
 
 
-- First, download the [faces-12.2.1.4.0.war](https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/ll-wls-bucket/o/faces-12.2.1.4.0.war) application web archive. Then, in a similar way as at step **Deploy sample ADP application**, install the faces-12.2.1.4.0.war application. 
+- First, download the [faces-12.2.1.4.0.war](https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/ll-wls-bucket/o/faces-12.2.1.4.0.war) application web archive. Then, in a similar way as at step **Deploy sample ADF application**, install the faces-12.2.1.4.0.war application. 
 
 - Then, from *Deployments* -> *Control* tab start the application:
 
@@ -41,7 +41,7 @@ A demo of interest should be the **Styles** demo. Users frequently get confused 
 
 
 
-## Step 6. [Optional] Destroy resources
+## 2. [Optional] Destroy resources
 
 If you don't plan to use the WebLogic Domain anymore, to spare tenancy resources, the quickest way to delete the resources created during this lab is to run *Terraform Destroy*  on the Stack.
 
