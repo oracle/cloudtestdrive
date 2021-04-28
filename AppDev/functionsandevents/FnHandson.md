@@ -249,11 +249,11 @@ In the OCI Console, change the region to the London region in the grey bar acros
 
 In the browser session where you logged into the OCI Console look for the ![image2019-8-28_11-40-56](image2019-8-28_11-40-56.png) menu in the top left hand of the screen and press it.
 
-From the list presented hover your mouse over 'Object Storage' and more options appear.
+From the list presented click 'Storage'.
 
-Press your mouse on 'Object Storage'
+Click "Buckets" under the "Object Storage" group:
 
-![Select Object Storage](chooseobjectstorage.png)
+![Screenshot from 2021-04-28 12-42-25](Screenshot%20from%202021-04-28%2012-42-25.png)
 
 All the assets you will create during this workshop will be in a compartment named fnstudentworkshop in your tenancy. A compartment is a logical container that can be used to isolate workloads in OCI, all students in this workshop will be working in the same compartment.  Ensure that you are in the **fnworkshopstudent** compartment in the compartment picker. You can type the compartment name and this will filter the entries to allow you to find the **fnworkshopstudent** compartment quickly.
 
@@ -280,11 +280,11 @@ Now that we have completed the Fn based configuration we can turn our attention 
 
 In the browser session where you logged into the OCI Console look for the ![image2019-8-28_11-40-56](image2019-8-28_11-40-56.png) menu in the top left hand of the screen and press it.
 
-From the list presented hover your mouse over 'Developer Services and more options appear.
+From the list presented click 'Developer Services and more options appear.
 
-![image2019-8-28_11-52-25](image2019-8-28_11-52-25.png)
+![Screenshot from 2021-04-28 12-47-45](Screenshot%20from%202021-04-28%2012-47-45.png)
 
-Press your mouse on 'Functions'
+Press your mouse on 'Applications' in the 'Functions' grouping.
 
 Before we can use Functions we need to select the **fnworkshopstudent** compartment to utilise and you will be presented with a screen similar to this:
 
@@ -522,7 +522,9 @@ In order to link events occurring in OCI object storage to the new function it's
 
 **It makes sense to open the events service in a new browser tab.**
 
-In the OCI console open the hamburger menu in the top left-hand corner and navigate to "Application Integration" and then, **right-click** new browser tab, "Events Service".
+In the OCI console open the hamburger menu in the top left-hand corner and navigate to "Observability & Management" and then, **right-click** new browser tab, "Rules" under the "Events Service" grouping.
+
+![Screenshot from 2021-04-28 12-53-22](Screenshot%20from%202021-04-28%2012-53-22.png)
 
 **Ensure that you are in the fnworkshopstudent compartment**
 
