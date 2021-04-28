@@ -30,7 +30,7 @@ This script will delete the OCIR repositories associated with this WebLogic depl
 
 For the rest of the provisioned resources, destroying the WebLogic Stack will be sufficient.
 
-In OCI Console, navigate to Resource Manager and click on the WebLogic for OKE stack:
+In OCI Console, navigate to *Developer Services* -> *Resource Manager* and click on the WebLogic for OKE stack:
 
 ![](images/wlsforocionokedelete/image-010.png)
 

@@ -96,7 +96,7 @@ A known issue is related with non-admin federated users created and added as mem
 
 ### 2.3 Create a Security Vault
 
-Go to *Governance and Administration* > *Security* > *Vault*
+Go to *Identity & Security* > *Vault*
 
 ![](images/wlsforocionokeprereq/image060.png)
 
@@ -199,7 +199,7 @@ We will be using the **Cloud Shell** to generate the keys in this tutorial.
   $ cd keys
   ```
   
-
+  
   
 - Now create your key set :
 
@@ -236,8 +236,6 @@ The key's randomart image is:
 
 
 You should be able now to run the rest of the Hands on Labs on your own cloud environment.
-
-
 
 
 
