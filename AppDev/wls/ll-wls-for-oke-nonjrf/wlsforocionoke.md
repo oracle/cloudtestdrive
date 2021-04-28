@@ -12,7 +12,7 @@ This Hands on Lab will go through the process of creating a WebLogic for OKE on 
 
 ## Step 1. Create WebLogic for OKE Stack
 
-Login to your Oracle Cloud Infrastructure environment and from the main menu go to *Solutions and platform* -> *Marketplace* -> *Applications*:
+Login to your Oracle Cloud Infrastructure environment and from the main menu go to *Marketplace* -> *All Applications*:
 
 ![](images/wlsforocionoke/image-010.png)
 
@@ -81,12 +81,38 @@ Fill in information for **WebLogic Server on Container Cluster (OKE)**:
 
 
 
-Scroll down and expand **WebLogic Server Advance Configuration**. Configure a name for the WebLogic Domain and leave default port as 7001:
+Configure a custom name for the WebLogic Domain:
 
 - **WebLogic Domain Name**: wlsoke
-- **WebLogic Server Admin Console Port**: *7001*
 
 ![](images/wlsforocionoke/image-070.png)
+
+
+
+On **Network** configuration:
+
+- **Virtual Cloud Network Strategy**: *Create New VCN* (easy way for quick execution of the lab; if you'd like to reuse an existing network, check the documentation and make sure you have in place all prerequisites from networking perspective)
+- **Network Compartment**: keep the same compartment selected when launching the Stack configuration
+- **WebLogic Server Network CIDR**: keep default value
+- **Bastion Host Subnet CIDR**: keep default value
+- **Administration Host Subnet CIDR**: keep default value
+- **File System and Mount Target Subnet CIDR**: keep default value
+
+![](images/wlsforocionoke/image-100.png)
+
+
+
+Continue with:
+
+- **Kubernetes Cluster Subnet CIDR**: keep default value
+- **Kubernetes API Endpoint Subnet CIDR**: keep default value
+- **Load Balancer Subnet CIDR**: keep default value
+- **Minimum Bandwidth for Administration Console Load Balancer**: *10 Mbtps*
+- **Maximum Bandwidth for Administration Console Load Balancer**: *20 Mbtps*
+- **Minimum Bandwidth for WebLogic Cluster Load Balancer**: *10 Mbps*
+- **Maximum Bandwidth for WebLogic Cluster Load Balancer**: *20 Mbps*
+
+![image-20210428171936282](images/wlsforocionoke/image-105.png)
 
 
 
@@ -115,15 +141,9 @@ For the **Container Cluster (OKE) Administration Instances**:
 
 
 
-On **Network** configuration:
+Leave **Enable Authentication Using Identity Cloud Service** unchecked; We'll use default Realm that comes with WebLogic Server:
 
-- **Network Compartment**: keep the same compartment selected when launching the Stack configuration
-- **Virtual Cloud Network Strategy**: *Create New VCN* (easy way for quick execution of the lab; if you'd like to reuse an existing network, check the documentation and make sure you have in place all prerequisites from networking perspective)
-- **WebLogic Server CIDR**: keep default value
-- **Administration Console Load Balancer Shape**: *100Mbtps*
-- **WebLogic Cluster Load Balancer Shape**: *100Mbps*
-
-![](images/wlsforocionoke/image-100.png)
+![image-20210428172441505](images/wlsforocionoke/image-095.png)
 
 
 
@@ -159,7 +179,11 @@ Finally, leave **OCI Policies** option checked and the provisioning scripts will
 
 
 - Click **Next** to review Stack Configuration. 
-- *ATTENTION*: if you are re-running the stack after an initial failed attempt, **make sure you have cleaned out all remaining artefacts of that initial run,** as they migh interfere with this next run: compute instances, network environment, loadbalancers, etc.  
+
+- *ATTENTION*: if you are re-running the stack after an initial failed attempt, **make sure you have cleaned out all remaining artefacts of that initial run,** as they might interfere with this next run: compute instances, network environment, load balancers, etc.  
+
+  
+
 - Click **Create** to start executing the Stack:
 
 ![](images/wlsforocionoke/image-140.png)
@@ -230,13 +254,13 @@ The IP address of the WebLogic Cluster LB URL represents the Public IP address o
 
 We can have a quick look of all OCI resources that have been created.
 
-If we navigate to *Core Infrastructure* -> *Compute* -> *Instances* we can see six new Compute Instance running: one for *Admin Host*, one for *Bastion* host and four belonging to the OKE cluster (two for each Node Pools, the *Non-WebLogic Node Pool* and the *WebLogic Node Pool*). Note that only the Bastion host has a Public IP address:
+If we navigate to *Compute* -> *Instances* we can see six new Compute Instance running: one for *Admin Host*, one for *Bastion* host and four belonging to the OKE cluster (two for each Node Pools, the *Non-WebLogic Node Pool* and the *WebLogic Node Pool*). Note that only the Bastion host has a Public IP address:
 
 ![](images/wlsforocionoke/image-230.png)
 
 
 
-If we go *Core Infrastructure* -> *File Storage* -> *File Systems* we can see the File System that it's being shared among some of the created components:
+If we go *Storage* -> *File Storage* -> *File Systems* we can see the File System that it's being shared among some of the created components:
 
 ![](images/wlsforocionoke/image-240.png)
 
@@ -248,7 +272,7 @@ And the associated Mount Target that actually exports the File System through th
 
 
 
-In the  *Core Infrastructure* -> *Networking* -> *Virtual Cloud Networks*  we'll see the new VCN in which all components are running:
+In the  *Networking* -> *Virtual Cloud Networks*  we'll see the new VCN in which all components are running:
 
 ![](images/wlsforocionoke/image-260.png)
 
@@ -260,7 +284,7 @@ Switching to *Load Balancers* we see the two Load Balancers up & running and the
 
 
 
-Going to *Solutions and Platform* -> *Developer Services* -> *Kubernetes Clusters* we can see the WebLogic Kubernetes Cluster:
+Going to *Developer Services* -> *Container* -> *Kubernetes Clusters* we can see the WebLogic Kubernetes Cluster:
 
 ![](images/wlsforocionoke/image-280.png)
 
@@ -310,7 +334,7 @@ At the end of the list we identity a Pod running WLS Admin Server, two Pods runn
 
 
 
-Lastly, by going to *Solutions and Platform* -> *Developer Services* -> *Container Registry* we can check for the repositories created once the WebLogic for OKE has been provisioned:
+Lastly, by going to *Developer Services* -> *Containers* -> *Container Registry* we can check for the repositories created once the WebLogic for OKE has been provisioned:
 
 ![image-20201103180909347](images/wlsforocionoke/image-330.png)
 
