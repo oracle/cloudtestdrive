@@ -159,7 +159,7 @@ Last part of the Stack configuration is addressing connectivity to OCI Registry 
 
 For the **Registry User Name** please use the *fully qualified username* you noted when creating the token in the prerequisites. 
 
-- If you are using a **Single Sign-on** user via the Oracle Identity cloud service, your name will look like : `oracleidentitycloudservice/bogdan.eremia@oracle.com`
+- If you are using a **Single Sign-on** user via the Oracle Identity cloud service, your name will look like : `oracleidentitycloudservice/bogdaneremia@oracle.com`
 - If you are using a **Direct Sign-in** user, this will be for example `janleemans`
 
 If in doubt, you can see your full user name by clicking on the upper-right profile icon:
