@@ -109,14 +109,11 @@ This Hands on Lab will go through the process of creating a JRF type of WebLogic
   - For the Subnet Strategy:
 
     - *Create New Subnet*
-    - *Use Public Subnet*
-    - *Regional Subnet*
-
-    ![](images/wlsvcn2.png)
-
-  - Tick to **Enable Access to Administration Console**:
+    - Leave other parameters as default
   
-    ![image-20210119080943656](images/wlsvcn4.png)
+  ![](images/wlsvcn2.png)
+  
+  
   
   - Tick to **Provision Load Balancer**
   
@@ -206,12 +203,134 @@ This Hands on Lab will go through the process of creating a JRF type of WebLogic
   - **Sample Application URL** (we can can try it at this moment, but the out of the box sample application won't load as we need to finish the SSL configuration of the Load Balancer)
   - **WebLogic Server Administration Console**
 
-![](images/wlscnonjrfwithenv/image210.png)
+![](images/image210.png)
 
 
 
-- Let's check the **WLS admin console** of the newly created WebLogic Server; as we have chosen a Public Subnet for the WLS network, both Compute instances that have been created have public IPs associated.  Use the Console URL provided in the **Outputs** section as shown above
-- Login with **weblogic** username and the provided password:
+### Access the WebLogic Admin Console
+
+To access the WebLogic Admin Console we need first to connect to the Bastion Host and create a SSH tunnel from your PC to the Bastion.
+
+If you used Cloud Shell for creating the SSH private and public key pair, you'd need to copy it to local machine. In the Cloud Shell Console, go to `keys` folder and print the private key:
+
+![](images/image-400.png)
+
+
+
+Use `CTRL+Insert` to copy the entire output including the last line:
+
+```
+-----BEGIN RSA PRIVATE KEY-----
+MIIJKAIBAAKCAgEA1/QqcR0Z6y/BKwloOSwIZKc3cneUtBdjmNz0AKmVDxN5cFHs
+tibJXd32TDBo0DGhl1FsIlI9Zx2/EC0a4haYjef7Y3uHd3m5z4CEmNML53DSxq/A
+2Y5gL0aGxl/b7nvRn5gKXuokBqSQ/uy562P/fZLdRMHPqPyIsNiKauESxtYegLVM
+....
+
+/rbekx4s3WF0C11lfCsYsQVfBrTLOSO890KqklC5f1ZQH99glF6sjiTbxdz+6ZJy
+3hGzLs46srOx5NDA4EfIz4WfcddXMGBXwVwfJVmR7CGn+wVwAXVKr7/6V7HNFjDy
+zcdaHbqFbR1gDVa5xZ1s+htPM2lW5UQDVvdpcALefZqmQgYAQV6jZNUDyeA=
+-----END RSA PRIVATE KEY-----
+```
+
+
+
+Save the content on local machine, in a file with the same name, as in example **weblogic_ssh_key**.
+
+
+
+Next, we need to change the private key file permissions.
+
+On a linux / mac platform:
+
+```
+$ chmod 600 weblogic_ssh_key
+```
+
+
+
+On a Windows platform, open **Command Prompt** (cmd) and run below commands to make the file readable only by current user:
+
+```
+> icacls .\weblogic_ssh_key /inheritance:r
+> icacls .\weblogic_ssh_key /grant:r "%username%":"(R)"
+```
+
+
+
+For both Windows commands you should get an output like:
+
+```
+processed file: .\weblogic_ssh_key
+Successfully processed 1 files; Failed processing 0 files
+```
+
+
+
+For Windows we're taking this approach for using **Windows Power Shell** instead of Putty. If you enjoy more using Putty, you'd need to use PuttyGen to import the private key and save it in .ppk format.
+
+
+
+Next, on your local computer, open an SSH tunnel to an unused port on the bastion compute instance as the `opc` user. For example, you can use port `1088` for SOCKS proxy. Specify the `-D` option to use dynamic port forwarding. 
+
+The SSH command format is:
+
+```
+$ ssh -C -D <port_for_socks_proxy> -i <path_to_private_key> opc@<bastion_public_ip>
+```
+
+
+
+For example:
+
+```
+ssh -C -D 1088 -i weblogic_ssh_key opc@130.61.39.170
+```
+
+
+
+For Windows, use **Windows Power Shell** to run the SSH command.
+
+![](images/image-410.png)
+
+
+
+In another Bash Console (or Command Prompt for Windows) you can check that the tunnel port has been open on your computer:
+
+```
+$ netstat -tln | grep 1088
+```
+
+
+
+On Windows:
+
+```
+> netstat -a
+```
+
+(look for `TCP    127.0.0.1:1088` line)
+
+
+
+Now all the local machine network traffic proxy-ed through 1088 port will be tunneled through the SSH connection to the bastion host.
+
+Open **Firefox** browser, go to  *Options*, scroll down to *Network Settings* and configure a Proxy to access Internet. Setup a *Manual proxy configuration*, use *localhost* for **SOCKS Host** and *1088* port for **SOCKS Port**. Leave HTTP Proxy and FTP Proxy untouched:
+
+![](images/image-420.png) 
+
+
+
+Once done that, open a new browser tab and navigate to WebLogic Admin Console:
+
+```
+http://<private load balancer ip>/console
+```
+
+
+
+You find the full URL in the Terraform Apply Job Logs Output as showed above. Login with `weblogic` and the password setup for the WebLogic Admin Secret in the prerequisites lab:
+
+
 
 ![](images/wlscnonjrfwithenv/image220.png)
 
