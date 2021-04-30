@@ -10,7 +10,7 @@ This Hands on Lab will go through the process of creating a JRF type of WebLogic
 
 ## 1. Create WebLogic for OCI Stack
 
-- After logging in, go to Hamburger Menu, *Solutions and Platform -> Marketplace -> All Application*:
+- After logging in, go to Hamburger Menu, *Marketplace* -> *All Applications*:
 
 <img src="images/wlscnonjrfwithenv/image040.png" style="zoom:33%;" />
 
@@ -344,7 +344,7 @@ You find the full URL in the Terraform Apply Job Logs Output as showed above. Lo
 
 - We can check the Compute Instances to see what has been provisioned; From OCI menu choose *Core Infrastructure* -> *Compute* -> *Instances*:
 
-![](images/wlscnonjrfwithenv/image240.png)
+<img src="images/wlscnonjrfwithenv/image240.png" style="zoom:33%;" />
 
 
 
@@ -377,7 +377,7 @@ Before deploying the sample ADF Application, we need to change the way Session P
 
 - In the OCI Console navigate to *Core Infrastructure* -> *Networking* -> *Load Balancers*:
 
-![](images/wlscnonjrfwithenv/image800.png)
+<img src="images/wlscnonjrfwithenv/image800.png" style="zoom:33%;" />
 
 
 
@@ -558,5 +558,4 @@ Before deploying the sample ADF Application, we need to change the way Session P
 
 
 - This is just a sample ADF application, but you can deploy any other applications; Congratulations!
-
 

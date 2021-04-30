@@ -19,9 +19,19 @@ In this first step of the lab we will prepare your tenancy to be able to create 
 
 When provisioning WebLogic for OCI through Marketplace, you need to specify an OCI Compartment where all resources will be created.
 
-Make sure you have a Compartment that you can use or create a new one.
+Use the menu icon in the top left of the console, then select *Identity and Security* and next *Compartments*.
 
-Take note of the compartment **OCID**:
+<img src="images/image0300.png" style="zoom:33%;" />
+
+Now create a compartment using the *Create Compartment* button, and specify following parameters:
+
+- Name: choose a name, for example **CTDOKE** (this name will be used in remained of the tutorial)
+- Description : an optional description 
+- Parent Compartment : please select the *root* compartment.  The name of the root compartment is the name of your tenancy, with *(root*) appended to it:
+
+<img src="images/image0310.png" style="zoom:33%;" />
+
+Once the compartment is created, please copy the compartment **OCID** in a notebook, you will need it later in the lab.  You can use the *Copy* button :
 
 ![](images/wlscnonjrfwithenvprereq/image550.png)
 
@@ -41,7 +51,7 @@ When deploying a JRF enabled WebLogic domain, a database repository is required.
 
 Go to *Oracle Database* > *Autonomous Transaction Processing*:
 
-![](images/wlscnonjrfwithenvprereq/image800.png)
+<img src="images/wlscnonjrfwithenvprereq/image800.png" style="zoom:33%;" />
 
 
 
@@ -161,9 +171,9 @@ A **vault** will contain **encryption keys** that are used to encrypt and decryp
 
 ### 3.1 Create a Vault
 
-Go to *Governance and Administration* > *Security* > Vault
+Go to *Identity & Security* and then select *Vault*
 
-![](images/wlscnonjrfwithenvprereq/image010-1.png)
+<img src="images/wlscnonjrfwithenvprereq/image010-1.png" style="zoom:33%;" />
 
 
 
@@ -227,7 +237,7 @@ Shortly, the Secret should be listed as *Active*:
 
 
 
-Click on the Secret name and take note of its **OCID**. We need to provide this value in the WebLogic for OCI Stack configuration form:
+Click on the Secret name and take note of its **OCID**. We need to provide this value in the WebLogic for OCI Stack configuration form, so make sure to copy this OCID to your notebook.
 
 ![](images/wlscnonjrfwithenvprereq/image730.png)
 
