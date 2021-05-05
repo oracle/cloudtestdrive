@@ -198,17 +198,11 @@ You can do this via a simple scp command in a local shell or command window:
 
 ```   
    scp wget.sh opc@130.61.121.213:/mnt/software/edelivery/.
-   
-   ssh opc@130.61.121.213
-   cd /mnt/software/edelivery
-   sh wget.sh
-   SSO User Name: xxx@xxx.com
-   password (take care, there is no prompt for the password)
-   -> Wait about 5/10 mins ...
-   ./unzip_edelivery.sh
 ```
 
 Alternatively you can copy the content of the file and using an editor paste it into a new file on the Build machine.
+
+Now log into the Build machine:
 
 ```
 # log in on the Build machine
@@ -224,9 +218,8 @@ On the Build machine, position yourself in the correct folder and run the script
 
 ```
 # Go to the edelivery directory
-
-  cd /mnt/software/edelivery
-   sh wget.sh
+cd /mnt/software/edelivery
+sh wget.sh
    SSO User Name: xxx@xxx.com
    your_password (no prompt for the password !!!!!)
 ```
@@ -287,17 +280,17 @@ Load_Balancer_Ip = [
   "129.159.198.67",
 ]
 Loadbalancer_Subnets_Id = [
-  "ocid1.subnet.oc1.eu-frankfurt-1.aaaaaaaaxrq63m3cfu7jznuwd2mdgthgdbqt3h2maqgf7rzm6bdyhdqwc3ka",
+  "ocid1.subnet.oc1.eu-frankfurt-1.aaaaaa",
 ]
 Provisioning_Status = Asynchronous provisioning is enabled. Connect to each compute instance and confirm that the file /u01/data/domains/jltf_domain/provisioningCompletedMarker exists. Details are found in the file /u01/logs/provisioning.log.
 Sample_Application = 
 Sample_Application_protected_by_IDCS = 
 Virtual_Cloud_Network_CIDR = 
-Virtual_Cloud_Network_Id = ocid1.vcn.oc1.eu-frankfurt-1.amaaaaaaqrgb7baao6yqtpyen3in2jovsaiq2vu4lmvjpdk4drulzvefq74q
-WebLogic_Instances = "{       Instance Id:ocid1.instance.oc1.eu-frankfurt-1.antheljtqrgb7bacvuhtvds6gt3xjhf7sz56tomqouedg3ft4gbva2h6xuoq,       Instance name:jltf-wls-0,       Availability Domain:ezas:EU-FRANKFURT-1-AD-1,       Instance shape:VM.Standard.E2.2,       Private IP:10.0.0.153,       Public IP:130.61.188.112       }"
+Virtual_Cloud_Network_Id = ocid1.vcn.oc1.eu-frankfurt-1.amaaaaaa
+WebLogic_Instances = "{       Instance Id:ocid1.instance.oc1.eu-frankfurt-1.anthel,       Instance name:jltf-wls-0,       Availability Domain:ezas:EU-FRANKFURT-1-AD-1,       Instance shape:VM.Standard.E2.2,       Private IP:10.0.0.153,       Public IP:130.61.188.112       }"
 WebLogic_Server_Administration_Console = https://130.61.188.112:7002/console
 WebLogic_Subnet_Id = [
-  "ocid1.subnet.oc1.eu-frankfurt-1.aaaaaaaaxrq63m3cfu7jznuwd2mdgthgdbqt3h2maqgf7rzm6bdyhdqwc3ka",
+  "ocid1.subnet.oc1.eu-frankfurt-1.aaaaaaaa",
 ]
 WebLogic_Version = 12.2.1.4 Suite Edition (JRF with ATP DB)
 ```
