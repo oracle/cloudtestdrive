@@ -14,7 +14,7 @@ To see this tutorial in **LiveLabs** format, click [here](https://oracle.github.
 
 ## Overview of the steps of this tutorial
 
-#### Step 1: Prepare your environment
+**Step 1: Prepare your environment**
 
 - Clone the scripts to your cloud shell from github
 - Make sure you have a public/private key ssh key pair available
@@ -22,7 +22,7 @@ To see this tutorial in **LiveLabs** format, click [here](https://oracle.github.
 
 
 
-#### Step 2: Run the **Edelivery** terraform script to create initial artefacts:
+**Step 2: Run the Edelivery terraform script to create initial artefacts:**
 
 - A Virtual Cloud Network with appropriate subnets, routing rules etc.
 - An ATP database to be used for the JRF database
@@ -31,20 +31,20 @@ To see this tutorial in **LiveLabs** format, click [here](https://oracle.github.
 
 
 
-#### Step 3: Download and prepare the Forms software 
+**Step 3: Download and prepare the Forms software** 
 
 - Get the Forms install software install script from the eDelivery website
 - Download and prepare the Forms Installation on the shared filesystem
 
 
 
-#### Step 4: Run the **WebLogic Stack** terraform script
+**Step 4: Run the WebLogic Stack terraform script**
 
 - This is the standard WLS for OCI Marketplace teraform script, with the installation of Forms appended at the end.
 
 
 
-#### Step 5: Validate you can access a test Form running on the installation
+**Step 5: Validate you can access a test Form running on the installation**
 
 
 
