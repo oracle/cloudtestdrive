@@ -3,6 +3,10 @@
         {
             "title": "Forms on WLS for OCI",
             "filename": "./readme.md"
+        },
+        {
+            "title": "Prerequisites",
+            "filename": "../ll-jrf/wlsforocijrf_prereq.md"
         }
     ]
 }
