@@ -8,6 +8,8 @@ This tutorial proposes an automation to create a Forms environment using the WLS
 
 We'll be using the standard WLS for OCI Marketplace Stack terraform script, and ammend it to include the creation of a Forms installation on each WLS node.
 
+To see this tutorial in **LiveLabs** format, click [here](https://oracle.github.io/cloudtestdrive/AppDev/wls/forms).
+
 
 
 ## Overview of the steps of this tutorial
