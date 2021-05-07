@@ -56,6 +56,8 @@ All the steps generate extensive log files, we'll clearly indicate where you can
 
 We'll be using the *Cloud Shell* of your tenancy to run most of the commands, as this environment already has all the required utilities installed : terraform, git, jq, ssh, etc.
 
+### Preparing your tenancy
+
 - Log into your tenancy and start the Cloud Shell
 
 - Clone the example scripts from github by issuing the following command:
@@ -87,6 +89,10 @@ The WebLogic for OCI stack will use a **Vault** and **Secrets** to store the pas
 - In your vault, create an encyption key: use the default parameters
 - In your vault, create a first secret containing the weblogic Administrator password, using the encryption key you just created.  Note down the OCID of the secret you just created
 - Repeat the secret creation for the admin password of the database that will be created.  Note down the OCID of the secret.
+
+
+
+### Preparing your terraform script parameters
 
 To access the VM's you will be creating, you need a public/private ssh key pair.  Use the below command and accept the default location (.ssh folder).
 
@@ -183,7 +189,7 @@ Also note you don't need the Cloud shell to do this.  If you make sure to copy t
 ## Step 3. Download Forms and dependecies
 Open a new browser window and navigate to [edelivery.oracle.com](http://edelivery.oracle.com)
 
-- Sign-in
+- Sign-in with your Oracle account (*not* your cloud tenancy account!)
 - In the search box, change "All categories" to "Release"
 - Search and select: REL: Oracle Forms 12.2.1.4.0
 - Click *Continue* on the top op the window
@@ -194,17 +200,43 @@ Open a new browser window and navigate to [edelivery.oracle.com](http://edeliver
 - Click the button *Download.sh*
 - You will get a file called wget.sh
 
-From your laptop, copy this file on the *Build* host created in the previous step, in directory /mnt/software/edelivery
+You also need to download 2 patches
 
-You can do this via a simple scp command in a local shell or command window:
+- navigate to [support.oracle.com](http://support.oracle.com)
 
-```   
-   scp wget.sh opc@130.61.121.213:/mnt/software/edelivery/.
+- Select the tab **Patches and Updates**
+
+- In the patch search box, enter the following 2 patch numbers, separated by a comma : 
+
+  `30613424 , 31225296`
+
+- Hit the **Search** button, you should see the result page with 2 patches
+
+- Click on each patch, and select **Download**, then click on the actual file name to start the download
+
+
+
+From your laptop, copy these files on the *Build* host created in the previous step, in the correct directories.
+
+- Drag and drop these 3 files from your local download folder onto the Cloud Shell window.  This will copy the files over to the Cloud shell environment inside your browser.
+
+- In the Cloud Shell, copy the script file to the correct location on the *Build* machine: 
+
+```
+# Replace the IP address by the IP address of your Build machine !
+scp wget.sh opc@130.61.121.213:/mnt/software/edelivery/.
 ```
 
-Alternatively you can copy the content of the file and using an editor paste it into a new file on the Build machine.
+- Copy the patches to the correct location: 
 
-Now log into the Build machine:
+```
+# Replace the IP address by the IP address of your Build machine !
+scp p30613424_122140_Generic.zip p31225296_122140_Generic.zip opc@130.61.121.213:/mnt/software/install/patches/.
+```
+
+
+
+Now log into the Build machine. 
 
 ```
 # log in on the Build machine
@@ -252,6 +284,12 @@ drwxr-xr-x. 2 opc opc       5 Nov 13 09:38 zip
 ```
 
 Now log out of the Build machine, you don't need it anymore at this point.
+
+```
+exit
+```
+
+This will return your prompt to the Cloud Shell environment.
 
 
 
@@ -338,7 +376,7 @@ Sequence of Log files to check:
 
   You should see the `Executed check_versions script with exit code [0]` on the last line
 
-- part1_root_install.log in home directory /home/opc:
+- File `part1_root_install.log` in home directory /home/opc:
 
   ```
   tail -20 part1_root_install.log 
@@ -441,10 +479,17 @@ The test form should now appear !
 ### Rebuild the WLS_STACK based on a new version of WLS on OCI stack.
 You need this step when you want/need to install Forms based a newer version of the WLS stack on OCI. For example to get the last version of the JDK and WLS CPU/PSU patches.
 
-* Step-by-step:
-  * Create a new WLS stack on OCI. When created in resource manager. Download the terraform script. (zip file)
-  * Rename the file wls_stack.zip and place it in directory WLS_STACK
-  * Run bin/wls_stack_build/terraform_wls_stack_build.sh
+* Create a new WLS stack on OCI. When created in resource manager. Download the terraform script. (zip file)
+
+* Rename the file `wls_stack.zip` and place it in directory `WLS_STACK`
+
+* Run below command: 
+
+  ```
+  bin/wls_stack_build/terraform_wls_stack_build.sh
+  ```
+
+  
 
 
 
