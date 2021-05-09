@@ -23,7 +23,7 @@ On the cloud console :
 
 Next you will use the Cloud Shell 
 
-- to download the automation scripts from GitHub,
+- to download the [automation scripts](https://github.com/CloudTestDrive/forms_wls.git) from GitHub,
 - to create a ssh key pair to access your VM's
 - edit the script `env.sh` to include the OCID's of the above collected objects.  These will be used to pass the correct parameters for your tenancy to terraform stack.
 
@@ -64,3 +64,16 @@ Once the installation has finished, you can try to access a test form that has b
 
 In case something went wrong, all the steps generate extensive log files, so you can easily debug where a possible issue has occurred, and what the cause of the problem might be.
 
+
+
+You can find the detailed instructions to execute this installation on the [next page of the tutorial](https://oracle.github.io/cloudtestdrive/AppDev/wls/forms/?lab=creating-forms-environment)
+
+
+
+## Rebuild the Forms automation based on a new version of WLS on OCI stack.
+
+The example script provided is based on the WebLogic Marketplace automation version available at the time of creation of the tutorial (March 2021).  As this script is updated regularly, you might want to rebase your Forms automation to be based on the latest version.  
+
+A script is provided to modify a freshly downloaded version of the standard OCI Marketplace script to include the required steps to launch the Forms installation at the end of the process.
+
+One of the key drivers is the use of newer images of the the WLS VM Image, with newer patch sets or higher versions of the JDK.
