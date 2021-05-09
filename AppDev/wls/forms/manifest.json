@@ -1,8 +1,16 @@
 {
     "tutorials": [
         {
-            "title": "Forms on WLS for OCI",
-            "filename": "./readme.md"
+            "title": "Forms on WLS for OCI - Introduction",
+            "filename": "./forms_intro.md"
+        },
+        {
+            "title": "Creating your Forms environment",
+            "filename": "./forms_creation.md"
+        },
+        {
+            "title": "Extra steps",
+            "filename": "./forms_extra_steps.md"
         }
     ]
 }
