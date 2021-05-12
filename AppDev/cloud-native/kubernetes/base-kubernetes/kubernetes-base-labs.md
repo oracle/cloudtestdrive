@@ -687,7 +687,7 @@ Hang tight while we grab the latest from your chart repositories...
 
   6. Run the following command to install **ingress-nginx** using Helm 3:
   
-  - `helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --version 3.29.0   --set rbac.create=true --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-tls-secret"=tls-secret --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-ssl-ports"=443`
+  - `helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --version 3.29.0 --set rbac.create=true --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-tls-secret"=tls-secret --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-ssl-ports"=443 --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape"=10Mbps`
   
   ```
 NAME: ingress-nginx
@@ -705,7 +705,7 @@ You can watch the status by running 'kubectl --namespace ingress-nginx get servi
 <Additional output removed for ease of reading>
 ```
 
-This will install the ingress controller in the default namespace.
+This will install the ingress controller in the default namespace. We're using a 10Mbps load balancer as the free tiral accounts have limits on the overall load balancer capacity, and we'll be creating some more later on.
 
 Because the Ingress controller is a service, to make it externally available it still needs a load balancer with an external port. Load balancers are not provided by Kubernetes, instead Kubernetes requests that the external framework delivered by the environment provider create a load balancer. Creating such a load balancer *may* take some time for the external framework to provide. 
 
