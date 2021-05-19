@@ -2,11 +2,11 @@
 
 ## Summary
 
-Since a few months Oracle has included the licenses entitlement of Internet Application Server EE (iAS EE) as part of the WebLogic for OCI pay-as-you-go subscription. This means **you can now run Oracle Forms** without the need to purchase traditional licenses, and simply **use the WLS for OCI UCM edition** of the Marketplace service, paying for your Forms per hour and per ocpu.  This gives you increased flexibility: you can scale up and down your environment as required, or shut it down completely, and only pay for the hours you were running the service.
+Since a few months Oracle has included the licenses entitlement of Internet Application Server EE (iAS EE) as part of the WebLogic Suite for OCI pay-as-you-go subscription. This means **you can now run Oracle Forms** without the need to purchase traditional licenses, and simply **use the WLS Suite for OCI UCM edition** of the Marketplace service, paying for your Forms per hour and per ocpu.  This gives you increased flexibility: you can scale up and down your environment as required, or shut it down completely, and only pay for the hours you were running the service.
 
-From a license perspective this solved the problem, but technically you needed to install the Forms environment manually into the VM's of your WLS setup.  
+From a license perspective this solved the problem, but technically you need to install the Forms environment manually into the VM's of your WLS setup.  
 
-This article will explain an automation based on an extension of the standard WebLogic Marketplace terraform script, only requiring you to manually obtain the Forms installation download script from the edelivery website.
+This article will explain an example automation based on an extension of the standard WebLogic Marketplace terraform script, only requiring you to manually obtain the Forms installation download script from the edelivery website.  Please note this is just an example, **not** an officially Oracle supported procedure.  To be adapted to fit your specific needs.
 
 A big thanks to Marc Gueury who wrote the initial version of this script !
 
