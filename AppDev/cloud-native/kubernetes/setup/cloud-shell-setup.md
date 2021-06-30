@@ -176,6 +176,52 @@ app:
 ```
  
   4. Save the changes to the file
+  
+
+## Step 5: Preparing to create certificates and keys
+
+At various points in the lat we're going to need certificates for securing connections. The cloud shell does include the openssl command which is pretty powerful, but not the easiest to use when dealing with the various levels of certificates we'll need (Root CA, leaf certs etc.)
+
+To make this a little easier we're going to use `step` this is a much easier to use command, but first we need to install it in the cloud shell.
+
+### a: Setting up your directory
+ 
+  1. To set up these certificates let's first of all create a working directory
+
+  - `mkdir $HOME/keys`
+
+  2. Now let's switch to it
+
+  - `cd $HOME/keys`
+  
+### b: Locating the step executable
+
+  1. In a web browser go to [The step download page](https://smallstep.com/docs/step-ca/installation)
+  
+  2. Click on `Linux-other` in the list of options
+  
+  3. Copy the `wget` and `tar` commands **only**. The `wget` command will be something like `wget -O step.tar.gz https://github.com/smallstep/cli/releases/download/v0.15.14/step_linux_0.15.14_amd64.tar.gz` but the version numbers will probably be different. **Important** use the one from the web page, not this example one !
+  
+  4. Paste the commands you just copied into the cloud shell window, press return if needed. It will take a short while to download and unpack the files.
+  
+  5. This will extract the step command, but it's burried in a directory, let's move that to somewhere easier
+  
+  - `mv step_*/bin/step .`
+  
+  6. Let's get rid of the temporary stuff
+
+  ` `rm -rf *gz step_*`
+  
+### c: Creating our root certificate
+
+  1. Let's create a "root" certificate that we can use for signing the specific certificates, this will also package it up as a certificate authority - something that can be used to sign other certificates. Please note that this is of course still a self signed certificate, in a production environment you would be using a certificate for your organization (which ultimately would be signed by a known certificate authority)
+
+  - `./step certificate create root.cluster.local root.crt root.key --profile root-ca --no-password --insecure`
+  
+  ```
+  Your certificate has been saved in root.crt.
+  Your private key has been saved in root.key.
+```
  
 ## End of the setup module, What's next ?
 

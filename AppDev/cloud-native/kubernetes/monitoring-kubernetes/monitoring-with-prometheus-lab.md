@@ -89,7 +89,7 @@ To separate the monitoring services from the  other services we're going to put 
 
 
 
-## Step 3: Prometheus
+## Step 3: Installing Prometheus
 
 <details><summary><b>Older versions of Kubernetes than 1.19.7</b></summary>
 
@@ -111,17 +111,15 @@ To specify a specific older version use the version keyword in your help command
 
 </details>
 
-### Step 3a: Installing Prometheus
-
 Installing Prometheus is simple, we just use helm.
 
   1. In the OCI Cloud Shell type
   
-  -  `helm install prometheus prometheus-community/prometheus --namespace monitoring --set server.service.type=LoadBalancer --version 13.7.0`
+  -  `helm install prometheus prometheus-community/prometheus --namespace monitoring --version 13.7.0`
   
   ```
 NAME: prometheus
-LAST DEPLOYED: Wed Jul  1 18:18:10 2020
+LAST DEPLOYED: Wed Jun 30 17:36:26 2021
 NAMESPACE: monitoring
 STATUS: deployed
 REVISION: 1
@@ -132,11 +130,8 @@ prometheus-server.monitoring.svc.cluster.local
 
 
 Get the Prometheus server URL by running these commands in the same shell:
-  NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-        You can watch the status of by running 'kubectl get svc --namespace monitoring -w prometheus-server'
-
-  export SERVICE_IP=$(kubectl get svc --namespace monitoring prometheus-server -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-  echo http://$SERVICE_IP:80
+  export POD_NAME=$(kubectl get pods --namespace monitoring -l "app=prometheus,component=server" -o jsonpath="{.items[0].metadata.name}")
+  kubectl --namespace monitoring port-forward $POD_NAME 9090
 
 
 The Prometheus alertmanager can be accessed via port 80 on the following DNS name from within your cluster:
@@ -170,30 +165,82 @@ Note the name given to the Prometheus server within the cluster, in this case `p
 
 The Helm chart will automatically create a couple of small persistent volumes to hold the data it captures. If you want to see more on the volume in the dashboard (namespace monitoring) look at the Config and storage section / Persistent volume claims section, chose the prometheus-server link to get more details, then to locate the volume in the storage click on the Volume link in the details section) Alternatively in the Workloads / Pods section click on the prometheus server pod and scroll down to see the persistent volumes assigned to it.
 
-For the purposes of the lab we've set this up using a load balancer, but Prometheus itself does not provide any login or authentication mechanism to access the UI. Because of this in production you would not expose it without security measures to the public internet using an Ingress or load balancer (neither of which apply authentication rules, but delegate that to the underlying services). 
+We've set this up using a cluster IP address. Prometheus itself does not provide any login or authentication mechanism to access the UI. Because of this in production you would not expose it without security measures to the public internet. However to actually show you a bit of how to use Prometheus in this lab we're going to setup an ingress rule to access prometheus **You should not do this in a production environment without taking proper security measures to secure access, this is only for lab purposes.**
 
-  2. When we used Helm we asked it to setup a load balancer for us on the service, we just need to get the IP address. In the OCI Cloud Shell run this command
+  2. let's switch to the directory with the monitoring scripts
   
-  - `kubectl get services -n monitoring`
-
+  - `cd $HOME/helidon-kubernetes-ingress/monitoring-kubernetes`
+  
+  1. To provide secure access for the ingress we will set this up with a TLS connection , that requires that we create a certificate for the ingress rule. In productin you woudl use a proper certificate, but for this lab we're going to use the self-signed root certificate we created in the cloud shell setup. **IT IS VITAL** that you replace `<External IP>` in the example below with the IP address of your ingress load balancer (this is the IP address you've previously been using for access to the dashboard, zipkin and the curl commands).
+  
+  - `$HOME/keys/step certificate create prometheus.monitoring.<External IP>.nip.io tls-prometheus.crt tls-prometheus.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
+  
   ```
-NAME                            TYPE           CLUSTER-IP      EXTERNAL-IP       PORT(S)        AGE
-prometheus-alertmanager         ClusterIP      10.96.92.158    <none>            80/TCP         2m43s
-prometheus-kube-state-metrics   ClusterIP      10.96.43.62     <none>            8080/TCP       2m43s
-prometheus-node-exporter        ClusterIP      None            <none>            9100/TCP       2m43s
-prometheus-pushgateway          ClusterIP      10.96.16.206    <none>            9091/TCP       2m42s
-prometheus-server               LoadBalancer   10.96.216.217   132.145.227.187   80:30280/TCP   2m43s
+  Your certificate has been saved in tls-prometheus.crt.
+  Your private key has been saved in tls-prometheus.key.
 ```
 
-On the `prometheus-server` line you can see the external IP address the load balancer has allocated. In this case it's 132.145.227.187, but of course that will differ in your environment.
+  2. Now we will create a tls secret in Kubernetes using this certificate, note that this is in the `monitoring` namespace as that's where Prometheus will be installed
+  
+  - `kubectl create secret tls tls-prometheus --key tls-prometheus.key --cert tls-prometheus.crt -n monitoring`
+  
+  ```
+  secret/tls-prometheus created
+  ```
+  
+  3. Installing Prometheus is simple, we just use helm. In the OCI Cloud Shell type the following, you must of course replace <External IP> with the IP address of the external load balancer
+  
+  - `helm install prometheus prometheus-community/prometheus --namespace monitoring --version 13.7.0 --set server.ingress.enabled=true --set server.ingress.hosts='{prometheus.monitoring.<External IP>.nip.io}' --set server.ingress.tls[0].secretName=tls-prometheus`
+  
+  ```
+  NAME: prometheus
+LAST DEPLOYED: Wed Jun 30 19:02:43 2021
+NAMESPACE: monitoring
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+The Prometheus server can be accessed via port 80 on the following DNS name from within your cluster:
+prometheus-server.monitoring.svc.cluster.local
 
-If the external IP is `<pending>` then Kubernetes is still starting the Prometheus environment. Wait a short while (a few mins) and try again.
+From outside the cluster, the server URL(s) are:
+http://prometheus.monitoring.123.456.789.999.nip.io
 
+
+The Prometheus alertmanager can be accessed via port 80 on the following DNS name from within your cluster:
+prometheus-alertmanager.monitoring.svc.cluster.local
+
+
+Get the Alertmanager URL by running these commands in the same shell:
+  export POD_NAME=$(kubectl get pods --namespace monitoring -l "app=prometheus,component=alertmanager" -o jsonpath="{.items[0].metadata.name}")
+  kubectl --namespace monitoring port-forward $POD_NAME 9093
+#################################################################################
+######   WARNING: Pod Security Policy has been moved to a global property.  #####
+######            use .Values.podSecurityPolicy.enabled with pod-based      #####
+######            annotations                                               #####
+######            (e.g. .Values.nodeExporter.podSecurityPolicy.annotations) #####
+#################################################################################
+
+
+The Prometheus PushGateway can be accessed via port 9091 on the following DNS name from within your cluster:
+prometheus-pushgateway.monitoring.svc.cluster.local
+
+
+Get the PushGateway URL by running these commands in the same shell:
+  export POD_NAME=$(kubectl get pods --namespace monitoring -l "app=prometheus,component=pushgateway" -o jsonpath="{.items[0].metadata.name}")
+  kubectl --namespace monitoring port-forward $POD_NAME 9091
+
+For more information on running Prometheus, visit:
+https://prometheus.io/
+```
+Note that it will take a short while for the Prometheus service to start.
+  
+## Step 4 accessing Prometheus
 Let's go to the service web page
 
-  3. In your web browser open up (replace <prometheus ip address> with the IP you got **for the prometheus server**)
+  1. In your web browser open up (replace <External IP> with the IP for your Load balancer - you may have to accept it as an unsafe page due to using a self-signed root certificate.
   
-  - `http://<prometheus ip address>/graph`
+  - `https://prometheus.monitoring.<External IP>.nip.io`
  
 You'll see the Initial prometheus graph page as below.
 
@@ -201,13 +248,13 @@ You'll see the Initial prometheus graph page as below.
 
 Let's check that Prometheus is scraping some data. 
 
-  4. Click the **Insert Metric At Cursor** button
+  2. Click the **Insert Metric At Cursor** button
   
 You will see a *lot* of possible choices exploring the various services built into Kubernetes (Including apiserver, Core DNS, Container stats, the number of various Kubernetes objects like secrets, pods, configmaps and so on).
 
-  5. In the dropdown find and select select `kubelet_http_requests_total`  
+  3. In the dropdown find and select select `kubelet_http_requests_total`  (if you type in the box it will reduce the options to match with what you've already entered)
   
-  6. Click the **Execute** button. 
+  4. Click the **Execute** button. 
 
 Alternatively rather than selecting from the list you can just start to type `kubelet_http_requests_total` into the Expression box, as you type a drop down will appear showing the possible metrics that match your typing so far, once the list of choices is small enough to see it chose `kubelet_http_requests_total` from the list (or just finish typing the entire name and press return to select it) 
 
@@ -219,17 +266,17 @@ or a graph
 
 ![prometheus-http-requests-total-graph](images/prometheus-kubelet-http-requests-total-graph.png)
 
-  7. Click the **Graph** or **Console** tab names to switch between them
+  5. Click the **Graph** or **Console** tab names to switch between them
 
 The Kubelet is the code that runs in the worker nodes to perform management actions like starting pods and the like, we can therefore be reasonably confident it'll be available to select.
 
 Note that the precise details shown will of course vary, especially if you've only recently started Prometheus.
 
-  8. Click the + and - buttons next to the duration (default is 1 hour) to expand or shrink the time window of the data displayed
+  6. Click the + and - buttons next to the duration (default is 1 hour) to expand or shrink the time window of the data displayed
   
-  9. Use the << and >> buttons to move the time window around within the overall data set (of course these may not be much use if you haven't got much data, but have a play if you like)
+  7. Use the << and >> buttons to move the time window around within the overall data set (of course these may not be much use if you haven't got much data, but have a play if you like)
 
-### Step 3b: Specifying services to scrape
+## Step 5: Specifying services to scrape
 The problem we have is that (currently) Prometheus is not collecting any data from our services. Of course we may find info on the clusters behavior interesting, but our own services would be more interesting!
 
 We can see what services Prometheus is currently scraping :

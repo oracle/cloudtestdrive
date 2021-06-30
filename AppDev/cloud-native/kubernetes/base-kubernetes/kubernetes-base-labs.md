@@ -37,29 +37,40 @@ Helm is the tool we will be using to install standard software into Kubernetes. 
 
 The OCI Cloud Shell has helm already installed for you, however it does not know what repositories to use for the helm charts. We need to tell helm what repositories to use.
 
-  1. Run the following command to add the dashboard repo to helm
+ 
+  1. Add the Kubernetes nginx based ingress repo to helm
   
-  - `helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/`
+  - `helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx`
+
+  ```
+"ingress-nginx" has been added to your repositories
+```
+
+  2. Run the following command to add the dashboard repo to helm
+  
+  - `helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard`
   
   ```
 "kubernetes-dashboard" has been added to your repositories
  ```
- 
-  2. To can get the current list of repositories run the following command :
+
+  3. To can get the current list of repositories run the following command :
   
   - `helm repo list`
   
   ```                                            
-NAME                    URL         
-kubernetes-dashboard    https://kubernetes.github.io/dashboard/  
+NAME                    URL        
+ingress-nginx           https://kubernetes.github.io/ingress-nginx   
+kubernetes-dashboard    https://kubernetes.github.io/dashboard
 ```
     
-  3. Lastly let's update the helm cache, run the following command :
+  4. Lastly let's update the helm cache, run the following command :
   
   - `helm repo update`
 
   ```
 Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "ingress-nginx" chart repository
 ...Successfully got an update from the "kubernetes-dashboard" chart repository
 Update Complete. ⎈ Happy Helming!⎈ 
 ```
@@ -143,37 +154,49 @@ The latest version of helm is helm 3. This is a client side only program that is
 
 Fortunately for us helm 3 is installed within the OCI Cloud Shell, but if later on you want to use your own laptop to manage a Kubernetes cluster [here are the instructions for a local install of helm](https://helm.sh/docs/intro/install/)
 
-### Step 3a: Installing the Kubernetes dashboard
-
-Our first use of helm is to install the kubernetes-dashboard.
-
-Setting up the Kubernetes dashboard (or any) service using helm is pretty easy. it's basically a simple command. 
-
-If you are using the OCI Cloud shell for **this** section of the lab (either in an oracle provided or your own tenancy)
+### Step 3a: Starting an Ingress controller for accepting external data
 
 
-  1. To install the dashboard run the following command : 
+There is a core service we need to install before we can start running the web based system services, or indeed our microservices, the Ingress controller. An Ingress controller provides the actual ingress capability, but it also needs to be configured (we will look at that later).
+
+An Ingress in Kubernetes is one mechanism for external / public internet clients to access http / https connections (and thus REST API's) It is basically a web proxy which can process specific URL's forwarding data received to a particular microservice / URL on that microservice.
+
+Ingresses themselves are a Kubernetes service, they do however rely on the Kubernetes environment to support a load balancer to provide the external access. As a service they can have multiple instances with load balancing across them etc. as per any other Kubernetes service. 
+
+The advantage of using an ingress compared to a load balancer is that as the ingress understands the payload a single ingress service can support connections to multiple microservices (we'll see more on this later) whereas a load balancer just forwards data on a single port to a specific destination. As commercially offered Kubernetes environments usually charge per load balancer this can be a significant cost saving. However, because it is a layer 7 (http/https) proxy it can't handle raw TCP/UCP connections (for those you need a load balancer)
+
+Though an Ingress itself is a Kubernetes concept Kubernetes does not itself provide a specific Ingress service, it provides a framework in which different Ingress services can be deployed, with the user chosing the service to use. Though it uses the Kubernetes configuration mechanism the actual configuration specifics of an Ingress controller unfortunately very between the different controllers. 
+
+For this lab we're going to use an nginx based Ingress controller. The nginx based Ingress controller we use here is maintained by the Kubernetes team, but there are several others that could be used in your environments if you want. There are a list of commercial and open source Ingress controllers in the [Kubernetes ingress documentation](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)
+
+Firstly we need to create a namespace for the ingress controller.
+
+  1. Run the following command :
   
-  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set service.type=LoadBalancer --version 4.0.3`
-
+  - `kubectl create namespace ingress-nginx`
+  
   ```
-NAME: kubernetes-dashboard
-LAST DEPLOYED: Tue Jun 30 13:07:36 2020
-NAMESPACE: kube-system
+    namespace/ingress-nginx created
+```
+
+  2. Run the following command to install **ingress-nginx** using Helm 3:
+  
+  - `helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx --version 3.29.0 --set rbac.create=true  --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-protocol"=TCP --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape"=10Mbps`
+  
+  ```
+NAME: ingress-nginx
+LAST DEPLOYED: Fri Jul  3 12:06:33 2020
+NAMESPACE: ingress-nginx
 STATUS: deployed
 REVISION: 1
 TEST SUITE: None
 NOTES:
-*********************************************************************************
-*** PLEASE BE PATIENT: kubernetes-dashboard may take a few minutes to install ***
-*********************************************************************************
+The nginx-ingress controller has been installed.
+It may take a few minutes for the LoadBalancer IP to be available.
 
-  NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-        Watch the status with: 'kubectl get svc -n kube-system -w kubernetes-dashboard'
+You can watch the status by running 'kubectl --namespace ingress-nginx get services -o wide -w ingress-nginx-nginx-ingress-controller'
 
-Get the Kubernetes Dashboard URL by running:
-  export SERVICE_IP=$(kubectl get svc -n kube-system kubernetes-dashboard -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-  echo https://$SERVICE_IP/
+<Additional output removed for ease of reading>
 ```
 
 <details><summary><b>Explaining the helm options</b></summary>
@@ -182,19 +205,23 @@ The helm options are :
 
 - `install` do an install operation, helm has many other operations type helm --help` for a list.
 
-- `kubernetes-dashboard` This is the "human" name to give the installation, it's easier to use that later on than using a machine generated one.
+- `ingress-nginx` - the name to give the installation to it can be identified later
 
-- `kubernetes-dashboard/kubernetes-dashboard` is the name of the *chart* to install. Helm will download the chart from the repo kubernetes-dashboard and then execute it. if you had need a specific chart version (see a few lines down) then you could have added a version specifier, for example `--version=1.2.3`
+- `ingress-nginx/ingress-nginx` the repository and location of the helm chart (yes I know having all these ingress-nginx is confusing, but it does make sense when you get used to it)
 
-- `--namespace kube-system` This tells helm to install the dashboard into the kube-system namespace. Namespaces are ways of partitioning the physical cluster into a virtual cluster to help you manage related resources, they are similar to the way you organize files using folders on your computer, but can also restrict resource usage like memory and cpu and future versions of Kubernetes plan to support role based access controls based on namespaces.
+- `--namespace ingress-nginx`  The kubernetes namespace to install the software into
 
-- `--set service.type=LoadBalancer` This tells helm to configure the Kubernetes service associated with the dashboard as being immediately accessible via a load balancer. Normally you wouldn't do this for a range of reasons (more on these later) but as this is an overview lab we're doing this to avoid having to wait for DNS name propogation getting certificates. In a production environment you would of course do that.
+- `--version 3.29.0` The version of the helm chart to use to specify the install (the software version is defined in the chart, so is indirectly specified for you)
 
-- `--version 2.8.3` This tells helm to use a specific version of the helm chart.
+- `--set rbac.create=true` Tells the helm chart to specifiy the role based access control features, we're not really using these in this lab, but they make this a lot more secure in a production env ironment.
 
----
+- `--set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-protocol"=TCP` This sells helm to set a specific attribute, in this case to be passed to OCI to create a load balancer that uses TCP and not any other protocol.
+
+- `--set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape"=10Mbps` As above this sets a specific flag, in this case to be passed to OCI to create a load balancer which allows up to 10Mbps throughput.
 
 </details>
+
+This will install the ingress controller. We're using a 10Mbps load balancer as the free trial accounts have limits on the overall load balancer capacity, and we'll be creating some more later on.
 
 <details><summary><b>Why are we specifying a particular chart version ?</b></summary>
 
@@ -211,6 +238,86 @@ Helm is a great tool for installing software for us, but you don't always want t
 </details>
 
 Note that Helm does all the work needed here, it creates the service, deployment, replica set and pods for us and starts things running. Unless you need a very highly customised configuration using helm is **way** simpler than setting each of these individual elements up yourself.
+
+Because the Ingress controller is a service, to make it externally available it still needs a load balancer with an external port. Load balancers are not provided by Kubernetes, instead Kubernetes requests that the external framework delivered by the environment provider create a load balancer. Creating such a load balancer *may* take some time for the external framework to provide. 
+
+  7. To see the progress in creating the Ingress service type :
+  
+  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+  
+  ```
+NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
+ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
+```
+In this case we can see that the load balancer has been created and the external-IP address is available. If the External IP address is listed as `<pending>` then the load balancer is still being created, wait a short while then try the command again.
+
+In the helm command you'll have seen a couple of `--set`` options.  These are oci specific annotations (more on annotations later) which tell Kubernetes to setup the load balancer using the TLS secret we created earlier
+
+  8. **Make a note of this external IP address, you'll be using it a lot!**
+
+
+
+Note that in a production environment you might want to terminate the encryption in the load balancer for efficiency reasons, and also between the microservices using a service mesh (which is a later optional lab).
+
+
+### Step 3b: Installing the Kubernetes dashboard
+
+Setting up the Kubernetes dashboard (or any) service using helm is pretty easy. it's basically a simple command. 
+
+  1. To install the dashboard you need to replace `<External IP>` with the IP address of the Ingress controller service you got earlier in this helm command, so if the IP address you got was 123.456.789.999 (this is not a valid address, so don;t use it, use yours) the set ingress.hosts section of command below might look like `--set ingress.hosts='{dashboard.kube-system.123.456.789.999.nip.io}'`
+  
+  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set ingress.enabled=true  --set ingress.hosts='{dashboard.kube-system.<External IP>.nip.io}' --version 4.0.3`
+  
+  It it **critical** that you update the `<External IP>` address to match that of **your** ingress controller service, if you get it wrong then though the command will complete you won't be able to access the dashboard with the URL. 
+  
+  ```
+NAME: kubernetes-dashboard
+LAST DEPLOYED: Tue Jun 30 13:07:36 2020
+NAMESPACE: kube-system
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+*********************************************************************************
+*** PLEASE BE PATIENT: kubernetes-dashboard may take a few minutes to install ***
+*********************************************************************************
+From outside the cluster, the server URL(s) are:
+     https://dashboard.kube-system.123.456.789.999.nip.io
+```
+
+Note the URL to use to access the dashboard (this is of course an example and won't work, the IP address will be the one you specified) 
+
+<details><summary><b>What to do if you got your External IP Address wrong</b></summary>
+
+If you did not correctly specify the IP address of **your** ingress then you will have to uninstal the dashboard and try again, this time with the right `<External IP>`
+
+  To uninstall the dashboard type 
+
+  - `helm uninstall kubernetes-dashboard --namespace kube-system`
+  
+It will take a short while to remove the dashboard, after which you can re-try with the **correct external IP address for your ingress service** 
+ 
+</details>
+
+<details><summary><b>Explaining the helm options</b></summary>
+
+The helm options are :
+
+- `install` do an install operation, helm has many other operations type helm --help` for a list.
+
+- `kubernetes-dashboard` This is the "human" name to give the installation, it's easier to use that later on than using a machine generated one.
+
+- `kubernetes-dashboard/kubernetes-dashboard` is the name of the *chart* to install. Helm will download the chart from the repo kubernetes-dashboard and then execute it. if you had need a specific chart version (see a few lines down) then you could have added a version specifier, for example `--version=1.2.3`
+
+- `--namespace kube-system` This tells helm to install the dashboard into the kube-system namespace. Namespaces are ways of partitioning the physical cluster into a virtual cluster to help you manage related resources, they are similar to the way you organize files using folders on your computer, but can also restrict resource usage like memory and cpu and future versions of Kubernetes plan to support role based access controls based on namespaces.
+
+- `--set ingress.enabled=true` and `--set ingress.hosts='{dashboard.kube-system.158.101.210.253.nip.io}'` These tell helm to configure an ingress rule, this basically tells the ingress controller we installed earlier how to identify requests to the dashboard and sent them to the dashboard service.
+
+- `--version 4.0.3` This tells helm to use a specific version of the helm chart.
+
+---
+
+</details>
 
   2.  Check the staus of the Helm deployment
   
@@ -342,7 +449,7 @@ NAME                                    READY   STATUS    RESTARTS   AGE
 kubernetes-dashboard-bfdf5fc85-djnvb   1/1     Running   0          43m
 ```
 
-### Step 3b: Accessing the Kubernetes dashboard
+### Step 3c: Setting up the Kubernetes dashboard user
 
 First we're going to need create a user to access the dashboard. This involves creating the user, then giving it the kubernetes-dashbaord role that helm created for us when it installed the dashbaord chart.
 
@@ -475,12 +582,12 @@ Fortunately for us helm is a very powerful mechanism for configuring services, a
 The IP address of the load balancer is in the EXTERNAL-IP column. Note that this can take a few minutes to be assigned, so it it's listed as <pending> just re-run the `kubectl get` command after a short while
 
 
-### Step 3c: Looking around the dashboard.
+### Step 3d: Looking around the dashboard.
 In several of the labs we're going to be using the dashboard, so let's look around it a bit to get familiar with it's operation.
 
-  1. Open a web browser and using the IP address you got above and go to 
+  1. Open a web browser and go to the dashbaord URL you got above, it will be something like `https://dashboard.kube-system.123.456.789.999.nip.io` but the IP address will be that of your ingress service (this is just an example)
   
-  - `https://<load balancer ip address>/#!/login`
+  - `https://dashboard.kube-system.<External IP>.nip.io/#!/login`
 
   2. In the browser, accept a self signed certificate the mechanism varies by browser and version, but as of August 2020 the following worked.
   
@@ -607,190 +714,6 @@ Outside a lab environment you may well want to take a little longer to configure
 </details>
 
 
-### Step 3d: Starting an Ingress controller for accepting external data
-
-
-There is one other core service we need to install before we can start running our microservices, the Ingress controller. An Ingress controller provides the actual ingress capability, but it also needs to be configured (we will look at that later).
-
-An Ingress in Kubernetes is one mechanism for external / public internet clients to access http / https connections (and thus REST API's) It is basically a web proxy which can process specific URL's forwarding data received to a particular microservice / URL on that microservice.
-
-Ingresses themselves are a Kubernetes service, they do however rely on the Kubernetes environment to support a load balancer to provide the external access. As a service they can have multiple instances with load balancing across them etc. as per any other Kubernetes service. 
-
-The advantage of using an ingress compared to a load balancer is that as the ingress understands the payload a single ingress service can support connections to multiple microservices (we'll see more on this later) whereas a load balancer just forwards data on a single port to a specific destination. As commercially offered Kubernetes environments usually charge per load balancer this can be a significant cost saving. However, because it is a layer 7 (http/https) proxy it can't handle raw TCP/UCP connections (for those you need a load balancer)
-
-Though an Ingress itself is a Kubernetes concept Kubernetes does not itself provide a specific Ingress service, it provides a framework in which different Ingress services can be deployed, with the user chosing the service to use. Though it uses the Kubernetes configuration mechanism the actual configuration specifics of an Ingress controller unfortunately very between the different controllers. 
-
-<details><summary><b>Why not use an Ingress for the dashboard ?</b></summary>
-
-Normally in a production environment you would use an ingress for the dashboard rather than setting up (and paying for) a separate load balancer. For this lab however we are using a load balancer because the dashboard uses certificates, and while it is possible to create the required DNS entries for the certificate, wait for them to propagate and then create and install the certificates that takes time (especially if using real, not self-signed certificates)
-
----
-
-</details>
-
-
-For this lab we're going to use an nginx based Ingress controller. The nginx based Ingress controller we use here is maintained by the Kubernetes team, but there are several others that could be used in your environments if you want. There are a list of commercial and open source Ingress controllers in the [Kubernetes ingress documentation](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)
-
-Firstly we need to create a namespace for the ingress controller.
-
-  1. Run the following command :
-  
-  - `kubectl create namespace ingress-nginx`
-  
-  ```
-    namespace/ingress-nginx created
-```
-
-As we will be providing a secure TLS protected connection we need to create a certificate to protect the connection. In a **production** environment this would be accomplished by going to a certificate authority and having them issue a certificate. This however can take time as certificates are (usually) based on a DNS name and a commercial provider may well require that you prove your organizations identity before issuing a certificate.
-
-To enable the lab to complete in a reasonable time we will therefore be generating our own self-signed certificate. For a lab environment that's fine, but in a production environment you wouldn't do this.
-
-  2. Run the following command to generate a certificate.
-
-  - `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=nginxsvc/O=nginxsvc"`
-
-  ```
-Generating a 2048 bit RSA private key
-............................+++
-............................................................................................+++
-writing new private key to 'tls.key'
------
-```
- 
-The certificate needs to be in a Kubernetes secret, we'll look at these in more detail, but for now :
-
-  3. Run the following command to save the certificate as a secret in the ingress-nginx namespace
-
-  - `kubectl create secret tls tls-secret --key tls.key --cert tls.crt -n ingress-nginx`
- 
-  ```
-secret/tls-secret created
-```
-
-  4. Add the Kubernetes nginx based ingress repo to helm
-  
-  - `helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx`
-
-  ```
-"ingress-nginx" has been added to your repositories
-```
-  
-  5. Update the repositories with the new repo
-  
-  - `helm repo update`
-  
-```
-Hang tight while we grab the latest from your chart repositories...
-...Successfully got an update from the "kubernetes-dashboard" chart repository
-...Successfully got an update from the "ingress-nginx" chart repository
-```
-
-  6. Run the following command to install **ingress-nginx** using Helm 3:
-  
-  - `helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --version 3.29.0 --set rbac.create=true --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-tls-secret"=tls-secret --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-ssl-ports"=443 --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape"=10Mbps`
-  
-  ```
-NAME: ingress-nginx
-LAST DEPLOYED: Fri Jul  3 12:06:33 2020
-NAMESPACE: ingress-nginx
-STATUS: deployed
-REVISION: 1
-TEST SUITE: None
-NOTES:
-The nginx-ingress controller has been installed.
-It may take a few minutes for the LoadBalancer IP to be available.
-
-You can watch the status by running 'kubectl --namespace ingress-nginx get services -o wide -w ingress-nginx-nginx-ingress-controller'
-
-<Additional output removed for ease of reading>
-```
-
-This will install the ingress controller in the default namespace. We're using a 10Mbps load balancer as the free tiral accounts have limits on the overall load balancer capacity, and we'll be creating some more later on.
-
-Because the Ingress controller is a service, to make it externally available it still needs a load balancer with an external port. Load balancers are not provided by Kubernetes, instead Kubernetes requests that the external framework delivered by the environment provider create a load balancer. Creating such a load balancer *may* take some time for the external framework to provide. 
-
-  7. To see the progress in creating the Ingress service type :
-  
-  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
-  
-  ```
-NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
-ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
-```
-In this case we can see that the load balancer has been created and the external-IP address is available. If the External IP address is listed as `<pending>` then the load balancer is still being created, wait a short while then try the command again.
-
-In the helm command you'll have seen a couple of `--set`` options.  These are oci specific annotations (more on annotations later) which tell Kubernetes to setup the load balancer using the TLS secret we created earlier
-
-  8. **Make a note of this external IP address, you'll be using it a lot!**
-
-As we are having the load balancer act as the encryption termination point, and internal to the cluster we are not using encryption we need to update the load balancer to tell is that once is has terminated the secure connection is should pass on the request internally using an http, not https.
-
-  9. Open up the OCI Cloud UI in your web browser, using the "hamburger" menu navigate to **Core Infrastructure** section then **Networking** then select **Load Balancers**
-
-  ![hamburger-menu-select-loadbalancer](images/hamburger-menu-select-loadbalancer.png)
-
-  10. Locate the row for **your** load balancer with the IP address you got above, in this case that's for a load balancer named `5da95ea3-6993-4e3b-8d09-a6da655b3eae` but it **will** be different for you!
-
-  11. Click on the load balancer name to open it's details
-
-  ![load-balancer-overview](images/load-balancer-overview.png)
-
-  12. Locate the **Resources** section on the lower left side
-
-  ![load-balancer-resources](images/load-balancer-resources.png)
-
-  13. Click on the **Listeners** option
-
-  ![load-balancer-listeners](images/load-balancer-listeners.png)
-
-In the list of listeners look at the line TCP-443, notice that it is set to uses SSL (right hand column) and that it's backend set (where it sends traffic to) is set to TCP-443, we need to change that.
-
-  14. Click on the three dots on the right hand side of the **TCP-443** row
-
-  ![load-balancer-listeners-edit](images/load-balancer-listeners-edit.png)
-
-  15. Click the **Edit** option in the resulting menu
-
-  ![load-balancer-edit-listener-chose-backend-set](images/load-balancer-edit-listener-chose-backend-set.png)
-
-  16. In the popup locate the **BackendSet** option, click on it and select the **TCP-80** option
-
-  17. Click the **Update Listener**
-
-  ![load-balancer-update-in-progress](images/load-balancer-update-in-progress.png)
-
-  18. You'll be presented with a **Work in progress** popup, for now just click the **Close** button and the update will continue in the background
-  
-**Note** In some situations (for example the Ingress controller gets re-installed) these changes to the load balancer are reset, if you get errors like "400 THe plain http request was sent to an https port" this has happened, and you'll need to redo the load balancer configuration. Of course in a production environment with real, not self signed certificates this is not an issue as you'd be using https throughout, but for this lab we don't have the time needed for setting up the infrastructure to get and deploy proper certificates.
-
-<details><summary><b>Scripting the listener change</b></summary>
-
-While the configuration of the load balancer is outside Kubernetes I just wanted to show you how you might go about scripting this rather than doing it through the browser interface.
-
-The following commands do absolutely no error checking, or waiting for the load balancer IP address to be assigned, so before you used them in a script for automation you'd probably want to put some decent error correction in place.
-
-The [oci command](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cliconcepts.htm) used here allows you to manage aspects of the oci environment, you can also run it in your laptop if you want (follow the instructions at the link to download and configure it). The oci command is **very** powerful and has a lot of options (on the OCI shell type `oci --help` to see them) The script also uses the [jq command](https://stedolan.github.io/jq) which is in the OCI Cloud shell, you can download it from the jq site if you wanted it on your own system.
-
-Note this assumes that you are using the CTDOKE compartment in the root compartment.
-
-```bash
-echo Getting the Load balancer IP address from Kubernetes
-LB_IP=`kubectl get service ingress-nginx-controller  -n ingress-nginx -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'`
-echo Load balancer IP is $LB_IP
-echo Getting the CTDOKE compartment ocid from oci
-COMPARTMENT_OCID=`oci iam compartment list --name CTDOKE | jq -j '.data[0].id'`
-echo CTKOKE compartment ocid is $COMPARTMENT_OCID
-echo Getting the Load balancer ocid
-LB_OCID=`oci lb load-balancer list --all --compartment-id=$COMPARTMENT_OCID | jq -j ".data[] | select (.\"ip-addresses\"[].\"ip-address\"  == \"$LB_IP\")  | .id"`
-echo Load balancer ocid is $LB_OCID
-echo Running the update
-echo y | oci lb listener update  --load-balancer-id=$LB_OCID --listener-name=TCP-443  --default-backend-set-name=TCP-80 --protocol=TCP --port=443 --ssl-certificate-name=tls-secret  --wait-for-state SUCCEEDED --wait-for-state FAILED
-```
----
-
-</details>
-
-Note that in a production environment you might want to extend the encryption by encrypting traffic between the load balancer and the ingress controller, and also between the microservices using a servcie mesh (which is a later optional lab).
 
 ## Step 4: Namespace, Services and Ingress rules
 
@@ -964,7 +887,7 @@ Thirdly most cloud services charge on a per load balancer basis, this means that
 
 Fourthly from a security perspective it means that you can't do things like enforcing SSL on your connections, as that's done at a level above TCP/IP
 
-Fortunately for REST activities there is another option, the ingress controller. This can service multiple REST API endpoints as it operates at the http level and is aware of the context of the request (e.g. URL, headers etc.) The downside of an ingress controller is that it does not operate on non http / https requests
+Fortunately for REST activities there is another option, the ingress controller (and coincidentally we installed one earlier !) This can service multiple REST API endpoints as it operates at the http level and is aware of the context of the request (e.g. URL, headers etc.) The downside of an ingress controller is that it does not operate on non http / https requests
 
 ***Update***
 Saying that an ingress cannot handle TCP / UDP level requests is actually a slight lie, in more recent versions of the nginx ingress controller it's possible to define a configuration that can process TCP / UDP connections and forward those untouched to a service / port. This is however not a standard capability and needs to be configured separately with specific IP addresses for the external port defined in the ingress configuration. However, different ingress controllers will have different capabilities, so you can't rely on this being the case with all ingress controllers.
@@ -997,7 +920,30 @@ You will need to use this address to access **your** services in the rest of thi
 
 For the moment there are no actual ingress rules defined yet, 
 
-  3. Let's use kubectl to confirm we have no rules yet
+As we will be providing a secure TLS protected connection we need to create a certificate to protect the connection. In a **production** environment this would be accomplished by going to a certificate authority and having them issue a certificate. This however can take time as certificates are (usually) based on a DNS name and a commercial provider may well require that you prove your organizations identity before issuing a certificate.
+
+To enable the lab to complete in a reasonable time we will therefore be generating our own self-signed certificate. For a lab environment that's fine, but in a production environment you wouldn't do this.
+
+  3. Run the following command to generate a certificate (you installed the step command inthe cloud shell setup). **VITAL** You must replace `<External IP>` in the subject below with the external IP address of your Ingress service, as an example this might look like `stock.123.456.789.999.nip.io` (That's is only an example, it absolutely will not work in the real world).
+
+  - `$HOME/keys/step certificate create store.<External IP>.nip.io tls-store.crt tls-store.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key"`
+
+  ```
+Your certificate has been saved in tls-store.crt.
+Your private key has been saved in tls-store.key
+```
+ 
+The certificate needs to be in a Kubernetes secret, we'll look at these in more detail, but for now :
+
+  4. Run the following command to save the certificate as a secret in the ingress-nginx namespace
+
+  - `kubectl create secret tls tls-store --key tls-store.key --cert tls-store.crt`
+ 
+  ```
+secret/tls-store created
+```
+
+  5. Let's use kubectl to confirm we have no rules yet
 
   -  `kubectl get ingress`
 
@@ -1007,8 +953,7 @@ No resources found in tg-helidon namespace.
 
 <details><summary><b>More on Ingress rules</b></summary>
 
-
-We need to define the ingress rules that will apply. The critical thing to remember here is that different Ingress Controllers may have different syntax for applying the rules. We're looking at the nginx-ingress controller here which is commonly used, but remember there may be others.
+We need to define the ingress rules that will apply. The critical thing to remember here is that different Ingress Controllers may have different syntax for applying the rules. We're looking at the nginx-ingress controller build and maintained by the Kubernetes project here which is commonly used, but remember there are others.
 
 The rules define URL's and service endpoints to pass those URLs to, the URL's can also be re-written if desired.
 
@@ -1025,13 +970,22 @@ metadata:
     # use the shared ingress-nginx
     kubernetes.io/ingress.class: "nginx"
 spec:
+  tls:
+  - hosts: 
+    # <External IP> must be replaced tihe the IP address of the ingress controller
+    - store.158.101.210.253.nip.io
+    secretName: tls-store
   rules:
-  - http:
+    # <External IP> must be replaced tihe the IP address of the ingress controller
+  - host: store.158.101.210.253.nip.io
+    http:
       paths:
       - path: /zipkin
         backend:
           serviceName: zipkin
           servicePort: 9411
+          
+<more paths>
 ```
 
 Firstly note that the api here is the `networking.k8s.io/v1beta1` API. In recent versions of Kubernetes this was been changed from `extensions/v1beta1` to indicate that Ingress configuration is part of the core Kubernetes networking features.
@@ -1089,14 +1043,8 @@ One simple solution however is to modify the load balancer settings to block non
   -  `kubectl apply -f ingressConfig.yaml`
 
   ```
-ingress.networking.k8s.io/zipkin created
-ingress.networking.k8s.io/storefront created
-ingress.networking.k8s.io/stockmanager created
-ingress.networking.k8s.io/storefront-status created
-ingress.networking.k8s.io/stockmanager-status created
-ingress.networking.k8s.io/stockmanager-management created
-ingress.networking.k8s.io/storefront-management created
-ingress.networking.k8s.io/storefront-openapi created
+ingress.networking.k8s.io/direct-ingress create
+ingress.networking.k8s.io/rewrite-ingress created
 ```
 
   5. We can see the resulting ingresses using kubectl
@@ -1158,7 +1106,7 @@ The image below was going to the ingress-nginx namespace (that being the one the
 
   8. We now have a working endpoint, let's try accessing it using curl - expect an error!
 
-  -  `curl -i -k -X GET https://<ip address>/sf`
+  -  `curl -i -k -X GET https://<ip address>/store`
 
   ```
 HTTP/2 503 
