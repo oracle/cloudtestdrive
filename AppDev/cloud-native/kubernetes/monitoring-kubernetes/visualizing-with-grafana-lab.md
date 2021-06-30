@@ -37,14 +37,14 @@ Grafana on the other hand is a very powerful open source visualization engine an
 For this lab we will use a small subset of the open source features only.
 
 ## Step 2: Installing Grafana
-Like many other Kubernetes services Grafana can be installed using helm. By default the helm chart does not create a volume for the storage of the grafana configuration. This would be a problem in a production environment, so we're going to use the persistent storage option defined inthe helm chart for Grafana to create a storage volume. 
+Like many other Kubernetes services Grafana can be installed using helm. By default the helm chart does not create a volume for the storage of the grafana configuration. This would be a problem in a production environment, so we're going to use the persistent storage option defined in the helm chart for Grafana to create a storage volume. 
 
   1. Add the Helm repository entry for Grafana 
   
-  - `helm repo add bitnami https://charts.bitnami.com/bitnami`
+  - `helm repo add grafana https://grafana.github.io/helm-charts`
 
  ```
-"bitnami" has been added to your repositories
+"grafana" has been added to your repositories
 ```
 
 If you have already added the bitnami repository in another module you'll be told it's already there, that's fine.
@@ -56,43 +56,39 @@ If you have already added the bitnami repository in another module you'll be tol
   ```
 Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "kubernetes-dashboard" chart repository
-...Successfully got an update from the "bitnami" chart repository
+...Successfully got an update from the "grafana" chart repository
+.
+.
+.
 Update Complete. ⎈ Happy Helming!⎈ 
 ```
 
 Depending on what modules you have done previously the updated repositories list may vary
 
-  3. In the OCI Cloud Shell type following command:
+  3. Create a certificate to protect the connection, we'll use step which we installed in the cloud shell setup section of the lab. Replace `<External IP>` with the IP address of the load balancer we've been using for all the other parts of the lab.
   
-  - `helm install grafana  bitnami/grafana --version 5.2.10 --namespace  monitoring  --set persistence.enabled=true --set service.type=LoadBalancer`
+  - `$HOME/keys/step certificate create grafana.monitoring.<External IP>.nip.io tls-grafana.crt tls-grafana.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
+  
+  ```
+  Your certificate has been saved in tls-grafana.crt.
+  Your private key has been saved in tls-grafana.key.
+```
+
+  4. Now let's create a TLS secret containing this configuration.
+  
+  - `kubectl create secret tls tls-grafana --key tls-grafana.key --cert tls-grafana.crt -n monitoring`
+  
+  ```
+  secret/tls-grafana created
+  ```
+
+  5. Let's install Grafana itself. In the OCI Cloud Shell type following command, replace `<External IP>` with the IP address of the load balancer we've been using for all the other steps.
+  
+  - `helm install grafana grafana/grafana --version 6.13.6 --namespace  monitoring  --set persistence.enabled=true --set ingress.enabled=true --set ingress.hosts='{grafana.monitoring.<External IP>.nip.io}' --set ingress.tls[0].secretName=tls-grafana`
 
   ```
 NAME: grafana
-LAST DEPLOYED: Mon Oct  5 14:28:49 2020
-NAMESPACE: monitoring
-STATUS: deployed
-REVISION: 1
-TEST SUITE: None
-NOTES:
-** Please be patient while the chart is being deployed **
-
-1. Get the application URL by running these commands:
-     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-           You can watch the status of by running 'kubectl get --namespace monitoring svc -w grafana'
-    export SERVICE_IP=$(kubectl get svc --namespace monitoring grafana -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-    echo http://$SERVICE_IP:3000
-
-2. Get the admin credentials:
-
-    echo "User: admin"
-    echo "Password: $(kubectl get secret grafana-admin --namespace monitoring -o jsonpath="{.data.GF_SECURITY_ADMIN_PASSWORD}" | base64 --decode)"
-```
-
-Note that normally you would not expose Grafana directly, but would use a ingress or other front end. However to do that requires setting up a reverse proxy with DNS names and getting security certificates, which can take time. Of course you'd do that in production, but for this lab we want to focus on the core Kubernetes learning stream, so we're taking the easier approach of just creating a load balancer.
- 
-```
-NAME: grafana
-LAST DEPLOYED: Tue Dec 31 11:59:27 2019
+LAST DEPLOYED: Wed Jun 30 18:18:59 2021
 NAMESPACE: monitoring
 STATUS: deployed
 REVISION: 1
@@ -105,53 +101,58 @@ NOTES:
 
    grafana.monitoring.svc.cluster.local
 
-   Get the Grafana URL to visit by running these commands in the same shell:
+   If you bind grafana to 80, please update values in values.yaml and reinstall:
+   
+   securityContext:
+     runAsUser: 0
+     runAsGroup: 0
+     fsGroup: 0
 
-     export POD_NAME=$(kubectl get pods --namespace monitoring -l "app=grafana,release=grafana" -o jsonpath="{.items[0].metadata.name}")
-     kubectl --namespace monitoring port-forward $POD_NAME 3000
+   command:
+   - "setcap"
+   - "'cap_net_bind_service=+ep'"
+   - "/usr/sbin/grafana-server &&"
+   - "sh"
+   - "/run.sh"
+   
+   Details refer to https://grafana.com/docs/installation/configuration/#http-port.
+   Or grafana would always crash.
+
+   From outside the cluster, the server URL(s) are:
+     http://grafana.monitoring.123.456.789.999.nip.io
+
 
 3. Login with the password from step 1 and the username: admin
 ```
 
+Note that normally you would not expose Grafana directly like this but woudl use an official certificate. For the lab we're just using a self signed certificate.
+
 Like many helm charts the output has some useful hints in it, specifically in this case how to get the admin password and setup port-forwarding using Kubectl.
 
-  4. Now get the Grafana login password. In the OCI Cloud Shell 
+  6. Now get the Grafana login password. In the OCI Cloud Shell 
   
-  - `echo "Password: $(kubectl get secret grafana-admin --namespace monitoring -o jsonpath="{.data.GF_SECURITY_ADMIN_PASSWORD}" | base64 --decode)"`
+  - `kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo`
   
   ```
-OFR3aOHBVj
+G5gBdejUfBxhzKn4ZrmwhZQTtlXlZ9qaLHpzispm
 ```
 
 Of course **your** password will vary, this is just an example
 
-  5. **Copy and paste** the password into a text editor so you can use it later.
+  7. **Copy and paste** the password into a text editor so you can use it later.
 
 We need some data to look at, so :
 
-  6. Using the OCI Cloud Shell or your laptop, make a few requests using curl to generate some new data (replace <external IP> with that of the ingress controller you were using earlier)
+  8. Using the OCI Cloud Shell or your laptop, make a few requests using curl to generate some new data (replace <external IP> with that of the ingress controller you were using earlier)
   
   -  `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
 
-We need to open a web page to the Grafana service. To do that we need to get the IP address of the load balancer.
+We need to open a web page to the Grafana service. This was displayed in the Helm output, in this example it's `http://grafana.monitoring.123.456.789.999.nip.io` ** but of of thats an example, your's will vary** (and that's not a valid address anyway)
 
-  7. Run the following command (here we are limiting to just the grafana service)
+  9. Open a web page (replace `<External IP>`) with the one you just got for the grafana service.
   
-  - `kubectl get service grafana -n monitoring`
-
-```
-NAME      TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)        AGE
-grafana   LoadBalancer   10.96.161.234   130.61.205.103   80:32261/TCP   4m57s
-```
-Note the External IP address (130.61.201.103 in this case)
-
-If the external IP address says <pending> then Kubernetes hasn't finished starting the service. wait a short while and run the command again.
-
-  8. Open a web page (replace `<grafana ip address>`) with the one you just got for the grafana service.
+  - `https://grafana.monitoring.<External IP>.nip.io`
   
-  - `http://<grafana ip address>:3000`
-  
-I have found that for some versions of Firefox that grafana complains about reverse-proxy settings. You may find that you need to use chrome or safari to access the grafana page.
 
 If the browser prompts you about using a self signed certificate accept it. The process for doing this can vary by browser and version, as of August 2020 the following worked, but newer versions may have changed it.
 
@@ -167,29 +168,29 @@ We have had reports that some versions of Chrome will not allow you to override 
 You'll be presented with the Grafana login window
   ![grafana-login](images/grafana-login.png)
 
-  9. Enter **admin** as the user name and then use the Grafana password you copied a few moments ago. 
+  10. Enter **admin** as the user name and then use the Grafana password you copied a few moments ago. 
 
-  10. Press enter to login and go to the Grafana initial config page
+  11. Press enter to login and go to the Grafana initial config page
 
   ![grafana-initial-setup](images/grafana-initial-setup.png)
 
 Before we can do anything useful with Grafana we need to provide it with some data. 
 
-  11. Click the **Add Your First Data Source** icon to start this process
+  12. Click the **Add Your First Data Source** icon to start this process
 
   ![grafana-possible-data-sources](images/grafana-possible-data-sources.png)
 
-  12. Select **Prometheus**  from the list, then when the UI displays it click the **Select** button
+  13. Select **Prometheus**  from the list, then when the UI displays it click the **Select** button
 
   ![grafana-configure-prometheus-data-source](images/grafana-configure-prometheus-data-source.png)
 
-  13. In the **URL** field we need to enter the details we got then we installed Prometheus. Enter the URL 
+  14. In the **URL** field we need to enter the details we got then we installed Prometheus. Enter the URL 
   
   -  `http://prometheus-server.monitoring.svc.cluster.local`
 
 Leave the other values unchanged
 
-  14. Scroll down and click the **Save & Test** button at the bottom of the screen. 
+  15. Scroll down and click the **Save & Test** button at the bottom of the screen. 
 
   ![grafana-configure-prometheus-data-source-save-and-test](images/grafana-configure-prometheus-data-source-save-and-test.png)
 
@@ -197,7 +198,7 @@ Assuming you entered the details correctly it will report that it's done the sav
 
   ![grafana-configure-prometheus-data-source-saved](images/grafana-configure-prometheus-data-source-saved.png)
 
-  15. Click the **Grafana logo** ![grafana-logo](images/grafana-logo.png) at the top left to return to the Grafana home page
+  16. Click the **Grafana logo** ![grafana-logo](images/grafana-logo.png) at the top left to return to the Grafana home page
 
   ![grafana-home-datasource-done](images/grafana-home-datasource-done.png)
   
