@@ -138,7 +138,7 @@ export PATH=$PATH:$HOME/.linkerd2/bin
   - `linkerd version`
 
   ```
-Client version: stable-2.10.0
+Client version: stable-2.10.2
 Server version: unavailable
 ```
 
@@ -287,8 +287,8 @@ Let's check that the linkerd command can talk to the control plane
   - `linkerd version`
 
 ```
-Client version: stable-2.10.0
-Server version: stable-2.10.0
+Client version: stable-2.10.2
+Server version: stable-2.10.2
 ```
 
 Expect a short delay while the linkerd command contacts the control plane servers.
@@ -543,7 +543,7 @@ At the end of the output we'll see the status of the extensions.
 
 Linkerd is managed via the linkerd command OR via it's browser based dashboard. In general you want to use the dashboard as it give you access to the Grafana instance provided by Linkerd and thus you get the visualizations.
 
-There are several ways to access the linkerd dashboard. In a production deployment you would use an ingress with very strict security rules, and configure linkerd to only accept external connections via that ingress, but to implement that requires the use of a certificate and DNS configuration.
+There are several ways to access the linkerd dashboard. In a production deployment you would use an ingress with very strict security rules, and configure linkerd to only accept external connections via that ingress, but to fully implement that requires the use of a certificate and DNS configuration.
 
 For ease of setting up the lab we are going to use an ingress but relax the security constraints around accessing the linkerd web front end a bit **YOU SHOULD NEVER DO THIS IN A PRODUCTION ENVIRONMENT** - a service mesh like linkerd controls the entire communications network in your cluster, unauthorized access to it would enable hackers to have complete control of your cluster communications.
 
@@ -577,11 +577,38 @@ kubectl will pick them up and apply them, Kubernetes will restart the linkerd-we
 
 Curiously the linkerd-web ingress does not by default use a TLS certificate to ensure that the connection to it is encrypted, as we will be sending passwords we want to ensure it is encrypted, to do which we need to create a TLS secret in Kubernetes that the ingress controller can use.
 
-Fortunately for us when we first setup our ingress controller and load balancer we installed a certificate in the load balancer for SSL / TLS connections, so we can just use that for the linkerd SSL/TLS endpoint as well. 
-
-  5. Move to the directory containing the scripts for the service mesh lab
+We will use step to help us here, it was installed when you did the cloud shell setup
+  
+  1. Move to the directory containing the scripts for the service mesh lab
   
   - `cd $HOME/helidon-kubernetes/service-mesh`
+
+  2. In the OCI CLodu shell run the following, replace `<External IP>` with the IP address of your load balancer - this is the one we've been using previously
+  
+  - `$HOME/keys/step certificate create linkerd.<external IP>.nip.io tls-linkerd.crt tls-linkerd.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
+
+  ```
+  Your certificate has been saved in tls-linkerd.crt.
+  Your private key has been saved in tls-linkerd.key.
+```
+  3. Now let's put this in a Kubernetes TLS secret. In the OCI Cloud shell
+  
+  - `kubectl create secret tls tls-linkerd --key tls-linkerd.key --cert tls-linkerd.crt -n linkerd-viz`
+  
+  4. Edit the `linkerd-ingress.yaml` file in the `spec:` section replace the `External IP` with the IP address of the Load balancer we've been using, you need to do this in two locations. Then save the file. An example of the edited version is below, **but the example IP addresses used below are fake and will not work, you must use your own**
+  
+  ```
+  spec:
+  tls:
+  - hosts: 
+    # <External IP> must be replaced with the IP address of the ingress controller
+    - linkerd.123.456.789.999.nip.io
+    secretName: tls-linkerd
+  rules:
+    # <External IP> must be replaced with the IP address of the ingress controller
+  - host: linkerd.123.456.789.999.nip.io
+    http:
+  ```
 
 ### Step 5c: Create a login password to secure the connection
 
@@ -629,7 +656,7 @@ ingress.networking.k8s.io/web-ingress created
 
 Now you can go to the ingress ip address for the linkerd UI
 
-  2. In your laptop web browser go to `https://<external IP>`
+  2. In your laptop web browser go to `https://linkerd.<external IP>.nip.io`
 
 <details><summary><b>If you need to remind yourself of the external IP if your ingress controller</b></summary>
 
@@ -672,7 +699,7 @@ You'll be presented with the linkerd-web main page
 
 Let's also check you can access the grafana dashboard that's been installed by linkerd
 
-  5. In your web browser go to `https://<externalIP>/grafana` Note if you did not save the username / password details you may be prompted to re-enter them
+  5. In your web browser go to `https://linkerd.<externalIP>.nip.io/grafana` Note if you did not save the username / password details you may be prompted to re-enter them
 
 I have found that for some versions of Firefox that grafana complains about reverse-proxy settings. You may find that you need to use chrome or safari to access the grafana page.
 
@@ -1267,7 +1294,7 @@ The address is in the EXTERNAL-IP column, in this case it's 130.61.195.102 **but
 
   9. In the OCI Cloud Shell terminal type the following, be prepared for an error (remember to replace `<external IP>` with the IP address for your ingress controller)
   
-  - `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
+  - `curl -i -k -X GET -u jack:password https://store.<external IP>.nip.io/store/stocklevel`
   
   ```
 HTTP/1.1 200 OK
@@ -1283,9 +1310,9 @@ Strict-Transport-Security: max-age=15724800; includeSubDomains
 
 As you have restarted the services you may get 424 failed dependency errors as the services start up. If you do simply retry the request.
 
-Let's go and look at the dashboards again
+Let's go and look at the Linkerd dashboards again
 
-  10. In your laptop web browser go to `https://<external IP>` (replace `<external IP>` with the IP address of your ingress controller)
+  10. In your laptop web browser go to `https://linklerd.<external IP>.nip.io` (replace `<external IP>` with the IP address of your ingress controller)
 
 You may get a certificate warning again, in which case follow the procedures for your browser to accept the self signed certificate
 
@@ -1300,7 +1327,7 @@ Good news! We can see that there is http traffic in the ingress-ngnix namespace 
   11. If we go to the Grafana page in your laptop web browser go to 
   
   ```
-  https://<external IP>/grafana
+  https://linkerd.<external IP>.nip.io/grafana
   ```
 
   ![](images/linkerd-grafana-topline-after-services-enabled.png)

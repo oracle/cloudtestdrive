@@ -76,7 +76,7 @@ look at the `ingress-nginx-nginx-ingress-controller` row, IP address inthe `EXTE
 </details>
 
 
-  2. In the OCI Cloud shell type (remember to replace `<external IP>` with the IP address of your ingress service
+  2. In the OCI Cloud shell type (remember to replace `<external IP>` with the IP address of your ingress service (in this case you do not need to add a `store` prefix or `nip.io` suffix, the script does it for you)
   
   - `bash generate-service-mesh-load.sh <external IP> 2`
   
@@ -96,7 +96,7 @@ If that happens while you are doing the service mesh labs the solution is to con
 
 Let's just check that the load is running fine
 
-  1. In your web browser go to `https://<external IP>`
+  1. In your web browser go to `https://linkerd.<external IP>.nip.io`
 
 You may be challenged as you have a self signed certificate. Follow the normal procedures in your browser to accept the connection and proceed.
 
@@ -183,7 +183,7 @@ Now let's check that the change has applied by going direct to the stockmanager 
 
   7. In the OCI Cloud shell type the following (remember to replace `<external IP>` )
   
-  - `curl -i -k -X GET -u jack:password https://<external IP>/sm/stocklevel`
+  - `curl -i -k -X GET -u jack:password https://store.<external IP>.nip.io/sm/stocklevel`
 
 (As usual the first response may take a short while, if you get a 503 error it means that the Kubernetes is waiting for the stockmanager to come online.
  
@@ -220,7 +220,7 @@ Now try making the request a few times to the storefront service
 
   8. In the OCI Cloud shell type the following (remember to replace `<external IP>` )
   
-  - `curl -i -k -X GET -u jack:password https://<EXTERNAL IP>/store/stocklevel`
+  - `curl -i -k -X GET -u jack:password https://store.<EXTERNAL IP>.nip.io/store/stocklevel`
   
 You will get either error messages like this
 
@@ -254,7 +254,7 @@ As before repeat this a few times, approximately half the time it will succeed a
 
 Restart the load generator
 
-  9. In the OCI Cloud shell type (remember to replace `<external IP>` with the IP address of your ingress service
+  9. In the OCI Cloud shell type (remember to replace `<external IP>` with the IP address of your ingress service, no need to prefix with store or suffix with nip.io, the script will do that for you)
   - `bash generate-service-mesh-load.sh <external IP> 2 `
   
  ```
@@ -269,7 +269,7 @@ As previously if the OCI shell stops then you will need to re-open is and re-sta
 
 We'll open the LinkerdUI and see what it's reporting.
 
-  1. In your web browser go to `https://<external IP>` (replace `<external IP>` of course) If asked login with the user name admin and the password you chose when setting up the Linkerd ingress
+  1. In your web browser go to `https://linkerd.<external IP>.nip.io` (replace `<external IP>` of course) If asked login with the user name admin and the password you chose when setting up the Linkerd ingress
 
   2. Click on **Namespaces** in the **Cluster** section of the left menu and locate the **HTTP metrics** entry for your namespace (mine is tg-helidon, yours will have a different name)
 
