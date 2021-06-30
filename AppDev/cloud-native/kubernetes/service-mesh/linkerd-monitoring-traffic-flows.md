@@ -81,7 +81,7 @@ If that happens while you are doing the service mesh labs the solution is to con
 
 ### Step 1b: Viewing the load
 
-  1. In your laptop web browser go to `https://<external IP>`
+  1. In your laptop web browser go to `https://linkerd.<external IP>.nip.io`
 
 You may be challenged as you have a self signed certificate. Follow the normal procedures in your browser to accept the connection and proceed.
 
@@ -306,7 +306,7 @@ The data we've seen so far is the live view, but if we wanted to understand what
 
 We could of course go direct to the Grafana page for a specific item (all the tables have a little Grafana icon ![](images/linkerd-grafana-icon.png) which would take us there directly) but let's start out looking at the Grafana overview
 
-  1. In your laptop web browser go to `https://<external IP>/grafana`
+  1. In your laptop web browser go to `https://linkerd.<external IP>.nip.io/grafana`
 
   ![](images/grafana-overview.png)
 
