@@ -171,7 +171,7 @@ We've set this up using a cluster IP address. Prometheus itself does not provide
   
   - `cd $HOME/helidon-kubernetes-ingress/monitoring-kubernetes`
   
-  3. To provide secure access for the ingress we will set this up with a TLS connection , that requires that we create a certificate for the ingress rule. In productin you woudl use a proper certificate, but for this lab we're going to use the self-signed root certificate we created in the cloud shell setup. **IT IS VITAL** that you replace `<External IP>` in the example below with the IP address of your ingress load balancer (this is the IP address you've previously been using for access to the dashboard, zipkin and the curl commands).
+  1. To provide secure access for the ingress we will set this up with a TLS connection , that requires that we create a certificate for the ingress rule. In productin you woudl use a proper certificate, but for this lab we're going to use the self-signed root certificate we created in the cloud shell setup. **IT IS VITAL** that you replace `<External IP>` in the example below with the IP address of your ingress load balancer (this is the IP address you've previously been using for access to the dashboard, zipkin and the curl commands).
   
   - `$HOME/keys/step certificate create prometheus.monitoring.<External IP>.nip.io tls-prometheus.crt tls-prometheus.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
   
@@ -180,7 +180,7 @@ We've set this up using a cluster IP address. Prometheus itself does not provide
   Your private key has been saved in tls-prometheus.key.
 ```
 
-  4. Now we will create a tls secret in Kubernetes using this certificate, note that this is in the `monitoring` namespace as that's where Prometheus will be installed
+  2. Now we will create a tls secret in Kubernetes using this certificate, note that this is in the `monitoring` namespace as that's where Prometheus will be installed
   
   - `kubectl create secret tls tls-prometheus --key tls-prometheus.key --cert tls-prometheus.crt -n monitoring`
   
@@ -188,33 +188,52 @@ We've set this up using a cluster IP address. Prometheus itself does not provide
   secret/tls-prometheus created
   ```
   
+  3. Installing Prometheus is simple, we just use helm. In the OCI Cloud Shell type the following, you must of course replace <External IP> with the IP address of the external load balancer
   
-We need to edit the ingress file to tell it the "host" that we are using. To enable us to use certificates here we are using a service called nip.io which converts a DNS name containing an IP address into the IP address. That allows us to access the service using a host name (needed by the certificates and ingress host rules) without having to do all of the DNS setup. On the down side as the hostnames containe the IP address of the Load Balancer that means we need to do a bit of editing
-  
-  5. Edit the `ingressPrometheus.yaml` file (this is in the $HOME/helidon-kubernetes/monitoring-kubernets directory we switched to earlier)
-  
-  6. Locate the entries `<External IP>` in the spec: section (there are two of them) and replace them with the load balancer IP address, then save the file. The resulting section of the file will look something like this **But of course the IP address will be yours, not this one - which is invalid**
+  - `helm install prometheus prometheus-community/prometheus --namespace monitoring --version 13.7.0 --set server.ingress.enabled=true --set server.ingress.hosts='{prometheus.monitoring.<External IP>.nip.io}' --set server.ingress.tls[0].secretName=tls-prometheus`
   
   ```
-  spec:
-    tls:
-    - hosts: 
-      # <External IP> must be replaced with the IP address of the ingress controller
-      - prometheus.monitoring.123.456.789.999.nip.io
-      secretName: tls-prometheus
-    rules:
-      # <External IP> must be replaced with the IP address of the ingress controller
-    - host: prometheus.monitoring.123.456.789.999.nip.io
-      http:
-```
+  NAME: prometheus
+LAST DEPLOYED: Wed Jun 30 19:02:43 2021
+NAMESPACE: monitoring
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+The Prometheus server can be accessed via port 80 on the following DNS name from within your cluster:
+prometheus-server.monitoring.svc.cluster.local
 
-  7. Once you've changed the `ingressPrometheus.yaml` file we will apply the ingress rule into the monitoring namespace
-  
-  - `kubectl apply -f ingressPrometheus.yaml -n monitoring`
-  
-  ```
-  ingress.networking.k8s.io/prometheus-ingress created
+From outside the cluster, the server URL(s) are:
+http://prometheus.monitoring.123.456.789.999.nip.io
+
+
+The Prometheus alertmanager can be accessed via port 80 on the following DNS name from within your cluster:
+prometheus-alertmanager.monitoring.svc.cluster.local
+
+
+Get the Alertmanager URL by running these commands in the same shell:
+  export POD_NAME=$(kubectl get pods --namespace monitoring -l "app=prometheus,component=alertmanager" -o jsonpath="{.items[0].metadata.name}")
+  kubectl --namespace monitoring port-forward $POD_NAME 9093
+#################################################################################
+######   WARNING: Pod Security Policy has been moved to a global property.  #####
+######            use .Values.podSecurityPolicy.enabled with pod-based      #####
+######            annotations                                               #####
+######            (e.g. .Values.nodeExporter.podSecurityPolicy.annotations) #####
+#################################################################################
+
+
+The Prometheus PushGateway can be accessed via port 9091 on the following DNS name from within your cluster:
+prometheus-pushgateway.monitoring.svc.cluster.local
+
+
+Get the PushGateway URL by running these commands in the same shell:
+  export POD_NAME=$(kubectl get pods --namespace monitoring -l "app=prometheus,component=pushgateway" -o jsonpath="{.items[0].metadata.name}")
+  kubectl --namespace monitoring port-forward $POD_NAME 9091
+
+For more information on running Prometheus, visit:
+https://prometheus.io/
 ```
+Note that it will take a short while for the Prometheus service to start.
   
 ## Step 4 accessing Prometheus
 Let's go to the service web page
