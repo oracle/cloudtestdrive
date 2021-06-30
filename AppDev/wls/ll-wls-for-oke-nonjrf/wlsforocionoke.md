@@ -290,50 +290,6 @@ Going to *Developer Services* -> *Container* -> *Kubernetes Clusters* we can see
 
 
 
-Let's click on it and check the information to **Access the Cluster**:
-
-![](images/wlsforocionoke/image-290.png)
-
-
-
-Launch the Cloud Shell, copy the command listed at step 2) and run it in the Cloud Shell Console:
-
-![](images/wlsforocionoke/image-300.png)
-
-
-
-Run:
-
-```
-$ kubectl get nodes
-```
-
-
-
-It will display Kubernetes nodes corresponding to both Node Pools (the four Compute Instances we have seen above):
-
-![](images/wlsforocionoke/image-310.png)
-
-
-
-Run now:
-
-```
-$ kubectl get pods --all-namespaces
-```
-
-
-
-It will display all running Pods across all namespaces:
-
-![](images/wlsforocionoke/image-320.png)
-
-
-
-At the end of the list we identity a Pod running WLS Admin Server, two Pods running Managed Servers and one Pod running WebLogic Operator.
-
-
-
 Lastly, by going to *Developer Services* -> *Containers* -> *Container Registry* we can check for the repositories created once the WebLogic for OKE has been provisioned:
 
 ![image-20201103180909347](images/wlsforocionoke/image-330.png)
@@ -549,6 +505,53 @@ Example on Window PowerShell:
 Once logged in, you can inspect `/u01/shared` shared folder, for example checking the Jenkins Pipelines script files:
 
 ![image-20201103163708746](images/wlsforocionoke/image-520.png)
+
+
+
+
+
+## Step 5 (optional) : Use kubectl to access your kubernetes cluster
+
+As of May 2021, the default setup of a OKE cluster is now with ***private*** endpoints.  This prohibits access to the cluster through the cloud shell for now.  The only way to access the cluster is to set up OCI CLI and kubectl on your local machine, and use a SSH tunnel through the bastion host to access the cluster.  
+
+Feel free to skip this step if you have issues installing software on your machine.
+
+***This step is not a prerequisite for the rest of this lab !***
+
+The full process of installing and setting up on your local machine is described here : https://docs.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengdownloadkubeconfigfile.htm 
+
+This process involves the following steps:
+
+- Creating and uploading an API signing key
+- Installing the Oracle Cloud Command Line utility (OCI CLI)
+- Set up the the kubeconfig file
+- set up an ssh tunnel through the bastion host
+
+
+
+Below the results of running the commands to visualize the nodes and the pods of the clusterthat are present after the creation of the WLS domain
+
+```
+$ kubectl get nodes
+```
+
+It will display Kubernetes nodes corresponding to both Node Pools (the four Compute Instances we have seen above):
+
+![](images/wlsforocionoke/image-310.png)
+
+Run now:
+
+```
+$ kubectl get pods --all-namespaces
+```
+
+It will display all running Pods across all namespaces:
+
+![](images/wlsforocionoke/image-320.png)
+
+
+
+At the end of the list we identity a Pod running WLS Admin Server, two Pods running Managed Servers and one Pod running WebLogic Operator.
 
 
 

@@ -64,7 +64,7 @@ During this day you will be able to experience the various cloud services hands-
 
 ## Data Science ##
 
-+ [Follow a series of Data Science labs](DataScience/README.md)
++ [Follow a series of Data Science labs (now on LiveLabs)](https://apexapps.oracle.com/pls/apex/dbpm/r/livelabs/view-workshop?wid=788)
 
   
 
