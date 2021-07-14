@@ -169,7 +169,7 @@ We've set this up using a cluster IP address. Prometheus itself does not provide
 
   2. let's switch to the directory with the monitoring scripts
   
-  - `cd $HOME/helidon-kubernetes-ingress/monitoring-kubernetes`
+  - `cd $HOME/helidon-kubernetes/monitoring-kubernetes`
   
   1. To provide secure access for the ingress we will set this up with a TLS connection , that requires that we create a certificate for the ingress rule. In productin you woudl use a proper certificate, but for this lab we're going to use the self-signed root certificate we created in the cloud shell setup. **IT IS VITAL** that you replace `<External IP>` in the example below with the IP address of your ingress load balancer (this is the IP address you've previously been using for access to the dashboard, zipkin and the curl commands).
   
