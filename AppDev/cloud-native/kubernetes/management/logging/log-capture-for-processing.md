@@ -20,7 +20,7 @@ This is one of the optional sets of Kubernetes labs
 
 ### Objectives
 
-This module shows how to install and configure the log capture tool Fluentd, and write data to an elastic search instance where it could be subsequently processed or analysed (this processing / analysis is not covered in this module)
+This module shows how to install and configure the log capture tool Fluentd, and write data to an elastic search instance where it could be subsequently processed or analyzed (this processing / analysis is not covered in this module)
 
 ### Prerequisites
 
@@ -57,7 +57,7 @@ This is good, but with in a distributed architecture a single request may (almos
 
 To process log data in a consistent manner we need to get all of the data into one place. We're going to use [fluentd](https://www.fluentd.org/) to capture the data and send it to  an Elastic search instance deployed in our Kubernetes cluster in the initial example below, but there are many other options.
 
-### Step 2a: Installing elastic search
+### Step 2a: Configuring the environment for the elastic search install
 
 As with elsewhere in the labs we'll do this module in it's own namespace, so first we have to create one.
 
@@ -71,15 +71,13 @@ namespace/logging created
 
 Now let's use helm to install the elastic search engine into the logging namespace
 
-  2. First add the bitnami helm chart repository.
+  2. First add the Elastic helm chart repository.
 
-  - `helm repo add bitnami https://charts.bitnami.com/bitnami`
+  - `helm repo add elastic https://helm.elastic.co`
   
   ```
-"bitnami" has been added to your repositories
+"elastic" has been added to your repositories
 ```
-
-Note that depending on what modules you have already done you may get a message that `"bitnami" already exists with the same configuration, skipping` This is fine.
 
   3. Update the repository cache
   
@@ -87,104 +85,128 @@ Note that depending on what modules you have already done you may get a message 
 
   ```
 Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "ingress-nginx" chart repository
 ...Successfully got an update from the "kubernetes-dashboard" chart repository
-...Successfully got an update from the "bitnami" chart repository
+...Successfully got an update from the "elastic" chart repository
 Update Complete. ⎈ Happy Helming!⎈ 
 ```
 
-  4. Now we can actually install elastic search. In the cloud console type
+  4. Make sure you are in the right environment which holds the yaml files
   
-  - `helm install elasticsearch bitnami/elasticsearch --namespace logging --version 12.8.2`
+  - `cd $HOME/helidon-kubernetes/management/logging`
+  
+### Step 2b: Setting up the security for the elastic search install
+
+The default configuration for the elastic service does not have any password protection. For demo purposes this might be OK, but we **are** on the internet and so should use something more secure (and of course you **must** use a strong password in a production environment!)
+
+First let's create a password file for the admin user. In the example below I'm using `ZaphodBeeblebrox` as the password, but please feel free to change this if you like
+
+  1. In the OCI Cloud Shell type
+  
+  - `htpasswd -c -b auth admin ZaphodBeeblebrox`
+
+  ```
+Adding password for user admin
+```
+
+Now having create the password file we need to add it to Kuberntes as a secret so the ingress controller can use it.
+
+  2. In the OCI Cloud Shell type
+  
+  - `kubectl create secret generic web-ingress-auth -n logging --from-file=auth`
+
+  ```
+secret/web-ingress-auth created
+```
+
+  3. Let's create the certificate for this service. In the OCI cloud shell type the following, remembering to replace `<External IP>` with the IP address of the ingress service
+  
+  - `$HOME/keys/step certificate create search.logging.<External IP>.nip.io tls-search.crt tls-search.key  --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
+  
+  ```
+  Your certificate has been saved in tls-search.crt.
+  Your private key has been saved in tls-search.key.
+```
+  
+  4. Create the tls secret from the certificate. IN the OCI cloud shell type
+  
+  - `kubectl create secret tls tls-search --key tls-search.key --cert tls-search.crt -n logging`
+
+   ```
+   secret/tls-search created
+```
+  
+### Step 2c: Installing elastic search
+  
+  1. Now we can actually install elastic search. In the cloud console type the following, remembering to replace `<External IP>` with the IP address of the Ingress controller **BOTH** times
+  
+  - `helm install elasticsearch elastic/elasticsearch --namespace logging --version 7.13.4 --set ingress.enabled=true --set ingress.tls[0].hosts[0]='search.logging.<External IP>.nip.io' --set ingress.tls[0].secretName=tls-search --set ingress.hosts[0].host='search.logging.<External IP>.nip.io' --set ingress.hosts[0].paths[0].path='/' --set ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-type"=basic --set ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-secret"=web-ingress-auth --set ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-realm"="Authentication Required"`
 
   ```
 NAME: elasticsearch
-LAST DEPLOYED: Wed Apr 22 15:05:25 2020
+LAST DEPLOYED: Wed Jul 21 13:16:34 2021
 NAMESPACE: logging
 STATUS: deployed
 REVISION: 1
 NOTES:
-The elasticsearch cluster has been installed.
-
-Elasticsearch can be accessed:
-
-  * Within your cluster, at the following DNS name at port 9200:
-
-    elasticsearch-client.logging.svc
-
-  * From outside the cluster, run these commands in the same shell:
-
-    export POD_NAME=$(kubectl get pods --namespace logging -l "app=elasticsearch,component=client,release=elasticsearch" -o jsonpath="{.items[0].metadata.name}")
-    echo "Visit http://127.0.0.1:9200 to use Elasticsearch"
-    kubectl port-forward --namespace logging $POD_NAME 9200:9200
+1. Watch all cluster members come up.
+  $ kubectl get pods --namespace=logging -l app=elasticsearch-master -w
+2. Test cluster health using Helm test.
+  $ helm test elasticsearch
 ```
 
-Note the DNS name, in this case it's `elasticsearch-client.logging.svc`
+There are a lot of options in this command, this is bacause the elastic search helm stack is written slightly differently from some of the others we've used so far (it doesn't have a single "Set up an ingress" option) so we need to define the ingress host and tls details more precisely. Additionally to protect thge actuall elastic search service we are also specifying the annotations to make the ingress controller ask for a security password.
 
 Let's check on the installation, note that is can take a few mins for the elastic search to be loaded and installed.
 
-  5. In the cloud console type 
+  2. In the cloud console type 
   
   - `kubectl get all -n logging`
 
   ```
-NAME                                        READY   STATUS     RESTARTS   AGE
-pod/elasticsearch-client-5597688787-mq8qx   0/1     Running    0          55s
-pod/elasticsearch-client-5597688787-vzgk6   0/1     Running    0          56s
-pod/elasticsearch-data-0                    0/1     Init:0/2   0          56s
-pod/elasticsearch-master-0                  0/1     Init:0/2   0          55s
+NAME                         READY   STATUS    RESTARTS   AGE
+pod/elasticsearch-master-0   1/1     Running   0          4m57s
+pod/elasticsearch-master-1   1/1     Running   0          4m57s
+pod/elasticsearch-master-2   0/1     Pending   0          4m57s
 
-NAME                              TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)    AGE
-service/elasticsearch-client      ClusterIP   10.96.5.107   <none>        9200/TCP   56s
-service/elasticsearch-discovery   ClusterIP   None          <none>        9300/TCP   56s
-
-NAME                                   READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/elasticsearch-client   0/2     2            0           56s
-
-NAME                                              DESIRED   CURRENT   READY   AGE
-replicaset.apps/elasticsearch-client-5597688787   2         2         0       56s
+NAME                                    TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)             AGE
+service/elasticsearch-master            ClusterIP   10.96.76.71   <none>        9200/TCP,9300/TCP   4m58s
+service/elasticsearch-master-headless   ClusterIP   None          <none>        9200/TCP,9300/TCP   4m58s
 
 NAME                                    READY   AGE
-statefulset.apps/elasticsearch-data     0/2     56s
-statefulset.apps/elasticsearch-master   0/3     56s
+statefulset.apps/elasticsearch-master   2/3     4m58s
 ```
 
-### Step 2b: Create an ingress to allow external access to the elastic search
-
-Normally you wouldn't do this as the elastic search is an internal service that's accessed using other services that do analysis, but as we're going to be connecting to it externally to see how it's been working we're going to create an ingress that will let us access it.
-
-  1. Switch to the logging scripts directory.
+  3. We can check that the software has been installed by using the helm test command. In the OCI cloud shell type 
   
-  - `cd $HOME/helidon-kubernetes/management/logging` 
-
-  2. Apply the ingress file by typing 
+  - `helm test elasticsearch -n logging`
   
-  - `kubectl apply -f ingressElasticSearch.yaml`
-
   ```
-ingress.networking.k8s.io/elasticsearch created
-```
+Pod elasticsearch-qepig-test pending
+Pod elasticsearch-qepig-test pending
+Pod elasticsearch-qepig-test pending
+Pod elasticsearch-qepig-test succeeded
+NAME: elasticsearch
+LAST DEPLOYED: Wed Jul 21 13:16:34 2021
+NAMESPACE: logging
+STATUS: deployed
+REVISION: 1
+TEST SUITE:     elasticsearch-qepig-test
+Last Started:   Wed Jul 21 13:24:23 2021
+Last Completed: Wed Jul 21 13:24:25 2021
+Phase:          Succeeded
+NOTES:
+1. Watch all cluster members come up.
+  $ kubectl get pods --namespace=logging -l app=elasticsearch-master -w
+2. Test cluster health using Helm test.
+  $ helm test elasticsearch
+  ```
 
-<details><summary><b>If you need to remind yourself of the ingress controller IP address</b></summary>
+### Step 2d: Accessing the service
 
+  1. In a web browser go to the web page `https://search.logging.<External IP>.nip.ip/_cat`  (remember to replace `External IP>` with your ingress controller IP address) If you get a 503 or 502 error this means that the elastic search service is still starting up. Wait a short time then retry.
 
-- In the OCI Cloud Shell type :
-  - `kubectl get services -n ingress-nginx`
-
-```
-NAME                                          TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)                      AGE
-ingress-nginx-nginx-ingress-controller        LoadBalancer   10.96.196.6    130.61.195.102   80:31969/TCP,443:31302/TCP   6d1h
-ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.17.121   <none>           80/TCP                       6d1h
-```
-
-look at the `ingress-nginx-nginx-ingress-controller` row, IP address inthe `EXTERNAL-IP` column is the one you want, in this case that's `130.61.195.102` **but yours will vary**
-
----
-
-</details>
-
-  3. In a web browser go to the web page `https://<External IP>/elastic/_cat`  (remember the one below is **my** ip address **you need to use yours**) If you get a 503 or 502 error this means that the elastic search service is still starting up. Wait a short time then retry.
-
-  4. If needed in the browser, accept a self signed certificate. The mechanism varies by browser and version, but as of September 2020 the following worked with the most recent (then) browser version.
+  2. If needed in the browser, accept a self signed certificate. The mechanism varies by browser and version, but as of September 2020 the following worked with the most recent (then) browser version.
   
   - In Safari you will be presented with a page saying "This Connection Is Not Private" Click the "Show details" button, then you will see a link titled `visit this website` click that, then click the `Visit Website` button on the confirmation pop-up. To update the security settings you may need to enter a password, use Touch ID or confirm using your Apple Watch.
   
@@ -194,21 +216,25 @@ look at the `ingress-nginx-nginx-ingress-controller` row, IP address inthe `EXTE
   
 We have had reports that some versions of Chrome will not allow you to override the page like this, for Chrome 83 at least one solution is to click in the browser window and type the words `thisisunsafe` (copy and past doesn't seem to work, you need to actually type it). Alternatively use a different browser.
 
-  ![](images/ES-catalogue-endpoints.png)
+  3. When prompted enter the username of `admin` and the password you chose when you setup the credentials (we suggested `ZaphodBeeblebrox` but if you chose your own you'll need to use that). We recommend remembering the password to make future accesses easier. 
+  
+  ![](images/ES-enter-password.png)
 
 We can see that the elastic search service is up and running, let's see what data it holds
 
-  5. In a web browser (remember to substitute **your** IP address) look at the indices in the service
+  ![](images/ES-catalogue-endpoints.png)
+
+  4. In a web browser (remember to substitute **your** IP address) look at the indices in the service
   
   ```
-  http://<external IP>/elastic/_cat/indices
+  http://<external IP>/_cat/indices
 ```
 
   ![](images/ES-no-indices.png)
 
 Well, it's empty! Of course that shouldn't be a surprise, we've not put any log data in it yet!
 
-### Step 2c: Capturing the log data from the micro-services
+### Step 2e: Capturing the log data from the micro-services
 
 Kubernetes writes the log data it captures to files on the host that's running the node. To get the data we therefore need to run a program on every node that accesses the log files and sends them to the storage (elastic search in this case)
 
@@ -226,7 +252,7 @@ Additionally the daemon set can look at the log data for all of the pods in the 
 
 </details>
 
-Why run the data gathering in a pod ? Well why not ? While we could run the data capture process by hand manually on each node then we'd have to worry about stopping and starting the service, restarting if it fails, managing and updating configuration files and so on. If we just run it in a Kubernetes pod we can let Kuberneties do all of it's magic for us and we can focus on defining the capture process, and leave running it to Kubernetes! 
+Why run the data gathering in a pod ? Well why not ? While we could run the data capture process by hand manually on each node then we'd have to worry about stopping and starting the service, restarting if it fails, managing and updating configuration files and so on. If we just run it in a Kubernetes pod we can let Kubernetes do all of it's magic for us and we can focus on defining the capture process, and leave running it to Kubernetes! 
 
 How will our capture pod get the log data though ? We've seen previously how we can use volumes to bring in a config map or secret to a pod and make it look like it's part of the local file system, well there are several other types of source for a volume (in the Prometheus section we briefly saw how helm setup an external storage object as a volume for storing the data). One of the volume types provides the ability to bring in a local file system, in this case in the node as part of the pods file structure.
 
@@ -286,33 +312,11 @@ NAME        STATUS   ROLES   AGE   VERSION
 
 But it's easier to see what's happening using the Kubernetes dashboard in this case.
 
-<details><summary><b>If you've forgotten your Kubernetes dashboard details</b></summary>
-
-
-You can get the IP address being used for the dashboard by looking at the services list for the kube-system namespace
-
-- In the OCI Cloud Shell type :
-  - `kubectl get services -n kube-system`
-  
-```
-NAME                   TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)                  AGE
-kube-dns               ClusterIP      10.96.5.5      <none>           53/UDP,53/TCP,9153/TCP   8d
-kubernetes-dashboard   LoadBalancer   10.96.161.29   132.145.231.23   443:30738/TCP            6d22h
-```
-
-The address is in the EXTERNAL-IP column, in this case it's 132.145.231.23 **but yours will be different**
-
----
-
-</details>
-
 Open the Kubernetes dashboard
 
-  4. In a web browser on your laptop go to the dashboard (remember this is my IP address, yours will be different) 
+  4. In a web browser on your laptop go to the dashboard (remember to replace `<External IP` with your IP address) 
   
-  ```
-https://132.145.231.23/#!/login
-```
+  - `https://dashboard.kube-system.<External IP>.nip.io/#!/login`
 
   5. If prompted in the browser, accept the self signed certificate. The mechanism varies by browser and version, but as of September 2020 the following worked with the most recent (then) browser version.
   
@@ -374,19 +378,19 @@ In the Oracle Kubertnetes Environment the nodes are names based on their IP addr
 
   ![](images/dashboard-node-details.png)
 
-The dashboard is showing the overview of the node, if we scroll down further we'll see the list of the pods running on it.
+The dashboard is showing the overview of the node, if we scroll down further we'll see the list of the pods running on it (your list will vary from this one).
 
-  ![](images/dashboard-node-pods.png)
+  ![](images/dashboard-node-pods.png)ES-no-indices
 
-The fluentd pod is running, along with a number of others, for example the elaxtic search pods, others are system pods, and our application.
+The fluentd pod is running, along with a number of others, for example the elastic search pods, others are system pods, and our application.
 
-If you look at all of the other nodes you'll find that there is a fluentd pod on all of them, even though the other services like storefrond or stock manager aren't running on them all (well unless you've told Kubernetes to run multiple instances of the pod)
+If you look at all of the other nodes you'll find that there is a fluentd pod on all of them, even though the other services like storefront or stockmanager aren't running on them all (well unless you've told Kubernetes to run multiple instances of the pod)
 
 ## Step 3: Looking the the data
 
 If we go back and look at the Elastic search list of indices now we can see that some data has been added (the `?v=true` means that column headings are included the the returned data
 
-  1. In a web browser go to the web page `https://<External IP>/elastic/_cat/indices?v=true`  (remember the one below is **my** ip address **you need to use yours**)
+  1. In a web browser go to the web page `https://search.logging.<External IP>.nip.io/_cat/indices?v=true`  (remember to replace `<External IP> with your IP address)
 
   ![](images/ES-some-indicies.png)
 
@@ -398,33 +402,35 @@ I've used the index for the data gathered most recently, as can be seen in the i
 
   2. Let's look at the captured data. Look at the indecies list and chose one
   
-  3. Go to the `_search` URL (remember **you need to use your** IP address, adjust YYYY-MM-DD to one of the entries in the indexes list).
+  3. Go to the `_search` URL (remember to replace `<External IP>` address with yours) adjust YYYY-MM-DD to one of the entries in the indexes list).
   
   ```
-  https://<External IP>/elastic/logstash-<YYYY-MM-DD>/_search
+  https://search.logging.<External IP>.nip.io/logstash-<YYYY-MM-DD>/_search
 ```
 
+  **Important** Different web browsers will render the resulting JSON differently, this will also depend on the plugins in the browser, so do not be concerned if the output varies and is pure JSON data or is structured as in the image below)
+   
   ![](images/ES-quick-log-query.png)
 
 There's a lot of data here (and depending on which browser you use it may be nicely formated, or a pure text dump) but this has been running most of the day as I wrote this module, most interesting is that in the hits.total section we can see that there were 66177 entries, and we can see that (in this case) entry 0 is a warning from fluentd about the log data generated by the coredns container.
 
 Of course we can focus in on specific entries if we want, in this case we're going to look for entries which have the container_name of storefront
 
-  4. Try this URL to focus on the storefront container (remember the one below is **my** ip address **you need to use yours**, adjust YYYY-MM-DD to one of the entries in the indexes list).
+  4. Try this URL to focus on the storefront container (remember to replace `<External IP>` address with yours) adjust YYYY-MM-DD to one of the entries in the indexes list).
   
   ```
-https://<External IP>/elastic/logstash-<YYYY-MM-DD>/_search?q=kubernetes.container_name:storefront
+https://search.logging.<External IP>.nip.io/logstash-<YYYY-MM-DD>/_search?q=kubernetes.container_name:storefront
 ```
 
   ![](images/ES-search-empty-storefront.png)
 
-It may be empty, or you may get log messages (will really depend on if you'de used it on the chosen day)
+It may be empty, or you may get log messages (will really depend on if you've used it on the chosen day)
 
 If you haven't generated any log messages from the storefront container since we setup up the log capture just do some requests to the stock manager service which will generate log data
 
-  5. In the OCI Cloud Shell terminal type (remember to replace the <external IP> with the IP address for the ingress controller for your service)
+  5. In the OCI Cloud Shell terminal type (remember to replace `<External IP>` address with the IP address for the ingress controller for your service)
   
-  - `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
+  - `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
   
   ```
 HTTP/1.1 200 OK
@@ -473,7 +479,7 @@ The Kubernetes documentation has a [section covering logging](https://kubernetes
 
 ## Step 6: Tidying up the environment
 
-If you are in a trial tenancy there are limitations on how many Load Balancers and other resources you can have in use at any time, and you may need them for other modules. The simplest way to release the resources used in his module (including the load balancer) is to delete the entire namespace.
+If you are in a trial tenancy there are limitations on how many resources you can have in use at any time, and you may need them for other modules. The simplest way to release the resources used in this module is to delete the entire namespace.
 
   1. In the OCI Cloud shell type 
   
