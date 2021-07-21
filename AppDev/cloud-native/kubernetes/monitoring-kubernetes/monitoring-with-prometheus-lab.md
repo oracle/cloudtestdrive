@@ -76,24 +76,63 @@ Update Complete. ⎈Happy Helming!⎈
   
 Depending on which other modules you have done you may see differences in the repositories in the update list
 
-### Step 2b: Create a Namespace for the monitoring and visualization software
-To separate the monitoring services from the  other services we're going to put them into a new namespace. 
+### Step 2b: Setting up the namespace and security information
 
-  1. Type the following to create the namespace
+To separate the monitoring services from the  other services we're going to put them into a new namespace. We will also secure access to prometheus using a password.
+
+  1. Switch to the monitoring directory. In the OCI CLoud shell type
+  
+   - `cd $HOME/helidon-kubernetes/monitoring-kubernetes` 
+  
+
+  2. Type the following to create the namespace
   
   -  `kubectl create namespace monitoring`
 
   ```
       namespace/monitoring created
  ```
+ 
+  3. Create a password file for the admin user. In the example below I'm using `ZaphodBeeblebrox` as the password, but please feel free to change this if you like. In the OCI Cloud Shell type
+  
+  - `htpasswd -c -b auth admin ZaphodBeeblebrox`
 
+  ```
+Adding password for user admin
+```
 
+  4. Now having created the password file we need to add it to Kuberntes as a secret so the ingress controller can use it. In the OCI Cloud Shell type
+  
+  - `kubectl create secret generic web-ingress-auth -n monitoring --from-file=auth`
+
+  ```
+secret/web-ingress-auth created
+```
+
+  5. To provide secure access for the ingress we will set this up with a TLS connection , that requires that we create a certificate for the ingress rule. In productin you woudl use a proper certificate, but for this lab we're going to use the self-signed root certificate we created in the cloud shell setup. **IT IS VITAL** that you replace `<External IP>` in the example below with the IP address of your ingress load balancer (this is the IP address you've previously been using for access to the dashboard, zipkin and the curl commands).
+  
+  - `$HOME/keys/step certificate create prometheus.monitoring.<External IP>.nip.io tls-prometheus.crt tls-prometheus.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
+  
+  ```
+  Your certificate has been saved in tls-prometheus.crt.
+  Your private key has been saved in tls-prometheus.key.
+```
+
+  6. Now we will create a tls secret in Kubernetes using this certificate, note that this is in the `monitoring` namespace as that's where Prometheus will be installed
+  
+  - `kubectl create secret tls tls-prometheus --key tls-prometheus.key --cert tls-prometheus.crt -n monitoring`
+  
+  ```
+  secret/tls-prometheus created
+  ```
+  
 
 ## Step 3: Installing Prometheus
 
+
 <details><summary><b>Older versions of Kubernetes than 1.19.7</b></summary>
 
-We assume you are using Kubernetes 1.19.7 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the 11.16.9 version of the prometheus helm charts were found to work. If you were using an older version of Kubernetes we found the following version combinations to work.
+We assume you are using Kubernetes 1.19.7 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the 13.7.0 version of the prometheus helm charts were found to work. If you were using an older version of Kubernetes we found the following version combinations to work.
 
 Kubernetes 1.18.7 Promteheus helm chart 11.12.1 worked for us
 
@@ -110,91 +149,19 @@ To specify a specific older version use the version keyword in your help command
 ---
 
 </details>
-
-Installing Prometheus is simple, we just use helm.
-
-  1. In the OCI Cloud Shell type
-  
-  -  `helm install prometheus prometheus-community/prometheus --namespace monitoring --version 13.7.0`
-  
-  ```
-NAME: prometheus
-LAST DEPLOYED: Wed Jun 30 17:36:26 2021
-NAMESPACE: monitoring
-STATUS: deployed
-REVISION: 1
-TEST SUITE: None
-NOTES:
-The Prometheus server can be accessed via port 80 on the following DNS name from within your cluster:
-prometheus-server.monitoring.svc.cluster.local
-
-
-Get the Prometheus server URL by running these commands in the same shell:
-  export POD_NAME=$(kubectl get pods --namespace monitoring -l "app=prometheus,component=server" -o jsonpath="{.items[0].metadata.name}")
-  kubectl --namespace monitoring port-forward $POD_NAME 9090
-
-
-The Prometheus alertmanager can be accessed via port 80 on the following DNS name from within your cluster:
-prometheus-alertmanager.monitoring.svc.cluster.local
-
-
-Get the Alertmanager URL by running these commands in the same shell:
-  export POD_NAME=$(kubectl get pods --namespace monitoring -l "app=prometheus,component=alertmanager" -o jsonpath="{.items[0].metadata.name}")
-  kubectl --namespace monitoring port-forward $POD_NAME 9093
-#################################################################################
-######   WARNING: Pod Security Policy has been moved to a global property.  #####
-######            use .Values.podSecurityPolicy.enabled with pod-based      #####
-######            annotations                                               #####
-######            (e.g. .Values.nodeExporter.podSecurityPolicy.annotations) #####
-#################################################################################
-
-
-The Prometheus PushGateway can be accessed via port 9091 on the following DNS name from within your cluster:
-prometheus-pushgateway.monitoring.svc.cluster.local
-
-
-Get the PushGateway URL by running these commands in the same shell:
-  export POD_NAME=$(kubectl get pods --namespace monitoring -l "app=prometheus,component=pushgateway" -o jsonpath="{.items[0].metadata.name}")
-  kubectl --namespace monitoring port-forward $POD_NAME 9091
-
-For more information on running Prometheus, visit:
-https://prometheus.io/
-```
-
 Note the name given to the Prometheus server within the cluster, in this case `prometheus-server.monitoring.svc.cluster.local`  and also the alert manager's assigned name, in this case `prometheus-alertmanager.monitoring.svc.cluster.local`
 
-The Helm chart will automatically create a couple of small persistent volumes to hold the data it captures. If you want to see more on the volume in the dashboard (namespace monitoring) look at the Config and storage section / Persistent volume claims section, chose the prometheus-server link to get more details, then to locate the volume in the storage click on the Volume link in the details section) Alternatively in the Workloads / Pods section click on the prometheus server pod and scroll down to see the persistent volumes assigned to it.
+The Helm chart will automatically create a couple of small persistent volumes to hold the data it captures. If you want to see more on the volume in the dashboard (namespace monitoring) look at the Config and storage section / Persistent volume claims section, chose the prometheus-server link to get more details, then to locate the volume in the storage click on the Volume link in the details section) Alternatively in the Workloads / Pods section click on the prometheus server pod and scroll down to see the persistent volumes assigned to it. It will also use the tls-prometheus secret and the password auth we just setup
 
-We've set this up using a cluster IP address. Prometheus itself does not provide any login or authentication mechanism to access the UI. Because of this in production you would not expose it without security measures to the public internet. However to actually show you a bit of how to use Prometheus in this lab we're going to setup an ingress rule to access prometheus **You should not do this in a production environment without taking proper security measures to secure access, this is only for lab purposes.**
 
-  2. let's switch to the directory with the monitoring scripts
-  
-  - `cd $HOME/helidon-kubernetes/monitoring-kubernetes`
-  
-  1. To provide secure access for the ingress we will set this up with a TLS connection , that requires that we create a certificate for the ingress rule. In productin you woudl use a proper certificate, but for this lab we're going to use the self-signed root certificate we created in the cloud shell setup. **IT IS VITAL** that you replace `<External IP>` in the example below with the IP address of your ingress load balancer (this is the IP address you've previously been using for access to the dashboard, zipkin and the curl commands).
-  
-  - `$HOME/keys/step certificate create prometheus.monitoring.<External IP>.nip.io tls-prometheus.crt tls-prometheus.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
-  
-  ```
-  Your certificate has been saved in tls-prometheus.crt.
-  Your private key has been saved in tls-prometheus.key.
-```
 
-  2. Now we will create a tls secret in Kubernetes using this certificate, note that this is in the `monitoring` namespace as that's where Prometheus will be installed
+  31 Installing Prometheus is simple, we just use helm. In the OCI Cloud Shell type the following, you must of course replace `<External IP>` with the IP address of the external load balancer
   
-  - `kubectl create secret tls tls-prometheus --key tls-prometheus.key --cert tls-prometheus.crt -n monitoring`
-  
-  ```
-  secret/tls-prometheus created
-  ```
-  
-  3. Installing Prometheus is simple, we just use helm. In the OCI Cloud Shell type the following, you must of course replace <External IP> with the IP address of the external load balancer
-  
-  - `helm install prometheus prometheus-community/prometheus --namespace monitoring --version 13.7.0 --set server.ingress.enabled=true --set server.ingress.hosts='{prometheus.monitoring.<External IP>.nip.io}' --set server.ingress.tls[0].secretName=tls-prometheus`
+  - `helm install prometheus prometheus-community/prometheus --namespace monitoring --version 14.4.1 --set server.ingress.enabled=true --set server.ingress.hosts='{prometheus.monitoring.<External IP>.nip.io}' --set server.ingress.tls[0].secretName=tls-prometheus --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-type"=basic --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-secret"=web-ingress-auth --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-realm"="Authentication Required"`
   
   ```
   NAME: prometheus
-LAST DEPLOYED: Wed Jun 30 19:02:43 2021
+LAST DEPLOYED: Wed Jul 21 17:22:59 2021
 NAMESPACE: monitoring
 STATUS: deployed
 REVISION: 1
@@ -233,7 +200,7 @@ Get the PushGateway URL by running these commands in the same shell:
 For more information on running Prometheus, visit:
 https://prometheus.io/
 ```
-Note that it will take a short while for the Prometheus service to start.
+Note that it will take a short while for the Prometheus service to start. Check the dashboard and wait for the `prometheus-service` pod to be Ready or if you prefer the CLI `kubectl get pods -n monitoring`.
   
 ## Step 4 accessing Prometheus
 Let's go to the service web page
@@ -241,6 +208,10 @@ Let's go to the service web page
   1. In your web browser open up (replace <External IP> with the IP for your Load balancer - you may have to accept it as an unsafe page due to using a self-signed root certificate.
   
   - `https://prometheus.monitoring.<External IP>.nip.io`
+  
+  2. When prompted enter the username of `admin` and the password you chose when you setup the credentials (we suggested `ZaphodBeeblebrox` but if you chose your own you'll need to use that).
+  
+  ![Prometheus login password](images/prometheus-login-password.png)
  
 You'll see the Initial prometheus graph page as below.
 
@@ -248,7 +219,7 @@ You'll see the Initial prometheus graph page as below.
 
 Let's check that Prometheus is scraping some data. 
 
-  2. Click the **Insert Metric At Cursor** button
+  2. Click in the **Expression** box the press the space bar
   
 You will see a *lot* of possible choices exploring the various services built into Kubernetes (Including apiserver, Core DNS, Container stats, the number of various Kubernetes objects like secrets, pods, configmaps and so on).
 
@@ -258,7 +229,7 @@ You will see a *lot* of possible choices exploring the various services built in
 
 Alternatively rather than selecting from the list you can just start to type `kubelet_http_requests_total` into the Expression box, as you type a drop down will appear showing the possible metrics that match your typing so far, once the list of choices is small enough to see it chose `kubelet_http_requests_total` from the list (or just finish typing the entire name and press return to select it) 
 
-Depending on what Prometheus feels like (It seems to very between versions and your starting view) you will be presented with either console text data
+Depending on what Prometheus feels like (It seems to very between versions and your starting view) you will initially be presented with either s table of text data
 
 ![prometheus-http-requests-total-console](images/prometheus-kubelet-http-requests-total-console.png)
 
@@ -266,7 +237,7 @@ or a graph
 
 ![prometheus-http-requests-total-graph](images/prometheus-kubelet-http-requests-total-graph.png)
 
-  5. Click the **Graph** or **Console** tab names to switch between them
+  5. Click the **Graph** or **Table** tab names to switch between them
 
 The Kubelet is the code that runs in the worker nodes to perform management actions like starting pods and the like, we can therefore be reasonably confident it'll be available to select.
 
