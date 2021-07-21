@@ -612,7 +612,7 @@ We will use step to help us here, it was installed when you did the cloud shell 
 
 ### Step 5c: Create a login password to secure the connection
 
-The default configuration for the linkerd-web service includes a password of admin/admin. Obviously this is for demo purposes, but we should use something more secure (and of course you **must** use a strong password kubectl get namespace ingress-nginx -o yaml | linkerd inject - | kubectl replace -f -in a production environment!)
+The default configuration for the linkerd-web service includes a password of admin/admin. Obviously this is for demo purposes, but we should use something more secure (and of course you **must** use a strong password in a production environment!)
 
 First let's create a password file for the admin user. In the example below I'm using `ZaphodBeeblebrox` as the password, but please feel free to change this if you like
 
