@@ -1052,15 +1052,9 @@ ingress.networking.k8s.io/rewrite-ingress created
   -  `kubectl get ingress`
 
   ```
-NAME                      CLASS    HOSTS   ADDRESS          PORTS   AGE
-stockmanager              <none>   *       132.145.235.17   80      23s
-stockmanager-management   <none>   *       132.145.235.17   80      22s
-stockmanager-status       <none>   *       132.145.235.17   80      22s
-storefront                <none>   *       132.145.235.17   80      23s
-storefront-management     <none>   *       132.145.235.17   80      22s
-storefront-openapi        <none>   *       132.145.235.17   80      22s
-storefront-status         <none>   *       132.145.235.17   80      23s
-zipkin                    <none>   *       132.145.235.17   80      23s
+PORTS     AGE
+direct-ingress    <none>   store.123.456.789.999.nip.io   123.456.789.999   80, 443   8m18s
+rewrite-ingress   <none>   store.123.456.789.999.nip.io   123.456.789.999   80, 443   8m18s
 ```
 One thing that you may have noticed is that the ingress controller is running in the ingress-nginx namespace, but when we create the rules we are using the namespace we specified (in this case tg_helidon) This is because the rule needs to be in the same namespace as the service it's defining the connection two, but the ingress controller service exists once for the cluster (we could have more pods if we wanted, but for this lab it's perfectly capable of running all we need) We could put the ingress controller into any namespace we chose, kube-system might be a good choice in a production environment. If we wanted different ingress controllers then for nginx at any rate the --watch-namespace option restricts the controller to only look for ingress rules in specific namespaces.
 
