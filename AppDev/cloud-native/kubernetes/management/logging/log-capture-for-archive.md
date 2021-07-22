@@ -541,7 +541,7 @@ Do some requests to the storefront service which will generate log data
 
   7. In the OCI Cloud Shell terminal type (remember to replace the <external IP> with the IP address for the ingress controller for your service)
   
-  - `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
+  - `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
   
   ```
 HTTP/1.1 200 OK

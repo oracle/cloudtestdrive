@@ -145,7 +145,7 @@ We need some data to look at, so :
 
   8. Using the OCI Cloud Shell or your laptop, make a few requests using curl to generate some new data (replace <external IP> with that of the ingress controller you were using earlier)
   
-  -  `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
+  -  `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
 
 We need to open a web page to the Grafana service. This was displayed in the Helm output, in this example it's `http://grafana.monitoring.123.456.789.999.nip.io` ** but of of thats an example, your's will vary** (and that's not a valid address anyway)
 
@@ -230,7 +230,7 @@ If you don't have any data displayed then make a few requests
 
   4. If needed use curl to generate some new data (replace <external IP> with that of the ingress controller you were using earlier)
   
-  -  `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
+  -  `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
   
   ```
 HTTP/2 200 
@@ -273,7 +273,7 @@ Now any pod that provides the `application_listAllStockMeter_one_min_rate_per_se
 
   8. Make a few requests using curl to generate some new data (replace <external IP> with that of the ingress controller you were using earlier)
   
-  -  `curl -i -k -X GET -u jack:password https://1<external IP/store/stocklevel`
+  -  `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
 
   ```
 HTTP/2 200 
@@ -472,7 +472,7 @@ Now we have our dashboard let's set the auto refresh so as new data becomes avai
 
   8. Make a few requests using curl to generate some new data (replace <external IP> with that of the ingress controller you were using earlier)
   
-  -  `curl -i -k -X GET -u jack:password https://1<external IP/store/stocklevel`
+  -  `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
   
 ```
 HTTP/2 200 

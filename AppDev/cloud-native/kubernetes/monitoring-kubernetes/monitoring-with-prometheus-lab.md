@@ -496,7 +496,7 @@ Let's make a few calls to list the stock and see what we get
 
   6. Execute the following command a few times, **replacing <external IP> with your Ingress endpoint (not the prometheus IP):**
   
-  -  `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
+  -  `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
 
   ```
 HTTP/2 200 

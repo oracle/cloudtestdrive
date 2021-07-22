@@ -388,7 +388,7 @@ We see the usual deployment info, the Image is indeed the new one we specified (
 
   8. We should of course check that our update is correctly delivering a service (replace the IP address with one for your service)
   
-  - `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
+  - `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
 
   ```
 HTTP/2 200 
@@ -403,7 +403,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
   9. Now let's check the output from the StatusResource (again replace the IP address with the one for your service)
   
-  -  `curl -i -k -X GET https://<external IP>/sf/status`
+  -  `curl -i -k -X GET https://store.<External IP>.nip.io/sf/status`
 
   ```
 HTTP/2 200 
@@ -608,7 +608,7 @@ We see that all of the pods are now the original replica set version, and there 
 
   7. If we check this by going to the status we can see the rollback has worked (remember to replace <external IP> with the one for your service) :
   
-  -  `curl -i -k -X GET https://<external IP>/sf/status`
+  -  `curl -i -k -X GET https://store.<External IP>.nip.io/sf/status`
 
   ```
 HTTP/2 200 

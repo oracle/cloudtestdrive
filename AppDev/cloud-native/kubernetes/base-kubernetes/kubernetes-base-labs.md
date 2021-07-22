@@ -1098,9 +1098,9 @@ The image below was going to the ingress-nginx namespace (that being the one the
 
 ![Ingress controller service endpoints](images/ingress-controller-service-endpoints.png)
 
-  8. We now have a working endpoint, let's try accessing it using curl - expect an error!
+  8. We now have a working endpoint, let's try accessing it using curl (replace `<External IP>` with your Load balancer IP address) - expect an error!
 
-  -  `curl -i -k -X GET https://<ip address>/store`
+  -  `curl -i -k -X GET https://store.<External IP>.nip.io/store`
 
   ```
 HTTP/2 503 
@@ -1131,7 +1131,7 @@ We got a **service unavailable** error. This is because that web page is recogni
 
   9. If we tried to go to a URL that's not defined we will as expected get a **404 error**:
 
-  -  `curl -i -k -X GET https://<ip address>/unknowningress`
+  -  `curl -i -k -X GET https://store.<External IP>.nip.io/unknowningress`
 
   ```
 HTTP/2 404 
@@ -1882,7 +1882,7 @@ The External_IP column displays the external address.
 
   6. Let's try to get some data - **you might get an error** (replace <external IP> with the ingress controllers load ballancer you got earlier) If you only get a response of `[]` it's fine, you'll just need to setup the test data (expand the section below for details)
   
-  -  `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
+  -  `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
 
   ```
 HTTP/2 200 
@@ -1903,9 +1903,9 @@ Your database does not have the information that was uploaded in the Helidon par
 
 All is not lost, you can create the information easily
 
-- Run the following command, using the external IP address you used above
+- Run the following command, using the external IP address you used above (just the ip address is needed)
 
-  - `bash create-test-data.sh <external ip>`
+  - `bash create-test-data.sh <External ip>`
   
 ```
     Service IP address is 130.61.11.184
@@ -2032,7 +2032,7 @@ Of course the other services are also available, for example we can get the mini
 
   14. Consult minimum change (replace <external IP> with your address)
   
-  -  `curl -i -k -X GET https://<external IP>/sf/minimumChange`
+  -  `curl -i -k -X GET https://store.<External IP>.nip.io/sf/minimumChange`
 
   ```
 HTTP/2 200 
@@ -2049,7 +2049,7 @@ And in this case we are going to look at data on the admin port for the stock ma
 
   15. Test the Readiness call
   
-  - `curl -i -k -X GET https://<external IP>/smmgt/health/ready`
+  - `curl -i -k -X GET https://<store.<External IP>.nip.io/smmgt/health/ready`
 
   ```
 HTTP/2 200 
@@ -2067,7 +2067,7 @@ We saw in the helidon labs that it's possible to have the helidon framework moni
 
   1. Get the status resource data 
   
-  -  `curl -i -k -X GET https://<external IP>/sf/status`
+  -  `curl -i -k -X GET https://<store.<External IP>.nip.io/sf/status`
 
   ```
 HTTP/2 200 
@@ -2179,7 +2179,7 @@ If we now get the status resource data again it's also updated
 
   17. Query the status
   
-  - `curl -i -k -X GET https://<external IP>/sf/status`
+  - `curl -i -k -X GET https://store.<External IP>.nip.io/sf/status`
 
   ```
 HTTP/2 200 

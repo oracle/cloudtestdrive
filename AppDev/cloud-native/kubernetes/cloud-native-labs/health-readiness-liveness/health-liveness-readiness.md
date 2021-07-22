@@ -63,7 +63,7 @@ First let's make sure that the service is running, (replace <External IP> with t
 
   1. In the OCI Cloud Shell
   
-  - `curl -i -X GET -u jack:password http://<External IP>:80/store/stocklevel`
+  - `curl -i -X GET -u jack:password http://store.<External IP>.nip.io/store/stocklevel`
 
   ```
 HTTP/1.1 200 OK
@@ -117,7 +117,7 @@ If we now try getting the data again it still responds  (replace <External IP> w
 
   5. Try getting the data
 
-  - `curl -i -k -X GET -u jack:password https://<External IP>/store/stocklevel`
+  - `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
 
   ```
 HTTP/2 200 
@@ -730,7 +730,7 @@ To see what happens if the readiness probe does not work we can simply undeploy 
 
   13. First let's check it's running fine  (replace the <external IP> with the one for your service, and be prepared for a short delay as we'd just restarted everything)
   
-  - `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
+  - `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
 
   ```
 HTTP/1.1 200 OK
@@ -790,7 +790,7 @@ Something else has also happened though, the storefront service has no pods in t
 
   17. Let's try accessing the service (replace <external IP> with the one for your service)
   
-  -  `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
+  -  `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
 
   ```
 HTTP/1.1 503 Service Temporarily Unavailable
@@ -878,7 +878,7 @@ The storefront readiness probe has kicked in and the services are all back in th
 
   21. Check the service is responding properly now
   
-  - `curl -i -k -X GET -u jack:password https://<external IP>/store/stocklevel`
+  - `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
 
   ```
 HTTP/1.1 200 OK
