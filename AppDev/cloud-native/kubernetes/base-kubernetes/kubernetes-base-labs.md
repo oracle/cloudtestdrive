@@ -102,10 +102,10 @@ Access to the cluster is managed via a config file that by default is located in
 
 You will be presented with a page with details for downloading the kubeconfig file. Make sure the **OCI Cloud Shell Access** is the selected option.
 
-Look for the section with the download command, it will look like this :
+Look for the section with the download command, it will look something like this (yours of course will have a different OCID)
 
   ```
-oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.aaaa<lots of stuff>aaa --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0
+oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.abababababj472oaexzkmkvm5lsue2usqfkrcizupdx64o2qg4dcsvt62fhrgq --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0  --kube-endpoint PUBLIC_ENDPOINT
 ```
 
 
@@ -566,21 +566,6 @@ ca.crt:     1025 bytes
   
   5. Save it in a plain text editor on your laptop for easy use later in the lab
 
-As the OCI Cloud Shell runs in a web browser and is not itself a web browser we need to setup access so that the kubernetes-dashboard is available to your web browser on your laptop. This would normally be a problem as it would be running on a network that it internal to the cluster. 
-
-Fortunately for us helm is a very powerful mechanism for configuring services, and when we used the helm command to install the dashboard we told it that the service.type was LoadBalancer, this will automatically setup a load balancer for us, making the dashbaord service visible on the public internet, we just need the IP address to use.
-
-  6. To get the IP address of the dashboard load balancer run the following command
-  
-  - `kubectl get service kubernetes-dashboard -n kube-system`
-  
-  ```
-    NAME                   TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)         AGE
-    kubernetes-dashboard   LoadBalancer   10.96.21.252   130.61.134.234   443:32302/TCP   4m48s
-```
-
-The IP address of the load balancer is in the EXTERNAL-IP column. Note that this can take a few minutes to be assigned, so it it's listed as <pending> just re-run the `kubectl get` command after a short while
-
 
 ### Step 3d: Looking around the dashboard.
 In several of the labs we're going to be using the dashboard, so let's look around it a bit to get familiar with it's operation.
@@ -926,7 +911,7 @@ To enable the lab to complete in a reasonable time we will therefore be generati
 
   3. Run the following command to generate a certificate (you installed the step command inthe cloud shell setup). **VITAL** You must replace `<External IP>` in the subject below with the external IP address of your Ingress service, as an example this might look like `stock.123.456.789.999.nip.io` (That's is only an example, it absolutely will not work in the real world).
 
-  - `$HOME/keys/step certificate create store.<External IP>.nip.io tls-store.crt tls-store.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key"`
+  - `$HOME/keys/step certificate create store.<External IP>.nip.io tls-store.crt tls-store.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
 
   ```
 Your certificate has been saved in tls-store.crt.
@@ -1027,18 +1012,38 @@ Note that it is possible to match multiple paths in the same ingress, and they c
 
 </details>
 
-<details><summary><b>How to block http access ?</b></summary>
+  4. Edit the ingressConfig.yaml file, locate the sections `store.<External IP>.nip.io` replace `<External IP>` with the IP address of your ingress load balancer which you've just got, for example `store.123.456.789.999nip.io` (you need to use your ip address, this is only an example and won't work for you), you don't need to make changes in the comments. There are 4 locations where this needs doing in the actual text (not comments)
+  
+  - Original version before changing (this is only part of the file, there are other locations that need changing in addition to the ones shown here)
+  
+  ```
+  spec:
+  tls:
+  - hosts: 
+    # <External IP> must be replaced with the IP address of the ingress controller
+    - store.<External IP>.nip.io
+    secretName: tls-store
+  rules:
+    # <External IP> must be replaced with the IP address of the ingress controller
+  - host: store.<External IP>.nip.io
+  ```
+  
+  - Example after changing the text - note that the comments do not need changing (but feel free to do so if you want) Of course the IP address shown below is only an example and will not work, yours will be different
+  
+  ```
+  spec:
+  tls:
+  - hosts: 
+    # <External IP> must be replaced with the IP address of the ingress controller
+    - store.123.456.789.999.nip.io
+    secretName: tls-store
+  rules:
+    # <External IP> must be replaced with the IP address of the ingress controller
+  - host: store.123.456.789.999nip.io
+  ```
 
-We have provided a certificate in a secret to use for https traffic, but the ingress controller will not block http traffic without some ingress controller specific annotations that seem to very between not only the different ingress controllers but also the same controller in different cloud providers. 
 
-One simple solution however is to modify the load balancer settings to block non ssl traffic. This is generally cloud provider specific however.
-
----
-
-</details>
-
-
-  4. Let's create the Ingress rules by applying the Ingress Config file : 
+  5. Let's create the Ingress rules by applying the Ingress Config file : 
   
   -  `kubectl apply -f ingressConfig.yaml`
 
@@ -1047,7 +1052,7 @@ ingress.networking.k8s.io/direct-ingress create
 ingress.networking.k8s.io/rewrite-ingress created
 ```
 
-  5. We can see the resulting ingresses using kubectl
+  6. We can see the resulting ingresses using kubectl
 
   -  `kubectl get ingress`
 
@@ -1058,7 +1063,7 @@ rewrite-ingress   <none>   store.123.456.789.999.nip.io   123.456.789.999   80, 
 ```
 One thing that you may have noticed is that the ingress controller is running in the ingress-nginx namespace, but when we create the rules we are using the namespace we specified (in this case tg_helidon) This is because the rule needs to be in the same namespace as the service it's defining the connection two, but the ingress controller service exists once for the cluster (we could have more pods if we wanted, but for this lab it's perfectly capable of running all we need) We could put the ingress controller into any namespace we chose, kube-system might be a good choice in a production environment. If we wanted different ingress controllers then for nginx at any rate the --watch-namespace option restricts the controller to only look for ingress rules in specific namespaces.
 
-  6. Edit the ingressConfig.yaml file you'll see the rules in it sets up the following mappings
+  7. Look at the ingressConfig.yaml file you'll see the rules in it sets up the following mappings
 
 Direct mappings
 
@@ -1080,7 +1085,7 @@ Direct mappings
 
 Notice the different ports in use on the target.
 
-  7. If you didn't write it down earlier find the external IP address the ingress controller is running on :
+  8. If you didn't write it down earlier find the external IP address the ingress controller is running on :
 
   -  `kubectl get service -n ingress-nginx`
 
@@ -1098,7 +1103,7 @@ The image below was going to the ingress-nginx namespace (that being the one the
 
 ![Ingress controller service endpoints](images/ingress-controller-service-endpoints.png)
 
-  8. We now have a working endpoint, let's try accessing it using curl (replace `<External IP>` with your Load balancer IP address) - expect an error!
+  9. We now have a working endpoint, let's try accessing it using curl (replace `<External IP>` with your Load balancer IP address) - expect an error!
 
   -  `curl -i -k -X GET https://store.<External IP>.nip.io/store`
 
@@ -1129,7 +1134,7 @@ Previously we didn't use the -k flag or https when testing in the Helidon labs. 
 
 We got a **service unavailable** error. This is because that web page is recognised as an ingress rule, but there are no pods able to deliver the service. This isn't a surprise as we haven't started them yet!
 
-  9. If we tried to go to a URL that's not defined we will as expected get a **404 error**:
+  10. If we tried to go to a URL that's not defined we will as expected get a **404 error**:
 
   -  `curl -i -k -X GET https://store.<External IP>.nip.io/unknowningress`
 
@@ -2002,7 +2007,7 @@ As we are running zipkin and have an ingress setup to let us access the zipkin p
 
   9. Open your browser
   
-  10. Go to the ingress end point for your cluster, for example `http://<external IP>/zipkin` (replace with *your* ingress controllers Load balancer IP address)
+  10. Go to the ingress end point for your cluster, for example `https://store.<external IP>.nip.io/zipkin` (replace with `<external IP>` *your* ingress controllers Load balancer IP address)
 
   11. In the browser, accept a self signed certificate. The mechanism varies per browser and sometimes version, but below worked as of Summer 2020.
   

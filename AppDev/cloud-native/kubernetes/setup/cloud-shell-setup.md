@@ -210,7 +210,7 @@ To make this a little easier we're going to use `step` this is a much easier to 
   
   6. Let's get rid of the temporary stuff
 
-  ` `rm -rf *gz step_*`
+  - `rm -rf *gz step_*`
   
 ### c: Creating our root certificate
 
