@@ -10,9 +10,9 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 ## Step 1. Create WebLogic for OCI Stack
 
-- After logging in, go to Hamburger Menu, *Solutions and Platform* -> *Marketplace*:
+- After logging in, go to Hamburger Menu,  *Marketplace* -> *All Applications*:
 
-![](images/wlscnonjrfwithenv/image040.png)
+<img src="images/wlscnonjrfwithenv/image040.1.png" style="zoom: 50%;" />
 
 
 
@@ -26,6 +26,7 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 
 - Choose *WebLogic Server Enterprise Edition UCM*; This brings you to the Stack Overview page:
+  - Select the most recently dated version of the version **12.2.1.4**
 
 ![](images/wlscnonjrfwithenv/image060.png)
 
@@ -86,8 +87,10 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
       - A bit of context: the WebLogic Server Admin Password it's stored in an OCI Vault as an OCI Secret (encrypted with an OCI Encryption Key); during WebLogic Domain creation, the provisioning scripts will setup the admin password by getting it from the OCI Secret instead of having it as a Terraform variable; in a similar way - if talking about an JRF enabled domains - the database admin password will be referred from an OCI Secret
       
+  - **JDK Version**: use the default: *jdk8*
   
       
+  
 
 
 ![](images/wlscnonjrfwithenv/image110.png)
@@ -109,20 +112,20 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
   - For the Subnet Strategy:
 
     - *Create New Subnet*
-    - *Use Public Subnet*
-    - *Regional Subnet*
-
-    ![](images/wlsvcn2.png)
-
-  - Tick to **Enable Access to Administration Console**:
-
-    ![](images/wlsvcn4.png)
-
-  - Tick to **Provision Load Balancer**
-
-    - **Load Balancer Minimum and Maximum Bandwidth**: keep defaults
-
-    ![](images/wlsvcn3.png)
+    - WebLogic Server Subnet CIDR: keep default
+    - Bastion Host Subnet CIDR : keep default
+  - Bastion Host Shape: keep default
+  
+  ![](images/wlsvcn2.1.png)
+  
+- Tick to **Provision Load Balancer**
+  
+  - Load Balancer Subnet : keep defaults
+    - Minimum Bandwidth : keep default of 10
+  - Maximum Bandwidth : set to *20*
+    
+  
+  ![](images/wlsvcn3.1.png)
 
 
 
@@ -158,7 +161,121 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
 
 
 
-- After approx. 15 minutes, the Job should complete with success:
+The creation process will take approx. 15 minutes, during this time you can already set up your local machine to access the admin console through the bastion host: 
+
+
+If you used Cloud Shell for creating the SSH private and public key pair, you'd need to copy it to local machine. In the Cloud Shell Console, go to `keys` folder and print the private key:
+
+![](images/image-400.png)
+
+
+
+Use `CTRL+Insert` to copy the entire output including the last line:
+
+```
+-----BEGIN RSA PRIVATE KEY-----
+MIIJKAIBAAKCAgEA1/QqcR0Z6y/BKwloOSwIZKc3cneUtBdjmNz0AKmVDxN5cFHs
+tibJXd32TDBo0DGhl1FsIlI9Zx2/EC0a4haYjef7Y3uHd3m5z4CEmNML53DSxq/A
+2Y5gL0aGxl/b7nvRn5gKXuokBqSQ/uy562P/fZLdRMHPqPyIsNiKauESxtYegLVM
+....
+
+/rbekx4s3WF0C11lfCsYsQVfBrTLOSO890KqklC5f1ZQH99glF6sjiTbxdz+6ZJy
+3hGzLs46srOx5NDA4EfIz4WfcddXMGBXwVwfJVmR7CGn+wVwAXVKr7/6V7HNFjDy
+zcdaHbqFbR1gDVa5xZ1s+htPM2lW5UQDVvdpcALefZqmQgYAQV6jZNUDyeA=
+-----END RSA PRIVATE KEY-----
+```
+
+
+
+Save the content on local machine, in a file with the same name, as in example **weblogic_ssh_key**.
+
+
+
+Next, we need to change the private key file permissions.
+
+On a linux / mac platform:
+
+```
+$ chmod 600 weblogic_ssh_key
+```
+
+
+
+On a Windows platform, open **Command Prompt** (cmd) and run below commands to make the file readable only by current user:
+
+```
+> icacls .\weblogic_ssh_key /inheritance:r
+> icacls .\weblogic_ssh_key /grant:r "%username%":"(R)"
+```
+
+
+
+For both Windows commands you should get an output like:
+
+```
+processed file: .\weblogic_ssh_key
+Successfully processed 1 files; Failed processing 0 files
+```
+
+
+
+For Windows we're taking this approach for using **Windows Power Shell** instead of Putty. If you enjoy more using Putty, you'd need to use PuttyGen to import the private key and save it in .ppk format.
+
+
+
+Next, on your local computer, open an SSH tunnel to an unused port on the bastion compute instance as the `opc` user. For example, you can use port `1088` for SOCKS proxy. Specify the `-D` option to use dynamic port forwarding. 
+
+The SSH command format is:
+
+```
+$ ssh -C -D <port_for_socks_proxy> -i <path_to_private_key> opc@<bastion_public_ip>
+```
+
+
+
+For example:
+
+```
+ssh -C -D 1088 -i weblogic_ssh_key opc@130.61.39.170
+```
+
+
+
+For Windows, use **Windows Power Shell** to run the SSH command.
+
+![](images/image-410.png)
+
+
+
+In another Bash Console (or Command Prompt for Windows) you can check that the tunnel port has been open on your computer:
+
+```
+$ netstat -tln | grep 1088
+```
+
+
+
+On Windows:
+
+```
+> netstat -a
+```
+
+(look for `TCP    127.0.0.1:1088` line)
+
+
+
+Now all the local machine network traffic proxy-ed through 1088 port will be tunneled through the SSH connection to the bastion host.
+
+Open **Firefox** browser, go to  *Options*, scroll down to *Network Settings* and configure a Proxy to access Internet. Setup a *Manual proxy configuration*, use *localhost* for **SOCKS Host** and *1088* port for **SOCKS Port**. Leave HTTP Proxy and FTP Proxy untouched:
+
+![](images/image-420.png) 
+
+
+
+
+
+- By now the Job should have completed with success:
 
 ![](images/wlscnonjrfwithenv/image200.png)
 
@@ -168,7 +285,7 @@ This Hands on Lab will go through the process of creating a non JRF type of WebL
   - **Sample Application URL** (we can can try it at this moment, but the out of the box sample application won't load as we need to finish the SSL configuration of the Load Balancer)
   - **WebLogic Server Administration Console**
 
-![](images/wlscnonjrfwithenv/image210.png)
+![](images/wlscnonjrfwithenv/image210.1.png)
 
 
 

@@ -15,19 +15,18 @@ This lab will guide you through the steps to create a WebLogic for OCI Instance,
 
 In this lab we will spin up a simple configuration of WebLogic, composed of the following elements : 
 
-<img src="images/image040.png" alt="image-20201027145036593" style="zoom:50%;" />
+<img src="images/imageintro01.png" alt="image-20201027145036593" style="zoom:50%;" />
 
 We will be using the "WebLogic for OCI" Marketplace to select an image with the following properties:
 
 - Running as a Virtual Machine on the Infrastructure
 - Using the EE edition of WebLogic
 - Using the **UCM** or **Universal Credits Model** license model
-- Running in a public network
 
 Much more sophisticated setups are possible, you can explore thes on your own adfter the initial lab :
 
 - Using a Repository database
-- Using a private network and a *bastion host* to access this network
+- Using an existing network setup corresponding to your specific needs
 
 Below an example of a setup with private networks and a Database:
 

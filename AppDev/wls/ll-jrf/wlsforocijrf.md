@@ -26,6 +26,7 @@ This Hands on Lab will go through the process of creating a JRF type of WebLogic
 
 
 - Choose *WebLogic Server Enterprise Edition UCM*; This brings you to the Stack Overview page:
+  - Select the most recently dated version of the version **12.2.1.4**
 
 ![](images/wlscnonjrfwithenv/image060.png)
 
@@ -86,6 +87,8 @@ This Hands on Lab will go through the process of creating a JRF type of WebLogic
 
     - A bit of context: the WebLogic Server Admin Password it's stored in an OCI Vault as an OCI Secret (encrypted with an OCI Encryption Key); during WebLogic Domain creation, the provisioning scripts will setup the admin password by getting it from the OCI Secret instead of having it as a Terraform variable; in a similar way - for JRF enabled domains - the database admin password will be referred from an OCI Secret
 
+  - **JDK Version**: use the default: *jdk8*
+  
     
 
 
@@ -109,18 +112,20 @@ This Hands on Lab will go through the process of creating a JRF type of WebLogic
   - For the Subnet Strategy:
 
     - *Create New Subnet*
-    - Leave other parameters as default
+    - WebLogic Server Subnet CIDR: keep default
+    - Bastion Host Subnet CIDR : keep default
   
-  ![](images/wlsvcn2.png)
+  ![](images/wlsvcn2.1.png)
   
   
   
   - Tick to **Provision Load Balancer**
   
-    - **Load Balancer Minimum and Maximum Bandwidth**: 
-    - Set the **Maximum Bandwith = 20**
+    - Load Balancer Subnet : keep defaults
+      - Minimum Bandwidth : keep default of 10
+      - Maximum Bandwidth : set to *20*
     
-    ![](images/wlsvcn3-1.png)
+    ![](images/wlsvcn3.1.png)
 
 
 
@@ -193,23 +198,10 @@ This Hands on Lab will go through the process of creating a JRF type of WebLogic
 
 
 
-- After approx. 15 minutes, the Job should complete with success:
-
-![](images/wlscnonjrfwithenv/image200.png)
-
-
-
-- We can check the *Outputs* section of Job Resources and see two important values:
-  - **Sample Application URL** (we can can try it at this moment, but the out of the box sample application won't load as we need to finish the SSL configuration of the Load Balancer)
-  - **WebLogic Server Administration Console**
-
-![](images/image210.png)
-
-
-
 ### Access the WebLogic Admin Console
 
-To access the WebLogic Admin Console we need first to connect to the Bastion Host and create a SSH tunnel from your PC to the Bastion.
+The creation process will take approx. 15 minutes, during this time you can already set up your local machine to access the admin console through the bastion host: 
+
 
 If you used Cloud Shell for creating the SSH private and public key pair, you'd need to copy it to local machine. In the Cloud Shell Console, go to `keys` folder and print the private key:
 
@@ -320,7 +312,23 @@ Open **Firefox** browser, go to  *Options*, scroll down to *Network Settings* an
 
 
 
-Once done that, open a new browser tab and navigate to WebLogic Admin Console:
+
+
+- By now the Job should have completed with success:
+
+![](images/wlscnonjrfwithenv/image200.png)
+
+
+
+- We can check the *Outputs* section of Job Resources and see two important values:
+  - **Sample Application URL** (we can can try it at this moment, but the out of the box sample application won't load as we need to finish the SSL configuration of the Load Balancer)
+  - **WebLogic Server Administration Console**
+
+![](images/image210.png)
+
+
+
+Open a new browser tab and navigate to WebLogic Admin Console:
 
 ```
 http://<private load balancer ip>/console
