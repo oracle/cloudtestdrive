@@ -20,7 +20,7 @@ If you chose to follow the instructions this optional module will guide you thro
 
 **If** you decide to do this then you should have finished the all of the lab modules (Helidoon, Docker, Kubernetes etc. and any optional modules in those) Once these resources have been terminated you will not be able to recover them and will have to do the lab again to re-create them.
 
-## Step 1: Terminating the database
+## Task 1: Terminating the database
 
 **DO NOT** do this step unless you are **certain** that you have finished with the database, and in particular have decided they you **will not** be doing the associated Kubernetes labs (which also use the database)
 
@@ -38,7 +38,7 @@ If you chose to follow the instructions this optional module will guide you thro
   
 OCI will then start the termination process. This can take a short while. If you change your mind it's now to late.
 
-## Step 2: Terminating the Virtual Cloud Network
+## Task 2: Terminating the Virtual Cloud Network
 
 Do not do this step if you are running in an Oracle provided shared tenancy (e.g. live labs, cloud test drive)
 
@@ -62,7 +62,7 @@ OCI will then start the termination process. This can take a short while. If you
 
   7. Once the resources are terminated then click the `Close` button
   
-## Step 3: Terminating the compartment
+## Task 3: Terminating the compartment
 
 Do not do this step if you are running in an Oracle provided shared tenancy (e.g. live labs, cloud test drive)
 

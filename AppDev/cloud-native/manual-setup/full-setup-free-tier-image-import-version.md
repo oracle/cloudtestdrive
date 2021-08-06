@@ -33,7 +33,7 @@ This video is an introduction to this section of the lab. Once you've watched it
 
 </details>
 
-## Step 1: Create the CTDOKE compartment
+## Task 1: Create the CTDOKE compartment
 
 If you are in an **instructor led lab** the instructor may have already done this step for you, if so they will tell you.
 
@@ -63,7 +63,7 @@ If you are in an **instructor led lab** the instructor may have already done thi
 
 
 
-## Step 2: Import the image for the Development VM
+## Task 2: Import the image for the Development VM
 
 If you are in an **instructor led lab** the instructor may have already done this step for you, if so they will tell you.
 
@@ -101,7 +101,7 @@ If you are in an **instructor led lab** the instructor may have already done thi
 
   ![](images/import-custom-image-form.png)
 
-## Step 3: Creating a Virtual Cloud Network (VCN)
+## Task 3: Creating a Virtual Cloud Network (VCN)
 
 If you are in an **instructor led lab** the instructor may have already done this step for you, if so they will tell you.
 
@@ -136,7 +136,7 @@ You need to set up a Virtual Cloud Network to run the instances of this lab on.
   14. Once the VCN has been created click the `View Virtual Cloud Network` button
 
 
-## Step 4: Adding an OCI ingress rule for VNC
+## Task 4: Adding an OCI ingress rule for VNC
 
 If you are in an **instructor led lab** the instructor may have already done this step for you, if so they will tell you.
 
@@ -168,7 +168,7 @@ You need to be sure that the Virtual Cloud Network supports remote access using 
 
 
 
-## Step 5: Setup the database.
+## Task 5: Setup the database.
 
 If you are in an **instructor led lab** the instructor may have already done this step for you, if so they will tell you.
 
@@ -231,7 +231,7 @@ GRANT UNLIMITED TABLESPACE TO HelidonLabs;
   ![](images/SQLDeveloper-button.png)
 
 
-## Step 6: Create a Development VM using the image you imported
+## Task 6: Create a Development VM using the image you imported
 
 If you are running in your tenancy
 
@@ -299,7 +299,7 @@ Give the VM a few minutes to start up it's internal services.
 
 
 
-## Step 7: Accessing the Developer VM
+## Task 7: Accessing the Developer VM
 
 You will be using VNC to access the developer VM. There are multiple possible clients, chose from the list below or use another if you already have it. Note that the following may require you to have some level of admin rights on your machine.
 
@@ -373,7 +373,7 @@ The VNC connection will probably drop immediately and the VNC client will try to
 
 When the VM has rebooted (allow about 60 - 90 seconds) Open a new VNC connection, the IP address shoudl remain the same, and at the VNC login enter the **new** VNC password you just set.
 
-## Step 8: Installing Eclipse in the developer VM
+## Task 8: Installing Eclipse in the developer VM
 
 We have installed a developer configuration of Oracle Linux, and added tools like Maven, git and the Java development kit. To ensure that you have the latest integrated developer environments (IDE's) and starting point source code for the labs there are a couple of steps you need to take.
 
@@ -473,7 +473,7 @@ Double click on the `Eclipse` icon on the desktop. It may look like a text page 
 
 ![](images/14-eclipse-icon.png)
 
-## Step 9: Downloading and importing the labs initial code
+## Task 9: Downloading and importing the labs initial code
 
 To enable us to update the code used by the labs without having to update the Developer VM image each time we hold the primary copy of the code in a git repository (where we can update it as the lab is enhanced) You need to download this into your development VM and import it into Eclipse
 
@@ -625,7 +625,7 @@ When Maven finishes there may be warnings about problems (These relate to incomp
 
 
 
-## Step 10: Downloading the database Wallet file.
+## Task 10: Downloading the database Wallet file.
 
 The database Wallet file contains the details needed to connect to your database instance, it needs to be downloaded to the development VM and placed in the right location.
 

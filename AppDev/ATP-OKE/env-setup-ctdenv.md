@@ -22,7 +22,7 @@ In this lab you will be using the PaaS services that are linked with the **Ident
 
 
 
-## STEP 1: Create a user certificate and token
+## Task 1: Create a user certificate and token
 
 In order to interact with the various Cloud Services in a secure way, we will be using a **password token** and a **API Key**.
 

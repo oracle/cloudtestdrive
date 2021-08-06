@@ -20,7 +20,7 @@ If you chose to follow the instructions this optional module will guide you thro
 
 **If** you decide to do this then you should have finished the Kubernetes lab modules you have chosen to do. Once you delete these resources you will not be able to recover them except by doing the lab again.
 
-## Step 1: Cleaning out your cluster
+## Task 1: Cleaning out your cluster
 
 As some of the resources you've created in the Kubernetes cluster are actually outside the cluster we need to terminate the in cluster elements cleanly so that the cluster management will clean up the OCI level resources (e.g. load balancers, storage reservations etc.)
 
@@ -75,7 +75,7 @@ namespace "tg-helidon" deleted
 namespace "ingress-nginx deleted  
 ```
 
-## Step 2: Terminating the Kubernetes cluster
+## Task 2: Terminating the Kubernetes cluster
 
 This will destroy the Kubernetes cluster you have been using.
 

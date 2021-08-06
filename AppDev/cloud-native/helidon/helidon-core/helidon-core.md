@@ -26,7 +26,7 @@ This module looks at the core Helidon features for REST enabling code to convert
 
 You need to have completed the **Setting up your tenancy** and **Setup for the Helidon labs** modules
 
-## Step 1: REST enabling our Java classes.
+## Task 1: REST enabling our Java classes.
 
   1. Open the Eclipse IDE. There is an Eclipse icon on the desktop, double click it, and wait for Eclipse to start.
 
@@ -544,7 +544,7 @@ Now you've seen how Helidon can not only REST enable methods, but also handle th
 
 
 
-## Step 2: Authentication
+## Task 2: Authentication
 
 <details><summary><b>The theory</b></summary>
 
@@ -669,7 +669,7 @@ With a single annotation and a config file we've now ensured that our service is
 
 
 
-## Step 3: Scope of classes and additional REST endpoints
+## Task 3: Scope of classes and additional REST endpoints
 
 A big application may have multiple sets of services, grouped into resources, so far we're looking at the StorefrontResource that handles the stock interactions. But what if we want to have other resources for other parts of the application ?
 
@@ -976,7 +976,7 @@ content-length: 54
 
 We'll look at what the StatusResource is used for later
 
-## Step 4: Content and Dependency Injection
+## Task 4: Content and Dependency Injection
 
 Here we look at ways to automatically have the Helidon framework create and assign instance for us.
 
@@ -1436,7 +1436,7 @@ content-length: 1
 ```
 
 
-## Step 5: Monitoring the configuration for changes
+## Task 5: Monitoring the configuration for changes
 <details><summary><b>How it works</b></summary>
 
 
@@ -1554,7 +1554,7 @@ The value is injected **after** the classes constructor has been run, so if the 
 
 </details>
 
-## Step 6: Separating functionality by port
+## Task 6: Separating functionality by port
 Helidon can deliver service using multiple ports, for example separating out the administration functions (e.g. metrics, health etc.) from the operational functions.
 
   1. Look at the contents config file in `conf/storefront-network.yaml` 
@@ -1618,7 +1618,7 @@ You will see that it defines two network ports, the primary one on port 8080 and
 We will look more in the the services like health that are available on the admin port in a later exercise.
 
 
-## Step 7: Handling problems
+## Task 7: Handling problems
 
 When working in a distributed set of microservices you are operating in a networked environment, and that introduced a potential set of faults that are different from just accessing a local object instance. 
 

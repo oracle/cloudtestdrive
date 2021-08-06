@@ -20,7 +20,7 @@ If you chose to follow the instructions this optional module will guide you thro
 
 **If** you decide to do this then you should have finished the Helidon and Docker lab modules you have chosen to do. Once you delete these resources you will not be able to recover them except by doing the lab again.
 
-## Step 1: Saving your Eclipse projects
+## Task 1: Saving your Eclipse projects
 
 This is an optional step.
 
@@ -42,7 +42,7 @@ If you want to you can export the eclipse projects for use in your own environme
   
   8. Use the web email client from your email provider to email the exported file. Please remember that this is a zip file, so chose an address where you can receive it as some email services will block zip files. We advise that you check the receipt of the email **before** you destroy the virtual machine.
   
-## Step 2: Terminating the virtual machine
+## Task 2: Terminating the virtual machine
 
 This will destroy the virtual machine you have been using for development, and all work done within it. Be sure you want to do this!
 

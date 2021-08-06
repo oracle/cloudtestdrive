@@ -9,7 +9,7 @@ In this section we will create a second build job to run the container we create
 
 Let’s get started! 
 
-## Step 1: Set up your Deploy Build Job
+## Task 1: Set up your Deploy Build Job
 
 - Navigate to the **Build** tab and hit the **New Job** button.
 
@@ -69,7 +69,7 @@ Let’s get started!
 
   
 
-## Step 2: Configure the environment to point to your cloud instance
+## Task 2: Configure the environment to point to your cloud instance
 
 - Upload the kubeconfig file into the repository.  During the creation of the cluster, a **kubeconfig** file was generated.  This file is required to connect to your cluster from within the build job.  In case you are using a common Kubernetes cluster, your instructor will provide you with the appropriate **kubeconfig** file.
 
@@ -105,7 +105,7 @@ Let’s get started!
   
   
 
-## Step 3: Execute and validate your new job
+## Task 3: Execute and validate your new job
 
 - In the **Builds** menu, select the job you just created and hit the **Build Now** button.
 
@@ -122,7 +122,7 @@ Let’s get started!
 
 
 
-## Step 4: Visualize the Service to obtain the URL of your application
+## Task 4: Visualize the Service to obtain the URL of your application
 
 In order to see the application you just deployed, we need to construct the URL where the container is listening.  You can do this via the command line and kubectl.
 

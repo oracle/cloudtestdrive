@@ -25,7 +25,7 @@ As a database user, DBA or application developer,
 - An Oracle Cloud Infrastructure account with IAM privileges to provision compute instances
 - VNC Viewer or other suitable VNC client on your local laptop
 
-## **STEP 1**: Provision an OCI Marketplace Forms Services image
+## Task 1: Provision an OCI Marketplace Forms Services image
 
 We start with deploying a pre-configured client machine instance from the OCI marketplace.
 
@@ -59,7 +59,7 @@ We start with deploying a pre-configured client machine instance from the OCI ma
     ![](./images/computeready.png " ")
 
 
-## **STEP 2**: Connect from your local laptop into your development system to complete the forms installation
+## Task 2: Connect from your local laptop into your development system to complete the forms installation
 
 First we ssh into the dev client and invoke the VNC server that comes pre-installed.
 
@@ -203,7 +203,7 @@ First we ssh into the dev client and invoke the VNC server that comes pre-instal
 
 9. If all goes well, you should now see a linux desktop in your VNC window.
 
-## **STEP 3**: Copy the SQL Scripts, Shell Scripts and Sample Forms files to your development system
+## Task 3: Copy the SQL Scripts, Shell Scripts and Sample Forms files to your development system
 
 1. We have sample forms and sample database scripts that can be downloaded from [here](https://objectstorage.us-ashburn-1.oraclecloud.com/p/QP5J-CoMLxkdSxU25SaE8_B5t1A18b6qe7j_Xv7TckRgD3yDxilgfJhp-TAJir1V/n/c4u03/b/developer-library/o/setup-oracle-forms.zip)
 
@@ -220,7 +220,7 @@ First we ssh into the dev client and invoke the VNC server that comes pre-instal
     </copy>
     ````
 
-## **STEP 4**: Connect to your DB in Development system using SQL Developer
+## Task 4: Connect to your DB in Development system using SQL Developer
 
 1. In your VNC session, invoke SQL Developer from the top left Applications menu as shown below.
     ![](./images/sql-developer-vnc.png " ")
@@ -251,13 +251,13 @@ First we ssh into the dev client and invoke the VNC server that comes pre-instal
 3. Test your connection and save. The *Status* bar will show *Success* if it is a successful connection!
 
 
-## **STEP 5**: Run the scripts to create sample schema and insert sample data
+## Task 5: Run the scripts to create sample schema and insert sample data
 
   1.  Open the script  forms\_conversion\_ddl.sql in SQL developer in VNC and execute the script. Make a note of the credential for order user in the script.
   2.  The script creates the orders schema and orders user
   3.  In the same session connect to orders user and run the insert script forms\_conversion\_data\_insert.sql
 
-## **STEP 6**: Compile the forms files.
+## Task 6: Compile the forms files.
 
   1. In your VNC session, invoke Forms Builder from the top left Applications menu as shown below.
       ![](./images/fusion_middleware.png " ")
@@ -349,7 +349,7 @@ First we ssh into the dev client and invoke the VNC server that comes pre-instal
     </copy>
     ```
 
-## **STEP 7**: Convert the Forms to XML files
+## Task 7: Convert the Forms to XML files
 
 1. Before migrating  to Oracle Applications Express, Forms file have to be converted to XML file using frmf2xml utility provided with Oracle Forms Service Image. In the downloaded scripts, formsXMLconvert.sh script that can be run to convert all the Forms files in the directory where it is run from.
 

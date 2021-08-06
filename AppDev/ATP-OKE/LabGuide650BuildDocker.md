@@ -9,7 +9,7 @@ In this lab, you’ll learn how to build a Docker image for a Node.js REST servi
 
 Let’s get started! 
 
-## Step 1: Configure the connection to your OCIR Docker Repository
+## Task 1: Configure the connection to your OCIR Docker Repository
 
 Open your project in Visual Builder Studio, and follow the steps below:
 
@@ -45,7 +45,7 @@ Open your project in Visual Builder Studio, and follow the steps below:
 
 
 
-## Step 2: Configure the Docker build job
+## Task 2: Configure the Docker build job
 
 - Click **Build** in the left nav bar, then click Create Job**. 
 
@@ -77,7 +77,7 @@ Open your project in Visual Builder Studio, and follow the steps below:
   
 
 
-## Step 3: Add steps to the build: Execute the Docker commands
+## Task 3: Add steps to the build: Execute the Docker commands
 
 - Use the **Add Step** button and add a step of type **Docker -> Docker login**. 
 
@@ -123,7 +123,7 @@ Open your project in Visual Builder Studio, and follow the steps below:
 
 
 
-## Step 4: Configure some scripts to point to your environment
+## Task 4: Configure some scripts to point to your environment
 
 Before we can run the Build Job we just created, we need to parametrize some scripts to be pointing to your specific environment.
 
@@ -141,7 +141,7 @@ You are now ready to try out your Build Job in the next step!
 
 
 
-## Step 5: Run the Build Job
+## Task 5: Run the Build Job
 
 Before we move on, we want to ensure the job we just created works correctly. 
 

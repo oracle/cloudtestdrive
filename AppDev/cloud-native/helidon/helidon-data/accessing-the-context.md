@@ -20,7 +20,7 @@ Here we will see how you can access the context of your request, in this case to
 
 You need to have completed the **Database and Helidon** module.
 
-## Step 1: Accessing the context
+## Task 1: Accessing the context
 
 Strictly speaking this is not part of Helidon, but part of the larger Java EE spec, but it's a useful thing to do and works with Helidon.
 
@@ -129,15 +129,15 @@ To be complete update the adjustStockLevel and deleteStockItem methods in the sa
 
   8. Stop and restart the stock manager
   
-## Step 2: Other information available
+## Task 2: Other information available
 The security context can be used to find out if a user is in a role, and what form of authentication is in place. You can also use it to find out if the request came over a secure (https) connection, but a little note of warning there. In many micro-services deployments you may do the https termination elsewhere in the framework (for example in a Kubernetes Ingress controller) which may result in being told the connection is not secure, when in fact the connection to the framework itself is secure.
 
 
-## Step 3: Supporting methods
+## Task 3: Supporting methods
 
 There are already methods provided in the StockResource class to deal with retrieving (getAuditRecords) and writing the audit records (writeAuditRecord and the helper methods writeCreateRecord, writeUpdateRecord and writeDeleteRecord) These methods work in basically the same way as the other stock item methods so we're don't need to review them here, but feel free to look at them if you like.
 
-## Step 4: Transactional implications
+## Task 4: Transactional implications
 
 The entire StockResource class is covered by the @Transational annotation. This means that as we update the database with the stock changes in the transaction the same transaction will also cover the creating of the audit records. Thus both the stock level and the associated audit record will succeed or fail together. Admittedly here we are using the same database, but this would also apply if the audit records were being written to a completely different database.
 

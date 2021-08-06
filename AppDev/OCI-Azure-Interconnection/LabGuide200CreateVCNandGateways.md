@@ -108,7 +108,7 @@ Lets get started!
 ![](./images/200/SGWconfirmation.PNG)
 
 
-### STEP 4: Create first route table and associate it with DRG
+### Task 4: Create first route table and associate it with DRG
 
 - Select **Route Tables** under **Resources** section on the left and click **Create Route Table** button.
 
@@ -148,7 +148,7 @@ You will see also Default Route Table for VCN, but we will not use it here.
 
 ![.](./images/200/RouteTableDRGConfirmedAsociation.PNG)
 
-### STEP 5: Create second route table and associate it with SWG
+### Task 5: Create second route table and associate it with SWG
 
 - Select again **Route Tables** under **Resources** section on the left and click **Create Route Table** button.
 

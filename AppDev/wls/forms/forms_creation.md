@@ -2,7 +2,7 @@
 
 
 
-## Step 1: Preparing the environment
+## Task 1: Preparing the environment
 
 We'll be using the *Cloud Shell* of your tenancy to run most of the commands, as this environment already has all the required utilities installed : terraform, git, jq, ssh, etc.
 
@@ -289,7 +289,7 @@ The script will signal it it finished in approx. 5 minutes, but the actual insta
 
 
 
-## Step 5: Verify and Test
+## Task 5: Verify and Test
 To make sure the installation has finished correctly, ssh into the VM that was just created.  You can see the public IP address of the WebLogic instance in the above output: note the *public IP* of the instance.
 
 ```

@@ -101,7 +101,7 @@ In order to create the interconnect between Azure virtual network and Oracle Clo
 
 It make take up to 15-20 minutes for creating the virtual network gateway. 
 
-### STEP 3: Create a Virtual Machine and connect to it
+### Task 3: Create a Virtual Machine and connect to it
 
 In the meantime, lets setup a virtual machine in your virtual network, where you will deploy your .NET application and test the connectivity to the database, once the interconnect is successfully setup.
 
