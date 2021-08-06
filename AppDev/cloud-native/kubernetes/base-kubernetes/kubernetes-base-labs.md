@@ -31,7 +31,7 @@ If you are only doing the Kubernetes based labs you need to have completed the s
 
 In both cases you need to complete the **Create your Kubernetes cluster** and **Cloud Shell Setup for the Kubernetes Labs** modules.
 
-## Step 1: Configure the Helm repository
+## Task 1: Configure the Helm repository
 
 Helm is the tool we will be using to install standard software into Kubernetes. While it's possible to load software into Kubertetes by hand Helm makes it much easier as it has pre-defined configurations (called charts) that it pulls from an internet based repository.
 
@@ -76,7 +76,7 @@ Update Complete. ⎈ Happy Helming!⎈
 ```
 
 
-## Step 2: Getting your cluster access details
+## Task 2: Getting your cluster access details
 
 Access to the cluster is managed via a config file that by default is located in the `$HOME/.kube` folder, and is called `config`.  To check the setup, make sure to have copied your personal kubeconfig file to this location : 
 
@@ -144,7 +144,7 @@ If the kubectl command returns `No resources found.` and you have only just crea
 (The details and number of nodes will vary depending on the settings you chose when you created the cluster, they will take a few mins for the nodes to be configured after the cluster management is up and running)
 
 
-## Step 3: Basic cluster infrastructure services install
+## Task 3: Basic cluster infrastructure services install
 
 Usually a Kubernetes cluster comes with only the core Kubernetes services installed that are needed to actually run the cluster (e.g. the API, DNS services). Some providers also give you the option of installing other elements, but here we're going to assume you have a minimal cluster with only the core services and will need to setup the other services before you run the rest of the system.
 
@@ -700,7 +700,7 @@ Outside a lab environment you may well want to take a little longer to configure
 
 
 
-## Step 4: Namespace, Services and Ingress rules
+## Task 4: Namespace, Services and Ingress rules
 
 You now have the basic environment to deploy services, and we've looked at how to use the Kubernetes dashboard and the kubectl command line.
 
@@ -1155,7 +1155,7 @@ For more information on the nginx ingress controller and the different rules typ
 
 For see the doc more information on how the regular expressions with with see the [nginx ingress path matching page.](https://kubernetes.github.io/ingress-nginx/user-guide/ingress-path-matching/) 
 
-## Step 5: Secrets, configmaps - external configuration for your containers
+## Task 5: Secrets, configmaps - external configuration for your containers
 
 <details><summary><b>Introduction to Kubernetes secrets</b></summary>
 
@@ -1451,7 +1451,7 @@ As we'll see later we can also update the text by modifying the file and re-crea
 
 
 
-## Step 6: Deploying the actual microservices
+## Task 6: Deploying the actual microservices
 
 It's been quite a few steps (many of which are one off and don't have to be repeated for each application we want to run in Kubernetes) but we're finally ready to create the deployments and actually run our Helidon microservices inside of Kubernetes!
 
@@ -2067,7 +2067,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 {"outcome":"UP","status":"UP","checks":[{"name":"stockmanager-ready","state":"UP","status":"UP","data":{"department":"TestOrg","persistanceUnit":"stockmanagerJTA"}}]}
 ```
 
-## Step 7: Updating your external configuration
+## Task 7: Updating your external configuration
 We saw in the helidon labs that it's possible to have the helidon framework monitor the configuration files and trigger a refresh of the configuration data if something changed. Let's see how that works in Kubernetes.
 
   1. Get the status resource data 

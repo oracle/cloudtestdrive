@@ -33,7 +33,7 @@ This video is an introduction to this section of the lab. Once you've watched it
 
 </details>
 
-## Step 1: Create the CTDOKE compartment
+## Task 1: Create the CTDOKE compartment
 
 If you are in an **instructor led lab** the instructor may have already done this step for you, if so they will tell you.
 
@@ -60,7 +60,7 @@ If the `CTDOKE` compartment is not yet there, **create it** as below, if it it t
   8. Click the **Create Compartment** button.
   
 
-## Step 2: Creating the VM Image
+## Task 2: Creating the VM Image
 
 If you are in an **instructor led lab** the instructor may have already done this step for you, if so they will tell you.
 
@@ -156,7 +156,7 @@ Once the create button has been clicked you will see the VM details page.  Initi
 
 While it's starting you can work on the next step  
 
-## Step 3: Adding an OCI ingress rule for VNC
+## Task 3: Adding an OCI ingress rule for VNC
 
 If you are in an **instructor led lab** the instructor may have already done this step for you, if so they will tell you.
 
@@ -194,7 +194,7 @@ You need to be sure that the Virtual Cloud Network supports remote access using 
 
   ![](images/cloud-marketplace-install-add-ingress-rule.png)
 
-## Step 4: Setup the database.
+## Task 4: Setup the database.
 
 If you are in an **instructor led lab** the instructor may have already done this step for you, if so they will tell you.
 
@@ -262,7 +262,7 @@ GRANT UNLIMITED TABLESPACE TO HelidonLabs;
 
   ![](images/SQLDeveloper-button.png)
   
-## Step 5: Accessing the Developer VM
+## Task 5: Accessing the Developer VM
 
 Access to the Developer VM is via a VNC client, this allows us to provide direct access to the desktop and enables easy use of the developer tools. If you do not already have a VNC client on your computer you will need to install one.
 
@@ -342,7 +342,7 @@ The VNC connection will probably drop immediately and the VNC client will try to
 
 When the VM has rebooted (allow about 60 - 90 seconds) Open a new VNC connection, the IP address should remain the same, and at the VNC login enter the **new** VNC password you just set.
 
-## Step 6: Installing Eclipse in the developer VM
+## Task 6: Installing Eclipse in the developer VM
 
 We have installed a developer configuration of Oracle Linux, and added tools like Maven, git and the Java development kit. To ensure that you have the latest integrated developer environments (IDE's) and starting point source code for the labs there are a couple of steps you need to take.
 
@@ -514,7 +514,7 @@ Double click on the **Eclipse** icon on the desktop. It may look like a text pag
 ![](images/14-eclipse-icon.png)
 
 
-## Step 7: Downloading the database Wallet file.
+## Task 7: Downloading the database Wallet file.
 
 The database Wallet file contains the details needed to connect to your database instance, it needs to be downloaded to the development VM and placed in the right location.
 

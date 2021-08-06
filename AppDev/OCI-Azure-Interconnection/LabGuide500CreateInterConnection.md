@@ -27,7 +27,7 @@ Let's get started in order to connect developed and deployed application on Azur
 
 ## Steps
 
-### Step 1: Setup Azure ExpressRoute
+### Task 1: Setup Azure ExpressRoute
 
 - On the upper-left side of the Azure home screen, select **Create a resource** and type in the search bar **ExpressRoute** and click **Create.** 
 
@@ -62,7 +62,7 @@ Let's get started in order to connect developed and deployed application on Azur
 
 ![](./images/500/ExpressRouteCreated.PNG)
 
-### Step 2: Setup Oracle Cloud Infrastructure FastConnect
+### Task 2: Setup Oracle Cloud Infrastructure FastConnect
 
 - In OCI Console, navigate to the **Menu > Networking > FastConnect**.
 
@@ -125,7 +125,7 @@ You provide /30 addresses here for the BGP connection. The second and third in e
 
 ![](./images/500/ExpressRouteProvisioned.PNG)
 
-### Step 3: Link VNet to Azure ExpressRoute
+### Task 3: Link VNet to Azure ExpressRoute
 
 Next step is to create a link between the Azure Virtual Network (VNet) and ExpressRoute circuit.
 
@@ -154,7 +154,7 @@ Next step is to create a link between the Azure Virtual Network (VNet) and Expre
 
 ![](./images/500/GatewayConnectionSucceeded.PNG)
 
-### Step 4: Associate Network Security group to Azure AppSubnet and create Inbound Security rules
+### Task 4: Associate Network Security group to Azure AppSubnet and create Inbound Security rules
 
 You will reuse Network Security Group created automatically while creating Virtual Machine for your application
 
@@ -262,7 +262,7 @@ You will reuse Network Security Group created automatically while creating Virtu
 
 You have created an ExpressRoute, linked it with our Virtual Network  Gateway and configured network security group and route table to allow traffic connectivity with OCI VCN.
 
-### Step 6: Test your Connection again
+### Task 6: Test your Connection again
 
 - Go to your Visual Studio installed on **MyApp** VM on Azure.
 

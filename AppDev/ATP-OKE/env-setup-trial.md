@@ -20,7 +20,7 @@ This page will guide you through the following activities :
 
 
 
-## Step 1: Create a compartment called CTDOKE
+## Task 1: Create a compartment called CTDOKE
 
 ### Log in to your cloud account
 
@@ -64,7 +64,7 @@ After you successfully created the compartment, note down the **Compartment OCID
 
 
 
-## Step 2: Create a user certificate and token
+## Task 2: Create a user certificate and token
 
 In order to interact with the various Cloud Services in a secure way, we will be using a **password token** and a **API Key**.
 

@@ -27,7 +27,7 @@ This module explores how you can configure Kubernetes to automatically scale the
 
 You need to complete the **Horizontal Scaling** module.
 
-## Step 1: Horizontal autoscaling - based on CPU load or Memory usage
+## Task 1: Horizontal autoscaling - based on CPU load or Memory usage
 
 We've seen how we can increase (or decrease) the number of pods underlying a service and that the service will automatically balance the load across the pods for us as the pod count changes.
 
@@ -270,7 +270,7 @@ Importantly, if you have a ResourceQuota like CPU or memory usage applied to a n
 
 As an aside if you do the above for the zipkin pod you'll see that it has no resource constraint in place, so it can use as much CPU as the cluster allows for a pod by default
 
-## Step 2: Configuring the autoscaler
+## Task 2: Configuring the autoscaler
 
 That we have hit the limit is almost certainly a problem, it's quite likely that the performance of the service is limited out because of this. Of course it may be that you have made a deliberate decision to limit the service, possibly to avoid overloading the back end database (though as it's an ATP database it can scale automatically for you if the load gets high)
 
@@ -506,7 +506,7 @@ zipkin         1/1     1            1           4d2h
 
 The number of pods is now back to one (it may be that you get a report of 2 pods still running, in which case try getting the deployments again a little bit later.
 
-## Step 3: Autoscaling on other metrics
+## Task 3: Autoscaling on other metrics
 We have here looked at how to use CPU and memory to determine when to autoscale, that may be a good solution, or it may not. Kubernetes autoscaling can support the use of other metrics to manage autoscaling.
 
 These other metrics can be other Kuberneties metrics (known as custom metrics) for example the number of requests to the ingress controller, or (with the provision of the [Prometheus Adaptor (helm chart)](https://github.com/prometheus-community/helm-charts)) any metric that Prometheus gathers. This last is especially useful as it means you can autoscale on what are effectively business metrics.
@@ -515,7 +515,7 @@ It's also possible to autoscale on metrics provides from outside Kubernetes (the
 
 The [autoscaler docs explain some of these](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics)
 
-## Step 4: Other forms of AutoScaling
+## Task 4: Other forms of AutoScaling
 Here we have looked a how to have Kubernetes create new pods based on load (horizontal auto scaling). 
 
 OKE also supports vertical auto scaling (increasing the allowed resource limits on a pod) and to allow for situations where a pod may not sale horizontally that well. 

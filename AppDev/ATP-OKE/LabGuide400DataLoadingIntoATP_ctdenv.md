@@ -20,7 +20,7 @@ In real life, you would want to set up a more sophisticated logic to manage your
 
 
 
-## Step 1: Personalize the table creation script
+## Task 1: Personalize the table creation script
 
 As all participants will be using the same ATP database, we will first personalize the database table creation script so you can see your table in the database after running the build job.
 
@@ -35,7 +35,7 @@ As all participants will be using the same ATP database, we will first personali
 
 
 
-## Step 2: Set up your ATP Database Wallet
+## Task 2: Set up your ATP Database Wallet
 
 We need to extract the ATP Database wallet file into the OCI Cloud shell. Open the OCI Cloud shell.
 
@@ -101,7 +101,7 @@ git push
 
 
 
-## Step 3: Create and load your data in the database
+## Task 3: Create and load your data in the database
 
 - In Visual Builder Studio, navigate to the "Builds" tab and select **+Create Job**.
   - Enter a name : **CreateDBObjects**
@@ -152,7 +152,7 @@ In case this is the first build job in your environment, the startup of the Buil
 
 
 
-## Step 4: Verify the results
+## Task 4: Verify the results
 
 You can visualize the log file of your virtual machine, to check any errors you might encounter on this level: <img src="./images/400/logs.png" style="zoom:25%;" />
 

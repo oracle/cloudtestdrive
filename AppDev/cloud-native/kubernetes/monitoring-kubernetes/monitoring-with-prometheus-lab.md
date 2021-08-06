@@ -27,7 +27,7 @@ This module shows how to install the data capture tool Prometheus and how to con
 
 You need to complete the **Rolling update** module (last of the core Kubernetes labs modules). You can have done any of the other optional module sets.
 
-## Step 1: Explaining Monitoring in Kubernetes
+## Task 1: Explaining Monitoring in Kubernetes
 
 Monitoring a service in Kubernetes involves three components
 
@@ -43,7 +43,7 @@ Just because the data is available doesn't mean we can analyse it, something nee
 Once you have the data you need to be able to process it to visualize it and also report any alerts of problems.
 
 
-## Step 2: Preparing for installing Prometheus
+## Task 2: Preparing for installing Prometheus
 
 For this lab we are going to do some very simple monitoring, using the metrics in our microservices and the standard capabilities in the Kubernetes core services to generate data.  Then we'll use the Prometheus to extract the data and Grafana to display it.
 
@@ -127,7 +127,7 @@ secret/web-ingress-auth created
   ```
   
 
-## Step 3: Installing Prometheus
+## Task 3: Installing Prometheus
 
 
 <details><summary><b>Older versions of Kubernetes than 1.19.7</b></summary>
@@ -247,7 +247,7 @@ Note that the precise details shown will of course vary, especially if you've on
   
   7. Use the << and >> buttons to move the time window around within the overall data set (of course these may not be much use if you haven't got much data, but have a play if you like)
 
-## Step 5: Specifying services to scrape
+## Task 5: Specifying services to scrape
 The problem we have is that (currently) Prometheus is not collecting any data from our services. Of course we may find info on the clusters behavior interesting, but our own services would be more interesting!
 
 We can see what services Prometheus is currently scraping :
@@ -559,7 +559,7 @@ Prometheus was not designed to be a high end graphing tool, the graphs cannot fo
 
 ---
 
-## Step 3: Tidying up the environment
+## Task 3: Tidying up the environment
 
 If you are going to do the Visualizing with Gafana module please do **not** do the following, but return to the introduction of jump to the Visualizing With Grafana module
 

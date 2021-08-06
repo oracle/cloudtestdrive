@@ -10,7 +10,7 @@ This optional lab will guide you through the steps of terminating the cross-clou
 
 ## Steps
 
-### STEP 1: Delete connection from ExpressRoute circuit
+### Task 1: Delete connection from ExpressRoute circuit
 
 - In the Azure portal, view the ExpressRoute circuit, then view its **Connections**. Click on 3 dots next to the existing connection and then **Delete**.
 

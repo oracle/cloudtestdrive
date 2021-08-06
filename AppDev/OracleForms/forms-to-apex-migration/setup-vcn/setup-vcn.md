@@ -22,7 +22,7 @@ To sign in to the Console, you need the following:
 - URL for the Console: [https://console.us-ashburn-1.oraclecloud.com/](https://console.us-ashburn-1.oraclecloud.com/)
 - Oracle Cloud Infrastructure supports the latest versions of Google Chrome, Firefox and Internet Explorer 11. ***It does not support the Edge browser***.
 
-## **STEP 1**: Create Your VCN
+## Task 1: Create Your VCN
 
 To create a VCN on Oracle Cloud Infrastructure:
 

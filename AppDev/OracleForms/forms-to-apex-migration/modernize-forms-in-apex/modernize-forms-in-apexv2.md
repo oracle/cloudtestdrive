@@ -20,7 +20,7 @@ Estimated Lab Time: 30 minutes
 - Have Oracle APEX Workspace defined for the migration project
 
 
-## **STEP 1**: Creating an App
+## Task 1: Creating an App
 
 1. In the App Builder menu, click **App Builder**.
 2. Click **Create**.
@@ -34,7 +34,7 @@ Estimated Lab Time: 30 minutes
 4. Enter "Summit" in the application name, select appearance (Vita-Slate, Side Menu) and coninue on to add pages to the new application
     ![](images/create-app.png " ")
 
-## **STEP 2**: Create Oracle APEX page for Customer Form
+## Task 2: Create Oracle APEX page for Customer Form
 
 
 We will be walking through series of steps on how to create Customer Faceted Search, Summary Report in Interactive Report and Tree Report along with a modal form to create/update/delete customers. We will also be comparing with APEX migration project on how we can transform the Forms  Blocks/Triggers/LOV and Alerts into APEX.
@@ -52,7 +52,7 @@ We will be walking through series of steps on how to create Customer Faceted Sea
     Click **Add Page**
     ![](images/create-app_page_form_faceted_search1.png " ")
 
-## **STEP 3**: Create Oracle APEX Page for Customer Report
+## Task 3: Create Oracle APEX Page for Customer Report
 
 1. Click **Add Page** to add another page
     ![](images/create-app_pages.png " ")
@@ -81,7 +81,7 @@ We will be walking through series of steps on how to create Customer Faceted Sea
     Click **Add Page**
     ![](images/create-app_page_add_interactive_report2.png " ")
 
-## **STEP 4**: Create Oracle APEX page for Orders Master Detail Form
+## Task 4: Create Oracle APEX page for Orders Master Detail Form
 
   1. Click **Add Page** to add another page
       ![](images/create-app_pages.png " ")
@@ -98,7 +98,7 @@ We will be walking through series of steps on how to create Customer Faceted Sea
   Click **Add Page**
   ![](images/create-app_page_form_master_detail1.png " ")
 
-## **STEP 5**: Create Oracle APEX page for Orders Form
+## Task 5: Create Oracle APEX page for Orders Form
 
   1. Click **Add Page** to add another page
       ![](images/create-app_pages.png " ")
@@ -113,7 +113,7 @@ We will be walking through series of steps on how to create Customer Faceted Sea
       Click **Add Page**
       ![](images/create-app_page_form_faceted_search2.png " ")
 
-## **STEP 6**: Finalise the Oracle APEX Application Creation
+## Task 6: Finalise the Oracle APEX Application Creation
 
   1. Select Relevant Out-of-the-Box Features to be included with the new application. For now, ust Check the boxes for the **About Page** and **Feedback** features, Click **Create Application**
   ![](images/create-app_page1.png " ")
@@ -121,7 +121,7 @@ We will be walking through series of steps on how to create Customer Faceted Sea
   This will create the navigation menu entries, pages for all the Forms and other related application objects. Once completed it will take you to the App Builder for the application.
     ![](images/create-app_page2.png " ")
 
-## **STEP 7**: Explore the new Oracle APEX Application
+## Task 7: Explore the new Oracle APEX Application
 
   1. When you run the Page, you will be able to see Report with all the customers listed and you can edit or create new customer from the Report page
       ![](images/interactive_report.png " ")
@@ -142,7 +142,7 @@ We will be walking through series of steps on how to create Customer Faceted Sea
 
       Creating Customer Modal Form takes care of **Data Block** conversion and **Items** from Forms to APEX
 
-## **STEP 8**: Review the List of Values in Oracle APEX page
+## Task 8: Review the List of Values in Oracle APEX page
 
   During the Create Application step we create the LOVs at the same time as the pages for the Forms. Let's review the migrated objects and update the created LOV for the Sales Representatives.
 
@@ -190,7 +190,7 @@ We will be walking through series of steps on how to create Customer Faceted Sea
 
 That completes the List of Values section of the Migration.
 
-## **STEP 9**:Migrate Alerts from Forms to APEX  
+## Task 9:Migrate Alerts from Forms to APEX  
 
 1. From the App Builder Home Page, Click on **Migrations**
     ![](images/migration.png " ")
@@ -213,15 +213,15 @@ That completes the List of Values section of the Migration.
 7. **CONFIRM_ALERT** is handled by Page setting , Change the **Warn on unsaved changes** to **Page Default**
     ![](images/confirm-revert-alert.png " ")
 
-## **STEP 10**: Migrate Program Units from Forms to APEX  
+## Task 10: Migrate Program Units from Forms to APEX  
 
 - **Program Units** logic of customer form does not apply to APEX as it is handled by default processing of APEX.
 
-## **STEP 11**: Migrate Triggers from Forms to APEX  
+## Task 11: Migrate Triggers from Forms to APEX  
 
 - **Triggers** logic of customer form does not apply to APEX as it is handled by default processing of APEX.
 
-## **STEP 12**: Recreate Forms Tree Structure Triggers from Forms to APEX  
+## Task 12: Recreate Forms Tree Structure Triggers from Forms to APEX  
 
 - **Customer Form** in the Oracle Forms Service was represented in a **Tree** Structure , You can easily recreate the tree structure in APEX.
 
