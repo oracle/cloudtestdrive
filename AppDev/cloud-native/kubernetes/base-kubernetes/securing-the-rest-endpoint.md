@@ -34,23 +34,23 @@ Below are some thoughts, but these need to be considered with professional advic
 
 ### In your service itself
 
-You can of course have your micro-service itself implement the end point termination and other security features. In the Helidon part of the lab you will have seen how Helidon can implement authentication to limit who can access certain features of the micro-service.
+You can of course have your micro-service itself implement the end point termination and other security features. If you did the Helidon lab you will have seen how Helidon can implement authentication to limit who can access certain features of the micro-service.
 
 You could of course implement a TLS end point in your application as well, but then you have to implement your own certificate management. By taking the encryption all the way to the micro-service you'd also be limiting what you can do in terms of a Layer 7 firewall where you use an external service to inspect your data, for example to rate limit for specific endpoints, or dynamically add capabilities such as SQL Injection protection.
 
 Taking the encryption all the way to the micro-service does however reduce the chance that you will be subject to a attack by compromised network infrastructure (with modern clouds this is unlikely as the vendor can almost certainly do a better job at managing their infrastructure and detecting attacks than most end user organizations who will have a different focus).
 
-Taking encryption to the service also means that you are responsible for ensuring that your service meets the latest patches and updates. It mag be great to have the fine grained control, but with that comes the responsibility of monitoring the encryption libraries you've used for vulnerabilities and patching them to keep up to the latest versions. On that subject you should **never** write your own encryption unless you are an genuine expert, professionals are guaranteed to do a better job at that than you, and it's incredibly easily to make a mistake with encryption. 
+Taking encryption to the service also means that you are responsible for ensuring that your service meets the latest patches and updates. It may be great to have the fine grained control, but with that comes the responsibility of monitoring the encryption libraries you've used for vulnerabilities and patching them to keep up to the latest versions. On that subject you should **never** write your own encryption unless you are an genuine expert, professionals are guaranteed to do a better job at that than you, and it's incredibly easily to make a mistake with encryption. 
 
 ### Using the Ingress controller
 
-This is the approach we have taken in the labs, we use the ingress controller to perform the encryption of the https connections from outside the Kubernetes cluster, and then internal to the cluster pass the information on to the micro-service unencrypted. The benefit of this is your service no longer needs to manage the encryption, though the ingress controller doesn't operate functions such as authentication and authorization. 
+This is the approach we have taken in the labs, we use the ingress controller to perform the encryption of the https connections from outside the Kubernetes cluster, and then internal to the cluster pass the information on to the micro-service unencrypted (except in the ServiceMesh labe where the mech provide point to point enctuprion between meshed servcies). The benefit of this is your service no longer needs to manage the encryption. If your application doesn't provide authentication capabilities you can even have the ingress controller implement a password capability for you - we show this later on in the optional lab modules where we use the ingress controller to implement a password layer on top of the otherwise unsecured Prometheus UI. 
 
 ### In the load Balancer
 
 Load Balancers are generally in two types. 
 
-The ones that operate on a TCP/IP connection don't look inside the contents of the packet, they just send the packet on to the specified destination and port. They block all other communication except that on the in-bound port they are configured to work on, so they are also an in-bound firewall restricting the traffic into your network.
+The ones that operate on a TCP/IP connection don't look inside the contents of the packet, they just send the packet on to the specified destination and port. They block all other communication except that on the in-bound port they are configured to work on, so they are also an in-bound firewall restricting the traffic into your network. If you are terminating encryptionin your ingress controller or load balancer you'll need to use this type, but there are some drawbacks to this, for example you won't the original client UP address header added to http requests if you do this.
 
 The other type operates at the http / https level. These can perform operations such as terminating the SSL connection, potentially adding extra headers to the http request (for example with proxy information) and usually they can also then re-encrypt the http(s) traffic as it makes the onward connection to the micro-service if you want internal encryption. This type of load balancer may have dedicated hardware to perform functions such as encryption / decryption of data, and is likely to have better certificate management than you would implement in your own micro-service code.
 
@@ -88,4 +88,4 @@ The next module is the **Cloud native availability with Kubernetes** module
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, November 2020
+* **Last Updated By** - Tim Graves, August 2021

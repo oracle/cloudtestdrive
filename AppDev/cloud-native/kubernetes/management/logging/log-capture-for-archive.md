@@ -279,7 +279,7 @@ Note that the storage tier for the new bucket (named TG-FLUENTD in this case **b
 
   1. In the OCI Cloud shell Change to the logging folder.
   
-  - `cd $HOME/helidon-kubernetes/managmenent/logging`
+  - `cd $HOME/helidon-kubernetes/management/logging`
 
 There are a several of yaml files that we will use. These will all be applied in the `logging` namespace
 
@@ -288,6 +288,17 @@ The `fluentd-to-ooss-configmap.yaml` file defines a configuration map representi
 The `fluentd-s3-configmap.yaml` contains a config map with the specific settings we will be using (these are what you gathered above) which are applied to the environment variables inside the pod. You will need to edit this to hold the values you gathered.
 
 The `fluentd-daemonset-oss-rbac.yaml` configures the cluster role, service account, binding between the two and also the details of the daemonset that gathers the log data and writes it to the S3 compatible storage service. The daemon set uses the values that are set in the `fluentd-s3-configmap.yaml` for it's environment variables (look at the file for the details of how the environment variables are defined in terms of config map entries). This means we won't need to change the daemon set configuration / it's yaml file if we want to change those settings.
+
+**IMPORTANT** In Kubernetes 1.20 the default container engine switched from Docker to CRI-O, Docker logs were written in JSON format, wheras CRI-O uses a format called Logrus.
+
+This lab module has been updated to work with the 1.20 CRI-O log format, but if you are using a version of Kubernetes with Docker as the container engine (Kubernetes removed Docker support in 1.20, so this is probabaly 1.19 or earlier) you will need to modify the `fluentd-daemonset-oss-rbac.yaml` and remove the following lines in the container environment section.
+
+```
+          - name: FLUENT_CONTAINER_TAIL_PARSER_TYPE
+            value: "cri"
+          - name: FLUENT_CONTAINER_TAIL_PARSER_TIME_FORMAT
+            value: "%Y-%m-%dT%H:%M:%S.%N%:z"
+```
 
 <details><summary><b>How does Kubernetes know where to get the environment variable values ?</b></summary>
 
@@ -576,6 +587,8 @@ The Object storage UI provides a pseudo directory structure view. In this case t
 
 You can see the list of logs that have been saved. Note that all of them have a status of `Archived`.
 
+If you can't see the list of files and fluentd has been running for a while try clicking on the **More Actions** button, then **Refresh**
+
 Let's start the process to restore from the archive.
 
   3. Click the selection checkbox next to **one** of the entries. Then click the **More Actions** button and chose **Restore** from the menu
@@ -697,4 +710,4 @@ You can chose from the various Kubernetes optional module sets.
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, November 2020
+* **Last Updated By** - Tim Graves, August 2021

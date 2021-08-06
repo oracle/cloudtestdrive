@@ -224,12 +224,9 @@ We can see that the elastic search service is up and running, let's see what dat
 
   ![](images/ES-catalogue-endpoints.png)
 
-  4. In a web browser (remember to substitute **your** IP address) look at the indices in the service
+  4. In a web browser go to `http://<external IP>/_cat/indices` (remember to substitute **your** IP address) look at the indices in the service
   
-  ```
-  http://<external IP>/_cat/indices
-```
-
+  
   ![](images/ES-no-indices.png)
 
 Well, it's empty! Of course that shouldn't be a surprise, we've not put any log data in it yet!
@@ -271,6 +268,17 @@ We need to tell fluentd to ignore the systemd that's running in it's own pod, th
 We have added a volume mount entry and associated volume to bring in the log files. In the case of the OKE installation of Kubernetes those are located in /var/log/containers, but that's actually a link to their real location in /u01/data/docker/containers
 
 Finally we have changes the namespace from kube-system to logging, this is really just for convenience as this is an optional lab module, and we didn't want to complicate following modules with text along the lines of "If you've done the logging module you'll see xxxx in kube-system, but if you haven't you'll see yyyy" Also it's generally good practice to separate things by their function.
+
+**IMPORTANT** In Kubernetes 1.20 the default container engine switched from Docker to CRI-O, Docker logs were written in JSON format, wheras CRI-O uses a format called Logrus.
+
+This lab module has been updated to work with the 1.20 CRI-O log format, but if you are using a version of Kubernetes with Docker as the container engine (Kubernetes removed Docker support in 1.20, so this is probabaly 1.19 or earlier) you will need to modify `fluentd-daemonset-elasticsearch-rbac.yaml` and remove the following lines in the container environment section.
+
+```
+          - name: FLUENT_CONTAINER_TAIL_PARSER_TYPE
+            value: "cri"
+          - name: FLUENT_CONTAINER_TAIL_PARSER_TIME_FORMAT
+            value: "%Y-%m-%dT%H:%M:%S.%N%:z"
+```
 
 Let's create the daemonset
 
@@ -314,10 +322,8 @@ But it's easier to see what's happening using the Kubernetes dashboard in this c
 
 Open the Kubernetes dashboard
 
-  4. In a web browser on your laptop go to the dashboard (remember to replace `<External IP` with your IP address) 
+  4. In a web browser on your laptop go to the dashboard `https://dashboard.kube-system.<External IP>.nip.io/#!/login` (remember to replace `<External IP` with your IP address) 
   
-  - `https://dashboard.kube-system.<External IP>.nip.io/#!/login`
-
   5. If prompted in the browser, accept the self signed certificate. The mechanism varies by browser and version, but as of September 2020 the following worked with the most recent (then) browser version.
   
   - In Safari you will be presented with a page saying "This Connection Is Not Private" Click the "Show details" button, then you will see a link titled `visit this website` click that, then click the `Visit Website` button on the confirmation pop-up. To update the security settings you may need to enter a password, use Touch ID or confirm using your Apple Watch.
@@ -402,11 +408,9 @@ I've used the index for the data gathered most recently, as can be seen in the i
 
   2. Let's look at the captured data. Look at the indecies list and chose one
   
-  3. Go to the `_search` URL (remember to replace `<External IP>` address with yours) adjust YYYY-MM-DD to one of the entries in the indexes list).
+  3. Go to the `_search` URL`https://search.logging.<External IP>.nip.io/logstash-<YYYY-MM-DD>/_search` (remember to replace `<External IP>` address with yours) adjust YYYY-MM-DD to one of the entries in the indexes list).
   
-  ```
-  https://search.logging.<External IP>.nip.io/logstash-<YYYY-MM-DD>/_search
-```
+  
 
   **Important** Different web browsers will render the resulting JSON differently, this will also depend on the plugins in the browser, so do not be concerned if the output varies and is pure JSON data or is structured as in the image below)
    
@@ -416,11 +420,7 @@ There's a lot of data here (and depending on which browser you use it may be nic
 
 Of course we can focus in on specific entries if we want, in this case we're going to look for entries which have the container_name of storefront
 
-  4. Try this URL to focus on the storefront container (remember to replace `<External IP>` address with yours) adjust YYYY-MM-DD to one of the entries in the indexes list).
-  
-  ```
-https://search.logging.<External IP>.nip.io/logstash-<YYYY-MM-DD>/_search?q=kubernetes.container_name:storefront
-```
+  4. Try this URL `https://search.logging.<External IP>.nip.io/logstash-<YYYY-MM-DD>/_search?q=kubernetes.container_name:storefront` to focus on the storefront container (remember to replace `<External IP>` address with yours) adjust YYYY-MM-DD to one of the entries in the indexes list).
 
   ![](images/ES-search-empty-storefront.png)
 
@@ -503,4 +503,4 @@ You can chose from the various Kubernetes optional module sets.
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, November 2020
+* **Last Updated By** - Tim Graves, August 2021

@@ -229,13 +229,13 @@ You will see a *lot* of possible choices exploring the various services built in
 
 Alternatively rather than selecting from the list you can just start to type `kubelet_http_requests_total` into the Expression box, as you type a drop down will appear showing the possible metrics that match your typing so far, once the list of choices is small enough to see it chose `kubelet_http_requests_total` from the list (or just finish typing the entire name and press return to select it) 
 
-Depending on what Prometheus feels like (It seems to very between versions and your starting view) you will initially be presented with either s table of text data
+Depending on what Prometheus feels like (It seems to very between versions and your starting view) you will initially be presented with either a table of text data
 
-![prometheus-http-requests-total-console](images/prometheus-kubelet-http-requests-total-console.png)
+  ![prometheus-http-requests-total-console](images/prometheus-kubelet-http-requests-total-console.png)
 
 or a graph
 
-![prometheus-http-requests-total-graph](images/prometheus-kubelet-http-requests-total-graph.png)
+  ![prometheus-http-requests-total-graph](images/prometheus-kubelet-http-requests-total-graph.png)
 
   5. Click the **Graph** or **Table** tab names to switch between them
 
@@ -587,4 +587,4 @@ You can move on to the `Visualizing with Grafana` module which builds on this mo
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, November 2020
+* **Last Updated By** - Tim Graves, August 2021

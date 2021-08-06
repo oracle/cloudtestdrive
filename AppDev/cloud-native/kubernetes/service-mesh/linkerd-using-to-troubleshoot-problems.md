@@ -349,4 +349,4 @@ You can chose from the remaining `Linkerd service mesh` modules or switch to one
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
 * **Contributor** - Charles Pretzer, Bouyant, Inc for reviewing and sanity checking parts of this document.
-* **Last Updated By** - Tim Graves, November 2020
+* **Last Updated By** - Tim Graves, April 2021
