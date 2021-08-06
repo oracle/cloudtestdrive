@@ -212,6 +212,7 @@ deployment.apps/zipkin         1/1     1            1           28m
 
 NAME                                      DESIRED   CURRENT   READY   AGE
 replicaset.apps/stockmanager-6759d989bf   1         1         1       28m
+replicaset.apps/storefront-6ha27g8ef4     0         0         0       35m
 replicaset.apps/storefront-5f777cb4f5     3         3         3       28m
 replicaset.apps/storefront-79d7d954d6     2         2         0       5s
 replicaset.apps/zipkin-88c48d8b9          1         1         1       28m
@@ -255,6 +256,7 @@ deployment.apps/zipkin         1/1     1            1           29m
 
 NAME                                      DESIRED   CURRENT   READY   AGE
 replicaset.apps/stockmanager-6759d989bf   1         1         1       29m
+replicaset.apps/storefront-6ha27g8ef4     0         0         0       36m
 replicaset.apps/storefront-5f777cb4f5     1         1         1       29m
 replicaset.apps/storefront-79d7d954d6     4         4         2       63s
 replicaset.apps/zipkin-88c48d8b9          1         1         1       29m
@@ -302,6 +304,7 @@ deployment.apps/zipkin         1/1     1            1           30m
 
 NAME                                      DESIRED   CURRENT   READY   AGE
 replicaset.apps/stockmanager-6759d989bf   1         1         1       30m
+replicaset.apps/storefront-6ha27g8ef4     0         0         0       37m
 replicaset.apps/storefront-5f777cb4f5     0         0         0       30m
 replicaset.apps/storefront-79d7d954d6     4         4         4       108s
 replicaset.apps/zipkin-88c48d8b9          1         1         1       30m
@@ -344,36 +347,9 @@ Pod Template:
   Containers:
    storefront:
     Image:       fra.ocir.io/oractdemeabdmnative/h-k8s_repo/storefront:0.0.2
-    Ports:       8080/TCP, 9080/TCP
-    Host Ports:  0/TCP, 0/TCP
-    Limits:
-      cpu:        250m
-    Liveness:     http-get http://:health-port/health/live delay=60s timeout=5s period=5s #success=1 #failure=3
-    Readiness:    exec [/bin/bash -c curl -s http://localhost:9080/health/ready | json_pp | grep "\"outcome\" : \"UP\""] delay=15s timeout=5s period=10s #success=1 #failure=1
-    Environment:  <none>
-    Mounts:
-      /conf from sf-config-map-vol (ro)
-      /confsecure from sf-conf-secure-vol (ro)
-  Volumes:
-   sf-conf-secure-vol:
-    Type:        Secret (a volume populated by a Secret)
-    SecretName:  sf-conf-secure
-    Optional:    false
-   sf-config-map-vol:
-    Type:      ConfigMap (a volume populated by a ConfigMap)
-    Name:      sf-config-map
-    Optional:  false
-Conditions:
-  Type           Status  Reason
-  ----           ------  ------
-  Available      True    MinimumReplicasAvailable
-OldReplicaSets:  storefront-79d7d954d6 (4/4 replicas created)
-NewReplicaSet:   <none>
-Events:
-  Type    Reason             Age   From                   Message
-  ----    ------             ----  ----                   -------
-  Normal  ScalingReplicaSet  51m   deployment-controller  Scaled up replica set storefront-5f777cb4f5 to 1
-  Normal  ScalingReplicaSet  50m   deployment-controller  Scaled up replica set storefront-5f777cb4f5 to 4
+... 
+Lots of output 
+... 
   Normal  ScalingReplicaSet  23m   deployment-controller  Scaled up replica set storefront-79d7d954d6 to 1
   Normal  ScalingReplicaSet  23m   deployment-controller  Scaled down replica set storefront-5f777cb4f5 to 3
   Normal  ScalingReplicaSet  23m   deployment-controller  Scaled up replica set storefront-79d7d954d6 to 2
@@ -429,6 +405,7 @@ In this case the update worked, but what would happen if it had for some reason 
   ```
 NAME                                                     DESIRED   CURRENT   READY   AGE
 stockmanager-6759d989bf                                  1         1         1       61m
+storefront-6ha27g8ef4                                    0         0         0       68m
 storefront-5f777cb4f5                                    0         0         0       61m
 storefront-79d7d954d6                                    4         4         4       33m
 zipkin-88c48d8b9                                         1         1         1       61m
@@ -600,6 +577,7 @@ NAME                                                                     DESIRED
 replicaset.apps/ingress-nginx-nginx-ingress-controller-57747c8999        1         1         1       12m
 replicaset.apps/ingress-nginx-nginx-ingress-default-backend-54b9cdbd87   1         1         1       12m
 replicaset.apps/stockmanager-6759d989bf                                  1         1         1       69m
+replicaset.apps/storefront-6ha27g8ef4                                    0         0         0       76m
 replicaset.apps/storefront-5f777cb4f5                                    4         4         4       69m
 replicaset.apps/storefront-79d7d954d6                                    0         0         0       40m
 replicaset.apps/zipkin-88c48d8b9                                         1         1         1       69m
