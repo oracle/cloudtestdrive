@@ -26,7 +26,7 @@ This module shows how to install and configure the log capture tool Fluentd, and
 
 You need to complete the **Rolling update** module (last of the core Kubernetes labs modules). You can have done any of the other optional module sets. The **log capture for processing** module is also optional.
 
-## Step 1: Capturing data to archive it
+## Task 1: Capturing data to archive it
 
 <details><summary><b>The problem with log data in a distributed cloud native environment</b></summary>
 
@@ -58,7 +58,7 @@ We're going to now look at how to extract data and save it to a storage service.
 
 Note, if you have the fluentd configuration setup monitoring to Elastic Search you can leave that running if you like. It is of course consuming resources, but there are situations where you may want long term storage of log data as well as short term analytics. 
 
-## Step 2: Create the logging namespace
+## Task 2: Create the logging namespace
 
 If you  did not do the capture log for processing, or deleted the logging namespace at the end of that module you will need to create a namespace for this module.
 
@@ -74,7 +74,7 @@ namespace/logging created
 
 If the namespace already exists this command will report : `Error from server (AlreadyExists): namespaces "logging" already exists`
 
-## Step 3: Storing the log data
+## Task 3: Storing the log data
 
 Kubernetes writes the log data it captures to files on the host that's running the node. To get the data we therefore need to run a program on every node that accesses the log files and sends them to the storage.
 
@@ -100,7 +100,7 @@ Fluentd is an open source solution to processing the log data, it's basically an
 
 We will be using one of the built in output plug-ins of Fluentd that allows us to write to storage solutions that provide a Amazon Simple Storage Service (S3) compatible interface. In this case we will be writing the data to the Oracle Object Storage Service, but you could of course use other compatible services.
 
-### Step 3a: Gathering the required information
+### Task 3a: Gathering the required information
 
 The first thing we need to do is to gather a bit of data about the storage service to configure the fluentd output plugin.
 
@@ -218,7 +218,7 @@ You now need to get the access key (this is the other part of the generated key 
 
 You have now gathered the information we need to write data into the Object Storage Service.
 
-### Step 3b: Create the storage bucket to hold the logs
+### Task 3b: Create the storage bucket to hold the logs
 
 You can let the S3 integration just create the storage bucket, but the scenario we are looking at here is for the long term retention of the log data for occasional access, in that case you want the cheapest possible storage, and for that you need the archive storage tier for the storage bucket. This is not the default tier so it needs to be set when the Oracle Object Storage Service bucket is created. The archive tier does mean that there is a delay to retrieve the data (Archive after all is about long term efficient storage of the data) so if you were planning on doing something with the data directly (For example uploading into the Oracle log analytics service) as you'd be transferring them once they were uploaded to the storage service, and probably only retaining them for a short while after that you would use the standard tier.
 
@@ -275,7 +275,7 @@ You will now see the list of buckets in your compartment. Remember that in my ca
 
 Note that the storage tier for the new bucket (named TG-FLUENTD in this case **but yours will vary**) is **Archive** This means all data will be held in a long term storage model which is much cheaper, but may take time to become available when requested.
 
-### Step 3c: Configuring the log monitoring process.
+### Task 3c: Configuring the log monitoring process.
 
   1. In the OCI Cloud shell Change to the logging folder.
   
@@ -366,7 +366,7 @@ For lab purposes we have setup the configuration with a 60 second cycle on switc
 
 </details>
 
-### Step 3d: Actually starting the log capture
+### Task 3d: Actually starting the log capture
 
 First we will create the `fluentd-config-to-ooss` config map, this is in the `fluentd-to-ooss-configmap.yaml` This is the basic configuration of fluentd and tells it to output to the S3 service, it just used environment variable place holders for the actual setting details though, the Kubernetes runtime will replace those with the actual values from the environment when the configuration map is added to the pod as it starts.
 
@@ -569,7 +569,7 @@ Strict-Transport-Security: max-age=15724800; includeSubDomains
 Do this several times
 
 
-## Step 4: The saved log files
+## Task 4: The saved log files
 
 Though the creation of the logs in the Object Storage Service is pretty cloud independent actually retrieving them is outside Kubernetes and specific to the cloud provider. The instructions below apply to the Oracle Object Storage Service.
 
@@ -629,7 +629,7 @@ Your web browser will start to download the object and depending on the web brow
 
 To access the restored object follow whatever the normal procedure is on your computer to access a downloaded `.gz` file.
 
-## Step 5: Tidying up the environment
+## Task 5: Tidying up the environment
 
 
 If you are in a trial tenancy there are limitations on how many resources you can have in use at any time, and you may need them for other modules. The simplest way to release the resources used in his module (including the load balancer) is to delete the entire namespace.

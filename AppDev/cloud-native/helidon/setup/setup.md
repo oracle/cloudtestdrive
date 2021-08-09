@@ -12,9 +12,9 @@ This module takes you through the process of setting up your development virtual
 
 ### Prerequisites
 
-You need to have completed the steps in the **Setting up your tenancy** module.
+You need to have completed the tasks in the **Setting up your tenancy** module.
 
-## Step 1: Configuring the VM hosts file.
+## Task 1: Configuring the VM hosts file.
 
 To make it easier to switch to the Kubernetes environment we are using hostnames rather than IP addresses to locate the various services.
 
@@ -50,11 +50,11 @@ The script will update the host file. Note that in some versions of the VM these
 
 Please **do not** run any other scripts you may find in these directories until instructed to do so, or you may end up with your environment in an unexpected state!
 
-## Step 2: Importing our template code
+## Task 2: Importing our template code
 
 To save you from having to completely create all of the Eclipse projects and classes from the beginning we have created some template code which you will use as a starting point. This needs to be imported into Eclipse.
 
-### 2a. Downloading the code zip file.
+### Task 2a. Downloading the code zip file.
 
   1. In the **virtual machine** open the Firefox web browser in the virtual machine - Click `Applications` then `Internet` then `Firefox`
 
@@ -78,7 +78,7 @@ When the download is complete the Firefox download icon will turn completely blu
 
   ![](images/44-github-download-complete.png)
 
-### 2b. Importing the downloaded zip file
+### Task 2b. Importing the downloaded zip file
 
   1. Switch back to Eclipse
 
@@ -110,7 +110,7 @@ Eclipse will import the projects and start importing the Maven dependencies. Not
 
 This may take a few mins. **Do not worry if you see errors during this process** (usually indicated by a white cross in a red box). These are to be expected as Eclipse imports the code, then updates the Maven configuration and other elements. Once the building indicator (lower right) has gone away the errors should have gone. Expect to see yellow warning triangles though - these are telling about unused code that we will be completing during the lab modules.
 
-### 2c. Building the helidon-labs-common project
+### Task 2c. Building the helidon-labs-common project
 
 The `helidon-labs-common` project contains classes that are used by both the storefront and stockmanager projects. We need to build that project to the Maven repository so it can be used later on.
 
@@ -122,7 +122,7 @@ Eclipse will use Maven to build and install the project. The progress will be sh
 
   ![](images/81-helidon-labs-common-menu-maven-install-completed.png)
 
-## Step 3: Configuring to use the Wallet file
+## Task 3: Configuring to use the Wallet file
 
 When you setup the VM the database Wallet file will have been downloaded to $HOME/Downloads, we want to place it in the right location for the labs and with the right name. It is **very** important that you follow the exact instructions below to ensure you are in the right directory as otherwise you may delete the lab files!
 

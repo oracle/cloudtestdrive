@@ -27,7 +27,7 @@ This module shows how to install the data capture tool Prometheus and how to con
 
 You need to complete the **Rolling update** module (last of the core Kubernetes labs modules). You can have done any of the other optional module sets.
 
-## Step 1: Explaining Monitoring in Kubernetes
+## Task 1: Explaining Monitoring in Kubernetes
 
 Monitoring a service in Kubernetes involves three components
 
@@ -43,13 +43,13 @@ Just because the data is available doesn't mean we can analyse it, something nee
 Once you have the data you need to be able to process it to visualize it and also report any alerts of problems.
 
 
-## Step 2: Preparing for installing Prometheus
+## Task 2: Preparing for installing Prometheus
 
 For this lab we are going to do some very simple monitoring, using the metrics in our microservices and the standard capabilities in the Kubernetes core services to generate data.  Then we'll use the Prometheus to extract the data and Grafana to display it.
 
 These tools are of course not the only ones, but they are very widely used, and are available as Open Source projects.
 
-### Step 2a: Configuring Helm
+### Task 2a: Configuring Helm
 
 We need to specify the Helm repository for Prometheus
 
@@ -76,7 +76,7 @@ Update Complete. ⎈Happy Helming!⎈
   
 Depending on which other modules you have done you may see differences in the repositories in the update list
 
-### Step 2b: Setting up the namespace and security information
+### Task 2b: Setting up the namespace and security information
 
 To separate the monitoring services from the  other services we're going to put them into a new namespace. We will also secure access to prometheus using a password.
 
@@ -127,7 +127,7 @@ secret/web-ingress-auth created
   ```
   
 
-## Step 3: Installing Prometheus
+## Task 3: Installing Prometheus
 
 
 <details><summary><b>Older versions of Kubernetes than 1.19.7</b></summary>
@@ -202,7 +202,7 @@ https://prometheus.io/
 ```
 Note that it will take a short while for the Prometheus service to start. Check the dashboard and wait for the `prometheus-service` pod to be Ready or if you prefer the CLI `kubectl get pods -n monitoring`.
   
-## Step 4 accessing Prometheus
+## Task 4 accessing Prometheus
 Let's go to the service web page
 
   1. In your web browser open up (replace <External IP> with the IP for your Load balancer - you may have to accept it as an unsafe page due to using a self-signed root certificate.
@@ -247,7 +247,7 @@ Note that the precise details shown will of course vary, especially if you've on
   
   7. Use the << and >> buttons to move the time window around within the overall data set (of course these may not be much use if you haven't got much data, but have a play if you like)
 
-## Step 5: Specifying services to scrape
+## Task 5: Specifying services to scrape
 The problem we have is that (currently) Prometheus is not collecting any data from our services. Of course we may find info on the clusters behavior interesting, but our own services would be more interesting!
 
 We can see what services Prometheus is currently scraping :
@@ -471,7 +471,7 @@ You can see that the storefront pod (port 9080) and stockmanager (port 9081) pod
 
   ![prometheus-pods-storefront-updated](images/prometheus-pods-storefront-updated.png)
 
-### Step 3c: Let's look at our captured data
+### Task 3c: Let's look at our captured data
 Now we have configured Prometheus to scrape the data from our services we can look at the data it's been capturing.
 
   1. Return to the Graph page in the Prometheus web page
@@ -559,7 +559,7 @@ Prometheus was not designed to be a high end graphing tool, the graphs cannot fo
 
 ---
 
-## Step 3: Tidying up the environment
+## Task 3: Tidying up the environment
 
 If you are going to do the Visualizing with Gafana module please do **not** do the following, but return to the introduction of jump to the Visualizing With Grafana module
 

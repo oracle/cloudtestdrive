@@ -25,7 +25,7 @@ This module demonstrates how the rolling update capabilities in Kubernetes can b
 
 You need to complete the **Auto Scaling** module.
 
-## Step 1: Why Rolling updates
+## Task 1: Why Rolling updates
 
 One of the problems when deploying an application is how to update it while still delivering service, and perhaps more important (but usually given little consideration) how to revert the changes in the event that the update fails to work in some way.
 
@@ -39,11 +39,11 @@ For *both* approaches Kubernetes will keep track of the changes and will underta
 
 As a general observation though it may be tempting to just go in and modify the configuration directly with kubectl ... this is a **bad** thing to do, it's likely to lead to unrecorded changes in your configuration management system so in the event that you had to do a complete restart of the system changes manually done with kubectl are likely to be forgotten. It is **strongly** recommended that you make changes by modifying your yaml file, and that the yaml file itself has a versioning scheme so you can identify exactly what versions of the service a given yaml file version provides. If you must make changes using kubectl (say you need to make a minor change in a test environment) then as soon as you decide it should be permanent then make the corresponding change in the yaml file *and do a rolling upgrade using the yaml file to ensure you are using the correct configuration* (after all, you may have made a typo in either the kubectl or yaml file).
 
-## Step 2: How to do a rolling upgrade in our setup
+## Task 2: How to do a rolling upgrade in our setup
 
 So far we've been stopping our services (the undeploy.sh script deletes the deployments) and then creating new ones (the deploy.sh script applies the deployment configurations for us) This results in service down time, and we don't want that. But before we can switch to properly using rolling upgrades there are a few bits of configuration we should do
 
-### Step 2a: Defining the rolling upgrade
+### Task 2a: Defining the rolling upgrade
 Kubernetes aims to keep a service running during the rolling upgrade, it does this by starting new pods to run the service, then stopping old ones once the new ones are ready. Through the magic of services and using labels as selectors the Kubernetes run time adds and removed pods from the service. This will work with a deployment whose replica sets only contain a single pod (the new pod will be started before the old one is stopped) but if your service contains multiple pods it will use some configuration rules to try and manage the process in a more balanced manner and sticking reasonably closely to the number of pods you've asked for (or the auto scaler has).
 
 We are going to once again edit the storefront-deployment.yaml file to give Kubernetes some rules to follow when doing a rolling upgrade. Importantly however we're going to edit a *Copy* of the file so we have a history.
@@ -129,7 +129,7 @@ spec:
   7. Save the changes
 
 
-### Step 2b: Applying the rollout strategy
+### Task 2b: Applying the rollout strategy
 
 To do the roll out we're just going to apply the new file. Kubernetes will compare that to the old config and update appropriately.
 
@@ -395,7 +395,7 @@ Now the rollout has completed and all the instances are running the updated imag
 
 If you had checked this during the rollout you would have got 0.0.1 or 0.0.2 versions returned depending on which pod you connected to and what version it was running.
 
-## Step 3: Rolling back a update
+## Task 3: Rolling back a update
 In this case the update worked, but what would happen if it had for some reason failed. Fortunately for us Kubernetes keeps the old replica set around, which includes the config for just this reason. 
 
   1. Let's get the replica set list
@@ -614,7 +614,7 @@ Obviously this is not something you're likely to be doing often, but it's quite 
 </details>
 
 
-## Step 4: Important note on external services
+## Task 4: Important note on external services
 Kubernetes can manage changes and rollbacks within it's environment, provided the older versions of the changes are available. So don't delete your old container images unless you're sure you won't need them! Kubernetes can handle the older versions of the config itself, but always a good idea to keep an archive of them anyway, in case your cluster crashes and takes your change history with it.
 
 However, Kubernetes itself cannot manage changes outside it's environment. It may seem obvious, but Kubernetes is about compute, not persistence, and in most cases the persistence layer is external to Kubernetes on the providers storage environments.

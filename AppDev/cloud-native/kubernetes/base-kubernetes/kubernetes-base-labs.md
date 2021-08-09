@@ -25,13 +25,13 @@ This module takes you through the process of setting up your environment for the
 
 ### Prerequisites
 
-If you are doing the full labs (these include modules on Helidon and Docker) you need to have completed the steps in the **Helidon** modules (including the setup)
+If you are doing the full labs (these include modules on Helidon and Docker) you need to have completed the tasks in the **Helidon** modules (including the setup)
 
-If you are only doing the Kubernetes based labs you need to have completed the steps in the **Tenancy Setup for the Kubernetes Labs** module.
+If you are only doing the Kubernetes based labs you need to have completed the tasks in the **Tenancy Setup for the Kubernetes Labs** module.
 
 In both cases you need to complete the **Create your Kubernetes cluster** and **Cloud Shell Setup for the Kubernetes Labs** modules.
 
-## Step 1: Configure the Helm repository
+## Task 1: Configure the Helm repository
 
 Helm is the tool we will be using to install standard software into Kubernetes. While it's possible to load software into Kubertetes by hand Helm makes it much easier as it has pre-defined configurations (called charts) that it pulls from an internet based repository.
 
@@ -76,7 +76,7 @@ Update Complete. ⎈ Happy Helming!⎈
 ```
 
 
-## Step 2: Getting your cluster access details
+## Task 2: Getting your cluster access details
 
 Access to the cluster is managed via a config file that by default is located in the `$HOME/.kube` folder, and is called `config`.  To check the setup, make sure to have copied your personal kubeconfig file to this location : 
 
@@ -144,7 +144,7 @@ If the kubectl command returns `No resources found.` and you have only just crea
 (The details and number of nodes will vary depending on the settings you chose when you created the cluster, they will take a few mins for the nodes to be configured after the cluster management is up and running)
 
 
-## Step 3: Basic cluster infrastructure services install
+## Task 3: Basic cluster infrastructure services install
 
 Usually a Kubernetes cluster comes with only the core Kubernetes services installed that are needed to actually run the cluster (e.g. the API, DNS services). Some providers also give you the option of installing other elements, but here we're going to assume you have a minimal cluster with only the core services and will need to setup the other services before you run the rest of the system.
 
@@ -154,7 +154,7 @@ The latest version of helm is helm 3. This is a client side only program that is
 
 Fortunately for us helm 3 is installed within the OCI Cloud Shell, but if later on you want to use your own laptop to manage a Kubernetes cluster [here are the instructions for a local install of helm](https://helm.sh/docs/intro/install/)
 
-### Step 3a: Starting an Ingress controller for accepting external data
+### Task 3a: Starting an Ingress controller for accepting external data
 
 
 There is a core service we need to install before we can start running the web based system services, or indeed our microservices, the Ingress controller. An Ingress controller provides the actual ingress capability, but it also needs to be configured (we will look at that later).
@@ -260,7 +260,7 @@ In the helm command you'll have seen a couple of `--set`` options.  These are oc
 Note that in a production environment you might want to terminate the encryption in the load balancer for efficiency reasons, and also between the microservices using a service mesh (which is a later optional lab).
 
 
-### Step 3b: Installing the Kubernetes dashboard
+### Task 3b: Installing the Kubernetes dashboard
 
 Setting up the Kubernetes dashboard (or any) service using helm is pretty easy. it's basically a simple command. 
 
@@ -449,7 +449,7 @@ NAME                                    READY   STATUS    RESTARTS   AGE
 kubernetes-dashboard-bfdf5fc85-djnvb   1/1     Running   0          43m
 ```
 
-### Step 3c: Setting up the Kubernetes dashboard user
+### Task 3c: Setting up the Kubernetes dashboard user
 
 First we're going to need create a user to access the dashboard. This involves creating the user, then giving it the kubernetes-dashbaord role that helm created for us when it installed the dashbaord chart.
 
@@ -567,7 +567,7 @@ ca.crt:     1025 bytes
   5. Save it in a plain text editor on your laptop for easy use later in the lab
 
 
-### Step 3d: Looking around the dashboard.
+### Task 3d: Looking around the dashboard.
 In several of the labs we're going to be using the dashboard, so let's look around it a bit to get familiar with it's operation.
 
   1. Open a web browser and go to the dashbaord URL you got above, it will be something like `https://dashboard.kube-system.123.456.789.999.nip.io` but the IP address will be that of your ingress service (this is just an example)
@@ -700,11 +700,11 @@ Outside a lab environment you may well want to take a little longer to configure
 
 
 
-## Step 4: Namespace, Services and Ingress rules
+## Task 4: Namespace, Services and Ingress rules
 
 You now have the basic environment to deploy services, and we've looked at how to use the Kubernetes dashboard and the kubectl command line.
 
-### Step 4a: Creating a namespace to work in
+### Task 4a: Creating a namespace to work in
 
 Kubernetes supports the concept of namespaces, these logically split the cluster up, effectively into multiple virtual clusters. It's similar to having different directories to store documents for different projects, and like directories you can have multiple namespaces. In this case you are going to be using your own cluster, but having a separate namespace splits your work from the system functions (those are in a namespace called kube-system). We're not going to be using it in this lab, but namespaces can also be used to control management of the cluster by role based access control to specific namespaces, and to control resource usage in Kubernetes enabling you to limit the usage of resources used by the pods in a namespace (memory, CPU etc). It's also possible to restrict resources on individual pods and we'll look at that later.
 
@@ -787,9 +787,9 @@ Of course the Kubernetes dashboard also understands namespaces. If you go to the
 </details>
 
 
-### Step 4b: Creating Services
+### Task 4b: Creating Services
 
-The next step is to create services. A service effectively defines a logical endpoint that has a internal dns name inside the cluster and a virtual IP address bound to that name to enable communication to a service. It's also internal load balancer in that if there are multiple pods for a service it will switch between the pods, and also will remove pods from it's load balancer if they are not operating properly (We'll look at this side of a service later on). 
+The next task is to create services. A service effectively defines a logical endpoint that has a internal dns name inside the cluster and a virtual IP address bound to that name to enable communication to a service. It's also internal load balancer in that if there are multiple pods for a service it will switch between the pods, and also will remove pods from it's load balancer if they are not operating properly (We'll look at this side of a service later on). 
 
 <details><summary><b>Explaining the service concept in Kubernetes</b></summary>
 
@@ -858,7 +858,7 @@ We can of course also use the kuberntes dashboard. Open the dashboard and make s
 
 If however you click on the service name in the services list in the dashboard you'll see that there are no endpoints, or pods associated with the service. This is because we haven't (yet) started any pods with labels that match those specified in the selector of the services.
 
-### Step 4c: Accessing your services using an ingress rule
+### Task 4c: Accessing your services using an ingress rule
 
 <details><summary><b>Introduction</b></summary>
 
@@ -909,7 +909,7 @@ As we will be providing a secure TLS protected connection we need to create a ce
 
 To enable the lab to complete in a reasonable time we will therefore be generating our own self-signed certificate. For a lab environment that's fine, but in a production environment you wouldn't do this.
 
-  3. Run the following command to generate a certificate (you installed the step command inthe cloud shell setup). **VITAL** You must replace `<External IP>` in the subject below with the external IP address of your Ingress service, as an example this might look like `stock.123.456.789.999.nip.io` (That's is only an example, it absolutely will not work in the real world).
+  3. Run the following command to generate a certificate (you installed the step command in the cloud shell setup). **VITAL** You must replace `<External IP>` in the subject below with the external IP address of your Ingress service, as an example this might look like `stock.123.456.789.999.nip.io` (That's is only an example, it absolutely will not work in the real world).
 
   - `$HOME/keys/step certificate create store.<External IP>.nip.io tls-store.crt tls-store.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
 
@@ -1155,7 +1155,7 @@ For more information on the nginx ingress controller and the different rules typ
 
 For see the doc more information on how the regular expressions with with see the [nginx ingress path matching page.](https://kubernetes.github.io/ingress-nginx/user-guide/ingress-path-matching/) 
 
-## Step 5: Secrets, configmaps - external configuration for your containers
+## Task 5: Secrets, configmaps - external configuration for your containers
 
 <details><summary><b>Introduction to Kubernetes secrets</b></summary>
 
@@ -1186,7 +1186,7 @@ There are also more specific secrets used for TLS certificates and pulling docke
 </details>
 
 
-### Step 5a: Configuring the database connection details
+### Task 5a: Configuring the database connection details
 
 In The Helidon labs we provided the database details via Java system properties using the command line. We don't want to do that here as it we would have to place them in the image (making it insecure, and also hard to update) To get around that (and to show the flexibility of the Helidon framework) here we will be specifying them using environment variables, because Helidon uses a hierarchy of sources for the configuration we don't even need to change the code to do this!
 
@@ -1237,7 +1237,7 @@ Here we're telling Kubernetes to look in the `stockmanagerdb` secret for a data 
 
 </details>
 
-### Step 5b: Creating the secrets
+### Task 5b: Creating the secrets
 
   1. Switch back to the scripts directory
   
@@ -1362,7 +1362,7 @@ The dashboard is actually a lot easier in this case.
   
 For security reasons Kubernetes only stores the secrets in memory, they are not written to permenant storage.
 
-### Step 5c: Config Maps
+### Task 5c: Config Maps
 
 <details><summary><b>Intro to Kubernetes Config Maps</b></summary>
 
@@ -1451,9 +1451,9 @@ As we'll see later we can also update the text by modifying the file and re-crea
 
 
 
-## Step 6: Deploying the actual microservices
+## Task 6: Deploying the actual microservices
 
-It's been quite a few steps (many of which are one off and don't have to be repeated for each application we want to run in Kubernetes) but we're finally ready to create the deployments and actually run our Helidon microservices inside of Kubernetes!
+It's been quite a few tasks (many of which are one off and don't have to be repeated for each application we want to run in Kubernetes) but we're finally ready to create the deployments and actually run our Helidon microservices inside of Kubernetes!
 
 <details><summary><b>About the deployment files</b></summary>
 
@@ -1570,7 +1570,7 @@ The script deploy.sh will apply all three deployment configuration files (storef
 
 The docker images refered to in the deployment yaml files are the pre-defined images we provided.
 
-If you did the Helidon and Docker labs and want to use your own images you create there you will have to expand this **Using your own images** and follow the steps it details.
+If you did the Helidon and Docker labs and want to use your own images you create there you will have to expand this **Using your own images** and follow the tasks it details.
 
 <details><summary><b>You want to use your images from the Helidon lab ?</b></summary>
 
@@ -2067,7 +2067,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 {"outcome":"UP","status":"UP","checks":[{"name":"stockmanager-ready","state":"UP","status":"UP","data":{"department":"TestOrg","persistanceUnit":"stockmanagerJTA"}}]}
 ```
 
-## Step 7: Updating your external configuration
+## Task 7: Updating your external configuration
 We saw in the helidon labs that it's possible to have the helidon framework monitor the configuration files and trigger a refresh of the configuration data if something changed. Let's see how that works in Kubernetes.
 
   1. Get the status resource data 

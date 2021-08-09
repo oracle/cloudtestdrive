@@ -26,7 +26,7 @@ This module shows how to install and configure the log capture tool Fluentd, and
 
 You need to complete the **Rolling update** module (last of the core Kubernetes labs modules). You can have done any of the other optional module sets. The **Log capture for archive** module is also optional.
 
-## Step 1: Log capture for processing and analysis
+## Task 1: Log capture for processing and analysis
 
 Developers create log entries for a reason, but as we've seen so far they are not that easy to get at in Kubernetes.
 
@@ -53,11 +53,11 @@ This is good, but with in a distributed architecture a single request may (almos
 
 </details>
 
-## Step 2: Setting up Elastic search
+## Task 2: Setting up Elastic search
 
 To process log data in a consistent manner we need to get all of the data into one place. We're going to use [fluentd](https://www.fluentd.org/) to capture the data and send it to  an Elastic search instance deployed in our Kubernetes cluster in the initial example below, but there are many other options.
 
-### Step 2a: Configuring the environment for the elastic search install
+### Task 2a: Configuring the environment for the elastic search install
 
 As with elsewhere in the labs we'll do this module in it's own namespace, so first we have to create one.
 
@@ -95,7 +95,7 @@ Update Complete. ⎈ Happy Helming!⎈
   
   - `cd $HOME/helidon-kubernetes/management/logging`
   
-### Step 2b: Setting up the security for the elastic search install
+### Task 2b: Setting up the security for the elastic search install
 
 The default configuration for the elastic service does not have any password protection. For demo purposes this might be OK, but we **are** on the internet and so should use something more secure (and of course you **must** use a strong password in a production environment!)
 
@@ -136,7 +136,7 @@ secret/web-ingress-auth created
    secret/tls-search created
 ```
   
-### Step 2c: Installing elastic search
+### Task 2c: Installing elastic search
   
   1. Now we can actually install elastic search. In the cloud console type the following, remembering to replace `<External IP>` with the IP address of the Ingress controller **BOTH** times
   
@@ -202,7 +202,7 @@ NOTES:
   $ helm test elasticsearch
   ```
 
-### Step 2d: Accessing the service
+### Task 2d: Accessing the service
 
   1. In a web browser go to the web page `https://search.logging.<External IP>.nip.ip/_cat`  (remember to replace `External IP>` with your ingress controller IP address) If you get a 503 or 502 error this means that the elastic search service is still starting up. Wait a short time then retry.
 
@@ -231,7 +231,7 @@ We can see that the elastic search service is up and running, let's see what dat
 
 Well, it's empty! Of course that shouldn't be a surprise, we've not put any log data in it yet!
 
-### Step 2e: Capturing the log data from the micro-services
+### Task 2e: Capturing the log data from the micro-services
 
 Kubernetes writes the log data it captures to files on the host that's running the node. To get the data we therefore need to run a program on every node that accesses the log files and sends them to the storage (elastic search in this case)
 
@@ -392,7 +392,7 @@ The fluentd pod is running, along with a number of others, for example the elast
 
 If you look at all of the other nodes you'll find that there is a fluentd pod on all of them, even though the other services like storefront or stockmanager aren't running on them all (well unless you've told Kubernetes to run multiple instances of the pod)
 
-## Step 3: Looking the the data
+## Task 3: Looking the the data
 
 If we go back and look at the Elastic search list of indices now we can see that some data has been added (the `?v=true` means that column headings are included the the returned data
 
@@ -452,7 +452,7 @@ Now you will can see that there is data in the system, there were 12 hits.
 
 You may have seen that the data arrived into the elastic search index pretty fast, fluentd is monitoring the log files all the time, in my testing it's usually less than a second between the log data being generated and the data being in the logs cache, though of course that can very.
 
-## Step 4: Monolith and other log capture options
+## Task 4: Monolith and other log capture options
 
 ### How do I handle my Monoliths logging ?
 
@@ -464,7 +464,7 @@ Of course fluentd is not the only logging solution out there, and elastic search
 
 Fluentd itself supports many other output plugins for writing the data, including to the OCI Object Storage service, or other services which provide a S3 compatible. We will see in the log capture for archive section how to use those.
 
-## Step 5: Log data processing
+## Task 5: Log data processing
 
 Once the data has been captured there needs to be analysis of it, as we saw before it's possible to extract specific records from the storage (and far more complex queries can be constructed than those shown) but for proper data analysis we need additional tools. The usage of these tools is outside the scope of this lab, (and as you've only been gathering data for a short time period there just isn't enough log data to perform an analasys on).
 
@@ -477,7 +477,7 @@ The Oracle Log Analytics cloud service can be used when processing logs from man
 The Kubernetes documentation has a [section covering logging](https://kubernetes.io/docs/concepts/cluster-administration/logging/)
 
 
-## Step 6: Tidying up the environment
+## Task 6: Tidying up the environment
 
 If you are in a trial tenancy there are limitations on how many resources you can have in use at any time, and you may need them for other modules. The simplest way to release the resources used in this module is to delete the entire namespace.
 

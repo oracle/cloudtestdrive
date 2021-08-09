@@ -14,7 +14,7 @@ This module takes you through the process of setting up your OCI Cloud shell env
 
 You need to complete the **Create your Kubernetes cluster** module.
 
-## Step 1: Accessing the cloud shell
+## Task 1: Accessing the cloud shell
 
 You will be using the **Oracle OCI Cloud shell** to run the Kubernetes parts of the labs.
 
@@ -35,9 +35,9 @@ To access the OCI Cloud Shell, you can use the native browser on your laptop (yo
   4. To maximise the size of the OCI Cloud Shell window, click the "Arrows" button on the right of the console as indicated above:
 
 
-Note, in some steps you may want to minimize the OCI Cloud Shell so you can get information from the GUI. Click the arrows icon again ![](images/cloud-console-shrink.png) to minimize the OCI Cloud Shell and see the Oracle Cloud GUI again. Alternatively you can open a second browser window or tab onto the Oracle Cloud GUI.
+Note, in some tasks you may want to minimize the OCI Cloud Shell so you can get information from the GUI. Click the arrows icon again ![](images/cloud-console-shrink.png) to minimize the OCI Cloud Shell and see the Oracle Cloud GUI again. Alternatively you can open a second browser window or tab onto the Oracle Cloud GUI.
 
-In some steps you are asked to edit files. The OCI Cloud Shell supports typical Linux editors such at `vi`, `emacs` and `nano` Use the editor you prefer to make changes to files. When you use kubectl to edit configuration directly however it uses a vi style editor.
+In some tasks you are asked to edit files. The OCI Cloud Shell supports typical Linux editors such at `vi`, `emacs` and `nano` Use the editor you prefer to make changes to files. When you use kubectl to edit configuration directly however it uses a vi style editor.
 
 <details><summary><b>Not familiar with vi ?</b></summary>
 
@@ -71,7 +71,7 @@ You will need to ask your tenancy admin to add you to a group which has rights t
 
 </details>
 
-## Step 2: Downloading the scripts and templates
+## Task 2: Downloading the scripts and templates
 
 Firstly we need to download all of the scripts, templates and other configuration data to run the labs into your OCI Cloud Shell environment. You have a few GB of storage so these will fit just fine. The scripts and instructions are stored in git.
 
@@ -86,7 +86,7 @@ Firstly we need to download all of the scripts, templates and other configuratio
   
   - `git clone https://github.com/CloudTestDrive/helidon-kubernetes.git`
   
-## Step 3: Downloading the database wallet file
+## Task 3: Downloading the database wallet file
 
 Usually you do not hard code the database details in to the images, they are held externally. This is for security reasons, and also convenience, you may decide to switch to a different database, or just change the user password of the database, and it's a lot easier doing that through configuration than having to rebuild the image.
 
@@ -151,7 +151,7 @@ l_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFU
 
   - `cd $HOME`
 
-## Step 4: Setting up your department Id
+## Task 4: Setting up your department Id
 
 To allow for some lab situations where there are multiple users in the same database we separate tables by department Id, like many other parts of these labs this will be based on your name or initials.
 
@@ -178,7 +178,7 @@ app:
   4. Save the changes to the file
   
 
-## Step 5: Preparing to create certificates and keys
+## Task 5: Preparing to create certificates and keys
 
 At various points in the lat we're going to need certificates for securing connections. The cloud shell does include the openssl command which is pretty powerful, but not the easiest to use when dealing with the various levels of certificates we'll need (Root CA, leaf certs etc.)
 

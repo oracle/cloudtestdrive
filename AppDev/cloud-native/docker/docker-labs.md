@@ -60,7 +60,7 @@ Make sure the zipkin container is running. You may have done this in the previou
   - `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin:2.22.0`
 
 
-## Step 1: Jib - Docker image build tool
+## Task 1: Jib - Docker image build tool
 
 We will be using **jib** to build the docker images. The Maven pom.xml file contains the details of the jib tooling and it's settings. 
 
@@ -87,14 +87,14 @@ Later in the Kubernetes labs we will use the capability to run commands to simul
 
 In a production environment a cut down version of a Java 11 base image would be used, as there wouldn't be the need to work inside the container. Also we'd suggest using the Graal enterprise versions which has native compilation capabilities to produce a single executable with a smaller footprint.
 
-## Step 2: Handling configuration and other changing items
+## Task 2: Handling configuration and other changing items
 
 ### Self contained images
 Initially you might think that the easiest thing to do when creating a docker image is to simply package up all of the configuration into the docker image so it's entirely self contained. The problem with this is that quite often configuration information changes after the image has been built, for example between test and deployment, and creating different images for each configuration is challenging (you may have lots of different configuration options, and may not even be able to define them all) and worse can result in embedding things like database access or other security configuration information into the docker images. This latter is especially critical if you are storing your image on an external or public repository where it can be accessed by anyone!
 
 To get around this docker provides a mechanism called volumes to have configuration files stored externally and injected into the container at run time.
 
-### Step 2a: Externalising the configuration
+### Task 2a: Externalising the configuration
 The following is an example of the approach taken when separating the executable from the configuration. 
 
 Firstly you'll need to create a docker image that contains the required executable elements. We've actually set up tooling to support this using jib (Java Image Builder), which is a Maven plugin - you've been using Maven already to manage dependencies, though you may not have realized this.
@@ -334,7 +334,7 @@ cwallet.sso  ewallet.p12  keystore.jks	ojdbc.properties  sqlnet.ora  tnsnames.or
   
  We have added the configuration to the container, but without having to hard code it into the image. Of course this means that if we change the content of the files in the directories that those changes will be reflected inside the container. 
 
-### Step 2b: What about the database configuration ?
+### Task 2b: What about the database configuration ?
 
 In the Helidon labs we specified the database configuration using Java system properties, e.g. entries like 
 
@@ -428,7 +428,7 @@ Of course if we did that it would also mean we couldn't show you how to use envi
 
 </details>
 
-## Step 3: Running the services locally in Docker
+## Task 3: Running the services locally in Docker
 
 Docker has been installed in the development VM and is automatically started for you.
 
@@ -546,11 +546,11 @@ Of course in a production environment you'd probably have a separate folder cont
 
 </details>
 
-## Step 4: Pushing your images to a container repository
+## Task 4: Pushing your images to a container repository
 
 The docker container images are currently only held locally, that's not good if you want to distribute them or run them in other locations. We can save the images in an external repository, This could be public - e.g. dockerhub.com, private to your organization or in a cloud registry like the Oracle OCIR. Note that if you wanted to there are docker image save and docker image load commands that will save and load image files from a tar ball, but that's unlikely to be as easy to use as a repository, especially when trying to manage distribution across a large enterprise environment.
 
-### Step 4a: Getting your docker credentials and other information
+### Task 4a: Getting your docker credentials and other information
 
 There are a few details (registry id, authentication tokens and the like) you will need to get before you push your images. Note that this is needed for the Oracle Cloud Infrastructure Registry, if you use another registry the details needed there may differ.
 
@@ -642,7 +642,7 @@ The ultimate full repository name will look something like `fra.ocir.io/oractdem
 
 
 
-### Step 4b: Docker login in to the Oracle Container Image Registry (OCIR)
+### Task 4b: Docker login in to the Oracle Container Image Registry (OCIR)
 
 We need to tell docker your username and password for the registry. 
 
@@ -673,7 +673,7 @@ docker login fra.ocir.io --username=cdtemeabdnse/oracleidentitycloudservice/my.e
 
 Enter the command with **your** details into a terminal in the virtual machine to login to the OCIR.
 
-### Step 4c: Pushing the images
+### Task 4c: Pushing the images
 
 You need to update **both** of the `repoStockmanagerConfig.sh` and `repoStorefrontConfig.sh scripts` in the helidon-labs-stockmanager and helidon-labs-storefront directories to reflect your chosen details.
 
@@ -830,7 +830,7 @@ If during the docker push stage you get image upload denied errors then it means
 </details>
 
 
-### Step 4d: Running the pushed images
+### Task 4d: Running the pushed images
 
 You can now re-run the images that have been pushed the cloud.
 
@@ -863,7 +863,7 @@ content-length: 184
 [{"itemCount":4980,"itemName":"rivet"},{"itemCount":4,"itemName":"chair"},{"itemCount":981,"itemName":"door"},{"itemCount":25,"itemName":"window"},{"itemCount":20,"itemName":"handle"}]
 ```
 
-## Step 5: Cleaning up
+## Task 5: Cleaning up
 
 This is the end of this section of the lab, let's stop the running images
 

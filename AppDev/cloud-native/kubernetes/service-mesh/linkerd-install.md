@@ -29,7 +29,7 @@ This module shows how to install and configure the Linkerd service mesh, and ena
 
 You need to complete the **Rolling update** module (last of the core Kubernetes labs modules). You can have done any of the other optional module sets.
 
-## Step 1: What is a service mesh
+## Task 1: What is a service mesh
 
 The concept behind a service mesh is pretty simple. It's basically a set of network proxies that are conceptually interposed between the containers running on a pod and the external network of the pod. This is achieved by the service mesh management capability (the control plane) which automatically adds proxies (the data plane) to the pods when the pods are started (if the pod is in a namespace that requests this via annotations)
 
@@ -53,7 +53,7 @@ Most Service mesh implementations are open source to some level, but currently o
 
 Currently there is no agreed standard on how to manage a service mesh, or even exactly what it does, though the [CNCF Service Mesh Interface project](https://smi-spec.io/)  is starting to define one. 
 
-## Step 2: What does that mean as an cluster operator or administrator?
+## Task 2: What does that mean as an cluster operator or administrator?
 
 Well the short version is that you need to be careful in choosing the right service mesh to meet your needs!
 
@@ -63,7 +63,7 @@ Installing a service mesh adds an additional layer of abstraction to your cluste
 
 Ultimately, the way to think about a service mesh as a cluster operator is to consider that adding this layer will result in better observability and security for your applications.
 
-## Step 3: Which service mesh to use ?
+## Task 3: Which service mesh to use ?
 
 There is no simple answer to this, as none of them are built into Kubernetes and there is no official standard. 
 
@@ -71,7 +71,7 @@ Factors to consider are functionality, if it's fully or partially open source, w
 
 The important thing is to define your requirements before selecting a service mesh.
 
-## Step 4: How to install the Linkerd service mesh ?
+## Task 4: How to install the Linkerd service mesh ?
 
 For the purposes of this lab we've chosen to use Linkerd as it's a long standing service mesh implementation and is the only CNCF supported service mesh project (at the time of writing.) It also has a reputation for being simple to install and use. The Linkerd website has an [FAQ on the differences](https://linkerd.io/2/faq/#whats-the-difference-between-linkerd-and-istio) and open source implications
 
@@ -81,7 +81,7 @@ These instructions are based on the [Getting started](https://linkerd.io/2.10/ge
 
 It's worth noting that Linkerd can also be installed using its [helm chart](https://linkerd.io/2/tasks/install-helm/) but today we're going to do it manually step by step.
 
-### Step 4a: Installing the linkerd CLI
+### Task 4a: Installing the linkerd CLI
 
 As linkerd is not a core Kubernetes component it's not included in the Oracle OCI Shell, so we need to do that first.
 
@@ -145,7 +145,7 @@ Server version: unavailable
 The server is unavailable because we haven't installed it yet. The version numbers will of course change over time, but these are the ones when this lab module was written.
 
 
-### Step 4b: Installing linkerd into your Kubernetes cluster
+### Task 4b: Installing linkerd into your Kubernetes cluster
 
 Though we have the linkerd client application we still need to install the linkerd control plan in our cluster (The control plane will handle deploying the proxies in the data plane)
 
@@ -539,7 +539,7 @@ Status check results are √
 
 At the end of the output we'll see the status of the extensions.
 
-## Step 5: Configuring access to the linkerd UI
+## Task 5: Configuring access to the linkerd UI
 
 Linkerd is managed via the linkerd command OR via it's browser based dashboard. In general you want to use the dashboard as it give you access to the Grafana instance provided by Linkerd and thus you get the visualizations.
 
@@ -548,7 +548,7 @@ There are several ways to access the linkerd dashboard. In a production deployme
 For ease of setting up the lab we are going to use an ingress but relax the security constraints around accessing the linkerd web front end a bit **YOU SHOULD NEVER DO THIS IN A PRODUCTION ENVIRONMENT** - a service mesh like linkerd controls the entire communications network in your cluster, unauthorized access to it would enable hackers to have complete control of your cluster communications.
 
 
-### Step 5a: Removing the linkerd-web hosts restriction
+### Task 5a: Removing the linkerd-web hosts restriction
 
 The first thing we need to do is to remove the restriction in the linkerd web front end on which hosts are allowed to access the web front end. Of course you would not do this in a production system!
 
@@ -573,7 +573,7 @@ The first thing we need to do is to remove the restriction in the linkerd web fr
 kubectl will pick them up and apply them, Kubernetes will restart the linkerd-web deployment with the new arguments and linkerd-web will no longer enforce the check on the hostnames.
 
 
-### Step 5b: Securing the connection to the linkerd UI
+### Task 5b: Securing the connection to the linkerd UI
 
 Curiously the linkerd-web ingress does not by default use a TLS certificate to ensure that the connection to it is encrypted, as we will be sending passwords we want to ensure it is encrypted, to do which we need to create a TLS secret in Kubernetes that the ingress controller can use.
 
@@ -610,7 +610,7 @@ We will use step to help us here, it was installed when you did the cloud shell 
     http:
   ```
 
-### Step 5c: Create a login password to secure the connection
+### Task 5c: Create a login password to secure the connection
 
 The default configuration for the linkerd-web service includes a password of admin/admin. Obviously this is for demo purposes, but we should use something more secure (and of course you **must** use a strong password in a production environment!)
 
@@ -634,7 +634,7 @@ Now having create the password file we need to add it to Kuberntes as a secret s
 secret/web-ingress-auth created
 ```
 
-### Step 5d: Creating an ingress rule to access the UI
+### Task 5d: Creating an ingress rule to access the UI
 
 We are now going to create the ingress rule. This is based on the example on the linkerd website, but with the following changes: 
 
@@ -732,7 +732,7 @@ This will setup the tunnel for you. You can then access linkerd and the grafana 
 
 </details>
 
-### Step 5e: Enabling our pods for linkerd
+### Task 5e: Enabling our pods for linkerd
 
 In the linkerd UI you will have seen that it was only active on the linkerd namespace, none of the other services were reporting (in the Grafana output would have seen the namespaces monitored count was 1, in the main web page there was only information displayed on the linkerd namespace)
 

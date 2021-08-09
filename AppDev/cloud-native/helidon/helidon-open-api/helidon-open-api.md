@@ -29,7 +29,7 @@ This module shows us how Helidon supports the creation of OpenAPI documents base
 
 You need to have completed the **Cloud Native support in Helidon** module.
 
-## Step 1: Why have a self describing API ?
+## Task 1: Why have a self describing API ?
 
 This module is how to get Helidon to self-describe the REST API you are offering. There are several use cases for this, some of those are :
 
@@ -47,7 +47,7 @@ OpenAPI describes the data format, but there has also been the development of to
 
 In the case of Microprofile (and this Helidon as a Microprofile implementation) this was done through the MicroProfile OpenAPI specification which defines annotations to be used when generating the OpenAPI documents and associated the control mechanisms (for example to exclude API elements that are not intended to be publicly exposed)
 
-## Step 2: Defining the API documentation in your code
+## Task 2: Defining the API documentation in your code
 
 When a system like Helidon MP runs the annotations you've applied to your code need to be identified so they can be processed. This is done automatically for you by the runtime, and annotation processors are called to perform whatever actions you have specified (e.g. setting up a start / stop on a timer on entry / exit form a method)
 
@@ -63,13 +63,13 @@ To build the index Heldion uses a tool called jandex (Java ANnotaiton inDEXer) t
 
 Because running JANDEX can take a lot of time (relatively speaking) you don't want to run it each time you make a change to a source code file in Eclipse, so it needs to be specifically run to generate the index when operating in Eclipse. We will shortly see how that is done.
 
-## Step 3: Annotating the Storefront
+## Task 3: Annotating the Storefront
 
 In this module we will be adding annotations to describe the storefront service and the data it consumes and returns. In a production environment you may chose to limit what's documented and restrict it to only the public API elements intended to be seen outside your project (this will of course be up to you how you do this, but in general it's good practice not to document something that can't be seen externally)
 
 You may of course chose to document other services, for example the stockmanager would normally not publicly visible outside the Kubernetes cluster, but you may chose to document it's API to help building internal clients of the service.
 
-### Step 3a: Accessing the OpenAPI documentation
+### Task 3a: Accessing the OpenAPI documentation
 
   1. Make sure that the storefront microservcies is running.
   
@@ -87,7 +87,7 @@ paths: {}
 
 Of course at the moment we haven't actually build anything in it (if you see output other than the above it means you've already created the index)
 
-### Step 3b: Defining the Service itself
+### Task 3b: Defining the Service itself
 
 Firstly we shall define what the top level service provides, this can be done on any of the classes managed by the content and dependency injection syb-system, but it seems most relevant to place the annotations on the StorefrontApplication class.
 
@@ -143,7 +143,7 @@ paths: {}
 
 But where it the content you just added ? For that we need to rebulid the index.
 
-## Step 4: Creating the index
+## Task 4: Creating the index
 Before we can see the updates to the OpenAPI spec we need to build an index of the annotations
 
 Unlike the server processing annotations the OpenAPI processing only operates against a jandex index, and won't scan for OpenAPI annotations in the class files (I'm not sure if this is a bug or a feature)
@@ -219,11 +219,11 @@ The version numbers may differ.
 
 Towards the end of the output you can see that the Maven jandex plugin is run.
 
-## Step 5:  Ths default OpenAPI document
+## Task 5:  Ths default OpenAPI document
 
 Now we've added an annotation covering the initial contents and built the index let's look at basic document. You must have created the jandex index as described above and stopped any existing instances (there is no need to have the stockmanager running, but if it already is don't worry)
 
-### Step 5a: Viewing the initial OpenAPI spec
+### Task 5a: Viewing the initial OpenAPI spec
 
   1. Start the storefront service running using the Main class as before, this will cause the jandex.idx file to be read.
 
@@ -325,7 +325,7 @@ If you just saw the basic info that was returned when you initially did a curl t
 
 </details>
 
-### Step 5ba: What does this output mean ?
+### Task 5ba: What does this output mean ?
 In summary it means that adding the @OpenAPIDefinition triggered Helidon to scan the jandex index for classes references by the application, looking for REST endpoints (@GET, @POST etc. annotations). Helidon then builds a OpenAPI document that returns the YAML description. Note that the precise order of the major sections may change (it depends on the order the annotations are processed) so you may see the `components:` section before or after the `info: or `path` section
 
   1. First locate the `info:` section. 
@@ -601,7 +601,7 @@ For the rest of the lab documentation I'm going to stick with yaml as it's a bit
 </details>
 
 
-### Step 5c: To many paths, how do we hide private ones ?
+### Task 5c: To many paths, how do we hide private ones ?
 This has given us the entire API, but the /status is probably not relevant to external callers. (As we'll see in the Kubernetes sections it's more for the internal operation of the cluster and availability than something an client would call. So we need a way to remove some end-points from the output.
 
   1. Open the src/main/resources/META-INF/microprofile-config.properties file
@@ -720,11 +720,11 @@ This looks much better, we can see the details of the core REST API we want to e
   
 Strictly speaking this is all that you need to be able to use the API from a caller perspective, you know what to send and what to expect in return, but it's not very detailed information, and it doesn't actually tell you much about what those end-points do (of course this is not completely true here because as a good programmer I've tried to use meaningful names).
 
-## Step 6: Defining the inputs and outputs
+## Task 6: Defining the inputs and outputs
 
 We've got basic information on the ItemRequest (and of course full info on ItemDetails as that was documented in a separate project). let's see how we can document the ItemRequest in more details.
 
-### Step 6a: Defining our data
+### Task 6a: Defining our data
 
   1. Open the ItemRequest class in the com.oracle.labs.helidon.storefront.data package and add @Schema annotations
 
@@ -880,7 +880,7 @@ paths:
  
 Brilliant, the `component.schemas.ItemRequest` section is now as nicely documented (though I accept this is subjective) as the ItemDetails section.
  
-### Step 6b: OpenAPI annotations on the REST Methods
+### Task 6b: OpenAPI annotations on the REST Methods
  
 We've up until now only put OpenAPI related annotations onto the data objects, we should also describe the actual REST API endpoints themselves.
  
@@ -1109,7 +1109,7 @@ paths:
 
 We can see that there is a lot more into on the `/store/reserveStock` REST endpoint, and also on the argument, we can see that it's required and also a description.
 
-### Step 6c: Documenting the error status codes 
+### Task 6c: Documenting the error status codes 
 Of course not every REST API call returns successfully, there may be problems, for example in the case of the `reserveStock` method it might throw a `UnknownItemException` In an earlier module we put an `@Fallback` annotation on the method directing Helidon to pass exceptions a handler class which converts them into relevant http status codes, in this case an `UnknownItemException` is converted into a 404 / Not Found status. But we need a way to document this and the other returns a client may reasonably be expected to handle.
 
   1. Add the following additional `@APIResponse` annotations to the reserveStock method

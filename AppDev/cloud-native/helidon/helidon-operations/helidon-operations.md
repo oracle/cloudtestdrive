@@ -24,7 +24,7 @@ Here we will see how you can use the Helidon features to transparently enable tr
 
 You need to have completed the **Communicating between microservices with Helidon** module.
 
-## Step 1: Why care about operations ?
+## Task 1: Why care about operations ?
 
 One thing that many developers used to forget is that once they have finished writing code it still has to run and be maintained. With the introduction of DevOps a lot of developers suddenly found they were the ones being woken up in the middle of the night to fix problems in their code. That changes the perception somewhat and now many developers are acutely aware that they will have ongoing involvement in the code well after the time it compiles cleanly and passed the test suite.
 
@@ -34,7 +34,7 @@ Equally performance information is key to understanding how well the services ar
 
 Fortunately for us and other developers Helidon has support for tools and and producing data that will help diagnose problems, and determine if there is a problem in the first place.
 
-## Step 2: Tracing
+## Task 2: Tracing
 We now managed to achieve the situation where we have a set of microservices that cooperate to perform specific function. However we don't know exactly how they are operating in reality, we do of course know how they operate in terms of our design!
 
 Tracing in a microservices environment allows us to see the flow of a request across all of the microservices involved, not just the sequence of method calls in a particular service. 
@@ -206,10 +206,10 @@ For requests into the service (the first of these is the first entry in the trac
 
 Now on the right we can see the details of this sub request, made from the storefront to the stockmanager. Feel free to further explore the zipkin UI if you wish, there's a lot if information available to help explore and diagnose problems.
 
-## Step 3: Metrics
+## Task 3: Metrics
 Tracking solutions like Zipkin can provide us with detail on how a single request is processed, but they are not going to be able to tell us how many requests were made, and what the distribution of requests per second is. This is the kind of thing that is needed by the operations team to understand how the microservice is being used, and where enhancements may be a good idea (especially where to focus development work for performance enhancements)
 
-### Step 3a: Counting calls
+### Task 3a: Counting calls
 
 The pom.xml would usually need to be updated for the metrics, that's already been done for you here.
 
@@ -349,7 +349,7 @@ In an earlier lab we setup a fall back on the listAllStock and reserveStock meth
 
 </details>
 
-### Step 3b: Limiting the output of the metrics request
+### Task 3b: Limiting the output of the metrics request
 
 There is a lot of data returned, including system data, let's see how we can limit that to just our application
 
@@ -375,7 +375,7 @@ Of if you're only interested in a specific metric you can just retrieve that, pr
 
 
 
-### Step 3c: Testing with real counter data
+### Task 3c: Testing with real counter data
 
 Let's make a couple of list stock requests, then look at the list_all_stock counter
 
@@ -422,7 +422,7 @@ We can see that now 5 requests in total have been made to the storefront resourc
 
 Why port 9080 ? Well you may recall that in the helidon core lab we defined the network as having two ports, one for the main application on port 8080 and another for admin functions on port 9080, we then specified that metrics (and health which we'll see later) were in the admin category so they are on the admin port. It's useful to split these things so we don't risk the core function of the microservice getting mixed up with operation data.  
 
-### Step 3d: Other types of metrics
+### Task 3d: Other types of metrics
 There are other types of metrics, for examples times. 
 
   1. Open the file **StorefrontResource.java**
@@ -507,7 +507,7 @@ application:list_all_stock_meter_five_min_rate_per_second 0.014179223683357264
 application:list_all_stock_meter_fifteen_min_rate_per_second 0.005264116322948982
 ```
 
-### Step 3e: Combining counters, metrics, timers and so on
+### Task 3e: Combining counters, metrics, timers and so on
 You can have multiple annotations on your class / methods as you've just seen, but be careful that you don't get naming collisions, if you do your program will likely fail to start.
 
 By default any of `@Metric`, `@Timed`, `@Counted` etc. will use a name that's depending on the class / method name, it does **not** append the type of thing it's actually measuring. So if you had `@Counted` on the class and `@Timed` a class (or `@Counted` and `@Timed` on a particular method) then there would be a naming clash between the two of them. It's best to get into the habit of naming these, and putting the type in the name. Then you also get the additional benefit of being able to easily extract it using the metrics url like `http://localhost:9080/metrics/application/listAllStockMeter`

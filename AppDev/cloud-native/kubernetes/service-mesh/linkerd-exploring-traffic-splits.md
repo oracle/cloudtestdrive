@@ -28,7 +28,7 @@ This module shows how to use the Linkerd traffic split functionality to do a tri
 
 You need to complete the **Rolling update** module (last of the core Kubernetes labs modules). You must have completed the **Installing the Linkerd service mesh** module. You can have done any of the other optional module sets, or any combination of the other service mesh modules.
 
-## Step 1: What is a a traffic split, and what can I do with it ?
+## Task 1: What is a a traffic split, and what can I do with it ?
 
 A traffic split is just what it says, the traffic sent to a service is split between the implementation instances. In core Kubernetes this is done using the selector in the service to locate pods with matching  labels. Then traffic sent to the service is split between the different pods, often using a round robin approach so each pod responds in turn.
 
@@ -42,9 +42,9 @@ Note that in a lot of these cases you use additional external automation tools t
 
 This module was written using the information in the [Linkerd fault injection page.](https://linkerd.io/2/tasks/fault-injection/)
 
-## Step 2: Canary deployments with a service mesh traffic split
+## Task 2: Canary deployments with a service mesh traffic split
 
-### Step 2a: What is a canary deployment ?
+### Task 2a: What is a canary deployment ?
 
 A canary deployment is a method of doing a small trial deployment, operating within the overall production infrastructure, and if the trial works you can expand it, if the trial deployment fails then it can be removed.
 
@@ -57,7 +57,7 @@ Historically canaries were used in underground mines as they were far more sensi
 
 </details>
 
-### Step 2b: What are we going to do ?
+### Task 2b: What are we going to do ?
 
 In this lab we are going to go through the process of **manually** performing a canary deployment, along with recovering it. We're doing this manually so you get the full details of what's happening, however normally you would use automated tools like [Flagger](https://flagger.app) or [Spinaker](https://www.spinnaker.io/) to actually perform the steps for you (and at a much finer granularity)
 
@@ -65,7 +65,7 @@ We are going to deploy a version of the stockmanager service that deliberately b
 
 More importantly we are going to do this while keeping the stockmanager service online all the time.
 
-### Step 2c: Identifying the deployments
+### Task 2c: Identifying the deployments
 
 The order here is important, this is because the basic stockmanager service is only looking for deployments which match the selector of `app: stockmanager`, so if we were to just roll out the new version then the service would match the old and new versions. To do that we need a way to identify the different **versions** of a dpeloyment
 
@@ -153,7 +153,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 As the pod has restarted you may have a delay or have to retry the request as the database connection is established.
 
-### Step 2d: Create versioned services
+### Task 2d: Create versioned services
 
 Now we have a mechanism to differentiate between the old and new versions of the service we're going to create two new service definitions, one having a selector that matches the  0.0.1 version of the stockmanager service and one for the 0.0.2 version. (We haven't actually deployed the 0.0.2 version, that comes later)
 
@@ -249,7 +249,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 For the 0.0.2 version we get a 503 - Service Unavailable response. The ingress controller can map to the 0.0.2 service, but the 0.0.2 service has a selector which is looking for pods with a label `version: 0.0.2` and so far we haven't created any of those.
 
-### Step 2e: Creating the traffic split
+### Task 2e: Creating the traffic split
 
 Now we have to create the traffic split. We need to do this before creating the 0.0.2 deployment because the original (un-versioned) stockmanager service is still running and being used by the storefront. The original service has a selector that will match on **any** pod with the label `app: stockmanager` **regardless** of what the version it is. Once the traffic split is in place it will intercept traffic for the original service, so only after that is it safe to create the new deployments.
 
@@ -428,7 +428,7 @@ Locate your namespace on the list, you'll see that it's running fine with 100% s
 
 As you'd expect we can see all the traffic is going to the 0.0.1 version and it's all successful. Keep this page open
 
-### Step 2f: Sending data to our new service
+### Task 2f: Sending data to our new service
 
 At the moment we're sending the data to the 0.0.1 service, but now we want to start sending some date to a 0.0.2 version and see how well it does.
 
@@ -483,7 +483,7 @@ Once you've finished looking at the split we need to stop the load generator
 
   7. In the OCI cloud shell where you are running the load balancer stop the generator using Control-C
 
-### Step 2g: It's failed, but what if it had worked ?
+### Task 2g: It's failed, but what if it had worked ?
 
 If it had worked then you would gradually adjust the traffic split, over time sending more traffic to the new deployment. Once it was taking all of the load then you could remove the deployment for the old version, and the associated service.
 
@@ -493,7 +493,7 @@ During this entire time period the overall stockmanager service would still have
 
 Remember, we've been doing this as a **manual** process to show you what's actually happening, in most cases where you have a CI/CD pipeline you'd use automation to manage the canary process, and it would perform the steps needed to completely switch to the new version automatically.
 
-### Step 2h : We've discovered the new version is broken, what to do ?
+### Task 2h : We've discovered the new version is broken, what to do ?
 
 Well obviously in the short term we don't want a broken version of the service if we have a working one, so the absolute first thing we need to do is to remove the new version from the traffic-split
 
@@ -540,7 +540,7 @@ Now there are lot's of actions you can take, what **we** are going to do soon is
 
 Another option is if you have some idea as to the cause of the fault and can fix it quickly, in that case you'd probably create a new image and re-deploy it, that way you'd just need to update the traffic split to start sending some traffic to the updated "new" version.
 
-### Step 2i: Resetting to our initial state
+### Task 2i: Resetting to our initial state
 
 In this case (and this is probably what the CI/CD connected automation would do) we'll just remove everything. You do of course need to do this in the right order, or there may be a short period where the original stockmanager service would map onto both the old and new versions (and thus the new broken version may be sent requests).
 
@@ -573,7 +573,7 @@ Well spotted! We're going to leave the version in place on the original service.
 
 </details>
 
-## Step 3: Using a traffic split to test resilience (A bit of Chaos)
+## Task 3: Using a traffic split to test resilience (A bit of Chaos)
 
 We're going to use a traffic split to send some messages to a fake zipkin endpoint which will generate errors, this will let us see how well our micro-services handle the situation where zipkin becomes unavailable.
 
@@ -581,7 +581,7 @@ We will do this by creating a fault injection service, this will respond to **al
 
 This is a very simple example of [Chaos Engineering](https://principlesofchaos.org)
 
-### Step 3a: Setup the fault injection service
+### Task 3a: Setup the fault injection service
 
 Switch to the service mesh directory
 
@@ -691,7 +691,7 @@ Connection: keep-alive
 
 OK, the 504 / Gateway Time-out response is generated as we expect.
 
-### Step 3b: Deploy the traffic split
+### Task 3b: Deploy the traffic split
 
 So far all we've done is to create a service that generates 504 errors, not much use by itself! We need to look at the traffic split to redirect some of the traffic for the original service to this new one.
 
@@ -751,7 +751,7 @@ We can see the details of the traffic split, the **Apex Service** indicates the 
 
 Keep this page open
 
-### Step 3c: Testing what happens
+### Task 3c: Testing what happens
 
 Let's generate some requests to see what happens
 
@@ -906,7 +906,7 @@ In this case we can find (within a lot of other stuff) the error log details whe
 
 We've seen that the traffic split has let us inject a fault so that the zipkin service is not available, our clients have continued as expected, but what would happens if we inject a fault such that the stockmanager itself becomes unavailable ?
 
-### Step 3d: What about more serious faults
+### Task 3d: What about more serious faults
 
 Disrupting access to zipkin is an example of where there is a fault that is not causing a problem to the overall service.
 
@@ -914,7 +914,7 @@ If we had however done this to the stock manager service (when we looked at cana
 
 In **some** cases one service failing cannot be recovered from directly. We could however have instructed the service mesh that when the stockmanager has a problem then [it should retry the request.](https://linkerd.io/2/tasks/configuring-retries/) This would mean that for intermittent errors the retry might have succeeded.
 
-### Step 3e: What about the Kubernetes health services ? 
+### Task 3e: What about the Kubernetes health services ? 
 
 You may be concerned about the impact of traffic splits on the health of the underlying service, after all if we're redirecting requests to the 504 error generator doesn't this mean that the readiness and liveness checks would start restarting the containers. 
 
@@ -924,11 +924,11 @@ The same should also apply to the deployment defined actions like prometheus met
 
 Of course there are some actions that might be impacted, for example if you had a service that you used for your own data gathering, going to a endpoint that was behind the traffic split then that may start failing, but most folks would use the standard Kuernetes components
 
-### Step 3f: Hum, this could cause me customer problems
+### Task 3f: Hum, this could cause me customer problems
 
-You probably don't want to start doing this type of chaos engineering on your production environments until you've tested it thoroughly in your dev and test environments. However there is another option here, you could use header based requests to identify "test traffic, and just make sure you chode a header that wouldn't normally come from your real customers.
+You probably don't want to start doing this type of chaos engineering on your production environments until you've tested it thoroughly in your dev and test environments. However there is another option here, you could use header based requests to identify "test traffic, and just make sure you chose a header that wouldn't normally come from your real customers.
 
-### Step 3g: Cleaning up the fault injection
+### Task 3g: Cleaning up the fault injection
 
 For now let's remove the Traffic split and the fault-injector components we created. I have created a simple script that removes them for us.
 
@@ -944,7 +944,7 @@ deployment.apps "fault-injector" deleted
 configmap "fault-injector-configmap" deleted
 ```
 
-## Step 4: Other criteria for splitting the traffic
+## Task 4: Other criteria for splitting the traffic
 
 The [Service mesh specification for traffic splits](https://github.com/servicemeshinterface/smi-spec/blob/master/apis/traffic-split/v1alpha3/traffic-split.md) supports other mechanisms (be warned not all service mesh implementation support this specification, and not all support all the traffic split options).
 

@@ -28,7 +28,7 @@ This module shows how to use Linkerd to see identify problems in the traffic bet
 
 You need to complete the **Rolling update** module (last of the core Kubernetes labs modules). You must have completed the **Installing the Linkerd service mesh** module. You can have done any of the other optional module sets, or any combination of the other service mesh modules.
 
-## Step 1: What the service mesh brings to troubleshooting
+## Task 1: What the service mesh brings to troubleshooting
 
 A service mesh like Linkerd doesn't just provide encryption and traffic statistics. It can also be used to help identify problems though it's monitoring capabilities.
 
@@ -44,9 +44,9 @@ in the case of Linkerd if a service fails to respond at all, or it responds but 
 
 Well fortunately for us I have build a version of the Stock Manager that can be configured to generate deliberate errors (I promise it's not just me doing bad coding :-) ) We will deploy this new version and then configure it to generate errors on half of the requests it makes.
 
-## Step 2: Using a service mesh to troubleshoot
+## Task 2: Using a service mesh to troubleshoot
 
-### Step 2a: Start the load generator
+### Task 2a: Start the load generator
 
 The first thing we need is some load so we can see what the service mesh is doing, there is a load generator script we can use to do this
 
@@ -92,7 +92,7 @@ Note, the OCI Cloud Shell session will terminate (and thus kill off the load gen
 
 If that happens while you are doing the service mesh labs the solution is to connect back to the OCI CLoud shell and restart the load generator
 
-### Step 2b: Viewing the load
+### Task 2b: Viewing the load
 
 Let's just check that the load is running fine
 

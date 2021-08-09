@@ -28,7 +28,7 @@ This module shows how to install the data visualisation tool Grafana and configu
 
 The **Prometheus for metrics capture** module must have been completed before you can do this module, and you must have left the Prometheus server running. If you stopped it then follow the instructions to install it again (the deployments will still have the correct annotations.)
 
-## Step 1: Displaying data with Grafana
+## Task 1: Displaying data with Grafana
 
 As we've seen while Prometheus can gather lots of data, it is not exactly the most powerful visualization mechanism.
 
@@ -36,7 +36,7 @@ Grafana on the other hand is a very powerful open source visualization engine an
 
 For this lab we will use a small subset of the open source features only.
 
-## Step 2: Installing Grafana
+## Task 2: Installing Grafana
 Like many other Kubernetes services Grafana can be installed using helm. By default the helm chart does not create a volume for the storage of the grafana configuration. This would be a problem in a production environment, so we're going to use the persistent storage option defined in the helm chart for Grafana to create a storage volume. 
 
   1. Add the Helm repository entry for Grafana 
@@ -202,11 +202,11 @@ Assuming you entered the details correctly it will report that it's done the sav
 
   ![grafana-home-datasource-done](images/grafana-home-datasource-done.png)
   
-## Step 3: Creating our first dashboard
+## Task 3: Creating our first dashboard
 
 We now need to configure a dashboard that will display data for us.
 
-### Step 3a: Create our initial visualisation
+### Task 3a: Create our initial visualisation
 
   1. Click the **Create your first dashboard** button to start the process
 
@@ -340,7 +340,7 @@ Now we see our dashboard with a graph panel
 
    ![grafana-new-dashboard-first-panel-completed](images/grafana-new-dashboard-first-panel-completed.png)
    
-### Step 3b: Adding a second panel
+### Task 3b: Adding a second panel
 
 Of course this looks pretty basic, It's good to see how many requests we're getting, but let's add an additional panel to give us a history of how many requests we've had . 
 
@@ -373,7 +373,7 @@ Of course this looks pretty basic, It's good to see how many requests we're gett
 
   ![grafana-dashboard-added-second-panel](images/grafana-dashboard-added-second-panel.png)
   
-### Step 3c: Adding a different type of visualisation
+### Task 3c: Adding a different type of visualisation
 
 We're going to add a 3rd panel with a different visualization type, using a dial graph that gives us a view of the most recent data.
 
@@ -431,7 +431,7 @@ Note that as you enter the values the order of the boxes may change.
 
   ![grafana-three-panel-dashboard-colums](images/grafana-three-panel-dashboard-colums.png)
   
-### Step 3d: Organising the dashboard
+### Task 3d: Organising the dashboard
 
 We can see what data we're getting, but it's not that easy to look at.
 
@@ -497,7 +497,7 @@ Now we can see more details
 
   ![grafana-stock-performance-dashboard-with-data](images/grafana-stock-performance-dashboard-with-data.png)
 
-## Step 4: More complex dashboards
+## Task 4: More complex dashboards
 This is a fairly simple dashboard, far more complex ones are easily achievable using a combination or Prometheus and Grafana. As an example we're going to look at a prebuilt dashboard.
 
   1. Click the **Grafana logo** ![grafana-logo](images/grafana-logo.png) on the upper left. 
@@ -532,7 +532,7 @@ The dashbaords will be imported (there will be a quick "I'm doing an import" mes
 
 ---
 
-## Step 5: Tidying up the environment
+## Task 5: Tidying up the environment
 
 If you are in a trial tenancy there are limitations on how many Load Balancers and other resources you can have in use at any time, and you may need them for other modules. The simplest way to release the resources used in his module (including the load balancer) is to delete the entire namespace.
 

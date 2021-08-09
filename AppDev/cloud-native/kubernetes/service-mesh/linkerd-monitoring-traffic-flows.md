@@ -28,11 +28,11 @@ This module shows how to use Linkerd to see the traffic flows between your micro
 
 You need to complete the `Rolling update` module (last of the core Kubernetes labs modules). You must have completed the `Installing the Linkerd service mesh` module. You can have done any of the other optional module sets, or any combination of the other service mesh modules.
 
-## Step 1: Using the service mesh to see what's happening
+## Task 1: Using the service mesh to see what's happening
 
 We've seen how to install and run the service mesh, we're now doing to look at how to use it.
 
-### Step 1a: Starting a load generator
+### Task 1a: Starting a load generator
 
 The first thing we need is some load so we can see what the service mesh is doing, there is a load generator script we can use to do this
 
@@ -79,7 +79,7 @@ Note, the OCI Cloud Shell session will terminate (and thus kill off the load gen
 
 If that happens while you are doing the service mesh labs the solution is to connect back to the OCI CLoud shell and restart the load generator
 
-### Step 1b: Viewing the load
+### Task 1b: Viewing the load
 
   1. In your laptop web browser go to `https://linkerd.<external IP>.nip.io`
 
@@ -140,7 +140,7 @@ In the TCP Metrics section the columns are :
 
 </details>
 
-### Step 1c: Namespace specific load
+### Task 1c: Namespace specific load
 
 Let's now look at the specific data for your namespace. 
 
@@ -203,7 +203,7 @@ Firstly we can see the other pods that are talking to this stock manager pod (th
 
 Below that we can the specific details. There's a lot of data we can see about the message flows and volumes, even in a simple setup like this one.
 
-### Step 1d: What network traffic is happening ?
+### Task 1d: What network traffic is happening ?
 
 So far we've seen what's happening on the pods, but as the service mesh is a layer 7 proxy it knows what's happening within the requests. Note in mid October 2020 as I was testing this module I found this section of the lab works best with Chrome, some features did work in Firefox. The live monitoring features did not work in Safari. Those browsers may have been updated since then of course.
 
@@ -266,7 +266,7 @@ We see the results as they are generated, let's look at them
 
 We can now see the details of the request. Note that we **do not** see the content of the request, only the header information (content could of course contain private information, admittedly the basic auth can easily be reversed, but in a production rather than a lab environment you's use something like JWT or OAUTH2.) We can however see the duration of the request, and other information that could be very useful in diagnosing  problems (something we will look at in another module)
 
-### Step 1e: Status of linkerd itself
+### Task 1e: Status of linkerd itself
 
 Finally let's have a quick look at the status of the linkerd control plane itself
 
@@ -300,7 +300,7 @@ There is more information on control plan failure in [the linkerd FAQ](https://l
 
 </details>
 
-## Step 2: Looking at the Grafana visualizations.
+## Task 2: Looking at the Grafana visualizations.
 
 The data we've seen so far is the live view, but if we wanted to understand what was happening over a longer period of time (say to understand how the request breakdown changes over the day) we want to look at historical data. To do that we will use the Grafana visualizations that the linkerd install setup for us. 
 
@@ -364,7 +364,7 @@ The ones that have recently been visited are listed first (I've been exploring a
 
 Feel free to explore the dashboards if you like, the Linkerd Health dashboard provides information on the operation of linkerd itself, whcih may be of interest to the linkerd developers.
 
-## Step 3: Stopping the load generator
+## Task 3: Stopping the load generator
 
   1. In the OCI cloud shell stop the load generator using Control-C
   

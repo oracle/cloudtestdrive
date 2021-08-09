@@ -26,11 +26,11 @@ This module looks at the core Helidon features for REST enabling code to convert
 
 You need to have completed the **Setting up your tenancy** and **Setup for the Helidon labs** modules
 
-## Step 1: REST enabling our Java classes.
+## Task 1: REST enabling our Java classes.
 
   1. Open the Eclipse IDE. There is an Eclipse icon on the desktop, double click it, and wait for Eclipse to start.
 
-For all of the steps in this section of the lab we will be using the **helidon-labs-storefront** project in Eclipse. Generally we will not be updating the Maven pom.xml file with the specific imports needed as we are focusing on the coding aspects here. If you are going to be coding your own services we encourage you to look at the pom.xml file to see what dependencies we are making available to the project.
+For all of the tasks in this section of the lab we will be using the **helidon-labs-storefront** project in Eclipse. Generally we will not be updating the Maven pom.xml file with the specific imports needed as we are focusing on the coding aspects here. If you are going to be coding your own services we encourage you to look at the pom.xml file to see what dependencies we are making available to the project.
 
 The main class we will be using is **StorefrontResource.java**.   Locate it in the Eclipse project explorer (Hierarchical browser on the left of the Eclipse window) and open it.
 
@@ -58,7 +58,7 @@ Enough on Lombok. Let's get to the Helidon work!
 </details>
 
 
-### Step 1a: Make the list stock REST Service available
+### Task 1a: Make the list stock REST Service available
 The first thing a REST service must do is provide a REST end point that can be called. Helidon makes this process very easy.
 
 For our first bit of Helidon work we're going to REST enable a Java method that returns data and doesn't take any input.
@@ -194,7 +194,7 @@ This Produces annotation is very important to understand. It means that the fram
 
 
 
-### Step 1b: How does the framework know what to make available?
+### Task 1b: How does the framework know what to make available?
 
 We've updated a single class, but in a traditional Java program something else would be calling that class and starting the rest of the program. We need to have a class that does that for us and tells Helidon that this is a class we want enabled as a REST service.
 
@@ -237,7 +237,7 @@ The problem with using CDI to do this however is that you won't have the chance 
 
 </details>
 
-### Step 1c: How does Helidon know what classes it needs to create REST endpoints for ?
+### Task 1c: How does Helidon know what classes it needs to create REST endpoints for ?
 
 We need to define a new class which extents the `Application` to provide this information. Helidon will scan for classes that implement `Application` and then use the `getClasses()` method to build the full set of classes it will process.
 
@@ -318,7 +318,7 @@ Note that in some cases you may still need an Application class however. For the
 
 </details>
 
-### Step 1d: Running the storefront program.
+### Task 1d: Running the storefront program.
 
   1. Locate the file **Main.java**. 
 
@@ -374,8 +374,8 @@ We've got data! Admittedly this is using fake data for now for testing purposes,
 
 Congratulations on creating your first REST API of the lab!
 
-### Step 1e: Make the reserveStock REST service available
-We've seen how simple it is to make a existing Java method REST enabled and how to use the framework to start up a server for us. The next step is to look at how we REST enable a Java method that needs to take parameters from the REST request to do it's processing.
+### Task 1e: Make the reserveStock REST service available
+We've seen how simple it is to make a existing Java method REST enabled and how to use the framework to start up a server for us. The next Task is to look at how we REST enable a Java method that needs to take parameters from the REST request to do it's processing.
 
   1. Re-open the file **StorefrontResource.java** 
 
@@ -544,7 +544,7 @@ Now you've seen how Helidon can not only REST enable methods, but also handle th
 
 
 
-## Step 2: Authentication
+## Task 2: Authentication
 
 <details><summary><b>The theory</b></summary>
 
@@ -669,7 +669,7 @@ With a single annotation and a config file we've now ensured that our service is
 
 
 
-## Step 3: Scope of classes and additional REST endpoints
+## Task 3: Scope of classes and additional REST endpoints
 
 A big application may have multiple sets of services, grouped into resources, so far we're looking at the StorefrontResource that handles the stock interactions. But what if we want to have other resources for other parts of the application ?
 
@@ -976,11 +976,11 @@ content-length: 54
 
 We'll look at what the StatusResource is used for later
 
-## Step 4: Content and Dependency Injection
+## Task 4: Content and Dependency Injection
 
 Here we look at ways to automatically have the Helidon framework create and assign instance for us.
 
-### Step 4a: Injecting classes and resources
+### Task 4a: Injecting classes and resources
 
 <details><summary><b>Sharing resources between classes</b></summary>
 
@@ -1170,7 +1170,7 @@ This time the request worked as the business logic in the StorefrontResource cla
 Of course there are lots of situations where you'd want to use dependency injection like this which are different situations, for example you may just not want to have to deal with constructors!
 
 
-### Step 4b: Constructors and Injecting properties from configuration
+### Task 4b: Constructors and Injecting properties from configuration
 
 <details><summary><b>Some theory</b></summary>
 
@@ -1436,7 +1436,7 @@ content-length: 1
 ```
 
 
-## Step 5: Monitoring the configuration for changes
+## Task 5: Monitoring the configuration for changes
 <details><summary><b>How it works</b></summary>
 
 
@@ -1554,7 +1554,7 @@ The value is injected **after** the classes constructor has been run, so if the 
 
 </details>
 
-## Step 6: Separating functionality by port
+## Task 6: Separating functionality by port
 Helidon can deliver service using multiple ports, for example separating out the administration functions (e.g. metrics, health etc.) from the operational functions.
 
   1. Look at the contents config file in `conf/storefront-network.yaml` 
@@ -1618,11 +1618,11 @@ You will see that it defines two network ports, the primary one on port 8080 and
 We will look more in the the services like health that are available on the admin port in a later exercise.
 
 
-## Step 7: Handling problems
+## Task 7: Handling problems
 
 When working in a distributed set of microservices you are operating in a networked environment, and that introduced a potential set of faults that are different from just accessing a local object instance. 
 
-### Step 7a: Handling failures
+### Task 7a: Handling failures
 It's a fact of life that problems sometimes occur. We saw in the console output earlier that the reserveStockItem method will throw a MinimumChangeException if the request does not exceed the specified minimum change.
 
 The problem is that at the moment all the caller gets to find out is that there's been a 500 server error. That's not a lot of help debugging things!
@@ -1726,7 +1726,7 @@ connection: keep-alive
 At least now the caller is getting something useful!
 
 
-### Step 7b: Handling code exceptions
+### Task 7b: Handling code exceptions
 Helidon has another approach error handling we're going to look at here that does let us get a *lot* of information around the error and why it happened. Unfortunately there isn't a simple way for the developer to process that data, but let's see an example of it.
 
   1. Navigate to `resources` package and open the file `StorefrontResource.java`
