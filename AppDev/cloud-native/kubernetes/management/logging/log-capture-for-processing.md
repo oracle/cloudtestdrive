@@ -204,7 +204,7 @@ NOTES:
 
 ### Task 2d: Accessing the service
 
-  1. In a web browser go to the web page `https://search.logging.<External IP>.nip.ip/_cat`  (remember to replace `External IP>` with your ingress controller IP address) If you get a 503 or 502 error this means that the elastic search service is still starting up. Wait a short time then retry.
+  1. In a web browser go to the web page `https://search.logging.<External IP>.nip.io/_cat`  (remember to replace `External IP>` with your ingress controller IP address) If you get a 503 or 502 error this means that the elastic search service is still starting up. Wait a short time then retry.
 
   2. If needed in the browser, accept a self signed certificate. The mechanism varies by browser and version, but as of September 2020 the following worked with the most recent (then) browser version.
   
