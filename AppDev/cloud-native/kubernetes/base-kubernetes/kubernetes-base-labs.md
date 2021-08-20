@@ -181,7 +181,7 @@ Firstly we need to create a namespace for the ingress controller.
 
   2. Run the following command to install **ingress-nginx** using Helm 3:
   
-  - `helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx --version 3.29.0 --set rbac.create=true  --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-protocol"=TCP --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape"=10Mbps`
+  - `helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx --version 3.34.0 --set rbac.create=true  --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-protocol"=TCP --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape"=10Mbps`
   
   ```
 NAME: ingress-nginx
@@ -266,7 +266,7 @@ Setting up the Kubernetes dashboard (or any) service using helm is pretty easy. 
 
   1. To install the dashboard you need to replace `<External IP>` with the IP address of the Ingress controller service you got earlier in this helm command, so if the IP address you got was 123.456.789.999 (this is not a valid address, so don;t use it, use yours) the set ingress.hosts section of command below might look like `--set ingress.hosts='{dashboard.kube-system.123.456.789.999.nip.io}'`
   
-  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set ingress.enabled=true  --set ingress.hosts='{dashboard.kube-system.<External IP>.nip.io}' --version 4.0.3`
+  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set ingress.enabled=true  --set ingress.hosts='{dashboard.kube-system.<External IP>.nip.io}' --version 4.3.1`
   
   It it **critical** that you update the `<External IP>` address to match that of **your** ingress controller service, if you get it wrong then though the command will complete you won't be able to access the dashboard with the URL. 
   

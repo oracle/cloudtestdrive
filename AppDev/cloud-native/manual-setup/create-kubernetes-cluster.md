@@ -52,7 +52,7 @@ Fill in the form with following parameters:
   
   B.  Make sure the **Compartment** is `CTDOKE`
   
-  C.  Make sure the **Kubernetes version** is the highest on the list (at the time of the last update of this document in March 2021 that was 1.19.7, but it may have been updated since then)
+  C.  Make sure the **Kubernetes version** is the highest on the list (at the time of the last update of this document in August 2021 that was 1.20.8 , but it may have been updated since then)
   
   D. Make sure that the **Kubernetes API Endpoint** is set to **Public Endpoint**
 
