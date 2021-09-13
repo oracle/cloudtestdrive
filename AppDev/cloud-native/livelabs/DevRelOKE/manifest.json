@@ -4,7 +4,7 @@
 	"tutorials": [
         {
           "title": "Labs introduction",
-          "filename":"kubernetes-core.md"
+          "filename":"kubernetes-devrel.md"
         },
         {
           "title": "Getting Started",
