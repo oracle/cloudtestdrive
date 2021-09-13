@@ -10,6 +10,9 @@ These have no optional modules
 
 [Kubernetes core lab](https://oracle.github.io/cloudtestdrive/AppDev/cloud-native/livelabs/individual/kubernetes/kubernetes-core/index.html?lab=labs-introduction)
 
+
+[Kubernetes for Ettore DevRel](https://oracle.github.io/cloudtestdrive/AppDev/cloud-native/livelabs/DevRelOKE/index.html?lab=labs-introduction)
+
 (No Docker lab as it makes no sense if you haven't finished the Helidon lab)
 
 ## Complete labs
