@@ -852,7 +852,7 @@ How do we fix this ? Simple, we just change the ConfigurationResource class from
 
   11. Open the file **ConfigurationResourse.java**
 
-  12. Change `@RequestScoped` to `@ApplicationScoped` in the ConfigurationRecourse class and save it
+  12. Change `@RequestScoped` to `@ApplicationScoped` in the ConfigurationResourse class and save it
 
   ```java
 @Path("/minimumChange")
