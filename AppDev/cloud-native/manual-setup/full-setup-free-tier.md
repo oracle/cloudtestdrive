@@ -200,7 +200,7 @@ If you are in an **instructor led lab** the instructor may have already done thi
 
 ### 4a. Create a database
 
-  1. Use the Hamburger menu, and select the Database section, **Autonomous Transaction Processing**
+  1. Use the Hamburger menu, and select the **Oracle Database** section, then chose **Autonomous Transaction Processing**
 
   2. Click **Create Autonomous Database**
 
@@ -526,7 +526,7 @@ The easiest way to get the database Wallet file into your virtual machine is to 
   
   3. Open the "Hamburger" menu (three bars on the top left)
   
-  4. Scroll down (if needed) to the **Database** section. Click on the **Autonomous Transaction Processing** menu option
+  4. Scroll down (if needed) to the **Oracle Database** section. Click on the **Autonomous Transaction Processing** menu option
   
   5. If you need to select the `CTDOKE` compartment you created earlier in the Compartment selector on the left side of the page.
   

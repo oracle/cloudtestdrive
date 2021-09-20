@@ -100,7 +100,7 @@ When the download is complete the Firefox download icon will turn completely blu
 
   ![](images/53-eclipse-import-file-selection.png)
 
-  7. Click `Select All` to make sure all the projects are imported, then click the `Finish` button
+  7. Click `Select All` to make sure all the projects are imported (the list of projects may differ slightly from that shown in the example below), then click the `Finish` button
 
   ![](images/54-eclipse-import-final-stage.png)
 
@@ -109,18 +109,6 @@ Eclipse will import the projects and start importing the Maven dependencies. Not
   ![](images/55-eclipse-import-progress.png)
 
 This may take a few mins. **Do not worry if you see errors during this process** (usually indicated by a white cross in a red box). These are to be expected as Eclipse imports the code, then updates the Maven configuration and other elements. Once the building indicator (lower right) has gone away the errors should have gone. Expect to see yellow warning triangles though - these are telling about unused code that we will be completing during the lab modules.
-
-### Task 2c. Building the helidon-labs-common project
-
-The `helidon-labs-common` project contains classes that are used by both the storefront and stockmanager projects. We need to build that project to the Maven repository so it can be used later on.
-
-  1 .Click right on the `helidon-labs-common` project, then chose the `Run as` menu option, then `Maven install`
-
-  ![](images/80-helidon-labs-common-menu-maven-install.png)
-
-Eclipse will use Maven to build and install the project. The progress will be shown in the `Console` tab, and you'll be able to see the `Build Success` message when it finishes (usually after 5 - 10 seconds, but it may take longer).
-
-  ![](images/81-helidon-labs-common-menu-maven-install-completed.png)
 
 ## Task 3: Configuring to use the Wallet file
 
