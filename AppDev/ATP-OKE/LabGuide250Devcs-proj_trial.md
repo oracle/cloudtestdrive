@@ -19,7 +19,7 @@ In this section, you’ll provision a complete development platform for your tea
 - Access your Visual Builder Studio Instance : use the URL to your Visual Builder Studio Console you saved during the setup of your environment (Remark: if you are using the Oracle CTD tenancy, see your access document for the URL)
 - On the Welcome page, click **+ Create**.
 
-![](images/150/create.png)
+![](images/150/Projects.png)
 
 
 
@@ -32,31 +32,31 @@ In this section, you’ll provision a complete development platform for your tea
 
   - Click **Next**
 
-    ![](images/150/image002-1.png)
+    ![](images/150/image002-2.png)
     
     
 
 - Click **Empty Project**, then click **Next**.
 
-  ![](images/150/image003-1.png)
+  ![](images/150/image003-2.png)
 
   
 
 - Select your preferred wiki markup language, then click **Finish**
 
-  ![](images/150/image004-1.png)
+  ![](images/150/image004-2.png)
 
   
 
 - Wait while the project modules are provisioned, which can take a minute or two. You can see the indicators turn green as the associated modules are provisioned.
 
-  ![](images/150/image005-1.png)
+  ![](images/150/image005-2.png)
 
   
 
 - When everything is provisioned, the project Home page opens, which contains details about your newly created project:
 
-  ![](images/150/image006-1.png)
+  ![](images/150/image006-3.png)
 
   
   
@@ -76,10 +76,10 @@ In this section, you’ll provision a complete development platform for your tea
 
 - With the **Project Home** selected on the left menu, look to the right and select **Repositories**, then click **+ Create** button.
 
-  <img src="images/150/image006-2.png" style="zoom: 25%;" />
+  <img src="images/150/image006-4.png" style="zoom: 80%;" />
 
 - In the New Repository dialog, enter these details: 
-  - Type **ATPDocker** in the **Name** field.  In case you are sharing a repository with other participants, add your initials at the end of the name, like for example **ATPDocker_JLE**
+  - Type **ATPDocker** in the **Name** field.  In case you are sharing a repository with other participants, add your initials at the end of the name, like for example **ATPDockerSJ**
 
   - Type **Microservices and ATP** in the **Description** field
 
@@ -87,13 +87,13 @@ In this section, you’ll provision a complete development platform for your tea
 
   - Enter https://github.com/CloudTestDrive/ATPDocker.git (make sure there is no whitespace at the start or finish if copy and pasting) in the text box: 
 
-    <img src="images/150/image010-3.png" style="zoom:50%;" />
+    <img src="images/150/image0010-4.png" style="zoom:100%;" />
 
 - Click **Create**.
 
   You should now be on the **Git** tab, which shows that you have a new git repository.  This new repository contains imported code from the GitHub repository you specified.
 
-  ![](images/150/image011-3.png)
+  ![](images/150/image011-4.png)
 
 
 

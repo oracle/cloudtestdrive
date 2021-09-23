@@ -249,9 +249,9 @@ In the following section you will need to switch repeatedly between the Visual B
 
 ### Create a Virtual Machine
 
-- On the left-side menu, select the top level **Organization** menu, then click on **Virtual Machines Templates** in the top menu.  Next you can hit the **Create Template** button.
+- On the left-side menu, select the top level **Organization** menu, then click on **Build Executor Templates** in the top menu.  Next you can hit the **Create Template** button.
 
-<img src="images/devcs/NewTemplate2.png" alt="alt text" style="zoom:50%;" />
+<img src="images/devcs/NewTemplate3.png" alt="alt text" style="zoom:90%;" />
 
 
 - In the dialog box, specify a name, for example **OKE2**  and use the default **Oracle Linux 7** image.  Then hit the **Create** button.
@@ -261,7 +261,7 @@ In the following section you will need to switch repeatedly between the Visual B
 
 - Now select the template you just created (OKE2), and add the required software packages by clicking on the **Configure Software** button.
 
-<img src="images/devcs/im05-3.png" alt="alt text" style="zoom:50%;" />
+<img src="images/devcs/ConfigSoftwareBuildExecutor.png" alt="alt text" style="zoom:70%;" />
 
 - Select the following packages:
   - Docker 17.12 
@@ -275,9 +275,9 @@ Note that modules for Oracle Java Required VM build components may be automatica
 
 
 
-- Finally, navigate to the **Build Virtual Machines** menu on the top menu, and hit the **+ Create VM** button.
+- Finally, navigate to the **VM Build Executors** menu on the top menu, and hit the **+ Create VM** button.
 
-  <img src="images/devcs/im07-2.png" alt="alt text" style="zoom:50%;" />
+  <img src="images/devcs/VMBuildExecutor.png" alt="alt text" style="zoom:70%;" />
 
   
   
@@ -291,7 +291,9 @@ Note that modules for Oracle Java Required VM build components may be automatica
   
   - Select the compute **Shape** : **VM.Standard2.1**
   
-    ![alt text](images/devcs/im08-2.png)
+  - VCN Selection : **Default**
+  
+    ![alt text](images/devcs/AddVMBuildExecutor.png)
 
 
 
@@ -328,7 +330,7 @@ This lab walks you through the steps to get started using the Oracle Autonomous 
    -  Select **Transaction Processing**
    -  Select **Shared Infrastructure**
 
-<img src="./images/100/Picture100-24-2.png" style="zoom:33%;" />
+<img src="./images/100/CreateATP.png" style="zoom:70%;" />
 
 
 
@@ -347,11 +349,14 @@ WElcome_123#
 
 
 
+- Choose a network access type: You will see 2 options.   
+  - **Allow Secure access from everywhere ** :  Connect from anywhere over a secure connection, you can restric access to specific IP addresses and VCNs. **Select this option**
+  - **Virtual cloud network**: This is to have private access only using a VCN.
 - Choose a license type: You will see 2 options.   
   - **Bring Your Own License (BYOL)** :  Oracle allows you to bring your unused on-prem licenses to the cloud and your instances are billed at a discounted rate. This is the default option so ensure you have the right license type for this subscription.
   - If you do not have available on-premise Licenses, select the option **License Included**, in this case License fees will be included in the hourly rate of your database.
 
-![](./images/100/Picture100-34.png)
+![](./images/100/CreateATP_Part2.png)
 
 
 
@@ -388,13 +393,17 @@ Lets connect to the database you just created using the build-in **SQL Developer
 
 - On the Database Details page, navigate to the **Service Console**, 
 
-  <img src="images/400/service_console.png" style="zoom:50%;" />
+  <img src="images/400/service_console1.png" style="zoom:80%;" />
 
   
 
-- Then select **Development** in the left-hand menu, and then the tile labeled **SQL Developer Web** 
+- Then select **Database Actions** in the right-hand menu 
 
-  <img src="images/400/DB_console.png" style="zoom: 25%;" />
+  <img src="images/400/DB_Actions.png" style="zoom: 80%;" />
+  
+- Then select **SQL**.
+
+  <img src="images/400/DB_console1.png" style="zoom: 80%;" />
   
 - Enter the user name **ADMIN** and the password you chose in the login form
 

@@ -86,7 +86,7 @@ git push
 
 Note We did change a file in the Wallet directory, but didn't re-zip it before pushing the changes back to the git repo. That's because the SQLcl step of the build process uses the basic zipped file without the Sqlnet changes, but when we use the aone application (which we'll come to later) we want to change the config using the TNS_ADMIN environment variable, and the driver for that uses the non zipped files. Basically the change we made will be used later in the labs, but this is a good time to make the change and avoid a second git push later on.
 
-<img src="images/400/wallet_added.png" style="zoom:50%;" />
+<img src="images/400/wallet_added1.png" style="zoom:80%;" />
 
 
 
@@ -97,28 +97,21 @@ Note We did change a file in the Wallet directory, but didn't re-zip it before p
   - Select the Software Template **OKE2**
   - Hit **Create Job**
 
-<img src="./images/400/new_job-1.png" style="zoom: 67%;" />
+<img src="./images/400/new_job2.png" style="zoom: 67%;" />
 
-
+<img src="./images/400/new_job2_1.png" style="zoom: 90%;" />
 
 - Add a  GIT Source repository
-
-![](./images/400/add_src-1.png)
-
 - Select your repository from the list
 - Do **not** select the Automatic build on Commit
 
 
 
-![](./images/400/config_source-1.png)
+![](./images/400/config_source-2.png)
 
 
 
 - Select the tab **Steps** to add a **SQLcl** build step from the dropdown
-
- ![](./images/400/add_step-1.png)
-
-
 
 - Fill in the parameters:
   - username of your ATP database instance : **admin**
@@ -130,11 +123,11 @@ Note We did change a file in the Wallet directory, but didn't re-zip it before p
 
 
 
-![](./images/400/step_details-1.png)
+![](./images/400/add_step_2.png)
 
  -   Now save your Build Config and hit the **Build Now** button.  
 
-![](./images/400/build-now-2.png)
+![](./images/400/BuildNow3.png)
 
 In case this is the first build job in your environment, the startup of the Build engine might take up to 10 minutes to complete. This is because it it creating the virtual machine to process the build, installing the operating system and the build software (Kubectl, docker, etc.) we specified previously.  During this time you will notice the build to be "Waiting for Executioner"
 
@@ -144,7 +137,7 @@ In case this is the first build job in your environment, the startup of the Buil
 
 ## Step 3: Verify the results
 
-You can visualize the log file of your virtual machine, to check any errors you might encounter on this level: <img src="./images/400/logs.png" style="zoom: 25%;" />
+You can visualize the log file of your virtual machine, to check any errors you might encounter on this level: <img src="./images/400/VBBuildExecutorsVMLog.png" style="zoom: 85%;" />
 
 
 
