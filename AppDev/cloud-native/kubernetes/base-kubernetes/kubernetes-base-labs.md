@@ -909,9 +909,9 @@ As we will be providing a secure TLS protected connection we need to create a ce
 
 To enable the lab to complete in a reasonable time we will therefore be generating our own self-signed certificate. For a lab environment that's fine, but in a production environment you wouldn't do this.
 
-  3. Run the following command to generate a certificate (you installed the step command in the cloud shell setup). **VITAL** You must replace `<External IP>` in the subject below with the external IP address of your Ingress service, as an example this might look like `stock.123.456.789.999.nip.io` (That's is only an example, it absolutely will not work in the real world).
+  3. Run the following command to generate a certificate (you installed the step command in the cloud shell setup). **VITAL** You must replace all occurrences of `<External IP>` in the subject below with the external IP address of your Ingress service, as an example this might look like `stock.123.456.789.999.nip.io` (That's is only an example, it absolutely will not work in the real world).
 
-  - `$HOME/keys/step certificate create store.<External IP>.nip.io tls-store.crt tls-store.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
+  - `$HOME/keys/step certificate create store.<External IP>.nip.io tls-store-<External IP>.crt tls-store-<External IP>.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
 
   ```
 Your certificate has been saved in tls-store.crt.
@@ -920,9 +920,9 @@ Your private key has been saved in tls-store.key
  
 The certificate needs to be in a Kubernetes secret, we'll look at these in more detail, but for now :
 
-  4. Run the following command to save the certificate as a secret in the ingress-nginx namespace
+  4. Run the following command to save the certificate as a secret in the ingress-nginx namespace, as before it is critical that you replace all occurrences of `<External IP>` with the external IP address of your ingress service
 
-  - `kubectl create secret tls tls-store --key tls-store.key --cert tls-store.crt`
+  - `kubectl create secret tls tls-store --key tls-store-<External IP>.key --cert tls-store-<External IP>.crt`
  
   ```
 secret/tls-store created
