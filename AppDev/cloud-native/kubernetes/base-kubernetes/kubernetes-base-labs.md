@@ -1005,20 +1005,27 @@ spec:
     http:
       paths:
       - path: /zipkin
+        pathType: Prefix
         backend:
-          serviceName: zipkin
-          servicePort: zipkin
+          service:
+            name: zipkin
+            port:
+              name: zipkin
 ```
 
 Firstly note that the api here is the `networking.k8s.io/v1` API. In recent versions of Kubernetes this was been changed from `networking.k8s.io/v1beta1` to indicate that Ingress configuration is part of the core Kubernetes networking features and has been released.
 
-The metadata specifies the name of the ingress (in this case zipkin) and also the annotations. Annotations are a way of specifying name / value pairs that can be monitored for my other services. In this case we are specifying that this ingress Ingress rule has a label of Kubernetes.io/ingress.class and a value of nginx. The nginx ingress controller will have setup a request in the Kubernetes infrastructure so it will detect any ingress rules with that annotation as being targeted to be processed by it. This allows us to define rules as standalone items, without having to setup and define a configuration for each rule in the ingress controller configuration itself. This annotation based approach is a simple way for services written to be cloud native to identify other Kubernetes objects and determine how to hendle them, as we will see when we look at monitoring in kubenteres.
+The change from the beta has resulted in several changes to the yaml structure, now you need to specify a pathType for each path Kubernetes understands `Prefix` and `Exact`, with Prefix being anything starting with the specified path, but exact having to match the specified path. For path formats that are understood by the ingress controller implementation (e.g. the wildcard based paths we'll see below) then use `ImplementationSpecific` as the pathType
+
+The backend service description has also got a lot more structure to it, the backend can be a service or it can be a reference to another object that defines the service, services themselves have a port which is either a number, or (as in this case) a named port - the name refers to the port name defined in the Kubernetes service itself. 
+
+The metadata specifies the name of the ingress (in this case zipkin) and also the annotations. Annotations are a way of specifying name / value pairs that can be monitored for my other services. In this case we are specifying that this ingress Ingress rule has a label of Kubernetes.io/ingress.class and a value of nginx. The nginx ingress controller will have setup a request in the Kubernetes infrastructure so it will detect any ingress rules with that annotation as being targeted to be processed by it. This allows us to define rules as standalone items, without having to setup and define a configuration for each rule in the ingress controller configuration itself. This annotation based approach is a simple way for services written to be cloud native to identify other Kubernetes objects and determine how to handle them, as we will see when we look at monitoring in kubenteres.
 
 The spec section basically defines the tls security details and rules to do the processing. In this case we're saying that a request that comes in targeted at `store.123.456.789.123.nip.io` will use the TLS Certificate in the Kubernetes secret `tls-store`. Remember a single IP address can have multipls domain names, so we can use the same IP to serve multiple DNS names, hence why we need sp specify the certificates o a per host basis. The rules then say  if there's an connection coming in to host `store.123.456.789.123.nip.io` with a url that starts with /zipkin then the connection will be proxied to the zikin service on it's port names `zipkin` (This is defined in the service YAML as being port 9411). The entire URL will be forwarded including the /zipkin.
 
 In some cases we don't want the entire URL to be forwarded however, what if we were using the initial part of the URL to identify a different service, perhaps for the health or metrics capabilities of the microservices which are on a different port (http://stockmanager:9081/health for example) In this case we want to re-write the incoming URL as it's passed to the target
 
-```
+```yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -1032,25 +1039,39 @@ spec:
   tls:
   - hosts: 
     # ${EXTERNAL_IP} must be replaced with the IP address of the ingress controller
-    - store.${EXTERNAL_IP}.nip.io
+    - store.123.456.789.123.nip.io
     secretName: tls-store
   rules:
     # ${EXTERNAL_IP} must be replaced with the IP address of the ingress controller
-  - host: store.${EXTERNAL_IP}.nip.io
+  - host: store.123.456.789.123.nip.io
     http:
       paths:
+        #any path starting with sm will have the /sm removed before being passed to the service on the specified url
+        #for example this handles /sm/status -> /status on arrival at the storefront server
+      - path: /sm(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: stockmanager
+            port: 
+              name: stockmanager    
         #any path starting with smmtg will have the /smmgt removed before being passed to the service on the specified url
       - path: /smmgt(/|$)(.*)
+        pathType: ImplementationSpecific
         backend:
-          serviceName: stockmanager
-          servicePort: stockmngr-mgt
+          service:
+            name: stockmanager
+            port: 
+              name: stockmngr-mgt
 ```
 
-In this case the annotations section is slightly different, it still triggers nginx when the path matches, but it uses a variable so that the URL will be `/` followed by whatever matches the `$2` in the regular expression. The rule itself looks for anything that starts with /smmgt followed by the regexp which matches `/` followed by a sequence of zero or more characters OR the end of the pattern. The regexp will be extracted and substituted for `$2`. The regexp matched two fields, the first match ​`$1` is `(/|$)` which matches either / or no further characters. The 2nd part of the regexp `$2` is `(.*)` which matches zero or more characters (the . being any character and * being a repeat of zero or more).
+In this case the annotations section is slightly different, the re-write annotation uses a variable so that the URL will be `/` followed by whatever matches the `$2` in the regular expression. The rule itself looks for anything that starts with /smmgt followed by the regexp which matches `/` followed by a sequence of zero or more characters OR the end of the pattern. The regexp will be extracted and substituted for `$2`. The regexp matched two fields, the first match ​`$1` is `(/|$)` which matches either / or no further characters. The 2nd part of the regexp `$2` is `(.*)` which matches zero or more characters (the . being any character and * being a repeat of zero or more).
 
 Thus `/smmgt` will result in a call to `/`, because `$1` matches no characters after `/smmgt`.  
 
 On the other hand,  `/smmgt/health/ready` will be mapped to `/health/ready` :  the `$1` is `/` and `$2` is `health/ready`, but the rewrite rule puts a `/` in front of `$2` thus becoming `/health/ready`) 
+
+In this case the re-write syntax is specific to the Ngnix ingress controller we're using (the CNCF version), for this to work we need to use an `ImplementationSpecific` pathType, this means that the processing will be handled by the ingress controller (in this case nginx) and the Kubernetes just hands it all over to that.
 
 Note that it is possible to match multiple paths in the same ingress, and they can forward to different ports, however the re-write target (the updated URL) will be the same structure in both cases.
 
@@ -1106,12 +1127,12 @@ ingress.networking.k8s.io/zipkin-direct-ingress created
   -  `kubectl get ingress`
 
   ```
-NAME                           CLASS    HOSTS                         ADDRESS          PORTS     AGE
-stockmanager-direct-ingress    <none>   store.129.159.252.47.nip.io   129.159.252.47   80, 443   51s
-stockmanager-rewrite-ingress   <none>   store.129.159.252.47.nip.io   129.159.252.47   80, 443   51s
-storefront-direct-ingress      <none>   store.129.159.252.47.nip.io   129.159.252.47   80, 443   49s
-storefront-rewrite-ingress     <none>   store.129.159.252.47.nip.io   129.159.252.47   80, 443   49s
-zipkin-direct-ingress          <none>   store.129.159.252.47.nip.io   129.159.252.47   80, 443   47s
+NAME                           CLASS    HOSTS                         ADDRESS   PORTS     AGE
+stockmanager-direct-ingress    <none>   store.152.70.165.212.nip.io             80, 443   26s
+stockmanager-rewrite-ingress   <none>   store.152.70.165.212.nip.io             80, 443   26s
+storefront-direct-ingress      <none>   store.152.70.165.212.nip.io             80, 443   24s
+storefront-rewrite-ingress     <none>   store.152.70.165.212.nip.io             80, 443   23s
+zipkin-direct-ingress          <none>   store.152.70.165.212.nip.io             80, 443   22s
 ```
 One thing that you may have noticed is that the ingress controller is running in the ingress-nginx namespace, but when we create the rules we are using the namespace we specified (in this case tg_helidon) This is because the rule needs to be in the same namespace as the service it's defining the connection two, but the ingress controller service exists once for the cluster (we could have more pods if we wanted, but for this lab it's perfectly capable of running all we need) We could put the ingress controller into any namespace we chose, kube-system might be a good choice in a production environment. If we wanted different ingress controllers then for nginx at any rate the --watch-namespace option restricts the controller to only look for ingress rules in specific namespaces.
 
