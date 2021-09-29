@@ -70,9 +70,11 @@ Depending on what modules you have done previously the updated repositories list
   - `$HOME/keys/step certificate create grafana.monitoring.<External IP>.nip.io tls-grafana-<External IP>.crt tls-grafana-<External IP>.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
   
   ```
-  Your certificate has been saved in tls-grafana.crt.
-  Your private key has been saved in tls-grafana.key.
+  Your certificate has been saved in tls-grafana-123.456.789.123.crt.
+  Your private key has been saved in tls-grafana-123.456.789.123.key.
 ```
+
+(The above is example output, your files will be based on the IP you provided)
 
   4. Now let's create a TLS secret containing this configuration. Again replace `<External IP>` occurences with the IP address of the infgress load balancer
   
