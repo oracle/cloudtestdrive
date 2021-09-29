@@ -594,7 +594,7 @@ We will use step to help us here, it was installed when you did the cloud shell 
 
 (The above is example output, your files will be based on the IP you provided)
 
-  3. Now let's put this in a Kubernetes TLS secret. As usual please rpelace `<External IP>` with the ingress load balancer IP address. In the OCI Cloud shell
+  3. Now let's put this in a Kubernetes TLS secret. As usual please replace `<External IP>` with the ingress load balancer IP address. In the OCI Cloud shell
   
   - `kubectl create secret tls tls-linkerd --key tls-linkerd-<External IP>.key --cert tls-linkerd-,external IP>.crt -n linkerd-viz`
   
