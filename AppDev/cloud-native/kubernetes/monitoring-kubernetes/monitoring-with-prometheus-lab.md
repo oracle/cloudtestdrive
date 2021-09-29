@@ -109,18 +109,20 @@ Adding password for user admin
 secret/web-ingress-auth created
 ```
 
-  5. To provide secure access for the ingress we will set this up with a TLS connection , that requires that we create a certificate for the ingress rule. In productin you woudl use a proper certificate, but for this lab we're going to use the self-signed root certificate we created in the cloud shell setup. **IT IS VITAL** that you replace `<External IP>` in the example below with the IP address of your ingress load balancer (this is the IP address you've previously been using for access to the dashboard, zipkin and the curl commands).
+  5. To provide secure access for the ingress we will set this up with a TLS connection , that requires that we create a certificate for the ingress rule. In productin you woudl use a proper certificate, but for this lab we're going to use the self-signed root certificate we created in the cloud shell setup. **IT IS VITAL** that you replace all `<External IP>` instances in the example below with the IP address of your ingress load balancer (this is the IP address you've previously been using for access to the dashboard, zipkin and the curl commands).
   
-  - `$HOME/keys/step certificate create prometheus.monitoring.<External IP>.nip.io tls-prometheus.crt tls-prometheus.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
+  - `$HOME/keys/step certificate create prometheus.monitoring.<External IP>.nip.io tls-prometheus-<External IP>.crt tls-prometheus-<ExternalIP>.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
   
   ```
-  Your certificate has been saved in tls-prometheus.crt.
-  Your private key has been saved in tls-prometheus.key.
+  Your certificate has been saved in tls-prometheus-123.456.789.123.crt.
+  Your private key has been saved in tls-prometheus-123.456.789.123.key.
 ```
 
-  6. Now we will create a tls secret in Kubernetes using this certificate, note that this is in the `monitoring` namespace as that's where Prometheus will be installed
+(The above is example output, your files will be based on the IP you provided)
+
+  6. Now we will create a tls secret in Kubernetes using this certificate, note that this is in the `monitoring` namespace as that's where Prometheus will be installed. Of course please replace all of the `<External IP>` occurrences with the IP of the ingress load balancer
   
-  - `kubectl create secret tls tls-prometheus --key tls-prometheus.key --cert tls-prometheus.crt -n monitoring`
+  - `kubectl create secret tls tls-prometheus --key tls-prometheus-<External IP>.key --cert tls-prometheus-<External IP>.crt -n monitoring`
   
   ```
   secret/tls-prometheus created

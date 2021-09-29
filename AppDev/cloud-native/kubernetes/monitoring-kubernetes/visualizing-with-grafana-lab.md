@@ -65,18 +65,20 @@ Update Complete. ⎈ Happy Helming!⎈
 
 Depending on what modules you have done previously the updated repositories list may vary
 
-  3. Create a certificate to protect the connection, we'll use step which we installed in the cloud shell setup section of the lab. Replace `<External IP>` with the IP address of the load balancer we've been using for all the other parts of the lab.
+  3. Create a certificate to protect the connection, we'll use step which we installed in the cloud shell setup section of the lab. Replace all occurences of `<External IP>` with the IP address of the load balancer we've been using for all the other parts of the lab.
   
-  - `$HOME/keys/step certificate create grafana.monitoring.<External IP>.nip.io tls-grafana.crt tls-grafana.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
+  - `$HOME/keys/step certificate create grafana.monitoring.<External IP>.nip.io tls-grafana-<External IP>.crt tls-grafana-<External IP>.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
   
   ```
-  Your certificate has been saved in tls-grafana.crt.
-  Your private key has been saved in tls-grafana.key.
+  Your certificate has been saved in tls-grafana-123.456.789.123.crt.
+  Your private key has been saved in tls-grafana-123.456.789.123.key.
 ```
 
-  4. Now let's create a TLS secret containing this configuration.
+(The above is example output, your files will be based on the IP you provided)
+
+  4. Now let's create a TLS secret containing this configuration. Again replace `<External IP>` occurences with the IP address of the infgress load balancer
   
-  - `kubectl create secret tls tls-grafana --key tls-grafana.key --cert tls-grafana.crt -n monitoring`
+  - `kubectl create secret tls tls-grafana --key tls-grafana-<External IP>.key --cert tls-grafana-<External IP>.crt -n monitoring`
   
   ```
   secret/tls-grafana created

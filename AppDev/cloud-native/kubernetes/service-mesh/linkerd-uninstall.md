@@ -81,7 +81,7 @@ namespace/usernameecho replaced
 
 Now restart the deployments to remove the linkerd-proxy sidecar container, as the namespace is no longer annotated as having linkerd enabled the new version will not have the proxy injected automatically.
 
-  2. Let's get the list of deplpyments. In the OCI Cloud shell type 
+  2. Let's get the list of deployments. In the OCI Cloud shell type 
   
   - `kubectl get deployments`
 
@@ -176,7 +176,7 @@ linkerd           Active   20d
 tg-helidon        Active   48d
 ```
 
-If you don't see `linkerd` or `linkerd-viz` in the list then remove you're done, if (as above) you do then remove them
+If you don't see `linkerd` or `linkerd-viz` in the list then remove you're done, if (in the example above the `linkerd` namespace remains) you do then remove them
 
   10. In the OCI Cloud shell type 
 

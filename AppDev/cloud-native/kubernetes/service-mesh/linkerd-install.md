@@ -583,17 +583,20 @@ We will use step to help us here, it was installed when you did the cloud shell 
   
   - `cd $HOME/helidon-kubernetes/service-mesh`
 
-  2. In the OCI CLodu shell run the following, replace `<External IP>` with the IP address of your load balancer - this is the one we've been using previously
+  2. In the OCI CLodu shell run the following, replace all of the `<External IP>` occurences with the IP address of your load balancer - this is the one we've been using previously
   
-  - `$HOME/keys/step certificate create linkerd.<external IP>.nip.io tls-linkerd.crt tls-linkerd.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
+  - `$HOME/keys/step certificate create linkerd.<external IP>.nip.io tls-linkerd-<External IP>.crt tls-linkerd-<External IP>.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
 
   ```
-  Your certificate has been saved in tls-linkerd.crt.
-  Your private key has been saved in tls-linkerd.key.
+  Your certificate has been saved in tls-linkerd-123.456.789.123.crt.
+  Your private key has been saved in tls-linkerd-123.456.789.123.key.
 ```
-  3. Now let's put this in a Kubernetes TLS secret. In the OCI Cloud shell
+
+(The above is example output, your files will be based on the IP you provided)
+
+  3. Now let's put this in a Kubernetes TLS secret. As usual please replace `<External IP>` with the ingress load balancer IP address. In the OCI Cloud shell
   
-  - `kubectl create secret tls tls-linkerd --key tls-linkerd.key --cert tls-linkerd.crt -n linkerd-viz`
+  - `kubectl create secret tls tls-linkerd --key tls-linkerd-<External IP>.key --cert tls-linkerd-,external IP>.crt -n linkerd-viz`
   
   4. Edit the `linkerd-ingress.yaml` file in the `spec:` section replace the `External IP` with the IP address of the Load balancer we've been using, you need to do this in two locations. Then save the file. An example of the edited version is below, **but the example IP addresses used below are fake and will not work, you must use your own**
   

@@ -119,18 +119,20 @@ Now having create the password file we need to add it to Kuberntes as a secret s
 secret/web-ingress-auth created
 ```
 
-  3. Let's create the certificate for this service. In the OCI cloud shell type the following, remembering to replace `<External IP>` with the IP address of the ingress service
+  3. Let's create the certificate for this service. In the OCI cloud shell type the following, remembering to replace `<External IP>` with the IP address of the ingress service in all occurences
   
-  - `$HOME/keys/step certificate create search.logging.<External IP>.nip.io tls-search.crt tls-search.key  --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
+  - `$HOME/keys/step certificate create search.logging.<External IP>.nip.io tls-search-<External IP>.crt tls-search-<External IP>.key  --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
   
   ```
-  Your certificate has been saved in tls-search.crt.
-  Your private key has been saved in tls-search.key.
+  Your certificate has been saved in tls-search-123.456.789.123.crt.
+  Your private key has been saved in tls-search-123.456.789.123.key.
 ```
+
+(The above is example output, your files will be based on the IP you provided)
+
+  4. Create the tls secret from the certificate. In the OCI cloud shell type the following, as usual you must replace `<External IP>` with the IP address of the ingress controller
   
-  4. Create the tls secret from the certificate. IN the OCI cloud shell type
-  
-  - `kubectl create secret tls tls-search --key tls-search.key --cert tls-search.crt -n logging`
+  - `kubectl create secret tls tls-search --key tls-search-<External IP>.key --cert tls-search-<External IP>.crt -n logging`
 
    ```
    secret/tls-search created

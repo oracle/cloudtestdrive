@@ -120,7 +120,7 @@ For now let's stop the load generator while we deploy our "broken" service
 
   4. In the OCI cloud shell stop the load generator using Control-C
  
-### Step 2c: Deploying our broken service
+### Task 2c: Deploying our broken service
 
 We are going to edit one of the configurations for the stock manager to specify that we want a 50% failure rate on requests to the stock manager. The deliberately "broken" stockmanager will pay attention to this, but the normal one will not.
 
