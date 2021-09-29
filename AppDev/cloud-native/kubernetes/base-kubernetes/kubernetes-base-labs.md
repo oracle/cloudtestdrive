@@ -143,6 +143,28 @@ If the kubectl command returns `No resources found.` and you have only just crea
 
 (The details and number of nodes will vary depending on the settings you chose when you created the cluster, they will take a few mins for the nodes to be configured after the cluster management is up and running)
 
+In some situations in this lab (depending on what modules you do) you may end up running multiple Kubernetes clusters, to separate the clusters we will need to use the name when running `kubectl` commands. Currently the name will be something like `context-czpet5do3oq` to make it easier to remember (and type) we are going to rename our cluster. The following command will get the current name and then and rename it to be `west` 
+
+  10. Get the current cluster name
+  
+  - `kubectl config current-context`
+  
+  ```
+  context-czpet5do3oq
+```
+
+  11. Using the cluster name you just got rename the context, replace `<contect name>` in the command with the context name you just got, for example `kubectl config rename-context context-czpet5do3oq west` (of course this is my context name, yours will be different)
+  
+  - `kubectl config rename-context <context name> west`
+  
+  11. Check the name is now `west`
+  
+  - `kubectl config current-context`
+  
+  ```
+  west
+```
+
 
 ## Task 3: Basic cluster infrastructure services install
 
@@ -264,7 +286,7 @@ Note that in a production environment you might want to terminate the encryption
 
 Setting up the Kubernetes dashboard (or any) service using helm is pretty easy. it's basically a simple command. 
 
-  1. To install the dashboard you need to replace `<External IP>` with the IP address of the Ingress controller service you got earlier in this helm command, so if the IP address you got was 123.456.789.999 (this is not a valid address, so don;t use it, use yours) the set ingress.hosts section of command below might look like `--set ingress.hosts='{dashboard.kube-system.123.456.789.999.nip.io}'`
+  1. To install the dashboard you need to replace `<External IP>` with the IP address of the Ingress controller service you got earlier in this helm command, so if the IP address you got was 123.456.789.999 (this is not a valid address, so don't use it, use yours) the set ingress.hosts section of command below might look like `--set ingress.hosts='{dashboard.kube-system.123.456.789.999.nip.io}'`
   
   -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set ingress.enabled=true  --set ingress.hosts='{dashboard.kube-system.<External IP>.nip.io}' --version 4.3.1`
   
@@ -289,7 +311,7 @@ Note the URL to use to access the dashboard (this is of course an example and wo
 
 <details><summary><b>What to do if you got your External IP Address wrong</b></summary>
 
-If you did not correctly specify the IP address of **your** ingress then you will have to uninstal the dashboard and try again, this time with the right `<External IP>`
+If you did not correctly specify the IP address of **your** ingress then you will have to uninstall the dashboard and try again, this time with the right `<External IP>`
 
   To uninstall the dashboard type 
 
@@ -797,7 +819,7 @@ Services determine what pods they will talk to using selectors. Each pod had met
 
 Services can be exposed externally via load balancer on a specific port (the type field is LoadBalancer) or can be mapped on to an external to the cluster port (basically it's randomly assigned when the type is NodePort) but by default are only visible inside the cluster (or if the type is ClusterIP). In this case we're going to be using ingress to provide the access to the services from the outside world so we'll not use a load balancer.
 
-The helidon-kubernetes/base-kubernetes/servicesClusterIP.yaml file defined the services for us. Below is the definition of the storefront service (the file also defines the stock manager and zipkin servcies as well)
+The helidon-kubernetes/base-kubernetes/servicesStorefront.yaml file defines one of the services for us (there are other files for the stock manager and zipkin). Below is the definition of the storefront service.
 
 ```
 apiVersion: v1
@@ -829,14 +851,36 @@ You need to define the services before defining anything else (e.g. deployments,
 </details>
 
 
-  1. The servicesClusterIP.yaml file in the defines the cluster services for us. We can apply it to make the changes
+There are three files that define the cluster services for us, serviceStorefront.yaml, serviceStockmanger.yaml and serviceZipkin.yaml. Here we have split the services with a yaml file for each, but you could combine them into a single file, or combine the details of a service with other aspects (e.g. the ingress rules or the deployment - more on those later). It's up to you if you combine them into a single file containing all aspects around a service (in which case use a single line using `---` to separate each one) or separate them out. Personally I prefer to separate them as it's easier to focus on the specifics if you're making changes, and makes creating deployment processes clearer, but some corporate standards may prefer them to be combined.
 
-  - `kubectl apply -f servicesClusterIP.yaml`
+Rather than you having to do a kubectl deploy against each yaml file individually the create-services.yaml script will do this for is (It will also remove any existing services for you incase you're re-using an environment).
+
+  - `bash ./create-services.sh`
 
   ```
-service/storefront created
-service/stockmanager created
+Deleting existing services
+Storefront
+service/storefront deleted
+Stockmanager
+service/stockmanager deleted
+Zipkin
+service/zipkin deleted
+Deleted services
+Services remaining in namespace are 
+NAME           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
+
+echo Creating services
+Zipkin
 service/zipkin created
+Stockmanager
+service/stockmanager created
+Storefront
+service/storefront created
+Current services in namespace are 
+NAME           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
+stockmanager   ClusterIP   10.110.57.74    <none>        8081/TCP,9081/TCP   5s
+storefront     ClusterIP   10.96.208.163   <none>        8080/TCP,9080/TCP   4s
+zipkin         ClusterIP   10.106.227.57   <none>        9411/TCP            6s
 ```
 
 Note that the service defines the endpoint, it's not actually running any code for your service yet.
@@ -870,15 +914,10 @@ Secondly the load balancers are at the port level, this is fine if you are deali
 
 Thirdly most cloud services charge on a per load balancer basis, this means that if you need to expose 10 different REST endpoints you are paying for 10 separate load balancers
 
-Fourthly from a security perspective it means that you can't do things like enforcing SSL on your connections, as that's done at a level above TCP/IP
-
 Fortunately for REST activities there is another option, the ingress controller (and coincidentally we installed one earlier !) This can service multiple REST API endpoints as it operates at the http level and is aware of the context of the request (e.g. URL, headers etc.) The downside of an ingress controller is that it does not operate on non http / https requests
 
 ***Update***
 Saying that an ingress cannot handle TCP / UDP level requests is actually a slight lie, in more recent versions of the nginx ingress controller it's possible to define a configuration that can process TCP / UDP connections and forward those untouched to a service / port. This is however not a standard capability and needs to be configured separately with specific IP addresses for the external port defined in the ingress configuration. However, different ingress controllers will have different capabilities, so you can't rely on this being the case with all ingress controllers.
-
-
-PS I know in this lab we've used a load balancer for the dashboard (and will do so later for a couple of other services - Prometheus and Grafana). We're doing this for time reasons, it's certainly possible to run the dashboard, Prometheus, Grafana via an ingress, and this is the best option, however doing so means you need to get setup reverse proxies, certifcates and DNS entries. Those can take a little time to do (esp waiting for DNS changes to propagate through the world wide internet infrastructure) so for this lab we chose the quicker, though less secure option of just using a Load Balancer.
 
 ---
 
@@ -947,64 +986,92 @@ An ingress rule defines a URL path that is looked for, when it's discovered the 
 There are ***many*** possible types of rules that we could define, but here we're just going to look at two types: Rules that are plain in that the recognize part of a path, and just pass the whole URL along to the actual service, and rules that re-write the URL before passing it on. Let's look at the simpler case first, that of the forwarding.
 
 ```
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: zipkin
+  name: zipkin-direct-ingress
   annotations:
     # use the shared ingress-nginx
     kubernetes.io/ingress.class: "nginx"
 spec:
   tls:
   - hosts: 
-    # <External IP> must be replaced tihe the IP address of the ingress controller
-    - store.158.101.210.253.nip.io
+    # ${EXTERNAL_IP} must be replaced with the IP address of the ingress controller
+    - store.123.456.789.123.nip.io
     secretName: tls-store
   rules:
-    # <External IP> must be replaced tihe the IP address of the ingress controller
-  - host: store.158.101.210.253.nip.io
+    # ${EXTERNAL_IP} must be replaced with the IP address of the ingress controller
+  - host: store.123.456.789.123.nip.io
     http:
       paths:
       - path: /zipkin
+        pathType: Prefix
         backend:
-          serviceName: zipkin
-          servicePort: 9411
-          
-<more paths>
+          service:
+            name: zipkin
+            port:
+              name: zipkin
 ```
 
-Firstly note that the api here is the `networking.k8s.io/v1beta1` API. In recent versions of Kubernetes this was been changed from `extensions/v1beta1` to indicate that Ingress configuration is part of the core Kubernetes networking features.
+Firstly note that the api here is the `networking.k8s.io/v1` API. In recent versions of Kubernetes this was been changed from `networking.k8s.io/v1beta1` to indicate that Ingress configuration is part of the core Kubernetes networking features and has been released.
 
-The metadata specifies the name of the ingress (in this case zipkin) and also the annotations. Annotations are a way of specifying name / value pairs that can be monitored for my other services. In this case we are specifying that this ingress Ingress rule has a label of Kubernetes.io/ingress.class and a value of nginx. The nginx ingress controller will have setup a request in the Kubernetes infrastructure so it will detect any ingress rules with that annotation as being targeted to be processed by it. This allows us to define rules as standalone items, without having to setup and define a configuration for each rule in the ingress controller configuration itself. This annotation based approach is a simple way for services written to be cloud native to identify other Kubernetes objects and determine how to hendle them, as we will see when we look at monitoring in kubenteres.
+The change from the beta has resulted in several changes to the yaml structure, now you need to specify a pathType for each path Kubernetes understands `Prefix` and `Exact`, with Prefix being anything starting with the specified path, but exact having to match the specified path. For path formats that are understood by the ingress controller implementation (e.g. the wildcard based paths we'll see below) then use `ImplementationSpecific` as the pathType
 
-The spec section basically defines the rules to do the processing, basically if there's an connection coming in with a url that starts with /zipkin then the connection will be proxied to the zikin service on port 9411. The entire URL will be forwarded including the /zipkin. (Note that you could in the spec section also specify a certificate for that connection, but in our case we did that in the load balancer).
+The backend service description has also got a lot more structure to it, the backend can be a service or it can be a reference to another object that defines the service, services themselves have a port which is either a number, or (as in this case) a named port - the name refers to the port name defined in the Kubernetes service itself. 
 
-In some cases we don't want the entire URL to be forwarded however, what if we were using the initial part of the URL to identify a different service, perhaps for the health or metrics capabilities of the microservices which are on a different port (http://storefront:9081/health for example) In this case we want to re-write the incomming URL as it's passed to the target
+The metadata specifies the name of the ingress (in this case zipkin) and also the annotations. Annotations are a way of specifying name / value pairs that can be monitored for my other services. In this case we are specifying that this ingress Ingress rule has a label of Kubernetes.io/ingress.class and a value of nginx. The nginx ingress controller will have setup a request in the Kubernetes infrastructure so it will detect any ingress rules with that annotation as being targeted to be processed by it. This allows us to define rules as standalone items, without having to setup and define a configuration for each rule in the ingress controller configuration itself. This annotation based approach is a simple way for services written to be cloud native to identify other Kubernetes objects and determine how to handle them, as we will see when we look at monitoring in kubenteres.
 
-```
-apiVersion: networking.k8s.io/v1beta1
+The spec section basically defines the tls security details and rules to do the processing. In this case we're saying that a request that comes in targeted at `store.123.456.789.123.nip.io` will use the TLS Certificate in the Kubernetes secret `tls-store`. Remember a single IP address can have multipls domain names, so we can use the same IP to serve multiple DNS names, hence why we need sp specify the certificates o a per host basis. The rules then say  if there's an connection coming in to host `store.123.456.789.123.nip.io` with a url that starts with /zipkin then the connection will be proxied to the zikin service on it's port names `zipkin` (This is defined in the service YAML as being port 9411). The entire URL will be forwarded including the /zipkin.
+
+In some cases we don't want the entire URL to be forwarded however, what if we were using the initial part of the URL to identify a different service, perhaps for the health or metrics capabilities of the microservices which are on a different port (http://stockmanager:9081/health for example) In this case we want to re-write the incoming URL as it's passed to the target
+
+```yaml
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: stockmanager-management
+  name: stockmanager-rewrite-ingress
   annotations:
-    # use a re-writer
+    kubernetes.io/ingress.class: "nginx"
+    # nginx.ingress.kubernetes.io/use-regex: "true"
+    # rewrite the requests
     nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
+  tls:
+  - hosts: 
+    # ${EXTERNAL_IP} must be replaced with the IP address of the ingress controller
+    - store.123.456.789.123.nip.io
+    secretName: tls-store
   rules:
-  - http:
+    # ${EXTERNAL_IP} must be replaced with the IP address of the ingress controller
+  - host: store.123.456.789.123.nip.io
+    http:
       paths:
+        #any path starting with sm will have the /sm removed before being passed to the service on the specified url
+        #for example this handles /sm/status -> /status on arrival at the storefront server
+      - path: /sm(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: stockmanager
+            port: 
+              name: stockmanager    
         #any path starting with smmtg will have the /smmgt removed before being passed to the service on the specified url
       - path: /smmgt(/|$)(.*)
+        pathType: ImplementationSpecific
         backend:
-          serviceName: stockmanager
-          servicePort: 9081
+          service:
+            name: stockmanager
+            port: 
+              name: stockmngr-mgt
 ```
 
-In this case the annotations section is slightly different, it still triggers nginx when the path matches, but it uses a variable so that the URL will be `/` followed by whatever matches the `$2` in the regular expression. The rule itself looks for anything that starts with /smmgt followed by the regexp which matches `/` followed by a sequence of zero or more characters OR the end of the pattern. The regexp will be extracted and substituted for `$2`. The regexp matched two fields, the first match ​`$1` is `(/|$)` which matches either / or no further characters. The 2nd part of the regexp `$2` is `(.*)` which matches zero or more characters (the . being any character and * being a repeat of zero or more).
+In this case the annotations section is slightly different, the re-write annotation uses a variable so that the URL will be `/` followed by whatever matches the `$2` in the regular expression. The rule itself looks for anything that starts with /smmgt followed by the regexp which matches `/` followed by a sequence of zero or more characters OR the end of the pattern. The regexp will be extracted and substituted for `$2`. The regexp matched two fields, the first match ​`$1` is `(/|$)` which matches either / or no further characters. The 2nd part of the regexp `$2` is `(.*)` which matches zero or more characters (the . being any character and * being a repeat of zero or more).
 
 Thus `/smmgt` will result in a call to `/`, because `$1` matches no characters after `/smmgt`.  
 
 On the other hand,  `/smmgt/health/ready` will be mapped to `/health/ready` :  the `$1` is `/` and `$2` is `health/ready`, but the rewrite rule puts a `/` in front of `$2` thus becoming `/health/ready`) 
+
+In this case the re-write syntax is specific to the Ngnix ingress controller we're using (the CNCF version), for this to work we need to use an `ImplementationSpecific` pathType, this means that the processing will be handled by the ingress controller (in this case nginx) and the Kubernetes just hands it all over to that.
 
 Note that it is possible to match multiple paths in the same ingress, and they can forward to different ports, however the re-write target (the updated URL) will be the same structure in both cases.
 
@@ -1012,58 +1079,64 @@ Note that it is possible to match multiple paths in the same ingress, and they c
 
 </details>
 
-  4. Edit the ingressConfig.yaml file, locate the sections `store.<External IP>.nip.io` replace `<External IP>` with the IP address of your ingress load balancer which you've just got, for example `store.123.456.789.999nip.io` (you need to use your ip address, this is only an example and won't work for you), you don't need to make changes in the comments. There are 4 locations where this needs doing in the actual text (not comments)
+As the ingress rules are based on our DNS name, which for now uses NIP to create a "fake" DNS entry using an embedded IP address we need to update the ingress rules to apply this. As there are multiple ingress rules (We have a file for each of the storefront, stockmanager and zipkin services) to make it easier we'ce created a little script that will do this for you.
   
-  - Original version before changing (this is only part of the file, there are other locations that need changing in addition to the ones shown here)
+  4. Switch to the right directory
   
+  - `cd $HOME/helidon-kubernetes/base-kubernetes` 
+  
+  
+  5. Run the script, this will update the files containing the ingress rules for us with the IP address. As usual please replace `<External IP>` with the external IP address of your Ingress service, when prompted double check that you are using the correct IP address and press `y` to proceed if you are
+
+  - `bash set-ingress-ip.sh <External IP>`
+  
+  this is an example only, 123.456.789.123 is not a valid IP address
+ 
   ```
-  spec:
-  tls:
-  - hosts: 
-    # <External IP> must be replaced with the IP address of the ingress controller
-    - store.<External IP>.nip.io
-    secretName: tls-store
-  rules:
-    # <External IP> must be replaced with the IP address of the ingress controller
-  - host: store.<External IP>.nip.io
-  ```
-  
-  - Example after changing the text - note that the comments do not need changing (but feel free to do so if you want) Of course the IP address shown below is only an example and will not work, yours will be different
-  
-  ```
-  spec:
-  tls:
-  - hosts: 
-    # <External IP> must be replaced with the IP address of the ingress controller
-    - store.123.456.789.999.nip.io
-    secretName: tls-store
-  rules:
-    # <External IP> must be replaced with the IP address of the ingress controller
-  - host: store.123.456.789.999nip.io
+  bash ./set-ingress-ip.sh 123.456.789.123
+Updating the ingress config to set 123.456.789.123 as the External IP address.
+Proceed ? y
+Updating ingress rules - setting 123.456.789.123 as the external IP address
+Updating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules.yaml
+Updating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules.yaml replacing ${EXTERNAL_IP} with 123.456.789.123
+Updating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules.yaml
+Updating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules.yaml replacing ${EXTERNAL_IP} with 123.456.789.123
+Updating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules.yaml
+Updating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules.yaml replacing ${EXTERNAL_IP} with 123.456.789.123
   ```
 
 
-  5. Let's create the Ingress rules by applying the Ingress Config file : 
+  6. Let's create the Ingress rules by applying the yaml files containing the rules, to make it easier we're using a script, but all it does is apply all of them using commands like `kubectl apply -f ingressZipkinRules.yaml`: 
   
-  -  `kubectl apply -f ingressConfig.yaml`
+  -  `bash create-ingress-rules.sh`
 
   ```
-ingress.networking.k8s.io/direct-ingress create
-ingress.networking.k8s.io/rewrite-ingress created
+Applying /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules.yaml
+ingress.networking.k8s.io/stockmanager-direct-ingress created
+ingress.networking.k8s.io/stockmanager-rewrite-ingress created
+Applying /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules.yaml
+ingress.networking.k8s.io/storefront-direct-ingress created
+ingress.networking.k8s.io/storefront-rewrite-ingress created
+Applying /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules.yaml
+ingress.networking.k8s.io/zipkin-direct-ingress created
 ```
+  
 
-  6. We can see the resulting ingresses using kubectl
+  7. We can see the resulting ingresses using kubectl
 
   -  `kubectl get ingress`
 
   ```
-PORTS     AGE
-direct-ingress    <none>   store.123.456.789.999.nip.io   123.456.789.999   80, 443   8m18s
-rewrite-ingress   <none>   store.123.456.789.999.nip.io   123.456.789.999   80, 443   8m18s
+NAME                           CLASS    HOSTS                         ADDRESS   PORTS     AGE
+stockmanager-direct-ingress    <none>   store.152.70.165.212.nip.io             80, 443   26s
+stockmanager-rewrite-ingress   <none>   store.152.70.165.212.nip.io             80, 443   26s
+storefront-direct-ingress      <none>   store.152.70.165.212.nip.io             80, 443   24s
+storefront-rewrite-ingress     <none>   store.152.70.165.212.nip.io             80, 443   23s
+zipkin-direct-ingress          <none>   store.152.70.165.212.nip.io             80, 443   22s
 ```
 One thing that you may have noticed is that the ingress controller is running in the ingress-nginx namespace, but when we create the rules we are using the namespace we specified (in this case tg_helidon) This is because the rule needs to be in the same namespace as the service it's defining the connection two, but the ingress controller service exists once for the cluster (we could have more pods if we wanted, but for this lab it's perfectly capable of running all we need) We could put the ingress controller into any namespace we chose, kube-system might be a good choice in a production environment. If we wanted different ingress controllers then for nginx at any rate the --watch-namespace option restricts the controller to only look for ingress rules in specific namespaces.
 
-  7. Look at the ingressConfig.yaml file you'll see the rules in it sets up the following mappings
+  8. Look at the ingress rules files you'll see the rules set up the following mappings (the actual port numbers come from the service definitions, the ingress rules use the name we specified there - this makes changes easier to implement!)
 
 Direct mappings
 
@@ -1085,7 +1158,7 @@ Direct mappings
 
 Notice the different ports in use on the target.
 
-  8. If you didn't write it down earlier find the external IP address the ingress controller is running on :
+  9. If you didn't write it down earlier find the external IP address the ingress controller is running on :
 
   -  `kubectl get service -n ingress-nginx`
 
@@ -1103,7 +1176,7 @@ The image below was going to the ingress-nginx namespace (that being the one the
 
 ![Ingress controller service endpoints](images/ingress-controller-service-endpoints.png)
 
-  9. We now have a working endpoint, let's try accessing it using curl (replace `<External IP>` with your Load balancer IP address) - expect an error!
+  10. We now have a working endpoint, let's try accessing it using curl (replace `<External IP>` with your Load balancer IP address) - expect an error!
 
   -  `curl -i -k -X GET https://store.<External IP>.nip.io/store`
 
@@ -1134,7 +1207,7 @@ Previously we didn't use the -k flag or https when testing in the Helidon labs. 
 
 We got a **service unavailable** error. This is because that web page is recognised as an ingress rule, but there are no pods able to deliver the service. This isn't a surprise as we haven't started them yet!
 
-  10. If we tried to go to a URL that's not defined we will as expected get a **404 error**:
+  11. If we tried to go to a URL that's not defined we will as expected get a **404 error**:
 
   -  `curl -i -k -X GET https://store.<External IP>.nip.io/unknowningress`
 
