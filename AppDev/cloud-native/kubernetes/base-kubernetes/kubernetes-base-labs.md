@@ -213,7 +213,7 @@ Firstly we need to create a namespace for the ingress controller.
 
   2. Run the following command to install **ingress-nginx** using Helm 3:
   
-  - `helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx --version 3.34.0 --set rbac.create=true  --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-protocol"=TCP --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape"=10Mbps`
+  - `helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx --version 3.38.0 --set rbac.create=true  --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-protocol"=TCP --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape"=10Mbps`
   
   ```
 NAME: ingress-nginx
@@ -298,7 +298,7 @@ Setting up the Kubernetes dashboard (or any) service using helm is pretty easy. 
 
   1. To install the dashboard you need to replace `<External IP>` with the IP address of the Ingress controller service you got earlier in this helm command, so if the IP address you got was 123.456.789.999 (this is not a valid address, so don;t use it, use yours) the set ingress.hosts section of command below might look like `--set ingress.hosts='{dashboard.kube-system.123.456.789.999.nip.io}'`
   
-  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set ingress.enabled=true  --set ingress.hosts='{dashboard.kube-system.<External IP>.nip.io}' --version 4.3.1`
+  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set ingress.enabled=true  --set ingress.hosts='{dashboard.kube-system.<External IP>.nip.io}' --version 5.0.0`
   
   It it **critical** that you update the `<External IP>` address to match that of **your** ingress controller service, if you get it wrong then though the command will complete you won't be able to access the dashboard with the URL. 
   
@@ -861,27 +861,32 @@ You need to define the services before defining anything else (e.g. deployments,
 </details>
 
 
-  1. The servicesClusterIP.yaml file in the defines the cluster services for us. We can apply it to make the changes
+  1. The `create-services.sh` script applies the YAML files to create the cluster services for us. Using a script makes this easily reproducible, though of course you could store the YAML in a git repo and use a deployment tool like Oracle DevOps CD or ArgoCD to apply them from the repo.
 
-  - `kubectl apply -f servicesClusterIP.yaml`
+  - `bash create-services.sh`
 
   ```
-service/storefront created
-service/stockmanager created
+Creating services
+Zipkin
 service/zipkin created
+Stockmanager
+service/stockmanager created
+Storefront
+service/storefront created
 ```
 
-Note that the service defines the endpoint, it's not actually running any code for your service yet.
+Note that the service defines the endpoint, it's not actually running any code for your service yet. It's like creating a DNS entry does not mean there is any thing at that IP address.
 
   2. To see the services we can use kubectl :
 
   - `kubectl get services`
 
   ```
+Current services in namespace are
 NAME           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
-stockmanager   ClusterIP   10.110.57.74    <none>        8081/TCP,9081/TCP   2m15s
-storefront     ClusterIP   10.96.208.163   <none>        8080/TCP,9080/TCP   2m16s
-zipkin         ClusterIP   10.106.227.57   <none>        9411/TCP            2m15s
+stockmanager   ClusterIP   10.96.51.195    <none>        8081/TCP,9081/TCP   3s
+storefront     ClusterIP   10.96.130.202   <none>        8080/TCP,9080/TCP   2s
+zipkin         ClusterIP   10.96.148.204   <none>        9411/TCP            5s
 ```
 
 The clusterIP is the virtual IP address assigned in the cluster for the service, note there is no external IP as we haven't put a load balancer in front of these services. The ports section specified the ports that the service will use (and in this case the target ports in the pods)
