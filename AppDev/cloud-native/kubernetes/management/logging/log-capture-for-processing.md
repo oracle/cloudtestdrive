@@ -26,6 +26,35 @@ This module shows how to install and configure the log capture tool Fluentd, and
 
 You need to complete the **Rolling update** module (last of the core Kubernetes labs modules). You can have done any of the other optional module sets. The **Log capture for archive** module is also optional.
 
+If your cloud shell session is new or has been restarted then the shell variable `$EXTERNAL_IP` may be invalid, expand this section if you think this may be the case to check and reset it if needed.
+
+<details><summary><b>How to check if $EXTERNAL_IP is set, and re-set it if it's not</b></summary>
+
+**To check if `$EXTERNAL_IP` is set**
+
+If you want to check if the variable is still set type `echo $EXTRNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
+
+**To get the external IP address if you no longer have it**
+
+In the OCI Cloud shell type
+
+  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+  
+  ```
+NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
+ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
+```
+
+The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column.
+
+**To set the variable again**
+
+  - `export EXTERNAL_IP=<External IP>`
+  
+---
+
+</details>
+
 ## Task 1: Log capture for processing and analysis
 
 Developers create log entries for a reason, but as we've seen so far they are not that easy to get at in Kubernetes.
@@ -119,9 +148,9 @@ Now having create the password file we need to add it to Kuberntes as a secret s
 secret/web-ingress-auth created
 ```
 
-  3. Let's create the certificate for this service. In the OCI cloud shell type the following, remembering to replace `<External IP>` with the IP address of the ingress service in all occurences
+  3. Let's create the certificate for this service. In the OCI cloud shell type the following.
   
-  - `$HOME/keys/step certificate create search.logging.<External IP>.nip.io tls-search-<External IP>.crt tls-search-<External IP>.key  --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
+  - `$HOME/keys/step certificate create search.logging.$EXTERNAL_LP.nip.io tls-search-$EXTERNAL_IP.crt tls-search-$EXTERNAL_IP.key  --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
   
   ```
   Your certificate has been saved in tls-search-123.456.789.123.crt.
@@ -130,9 +159,9 @@ secret/web-ingress-auth created
 
 (The above is example output, your files will be based on the IP you provided)
 
-  4. Create the tls secret from the certificate. In the OCI cloud shell type the following, as usual you must replace `<External IP>` with the IP address of the ingress controller
+  4. Create the tls secret from the certificate. In the OCI cloud shell type the following., as usual you must replace `<External IP>` with the IP address of the ingress controller
   
-  - `kubectl create secret tls tls-search --key tls-search-<External IP>.key --cert tls-search-<External IP>.crt -n logging`
+  - `kubectl create secret tls tls-search --key tls-search-$EXTERNAL_IP.key --cert tls-search-$EXTERNAL_IP.crt -n logging`
 
    ```
    secret/tls-search created
@@ -140,9 +169,9 @@ secret/web-ingress-auth created
   
 ### Task 2c: Installing elastic search
   
-  1. Now we can actually install elastic search. In the cloud console type the following, remembering to replace `<External IP>` with the IP address of the Ingress controller **BOTH** times
+  1. Now we can actually install elastic search. In the cloud console type the following.
   
-  - `helm install elasticsearch elastic/elasticsearch --namespace logging --version 7.13.4 --set ingress.enabled=true --set ingress.tls[0].hosts[0]='search.logging.<External IP>.nip.io' --set ingress.tls[0].secretName=tls-search --set ingress.hosts[0].host='search.logging.<External IP>.nip.io' --set ingress.hosts[0].paths[0].path='/' --set ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-type"=basic --set ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-secret"=web-ingress-auth --set ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-realm"="Authentication Required"`
+  - `helm install elasticsearch elastic/elasticsearch --namespace logging --version 7.13.4 --set ingress.enabled=true --set ingress.tls[0].hosts[0]="search.logging.$EXTERNAL_IP.nip.io" --set ingress.tls[0].secretName=tls-search --set ingress.hosts[0].host="search.logging.$EXTERNAL_IP.nip.io" --set ingress.hosts[0].paths[0].path='/' --set ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-type"=basic --set ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-secret"=web-ingress-auth --set ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-realm"="Authentication Required"`
 
   ```
 NAME: elasticsearch
@@ -206,7 +235,7 @@ NOTES:
 
 ### Task 2d: Accessing the service
 
-  1. In a web browser go to the web page `https://search.logging.<External IP>.nip.io/_cat`  (remember to replace `External IP>` with your ingress controller IP address) If you get a 503 or 502 error this means that the elastic search service is still starting up. Wait a short time then retry.
+  1. In a web browser go to the web page `https://search.logging.<External IP>.nip.io/_cat`  (replace `External IP>` with your ingress controller IP address) If you get a 503 or 502 error this means that the elastic search service is still starting up. Wait a short time then retry.
 
   2. If needed in the browser, accept a self signed certificate. The mechanism varies by browser and version, but as of September 2020 the following worked with the most recent (then) browser version.
   
@@ -226,7 +255,7 @@ We can see that the elastic search service is up and running, let's see what dat
 
   ![](images/ES-catalogue-endpoints.png)
 
-  4. In a web browser go to `http://<external IP>/_cat/indices` (remember to substitute **your** IP address) look at the indices in the service
+  4. In a web browser go to `http://<external IP>/_cat/indices` (remember to substitute **your** external IP address) look at the indices in the service
   
   
   ![](images/ES-no-indices.png)
@@ -430,9 +459,9 @@ It may be empty, or you may get log messages (will really depend on if you've us
 
 If you haven't generated any log messages from the storefront container since we setup up the log capture just do some requests to the stock manager service which will generate log data
 
-  5. In the OCI Cloud Shell terminal type (remember to replace `<External IP>` address with the IP address for the ingress controller for your service)
+  5. In the OCI Cloud Shell terminal type.
   
-  - `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
+  - `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
   
   ```
 HTTP/1.1 200 OK

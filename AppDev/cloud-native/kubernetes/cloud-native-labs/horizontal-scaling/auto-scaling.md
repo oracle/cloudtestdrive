@@ -158,34 +158,44 @@ The metrics server provides information on the current use of resources in the c
 
 You can see in the output above that all of the pods are using very small amounts of CPU here, this is because we're not really putting any load on them. Let's run a script that will put load on the services to see what's happening.
 
-<details><summary><b>Getting the service IP address if you don't have it</b></summary>
+If your cloud shell session is new or has been restarted then the shell variable `$EXTERNAL_IP` may be invalid, expand this section if you think this may be the case to check and reset it if needed.
 
-If you haven't written it down, or have forgotten how to get the IP address of the ingress controller service you can do the following
+<details><summary><b>How to check if $EXTERNAL_IP is set, and re-set it if it's not</b></summary>
 
-- In the OCI Cloud Shell type the following
-  - `kubectl get services -n ingress-nginx`
+**To check if `$EXTERNAL_IP` is set**
+
+If you want to check if the variable is still set type `echo $EXTRNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
+
+**To get the external IP address if you no longer have it**
+
+In the OCI Cloud shell type
+
+  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
   
-```
-NAME                                          TYPE           CLUSTER-IP      EXTERNAL-IP       PORT(S)                      AGE
-ingress-nginx-nginx-ingress-controller        LoadBalancer   10.96.210.131   132.145.253.186   80:31021/TCP,443:32009/TCP   19m
-ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.67.181    <none>            80/TCP                       19m
+  ```
+NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
+ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
 ```
 
-The Column EXTERNAL-IP gives you the IP address, in this case the IP address for the ingress-controller load balancer is `132.145.253.186` ** but this of course will be different in your environment!**
+The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column.
 
+**To set the variable again**
+
+  - `export EXTERNAL_IP=<External IP>`
+  
 ---
 
 </details>
 
-In the helidon-kubernetes project in the cloud-native-kubernetes/auto-scaling folder run the following. You must to replace <external IP> here with the one for your ingress controller (see the expansion section above for details of how to get this if you've forgotten)
+In the helidon-kubernetes project in the cloud-native-kubernetes/auto-scaling folder run the following.
 
   4. Switch to the auto scaling directory
   
   - `cd $HOME/helidon-kubernetes/cloud-native-kubernetes/auto-scaling`
   
-  5. Start a load generator. In the OCI Cloud Shell (As usual replace <external IP> with the IP address of the load balancer).
+  5. Start a load generator. In the OCI Cloud Shell.
   
-  -  `bash generate-load.sh <external IP> 0.1`
+  -  `bash generate-load.sh $EXTERNAL_IP 0.1`
   
 Note that the 0.1 controls how long the script waits, depending on how fast things respond below you may need to adjust the rate up (fewer requests) or down (more requests) If you chose an especially powerful processor you may need to open another cloud window in your browser and run a second load in that as well, or adjust the CPU available to the pod.
 
@@ -345,7 +355,7 @@ Now restart the load generator program. Note that you may need to change the sle
 
   4. In the OCI Cloud Shell where you were running the load balancer previously (substitute the IP address for the ingress for your cluster) If needed run multiple in different cloud shells.
   
-  -  `bash generate-load.sh <external IP> 0.1`
+  -  `bash generate-load.sh $EXTERNAL_IP 0.1`
 
 
 ```

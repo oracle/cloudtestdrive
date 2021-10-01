@@ -575,6 +575,33 @@ kubectl will pick them up and apply them, Kubernetes will restart the linkerd-we
 
 ### Task 5b: Securing the connection to the linkerd UI
 
+<details><summary><b>How to check if $EXTERNAL_IP is set, and re-set it if it's not</b></summary>
+
+**To check if `$EXTERNAL_IP` is set**
+
+If you want to check if the variable is still set type `echo $EXTRNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
+
+**To get the external IP address if you no longer have it**
+
+In the OCI Cloud shell type
+
+  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+  
+  ```
+NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
+ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
+```
+
+The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column.
+
+**To set the variable again**
+
+  - `export EXTERNAL_IP=<External IP>`
+  
+---
+
+</details>
+
 Curiously the linkerd-web ingress does not by default use a TLS certificate to ensure that the connection to it is encrypted, as we will be sending passwords we want to ensure it is encrypted, to do which we need to create a TLS secret in Kubernetes that the ingress controller can use.
 
 We will use step to help us here, it was installed when you did the cloud shell setup
@@ -583,9 +610,9 @@ We will use step to help us here, it was installed when you did the cloud shell 
   
   - `cd $HOME/helidon-kubernetes/service-mesh`
 
-  2. In the OCI CLodu shell run the following, replace all of the `<External IP>` occurences with the IP address of your load balancer - this is the one we've been using previously
+  2. In the OCI CLodu shell run the following.
   
-  - `$HOME/keys/step certificate create linkerd.<external IP>.nip.io tls-linkerd-<External IP>.crt tls-linkerd-<External IP>.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
+  - `$HOME/keys/step certificate create linkerd.$EXTERNAL_IP.nip.io tls-linkerd-$EXTERNAL_IP.crt tls-linkerd-$EXTERNAL_IP.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
 
   ```
   Your certificate has been saved in tls-linkerd-123.456.789.123.crt.
@@ -594,9 +621,9 @@ We will use step to help us here, it was installed when you did the cloud shell 
 
 (The above is example output, your files will be based on the IP you provided)
 
-  3. Now let's put this in a Kubernetes TLS secret. As usual please replace `<External IP>` with the ingress load balancer IP address. In the OCI Cloud shell
+  3. Now let's put this in a Kubernetes TLS secret. In the OCI Cloud shell
   
-  - `kubectl create secret tls tls-linkerd --key tls-linkerd-<External IP>.key --cert tls-linkerd-,external IP>.crt -n linkerd-viz`
+  - `kubectl create secret tls tls-linkerd --key tls-linkerd-$EXTERNAL_IP.key --cert tls-linkerd-$EXTERNAL_IP.crt -n linkerd-viz`
   
   4. Edit the `linkerd-ingress.yaml` file in the `spec:` section replace the `External IP` with the IP address of the Load balancer we've been using, you need to do this in two locations. Then save the file. An example of the edited version is below, **but the example IP addresses used below are fake and will not work, you must use your own**
   
@@ -659,7 +686,7 @@ ingress.networking.k8s.io/web-ingress created
 
 Now you can go to the ingress ip address for the linkerd UI
 
-  2. In your laptop web browser go to `https://linkerd.<external IP>.nip.io`
+  2. In your laptop web browser go to `https://linkerd.<external IP>.nip.io` (Replace `<External IP>` witrh the IP address of the load balancer)
 
 <details><summary><b>If you need to remind yourself of the external IP if your ingress controller</b></summary>
 
@@ -673,7 +700,7 @@ ingress-nginx-nginx-ingress-controller        LoadBalancer   10.96.196.6    130.
 ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.17.121   <none>           80/TCP                       6d1h
 ```
 
-look at the `ingress-nginx-nginx-ingress-controller` row, IP address inthe `EXTERNAL-IP` column is the one you want, in this case that's `130.61.195.102` **but yours will vary**
+look at the `ingress-nginx-nginx-ingress-controller` row, IP address in the `EXTERNAL-IP` column is the one you want, in this case that's `130.61.195.102` **but yours will vary**
 
 ---
 
@@ -702,7 +729,7 @@ You'll be presented with the linkerd-web main page
 
 Let's also check you can access the grafana dashboard that's been installed by linkerd
 
-  5. In your web browser go to `https://linkerd.<externalIP>.nip.io/grafana` Note if you did not save the username / password details you may be prompted to re-enter them
+  5. In your web browser go to `https://linkerd.<externalIP>.nip.io/grafana`(replace `<External IP>` as usual) Note if you did not save the username / password details you may be prompted to re-enter them
 
 I have found that for some versions of Firefox that grafana complains about reverse-proxy settings. You may find that you need to use chrome or safari to access the grafana page.
 
@@ -1276,28 +1303,38 @@ Now let's make a few calls to the service to check it's all working fine (you ma
 
 Let's do some requests to the stock manager service which will generate log data
 
-<details><summary><b>If you've forgotten your external IP address</b></summary>
+If your cloud shell session is new or has been restarted then the shell variable `$EXTERNAL_IP` may be invalid, expand this section if you think this may be the case to check and reset it if needed.
 
+<details><summary><b>How to check if $EXTERNAL_IP is set, and re-set it if it's not</b></summary>
 
-You can get the external IP address being used for the ingress controller by looking at the services list for the ingress-nginx namespace
+**To check if `$EXTERNAL_IP` is set**
 
-- In the OCI Cloud Shell type :
-  - `kubectl get services -n ingress-nginx`
+If you want to check if the variable is still set type `echo $EXTRNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
 
+**To get the external IP address if you no longer have it**
+
+In the OCI Cloud shell type
+
+  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+  
+  ```
+NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
+ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
 ```
-NAME                                          TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)                      AGE
-ingress-nginx-nginx-ingress-controller        LoadBalancer   10.96.196.6    130.61.195.102   80:31969/TCP,443:31302/TCP   35d
-ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.17.121   <none>           80/TCP                       35d
-```
 
-The address is in the EXTERNAL-IP column, in this case it's 130.61.195.102 **but yours will be different**
+The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column.
+
+**To set the variable again**
+
+  - `export EXTERNAL_IP=<External IP>`
+  
+---
 
 </details>
 
-
-  9. In the OCI Cloud Shell terminal type the following, be prepared for an error (remember to replace `<external IP>` with the IP address for your ingress controller)
+  9. In the OCI Cloud Shell terminal type the following, be prepared for an error
   
-  - `curl -i -k -X GET -u jack:password https://store.<external IP>.nip.io/store/stocklevel`
+  - `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
   
   ```
 HTTP/1.1 200 OK

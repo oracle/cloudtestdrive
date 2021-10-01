@@ -136,9 +136,39 @@ zipkin-7db7558998-c5b5j          2/2     Running   0          22h
 
 Let's make sure our service is still running (note that we haven't changed the service itself, it's selector will match the old and new versions of the pod)
 
-  5. In the OCI Cloud shell type the following (as usual replacing `<external IP>` with the IP address of the ingress controller service)
+If your cloud shell session is new or has been restarted then the shell variable `$EXTERNAL_IP` may be invalid, expand this section if you think this may be the case to check and reset it if needed.
+
+<details><summary><b>How to check if $EXTERNAL_IP is set, and re-set it if it's not</b></summary>
+
+**To check if `$EXTERNAL_IP` is set**
+
+If you want to check if the variable is still set type `echo $EXTRNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
+
+**To get the external IP address if you no longer have it**
+
+In the OCI Cloud shell type
+
+  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
   
-  - `curl -i -k  -u jack:password https://store.<external IP>.nip.io/store/stocklevel`
+  ```
+NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
+ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
+```
+
+The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column.
+
+**To set the variable again**
+
+  - `export EXTERNAL_IP=<External IP>`
+  
+---
+
+</details>
+
+
+  5. In the OCI Cloud shell type the following
+  
+  - `curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
 
   ```
 HTTP/2 200 
@@ -211,7 +241,7 @@ These ingress rules connect to the versioned services, not the original stockman
 
   4. Let's check them out. Firstly the 0.0.1 specific version. In the OCI CLoud shell type the following
   
-  - `curl -i -k  -u jack:password https://store.<external IP>.nip.io/stockmanagerv0-0-1/stocklevel`
+  - `curl -i -k  -u jack:password https://store.$EXTErNAL_IP.nip.io/stockmanagerv0-0-1/stocklevel`
 
   ```
 HTTP/2 200 
@@ -228,7 +258,7 @@ Accessing the 0.0.1 version the ingress connects to the 0.0.1 service which has 
 
   5. Now let's try the 0.0.2 version (expect an error)
   
-  - `curl -i -k  -u jack:password https://store.<external IP>.nip.io/stockmanagerv0-0-2/stocklevel`
+  - `curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/stockmanagerv0-0-2/stocklevel`
 
   ```
 HTTP/2 503 
@@ -297,9 +327,9 @@ As the traffic split is now in place and it's intercepting requests to the origi
 
 We can confirm this by making a few requests
 
-  2. In the OCI Cloud shell type (remember to replace `<external IP>` with your Ingress IP address)
+  2. In the OCI Cloud shell type
   
-  - `curl -i -k  -u jack:password https://store.<external IP>.nip.io/store/stocklevel`
+  - `curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
   
   ```
 HTTP/2 200 
@@ -327,9 +357,9 @@ deployment.apps/stockmanagerv0-0-2 created
 After waiting a short while for the new deployment to start we can check that the new version is configured using the 0.0.2 ingress. We are using the "broken" version of the stockmanager service we saw in the troubleshooting module, so expect some errors
  
 
-  4. In the OCI Cloud Shell type (remember to replace `<external IP>` with your Ingress IP address)
+  4. In the OCI Cloud Shell type
   
-  - `curl -i -k  -u jack:password https://store.<external IP>.nip.io/stockmanagerv0-0-2/stocklevel`
+  - `curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/stockmanagerv0-0-2/stocklevel`
   
 Note that it may take a short while for the v0.0.2 stockmanager to start, so you may get a 502 Bad Gateway or a delay while the stockmanager does it's lazy initialization and the database connection is established.
 
@@ -371,15 +401,39 @@ If you do this a few times you will find that about half of the requests succeed
 
 Now we've seen that the services are behaving as expected let's start up the load generator
 
-  5. Open a new window using your OCI account and start a cloud shell
+  5. Open a new window using your OCI account and start a cloud shell. You will need to set the `EXTERNAL_IP` variable in this new window, if you can't remember it or don;t have it written down expend ths section below and follow the instructions.
+  
+<details><summary><b>How to get and set $EXTERNAL_IP</b></summary>
+
+**To get the external IP address if you no longer have it**
+
+In the OCI Cloud shell type
+
+  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+  
+  ```
+NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
+ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
+```
+
+The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column.
+
+**To set the variable again**
+
+  - `export EXTERNAL_IP=<External IP>`
+  
+---
+
+</details>
+ 
   
   6. In the **new** OCI Cloud shell go to the script directory
   
   - `cd $HOME/helidon-kubernetes/service-mesh`
   
-  7. Start the load generator - (remember to replace `<external IP>` with the IP address of your ingress service, no need to prefix it with store or suffix with nip.io)
+  7. Start the load generator
   
-  - `bash generate-service-mesh-load.sh <external IP> 1 &`
+  - `bash generate-service-mesh-load.sh $EXTERNAL_IP 1 &`
   
  ```
  Iteration 1
@@ -393,7 +447,7 @@ Note, the OCI Cloud Shell session will terminate (and thus kill off the load gen
 
 We can use the Linkerd web UI to see how the traffic is working
 
-  8. In your laptop web browser go to `https://linkerd.<external IP>.nip.io`
+  8. In your laptop web browser go to `https://linkerd.<external IP>.nip.io` (Replace `External IP with the load balancers IP)
 
 If needed accept that it's a self signed certificate and login as `admin` with password you set when installing linkerd
 
@@ -667,9 +721,9 @@ ingress.networking.k8s.io/fault-injector created
 
 Test the fault injection returns the right value
 
-  7. In the OCI Cloud shell type (replace `<external IP>` with **your** ingress controller IP address)
+  7. In the OCI Cloud shell type
 
-  - `curl -i  http://store.<external IP>.nip.io/fault`
+  - `curl -i  http://store.$EXTERNAL_IP.nip.io/fault`
 
   ```
 Handling connection for 9411
@@ -725,7 +779,7 @@ trafficsplit.split.smi-spec.io/fault-injector-split created
 
 Let's look at the traffic split in the linkerd UI
 
-  2. In your web browser go to `https://<external IP address>`
+  2. In your web browser go to `https://linkerd.<external IP>.nip.io` (replace `External IP` with the IP address of the load balancer as usual)
 
   3. On the upper left click the **Namespace dropdown** (It may display `DEFAULT` or another namespace name)
 
@@ -755,9 +809,9 @@ Keep this page open
 
 Let's generate some requests to see what happens
 
-  1. In the OCI Cloud Shell type the following replacing `<External IP>` with your load balancers IP address  (Be prepared for an error)
+  1. In the OCI Cloud Shell type the following replacing (Be prepared for an error)
   
-  - `curl -i -k  -u jack:password https://store.<external ip>.nip.io/store/stocklevel`
+  - `curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
 
   ```  
 HTTP/2 200 
@@ -806,9 +860,9 @@ This will generate reports from any deployment to the `zipkin` deployment (it is
 
   7. Click the **Start** button
 
-  8. In the OCI cloud shell make multiple curl requests of the form, as always replace `<External ip>` with your load balancer IP address
+  8. In the OCI cloud shell make multiple curl requests of the form
   
-  - `curl -i -k  -u jack:password https://store.<external ip>.nip.io/store/stocklevel`
+  - `curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
   
   9. Looking at the Linkerd UI we can see the result.
 
