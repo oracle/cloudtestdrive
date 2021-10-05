@@ -71,6 +71,21 @@ Fill in information for **WebLogic Server on Container Cluster (OKE)**:
 
   - On Mac, you can simply use `command+c`
 
+- **Managed Server Count**: *2* (two managed WebLogic servers will be up&running as Kubernetes pods; this can be changed later)
+- **Administrator name**: *weblogic*
+- **Secrets OCID for Administration Password**: Enter the OCID of the WebLogic Admin Secret that was set up in the prerequisites lab
+  
+  - A bit of context: the WebLogic Server Admin Password it's stored in an OCI Vault as an OCI Secret (encrypted with an OCI Encryption Key); during WebLogic Domain creation, the provisioning scripts will setup the admin password by getting it from the OCI Secret instead of having it as a Terraform variable in plain-text mode
+
+![](images/wlsforocionoke/image-050.png)
+
+
+
+Configure a custom name for the WebLogic Domain:
+
+- **WebLogic Domain Name**: wlsoke
+
+![](images/wlsforocionoke/image-070.png)
 
 
 
@@ -92,23 +107,27 @@ Continue with:
 - **Kubernetes Cluster Subnet CIDR**: keep default value
 - **Kubernetes API Endpoint Subnet CIDR**: keep default value
 - **Load Balancer Subnet CIDR**: keep default value
-- **Minimum Bandwidth for Jenkins Load Balancer**: *10 Mbps*
-- **Maximum Bandwidth for Jenkins  Load Balancer**: *20 Mbps*
+- **Minimum Bandwidth for Administration Console Load Balancer**: *10 Mbtps*
+- **Maximum Bandwidth for Administration Console Load Balancer**: *20 Mbtps*
+- **Minimum Bandwidth for WebLogic Cluster Load Balancer**: *10 Mbps*
+- **Maximum Bandwidth for WebLogic Cluster Load Balancer**: *20 Mbps*
 
-![image-20210428171936282](images/wlsforocionoke/image-105-2.png)
+![image-20210428171936282](images/wlsforocionoke/image-105.png)
 
 
 
 Next, in the **Container Cluster (OKE) Configuration** Section:
 
 - **Kubernetes Version**: leave default
+- **WebLogic Node Pool Shape**: leave default
+- **Nodes in the Node Pool For WebLogic Pods**: *2* (this will allow the Kubernetes cluster to span over multiple Availability Domains)
 - **Non-WebLogic Node Pool Shape**: leave default
 - **Nodes in the Node Pool for Non-WebLogic Pods**: *2*
 - **Pods CIDR**: leave default
 - **Services CIDR**: leave default
 - **Kubernetes Secret Encryption**: leave default (unchecked)
 
-![](images/wlsforocionoke/image-080-2.png) 
+![](images/wlsforocionoke/image-080.png) 
 
 
 
@@ -122,9 +141,17 @@ For the **Container Cluster (OKE) Administration Instances**:
 
 
 
+Leave **Enable Authentication Using Identity Cloud Service** unchecked; We'll use default Realm that comes with WebLogic Server:
+
+![image-20210428172441505](images/wlsforocionoke/image-095.png)
+
+
+
+Scroll down and leave **Provision with JRF** unchecked to skip database configuration. We'll provision a Non-JRF WebLogic Domain.
+
 For the **File System** choose one of the Availability Domain. A File System and a Mount Target will be created in that particular AD. From Service Limits perspective, choose one that allows creation of new Shared File System resources.
 
-![](images/wlsforocionoke/image-110-2.png)
+![](images/wlsforocionoke/image-110.png)
 
 
 
@@ -182,6 +209,14 @@ Once the process finishes, you should see a green icon for a **Succeeded** creat
 
 
 
+## Step 2. Check what resources have been provisioned
+
+To better understand all components of a WebLogic for OKE on OCI solution keep as a reference this architecture diagram:
+
+![](images/wlsforocionoke/image-200.png)
+
+
+
 Before navigating away of the Job Information page, let's take note of some relevant details that we'll be using later. Switch from the *Logs* to the *Outputs* submenu item and check the **Outputs** table:
 
 ![](images/wlsforocionoke/image-210.png)
@@ -194,25 +229,88 @@ Some items need our attention:
 - **bastion_instance_public_ip**: public IP address of the *Bastion* Compute Instance in the reference architecture; the Bastion VM acts as jump server and let us connect from Internet to the WebLogic Infrastructure
 - **fss_path**: mount path of the shared file system between *Admin Host*, WebLogic managed servers and Jenkins Continuous Integration system; by connecting to the *Admin Host* you can change/add new scripts to be used in existing or new Jenkins Pipelines
 - **jenkins_console_url**: remember that `/jenkins` is the Jenkins application context root
+- **weblogic_console_url**: remember that `/console` is the WebLogic Administration Console context root
 - **oke_cluster_name**: the name of the OKE Cluster running 
 
 
 
-To easily get the Jenkins Load Balancer IP, go back to the Job *Logs*, and scroll down to the end:
+To easily get the two Load Balancers IPs, go back to the Job *Logs*, and scroll down to the end:
 
-![](images/wlsforocionoke/image-220-3.png)
-
-![](images/wlsforocionoke/image-220-2.png)
+![](images/wlsforocionoke/image-220.png)
 
 
 
-In yellow (at the top of the above image), we have the full URL for the Jenkins Console (**jenkins_console_url**)
+With yellow (at the top of the above image), we have the full URLs for:
+
+- WebLogic Admin Console (**weblogic_console_url**)
+- Jenkins Console (**jenkins_console_url**)
+- WebLogic Applications deployed on WebLogic domain (**weblogic_cluster_lb_url**)
+
+As we can see, the WebLogic Admin Console and the Jenkins Console have the same IP (hostname): this is the IP of the Private Load Balancer as in the Reference Architecture. This Load Balancer balances the traffic across Kubernetes Nodes and subsequently, on each node, an Ingress Controller forwards the traffic to right Pod running respective application (WebLogic Admin Server or Jenkins Master).
+
+The IP address of the WebLogic Cluster LB URL represents the Public IP address of the Public Load Balancer from the Reference Architecture. This Load Balancer allows incoming Internet traffic to be send to deployed applications running on WebLogic Managed Server Pods.
 
 
 
-## Step 2. Access the Jenkins Console to start the WLS domain
+We can have a quick look of all OCI resources that have been created.
 
-To access the Jenkins Console we need first  to connect to the Bastion Host and create a SSH tunnel at the same time. We cannot use the Cloud Shell for this part.
+If we navigate to *Compute* -> *Instances* we can see six new Compute Instance running: one for *Admin Host*, one for *Bastion* host and four belonging to the OKE cluster (two for each Node Pools, the *Non-WebLogic Node Pool* and the *WebLogic Node Pool*). Note that only the Bastion host has a Public IP address:
+
+![](images/wlsforocionoke/image-230.png)
+
+
+
+If we go *Storage* -> *File Storage* -> *File Systems* we can see the File System that it's being shared among some of the created components:
+
+![](images/wlsforocionoke/image-240.png)
+
+
+
+And the associated Mount Target that actually exports the File System through the internal network:
+
+![](images/wlsforocionoke/image-250.png)
+
+
+
+In the  *Networking* -> *Virtual Cloud Networks*  we'll see the new VCN in which all components are running:
+
+![](images/wlsforocionoke/image-260.png)
+
+
+
+Switching to *Load Balancers* we see the two Load Balancers up & running and their respective IP Addresses:
+
+![](images/wlsforocionoke/image-270.png)
+
+
+
+Going to *Developer Services* -> *Container* -> *Kubernetes Clusters* we can see the WebLogic Kubernetes Cluster:
+
+![](images/wlsforocionoke/image-280.png)
+
+
+
+Lastly, by going to *Developer Services* -> *Containers* -> *Container Registry* we can check for the repositories created once the WebLogic for OKE has been provisioned:
+
+![image-20201103180909347](images/wlsforocionoke/image-330.png)
+
+
+
+We can see:
+
+- infra/cisystem-jenkins-controller - Jenkins Controller Image
+- infra/cisystem-jenkins-agent - Jenkins Agent Image
+- infra/nginx-ingress-controller - Nginx Ingress Controller Image
+- infra/oraclelinux - Oracle Base Linux Image
+- infra/weblogic-kubernetes-operator - WebLogic Operator Image
+- /wlsoke02/wls-domain-base/12214 - WebLogic domain Base Image
+- /wlsoke02/wls-domain-base - WebLogic domain Image (this one will get versioned each time the WebLogic domain is updating, for example for deploying or undeploying applications)
+
+
+
+## Step 3. Access WebLogic Admin and Jenkins Consoles
+
+To access the WebLogic Admin Console and the Jenkins Console we need first  to connect to the Bastion Host and create a SSH tunnel at the same time. We cannot use the Cloud Shell for this part.
 
 
 
@@ -325,7 +423,27 @@ Open **Firefox** browser, go to  *Options*, scroll down to *Network Settings* an
 
 
 
-Once done that, open a new browser tab and navigate to the Jenkins console:
+Once done that, open a new browser tab and navigate to WebLogic Admin Console:
+
+```
+http://<private load balancer ip>/console
+```
+
+
+
+You find the full URL in the Terraform Apply Job Logs Output as showed above. Login with `weblogic` and the password setup for the WebLogic Admin Secret in the prerequisites lab:
+
+![](images/wlsforocionoke/image-430.png)
+
+
+
+Navigate to *Environments* > *Servers* to check for the running Managed Servers. As we have 2 Pods running Managed WebLogic Servers, only two of them are listed in `RUNNING` State.
+
+![](images/wlsforocionoke/image-440.png)
+
+
+
+In another browser tab, open the Jenkins console:
 
 ```
 http://<private load balancer ip>/jenkins
@@ -349,187 +467,11 @@ This leads us to the Jenkins Dashboard page displaying several pre-configured Pi
 
 Don't forget that with WebLogic running on top of Kubernetes, any change to the running WebLogic Domain (like domain configuration, deploying/un-deploying applications or managing Managed Servers) it's not recommended and it's not a best practice. Everything has to be done through the CI/CD flows that will update the WebLogic Domain model, push the WebLogic Image to OCI Registry and then re-create the Kubernetes Pods.
 
-![](images/wlsforocionoke/image-470-2.png)
+![](images/wlsforocionoke/image-470.png)
 
 
 
-To start a WLS Domain we'll be using the **Create_domain** pipeline.  Start the pipeline by clicking the small arrow on the right of the pipeline name to see th drop-down menu, and select **Build with Parameters**
-
- ![](images/wlsforocionoke/image-471-2.png)
-
-You now see the various parameters you can enter for the domain creation : 
-
-Fill in information for **WebLogic Server on Container Cluster** section:
-
-- **Domain_Name**: *wlsoke* (use **lower case letters** and add an unique suffix if other colleagues will be running this lab on the same cloud environment)
-
-- **Base_Image**: select the single default image in the dropdown
-
-- **Administrator name**: *weblogic*
-
-- **Managed_Server_Count**: *2* (two managed WebLogic servers will be up&running as Kubernetes pods; this can be changed later)
-
-- **SSH Public Key**: copy-and-paste the content of the generated **weblogic_ssh_key.pub** file; it contains the public key in RSA format; make sure to include the whole content in a single line, including *ssh-rsa* part at the beginning.
-
-  - Note: if you have used the Cloud Shell to generate the SSH Key, you can use the `cat` command to display its contents:
-
-    ```
-    $ cat weblogic_ssh_key.pub
-    ```
-
-    ![](images/wlsforocionoke/image-060.png)
-
-    
-
-  - On Windows, use `Ctrl+INSERT` to copy the highlighted area as in the above example
-
-  - On Mac, you can simply use `command+c`
-
-- Keep the **Patch_Automatically** parameter unchecked.
-
-![](images/wlsforocionoke/image-472.png)
-
-Fill in information for **Registry (OCIR)** section:
-
-- **Registry_Username** : this is the same name you specified previously but ...
-   **!!! ATTENTION!!! ** : now prefixed with the **tenancy namespace**
-
-  - To obtain the namespace of your tenancy, navigate to the *Developer Services*, then select *Container Registry* :
-
-    ![](images/wlsforocionoke/image-490.png)
-
-  - If you are using a **Single Sign-on** user via the Oracle Identity cloud service, your name will look like : `mynamespace/oracleidentitycloudservice/bogdaneremia@oracle.com`
-
-  - If you are using a **Direct Sign-in** user, this will be for example `mynamespace/janleemans`
-
-- **Registry_Authentication_Token** : this is the token you created in the prerequisite steps of this lab, a string looking somwhat like this example : VclaI2QlT{5"3"mli94AB<
-
-![](images/wlsforocionoke/image-491.png)
-
-
-
-Fill in information for **Container Cluster (OKE) Configuration** section:
-
-- **WebLogic_Node_Pool_Type** : select the **Create_Node_Pool** option
-- **Node_Count** : fill in **2**
-- **WebLogic_Node_Pool_Shape** : leave the default
-- **SSH_Public_Key** : paste the SSH public key as you did before (starts with the string ssh-rsa...)
-- **NodePool_Subnet_ID** : leave blank
-- **Existing_Node_Pool** : leave blank
-
-![](images/wlsforocionoke/image-492.png)
-
-
-
-Fill in information for **Load balancer Configuration** section:
-
-- **External_Lb_Shape_Min** : leave the default - **10**
-- **External_Lb_Shape_Max** : fill in **20**
-- **Private_Load_Balancer** : leave the default - unchecked
-- **Reserved_Public_IP** : leave blank
-
-![](images/wlsforocionoke/image-493.png)
-
-
-
-Leave the sections **Provision with JRF** and **Identity Cloud Service (IDCS) Integration** unchanged, in this lab we will not use these options.
-
-
-
-You are now ready to hit the **Build**button at the bottom.  The pipline will start executing and after some time you will see the progression through the various steps.  When the run is finished (successfully), the result should look like this : 
-
-![](images/wlsforocionoke/image-494.png)
-
-While the provisioning is proceeding, you can continue to the next step, and see the various resources you are in the process of creating.
-
-
-
-## Step 3. Check what resources have been provisioned
-
-To better understand all components of a WebLogic for OKE on OCI solution keep as a reference this architecture diagram:
-
-![](images/wlsforocionoke/image-200.png)
-
-
-
-We can have a quick look of all OCI resources that have been created.
-
-If we navigate to *Compute* -> *Instances* we can see six new Compute Instance running: one for *Admin Host*, one for *Bastion* host and four belonging to the OKE cluster (two for each Node Pools, the *Non-WebLogic Node Pool* and the *WebLogic Node Pool*). Note that only the Bastion host has a Public IP address:
-
-![](images/wlsforocionoke/image-230.png)
-
-
-
-If we go *Storage* -> *File Storage* -> *File Systems* we can see the File System that it's being shared among some of the created components:
-
-![](images/wlsforocionoke/image-240.png)
-
-
-
-And the associated Mount Target that actually exports the File System through the internal network:
-
-![](images/wlsforocionoke/image-250.png)
-
-
-
-In the  *Networking* -> *Virtual Cloud Networks*  we'll see the new VCN in which all components are running:
-
-![](images/wlsforocionoke/image-260.png)
-
-
-
-Switching to *Load Balancers* we see the two Load Balancers up & running and their respective IP Addresses:
-
-![](images/wlsforocionoke/image-270.png)
-
-
-
-Going to *Developer Services* -> *Container* -> *Kubernetes Clusters* we can see the WebLogic Kubernetes Cluster:
-
-![](images/wlsforocionoke/image-280.png)
-
-
-
-Lastly, by going to *Developer Services* -> *Containers* -> *Container Registry* we can check for the repositories created once the WebLogic for OKE has been provisioned:
-
-![image-20201103180909347](images/wlsforocionoke/image-330.png)
-
-
-
-We can see:
-
-- infra/cisystem-jenkins-controller - Jenkins Controller Image
-- infra/cisystem-jenkins-agent - Jenkins Agent Image
-- infra/nginx-ingress-controller - Nginx Ingress Controller Image
-- infra/oraclelinux - Oracle Base Linux Image
-- infra/weblogic-kubernetes-operator - WebLogic Operator Image
-- /wlsoke02/wls-domain-base/12214 - WebLogic domain Base Image
-- /wlsoke02/wls-domain-base - WebLogic domain Image (this one will get versioned each time the WebLogic domain is updating, for example for deploying or undeploying applications)
-
-
-
-## Step 4. Access WebLogic Admin Console
-
-To access the WebLogic Admin Console we also need to use the tunnel we set up previously.  
-
-- Use the Firefox browser used for accessing the Jenkins console and open a 2nd tab
-- Browse to the WebLogic Console URL : the URL format is: `http://<jenkins_lb_IP>/<domainname>/console`
-
-1. For example: `http://10.0.2.3/wlsoke/console`
-
-2. The WebLogic Server Administration Console login page is displayed.
-
-![](images/wlsforocionoke/image-430.png)
-
-
-
-Navigate to *Environments* > *Servers* to check for the running Managed Servers. As we have 2 Pods running Managed WebLogic Servers, only two of them are listed in `RUNNING` State.
-
-![](images/wlsforocionoke/image-440.png)
-
-
-
-## Step 5. Access Admin host
+## Step 4. Access Admin host
 
 There are cases when we would need to access the Admin host, for example to change the existing Jenkins Pipelines script files, add new ones to the shared file system or, as we'll see in the last lab of the workshop, to clean up some resources before tearing town the WebLogic for OKE Infrastructure.
 
@@ -568,7 +510,7 @@ Once logged in, you can inspect `/u01/shared` shared folder, for example checkin
 
 
 
-## Step 6 (optional) : Use kubectl to access your kubernetes cluster
+## Step 5 (optional) : Use kubectl to access your kubernetes cluster
 
 As of May 2021, the default setup of a OKE cluster is now with ***private*** endpoints.  This prohibits access to the cluster through the cloud shell for now.  The only way to access the cluster is to set up OCI CLI and kubectl on your local machine, and use a SSH tunnel through the bastion host to access the cluster.  
 
@@ -613,4 +555,4 @@ At the end of the list we identity a Pod running WLS Admin Server, two Pods runn
 
 
 
-You can now navigate to the next chapter of this lab called **Deploying a Sample application**
+In the next Hands on Lab, we'll test some of the pre-build Jenkins Pipelines.
