@@ -22,49 +22,42 @@ Login to Jenkins Console:
 
 You should see Jenkins Dashboard Page and available Pipelines:
 
-![](images/wlsforocionokedeploy/image-020.png)
+![](images/wlsforocionokedeploy/image-020-2.png)
 
 
 
-These Pipelines are provided as default examples, but you can change them or you create new ones as needed. As this is a fresh environment, no Pipeline has never been run yet so we don't see build history data.
+To deploy the WebLogic Sample Application, we will use the Pipeline called **sampleapp**. 
 
-To deploy the WebLogic Sample Application, we will use the Pipeline called **sample-app**. 
+Hover on *sample-app* Pipeline, expand the contextual menu and click on **Build with  Parameters**:
 
-Hover on *sample-app* Pipeline, expand the contextual menu and click on **Build with Parameters**:
-
-![](images/wlsforocionokedeploy/image-080.png)
+<img src="images/wlsforocionokedeploy/image-080-2.png" style="zoom:33%;" />
 
 
 
-Click on **Build** to deploy the Sample Application:
+- Select the WLS domain you created in the previous part of the lab
+- Click on **Build** to deploy the Sample Application:
 
-![](images/wlsforocionokedeploy/image-090.png)
+<img src="images/wlsforocionokedeploy/image-090-2.png" style="zoom: 33%;" />
 
 
 
 Once build starts, you're redirected to Pipeline's *Status* Page. This page will get updated once build stages are running and completed.
 
-To check the build log, hover the build number in the Build History section, expand the contextual menu and click on **Console Output**:
+<img src="images/wlsforocionokedeploy/image-100-2.png" style="zoom:33%;" />
 
-![](images/wlsforocionokedeploy/image-100.png)
+To check the build log, select the build number in the Build History section, then select the menu **Console Output**: on the left :
 
-
+<img src="images/wlsforocionokedeploy/image-101-2.png" style="zoom:33%;" />
 
 The running build output logs are displayed:
 
-![](images/wlsforocionokedeploy/image-110.png)
-
-
-
-After ~14min, if you go back to Status page, you should see the Build completed:
-
-![](images/wlsforocionokedeploy/image-120.png)
+![](images/wlsforocionokedeploy/image-110-2.png)
 
 
 
 Next step, is to access and test the WebLogic Sample Application. In a new browser tab navigate to:
 
-(check the previous lab on how to get the Public Load Balancer IP by inspecting the Load Balancers or the WebLogic for OKE stack Apply Job output logs)
+(check the previous lab on how to get the Public Load Balancer IP by inspecting the Load Balancers)
 
 ```
 https://<public load balancer ip>/sample-app
@@ -90,18 +83,13 @@ In the second step of this Hands on Lab we will use the *update-domain* Pipeline
 
 Let's inspect the required Build Parameters to launch this Pipeline:
 
-![](images/wlsforocionokedeploy/image-200.png)
-
-
-
-Pipeline's Build Parameters:
-
-![](images/wlsforocionokedeploy/image-210.png)
+<img src="images/wlsforocionokedeploy/image-200-2.png" style="zoom:33%;" />
 
 
 
 As this Pipeline executes the **WebLogic Deploy Tool** (**WDT**) *updateDomain* command, we can recognized the WDT parameters 
 
+- **Domain name** : select the domain you created previously
 - **Archive_Source**: The archive file is used to deploy binaries and other file resources to the target domain. The archive is a ZIP file with a specific directory structure.
 - **Domain_Model_Source**: The metadata model (or model, for short) - the version-independent description of a WebLogic Server domain configuration in YAML format
 - **Variable_Source**: Variables Properties file that can be passed and interpreted at execution
@@ -155,7 +143,7 @@ For this lab example, we don't need a variables properties file, nor an encrypti
 
 In the Pipeline build form, select *File Upload* for **Archive_Source** and **Domain_Model_Source** and upload the two files:
 
-![](images/wlsforocionokedeploy/image-230.png)
+<img src="images/wlsforocionokedeploy/image-230-2.png" style="zoom:67%;" />
 
 
 
