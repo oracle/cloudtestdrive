@@ -7,12 +7,12 @@
 
         {            
             "title": "Part 2 : WebLogic for OKE - Creating the stack and provisioning the Kubernetes Infrastructure",
-            "filename": "wlsforocionoke.md"
+            "filename": "wlsforocionokepart2.md"
         },
 
         {            
             "title": "Part 3 : WebLogic for OKE - Creating the WebLogic Domain",
-            "filename": "wlsforocionokestep2.md"
+            "filename": "wlsforocionokepart3.md"
         },
 
 		{            
