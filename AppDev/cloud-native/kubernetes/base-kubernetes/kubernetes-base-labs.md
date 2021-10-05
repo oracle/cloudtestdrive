@@ -328,7 +328,7 @@ The External IP of the Load Balancer connected to the ingresss controller is sho
 
 </details>
   
-  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set ingress.enabled=true  --set ingress.hosts='{dashboard.kube-system.$EXTERNAL_IP.nip.io}' --version 5.0.0`
+  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set ingress.enabled=true  --set ingress.hosts="{dashboard.kube-system.$EXTERNAL_IP.nip.io}" --version 5.0.0`
   
   ```
 NAME: kubernetes-dashboard
@@ -414,8 +414,8 @@ The helm options are :
   -  `helm list --namespace kube-system`
 
   ```
-NAME                	NAMESPACE  	REVISION	UPDATED                             	STATUS  	CHART                      	APP VERSION
-kubernetes-dashboard	kube-system	1       	2019-12-24 16:16:48.112474 +0000 UTC	deployed	kubernetes-dashboard-2.8.3	     2.0.4 
+NAME                    NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                           APP VERSION
+kubernetes-dashboard    kube-system     1               2021-10-04 14:56:39.913725424 +0000 UTC deployed        kubernetes-dashboard-5.0.0      2.3.1      
 ```
 
 We've seen it's been deployed by Helm, this doesn't however mean that the pods are actually running yet (they may still be downloading)
@@ -887,7 +887,7 @@ Services determine what pods they will talk to using selectors. Each pod had met
 
 Services can be exposed externally via load balancer on a specific port (the type field is LoadBalancer) or can be mapped on to an external to the cluster port (basically it's randomly assigned when the type is NodePort) but by default are only visible inside the cluster (or if the type is ClusterIP). In this case we're going to be using ingress to provide the access to the services from the outside world so we'll not use a load balancer.
 
-The helidon-kubernetes/base-kubernetes/servicesClusterIP.yaml file defined the services for us. Below is the definition of the storefront service (the file also defines the stock manager and zipkin servcies as well)
+The various services files define the services for us. Below is the definition of the storefront service (there are also files which define the stock manager and zipkin services as well)
 
 ```
 apiVersion: v1
@@ -919,11 +919,18 @@ You need to define the services before defining anything else (e.g. deployments,
 </details>
 
 
-  1. The `create-services.sh` script applies the YAML files to create the cluster services for us. Using a script makes this easily reproducible, though of course you could store the YAML in a git repo and use a deployment tool like Oracle DevOps CD or ArgoCD to apply them from the repo.
+  1. The `create-services.sh` script applies the YAML files to create the cluster services for us. Using a script makes this easily reproducible, though of course you could store the YAML in a git repo and use a deployment tool like Oracle DevOps CD or ArgoCD to apply them from the repo. Note that as you may be running this in a the script deletes any existing servcies for saftey first.
 
   - `bash create-services.sh`
 
   ```
+Deleting existing services
+Storefront
+Stockmanager
+Zipkin
+Deleted services
+Services remaining in namespace are
+No resources found in tims namespace.
 Creating services
 Zipkin
 service/zipkin created
@@ -931,6 +938,11 @@ Stockmanager
 service/stockmanager created
 Storefront
 service/storefront created
+Current services in namespace are
+NAME           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
+stockmanager   ClusterIP   10.96.31.251    <none>        8081/TCP,9081/TCP   3s
+storefront     ClusterIP   10.96.17.27     <none>        8080/TCP,9080/TCP   2s
+zipkin         ClusterIP   10.96.236.255   <none>        9411/TCP            5s
 ```
 
 Note that the service defines the endpoint, it's not actually running any code for your service yet. It's like creating a DNS entry does not mean there is any thing at that IP address.
@@ -942,9 +954,9 @@ Note that the service defines the endpoint, it's not actually running any code f
   ```
 Current services in namespace are
 NAME           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
-stockmanager   ClusterIP   10.96.51.195    <none>        8081/TCP,9081/TCP   3s
-storefront     ClusterIP   10.96.130.202   <none>        8080/TCP,9080/TCP   2s
-zipkin         ClusterIP   10.96.148.204   <none>        9411/TCP            5s
+stockmanager   ClusterIP   10.96.51.195    <none>        8081/TCP,9081/TCP   9s
+storefront     ClusterIP   10.96.130.202   <none>        8080/TCP,9080/TCP   8s
+zipkin         ClusterIP   10.96.148.204   <none>        9411/TCP            11s
 ```
 
 The clusterIP is the virtual IP address assigned in the cluster for the service, note there is no external IP as we haven't put a load balancer in front of these services. The ports section specified the ports that the service will use (and in this case the target ports in the pods)
@@ -1163,9 +1175,9 @@ Updating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules.
 
 ```
 
-Note that the output above is for an external IP of `123.456.789.999` This is of course not a real world IP address and your output will reflect the IP address of your controller 
+Note that the output above is for an external IP of `123.456.789.999` This is of course not a real world IP address and your output will reflect the IP address of your controller.
 
-  5. There is a shell script that will apply each of the ingress rules yaml files. Using a script is prefered as it is reproducible and minimises the chance of typo's, mistakes or forgetting to apply a file. In the OCI cloud shell type
+  5. There is a shell script that will apply each of the ingress rules yaml files. Using a script here is prefered as it is reproducible and minimises the chance of typo's, mistakes or forgetting to apply a file. of course in a production system you'd probabaly be using an automated deployment tool insted of this script. In the OCI cloud shell type
   
   - `bash create-ingress-rules.sh`
   
@@ -1530,7 +1542,7 @@ In the $HOME/helidon-kubernetes/base-kubernetes folder there is a script create-
 
   1. Run the script to create the config maps
 
-  -  `bash create-configmaps.sh `
+  -  `bash create-configmaps.sh`
 
   ```
 Deleting existing config maps
@@ -2018,7 +2030,7 @@ In the dashboard you can click the logs button on the upper right to open a log 
 
 We can interact with the deployment using the public side of the ingress (it's load ballancer),  We stored this in the enviro0nment variable `$EXTERNAL_IP` .
 
-  5. Let's try to get some data - **you might get an error** (replace <external IP> with the ingress controllers load ballancer you got earlier) If you only get a response of `[]` it's fine, you'll just need to setup the test data (expand the section below for details)
+  5. Let's try to get some data - **you might get an error** if you do wait a short while and try again as your servcies are probabaly still starting up. If you only get a response of `[]` it's fine, you'll just need to setup the test data (expand the section below for details)
   
   -  `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
 
@@ -2070,7 +2082,7 @@ If you can run the curl command above you'll see the data you just added
 <details><summary><b>How to find out what pods are connected to a service</b></summary>
 
 
-The service definition maps onto the actual pods in the dpeloyments using the selector as seen above. To find out exactly what pods match the selectors for a service 
+The service definition maps onto the actual pods in the deployments using the selector as seen above. To find out exactly what pods match the selectors for a service 
 
 - `kubectl get endpoints`
 
