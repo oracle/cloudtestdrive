@@ -337,7 +337,7 @@ Switching to *Load Balancers* we see the two Load Balancers up & running and the
 
 ![](images/wlsforocionoke/image-270.png)
 
-
+**Attention** : note down the public IP address of the public loadbalancer, as you will need it to access the Trial App later in this tutorial.
 
 Going to *Developer Services* -> *Container* -> *Kubernetes Clusters* we can see the WebLogic Kubernetes Cluster:
 
