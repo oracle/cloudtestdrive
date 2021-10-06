@@ -10,11 +10,9 @@ This chapter will go through the process of creating a WebLogic domain using the
 
 
 
-## Step 1. Access the Jenkins Console to start the WLS domain
+## Step 1. Setup access to the environment
 
-To access the Jenkins Console we need first  to connect to the Bastion Host and create a SSH tunnel at the same time. We cannot use the Cloud Shell for this part.
-
-
+To access the Jenkins Console and the Admin server we need first  to connect to the Bastion Host and create a SSH tunnel at the same time. 
 
 If you used Cloud Shell for creating the SSH private and public key pair, you'd need to copy it to local machine. In the Cloud Shell Console, go to `keys` folder and print the private key:
 
@@ -119,6 +117,73 @@ On Windows:
 
 Now all the local machine network traffic proxy-ed through 1088 port will be tunneled through the SSH connection to the bastion host.
 
+
+
+## Step 1b. Apply a patch for Trial Environments
+
+**This step only applies when running in a Free Trial account**
+
+When running on a normal, Free trial Cloud environment, you will only have a single loadbalancer of the type *Flexible Shape* at your discposal.  But the creation wizard of the WebLogic Domain will assume you have a second one available ... so we need to apply a small patch to switch your public domain loadbalancer to the type *Fixed Shape 100 MB*,of which you have 3 available in your trial.
+
+To do this, we will be accessing the Admin host.  This can be done :
+
+- using Cloud Shell - easier if you have generated the WebLogic SSH keys on the Cloud Shell environment; if not, you'd need to copy the private key in advance
+- using local ssh client
+
+Either option, an easy way to connect directly to Admin host by jumping though the Bastion host is to use ssh `ProxyCommand` feature. The ssh command should look like this:
+
+```
+ssh -i <path_to_private_key> -o ProxyCommand="ssh -W %h:%p -i <path_to_private_key> opc@<bastion_public_ip>" opc@<admin_host_private_ip>
+```
+
+Example on Cloud Shell:
+
+![image-20201103162837302](images/wlsforocionoke/image-500.png)
+
+
+
+Example on Window PowerShell:
+
+![image-20201103163051480](images/wlsforocionoke/image-510.png)
+
+**Note:** on Windows, you'd need to provide the full `shh.exe` path in the `ProxyCommand` string.
+
+
+
+Lets now **apply the patch**:
+
+- download the patch script by executing the below command :
+
+  ```
+  wget https://objectstorage.us-ashburn-1.oraclecloud.com/n/ocloud200/b/tutorial/o/apply_fixed_lb_100mb_no_limits_check.sh
+  ```
+
+- Make the script executable : 
+
+  ```
+  chmod +x apply_fixed_lb_100mb_no_limits_check.sh
+  ```
+
+- Execute the script :
+
+  ```
+  ./apply_fixed_lb_100mb_no_limits_check.sh
+  ```
+
+Do you want to understand what the patch has done ?
+
+- We canceled a pre-check that validated the availability of the Flexible Loadbalancers in the pipeline script `/u01/shared/scripts/pipeline/create_domain/scripts/precheck_utils.py`
+  The function `check_lb_quota` now always returns 0, indicating a successful check
+- We changed the template of the loadbalancer to use a different type of loadbalancer : in the file `/u01/shared/scripts/pipeline/create_domain/ingress-controller/templates/_nginx-load-balancer.tpl` we replaced the definition of the loadbalancer type from `flexible` to `100Mbps` 
+
+
+
+
+
+## Step 2. Connecting to the Jenkins console 
+
+
+
 Open **Firefox** browser, go to  *Options*, scroll down to *Network Settings* and configure a Proxy to access Internet. Setup a *Manual proxy configuration*, use *localhost* for **SOCKS Host** and *1088* port for **SOCKS Port**. Leave HTTP Proxy and FTP Proxy untouched:
 
 ![](images/wlsforocionoke/image-420.png) 
@@ -189,20 +254,10 @@ Fill in information for **WebLogic Server on Container Cluster** section:
 
 ![](images/wlsforocionoke/image-472.png)
 
-Fill in information for **Registry (OCIR)** section:
+For the **Registry (OCIR)** section:
 
-- **Registry_Username** : this is the same name you specified previously but ...
-   **!!! ATTENTION!!! ** : now prefixed with the **tenancy namespace**
-
-  - To obtain the namespace of your tenancy, navigate to the *Developer Services*, then select *Container Registry* :
-
-    ![](images/wlsforocionoke/image-490.png)
-
-  - If you are using a **Single Sign-on** user via the Oracle Identity cloud service, your name will look like : `mynamespace/oracleidentitycloudservice/bogdaneremia@oracle.com`
-
-  - If you are using a **Direct Sign-in** user, this will be for example `mynamespace/janleemans`
-
-- **Registry_Authentication_Token** : this is the token you created in the prerequisite steps of this lab, a string looking somwhat like this example : VclaI2QlT{5"3"mli94AB<
+- **Registry_Username** : leave this field blank, the script will use the value you already provided during stack creation
+- **Registry_Authentication_Token** : leave this field blank, the script will use the value you already provided during stack creation
 
 ![](images/wlsforocionoke/image-491.png)
 
@@ -213,7 +268,7 @@ Fill in information for **Container Cluster (OKE) Configuration** section:
 - **WebLogic_Node_Pool_Type** : select the **Create_Node_Pool** option
 - **Node_Count** : fill in **2**
 - **WebLogic_Node_Pool_Shape** : leave the default
-- **SSH_Public_Key** : paste the SSH public key as you did before (starts with the string ssh-rsa...)
+- **SSH_Public_Key** : leave blank, the same key provided in the stack creation will be used
 - **NodePool_Subnet_ID** : leave blank
 - **Existing_Node_Pool** : leave blank
 
@@ -244,7 +299,7 @@ While the provisioning is proceeding, you can continue to the next step, and see
 
 
 
-## Step 2. Check what resources have been provisioned
+## Step 3. Check what resources have been provisioned
 
 To better understand all components of a WebLogic for OKE on OCI solution keep as a reference this architecture diagram:
 
@@ -308,7 +363,7 @@ We can see:
 
 
 
-## Step 3. Access WebLogic Admin Console
+## Step 4. Access WebLogic Admin Console
 
 To access the WebLogic Admin Console we also need to use the tunnel we set up previously.  
 
@@ -328,67 +383,6 @@ Navigate to *Environments* > *Servers* to check for the running Managed Servers.
 ![](images/wlsforocionoke/image-440.png)
 
 
-
-## Step 5. Access Admin host
-
-There are cases when we would need to access the Admin host, for example to change the existing Jenkins Pipelines script files, add new ones to the shared file system or, as we'll see in the last lab of the workshop, to clean up some resources before tearing town the WebLogic for OKE Infrastructure.
-
-Accessing the Admin host can be done:
-
-- using Cloud Shell - easier if you have generated the WebLogic SSH keys on the Cloud Shell environment; if not, you'd need to copy the private key in advance
-- using local ssh client
-
-Either option, an easy way to connect directly to Admin host by jumping though the Bastion host is to use ssh `ProxyCommand` feature. The ssh command should look like this:
-
-```
-ssh -i <path_to_private_key> -o ProxyCommand="ssh -W %h:%p -i <path_to_private_key> opc@<bastion_public_ip>" opc@<admin_host_private_ip>
-```
-
-
-
-Example on Cloud Shell:
-
-![image-20201103162837302](images/wlsforocionoke/image-500.png)
-
-
-
-Example on Window PowerShell:
-
-![image-20201103163051480](images/wlsforocionoke/image-510.png)
-
-**Note:** on Windows, you'd need to provide the full `shh.exe` path in the `ProxyCommand` string.
-
-
-
-Once logged in, you can inspect `/u01/shared` shared folder, for example checking the Jenkins Pipelines script files:
-
-![image-20201103163708746](images/wlsforocionoke/image-520.png)
-
-
-
-On the admin host you can also access the Kubernetes cluster with the **kubectl** command : 
-
-```
-$ kubectl get nodes
-```
-
-It will display Kubernetes nodes corresponding to both Node Pools (the four Compute Instances we have seen above):
-
-![](images/wlsforocionoke/image-310.png)
-
-Run now:
-
-```
-$ kubectl get pods --all-namespaces
-```
-
-It will display all running Pods across all namespaces:
-
-![](images/wlsforocionoke/image-320.png)
-
-
-
-At the end of the list we identity a Pod running WLS Admin Server, two Pods running Managed Servers and one Pod running WebLogic Operator.
 
 
 
