@@ -140,7 +140,7 @@ The new key should be listed as *Enabled*:
 
 
 
-### 2.5 Create an OCI Secret for the OCI user Authentication Token
+### 2.5 Create an OCI Secret for the WebLogic Admin password
 
 Go to *Secrets* submenu of the Vault Information page and create an new Secret:
 
@@ -148,25 +148,39 @@ Go to *Secrets* submenu of the Vault Information page and create an new Secret:
 
 
 
-Setup a name for the OCI Secret; choose previously created Encryption Key (**WLSKey**) in the *Encryption Key* dropdown. With default option for *Secret Type Template* (**Plain-Text**), you have to enter the Authentication Token you created and noted down in a previous step as-is (the plain-text) in the *Secret Contents* aria.
+Setup a name for the OCI Secret; choose previously created Encryption Key (**WLSKey**) in the *Encryption Key* dropdown. With default option for *Secret Type Template* (**Plain-Text**), you have to enter the WebLogic Admin password as-is (the plain-text) in the *Secret Contents* aria. If you switch to **Base64** secret type template, you need to provide the WebLogic Admin password pre-encoded in base64.
 
 
 
-![](images/wlsforocionokeprereq/image140-1.png)
+> The password must start with a letter, should be between 8 and 30 characters long, should contain at least one number, and, optionally, any number of the special characters ($ # _).
+
+
+
+![](images/wlsforocionokeprereq/image140.png)
 
 
 
 Shortly, the Secret should be listed as *Active*:
 
-![](images/wlsforocionokeprereq/image150-1.png)
+![](images/wlsforocionokeprereq/image150.png)
 
 
 
 Click on the Secret name and take note of its **OCID**. We need to provide this value in the WebLogic for OKE Stack configuration form:
 
-![](images/wlsforocionokeprereq/image160-1.png)
+![](images/wlsforocionokeprereq/image160.png)
 
 
+
+### 2.6 Create an OCI Secret for your OCI user Authentication Token
+
+In the same way as in previous step, create a new OCI secret for your OCI user Authentication Token. Instead of the WebLogic Admin password, pass the Auth Token value generated earlier.
+
+![](images/wlsforocionokeprereq/image170.png)
+
+
+
+Click on the new Secret name and take note of its **OCID**. We need to provide this value in the WebLogic for OKE Stack configuration form.
 
 
 

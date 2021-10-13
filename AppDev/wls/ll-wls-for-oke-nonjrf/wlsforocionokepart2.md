@@ -93,7 +93,7 @@ Continue with:
 - **Kubernetes API Endpoint Subnet CIDR**: keep default value
 - **Load Balancer Subnet CIDR**: keep default value
 - **Minimum Bandwidth for Jenkins Load Balancer**: *10 Mbps*
-- **Maximum Bandwidth for Jenkins  Load Balancer**: *20 Mbps*
+- **Maximum Bandwidth for Jenkins  Load Balancer**: *10 Mbps*
 
 ![image-20210428171936282](images/wlsforocionoke/image-105-2.png)
 
