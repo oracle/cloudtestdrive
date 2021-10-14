@@ -1,0 +1,38 @@
+{
+  "workshoptitle": "WebLogic for OKE non-JRF",
+  "help": "jan.leemans@oracle.com",
+  "tutorials": [
+    {
+      "title": "Part 1 : Introduction and Prerequisites",
+      "description": "Introduction and Prerequisites for provisioning the WebLogic Infrastructure",
+      "filename": "../wlsforocionokeprereq.md"
+    },
+    {
+      "title": "Part 2 : Creating the stack and provisioning the Kubernetes Infrastructure",
+      "description": "Creating the WebLogic Stack and provisioning the Kubernetes Infrastructure using Marketplace",
+      "publisheddate": "10/13/2021",
+      "filename": "../wlsforocionokepart2.md"
+    },
+    {
+      "title": "Part 3 : Creating the WebLogic Domain",
+      "description": "Using Jenkins to create the WebLogic Domain",
+      "publisheddate": "10/13/2021",
+      "filename": "../wlsforocionokepart3.md"
+    },
+    {
+      "title": "Part 4 : Deploying Applications",
+      "description": "Deploying Sample Application and Custom Applications",
+      "filename": "../wlsforocionokedeploy.md"
+    },
+    {
+      "title": "Part 5 : Optional lab steps",
+      "description": "Troubleshooting an ddestroying the resources you created",
+      "filename": "../wlsforocionokedelete.md"
+    },
+    {
+      "title": "Need Help?",
+      "description": "Solutions to Common Problems and Directions for Receiving Live Help",
+      "filename": "https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/need-help/need-help-freetier.md"
+    }
+  ]
+}
