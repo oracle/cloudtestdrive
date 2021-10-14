@@ -44,28 +44,39 @@ Change to the directory for the service mesh scripts
 
 Once you are in the directory start the load generator
 
-<details><summary><b>If you need to remind yourself of the ingress controller IP address</b></summary>
+If your cloud shell session is new or has been restarted then the shell variable `$EXTERNAL_IP` may be invalid, expand this section if you think this may be the case to check and reset it if needed.
 
+<details><summary><b>How to check if $EXTERNAL_IP is set, and re-set it if it's not</b></summary>
 
-- In the OCI Cloud Shell type :
-  - `kubectl get services -n ingress-nginx`
+**To check if `$EXTERNAL_IP` is set**
 
+If you want to check if the variable is still set type `echo $EXTRNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
+
+**To get the external IP address if you no longer have it**
+
+In the OCI Cloud shell type
+
+  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+  
+  ```
+NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
+ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
 ```
-NAME                                          TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)                      AGE
-ingress-nginx-nginx-ingress-controller        LoadBalancer   10.96.196.6    130.61.195.102   80:31969/TCP,443:31302/TCP   2h
-ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.17.121   <none>           80/TCP                       2h
-```
 
-look at the `ingress-nginx-nginx-ingress-controller` row, IP address inthe `EXTERNAL-IP` column is the one you want, in this case that's `130.61.195.102` **but yours will vary**
+The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column.
 
+**To set the variable again**
+
+  - `export EXTERNAL_IP=<External IP>`
+  
 ---
 
 </details>
 
 
-  2. In the OCI Cloud shell type (remember to replace `<external IP>` with the IP address of your ingress service
+  2. In the OCI Cloud shell type 
   
-  - `bash generate-service-mesh-load.sh <external IP> 2`
+  - `bash generate-service-mesh-load.sh $EXTERNAL_IP 2`
   
  ```
 Iteration 1
@@ -81,7 +92,7 @@ If that happens while you are doing the service mesh labs the solution is to con
 
 ### Task 1b: Viewing the load
 
-  1. In your laptop web browser go to `https://linkerd.<external IP>.nip.io`
+  1. In your laptop web browser go to `https://linkerd.<external IP>.nip.io` (replace `<External IP>` with that of your load balancer)
 
 You may be challenged as you have a self signed certificate. Follow the normal procedures in your browser to accept the connection and proceed.
 
