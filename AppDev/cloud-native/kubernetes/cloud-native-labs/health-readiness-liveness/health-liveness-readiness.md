@@ -72,7 +72,7 @@ First let's make sure that the service is running
 
   1. In the OCI Cloud Shell
   
-  - `curl -i -X GET -u jack:password http://store.$EXTERNAL_IP.nip.io/store/stocklevel`
+  - `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
 
   ```
 HTTP/1.1 200 OK
