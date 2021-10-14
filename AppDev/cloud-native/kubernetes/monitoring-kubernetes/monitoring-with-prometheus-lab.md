@@ -161,9 +161,10 @@ secret/web-ingress-auth created
 ## Task 3: Installing Prometheus
 
 
-<details><summary><b>Older versions of Kubernetes than 1.19.7</b></summary>
+<details><summary><b>Older versions of Kubernetes than 1.20.8</b></summary>
 
-We assume you are using Kubernetes 1.19.7 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the 13.7.0 version of the prometheus helm charts were found to work. If you were using an older version of Kubernetes we found the following version combinations to work.
+We assume you are using Kubernetes 1.20.8 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the 14.4.1 version of the prometheus helm charts were found to work. If you were using an older version of Kubernetes we found the following version combinations to work.
+Kubernetes 1.19.7 Prometheus Helm chart 13.7.0
 
 Kubernetes 1.18.7 Promteheus helm chart 11.12.1 worked for us
 
