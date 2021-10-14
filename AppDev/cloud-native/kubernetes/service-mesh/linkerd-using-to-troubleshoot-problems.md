@@ -266,7 +266,7 @@ As before repeat this a few times, approximately half the time it will succeed a
 Restart the load generator
 
   9. In the OCI Cloud shell type
-  - `bash generate-service-mesh-load.sh $EXTERNAL_IP 2 `
+  - `bash generate-service-mesh-load.sh $EXTERNAL_IP 2`
   
  ```
  Iteration 1
