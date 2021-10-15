@@ -212,13 +212,21 @@ Be sure to remember the **admin password**, save it in a notes document for late
 
 ### 5b. Setup your database user
 
-  1. On the details page for the database, click the **Service Console** button
+  1. On the details page for the database, click the **Tools** tab 
+  
+  ![](images/db-15-db-tools-tab.png)
 
-  2. On the left side click the **Development** option
+  2. On the left side click the **Open Database Actions** button
+  
+  ![](images/db-16-db-actions.png)
 
-  3. Open up the **SQL Developer Web** console
+This will open a login form in a new window
 
-  4. Login as ADMIN, using the password you just chose
+  3. Login as ADMIN, using the password you just chose
+  
+  4. Click the **SQL** button to open the web based SQL developer tool
+
+  ![](images/db-17-access-sql-developer-web.png)
 
   5. Copy and paste the below SQL instructions into the top section of the page:
 
