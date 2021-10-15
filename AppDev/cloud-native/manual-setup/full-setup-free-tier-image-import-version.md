@@ -176,7 +176,9 @@ If you are in an **instructor led lab** the instructor may have already done thi
 
 ### 5a. Create a database
 
-  1. Use the Hamburger menu, and select the Database section, **Autonomous Transaction Processing**
+  1. Use the Hamburger menu, and select the **Oracle Database** section, then chose  **Autonomous Transaction Processing**
+  
+  ![](images/oracle-database-atp.png)
 
   2. Click **Create DB**
 
