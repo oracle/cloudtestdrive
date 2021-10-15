@@ -39,11 +39,13 @@ If you are in an **instructor led lab** the instructor may have already done thi
 
   1. Click the `hamburger` menu (three bars on the upper left)
 
-  2. Scroll down the list to the `Governance and Administration` section
+  2. Scroll down the list to the `Identity & Security` section
 
-  3. Under the `Identity` option chose `Compartments`
+  3. Chose `Compartments`
+  
+  ![](images/identity-and-security-compartments.png)
 
-  4. You should see a screen that looks like this : 
+  4. You should see a screen that looks similar to this : 
 
   ![](images/compartments.png)
 
