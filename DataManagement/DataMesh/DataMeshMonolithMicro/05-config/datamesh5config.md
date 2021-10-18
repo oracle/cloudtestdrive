@@ -1,4 +1,4 @@
-# Data Mesh for Monolith to Microservices
+# Set up your database schemas
 
 ### Set up the 3 environments: Monolith, Data Pump and Microservice
 

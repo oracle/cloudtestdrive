@@ -1,6 +1,4 @@
-# Data Mesh for Monolith to Microservices
-
-### Creating an Autonomous Database instance
+# Creating an Autonomous Database instance
 
 
 
@@ -8,7 +6,7 @@
 
 1. Open the **Navigation Menu**, navigate to **Networking**, and select **Virtual Cloud Networks**.
 
-   ![](pictures/s1/networking-vcn.png)
+   ![](images/networking-vcn.png)
 
 2. Click **Start VCN Wizard**.
 

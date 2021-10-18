@@ -1,4 +1,4 @@
-# Data Mesh for Monolith to Microservices
+# Configure GoldenGate flows
 
 ### Configure Source and Target systems in the GoldenGate environment and Observe the resulting data flows
 

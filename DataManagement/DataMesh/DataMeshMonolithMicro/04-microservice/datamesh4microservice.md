@@ -1,6 +1,4 @@
-# Data Mesh for Monolith to Microservices
-
-### Creating a VM for running microservices
+# Creating a VM for running microservices
 
 
 

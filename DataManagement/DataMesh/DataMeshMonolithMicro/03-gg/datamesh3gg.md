@@ -1,14 +1,4 @@
-# Data Mesh for Monolith to Microservices
-
-### Set up the 3 environments: Monolith, Data Pump and Microservice
-
-
-
-## Introduction
-
-This lab walks you through the steps to create an Oracle Cloud Infrastructure GoldenGate Deployment.
-
-
+# Create an OCI GoldenGate instance
 
 ### About Oracle Cloud Infrastructure GoldenGate Deployments
 A Oracle Cloud Infrastructure GoldenGate deployment manages the resources it requires to function. The GoldenGate deployment also lets you access the GoldenGate deployment console, where you can access the OCI GoldenGate deployment console to create and manage Extracts and Replicats.
@@ -21,10 +11,6 @@ In this lab, you will:
 * Review the OCI GoldenGate deployment details
 
   
-
-### Prerequisites
-
-This lab assumes that you completed all preceding labs.
 
 ## Task 1: Create a Deployment
 
