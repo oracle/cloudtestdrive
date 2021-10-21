@@ -57,7 +57,7 @@ Make sure the zipkin container is running. You may have done this in the previou
   
   6. If the entry is **missing**, relaunch it
   
-  - `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin:2.22.0`
+  - `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin:2.23.4`
 
 
 ## Task 1: Jib - Docker image build tool

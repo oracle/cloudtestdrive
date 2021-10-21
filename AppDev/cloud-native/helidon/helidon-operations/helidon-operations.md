@@ -49,7 +49,7 @@ In the VM you have docker installed and running, so to start zipkin:
   
   2. Run the following command in a terminal of your VM to start Zipkin in a container:
   
-  - `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin:2.22.0`
+  - `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin:2.23.4`
 
   ```
 Unable to find image 'openzipkin/zipkin:2.22.0' locally
