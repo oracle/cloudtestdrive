@@ -6,7 +6,8 @@
 
 This chapter will go through the process of creating a Virtual Compute environment to run your microservices
 
-- First copy the node source code of the microservice to your local machine by clicking on [this link](code/msapi.js), this will download the file msapi.js
+- First copy the node source code of the microservice to your local machine by 
+  **right-clicking** [on this link](code/msapi.js), and selecting **Save Link As**, this will download the file msapi.js
 
 - Navigate to the Compute Instance page to launch a new virtual machine where we will run the microservice application
 
