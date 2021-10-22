@@ -37,6 +37,9 @@ Grafana on the other hand is a very powerful open source visualization engine an
 For this lab we will use a small subset of the open source features only.
 
 ## Task 2: Installing Grafana
+
+Reminder - This lab requires that you have the Prometheus service installed and the `monitoring` namespace in place. This is covered in the **Prometheus for metrics capture** module. If at the end of that module you deleted the Promtheus stack and the `monitoring` namespace you will have to re-create them before proceeding with this module.
+
 Like many other Kubernetes services Grafana can be installed using helm. By default the helm chart does not create a volume for the storage of the grafana configuration. This would be a problem in a production environment, so we're going to use the persistent storage option defined in the helm chart for Grafana to create a storage volume. 
 
   1. Add the Helm repository entry for Grafana 

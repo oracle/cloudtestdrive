@@ -98,7 +98,7 @@ We will use the OCI Cloud Shell to download the database wallet file.
   
   - `cd $HOME`
   
-  2. Attention: replace the example ODIC below with the OCID of your database. If you didn't copy this when you created the database or don't have it then if you go to the database page for your instance (Hamburger -> Oracle Database -> Autonomous Transaction Processing -> your instance) it will be shown there with a **copy** link)
+  2. Attention: replace the example OCID below with the OCID of your database. If you didn't copy this when you created the database or don't have it then if you go to the database page for your instance (Hamburger -> Oracle Database -> Autonomous Transaction Processing -> your instance) it will be shown there with a **copy** link)
     
   - `oci db autonomous-database generate-wallet --file Wallet.zip --password 'Pa$$w0rd' --autonomous-database-id ocid1.autonomousdatabase.oc1.eu-frankfurt-1.aa8d698erlewaiehqrfklhfoeqwfaalkdhfuieiq`
 
@@ -180,7 +180,7 @@ app:
 
 ## Task 5: Preparing to create certificates and keys
 
-At various points in the lat we're going to need certificates for securing connections. The cloud shell does include the openssl command which is pretty powerful, but not the easiest to use when dealing with the various levels of certificates we'll need (Root CA, leaf certs etc.)
+At various points in this lab we're going to need certificates for securing connections. The cloud shell does include the openssl command which is pretty powerful, but not the easiest to use when dealing with the various levels of certificates we'll need (Root CA, leaf certs etc.)
 
 To make this a little easier we're going to use `step` this is a much easier to use command, but first we need to install it in the cloud shell.
 
