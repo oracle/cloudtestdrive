@@ -263,11 +263,11 @@ Alternatively rather than selecting from the list you can just start to type `ku
 
 Depending on what Prometheus feels like (It seems to very between versions and your starting view) you will initially be presented with either a table of text data
 
-  ![prometheus-http-requests-total-console](images/prometheus-kubelet-http-requests-total-console.png)
+  ![prometheus-kubelet-http-requests-total-console](images/prometheus-kubelet-http-requests-total-console.png)
 
 or a graph
 
-  ![prometheus-http-requests-total-graph](images/prometheus-kubelet-http-requests-total-graph.png)
+  ![prometheus-kubelet-http-requests-total-graph](images/prometheus-kubelet-http-requests-total-graph.png)
 
   5. Click the **Graph** or **Table** tab names to switch between them
 
