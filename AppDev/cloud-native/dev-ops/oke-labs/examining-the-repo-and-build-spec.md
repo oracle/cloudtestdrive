@@ -16,12 +16,12 @@ Feel free to look at the other files in the repo if you wish.
 
 Using the path "breadcrumb" at the top of the code display return to the `helidon-storefront-full` directory, then navigate to yaml -> build
 
-This directory contains the build_spec.yaml file which we use to actually run the build process. The `helidon-storefront-full` -> yaml -> deplpoyment directory holds the Kubernetes manifests that do the actuall deployment. In this case they are in the same git repo as the source code, however that's not required, you could have multiple repos, one for the source code and another for the manifests if you wished and use files from either or both in the build and deploy process.
+This directory contains the build_spec.yaml file which we use to actually run the build process. Please don;t go there, but the `helidon-storefront-full` -> yaml -> deplpoyment directory holds the Kubernetes manifests that do the actuall deployment. In this case they are in the same git repo as the source code, however that's not required, you could have multiple repos, one for the source code and another for the manifests if you wished and use files from either or both in the build and deploy process.
 
 Click on the build_spec.yal to open it.
 
-let's explain the build pipeline, this is sadly in YAML :-( go to the code repo then navigate to helidon-storefromt-full/yaml/build/build_spec.yaml 
-
+let's explain the build pipeline, this is sadly in YAML (I loathe YAML because it's whitespace sensitive, virtually every problem I've had with a YAML file has been because of that, it'a like going back to my very early days of programming at university when I had to use punch cards for Fortran befor being allowed to use the CRT terminals - but at least they always reserved 8 characters for the line number and didn't vary that indentation) 
+ 
 Variables
 variables names in this section persist across build steps, but not across pipeline stages unless explicityly exported
 vaultVariables are replaced with the content of the vault secrets we will setup soon, these also persist across steps, but they cannot be exported themselves to prevent leakage of confidential information like logins and so on that are often stored in these variables
