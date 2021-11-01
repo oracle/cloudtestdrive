@@ -9,28 +9,32 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 app.all('/med', (req, res, next) => {
-   //res.send(req.body);
+   res.send(req.body);
+   console.log('Call to med');
    const content = JSON.stringify(req.body);
    fs.writeFile('med.json', content, { flag: 'a+' }, err => {})
    next();
 });
 
 app.all('/eng', (req, res, next) => {
-   //res.send(req.body);
+   res.send(req.body);
+   console.log('Call to eng');
    const content = JSON.stringify(req.body);
    fs.writeFile('eng.json', content, { flag: 'a+' }, err => {})
    next();
 });
 
 app.all('/car', (req, res, next) => {
-   //res.send(req.body);
+   res.send(req.body);
+   console.log('Call to car');
    const content = JSON.stringify(req.body);
    fs.writeFile('car.json', content, { flag: 'a+' }, err => {})
    next();
 });
 
 app.all('/pro', (req, res, next) => {
-   //res.send(req.body);
+   res.send(req.body);
+   console.log('Call to pro');
    const content = JSON.stringify(req.body);
    fs.writeFile('pro.json', content, { flag: 'a+' }, err => {})
    next();

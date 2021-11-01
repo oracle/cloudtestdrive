@@ -8,30 +8,24 @@
       "filename": "../../01-intro/datamesh1intro.md"
     },
     {
-      "title": "Part 2 : Creating the stack : Autonomous Database",
-      "description": "Creating an Autonomous Database instance",
+      "title": "Part 2 : Creating the Infrastructure components",
+      "description": "Creating two Autonomous Database instances and a OCI GG instance",
       "publisheddate": "10/13/2021",
-      "filename": "../../02-db/datamesh2db.md"
+      "filename": "../../02-infra/datamesh2infra.md"
     },
     {
-      "title": "Part 3 : Creating the GoldenGate Data Pump",
-      "description": "Create an OCI GoldenGate instance",
-      "publisheddate": "10/13/2021",
-      "filename": "../../03-gg/datamesh3gg.md"
-    },
-    {
-      "title": "Part 4 : Creating the Microservices applications",
+      "title": "Part 3 : Creating the Microservices applications",
       "description": "Spin up a VM to run a few Microservices that act as consumers",
-      "filename": "../../04-microservice/datamesh4microservice.md"
+      "filename": "../../03-microservice/datamesh3microservice.md"
     },
     {
-      "title": "Part 5 : Configure the schemas",
-      "description": "Set up the 3 environments: Monolith, Data Pump and Microservice",
-      "filename": "../../05-config/datamesh5config.md"
+      "title": "Part 4 : Configure the schemas",
+      "description": "Set up the database environments: Monolith, Data Pump and Microservice schema",
+      "filename": "../../04-config/datamesh4config.md"
     },{
-      "title": "Part 6 : Configure the Flows",
+      "title": "Part 5 : Configure the Flows",
       "description": "Configure Source and Target systems in the GoldenGate environment and Observe the resulting data flows",
-      "filename": "../../06-flows/datamesh6flows.md"
+      "filename": "../../05-flows/datamesh5flows.md"
     }
   ]
 }

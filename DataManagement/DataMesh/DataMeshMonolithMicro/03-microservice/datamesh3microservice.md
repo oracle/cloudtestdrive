@@ -6,8 +6,7 @@
 
 This chapter will go through the process of creating a Virtual Compute environment to run your microservices
 
-- First copy the node source code of the microservice to your local machine by 
-  **right-clicking** [on this link](code/msapi.js), and selecting **Save Link As**, this will download the file msapi.js
+## Step 1 - Creating the VM Instance
 
 - Navigate to the Compute Instance page to launch a new virtual machine where we will run the microservice application
 
@@ -47,6 +46,8 @@ and a minute later :
 
 - Note the **Public IP Address** of your instance, you will need it to connect to your instance.
 
+## Step 2 - Setting up the VM Instance
+
 - Open the **Cloud Shell** of your console
 
   ![image-20211021161448356](images/image-20211021161448356.png)
@@ -55,7 +56,7 @@ and a minute later :
 
   ![image-20211021161640661](images/image-20211021161640661.png)
 
-- While we are copying files, let's also copy the microservice source code you downladed earlier over to the cloudshelll environment: drag & drop the file **msapi.js** also onto the console.
+- While we are copying files, let's also copy the microservice source code that was in the zip file you downladed earlier over to the cloudshelll environment: drag & drop the file **msapi.js** onto the console.
 
 - Set restrictive permissions on the key file as required by ssh 
   (replace the name with the name of **your** file)
@@ -97,7 +98,7 @@ and a minute later :
 
 - you might be prompted to confirm installation of some elements :
 
-  ![image-20211021162929398](/Users/jleemans/dev/github/cloudtestdrive/DataManagement/DataMesh/DataMeshMonolithMicro/04-microservice/images/image-20211021162929398.png)
+  ![image-20211021162929398](images/image-20211021162929398.png)
 
 - Wait for the message below to appear:
 
@@ -122,6 +123,8 @@ and a minute later :
   ![image-20211021165055362](images/image-20211021165055362.png)
 
 
+
+## Step 3 - Network configuration
 
 - Open a second console on your Virtual machine
 
@@ -157,17 +160,121 @@ We now need to make sure we can access the port 9002 on which this service is li
 
 
 
-Configure a rule to allow access from everywhere on port 9002:
+Configure a rule to allow access from everywhere on ports 9002 and 443: 9002 for the microservice itself, and 443 for https access to a gateway we will configure later in the lab.
 
 - Enter the source CIDR as 0.0.0.0/0
 
 - Leave Source Port Range blank (all sources)
 
-- Enter 9002 in destination port
+- Enter 9002,443 in destination port
 
 - Click on the **Add Ingress Rules** button
 
-  ![image-20211021205121698](images/image-20211021205121698.png)
+  ![image-20211031185555341](/Users/jleemans/dev/github/cloudtestdrive/DataManagement/DataMesh/DataMeshMonolithMicro/03-microservice/images/image-20211031185555341.png)
+
+Now verify access to your microservice by opening a new tab on your browser, and accessing the service using an URL that looks like the one below - you need to **replace the IP address** with the public IP address of your VM machine:
+
+```
+http://132.226.204.234:9002/med:9002/med
+```
+
+This should return :
+
+```
+{}
+```
+
+
+
+## Step 4 - Configure an API Gateway for HTTPS access
+
+Because an ATP database is only allowing external calls to HTTPS endpoints, we need to also configure a gateway in front of our microservice that listens on port 443 and re-routes the request to our service.
+
+- Open the menu and select first **Developer Services**, then under API Management select **Gateways**
+
+<img src="images/image-20211030150929234.png" alt="image-20211030150929234" style="zoom:50%;" />
+
+
+
+- Click the **Create Gateway** button
+
+  <img src="images/image-20211030151300173.png" alt="image-20211030151300173" style="zoom: 50%;" />
+
+- Enter the following fields:
+
+  - **Name** : the name of your gateway, for example **MyGW**
+  - **Type** must be public
+  - **Virtual Cloud Network** : select the VCN you created earlier
+  - **Subnet**: select the **Public** subnet of your VCN
+  - Leave all other fields untouched, and click the **Create Gateway** button
+
+  ![image-20211030151525507](/Users/jleemans/dev/github/cloudtestdrive/DataManagement/DataMesh/DataMeshMonolithMicro/03-microservice/images/image-20211030151525507.png)
+
+- Wait a few moments for the Gateway to become Active, then open the **Deployments** menu on the left
+
+- Click the **Create Deployment** button, and fill in the parameters
+
+- Select the **From Scratch** option
+
+- **Name**: a name for your deployment, for example **myDepl**
+
+- **Path Prefix**: enter **/ms**
+
+- Leave all other parameters as is and click the **Next** button
+
+- ![image-20211030152203989](/Users/jleemans/dev/github/cloudtestdrive/DataManagement/DataMesh/DataMeshMonolithMicro/03-microservice/images/image-20211030152203989.png)
+
+Now we will configure the 4 Routes consistent with the 4 paths of your microservice.
+
+Configuring Route 1 : /med
+
+- **Path**: /med
+
+- **Methods** : PUT and GET
+
+- **Type**: HTTP
+
+- **URL** : replace the IP address with the public IP address of your VM machine
+
+  ```
+  http://132.226.204.234:9002/med
+  ```
+
+- Leave the other parameters as par default
+
+Now add another Route with the button **+ Another Route** on the bottom right of your screen
+
+![image-20211030152955526](images/image-20211030152955526.png)
+
+And repeat this step for the following paths : 
+
+/eng
+
+/car
+
+/pro
+
+- When finished adding the routes, create the deployment by clicking the button **Next**, then **Create**.
+
+After a few moments your deployment should be **Active**
+
+- On the Gateway Information screen, locate the **Hostname** of your gateway and copy it over to your notebook for future use.  Use the **Show** button to display the name, or the **Copy** button to cut and paste it over to a notebook.
+
+  ![image-20211030153623939](images/image-20211030153623939.png)
+
+- Now test access to your microservice through the gateway: in a browser tab, access the following URL:
+
+```
+https://<your gateway hostname>/ms/med
+```
+
+For example: https://nkpqmf4umv3eyighkjhuenla.apigateway.eu-frankfurt-1.oci.customer-oci.com/ms/med
+
+Again you should see an empty accolade as a return, with no errors displayed:
+
+```
+{}
+```
 
 
 
