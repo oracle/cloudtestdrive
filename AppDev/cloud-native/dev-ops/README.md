@@ -15,7 +15,8 @@ general/creating-the-devops-project.md
 
 oke-labs/storefront-git.md
 oke-labs/examining-the-repo-and-build-spec.md
-
+oke-labs/updating-the-build-spec.md
+oke-labs/creating-the-devops-project.md
 
 Follow on content
 related-content.md

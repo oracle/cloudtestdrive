@@ -91,5 +91,5 @@ Now push the repo branch to the OCI Code repo you created earlier
 In the OCI Cloud shell
 git push devops my-lab-branch
 
-Our changes have now been uploaded to the OCI Code repo, if you want go to the `cloud-native-storefront` Code Repository in your project, be sure to swlect the `my-lab-branch` in th branch selector and look at the build_spec.yaml, you'll see the updated values (of course these are mine, yours will be different)
+Our changes have now been uploaded to the OCI Code repo, if you want go to the `cloud-native-storefront` Code Repository in your project, be sure to select the `my-lab-branch` in the branch selector and look at the build_spec.yaml, you'll see the updated values (of course these are mine, yours will be different)
 
