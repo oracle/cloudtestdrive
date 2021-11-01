@@ -8,7 +8,7 @@ This section will explain how to create the infrastructure components needed in 
 
 
 
-## Task 1: Create a VCN and subnet
+## Step 1 - Create a VCN and subnet
 
 1. Open the **Navigation Menu**, navigate to **Networking**, and select **Virtual Cloud Networks**.
 
@@ -30,7 +30,7 @@ This section will explain how to create the infrastructure components needed in 
 
 You can click View VCN Details and see both a Public and Private subnet were created.
 
-## Task 2: Create an ATP Instance - SourceATP
+## Step 2 - Create an ATP Instance - SourceATP
 
 1. Open the **Navigation Menu**, navigate to **Oracle Database**, and select **Autonomous Transaction Processing**.
 
@@ -69,7 +69,7 @@ You can click View VCN Details and see both a Public and Private subnet were cre
 
 9. Click **Create Autonomous Database**. Once it finishes provisioning, you can click on the instance name to see details of it.
 
-## Task 3: Create an second ATP Instance - TargetATP
+## Step 3 - Create an second ATP Instance - TargetATP
 
 Repeat the steps of the previous lab to create a second DB - the DB used by our target Microservice, using the same steps as before except for the name of the instance :
 
@@ -78,7 +78,7 @@ Repeat the steps of the previous lab to create a second DB - the DB used by our 
 
 
 
-## Task 4: Create a GoldenGate Deployment
+## Step 4 - Create a GoldenGate Deployment
 
 *Note that the compartment names in the screenshots may differ from values that appear in your environment.*
 

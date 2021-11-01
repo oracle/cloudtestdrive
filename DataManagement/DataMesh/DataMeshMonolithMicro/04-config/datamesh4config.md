@@ -10,7 +10,7 @@ This chapter will go through the process of creating database objects representi
 
 
 
-## Step 1. Setting up the Monolith schema
+## Step 1 - Setting up the Monolith schema
 
 First step is to set up the monolith application DB schema in the database **SourceATP**
 
@@ -105,7 +105,7 @@ Now we'll repeat this operation to set up the environment for the GoldenGate ins
 
 
 
-## Step 3: Enable the ggadmin user for the Source Database
+## Step 3 - Enable the ggadmin user for the Source Database
 
 The ggadmin user will be used to connect to the source and target database from the OCI GoldenGate environment, and perform the necessary capture or instertion actions.  Although the ggadmin user is created during the database creation process, it is disabled by default. The following steps guide you through how to enable the ggadmin user.
 
