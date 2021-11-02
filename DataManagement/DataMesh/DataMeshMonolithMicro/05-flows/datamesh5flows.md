@@ -45,7 +45,7 @@ We will first register our 2 databases so we can use them in our Goldenate envir
 
 - Enter the database's password in the Password field, and then click **Register**.
 
-  <img src="images/image-20211102162227271.png" alt="image-20211102162227271" style="zoom:67%;" />
+  ![](images/image-20211102162227271.png)
 
   The database becomes Active after a few minutes.
 
@@ -138,8 +138,8 @@ We will first register our 2 databases so we can use them in our Goldenate envir
     ```
     TABLE osm.customers, 
     SQLEXEC (SPNAME osm2.callout_ms,
-    ID mymscall,PARAMS (p_dm_domain='med',p_cust_no=CUST_NO,p_pol_no=CUST_NAME,p_pol_from=CUST_EMAIL,p_pol_to=CUST_AGE,p_pol_value=CUST_MOBILE,p_pol_sub_total=CUST_ADDRESS,p_pol_total=PROF_ID)
-    );
+    <copy>ID mymscall,PARAMS (p_dm_domain='med',p_cust_no=CUST_NO,p_pol_no=CUST_NAME,p_pol_from=CUST_EMAIL,p_pol_to=CUST_AGE,p_pol_value=CUST_MOBILE,p_pol_sub_total=CUST_ADDRESS,p_pol_total=PROF_ID)
+    ); </copy>
     ```
 
 10. Click **Create**. You're returned to the OCI GoldenGate Deployment Console Home page.
