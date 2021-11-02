@@ -19,23 +19,59 @@ In this lab, you will:
 
 
 
-## Step 1 - Log in to the Oracle GoldenGate deployment console
+## Step 1 - Register the databases in GoldenGate
 
-1.  Log in to Oracle Cloud Infrastructure, open the navigation menu, and then select **GoldenGate** from the **Oracle Database** services.
+We will first register our 2 databases so we can use them in our Goldenate environments
 
-2.  On the Deployments page, select the deployment you created earlier.
+- Log in to Oracle Cloud Infrastructure, open the navigation menu, and then select **GoldenGate** from the **Oracle Database** services.
 
-3.  On the Deployment Details page, click **Launch Console**.
+- Select the **Registered Databases** tab
+
+  ![image-20211102161707523](images/image-20211102161707523.png)
+
+- Click **Register Database**.
+
+  ![Click Register Database](images/01-02-ggs-registerdb.png "Click Register Database")
+
+- In the Register Database panel, for Name and Alias, enter **SourceATP**.
+
+- From the Compartment dropdown, select a compartment.
+
+- Click **Select Database**.
+
+- From the Database Type dropdown, select **Autonomous Database**.
+
+- If necessary, select the compartment where your DB's were created
+
+- Enter the database's password in the Password field, and then click **Register**.
+
+  <img src="images/image-20211102162227271.png" alt="image-20211102162227271" style="zoom:67%;" />
+
+  The database becomes Active after a few minutes.
+
+  
+
+- Now repeat this process to register the **TargetATP** database.
+
+
+
+## Step 2 - Log in to the Oracle GoldenGate deployment console
+
+1.  Select Deployments menu on the left where you can see the GoldenGate deployment you created earlier.  It should be in the **Active** state.
+
+2. Click on your deployment to see the Deployment Details.
+
+3. On the Deployment Details page, click **Launch Console**.
 
     ![Click Launch Console](images/01-03-ggs-launchconsole.png)
 
-4.  On the OCI GoldenGate Deployment Console sign in page, enter **oggadmin** for User Name and the password you provided when you created the deployment, and then click **Sign In**.
+4. On the OCI GoldenGate Deployment Console sign in page, enter **oggadmin** for User Name and the password you provided when you created the deployment, and then click **Sign In**.
 
     ![OCI GoldenGate Deployment Console Sign In](images/01-04-ggs-console-signin.png)
 
     You're brought to the OCI GoldenGate Deployment Console Home page after successfully signing in.
 
-## Step 2 - Add Transaction Data and a Checkpoint Table
+## Step 3 - Add Transaction Data and a Checkpoint Table
 
 1.  Open the navigation menu and then click **Configuration**.
 
@@ -73,7 +109,7 @@ In this lab, you will:
 
 
 
-## Step 3 - Add and Run an Extract
+## Step 4 - Add and Run an Extract
 
 1.  On the GoldenGate Deployment Console Home page, click the plus (+) icon for Extracts.
 
@@ -116,7 +152,7 @@ In this lab, you will:
 
     <img src="images/02-ggs-extract-started.png" alt="Extract started" style="zoom: 67%;" />
 
-## Step 4 - Add and Run the Replicat
+## Step 5 - Add and Run the Replicat
 
 1.  On the GoldenGate Deployment Console Home page, click the plus (+) icon for Replicats.
 
@@ -155,7 +191,7 @@ In this lab, you will:
 
 
 
-## Step 5 - Validate the integrations are working correctly
+## Step 6 - Validate the integrations are working correctly
 
 We will now execute a PLSQL procedure on the source database to simulate activity of the traditional monolith application, resulting in various data being entered continuously in the various tables of the OSM schema.
 
