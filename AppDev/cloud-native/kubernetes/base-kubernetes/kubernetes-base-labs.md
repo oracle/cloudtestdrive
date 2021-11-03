@@ -299,13 +299,13 @@ Note that in a production environment you might want to terminate the encryption
 
 Setting up the Kubernetes dashboard (or any) service using helm is pretty easy. it's basically a simple command. 
 
-  1. To install the dashboard we will be using the environment variable `EXTERNAL_IP` which we earlier set to the IP address of the Load balancer of the Ingress controller service. The variable `$EXTRNAL_IP` in the test below will be replaced by the value you set it to when the command is run. **IMPORTANT** if you have for any reason had to create a new cloud shell that variable will need to be setup again. 
+  1. To install the dashboard we will be using the environment variable `EXTERNAL_IP` which we earlier set to the IP address of the Load balancer of the Ingress controller service. The variable `$EXTERNAL_IP` in the test below will be replaced by the value you set it to when the command is run. **IMPORTANT** if you have for any reason had to create a new cloud shell that variable will need to be setup again. 
 
 <details><summary><b>How to check if $EXTERNAL_IP is set, and re-set it if it's not</b></summary>
 
 **To check if `$EXTERNAL_IP` is set**
 
-If you want to check if the variable is still set type `echo $EXTRNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
+If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
 
 **To get the external IP address if you no longer have it**
 
@@ -362,7 +362,7 @@ It will take a short while to remove the dashboard, after which set  re-try with
 
 **To check if `$EXTERNAL_IP` is set**
 
-If you want to check if the variable is still set type `echo $EXTRNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
+If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
 
 **To get the external IP address if you no longer have it**
 
@@ -1007,7 +1007,7 @@ Earlier we stored the value of the external IP address in the `$EXTERNAL_IP` var
 
 **To check if `$EXTERNAL_IP` is set**
 
-If you want to check if the variable is still set type `echo $EXTRNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
+If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
 
 **To get the external IP address if you no longer have it**
 
@@ -1238,7 +1238,7 @@ Notice the different ports in use on the target are actually specified by name i
 
 **To check if `$EXTERNAL_IP` is set**
 
-If you want to check if the variable is still set type `echo $EXTRNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
+If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
 
 **To get the external IP address if you no longer have it**
 

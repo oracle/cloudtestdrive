@@ -39,7 +39,7 @@ In this lab we will walk you through the following steps :
 
 
 
-### 1. An Oracle Cloud environment
+## Step 1 - Access to an Oracle Cloud environment
 
 To run these labs you will need access to an Oracle Cloud Account.  
 
@@ -49,16 +49,40 @@ To run these labs you will need access to an Oracle Cloud Account.
 
 
 
-### 2. Service limits
+## Step 2 - Download the files for this lab
+
+We will be using some scripts and application code during this lab.  They have been grouped in a zipfile to be downloaded to your laptop.
+
+- Download the zip file with the various scripts, db schema's and the source code of the microservice to your local machine via **[this link](code/labfiles.zip)**.  
+- Unzip the file on your laptop, and remember the location, we will be using these files in the following steps.
+
+
+
+## Step 3 - Local notebook
+
+Along this lab we will ask you to note down a series of elements for use later in the lab : IP addresses, hostnames, passwords, compartment names etc.
+
+Make sure you have a **text notebook** open to cut and paste these elements to.  
+
+We advise you to use a **simple text editor** that does not add any layout to the text: for example in Word, you might see simple quotes replaced by an opening quote and a closing quote, which will result in syntax errors when you copy this in a parameter definition file of OCI Goldengate.
+
+
+
+## Step 4 - Service limits (Optional)
+
+This lab can be run on a Trial tenancy provided by Oracle, during the initial period of 1 month and assuming you have remaining free credits in this environment.
+
+**Remark** : this lab cannot be executed beyond the first month, when you can only use the **Always Free** entitlements, as OCI Goldengate is not part of the Always Free components. 
+
+Incase you are running this lab on a **paying personal or corporate tenancy**, you might need to check you have the required service limits assigned to your tenancy or compartment :
 
 Going through the hands on labs you will create the following main components in your tenancy:
 
 - a VCN network with public access
-- one Autonomous database of the type "Transactional"
-- one Compute instance of shape "tbc"
+- two Autonomous database of the type "Transactional"
+- one Compute instance
 - one OCI GoldenGate instance
-
-(tbc with any additional resources used)
+- a API Gateway instance
 
 
 
