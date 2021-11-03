@@ -22,7 +22,9 @@ oke-labs/examining-the-repo-and-build-spec.md
 
 oke-labs/updating-the-build-spec.md
 
-oke-labs/creating-the-devops-project.md
+oke-labs/creating-the-first-pipeline.md
+
+oke-labs/updating-the-pipeline-to-output-the-artifacts.md
 
 Follow on content
 related-content.md
