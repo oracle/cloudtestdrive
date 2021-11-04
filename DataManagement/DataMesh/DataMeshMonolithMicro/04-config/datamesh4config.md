@@ -130,14 +130,83 @@ The ggadmin user will be used to connect to the source and target database from 
 ## Step 4 - Prepare the target database schema
 
 - Return to the Autonomous database overview screen, and select the **TargetATP** database
-
 - Repeat the steps to open the SQL utility: open the details of the database by clicking on the database name **TargetATP**, select the tab **Tools**, then select the **Database Actions** button, and finally select the **SQL** tile.
-
 - Open the file **osm3_schema.sql** on your laptop and copy the content over to the **Worksheet** pane.
-
 - Execute the script via the button **Run Script** and verify the correct execution of the commands - again, the **Drop** of the schema will fail upon first execution.
 
+We will be using this database to offer access to our data to other domains.  A very convenient way to do this is to use ORDS to enable REST access to JSON formatted data that is present in the database.  The following steps will unlock some data from the **customers** table to other domains of your application landscape.
+
+-  In the menu on the top left, select the **REST** under the development menu:
+
+  ![image-20211104110656872](images/image-20211104110656872.png)
+
+- On the overview screen, select **Modules** from the top menu:
+
+  ![image-20211104110924887](images/image-20211104110924887.png)
+
+- Use the **Create Module** button on the top right to create a first module :
+
+- Enter the name of the module : **com.oracle.mydomain.mymodule**
+
+- Enter the **Base Path**: **`/datadomain/`**
+
+- Select **Not Protected** for the parameter **Protected By Privilege**.  
+
+- Click **Create**
+
+  ![image-20211104111720733](images/image-20211104111720733.png)
+
+- The Module screen will open up, select the **Create Template** button on the right
+
+- In the Create Template screen, enter the URI Template : **demographics**
+
+- Leave all other parameters at their default and click the **Create** button
+
+  ![image-20211104112150372](images/image-20211104112150372.png)
+
+- Now click the **Create Handlers** button, and enter the following SQL statement :
+
+  ```
+  <copy>SELECT
+  cust_age as age,
+  DECODE(REG_ID,
+    'NORTH','North',
+    'SOUTH','South',
+    'EAST', 'East',
+    'WEST', 'West',
+    'CENT', 'Central'
+  ) region,
+  DECODE (edul_id,
+    'UG', 'Graduate',
+    'HS', 'High School',
+    'DIP', 'College',
+    'MD', 'Masters',
+    'PHD', 'PhD',
+    'None') qualification,
+   DECODE(PROF_ID,
+    'ENG', 'Technical',
+    'IT', 'Technical',
+    'PLOT', 'Technical',
+    'MD', 'Medical',
+    'NRS', 'Medical',
+    'UW', 'Financial',
+    'Other') career
+  FROM OSM3.customers</copy>
+  ```
   
+  ![image-20211104143820870](images/image-20211104143820870.png)
+
+- Your REST API is now available! Try it out by visiting the URL through a broowser via the link icon on the right of the Handler overview
+
+  ![image-20211104144016475](images/image-20211104144016475.png)
+
+You should see the JSON payload of your query:
+
+![image-20211104144152054](images/image-20211104144152054.png)
+
+Later we will use 
+
+
 
 ## Step 5 - Enable the ggadmin user for the Target Database
 
