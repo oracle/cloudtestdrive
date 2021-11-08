@@ -20,9 +20,15 @@ This chapter will go through the process of creating a Virtual Compute environme
 
   ![image-20211021160259577](images/image-20211021160259577.png)
 
-- Keep the default **Image** and **Shape** proposed as below:
+- Use the **Change Image** button to select the image called **Oracle Linux Cloud Developer** and don't forget to click the checkbox to accept the T&C.
 
-  ![image-20211021160433991](images/image-20211021160433991.png)
+  ![image-20211108173032470](images/image-20211108173032470.png)
+
+- Keep the default  **Shape** proposed
+
+  ![image-20211108173210296](images/image-20211108173210296.png)
+
+  
 
 - Select the Virtual network you created earlier, and make sure to be on the **public** subnet
 
@@ -78,35 +84,23 @@ and a minute later :
   ssh -i ssh-key-2021-10-21.key opc@152.70.161.144
   ```
 
-- As this is a fresh Linux instance, we need to install a few components to get our microservice running : node and Express
+- As this is a fresh Linux instance, we need to install a few components to get our microservices running
 
-- Run the below command to configure the yum repositories by installing the `oracle-nodejs-release-el7` or `oracle-nodejs-release-el6`
-
-  ```
-  sudo yum install -y oracle-nodejs-release-el7 oracle-release-el7
-  ```
-
-- This will update a number of packages, wait for the message below to appear: 
-
-  ![image-20211021162846225](images/image-20211021162846225.png)
-
-- Next perform the actual node installation : 
-
-  ```
-  sudo yum -y install nodejs
-  ```
-
-- Wait for the message below to appear:
-
-  ![image-20211021163454568](images/image-20211021163454568.png)
-
-- Now install Express with the following command :
+- Install Express with the following command :
 
   ```
   npm install express
   ```
 
   You will get some warnings, this is OK.
+
+- Install the faraday gem for the Ruby microservice:
+
+  ```
+  gem install faraday
+  ```
+
+  
 
 - You should now be able to launch your microservice with the following command:
 
@@ -171,7 +165,7 @@ Configure a rule to allow access from everywhere on ports 9002 and 443: 9002 for
 Now verify access to your microservice by opening a new tab on your browser, and accessing the service using an URL that looks like the one below - you need to **replace the IP address** with the public IP address of your VM machine:
 
 ```
-http://132.226.204.234:9002/med:9002/med
+http://132.226.204.234:9002/med
 ```
 
 This should return :
@@ -188,13 +182,13 @@ Because an ATP database is only allowing external calls to HTTPS endpoints, we n
 
 - Open the menu and select first **Developer Services**, then under API Management select **Gateways**
 
-<img src="images/image-20211030150929234.png" alt="image-20211030150929234" style="zoom:50%;" />
+![](images/image-20211030150929234.png)
 
 
 
 - Click the **Create Gateway** button
 
-  <img src="images/image-20211030151300173.png" alt="image-20211030151300173" style="zoom: 50%;" />
+  ![](images/image-20211030151300173.png)
 
 - Enter the following fields:
 

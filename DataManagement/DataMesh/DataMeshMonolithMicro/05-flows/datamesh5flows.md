@@ -150,7 +150,7 @@ We will first register our 2 databases so we can use them in our Goldenate envir
 
     The yellow exclamation point icon changes to a green checkmark.
 
-    <img src="images/02-ggs-extract-started.png" alt="Extract started" style="zoom: 67%;" />
+    ![](images/02-ggs-extract-started.png)
 
 ## Step 5 - Add and Run the Replicat
 
@@ -179,13 +179,13 @@ We will first register our 2 databases so we can use them in our Goldenate envir
 10. In the **Parameter File** text area, replace 
     **MAP \*.\*, TARGET \*.\*;**    with    **MAP OSM.CUSTOMERS, TARGET OSM3.CUSTOMERS;**
 
-    <img src="images/image-20211101182330909.png" alt="image-20211101182330909" style="zoom:50%;" />
+    ![](images/image-20211101182330909.png)
 
 11. Click **Create**.
 
 12. In the Rep Replicat **Action** menu, select **Start**.
 
-    <img src="images/03-10-ggs-start-replicat.png" alt="Replicat Actions Menu - Start" style="zoom:50%;" />
+    ![](images/03-10-ggs-start-replicat.png)
 
     The yellow exclamation point icon changes to a green checkmark.
 
@@ -199,7 +199,7 @@ In this lab we will focus on the table **Customers**.
 
 - Make sure you still have the microservice running in your Cloud Shell, this should look like: 
 
-  <img src="../03-microservice/images/image-20211021165055362.png" alt="Replicat Actions Menu - Start" style="zoom:50%;" />
+  ![](../03-microservice/images/image-20211021165055362.png)
 
 - In case the microservice is not running anymore, restart it by issuing the command 
 
@@ -234,7 +234,7 @@ In this lab we will focus on the table **Customers**.
 
 - Switch to the Cloud Shell where you started the microservice.  You should see a series of lines stating **Call to Med** :
 
-  <img src="images/image-20211101204307282.png" alt="image-20211101204307282" style="zoom:50%;" />
+  ![](images/image-20211101204307282.png)
 
   Each line with Call to Med represents a call from the OCI Gateway to the microservice
 
@@ -246,7 +246,7 @@ In this lab we will focus on the table **Customers**.
 
 
 
-**Congratulations !! ** you have reached the end of this hands-on tutorial.
+**Congratulations**, you have reached the end of this hands-on tutorial.
 
 
 

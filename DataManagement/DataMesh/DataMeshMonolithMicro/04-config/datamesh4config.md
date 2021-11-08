@@ -53,11 +53,11 @@ You can now verify all the commands executed correctly - only the very first com
 
 - Now refresh the browser window to update the list of schema's in the database, and in the **Navigator** expand the list of schema's and select **OSM**
 
-  <img src="images/image-20211031194344348.png" alt="image-20211031194344348" style="zoom: 50%;" />
+  ![](images/image-20211031194344348.png)
 
 - You can now see the list of tables created via the script :
 
-  <img src="images/image-20211031194544340.png" alt="image-20211031194544340" style="zoom:50%;" />
+  ![](images/image-20211031194544340.png)
 
 ## Step 2 - Creation of the schema for the Goldengate environment
 
@@ -65,7 +65,7 @@ Now we'll repeat this operation to set up the environment for the GoldenGate ins
 
 - On your laptop, open the file **osm2_schema.sql** with a code editor of your choice, and locate the call to the microservice on line 45 :
 
-  <img src="images/image-20211031201814845.png" alt="image-20211031201814845" style="zoom:50%;" />
+  ![](images/image-20211031201814845.png)
 
   
 
@@ -79,7 +79,7 @@ Now we'll repeat this operation to set up the environment for the GoldenGate ins
 
 - First delete the script you executed just before in the **Worksheet** window: put your cursor in the window, then hit the **Select All** shortcut (on Mac: Command-A, on PC: Control-A) and hit the **Delete** button.  Make sure no text remains in the display
 
-  <img src="images/image-20211031195153920.png" alt="image-20211031195153920" style="zoom:50%;" />
+  ![](images/image-20211031195153920.png)
 
 - Now cut and paste the content of the edited script **osm2_schema.sql**, and execute the whole script using the **Run Script** button.
 
@@ -95,7 +95,7 @@ Now we'll repeat this operation to set up the environment for the GoldenGate ins
 
 - Just uncomment the line, and select it :
 
-  <img src="images/image-20211031202115366.png" alt="image-20211031202115366" style="zoom:50%;" />
+  ![](images/image-20211031202115366.png)
 
 - This time use the button **Run Statement** to only execute the highlighted part of the script.
 
