@@ -88,7 +88,7 @@ Now we'll repeat this operation to set up the environment for the GoldenGate ins
 - You can verify the correct callout to the microservice you already set up by executing the command on the last line of the script :
 
   ```
-  exec callout_ms('med','jj','kk','mm','cc','ll','uu','nn')
+  exec osm2.callout_ms('med','jj','kk','mm','cc','ll','uu','nn')
   ```
 
   
@@ -115,11 +115,11 @@ The ggadmin user will be used to connect to the source and target database from 
 
 1. From the list of users, locate **GGADMIN**, and then click the ellipsis (three dots) icon and select **Edit**.
 
-   ![GGADMIN user](/Users/jleemans/dev/github/learning-library/data-management-library/goldengate/oci-ggs/register-db/images/02-06-locked.png)
+   ![GGADMIN user](images/02-06-locked.png)
 
 2. In the Edit User panel, deselect **Account is Locked**, enter a password for the ggadmin user, and then click **Apply Changes**.
 
-   ![Edit user](/Users/jleemans/dev/github/learning-library/data-management-library/goldengate/oci-ggs/register-db/images/02-07-edit.png)
+   ![Edit user](images/02-07-edit.png)
 
    Note that the user icon changes from a blue padlock to a green checkmark.
 
@@ -129,8 +129,8 @@ The ggadmin user will be used to connect to the source and target database from 
 
 ## Step 4 - Prepare the target database schema
 
-- Return to the Autonomous database overview screen, and select the **TargetATP** database
-- Repeat the steps to open the SQL utility: open the details of the database by clicking on the database name **TargetATP**, select the tab **Tools**, then select the **Database Actions** button, and finally select the **SQL** tile.
+- Return to the Autonomous database overview screen, and select the **TargetADW** database
+- Repeat the steps to open the SQL utility: open the details of the database by clicking on the database name **TargetADW**, select the tab **Tools**, then select the **Database Actions** button, and finally select the **SQL** tile.
 - Open the file **osm3_schema.sql** on your laptop and copy the content over to the **Worksheet** pane.
 - Execute the script via the button **Run Script** and verify the correct execution of the commands - again, the **Drop** of the schema will fail upon first execution.
 

@@ -51,7 +51,7 @@ We will first register our 2 databases so we can use them in our Goldenate envir
 
   
 
-- Now repeat this process to register the **TargetATP** database.
+- Now repeat this process to register the **TargetADW** database.
 
 
 
@@ -91,7 +91,7 @@ We will first register our 2 databases so we can use them in our Goldenate envir
 
     ![image-20211101131412058](images/image-20211101131412058.png)
 
-6.  Click **Connect to database TargetATP**.
+6.  Click **Connect to database TargetADW**.
 
     ![](images/02-05-connect-target.png)
 
@@ -164,7 +164,7 @@ We will first register our 2 databases so we can use them in our Goldenate envir
 
 4.  For **Credential Domain**, select **OracleGoldenGate**.
 
-5.  For **Credential Alias**, select **TargetATP**.
+5.  For **Credential Alias**, select **TargetADW**.
 
 6.  For **Trail Name**, enter E1.
 
@@ -208,9 +208,9 @@ In this lab we will focus on the table **Customers**.
   ```
 
 
-- Make sure you have two browser tabs open with the SQL tool : one  for the **SourceATP** database and one for the  **TargetATP** database.
+- Make sure you have two browser tabs open with the SQL tool : one  for the **SourceATP** database and one for the  **TargetADW** database.
 
-- In the SQL tool of the **TargetATP**  Database, enter and execute the following command :
+- In the SQL tool of the **TargetADW**  Database, enter and execute the following command :
 
   ```
   select count(*) from osm3.customers
@@ -238,7 +238,7 @@ In this lab we will focus on the table **Customers**.
 
   Each line with Call to Med represents a call from the OCI Gateway to the microservice
 
-- Switch to the **TargetATP** SQL window and execute the count command repeatedly : you will see the count increase as the records are being pumped from one DB to the other.
+- Switch to the **TargetADW** SQL window and execute the count command repeatedly : you will see the count increase as the records are being pumped from one DB to the other.
 
 - Now switch to the GoldenGate Admin console and open the **UAEXT** extract.  Click on the **Statistics** tab and you will see the nb of records captured : 
 
@@ -246,8 +246,7 @@ In this lab we will focus on the table **Customers**.
 
 
 
-## Learn More
+**Congratulations !! ** you have reached the end of this hands-on tutorial.
 
-* [Creating an Extract](https://docs.oracle.com/en/cloud/paas/goldengate-service/using/goldengate-deployment-console.html#GUID-3B004DB0-2F41-4FC2-BDD4-4DE809F52448)
-* [Creating a Replicat](https://docs.oracle.com/en/cloud/paas/goldengate-service/using/goldengate-deployment-console.html#GUID-063CCFD9-81E0-4FEC-AFCC-3C9D9D3B8953)
+
 

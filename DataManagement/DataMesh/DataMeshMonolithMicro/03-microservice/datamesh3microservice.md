@@ -93,12 +93,8 @@ and a minute later :
 - Next perform the actual node installation : 
 
   ```
-  sudo yum install nodejs
+  sudo yum -y install nodejs
   ```
-
-- you might be prompted to confirm installation of some elements :
-
-  ![image-20211021162929398](images/image-20211021162929398.png)
 
 - Wait for the message below to appear:
 
@@ -107,7 +103,7 @@ and a minute later :
 - Now install Express with the following command :
 
   ```
-  npm install express --save
+  npm install express
   ```
 
   You will get some warnings, this is OK.
@@ -170,7 +166,7 @@ Configure a rule to allow access from everywhere on ports 9002 and 443: 9002 for
 
 - Click on the **Add Ingress Rules** button
 
-  ![image-20211031185555341](/Users/jleemans/dev/github/cloudtestdrive/DataManagement/DataMesh/DataMeshMonolithMicro/03-microservice/images/image-20211031185555341.png)
+  ![image-20211031185555341](images/image-20211031185555341.png)
 
 Now verify access to your microservice by opening a new tab on your browser, and accessing the service using an URL that looks like the one below - you need to **replace the IP address** with the public IP address of your VM machine:
 
@@ -208,7 +204,7 @@ Because an ATP database is only allowing external calls to HTTPS endpoints, we n
   - **Subnet**: select the **Public** subnet of your VCN
   - Leave all other fields untouched, and click the **Create Gateway** button
 
-  ![image-20211030151525507](/Users/jleemans/dev/github/cloudtestdrive/DataManagement/DataMesh/DataMeshMonolithMicro/03-microservice/images/image-20211030151525507.png)
+  ![image-20211030151525507](images/image-20211030151525507.png)
 
 - Wait a few moments for the Gateway to become Active, then open the **Deployments** menu on the left
 
@@ -222,11 +218,9 @@ Because an ATP database is only allowing external calls to HTTPS endpoints, we n
 
 - Leave all other parameters as is and click the **Next** button
 
-- ![image-20211030152203989](/Users/jleemans/dev/github/cloudtestdrive/DataManagement/DataMesh/DataMeshMonolithMicro/03-microservice/images/image-20211030152203989.png)
+- ![image-20211030152203989](images/image-20211030152203989.png)
 
-Now we will configure the 4 Routes consistent with the 4 paths of your microservice.
-
-Configuring Route 1 : /med
+Now we will configure a Route consistent with the path of your microservice.
 
 - **Path**: /med
 
@@ -242,19 +236,9 @@ Configuring Route 1 : /med
 
 - Leave the other parameters as par default
 
-Now add another Route with the button **+ Another Route** on the bottom right of your screen
+  ![image-20211108113531293](images/image-20211108113531293.png)
 
-![image-20211030152955526](images/image-20211030152955526.png)
-
-And repeat this step for the following paths : 
-
-/eng
-
-/car
-
-/pro
-
-- When finished adding the routes, create the deployment by clicking the button **Next**, then **Create**.
+- When finished adding the route, create the deployment by clicking the button **Next**, then **Create**.
 
 After a few moments your deployment should be **Active**
 
