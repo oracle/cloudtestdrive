@@ -62,7 +62,7 @@ and a minute later :
 
   ![image-20211021161640661](images/image-20211021161640661.png)
 
-- While we are copying files, let's also copy the microservice source code that was in the zip file you downladed earlier over to the cloudshelll environment: drag & drop the file **msapi.js** onto the console.
+- While we are copying files, let's also copy the microservices source code files that are in the zip file you downladed earlier over to the cloudshelll environment: drag & drop the files **msapi.js** and **consumer.rb** onto the console.
 
 - Set restrictive permissions on the key file as required by ssh 
   (replace the name with the name of **your** file)
@@ -71,10 +71,11 @@ and a minute later :
   chmod 400 ssh-key-2021-10-21.key
   ```
 
-- First copy the Microservice code from the console into the VM we just created, using the private key (replace the IP address with the public IP address of **your** instance, and the keyfile name with **your** keyfile name ! )
+- First copy the source code of the two Microservices from the console into the VM we just created, using the private key (replace the IP address with the public IP address of **your** instance, and the keyfile name with **your** keyfile name ! )
 
   ```
   scp -i ssh-key-2021-10-21.key msapi.js opc@152.70.161.144:msapi.js
+  scp -i ssh-key-2021-10-21.key consumer.rb opc@152.70.161.144:consumer.rb
   ```
 
 - Now ssh into your VM with the below command

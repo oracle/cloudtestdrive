@@ -195,9 +195,11 @@ We will first register our 2 databases so we can use them in our Goldenate envir
 
 We will now execute a PLSQL procedure on the source database to simulate activity of the traditional monolith application, resulting in various data being entered continuously in the various tables of the OSM schema.
 
-In this lab we will focus on the table **Customers**.
+In this lab we will focus on the table **Customers**, and we'll observe both on the level of the databases as well as on the level of the two microservices how the data is flowing.
 
-- Make sure you still have the microservice running in your Cloud Shell, this should look like: 
+**Microservice 1** illustrates the **push** logic, it will be called by the extraction process of the GoldenGate instance while it will be listening on port 9002, where it will receive the unfiltered data coming from the source ATP database
+
+- Make sure you still have the first microservice running in your Cloud Shell, this should look like: 
 
   ![](../03-microservice/images/image-20211021165055362.png)
 
@@ -206,6 +208,28 @@ In this lab we will focus on the table **Customers**.
   ```
   node msapi.js
   ```
+
+
+
+**Microservice 2** will use the ORDS mechanism of the database to consume a Data Service made available as an API delivering the data in JSON format
+
+- Open a **second Cloud Console** window, and also **ssh into the VM** (if you have an ssh client on your local machine you can of course do this directly from your laptop too, using the same private key )
+  Replace IP address and key name with your values !
+
+  ```
+  ssh -i ssh-key-2021-10-21.key opc@152.70.161.144
+  ```
+
+- In this console, launch the **second microservice**
+  where you pass the link to the ORDS service we set up previously
+
+  ```
+  ruby consumer.rb <your-ORDS-Link-address>
+  ```
+
+  You will see the content of a query to the ORDS service, once data starts flowing in the number of records will increase
+
+
 
 
 - Make sure you have two browser tabs open with the SQL tool : one  for the **SourceATP** database and one for the  **TargetADW** database.
@@ -238,13 +262,13 @@ In this lab we will focus on the table **Customers**.
 
   Each line with Call to Med represents a call from the OCI Gateway to the microservice
 
+- On the console of the second microservice, you will see anonymized data flowing into the Consumer view exposed through ORDS
+
 - Switch to the **TargetADW** SQL window and execute the count command repeatedly : you will see the count increase as the records are being pumped from one DB to the other.
 
 - Now switch to the GoldenGate Admin console and open the **UAEXT** extract.  Click on the **Statistics** tab and you will see the nb of records captured : 
 
   ![image-20211101204855936](images/image-20211101204855936.png)
-
-
 
 **Congratulations**, you have reached the end of this hands-on tutorial.
 
