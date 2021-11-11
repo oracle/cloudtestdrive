@@ -41,7 +41,7 @@ One other section that's important is the onFailure section. There can be many r
 Let's have a look at the other steps
 The 2nd step named "Install local JDK11" this has the same structure as the previous step, but it downloads and installs a JDK for us. We need to do this to ensure that we know exactly what JDK is used to run the build. The image used to run the buiuld process does have a JDK in it, but it may not be the one we expect, so this way we know wehat we're getting
 
-As you can see this updates  JAVA_HOME which we defined earlier as a vatiable so it will be automatically transfered between build stages. The PATH is automatcally trnsfered
+As you can see this updates  JAVA_HOME which we defined earlier as a vatiable so it will be automatically transfered between build stages. The PATH is automatcally transfered
 
 Step 3 "Confirm Variables and versions" it really there to enable us to confirm what the settings are, it's not needed for the build, but it helps to diagnose potential problems due to wront versions shoudl they occur
 

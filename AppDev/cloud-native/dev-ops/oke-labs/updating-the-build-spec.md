@@ -83,9 +83,15 @@ Edit the helidon-storefront-full/yaml/build/build_spec.yaml file in the OCI clou
 
 Save the file away
 
+  - In the OCI Cloud shell edit the file $HOME/cloudnative-helidon-storefront/helidon-storefront-full/src/main/java/com/oracle/labs/helidon/storefront/resources/StatusResource.java`
+  
+  - Locate the line `public final static String VERSION = "0.0.1";` and change the version string to `"1.0.0"` Be careful not to remove any quotes or other characters that would mean it won't compile.
+  
+  - Save the file and exit the editor
+
 Let's commit these changes to your local git repo (the one in the cloud shell you are using) 
 In the OCI Cloud shell
-git commit -a -m 'Set secret OCIDs'
+git commit -a -m 'Set secret OCIDs and updated version'
 
 Now push the repo branch to the OCI Code repo you created earlier
 In the OCI Cloud shell

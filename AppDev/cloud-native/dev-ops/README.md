@@ -26,5 +26,9 @@ oke-labs/creating-the-first-pipeline.md
 
 oke-labs/updating-the-pipeline-to-output-the-artifacts.md
 
+oke-labs/creating-the-oke-deployment-pipeline.md
+
+oke-labs/running-the-deployment-and-triggering-the-build.md
+
 Follow on content
 related-content.md
