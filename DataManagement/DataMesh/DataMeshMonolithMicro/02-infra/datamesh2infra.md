@@ -69,12 +69,16 @@ You can click View VCN Details and see both a Public and Private subnet were cre
 
 9. Click **Create Autonomous Database**. Once it finishes provisioning, you can click on the instance name to see details of it.
 
-## Step 3 - Create an second ATP Instance - TargetATP
+## Step 3 - Create an second ATP Instance - TargetADW
 
-Repeat the steps of the previous lab to create a second DB - the DB used by our target Microservice, using the same steps as before except for the name of the instance :
+Repeat the steps of the previous lab to create a second DB - the DB used by our target Microservice, using the same steps as before except for the name of the instance 
 
-- Enter **TargetATP** for **Display Name** 
-- Enter **TargetATP** for **Database Name**
+- Choose a database of the type **Data Warehouse**
+
+  ![image-20211108111931979](images/image-20211108111931979.png)
+
+- Enter **TargetADW** for **Display Name** 
+- Enter **TargetADW** for **Database Name**
 
 
 

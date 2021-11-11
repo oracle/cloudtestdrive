@@ -20,9 +20,15 @@ This chapter will go through the process of creating a Virtual Compute environme
 
   ![image-20211021160259577](images/image-20211021160259577.png)
 
-- Keep the default **Image** and **Shape** proposed as below:
+- Use the **Change Image** button to select the image called **Oracle Linux Cloud Developer** and don't forget to click the checkbox to accept the T&C.
 
-  ![image-20211021160433991](images/image-20211021160433991.png)
+  ![image-20211108173032470](images/image-20211108173032470.png)
+
+- Keep the default  **Shape** proposed
+
+  ![image-20211108173210296](images/image-20211108173210296.png)
+
+  
 
 - Select the Virtual network you created earlier, and make sure to be on the **public** subnet
 
@@ -56,7 +62,7 @@ and a minute later :
 
   ![image-20211021161640661](images/image-20211021161640661.png)
 
-- While we are copying files, let's also copy the microservice source code that was in the zip file you downladed earlier over to the cloudshelll environment: drag & drop the file **msapi.js** onto the console.
+- While we are copying files, let's also copy the microservices source code files that are in the zip file you downladed earlier over to the cloudshelll environment: drag & drop the files **msapi.js** and **consumer.rb** onto the console.
 
 - Set restrictive permissions on the key file as required by ssh 
   (replace the name with the name of **your** file)
@@ -65,10 +71,11 @@ and a minute later :
   chmod 400 ssh-key-2021-10-21.key
   ```
 
-- First copy the Microservice code from the console into the VM we just created, using the private key (replace the IP address with the public IP address of **your** instance, and the keyfile name with **your** keyfile name ! )
+- First copy the source code of the two Microservices from the console into the VM we just created, using the private key (replace the IP address with the public IP address of **your** instance, and the keyfile name with **your** keyfile name ! )
 
   ```
   scp -i ssh-key-2021-10-21.key msapi.js opc@152.70.161.144:msapi.js
+  scp -i ssh-key-2021-10-21.key consumer.rb opc@152.70.161.144:consumer.rb
   ```
 
 - Now ssh into your VM with the below command
@@ -78,39 +85,23 @@ and a minute later :
   ssh -i ssh-key-2021-10-21.key opc@152.70.161.144
   ```
 
-- As this is a fresh Linux instance, we need to install a few components to get our microservice running : node and Express
+- As this is a fresh Linux instance, we need to install a few components to get our microservices running
 
-- Run the below command to configure the yum repositories by installing the `oracle-nodejs-release-el7` or `oracle-nodejs-release-el6`
-
-  ```
-  sudo yum install -y oracle-nodejs-release-el7 oracle-release-el7
-  ```
-
-- This will update a number of packages, wait for the message below to appear: 
-
-  ![image-20211021162846225](images/image-20211021162846225.png)
-
-- Next perform the actual node installation : 
+- Install Express with the following command :
 
   ```
-  sudo yum install nodejs
-  ```
-
-- you might be prompted to confirm installation of some elements :
-
-  ![image-20211021162929398](images/image-20211021162929398.png)
-
-- Wait for the message below to appear:
-
-  ![image-20211021163454568](images/image-20211021163454568.png)
-
-- Now install Express with the following command :
-
-  ```
-  npm install express --save
+  npm install express
   ```
 
   You will get some warnings, this is OK.
+
+- Install the faraday gem for the Ruby microservice:
+
+  ```
+  gem install faraday
+  ```
+
+  
 
 - You should now be able to launch your microservice with the following command:
 
@@ -170,12 +161,12 @@ Configure a rule to allow access from everywhere on ports 9002 and 443: 9002 for
 
 - Click on the **Add Ingress Rules** button
 
-  ![image-20211031185555341](/Users/jleemans/dev/github/cloudtestdrive/DataManagement/DataMesh/DataMeshMonolithMicro/03-microservice/images/image-20211031185555341.png)
+  ![image-20211031185555341](images/image-20211031185555341.png)
 
 Now verify access to your microservice by opening a new tab on your browser, and accessing the service using an URL that looks like the one below - you need to **replace the IP address** with the public IP address of your VM machine:
 
 ```
-http://132.226.204.234:9002/med:9002/med
+http://132.226.204.234:9002/med
 ```
 
 This should return :
@@ -192,13 +183,13 @@ Because an ATP database is only allowing external calls to HTTPS endpoints, we n
 
 - Open the menu and select first **Developer Services**, then under API Management select **Gateways**
 
-<img src="images/image-20211030150929234.png" alt="image-20211030150929234" style="zoom:50%;" />
+![](images/image-20211030150929234.png)
 
 
 
 - Click the **Create Gateway** button
 
-  <img src="images/image-20211030151300173.png" alt="image-20211030151300173" style="zoom: 50%;" />
+  ![](images/image-20211030151300173.png)
 
 - Enter the following fields:
 
@@ -208,7 +199,7 @@ Because an ATP database is only allowing external calls to HTTPS endpoints, we n
   - **Subnet**: select the **Public** subnet of your VCN
   - Leave all other fields untouched, and click the **Create Gateway** button
 
-  ![image-20211030151525507](/Users/jleemans/dev/github/cloudtestdrive/DataManagement/DataMesh/DataMeshMonolithMicro/03-microservice/images/image-20211030151525507.png)
+  ![image-20211030151525507](images/image-20211030151525507.png)
 
 - Wait a few moments for the Gateway to become Active, then open the **Deployments** menu on the left
 
@@ -222,11 +213,9 @@ Because an ATP database is only allowing external calls to HTTPS endpoints, we n
 
 - Leave all other parameters as is and click the **Next** button
 
-- ![image-20211030152203989](/Users/jleemans/dev/github/cloudtestdrive/DataManagement/DataMesh/DataMeshMonolithMicro/03-microservice/images/image-20211030152203989.png)
+- ![image-20211030152203989](images/image-20211030152203989.png)
 
-Now we will configure the 4 Routes consistent with the 4 paths of your microservice.
-
-Configuring Route 1 : /med
+Now we will configure a Route consistent with the path of your microservice.
 
 - **Path**: /med
 
@@ -242,19 +231,9 @@ Configuring Route 1 : /med
 
 - Leave the other parameters as par default
 
-Now add another Route with the button **+ Another Route** on the bottom right of your screen
+  ![image-20211108113531293](images/image-20211108113531293.png)
 
-![image-20211030152955526](images/image-20211030152955526.png)
-
-And repeat this step for the following paths : 
-
-/eng
-
-/car
-
-/pro
-
-- When finished adding the routes, create the deployment by clicking the button **Next**, then **Create**.
+- When finished adding the route, create the deployment by clicking the button **Next**, then **Create**.
 
 After a few moments your deployment should be **Active**
 

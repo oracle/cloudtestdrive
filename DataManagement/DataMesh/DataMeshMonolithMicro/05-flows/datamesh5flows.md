@@ -51,7 +51,7 @@ We will first register our 2 databases so we can use them in our Goldenate envir
 
   
 
-- Now repeat this process to register the **TargetATP** database.
+- Now repeat this process to register the **TargetADW** database.
 
 
 
@@ -91,7 +91,7 @@ We will first register our 2 databases so we can use them in our Goldenate envir
 
     ![image-20211101131412058](images/image-20211101131412058.png)
 
-6.  Click **Connect to database TargetATP**.
+6.  Click **Connect to database TargetADW**.
 
     ![](images/02-05-connect-target.png)
 
@@ -150,7 +150,7 @@ We will first register our 2 databases so we can use them in our Goldenate envir
 
     The yellow exclamation point icon changes to a green checkmark.
 
-    <img src="images/02-ggs-extract-started.png" alt="Extract started" style="zoom: 67%;" />
+    ![](images/02-ggs-extract-started.png)
 
 ## Step 5 - Add and Run the Replicat
 
@@ -164,7 +164,7 @@ We will first register our 2 databases so we can use them in our Goldenate envir
 
 4.  For **Credential Domain**, select **OracleGoldenGate**.
 
-5.  For **Credential Alias**, select **TargetATP**.
+5.  For **Credential Alias**, select **TargetADW**.
 
 6.  For **Trail Name**, enter E1.
 
@@ -179,13 +179,13 @@ We will first register our 2 databases so we can use them in our Goldenate envir
 10. In the **Parameter File** text area, replace 
     **MAP \*.\*, TARGET \*.\*;**    with    **MAP OSM.CUSTOMERS, TARGET OSM3.CUSTOMERS;**
 
-    <img src="images/image-20211101182330909.png" alt="image-20211101182330909" style="zoom:50%;" />
+    ![](images/image-20211101182330909.png)
 
 11. Click **Create**.
 
 12. In the Rep Replicat **Action** menu, select **Start**.
 
-    <img src="images/03-10-ggs-start-replicat.png" alt="Replicat Actions Menu - Start" style="zoom:50%;" />
+    ![](images/03-10-ggs-start-replicat.png)
 
     The yellow exclamation point icon changes to a green checkmark.
 
@@ -195,11 +195,13 @@ We will first register our 2 databases so we can use them in our Goldenate envir
 
 We will now execute a PLSQL procedure on the source database to simulate activity of the traditional monolith application, resulting in various data being entered continuously in the various tables of the OSM schema.
 
-In this lab we will focus on the table **Customers**.
+In this lab we will focus on the table **Customers**, and we'll observe both on the level of the databases as well as on the level of the two microservices how the data is flowing.
 
-- Make sure you still have the microservice running in your Cloud Shell, this should look like: 
+**Microservice 1** illustrates the **push** logic, it will be called by the extraction process of the GoldenGate instance while it will be listening on port 9002, where it will receive the unfiltered data coming from the source ATP database
 
-  <img src="../03-microservice/images/image-20211021165055362.png" alt="Replicat Actions Menu - Start" style="zoom:50%;" />
+- Make sure you still have the first microservice running in your Cloud Shell, this should look like: 
+
+  ![](../03-microservice/images/image-20211021165055362.png)
 
 - In case the microservice is not running anymore, restart it by issuing the command 
 
@@ -208,9 +210,31 @@ In this lab we will focus on the table **Customers**.
   ```
 
 
-- Make sure you have two browser tabs open with the SQL tool : one  for the **SourceATP** database and one for the  **TargetATP** database.
 
-- In the SQL tool of the **TargetATP**  Database, enter and execute the following command :
+**Microservice 2** will use the ORDS mechanism of the database to consume a Data Service made available as an API delivering the data in JSON format
+
+- Open a **second Cloud Console** window, and also **ssh into the VM** (if you have an ssh client on your local machine you can of course do this directly from your laptop too, using the same private key )
+  Replace IP address and key name with your values !
+
+  ```
+  ssh -i ssh-key-2021-10-21.key opc@152.70.161.144
+  ```
+
+- In this console, launch the **second microservice**
+  where you pass the link to the ORDS service we set up previously
+
+  ```
+  ruby consumer.rb <your-ORDS-Link-address>
+  ```
+
+  You will see the content of a query to the ORDS service, once data starts flowing in the number of records will increase
+
+
+
+
+- Make sure you have two browser tabs open with the SQL tool : one  for the **SourceATP** database and one for the  **TargetADW** database.
+
+- In the SQL tool of the **TargetADW**  Database, enter and execute the following command :
 
   ```
   select count(*) from osm3.customers
@@ -234,20 +258,19 @@ In this lab we will focus on the table **Customers**.
 
 - Switch to the Cloud Shell where you started the microservice.  You should see a series of lines stating **Call to Med** :
 
-  <img src="images/image-20211101204307282.png" alt="image-20211101204307282" style="zoom:50%;" />
+  ![](images/image-20211101204307282.png)
 
   Each line with Call to Med represents a call from the OCI Gateway to the microservice
 
-- Switch to the **TargetATP** SQL window and execute the count command repeatedly : you will see the count increase as the records are being pumped from one DB to the other.
+- On the console of the second microservice, you will see anonymized data flowing into the Consumer view exposed through ORDS
+
+- Switch to the **TargetADW** SQL window and execute the count command repeatedly : you will see the count increase as the records are being pumped from one DB to the other.
 
 - Now switch to the GoldenGate Admin console and open the **UAEXT** extract.  Click on the **Statistics** tab and you will see the nb of records captured : 
 
   ![image-20211101204855936](images/image-20211101204855936.png)
 
+**Congratulations**, you have reached the end of this hands-on tutorial.
 
 
-## Learn More
-
-* [Creating an Extract](https://docs.oracle.com/en/cloud/paas/goldengate-service/using/goldengate-deployment-console.html#GUID-3B004DB0-2F41-4FC2-BDD4-4DE809F52448)
-* [Creating a Replicat](https://docs.oracle.com/en/cloud/paas/goldengate-service/using/goldengate-deployment-console.html#GUID-063CCFD9-81E0-4FEC-AFCC-3C9D9D3B8953)
 

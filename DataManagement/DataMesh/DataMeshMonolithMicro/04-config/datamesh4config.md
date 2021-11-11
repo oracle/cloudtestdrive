@@ -53,11 +53,11 @@ You can now verify all the commands executed correctly - only the very first com
 
 - Now refresh the browser window to update the list of schema's in the database, and in the **Navigator** expand the list of schema's and select **OSM**
 
-  <img src="images/image-20211031194344348.png" alt="image-20211031194344348" style="zoom: 50%;" />
+  ![](images/image-20211031194344348.png)
 
 - You can now see the list of tables created via the script :
 
-  <img src="images/image-20211031194544340.png" alt="image-20211031194544340" style="zoom:50%;" />
+  ![](images/image-20211031194544340.png)
 
 ## Step 2 - Creation of the schema for the Goldengate environment
 
@@ -65,7 +65,7 @@ Now we'll repeat this operation to set up the environment for the GoldenGate ins
 
 - On your laptop, open the file **osm2_schema.sql** with a code editor of your choice, and locate the call to the microservice on line 45 :
 
-  <img src="images/image-20211031201814845.png" alt="image-20211031201814845" style="zoom:50%;" />
+  ![](images/image-20211031201814845.png)
 
   
 
@@ -79,7 +79,7 @@ Now we'll repeat this operation to set up the environment for the GoldenGate ins
 
 - First delete the script you executed just before in the **Worksheet** window: put your cursor in the window, then hit the **Select All** shortcut (on Mac: Command-A, on PC: Control-A) and hit the **Delete** button.  Make sure no text remains in the display
 
-  <img src="images/image-20211031195153920.png" alt="image-20211031195153920" style="zoom:50%;" />
+  ![](images/image-20211031195153920.png)
 
 - Now cut and paste the content of the edited script **osm2_schema.sql**, and execute the whole script using the **Run Script** button.
 
@@ -88,14 +88,14 @@ Now we'll repeat this operation to set up the environment for the GoldenGate ins
 - You can verify the correct callout to the microservice you already set up by executing the command on the last line of the script :
 
   ```
-  exec callout_ms('med','jj','kk','mm','cc','ll','uu','nn')
+  exec osm2.callout_ms('med','jj','kk','mm','cc','ll','uu','nn')
   ```
 
   
 
 - Just uncomment the line, and select it :
 
-  <img src="images/image-20211031202115366.png" alt="image-20211031202115366" style="zoom:50%;" />
+  ![](images/image-20211031202115366.png)
 
 - This time use the button **Run Statement** to only execute the highlighted part of the script.
 
@@ -115,11 +115,11 @@ The ggadmin user will be used to connect to the source and target database from 
 
 1. From the list of users, locate **GGADMIN**, and then click the ellipsis (three dots) icon and select **Edit**.
 
-   ![GGADMIN user](/Users/jleemans/dev/github/learning-library/data-management-library/goldengate/oci-ggs/register-db/images/02-06-locked.png)
+   ![GGADMIN user](images/02-06-locked.png)
 
 2. In the Edit User panel, deselect **Account is Locked**, enter a password for the ggadmin user, and then click **Apply Changes**.
 
-   ![Edit user](/Users/jleemans/dev/github/learning-library/data-management-library/goldengate/oci-ggs/register-db/images/02-07-edit.png)
+   ![Edit user](images/02-07-edit.png)
 
    Note that the user icon changes from a blue padlock to a green checkmark.
 
@@ -129,15 +129,84 @@ The ggadmin user will be used to connect to the source and target database from 
 
 ## Step 4 - Prepare the target database schema
 
-- Return to the Autonomous database overview screen, and select the **TargetATP** database
-
-- Repeat the steps to open the SQL utility: open the details of the database by clicking on the database name **TargetATP**, select the tab **Tools**, then select the **Database Actions** button, and finally select the **SQL** tile.
-
+- Return to the Autonomous database overview screen, and select the **TargetADW** database
+- Repeat the steps to open the SQL utility: open the details of the database by clicking on the database name **TargetADW**, select the tab **Tools**, then select the **Database Actions** button, and finally select the **SQL** tile.
 - Open the file **osm3_schema.sql** on your laptop and copy the content over to the **Worksheet** pane.
-
 - Execute the script via the button **Run Script** and verify the correct execution of the commands - again, the **Drop** of the schema will fail upon first execution.
 
+We will be using this database to offer access to our data to other domains.  A very convenient way to do this is to use ORDS to enable REST access to JSON formatted data that is present in the database.  The following steps will unlock some data from the **customers** table to other domains of your application landscape.
+
+-  In the menu on the top left, select the **REST** under the development menu:
+
+  ![image-20211104110656872](images/image-20211104110656872.png)
+
+- On the overview screen, select **Modules** from the top menu:
+
+  ![image-20211104110924887](images/image-20211104110924887.png)
+
+- Use the **Create Module** button on the top right to create a first module :
+
+- Enter the name of the module : **com.oracle.mydomain.mymodule**
+
+- Enter the **Base Path**: **`/datadomain/`**
+
+- Select **Not Protected** for the parameter **Protected By Privilege**.  
+
+- Click **Create**
+
+  ![image-20211104111720733](images/image-20211104111720733.png)
+
+- The Module screen will open up, select the **Create Template** button on the right
+
+- In the Create Template screen, enter the URI Template : **demographics**
+
+- Leave all other parameters at their default and click the **Create** button
+
+  ![image-20211104112150372](images/image-20211104112150372.png)
+
+- Now click the **Create Handlers** button, and enter the following SQL statement :
+
+  ```
+  <copy>SELECT
+  cust_age as age,
+  DECODE(REG_ID,
+    'NORTH','North',
+    'SOUTH','South',
+    'EAST', 'East',
+    'WEST', 'West',
+    'CENT', 'Central'
+  ) region,
+  DECODE (edul_id,
+    'UG', 'Graduate',
+    'HS', 'High School',
+    'DIP', 'College',
+    'MD', 'Masters',
+    'PHD', 'PhD',
+    'None') qualification,
+   DECODE(PROF_ID,
+    'ENG', 'Technical',
+    'IT', 'Technical',
+    'PLOT', 'Technical',
+    'MD', 'Medical',
+    'NRS', 'Medical',
+    'UW', 'Financial',
+    'Other') career
+  FROM OSM3.customers</copy>
+  ```
   
+  ![image-20211104143820870](images/image-20211104143820870.png)
+
+- Your REST API is now available! Try it out by visiting the URL through a broowser via the link icon on the right of the Handler overview
+
+  ![image-20211104144016475](images/image-20211104144016475.png)
+
+You should see the JSON payload of your query:
+
+![image-20211104144152054](images/image-20211104144152054.png)
+
+Later we will use 
+
+
 
 ## Step 5 - Enable the ggadmin user for the Target Database
 

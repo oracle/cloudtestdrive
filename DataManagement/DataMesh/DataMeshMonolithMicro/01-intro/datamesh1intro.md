@@ -4,36 +4,27 @@
 
 ## Objective of this lab
 
-This Lab will walk you through the steps to set up a Data Mesh to organize your data flows between classic Monolith applications, typically using a relational database schema, and various other applications, for example microserviceq that run in a different location and store their data as JSON text.
-
-![image-20211018171902583](images/image-20211018171902583.png)
-
-
-
-### What is a Data Mesh?
-
-Content to be finalized (tbc)
-
-
+This Lab will walk you through the steps to set up a Data Mesh to organize your data flows between classic Monolith applications, typically using a relational database schema, and various other applications, for example microservices that run in a different location and store their data in different ways, for example as JSON text.
 
 ### What will we do in this lab?
 
 In this lab we will walk you through the following steps : 
 
-- Set up an Autonomous Database and 3 schemas: one representing the monolith applciation, one representing the Data Pump environment , and one representing a microservice using JSON
-- Creating the GoldenGate Data Pump: create an instance of the OCI GoldenGate cloud service
-- Create a VM where we will run the microservices that will act as consumers
-- Create 3 schemas in the database: one representing the monolith applciation, one representing the Data Pump environment , and one representing a microservice using JSON
-- Configure Source and Target systems in the GoldenGate environment to manage the data flows
+- Set up two Autonomous Databases and 3 schemas: one representing the monolith application, one for the GoldenGate Integration environment , and one representing the Domain DWH exposing some data of the domain to external applications through ORDS
+- Set up the GoldenGate Data Integration environment by creating an instance of the OCI GoldenGate cloud service
+- Create a VM where we will run the first microservice that will act as a domain consumer of the data, through a direct API call to the service
+- Configure the data flows in the GoldenGate environment: set up an Extractor, a Replicat and a call to Microservice.
 - Observe the resulting data flows in the various applications and data sources
 
 
 
 ### Lab Architecture
 
+The below picture represents the various components of the lab:
+
+![image-20211108111208707](images/image-20211108111208707.png)
 
 
-![image-20211018175038297](images/image-20211018175038297.png)
 
 ## Prerequisites
 
