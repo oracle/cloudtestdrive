@@ -2047,6 +2047,94 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 If you get **424 failed dependency** or timeouts it's because the services are doing their lazy initialization, wait a minute or so and retry the request
 
+<details><summary><b>If you consistently get 424 Failed Dependency /  "Unable to connect to the stock manager service" messages over several minutes</b></summary>
+
+If you are getting messages containing output like `"Unable to connect to the stock manager service"` then this means that the storefront service is working, but it can't connect to the stockmanager service. if this happens once or twice then you start getting data it's fine, it just means that the stockmanager was still initializing.
+
+If you are still getting these messages after several minutes have passed then it's likely that there you have a configuration problem.
+
+Check to see if the stock manager is restarting a lot 
+
+  - In the OCI cloud shell type
+  
+  - `kubectl get pods` 
+  
+  ```
+  NAME                            READY   STATUS    RESTARTS   AGE
+  stockmanager-6b759ddcd7-rz2jm   1/1     CrashLoopBackoff   5          3m46s
+  storefront-74d6d55dcc-bt4cv     1/1     Running   0          3m44s
+  zipkin-7f4676fdcc-rkfsd         1/1     Running   0          3m47s
+```
+
+If the stockmanager pod has multiple restarts or is in the **CrashLoopBackoff** stage then that's probabaly a configuration problem.
+
+You can have a look at the logs of the service 
+
+  - In the OCI Cloud Shell type - note that here I am using the pod ID in my environment, the pod ID you have for your stockmanager service will be different.
+  
+  - `kubectl logs stockmanager-6b759ddcd7-rz2jm`
+  
+Looking at the output you may get usefull information from any stack traces, the example here is a part of the ouput showing a stack trace where the `app.department` property can't be found. This may be because it not been set, the line it's on is incorrectly indented, or it has not had the comment characters removed.
+
+  ```
+  2021.11.11 14:25:58 INFO org.jboss.weld.Bootstrap !thread!: WELD-ENV-002001: Weld SE container 9f74b70e-06aa-4d3f-8e1d-2bee1e25b29f shut down
+Exception in thread "main" org.jboss.weld.exceptions.DeploymentException: Cannot find value for key: app.department
+        at org.jboss.weld.bootstrap.events.AbstractDeploymentContainerEvent.fire(AbstractDeploymentContainerEvent.java:38)
+        at org.jboss.weld.bootstrap.events.AfterDeploymentValidationImpl.fire(AfterDeploymentValidationImpl.java:28)
+        at org.jboss.weld.bootstrap.WeldStartup.validateBeans(WeldStartup.java:505)
+        at org.jboss.weld.bootstrap.WeldBootstrap.validateBeans(WeldBootstrap.java:93)
+        at io.helidon.microprofile.cdi.HelidonContainerImpl.doStart(HelidonContainerImpl.java:297)
+        at io.helidon.common.context.Contexts.runInContext(Contexts.java:137)
+        at io.helidon.microprofile.cdi.HelidonContainerImpl.start(HelidonContainerImpl.java:249)
+        at io.helidon.microprofile.server.ServerImpl.start(ServerImpl.java:85)
+        at com.oracle.labs.helidon.stockmanager.Main.main(Main.java:56)
+Caused by: java.util.NoSuchElementException: Cannot find value for key: app.department
+        at io.helidon.microprofile.config.ConfigCdiExtension.produce(ConfigCdiExtension.java:262)
+        at
+```
+
+In this case you can see from the text `Cannot find value for key: app.department` in the stack trace that a value for the `app.department` property cannot be found. You may have other errors for example unable to connect to the database, invalid database login etc.
+
+In the case of the missing `app.department` then you need to check that you edited the `$HOME/helidon-kubernetes/configurations/stockmanagerconf/conf/stockmanager-config.yaml` file  as described in the **Cloud shell setup** instructions module, **Setting up your department Id** task, one mistake that is sometimes made there is changing the value, but forgetting to uncomment the line. 
+
+**My** version of this file starts like this, but of course yours will probabaly have a different department name, not that none of these three lines are commented !
+
+  ```yaml
+  app:
+    persistenceUnit: "stockmanagerJTA"
+    department: "Tims Shop"
+```
+
+If you do change the `stockmanager-config.yaml` file you will need to re-run the `create-configmaps.sh` script to reflect the changes into Kubernetes.
+
+If you have a problem logging in to the database itself, for example you get invalid user or bad login problems then it is probable that the database user was not correctly created, look at the instructions in the create database part of the cloud setup, and make sure that you executed **all** of the steps in the SQL that create the user.
+
+If you can't get the database connection info then make sure you have downloaded and unpacked the database Wallet file 
+
+  - In the OCI CLoud shell type 
+  
+  - `ls $HOME/helidon-kubernetes/configurations/stockmanagerconf/Wallet_ATP `
+  
+  ```
+cwallet.sso  ewallet.p12  keystore.jks  ojdbc.properties  README  sqlnet.ora  tnsnames.ora  truststore.jks  Wallet.zip
+```
+
+If you get a `not found` or the directory does not contain the file as described above then you need to complete the Wallet download process, as described in the **Cloud Shell setup** module, **Downloading the database wallet file** section. You will probabally also need to setup the JDBC URL as described below and then recreate the secrets by running the `create-secrets.sh` script to reflect the changes into Kubernetes.
+
+If the database connection is not found then make sure that you have correctly set the JDBC URL value in the `$HOME/helidon-kubernetes/configurations/stockmanagerconf/databaseConnectionSecret.yaml` file, the URL should look something like 
+
+```
+  url: jdbc:oracle:thin:@tgdemo_high?TNS_ADMIN=./Wallet_ATP
+```
+
+Of course tgdemo_high is the connection name for **my** database, yours will probabaly be different, if this is not correct then please follow the instructions in the **Secrets, configmaps - external configuration for your containers** section of this module, and then recreate the secrets by running the `create-secrets.sh` script to reflect the changes into Kubernetes.
+
+
+
+---
+
+</details>
+
 <details><summary><b>If you only get `[]` not a list of items</b></summary>
 
 Your database does not have the information that was uploaded in the Helidon part of the labs, or if you did the Helidon labs then you probabaly are using a different department name.
