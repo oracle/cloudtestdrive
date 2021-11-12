@@ -1,8 +1,29 @@
+![](../../../../common/images/customer.logo2.png)
+
+# Combining build and deploy pipelines, and automated triggering
+
+## Introduction
+
 We now have a build pipeline that builds the code and uploads the resulting artifacts, and the deployment pipeline is ready to go, though admittedly we haven't run it yet.
 
-We could if we wanted have run the build pipeline in a previous module, though we would have has to define a few more params (e.g. `STOREFRONT_VERSION`,`OCIR_HOST` etc.) but as this is a lab showing how the use of continuous integration and continuous deployment let's show how to connect the two and run a full CI/CD process.
+### Objectives
+
+In this module we will combine the build and deployment pipelines to have a successfully build pipeline automatically trigger a deploy pipeline for us, thus showing how the DevOps service can deliver a continuous integration and continuous deployment process.
+
+### Prerequisites
+
+You must have created and run the build pipeline and have created the deploy pipeline.
+
+## Triggering a deploy from a build pipeline
+
+
+We could if we wanted have run the deploy pipeline we just created in a previous module, though we would have has to define a few more params (e.g. `STOREFRONT_VERSION`,`OCIR_HOST` etc.) but as this is a lab showing how the use of continuous integration and continuous deployment let's show how to connect the two and run a full CI/CD process.
 
 We will need to update the build pipeline to have it trigger a deploy pipeline on successful completion.
+
+### Task 1: Adding a deployment trigger to the build pipeline
+
+We need to add a stage to the build pipeline that will trigger the deployment
 
 Go to the home page of your DevOps project (click on it's name in the "breadcrumb" trail at the top of the page)
 

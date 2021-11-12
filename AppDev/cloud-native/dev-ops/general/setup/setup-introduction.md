@@ -1,1 +1,0 @@
-For this lab we're going to be using the results of the Kubernetes hands on lab, this has two microservices, storefront that does simple business logic and stockmanager that interacts with the database. These have already been deployed into our cluster and we are going to use the CI/CD tools to update the storefront microservice
