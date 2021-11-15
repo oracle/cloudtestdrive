@@ -183,61 +183,9 @@ We will first register our 2 databases so we can use them in our Goldenate envir
 
 
 
-## Step 6 - Validate the integrations are working correctly
-
-We will now execute a PLSQL procedure on the source database to simulate activity of the traditional monolith application, resulting in various data being entered continuously in the various tables of the OSM schema.
-
-In this lab we will focus on the table **Customers**, and we'll observe both on the level of the databases as well as on the level of the two microservices how the data is flowing.
-
-Our **Microservice** will use the ORDS mechanism of the database to consume a Data Service made available as an API delivering the data in JSON format
-
-- Open a **second Cloud Console** window, and open a **Cloud Shell**
-  
-- In this console, launch the **microservice**
-  where you pass the link to the ORDS service we set up previously
-
-  ```
-  ruby consumer.rb <your-ORDS-Link-address>
-  ```
-
-  You will see the content of a query to the ORDS service, once data starts flowing in the number of records will increase
 
 
-
-
-- Make sure you have two browser tabs open with the SQL tool : one  for the **SourceATP** database and one for the  **TargetADW** database.
-
-- In the SQL tool of the **TargetADW**  Database, enter and execute the following command :
-
-  ```
-  select count(*) from osm3.customers
-  ```
-
-  This should result in a resulting query result of **Count(\*)** = 0. This means no records are present in this table.
-
-- Now switch to the **SourceATP** window, and **prepare - do not yet run !**  following two commands in the Worksheet pane:
-
-  ```
-  exec osm.call_trans_load;
-  
-  select count(*) from osm.customers;
-  ```
-
-- Now **select the first line** and execute this command by using the **Run Statement** button.
-
-- Now **select the second line** and execute this command with the **Run Statement** button.
-
-  You should see a count(\*) result of for example 70.  Repeat the execution of this last command and you will see the count(\*) number increase, indicating records are being insterted in the table.  So our Classic  application is working ...
-
-- On the Cloud Console of the microservice, you will see anonymized data flowing into the Consumer view exposed through ORDS
-
-- Switch to the **TargetADW** SQL window and execute the count command repeatedly : you will see the count increase as the records are being pumped from one DB to the other.
-
-- Now switch to the GoldenGate Admin console and open the **UAEXT** extract.  Click on the **Statistics** tab and you will see the nb of records captured : 
-
-  ![image-20211101204855936](images/image-20211101204855936.png)
-
-**Congratulations**, you have reached the end of this hands-on tutorial.
+**Congratulations**, you are ready to move to the last step : validating the data flows!
 
 
 

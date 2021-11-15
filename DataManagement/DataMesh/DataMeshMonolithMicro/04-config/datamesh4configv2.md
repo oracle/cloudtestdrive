@@ -162,7 +162,7 @@ You should see the JSON payload of your query:
 
 ![image-20211104144152054](images/image-20211104144152054.png)
 
-Later we will use 
+Later we will use this URL to enable other domains to access this data.
 
 
 
