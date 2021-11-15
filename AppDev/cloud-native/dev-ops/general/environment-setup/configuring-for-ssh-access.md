@@ -1,6 +1,6 @@
 ![](../../../../../common/images/customer.logo2.png)
 
-# Coonfiguring a ssh authentication token
+# Configuring a ssh authentication token
 
 ## Introduction
 
