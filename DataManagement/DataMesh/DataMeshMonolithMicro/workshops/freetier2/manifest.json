@@ -11,7 +11,7 @@
       "title": "Part 2 : Creating the Infrastructure components",
       "description": "Creating two Autonomous Database instances and a OCI GG instance",
       "publisheddate": "10/13/2021",
-      "filename": "../../02-infra/datamesh2infrav.md"
+      "filename": "../../02-infra/datamesh2infra.md"
     },
     {
       "title": "Part 3 : Configure the schemas",
@@ -19,8 +19,12 @@
       "filename": "../../04-config/datamesh4configv2.md"
     },{
       "title": "Part 4 : Configure the Flows",
-      "description": "Configure Source and Target systems in the GoldenGate environment and Observe the resulting data flows",
+      "description": "Configure Source and Target systems in the GoldenGate environment",
       "filename": "../../05-flows/datamesh5flowsv2.md"
+    },{
+      "title": "Part 5 : Validate the Flows",
+      "description": "Observe the resulting data flows",
+      "filename": "../../05-flows/datamesh5run_flows_v2.md"
     }
   ]
 }
