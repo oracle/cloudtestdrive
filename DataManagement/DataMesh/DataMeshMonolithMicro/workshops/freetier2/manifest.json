@@ -11,7 +11,7 @@
       "title": "Part 2 : Creating the Infrastructure components",
       "description": "Creating two Autonomous Database instances and a OCI GG instance",
       "publisheddate": "10/13/2021",
-      "filename": "../../02-infra/datamesh2infrav.md"
+      "filename": "../../02-infra/datamesh2infra.md"
     },
     {
       "title": "Part 3 : Configure the schemas",
