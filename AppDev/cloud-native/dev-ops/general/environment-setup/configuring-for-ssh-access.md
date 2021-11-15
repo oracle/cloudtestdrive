@@ -23,7 +23,7 @@ Using the OCI Cloud shell and Browser User Interface we will :
 
 In many places through this lab we will be using the OCI Cloud Shell to provide an environment where we can execute commands. The OCI Cloud Shell is a small Linux based instance you access from the OCI Web Interface and it runs within the OCI environment, already logged in and authenticated as you. This means we don't need to configure your local environment to use the **oci** command, but more importantly it ensures that everyone doing the lab will have an environment to use which has all of the commands we need ready to use.
 
-To open this click the Cloud Shell Icon ![](images/cloud-shell-icon.png) you find this at the upper right of any OCI Web Interface screen
+To open this click the Cloud Shell Icon ![](images/cloud-shell-icon.png | width 25) you find this at the upper right of any OCI Web Interface screen
 
 ![](images/cloud-shell-icon-on-main-screen.png | width=400)
 
@@ -34,13 +34,13 @@ You may have a short delay while the OCI infrastructure gets your home directory
 
 ![](images/cloud-shell-after-initial-open-example.png | width=400)
 
-Once open you can exdo normal things like minimize / maximize / restore / close the Cloud Shell using the icons 
+Once open you can do normal things like minimize / maximize / restore / close the Cloud Shell using the icons 
 
 ![](images/cloud-shell-control-icons.png)
 
 ### Task 1: Creating an ssh key
 
-To interact wihe the OCI DevOps Code Repository we will soon be creating we need to authenticate ourselves to OCI using an authentication token, this will be based on your **Users** SSH key. 
+To interact with the OCI DevOps Code Repository we will soon be creating we need to authenticate ourselves to OCI using an authentication token, this will be based on your **Users** SSH key. 
 
 **IMPORTANT** The SSH based API authentication we will be doing is not the same as the SSH setup used when accessing a virtual machine using SSH. If you already have setup a SSH key for **User** API access **In the OCI Cloud Shell** then you can skip the following steps and go to the **.ssh/config** session below. If you are doing this lab in a free trial account it is unlikely that you will have configured SSH access.
 
@@ -56,7 +56,7 @@ To interact wihe the OCI DevOps Code Repository we will soon be creating we need
 
 Now we can create the keys to use, we are going to do this rather than let the web UI do it as this means we don't have to transfer them over from your computer. Note that if you have already got ssh API keys configured for authentication which were not created in the OCI cloud Shell you can just place them into id_rsa and id_rsa.pub files in this folder (use `cat > id_rsa` and then past the contents then do Control-D to finish the cat). If you prefer to use new keys please do so, but remember than you can only have three API Keys in each account.
 
-  4. Run the following command in the OCI Cloud Shell to create a key pair, when prompted for a pass phrase just press return (a pass phrase can be used to secure access to the generated key, but that requires some additional setup so in the interests of time not going to use that here). Please replace `<email address>` with the email address for your user (for a free tenancy this is usually the one you provided during the signup process)
+  4. Run the following command in the OCI Cloud Shell to create a key pair, when prompted for a pass phrase just press return (a pass phrase can be used to secure access to the generated key, but that requires some additional setup so in the interests of time not going to use that here). Please replace `<email address>` with the email address for your user (for a free tenancy this is usually the one you provided during the sign-up process)
 
   - `ssh-keygen -t rsa -f $HOME/.ssh/id_rsa -C "<email address>" `
 
@@ -178,7 +178,7 @@ Next we need to setup our SSH configuration file, to do that we need to get some
 
   - Locate your tenancy information if you click the little "shaddow person" you can see that, in may case it's `oractdemeadbmnative`, though of course yours will vary, for a free trial account it's often based on the name you gave when setting up the account.
   
-  ![](iumages/bui-shadow-person-menu-tenancy-name.png)
+  ![](images/bui-shadow-person-menu-tenancy-name.png)
   
   - Open the cloud shell and using your preferred editor edit the file `$HOME/.ssh/config` (vim, vi, emacs and nano are available, there may be others)
 
