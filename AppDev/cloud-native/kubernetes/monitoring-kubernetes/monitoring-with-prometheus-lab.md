@@ -622,9 +622,9 @@ Prometheus was not designed to be a high end graphing tool, the graphs cannot fo
 
 ---
 
-## Task 3: Tidying up the environment
+## Task 6: Tidying up the environment
 
-If you are going to do the Visualizing with Gafana module please do **not** do the following, but return to the introduction of jump to the Visualizing With Grafana module
+If you are going to do the Visualizing with Gafana module please do **not** do the following, but return to the introduction or jump to the Visualizing With Grafana module
 
 **ONLY** do the following if you no longer want the Prometheus environment. **DO NOT** do this if you are planning on running the Visualising with Grafana module.
 
