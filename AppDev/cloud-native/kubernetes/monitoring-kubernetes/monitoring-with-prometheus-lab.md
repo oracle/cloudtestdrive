@@ -514,7 +514,7 @@ Now we have configured Prometheus to scrape the data from our services we can lo
 
   4. Click the **Execute** button.
 
-If you're on the graph screen you'll probabaly see a pretty boring graph
+If you're on the graph screen you'll probably see a pretty boring graph
 
   ![prometheus-list-stock-empty](images/prometheus-list-stock-empty-graph.png)
 
