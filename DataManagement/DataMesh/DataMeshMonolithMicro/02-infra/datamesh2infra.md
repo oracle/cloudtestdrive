@@ -71,7 +71,7 @@ You can click View VCN Details and see both a Public and Private subnet were cre
 
 ## Step 3 - Create an second ATP Instance - TargetADW
 
-Repeat the steps of the previous lab to create a second DB - the DB used by our target Microservice, using the same steps as before except for the name of the instance 
+Repeat the steps of the previous lab to create a second DB - the DB used by our target Microservice, using the same steps as before except for the type and name of the instance 
 
 - Choose a database of the type **Data Warehouse**
 

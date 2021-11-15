@@ -20,7 +20,7 @@ First step is to set up the monolith application DB schema in the database **Sou
 
   
 
-- Click on the database named **SourceATP **to go to the detail screen of the DB Instance, 
+- Click on the database named **SourceATP** to go to the detail screen of the DB Instance, 
   and click on the **Tools** tab, then open the **Database Actions**
 
   ![image-20211031191551319](images/image-20211031191551319.png)
@@ -98,31 +98,31 @@ We will be using this database to offer access to our data to other domains.  A 
 
   ![image-20211104110656872](images/image-20211104110656872.png)
 
-- On the overview screen, select **Modules** from the top menu:
+-  On the overview screen, select **Modules** from the top menu:
 
   ![image-20211104110924887](images/image-20211104110924887.png)
 
-- Use the **Create Module** button on the top right to create a first module :
+-  Use the **Create Module** button on the top right to create a first module :
 
-- Enter the name of the module : **com.oracle.mydomain.mymodule**
+-  Enter the name of the module : **com.oracle.mydomain.mymodule**
 
-- Enter the **Base Path**: **`/datadomain/`**
+-  Enter the **Base Path**: **`/datadomain/`**
 
-- Select **Not Protected** for the parameter **Protected By Privilege**.  
+-  Select **Not Protected** for the parameter **Protected By Privilege**.  
 
-- Click **Create**
+-  Click **Create**
 
   ![image-20211104111720733](images/image-20211104111720733.png)
 
-- The Module screen will open up, select the **Create Template** button on the right
+-  The Module screen will open up, select the **Create Template** button on the right
 
-- In the Create Template screen, enter the URI Template : **demographics**
+-  In the Create Template screen, enter the URI Template : **demographics**
 
-- Leave all other parameters at their default and click the **Create** button
+-  Leave all other parameters at their default and click the **Create** button
 
   ![image-20211104112150372](images/image-20211104112150372.png)
 
-- Now click the **Create Handlers** button, and enter the following SQL statement :
+-  Now click the **Create Handlers** button, and enter the following SQL statement :
 
   ```
   <copy>SELECT
@@ -151,18 +151,23 @@ We will be using this database to offer access to our data to other domains.  A 
     'Other') career
   FROM OSM3.customers</copy>
   ```
-  
-  ![image-20211104143820870](images/image-20211104143820870.png)
 
-- Your REST API is now available! Try it out by visiting the URL through a broowser via the link icon on the right of the Handler overview
+-  Change the parameter **Items Per Page** to **0** : this will select all records from the table in one go.  In a real deployment your application should handle the pagination of the results, we simplified here for clarity of the application.
+
+-  Clidk **Create**
+
+   ![image-20211104143820870](images/image-20211104143820870.png)
+
+-  Your REST API is now available! Try it out by visiting the URL through a broowser via the link icon on the right of the Handler overview
 
   ![image-20211104144016475](images/image-20211104144016475.png)
 
-You should see the JSON payload of your query:
+You should see the JSON payload of your query, which will return no entries at this point in the lab :
 
-![image-20211104144152054](images/image-20211104144152054.png)
+![image-20211115160838320](images/image-20211115160838320.png)
 
-Later we will use this URL to enable other domains to access this data.
+**Attention!** Later we will use this URL to enable other domains to access this data, 
+so make sure to **note down this URL**
 
 
 

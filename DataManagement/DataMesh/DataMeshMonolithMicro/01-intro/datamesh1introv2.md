@@ -72,7 +72,7 @@ To run these labs you will need access to an Oracle Cloud Account.
 
 We will be using some scripts and application code during this lab.  They have been grouped in a zipfile to be downloaded to your laptop.
 
-- Download the zip file with the various scripts, db schema's and the source code of the microservice to your local machine via **[this link](code/labfiles.zip)**.  
+- Download the zip file via **[this link](code/labfiles.zip)**.  
 - Unzip the file on your laptop, and remember the location, we will be using these files in the following steps.
 
 
