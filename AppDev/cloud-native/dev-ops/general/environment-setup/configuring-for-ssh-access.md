@@ -6,7 +6,7 @@
 
 One of the ways you can authenticate to access Oracle Cloud Infrastructure services is using a ssh based API Key In this module we will set that up.
 
-If you **already** have an ssh authentication 
+If you **already** have an ssh authentication token configured in OCI you can jump down to task 3: Updating your ssh configuration
 
 ### Objectives
 
