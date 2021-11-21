@@ -99,7 +99,7 @@ We will first register our 2 databases so we can use them in our Goldenate envir
 
     ![](images/02-06-add-checkpoint.png)
 
-8.  For **Checkpoint Table**, enter **"OSM3"."CHECKTABLE"**, and then click **Submit**.
+8.  For **Checkpoint Table**, enter **OSM3.CHECKTABLE**, and then click **Submit**.
 
     ![image-20211101131658363](images/image-20211101131658363.png)
     
@@ -136,7 +136,7 @@ We will first register our 2 databases so we can use them in our Goldenate envir
 9. On the Parameter File page, in the text area, add a new line and the following text:
 
     ```
-    TABLE OSM.*, 
+    TABLE OSM.*;
     ```
     
 10. Click **Create**. You're returned to the OCI GoldenGate Deployment Console Home page.

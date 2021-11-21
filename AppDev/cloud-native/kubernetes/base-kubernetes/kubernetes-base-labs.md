@@ -1158,37 +1158,37 @@ Note that it is possible to match multiple paths in the same ingress, and they c
 
 As we've mentioned before for the purposes of this lab we are not setting up official DNS domain entries (we're using `nip.io` to get around that) or creating official certificates (we're creating them locally using `step`) for this to work however that means that we need to use the `nip.io` "Fake" DNS Names with the IP address embedded in them
   
-  4. The multiple ingress rules files have a placeholder in them and there is a script that will replace the placeholder with the IP address. In the OCI Cloud shell type the following, at the prompt enter `y` (no need to press return)
+  4. The multiple ingress rules files have a placeholder in them and there is a script that will replace the placeholder with the IP address in a new version of the file. In the OCI Cloud shell type the following, at the prompt enter `y` (no need to press return)
   
   - `bash set-ingress-ip.sh $EXTERNAL_IP`
   
   ```
 Updating the ingress config to set 123.456.789.999 as the External IP address.
 Proceed ? y
-Updating ingress rules - setting 123.456.789.999 as the external IP address
-Updating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules.yaml
-Updating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules.yaml replacing ${EXTERNAL_IP} with 123.456.789.999
-Updating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules.yaml
-Updating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules.yaml replacing ${EXTERNAL_IP} with 123.456.789.999
-Updating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules.yaml
-Updating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules.yaml replacing ${EXTERNAL_IP} with 123.456.789.999
+Templating ingress rules - updating the template ingress rules yaml in /home/tim_graves/helidon-kubernetes/base-kubernetes setting 132.226.206.175 as the external IP address
+Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules.yaml to /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules-one.yaml
+Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules.yaml replacing ${EXTERNAL_IP}.nip.io with 132.226.206.175.nip.io to destination /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules-one.yaml
+Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules.yaml to /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules-one.yaml
+Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules.yaml replacing ${EXTERNAL_IP}.nip.io with 132.226.206.175.nip.io to destination /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules-one.yaml
+Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules.yaml to /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules-one.yaml
+Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules.yaml replacing ${EXTERNAL_IP}.nip.io with 132.226.206.175.nip.io to destination /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules-one.yaml
 
 ```
 
 Note that the output above is for an external IP of `123.456.789.999` This is of course not a real world IP address and your output will reflect the IP address of your controller.
 
-  5. There is a shell script that will apply each of the ingress rules yaml files. Using a script here is prefered as it is reproducible and minimises the chance of typo's, mistakes or forgetting to apply a file. of course in a production system you'd probabaly be using an automated deployment tool insted of this script. In the OCI cloud shell type
+  5. There is a shell script that will apply each of the ingress rules yaml files. Using a script here is prefered as it is reproducible and minimises the chance of typo's, mistakes or forgetting to apply a file. of course in a production system you'd probabaly be using an automated deployment tool instead of this script. In the OCI cloud shell type
   
   - `bash create-ingress-rules.sh`
   
   ```
-Applying /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules.yaml
+Applying /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules-one.yaml
 ingress.networking.k8s.io/stockmanager-direct-ingress created
 ingress.networking.k8s.io/stockmanager-rewrite-ingress created
-Applying /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules.yaml
+Applying /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules-one.yaml
 ingress.networking.k8s.io/storefront-direct-ingress created
 ingress.networking.k8s.io/storefront-rewrite-ingress created
-Applying /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules.yaml
+Applying /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules-one.yaml
 ingress.networking.k8s.io/zipkin-direct-ingress created
 
 ```

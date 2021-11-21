@@ -21,7 +21,7 @@ In this lab, you will:
 
 - Open the **Cloud Shell** of your console
 
-  ![image-20211021161448356](/Users/jleemans/dev/github/cloudtestdrive/DataManagement/DataMesh/DataMeshMonolithMicro/03-microservice/images/image-20211021161448356.png)
+  ![image-20211021161448356](images/image-20211021161448356.png)
 
   
 
