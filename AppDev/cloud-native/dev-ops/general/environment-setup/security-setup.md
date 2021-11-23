@@ -123,15 +123,21 @@ We are going to create three dynamic groups for identifying the code repositorie
   
   5. Follow the above process, to create two more groups as described below, remember to replace `<YOUR INITIALS` and `<Your Compartment OCID>` in these groups.
   
-  Code dynamic group
-  Name it `<YOUR INITIALS>CodeReposDynamicGroup`
-  Description is `This dynamic group identifies the OCI code repositories resources`
-  Set the rule to `ALL {resource.type = 'devopsrepository', resource.compartment.id = '<Your Compartment OCID>'}`
+  Code dynamic group:
 
-  Deployment dynamic group
-  Name It `<YOUR INITIALS>DeployDynamicGroup`
-  Description is `This dynamic group identifies the deployment tools resources`
-  Set the rule to `ALL {resource.type = 'devopsdeploypipeline', resource.compartment.id = '<Your Compartment OCID>'}`
+  - Name it `<YOUR INITIALS>CodeReposDynamicGroup`
+
+  - Description is `This dynamic group identifies the OCI code repositories resources`
+
+  - Set the rule to `ALL {resource.type = 'devopsrepository', resource.compartment.id = '<Your Compartment OCID>'}`
+
+  Deployment dynamic group:
+  
+  - Name It `<YOUR INITIALS>DeployDynamicGroup`
+
+  - Description is `This dynamic group identifies the deployment tools resources`
+
+  - Set the rule to `ALL {resource.type = 'devopsdeploypipeline', resource.compartment.id = '<Your Compartment OCID>'}`
   
   Once you have created the three dynamic groups you will see them in dynamic groups list. It is **critical** that you followed the instructions above and in particular remembered to use the OCID of **your** compartment.
   
@@ -139,22 +145,77 @@ We are going to create three dynamic groups for identifying the code repositorie
   
 ## Task 4: Define the policies
 
-OCI Security uses policies to 
+OCI Security uses policies to determine what groups can do. We need to setup policies that will allow our groups to perform operations within OCI. **IMPORTANT** We will be doing this based on your compartment, not on the entire tenancy (which would be a bad thing to do). 
 
-Now create the policies. Go to Identity & Security -> Policies
-Note you have to set the policies in a parent of your compartment, so if your compartment is /CTDOKE (most likley if you are running in a free trial account) then in the Compartment selector (Under List scope on the left side of the UI) make sure that the root is selected (this will be your tenancy name followed by (root) )
-If however your compartment is say MyProject within another compartment, for example /Dev/MyTeam/MyProject then the easiest approach is to make sure in the compartment selector that /Dev/MyTeam is chosen.
+Policies are applied in the parent of the compartment you are operating in, (or actually anything in the hierarchy, but it's easiest to just use the parent). In a free trial tenancy where you created the `CTDOKE` compartment in the tenancy root that means you will be applying the policies in the tenancy root (and these instructions will use that in the examples). However if for some reason you created your compartment as a sub compartment of another compartment you will need to remember to apply the policies in the parent compartment that contains the compartment you created. Of course if you chose a different compartment name you will need to use that instead of `CTDOKE`
 
-Create the following policies  - note that you should replace <compartment name> with the name of the compartment you created / are using for the lab, if you are doing this lab externally then that will probably be CTDOKE, if you are doing this in a non free trial and your compartmenbt is say /Dev/MyTeam/MyProject then <compartment name> would neet to be replaced by `MyProject`
+  1. Open the OCI Web console, Now create the policies. Click the "Hamburger" menu, then Go to Identity & Security then Policies
+  
+  ![](images/policies-access-service.png)
+  
+  2. On the left side of the page locate the **Compartment** selector, In the image be low there are lots of compartments, the list (size and also names) will be different in your case. Click in it and *make certain* that you have selected the *parent* compartment of the compartment you created. If you created the `CTDOKE` compartment in the root (this is what you probably will have done if you are using a free trial and following the instructions) then select the *root* If for example you had created the `TimGraves` compartment in the `Users-compartment` (this of cpurse is my setup, yours may vary) then you will need to select `Users-Compartment` as that's the parent of the `TimGraves` compartment.
+  
+  ![](images/policies-select-compartment.png)
+  
+  3. Click on the `parent` of your compartment, the dropdown will collapse to show it's selected as per the image below. Now click on **Create Policy** to open the Create policy form. (This tenancy has lots of policies already existing in the root compartment, yours probably will not)
+  
+  ![](images/policies-initial-create.png)
+  
+  4. Name the policy `<Your initials>DevOpsUsersPolicy` Of course you should replace `<Your initials>` with your initials, so as my initials are `tg` in the example image below I've named the group `tgDevopsUsersPolicy` Set the description to be `This policy allows members of the DevOps user group to interact with the DevOps services`. 
+  
+  ![](images/policies-create-policy-part1.png)
+  
+  5. Click the **Manual editor** button if it's not already enabled (it will be grey if not enabled and blue if enabled). In the Policy builder box paste the following AFTER substituting your initials (tg in this image) and your compartment name CTDOKE in this image `Allow group <YOUR INITIALS>DevOpsUsersGroup to manage devops-family in compartment <compartment name>` Then click the **Create** button
+  
+  ![](images/policy-create-policy-part2.png)
+  
+  6. The details of your new policy will show up in the UI click **Policies**  in the "Breadcrumb" trail to return to the policies list
+  
+  ![](images/policy-created-policy.png)
+  
+  7. Follow the process above to create policies that will allow the build, deploy and code repos dynamic group members (these are built using dynamic groups which will contain resources rather than users) to manage everything in the tenancy (it would be possible to put specific policy approvals in place on specific resources, but for a lab this is easier). Remember you will need to replace `<Your initials>` and `<compartment name>` and also you will need to create these in the **parent** compartment of your compartment.
+  
+  This allows the code repositories to trigger a build when you do a git push:
+  
+  - Name `<YOUR INITIALS>DevOpsCodeRepoPolicy`
+  
+  - Description `This policy allows the dynamic group of code repo resources resources to create trigger the build process`
+  
+  - Policy text `Allow dynamic-group <YOUR INITIALS>CodeReposDynamicGroup to manage all-resources in compartment <compartment name>`
+  
+  This allows the Build pipelines to create the build runners when you run a build 
+  
+  - Name `<YOUR INITIALS>DevOpsBuildPolicy`
+  
+  - Description `This policy allows the dynamic group of build resources resources to create build runners, and trigger deployments`
 
-This policy allows the user group to do interact with the devops services
-Allow group <YOUR INITIALS>DevOpsUsersGroup to manage devops-family in compartment <compartment name>
+  - Policy text `Allow dynamic-group <YOUR INITIALS>BuildDynamicGroup to manage all-resources in compartment <compartment name>`
+  
+  This allows the deploy pipelines to manipulate the environments they are deloying to
+  
+  - Name `<YOUR INITIALS>DevOpsDeployPolicy`
 
-This policy allows the dynamic group of build resources resources to create build runners and the similar things
-Allow dynamic-group <YOUR INITIALS>BuildDynamicGroup to manage all-resources in <compartment name>
+  - Description `This policy allows the deployment tooling to interact with the destination systems (OKE, Functions etc.)`
+  
+  - Policy Text `Allow dynamic-group <YOUR INITIALS>DeployDynamicGroup to manage all-resources in compartment <compartment name>`
+  
+  Once you have created all the policies if you return to the policies list one more time (Use the "breadcrumb" on the upper left) you will see something like the following
+  
+  ![](images/policy-all-created.png)
+  
+  Of course these all use my initials !
+  
 
-This policy allows the deployment tooling to interact with the destination systems (OKE, Functions etc.)
-Allow dynamic-group <YOUR INITIALS>DeployDynamicGroup to manage all-resources in compartment <compartment name>
+## End of the Module, what's next ?
+
+Congratulations, you've completed the security configuration to use the OCI DevOps service
+
+Next step is to start creating a DevOps project !
+
+## Acknowledgements
+
+* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Last Updated By** - Tim Graves, November 2021
 
 If you want to see the official documentation on setting these up then please see
 https://docs.oracle.com/en-us/iaas/Content/devops/using/devops_iampolicies.htm
