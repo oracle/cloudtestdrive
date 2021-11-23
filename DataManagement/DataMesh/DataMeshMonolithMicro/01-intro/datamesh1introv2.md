@@ -21,9 +21,7 @@ In this lab we will walk you through the following steps :
 
 The below picture represents the various components of the lab:
 
-![image-20211115093401165](images/image-20211115093401165.png)
-
-
+![image-20211123113203184](images/image-20211123113203184.png)
 
 
 

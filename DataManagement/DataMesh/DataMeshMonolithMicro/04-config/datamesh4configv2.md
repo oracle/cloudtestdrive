@@ -6,7 +6,14 @@
 
 ## Objective
 
-This chapter will go through the process of creating database objects representing the 3 environments we need for this lab.
+This chapter will go through the process of creating database objects representing the 2 environments we need for this lab.
+
+- We will set up a schema in the **SourceATP** database for the Monolith application, called OSM
+- We'll enable the GoldenGate user of the **SourceATP** so we can use it to set up the dataflows later in the lab
+- We'll prepare the target DB schema called OSM3 in the **TargetADW** DB
+- And finally we'll also enable the GoldenGate user of the **TargetADW** database.
+
+Estimated Lab Time: 15 minutes
 
 
 

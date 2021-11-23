@@ -10,12 +10,12 @@ Estimated Lab Time: 10 minutes
 
 In this lab, you will:
 * Set up your Cloud Shell for running a microservice
-
 * Start a load simulator on the side of the Monolith application
-
 * Check the flow of data in the databases, the GoldenGate console and the Microservice application
 
-  
+Estimated Lab Time: 10 minutes
+
+
 
 ## Step 1 - Set up your Cloud Shell for running a microservice
 

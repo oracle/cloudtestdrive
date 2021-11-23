@@ -6,7 +6,7 @@ This section will explain how to create the infrastructure components needed in 
 - Two **Autonomous database instances**, one for the Source Classic application, and one for the Target micorservices
 - An Deployment of **OCI GoldenGate** to manage the data flow between the two systems
 
-
+Estimated Lab Time: 15 minutes
 
 ## Step 1 - Create a VCN and subnet
 
