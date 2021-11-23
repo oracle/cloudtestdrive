@@ -1,3 +1,22 @@
+![](../../../../common/images/customer.logo2.png)
+
+# DevOps Lab Setup introduction
+
+## Introduction
+
+One of the ways you can pass information into a OCI DevOps build pipeline is to store it in a secret in an OCI vault. To do this of course we need to create a vault, and a master key to encrypt secrets held within the vault.
+
+### Objectives
+
+Using the OCI Cloud shell and Browser User Interface we will :
+
+  - Create a OCI Vault
+  
+  - Create a master key for the vault
+  
+ 
+### Prerequisites
+
 We've done all the background setup needed for DevOps, and have our Kubernetes cluster running with the Storefront and Stockmanager services in place, so it's time to start creating our DevOps projects.
 
 Our first task it to create a notification service that DevOps will use to communicate progress between it's different elements.
@@ -47,3 +66,12 @@ On the page of your newly created project in the amber "Warning" box titled **En
 
 Use the toggle to enable the log and in the popup leave all the fields unchanged from theprovide defaults and click the **Enable log** button at the bottom. It will take a short while to setup the login 
 
+## End of the Module, what's next ?
+
+Congratulations, you're now ready to use your vault to hold secret configuration information, The next step is to configure your environment for ssh access.
+
+## Acknowledgements
+
+* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Last Updated By** - Tim Graves, November 2021
+  

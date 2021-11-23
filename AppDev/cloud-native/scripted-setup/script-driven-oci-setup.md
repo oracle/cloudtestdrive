@@ -154,7 +154,7 @@ Now please go to **Task 3**
 
 ### Task 2b: Downloading step and creating the root certificate
 
-To make setting `step` up easier (manually it requires a lot of visits to different pages to get the download details) I have created a script that will to the page navigation, parsing, downloads, unpacking, and installation of `step` for you.
+To make setting `step` up easier (manually it requires a lot of visits to different pages to get the download details) I have created a script that will dso the page navigation, parsing, downloads, unpacking, and installation of `step` for you.
 
   1. Open the OCI cloud shall and go to the scripts directory, type
   
@@ -185,7 +185,7 @@ This has downloaded the latest version of `step` and created the root certificat
 
 ## Task 3: Recording your initials
 
-For a number of activities in the lab we use your initials to identify instances (database, Kubernetes etc.) We do this to enable multiple user to use the same tenancy in some versions of the lab. 
+For a number of activities in the lab we use your initials to identify instances (database, Kubernetes etc.) We do this to enable multiple user to operate in the same tenancy withouth conflict (This is only for some versions of the lab, in most cases you will be using your own free trial tenancy). 
 
 We need to capture your initials and save them. It is important that when you enter your initials you use lower case only and only the letters a-z, no numbers of special characters
 
@@ -193,7 +193,7 @@ We need to capture your initials and save them. It is important that when you en
   
   - `cd $HOME/helidon-kubernetes/setup/common`
   
-  2. Run the script to gather and save your initials, when prompted by the script enter your initials and press return, in the example below as my name is Tim Graves I used tg as the initials
+  2. Run the script to gather and save your initials, when prompted by the script enter your initials and press return, in the example below as my name is Tim Graves I used `tg` as the initials
   
   - `bash ./initials-setup.sh`
   
@@ -273,8 +273,8 @@ Do you want to use tglab as the name of the Kubernetes cluster to create or re-u
   3. If you already have an existing cluster in this compartment with a different name you want to reuse, or you just want a different name then type `n` and when prompted enter the name for the cluster to create or reuse. If you do not have an existing cluster to reuse and are happy with the proposed name type `y`
   
   ```
-Checking for cluster tglab1
-Creating cluster tglab1
+Checking for cluster tglab
+Creating cluster tglab
 Downloading terraform
 Cloning into 'terraform-oci-oke'...
 ...
@@ -305,7 +305,7 @@ Downloading oracle-terraform-modules/bastion/oci 3.0.0 for bastion...
       + default_route_table_id   = (known after apply)
       + default_security_list_id = (known after apply)
       + defined_tags             = (known after apply)
-      + display_name             = "oke_-oke-vcn-tglab1"
+      + display_name             = "oke_-oke-vcn-tglab"
       + dns_label                = "oke"
       + freeform_tags            = {
           + "environment" = "dev"
@@ -318,7 +318,7 @@ Downloading oracle-terraform-modules/bastion/oci 3.0.0 for bastion...
       + vcn_domain_name          = (known after apply)
     }
 ...
-<Lots of terraform output about what iut plans on doing>
+<Lots of terraform output about what it plans on doing>
 ...
 module.vcn.oci_core_internet_gateway.ig[0]: Creation complete after 0s [id=ocid1.internetgateway.oc1.eu-frankfurt-1.aaaaaaaaigrb67idaauxrvz76pwdxrtw6p3ao5jck3wgujh4ndpqnaekqefa]
 module.vcn.oci_core_route_table.ig[0]: Creating...
@@ -333,7 +333,7 @@ module.network.data.oci_core_vcn.vcn: Reading...
 module.network.data.oci_core_subnets.oke_subnets: Reading...
 module.network.oci_core_network_security_group.pub_lb[0]: Creating...
 ...
-<Lots of Terraform output showing you it's progress>
+<Lots of Terraform output showing you its progress>
 ...
 module.extensions.time_sleep.wait_30_seconds: Still creating... [30s elapsed]
 module.extensions.time_sleep.wait_30_seconds: Creation complete after 30s [id=2021-11-20T17:54:08Z]
@@ -370,7 +370,7 @@ Renaming context
 Context "context-cwy64pje7gq" renamed to "one".
 ```
 
-You can see the progress of Terraform, and that it spends time waiting for the actions is initiates to complete, but after a while (and assuming you have enough resources available to you) you will see that the process completes. Terraform displays it's outputs and then the script finished the work of setting up your configuration so it's ready to use.
+You can see the progress of Terraform, and that it spends time waiting for the actions it initiates to complete, but after a while (and assuming you have enough resources available to you) you will see that the process completes. Terraform displays it's outputs and then the script finished the work of setting up your configuration so it's ready to use.
 
 
 ### Task 5b: Confirming that the cluster was created and is running.

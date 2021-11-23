@@ -199,7 +199,9 @@ Host devops.scmservice.*.oci.oraclecloud.com
 
 ## End of the Module, what's next ?
 
-Congratulations, you're now ready to use ssh keys to access OCI services !
+Congratulations, you're now ready to use ssh keys to access OCI services
+
+Your next step is to configure the security groups and policies in OCI
 
 ## Acknowledgements
 

@@ -9,14 +9,14 @@ Welcome to the setup part of this lab
 There is some setup required before we can start using the DevOps service to build our pipelines service. 
 
 This setup covers :
+  
+  - Creating a Vault to securely hold our configuration information
 
   - Configuring an ssh identification token to enable code to be pushed into a git repository in the DevOps service
   
   - Defining dynamic groups to identify DevOps services running in your compartment
   
   - Defining policies that allow the dynamic groups to control services in your compartment 
-  
-  - Creating a Vault to securely hold out configuration information
   
   - Creating a notifications topic which is used by the individual parts of the DevOps service to communicate with each other
   
