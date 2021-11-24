@@ -1,18 +1,72 @@
+![](../../../../common/images/customer.logo2.png)
+
+# DevOps Lab Git repo Setup
+
+## Introduction
+
 We need a git repo to work with. There are many ways we can work with git in the DevOps service, we could use a repo in github or gitlab directly or create a OCI Code repo (basically a git repo) inside your project which is an automatically updating a mirror of an external git repo on gitlab or github. You could even create your own separate copy of the origional rep in github, but for all of these options you would need to have a github account and also a personal access token and that complicates things (and keeping up with changes to the OCI web UI is hard enough, having to keep up with github / gitlab changes as well would make it difficult to keep this lab up to date.
 
-So for this lab we are going to chose a different approach where every one has a OCI Code repo in their own project, that way you can easily update it and I don't have to worry about trying to push into my main repo holding the demo code !
+For this lab we are going to take the different approach where every one has a Git repo (officially here an OCI Code repo) in their own project, that way you can easily update it without having conflichts with other users - and I don't have to worry about trying to push changes into my main repo holding the demo code !
+
+### Objectives
+
+Using the OCI Cloud shell and Browser User Interface we will :
+
+  - Create a git repo in your devops project.
+
+  - Use git to transfer the sample project from github to the OCI Cloud Shell environment
+  
+  - Use Git to upload the sample code to the git repo in your devops project
+  
+  - Look around the code repo.
+  
+ 
+### Prerequisites
+
+You've done all the background setup needed for DevOps (Creating Vaults, ssh API Keys, security groups and policies). Have our Kubernetes cluster running with the Storefront and Stockmanager services in place, and have created your DevOps project.
+
+## Task 1: Creating the git repo in your Devops Project
 
 To start with we're going to create a the OCI Code repo in your project.
 
-On the left side of the project page click on the **Code Repositories** link
+  1. If you are not already there navigate to your DevOps project home page. 
+  
+<details><summary><b>How to get to your DevOps project home page</b></summary>
 
-Click on the **Create repository** button
+  - Go to the DevOps service home page - click the "Hamburger" menu select  **Developer Services** select **Projects**
+  
+  ![](images/devops-access-projects-list.png)
+  
+  You will see a list of projects
 
-Name the repository cloudnative-storefront-helidon
+  ![](images/devops-select-your-project.png)
 
-Provide a description if you like, but leave the default branch name blank (it will be set to `main`)
+  - Click on your project name in the list, in my case that's `tgDevOpsProject` but yours may vary, you will be taken to your projects home page
+  
+  ![](images/devops-project-home-page-just-created.png)
 
-It will take a short while to create the repository
+---
+</details>  
+
+
+
+  2. On the left side of the project page click on the **Code Repositories** link
+  
+  ![](images/code-repo-access-service.png)
+
+  3. Click on the **Create repository** button, this will open the **Create repository** popup
+  
+  ![](images/code-repo-create-repo-button.png)
+
+  4. Name the repository `cloudnative-storefront-helidon`, Provide a description if you like, but leave the default branch name blank (it will be set to `main`). Click the **Create repository** button
+  
+  ![](images/code-repo-create-form.png)
+
+  It will take a short while to create the repository, then you will be taken to it's home page
+  
+  ![](images/code-repo-home-page-just-created.png)
+  
+## Task 2: Populating our code repo
 
 Now we are going download the original repo with the source code for this lab into the OCI cloud shell. We are using the OCI Cloud shell because it has all of the commands we need to do this lab, so you don't need to setup anything on your laptop, we can even make changes to the source code to demonstrate that the pipelines do deploy them! In a production environment of course you'd use your own development systems.
 

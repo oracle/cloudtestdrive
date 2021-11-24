@@ -153,7 +153,7 @@ Policies are applied in the parent of the compartment you are operating in, (or 
   
   ![](images/policies-access-service.png)
   
-  2. On the left side of the page locate the **Compartment** selector, In the image be low there are lots of compartments, the list (size and also names) will be different in your case. Click in it and *make certain* that you have selected the *parent* compartment of the compartment you created. If you created the `CTDOKE` compartment in the root (this is what you probably will have done if you are using a free trial and following the instructions) then select the *root* If for example you had created the `TimGraves` compartment in the `Users-compartment` (this of cpurse is my setup, yours may vary) then you will need to select `Users-Compartment` as that's the parent of the `TimGraves` compartment.
+  2. On the left side of the page locate the **Compartment** selector, In the image be low there are lots of compartments, the list (size and also names) will be different in your case. Click in it and *make certain* that you have selected the *parent* compartment of the compartment you created. If you created the `CTDOKE` compartment in the root (this is what you probably will have done if you are using a free trial and following the instructions) then select the *root*. If for example you had created the `TimGraves` compartment in the `Users-compartment` (this of course is my setup, yours may vary) then you will need to select `Users-Compartment` as that's the parent of the `TimGraves` compartment.
   
   ![](images/policies-select-compartment.png)
   

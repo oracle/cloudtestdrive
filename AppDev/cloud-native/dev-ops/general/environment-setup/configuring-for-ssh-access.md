@@ -102,7 +102,7 @@ xwIDAQAB
 
 ### Task 2: Adding the key to your account
 
-Let's set this up as an API token in your account.
+Let's set this up as an API key in your account.
 
   1. Navigate to your user details page
   

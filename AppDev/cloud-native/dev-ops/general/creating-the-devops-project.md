@@ -102,7 +102,7 @@ The DevOps services usine the OCI logging service to record ths output it genera
   
 ## End of the Module, what's next ?
 
-Congratulations, you're now ready to start setting up your DevOps project, the next step is to configure your git repo and upload some contents to it.
+Congratulations, you're now ready to start using your DevOps project.
 
 ## Acknowledgements
 
