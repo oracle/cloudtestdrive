@@ -10,9 +10,9 @@ One of the ways you can pass information into a OCI DevOps build pipeline is to 
 
 Using the OCI Cloud shell and Browser User Interface we will :
 
-  - Create a OCI Vault
+  - Create a Notifications topic used for the DevOps services elements to communicate between themselves
   
-  - Create a master key for the vault
+  - Create a DevOps project
   
  
 ### Prerequisites
@@ -21,6 +21,8 @@ We've done all the background setup needed for DevOps, and have our Kubernetes c
 
 Our first task it to create a notification service that DevOps will use to communicate progress between it's different elements.
 
+
+## Task 1: 
 Go to the notifications service page
 Hamburger menu -> Developer Services -> Notifications
 

@@ -14,7 +14,7 @@ To use the scripts to setup the core Kubernrtes services
 
 You must have setup the compartment, database (including setting up the labs user and downloading the Wallet.zip file) and Kubernetes cluster (including downloading the kubectl config file, and naming the clusters context as "one"). You can have done this by hand or by using the scripts as detailed in the **Setting up the OCI environment using scripts** module.
 
-### Do not use these scripts 
+### When not to use these scripts 
 
 If you have got a Kubernetes cluster running and have setup all of the services as described in the base kubernetes lab (so Ingress controller, Kubernetes Dashboard, Services / Ingress rules / configuration (config  map / secrets) / Deployments for the Storefront / Stockmanager / Zipkin microservices. Using this script if those already exist may result in an inconsistent state.
 
@@ -432,9 +432,13 @@ Skipping confirmation, switching the kubernetes context to one - this will apply
 Switched to context "one".
 Switched, new default context is is
 one
-```
 
-If the database already contains data then you will see the `HTTP/1.1 500 Internal Server Error` messages when the script tries to create the test data.
+```
+---
+
+</details>
+
+If the database already contains data then you may see the `HTTP/1.1 500 Internal Server Error` messages when the script tries to create the test data.
 
 ## Task 3: Viewing the results
 
@@ -482,7 +486,7 @@ Strict-Transport-Security: max-age=15724800; includeSubDomains
 ```
 
 The output above shows that the shop is "alive" and is version "0.0.1"
-  
+ 
   - In the OCI cloud shell copy and paste the curl command ending oin /store/stocklevel from the clusterSettings.one file
   
   - `curl -i -X GET -u jack:password -k https://store.123.456.789.123.nip.io/store/stocklevel`
