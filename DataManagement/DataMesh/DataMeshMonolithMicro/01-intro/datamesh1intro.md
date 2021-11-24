@@ -4,7 +4,7 @@
 
 ## Objective of this lab
 
-This Lab will walk you through the steps to set up a Data Mesh to organize your data flows between classic Monolith applications, typically using a relational database schema, and various other applications, for example microservices that run in a different location and store their data in different ways, for example as JSON text.
+This Lab will walk you through the steps to set up a Data Mesh to organize your data flows between classic Monolith applications, typically using a relational database schema, and various other applications, for example microservices that run in a different location and store their data in different ways, for example as JSON document.
 
 ### What will we do in this lab?
 

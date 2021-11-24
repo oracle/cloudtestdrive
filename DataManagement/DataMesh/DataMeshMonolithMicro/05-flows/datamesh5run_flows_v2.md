@@ -29,7 +29,7 @@ Estimated Lab Time: 10 minutes
 
   ![image-20211115123408448](images/image-20211115123408448.png)
 
-- Because this application is written in Ruby, and is using a library called **faraday**, we need to install tjhis in our environment before we can run the application, by running the below command : 
+- Because this application is written in Ruby, and is using a library called **faraday**, we need to install this in our environment before we can run the application, by running the below command : 
 
   ```
   gem install faraday

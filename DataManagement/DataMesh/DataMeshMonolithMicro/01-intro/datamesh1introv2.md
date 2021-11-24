@@ -4,13 +4,13 @@
 
 ## Objective of this lab
 
-This Lab will walk you through the steps to set up a Data Mesh to organize your data flows between classic Monolith applications, typically using a relational database schema, and various other applications, for example microservices that run in a different location and store their data in different ways, for example as JSON text.
+This Lab will walk you through the steps to set up a Data Mesh to organize your data flows between classic Monolith applications, typically using a relational database schema, and various other applications, for example microservices that run in a different location and store their data in different ways, for example as JSON document.
 
 ### What will we do in this lab?
 
 In this lab we will walk you through the following steps : 
 
-- Set up two Autonomous Databases and a database schema for each: one representing the monolith application, and one representing the Domain DWH exposing some data of the domain to external applications through ORDS
+- Set up two Autonomous Databases and a database schema for each: one representing the monolith application, and one representing the Domain DWH exposing some data of the domain to external applications through ORDS (Oracle Rest Data Services)
 - Set up the GoldenGate Data Integration environment by creating an instance of the OCI GoldenGate cloud service
 - Configure the data flows in the GoldenGate environment: set up an Extractor and a Replicat.
 - Observe the resulting data flows in the various applications and data sources
