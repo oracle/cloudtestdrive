@@ -20,11 +20,9 @@ The actual lab
 
 general/creating-the-devops-project.md
 
-oke-labs/storefront-git.md
+oke-labs/uploading-code-to-the-repo-and-examining-it.md
 
-oke-labs/examining-the-repo-and-build-spec.md
-
-oke-labs/updating-the-build-spec.md
+oke-labs/examining-and-updating-the-build-spec.md
 
 oke-labs/creating-the-first-pipeline.md
 

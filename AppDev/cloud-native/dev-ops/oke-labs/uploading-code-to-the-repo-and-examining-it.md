@@ -16,7 +16,9 @@ Using the OCI Cloud shell and Browser User Interface we will :
 
   - Use git to transfer the sample project from github to the OCI Cloud Shell environment
   
-  - Use Git to upload the sample code to the git repo in your devops project
+  - Use Git to upload the sample code to the OCI Code repo in your devops project
+  
+  - Have a look at the code in the OCI Code Repo
   
  
 ### Prerequisites
@@ -198,9 +200,41 @@ To ssh://devops.scmservice.eu-frankfurt-1.oci.oraclecloud.com/namespaces/oraseem
   
   ![](images/code-repo-confirm-initial-git-upload.png)
 
+## Task 4: Exploring our code
+
+Let's have a look at the state of our projects OCI code repository. From the Code repository home page we can see the root code of the project
+
+  1. Click on the `helidon-storefront-full` directory name in the repository contents, this will move us through the hierarchy to that directory.
+  
+  ![](images/code-repo-exploration-helidon-storefront-full.png)
+
+  2. We can see the files in the `helidon-storefront-full`, following the links continue to navigate to `src/main/java/com/oracle/labs/helidon/storefront/resources`
+  
+  ![](images/code-repo-exploration-to-resources-directory.png)
+
+  3. Click on the StaturResource.java this will open the source code file in the viewer
+  
+  ![](images/code-repo-exploration-StatusResource-top.png)
+  
+  
+  4. This is a simple file, scoll down past the copyright (Sorry, but Oracle require that's there) and if you have done the Helidon labs you will see that it's the code that is run when  the `/status` REST API is called, Note the line
+
+```java
+public final static String VERSION = "0.0.1";
+```
+
+  This is the version string that is returned when we call the `/status` end point, and as we go through the lab it's what we will be changing to show the CI/CD process has worked.
+
+Feel free to look at the other files in the repo if you wish.
+
+  5. Using the path "breadcrumb" at the top of the code display return to the `helidon-storefront-full` directory
+
+  ![](images/code-repo-explorations-repo-navigate-to-helidon-storefront-full-using-breadcrumb.png)
+
+
 ## End of the Module, what's next ?
 
-Congratulations, you've added the sample content to your OCI Code repo and are now ready to start exploring it.
+Congratulations, you've added the sample content to your OCI Code repo.
 
 ## Acknowledgements
 
