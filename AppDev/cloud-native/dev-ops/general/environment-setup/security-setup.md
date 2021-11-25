@@ -59,7 +59,7 @@ Compartment information is held with in the Identity and Access management servi
 
 We need to define a group of users, we will later use this group to create a OCI Security policy that allows users to create, manage and use the Dev Ops service.
 
-  1. Open the OCI Web console, Click on the "shadow" user icon on the upper right, note the user name that's displayed. In my case that's `oracleidentitycloudservice/tim.graves ` but if you are the administrator of a trial tenancy (highly likely if you are in a Oracle guided lab) you're user name will not include `oracleidentitycloudservice/` but will be just the email address you used to log in to the tenancy.
+  1. Open the OCI Web console, Click on the "shadow" user icon on the upper right, note the user name that's displayed. In trhis case that's `oracleidentitycloudservice/tim.graves` but if you are the administrator of a trial tenancy (highly likely if you are in a Oracle guided lab) you're user name will will include your email address, for example `oracleidentitycloudservice/john.doe@somewhere.com`.
   
   ![](images/bui-shadow-person-menu-username.png)
   

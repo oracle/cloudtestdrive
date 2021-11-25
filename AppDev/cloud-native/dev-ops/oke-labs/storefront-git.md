@@ -18,8 +18,6 @@ Using the OCI Cloud shell and Browser User Interface we will :
   
   - Use Git to upload the sample code to the git repo in your devops project
   
-  - Look around the code repo.
-  
  
 ### Prerequisites
 
@@ -196,7 +194,7 @@ To ssh://devops.scmservice.eu-frankfurt-1.oci.oraclecloud.com/namespaces/oraseem
   
   ![](images/code-repo-project-clone-info-close.png)
   
-  9. The OCI code repo has now updated, you can see that is has now got a number of commits, and also files. Note that you may need to return to your DevOps project home page (use the "Breadcrumbs" and then back into the code repo for the files list to update
+  9. The OCI code repo has now updated, you can see that is has now got a number of commits, and also files. Note that you may need to return to your Code Repositories list (use the "Breadcrumbs" and then back into your code repo) for the files list to update.
   
   ![](images/code-repo-confirm-initial-git-upload.png)
 

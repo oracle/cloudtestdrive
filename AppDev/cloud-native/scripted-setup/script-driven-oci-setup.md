@@ -245,6 +245,8 @@ It may take a short while before new compartment has propogated and the web UI r
 ```
   
   In this case the compartment `CTDOKE` (or whatever name you entered if you chose to override it) did not exist in the tenancy root, so the compartment was created, If it had existed then the script would have retrieved it's information for re-use.
+  
+  **Important** It can take a short while for the compartment information to be propagated to all OCI regions and environments.
  
 ## Task 5: Creating the Kubernetes cluster
 
@@ -263,6 +265,8 @@ This script will do some data gathering and then if a new cluster is required wi
   2. Run the script, in the OCI Cloud Shell type
   
   - `bash ./kubernetes-setup.sh`
+  
+  If you have just created the compartment get a message "Authorization failed or requested resource not found" and that "The provided COMPARTMENT_OCID or ocid1.co....oycu3a cant be located" then please wait a short while for the compartment information to propagate and try rtunning the script again. 
 
 ```
 Loading existing settings information
@@ -391,12 +395,8 @@ Thus we need to enable access to the Kubernetes management API endpoint from any
 ### Task 5b: Confirming that the cluster was created and is running.
 
 Once the scripts have completed you can check that the cluster is responding.
-
-  1. If you are not already there open the OCI cloud shell and go to the scripts directory, type
   
-  - `cd $HOME/helidon-kubernetes/setup/common`
-  
-  2. Use the Kubernetes control program `kubectl` to check on the nodes, in the OCI Cloud shell type
+  1. Use the Kubernetes control program `kubectl` to check on the nodes, in the OCI Cloud shell type
   
   - `kubectl get nodes`
 
