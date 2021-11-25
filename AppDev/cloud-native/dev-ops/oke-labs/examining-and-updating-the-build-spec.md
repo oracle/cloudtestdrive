@@ -1,21 +1,127 @@
+![](../../../../common/images/customer.logo2.png)
+
+# DevOps The Build spec, what is it and what does it do ?
+
+## Introduction
+
+To build code we generally need a set of instructions that tells ue what to build. In the good old days this would have been something called a makefile, but over the years many different build tools and processes have evolved, some of which use graphical build tools, and others still using a text file.
 
 
-Using the path "breadcrumb" at the top of the code display return to the `helidon-storefront-full` directory, then navigate to yaml -> build
 
-This directory contains the build_spec.yaml file which we use to actually run the build process. Please don;t go there, but the `helidon-storefront-full` -> yaml -> deplpoyment directory holds the Kubernetes manifests that do the actuall deployment. In this case they are in the same git repo as the source code, however that's not required, you could have multiple repos, one for the source code and another for the manifests if you wished and use files from either or both in the build and deploy process.
+### Objectives
 
-Click on the build_spec.yal to open it.
+Using the OCI Cloud shell and Browser User Interface we will :
 
-let's explain the build pipeline, this is sadly in YAML (I loathe YAML because it's whitespace sensitive, virtually every problem I've had with a YAML file has been because of that, it'a like going back to my very early days of programming at university when I had to use punch cards for Fortran befor being allowed to use the CRT terminals - but at least they always reserved 8 characters for the line number and didn't vary that indentation) 
+  - Look at the build_spec.yaml file and understand it's structure.
+
+  - Update the build_spec.yaml locally with vault variables
+  
+  - Use Git to upload the changed build_spec.yaml to the git repo in your devops project
+  
  
-Variables
-variables names in this section persist across build steps, but not across pipeline stages unless explicityly exported
-vaultVariables are replaced with the content of the vault secrets we will setup soon, these also persist across steps, but they cannot be exported themselves to prevent leakage of confidential information like logins and so on that are often stored in these variables
-exportedVariables are passed out of the build process to the following stages, ONLY variables named here are exported, so if you want a standard or vault variable to be exported you need to specify it here, you can't export a vaultVariable for security reasons, so if you want to do that you have to crate another variable to export, then in one of the stages transfer the values over.
+### Prerequisites
+
+Ensure that you have Created your Kubernetes environment, your devops project, your OCI code repo and uploaded the sample code.
+
+## Task 1: Exploring the build_spec.yaml
+
+  1. Open the OCI Code repo (called `cloudnative-storefront-helidon`) you created in your project, navigate to the `helidon-storefront-full/yaml/build` directory, open the `build_spec.yaml` file
+  
+  2. Scroll down past the Copyright text
+
+Let's explain the build pipeline, this is sadly in YAML (I loathe YAML because it's whitespace sensitive, virtually every problem I've had with a YAML file has been because of that, it'a like going back to my very early days of programming at university when I had to use punch cards for Fortran before being allowed to use the CRT terminals - but at least punch cards always reserved 8 characters for the line number and didn't vary that indentation) 
+
+### General header
+
+```yaml
+version: 0.1
+
+component: build
+
+timeoutInSeconds: 6000
+
+runAs: root
+
+shell: bash
+```
+
+This content provides the basic information needed by the build system, defining the version of the build spec used, how long the entire build process should take before being stopped, the user running the build (at the time of writing this is limited to root) and what shell should be used when execuring commands.
+ 
+### Environment / Variables
+
+In the `env` block we have three sections, `variables`, `vaultVariables` and `exportedVariables`
+
+#### The variable block 
+
+```yaml
+  variables:
+   JAVA_HOME: "javahome"
+```
+
+The variables specified in this section persist across build steps, but not across pipeline stages unless explicitly exported, this allows you to set a variable (for example the setting the location of the JDK when installing it) and reuse that later in another part of the build_spec.
+
+#### The vaultVariables block
+
+```yaml
+  vaultVariables:
+    OCIR_HOST_VAULT: Needs your host secrets OCID
+    OCIR_STORAGE_NAMESPACE_VAULT: Needs your storage namespace OCID
+ ```
+The vaultVariables are replaced with the content of the vault secrets we will setup soon, these also persist across steps, but they cannot be exported outside the build_spec to prevent leakage of confidential information like logins and so on that are often stored in these variables. The "Needs ... OCID" text is just a placeholder for now, later in this module we will setup the variables in the vauld and will replace the placeholder text with the OCID of the vault secrets.
+
+
+#### The exportedVariables block
+
+```yaml
+  exportedVariables:
+    - STOREFRONT_VERSION
+    - OCIR_HOST
+    - OCIR_STORAGE_NAMESPACE
+```
+
+The exportedVariables are passed out of the build process to the following stages, ONLY variables named here are exported, so if you want a standard variable to be exported to a subsequent build stage you need to specify it here.
+
+A variable defined here is automatically transfered between build stages as if it were defined in the `variables:` block.
+
+You can't export a vaultVariable for security reasons, so if you want to do that you have to crate another variable to export, then in one of the stages transfer the values over. This is why there is a vaultVariable names `OCID_HOST_VAULT` and an exportedVariable called `OCIR_HOST`
 
 Note that it's also possible to define parameters that you can set when the pipeline is run, those are processed as ${VARIABLE_NAME} we'll look at how to set them up later on
 
-Steps - these are individual stages executed by the build pipeline, the run in the same OS instance, BUT not in the same shell instance. If you want a variable to persist across steps you need to specify it in the variables section. Note that some variables like PATH are automatically persisted across sessions for you and you don't need to specify them.
+### The Steps section
+
+```yaml
+steps:        
+  - type: Command
+    name: "Extract Export variables"
+    timeoutInSeconds: 10
+    command: |
+      echo Path is
+      echo $PATH
+      echo JAVA_HOME is
+      echo $JAVA_HOME
+      cd ${OCI_PRIMARY_SOURCE_DIR}
+      echo Extracting export variables - Working in `pwd`
+      export STOREFRONT_VERSION=`grep "VERSION = " helidon-storefront-full/src/main/java/com/oracle/labs/helidon/storefront/resources/StatusResource.java  | awk '{print $7}' | sed -e 's/"//g' -e s'/;//'`
+      echo "STOREFRONT_VERSION: " $STOREFRONT_VERSION
+      echo image will be stored to ${OCIR_HOST}/${OCIR_STORAGE_NAMEPACE}/${YOUR_INITIALS}/storefront:${STOREFRONT_VERSION}
+      echo transferring the OCIR_HOST and OCIR_STORAGE_NAMESPACE vault variables
+      export OCIR_HOST=$OCIR_HOST_VAULT
+      echo OCIR_HOST is $OCIR_HOST
+      export OCIR_STORAGE_NAMESPACE=$OCIR_STORAGE_NAMESPACE_VAULT
+      echo OCIR_STORAGE_NAMESPACE is $OCIR_STORAGE_NAMESPACE
+    onFailure:
+      - type: Command
+        timeoutInSeconds: 40
+        command: |
+          echo "Handling Failure"
+          echo "Failure successfully handled"
+        timeoutInSeconds: 400
+        runAs: root
+```
+
+```
+
+Steps are the individual stages executed by the build pipeline, the run in the same OS instance, BUT not in the same shell instance. If you want a variable to persist across steps you need to specify it in the variables section. Note that some variables like PATH are automatically persisted across sessions for you and you don't need to specify them.
 Each step has a name and timeout (in case the step hands for some reason) unless otherwise specified it will run as root
 The core of the step is the commands that it runs, 
 
@@ -144,3 +250,10 @@ git push devops my-lab-branch
 Our changes have now been uploaded to the OCI Code repo, if you want go to the `cloud-native-storefront` Code Repository in your project, be sure to select the `my-lab-branch` in the branch selector and look at the build_spec.yaml, you'll see the updated values (of course these are mine, yours will be different)
 
 
+  
+<details><summary><b>What about the Kubernetes manifest files ?</b></summary>
+
+For this project the original Kubernetes manifest files are also in the same git repo (`helidon-storefront-full/yaml/deployment`) The use of a single git repo is for convenience setting upt he lab, but there is no requirement to have them in  the same git repo, you could have them in a different repo and bring them in to the process, or just upload them directly yo the artifact repository and not tough them in the build pipelines at all. Ultimately you need to decide what's best given your environment.
+
+---
+</details>

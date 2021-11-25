@@ -164,6 +164,7 @@ From ssh://devops.scmservice.eu-frankfurt-1.oci.oraclecloud.com/namespaces/orase
 Already up-to-date!
 Merge made by the 'recursive' strategy.
 ```
+
 <details><summary><b>What's the --no-edit option ?</b></summary>
 
 The --no-edit option just tells git to use default text when combining the content, this means you don't need to provide text explaining why you're doing this. Normally that's a bad idea as providing a history trail in git is important, but here we're just setting things up so it's fine
