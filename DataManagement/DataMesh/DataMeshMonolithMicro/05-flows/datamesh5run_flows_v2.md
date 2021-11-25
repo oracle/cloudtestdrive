@@ -10,12 +10,12 @@ Estimated Lab Time: 10 minutes
 
 In this lab, you will:
 * Set up your Cloud Shell for running a microservice
-
 * Start a load simulator on the side of the Monolith application
-
 * Check the flow of data in the databases, the GoldenGate console and the Microservice application
 
-  
+Estimated Lab Time: 10 minutes
+
+
 
 ## Step 1 - Set up your Cloud Shell for running a microservice
 
@@ -29,7 +29,7 @@ In this lab, you will:
 
   ![image-20211115123408448](images/image-20211115123408448.png)
 
-- Because this application is written in Ruby, and is using a library called **faraday**, we need to install tjhis in our environment before we can run the application, by running the below command : 
+- Because this application is written in Ruby, and is using a library called **faraday**, we need to install this in our environment before we can run the application, by running the below command : 
 
   ```
   gem install faraday

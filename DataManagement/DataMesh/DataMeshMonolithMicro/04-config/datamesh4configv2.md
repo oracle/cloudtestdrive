@@ -6,7 +6,14 @@
 
 ## Objective
 
-This chapter will go through the process of creating database objects representing the 3 environments we need for this lab.
+This chapter will go through the process of creating database objects representing the 2 environments we need for this lab.
+
+- We will set up a schema in the **SourceATP** database for the Monolith application, called OSM
+- We'll enable the GoldenGate user of the **SourceATP** so we can use it to set up the dataflows later in the lab
+- We'll prepare the target DB schema called OSM3 in the **TargetADW** DB
+- And finally we'll also enable the GoldenGate user of the **TargetADW** database.
+
+Estimated Lab Time: 15 minutes
 
 
 
@@ -39,7 +46,7 @@ First step is to set up the monolith application DB schema in the database **Sou
 
 
 
-- Open the script file you downloaded via the zipfile called **dmlab.sql**, and copy the content 
+- Open the script file you downloaded via [the zipfile](../01-intro/code/labfiles.zip) called **dmlab.sql**, and copy the content 
 
 - In the **Worksheet** field, paste the content
 
@@ -92,7 +99,7 @@ The ggadmin user will be used to connect to the source and target database from 
 - Open the file **osm3_schema.sql** on your laptop and copy the content over to the **Worksheet** pane.
 - Execute the script via the button **Run Script** and verify the correct execution of the commands - again, the **Drop** of the schema will fail upon first execution.
 
-We will be using this database to offer access to our data to other domains.  A very convenient way to do this is to use ORDS to enable REST access to JSON formatted data that is present in the database.  The following steps will unlock some data from the **customers** table to other domains of your application landscape.
+We will be using this database to offer access to our data to other domains.  A very convenient way to do this is to use ORDS (Oracle Rest Data Services) to enable REST access to JSON formatted data that is present in the database.  The following steps will unlock some data from the **customers** table to other domains of your application landscape.
 
 -  In the menu on the top left, select the **REST** under the development menu:
 
