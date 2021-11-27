@@ -173,6 +173,11 @@ We will first register our 2 databases so we can use them in our Goldenate envir
 
 7.  Click **Next**.
 
+10. In the **Parameter File** text area, replace 
+   **MAP \*.\*, TARGET \*.\*;**    with    **MAP OSM.CUSTOMERS, TARGET OSM3.CUSTOMERS;**
+
+   ![](images/image-20211101182330909.png)
+
 7.  Click **Create**.
 
 11. In the Rep Replicat **Action** menu, select **Start**.
