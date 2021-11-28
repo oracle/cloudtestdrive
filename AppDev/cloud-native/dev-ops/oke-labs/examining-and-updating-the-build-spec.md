@@ -370,8 +370,10 @@ To enable us to confirm the updated when we push a new version through the DevOp
   ```
   
   3. Save the file and exit the editor
+  
+##  Task 5: Uploading your changes
 
-  4. Let's commit these changes to your local git repo (the one in the cloud shell you are using). In the OCI Cloud shell type
+  1. Let's commit these changes to your local git repo (the one in the cloud shell you are using). In the OCI Cloud shell type
 
   - `git commit -a -m 'Set secret OCIDs and updated version'`
   
@@ -380,7 +382,7 @@ To enable us to confirm the updated when we push a new version through the DevOp
   2 files changed, 4 insertions(+), 4 deletions(-)
  ```
 
-  5. Now push the repo branch to the OCI Code repo you created earlier. In the OCI Cloud shell type
+  2. Now push the repo branch to the OCI Code repo you created earlier. In the OCI Cloud shell type
 
   - `git push devops my-lab-branch`
 
@@ -398,11 +400,11 @@ To ssh://devops.scmservice.uk-london-1.oci.oraclecloud.com/namespaces/lrn2df6gh9
  
 Our changes (including the creation of the new branch) have now been uploaded to the OCI Code repo.
 
-  6. Navigate to the `cloud-native-storefront` Code Repository in your project, be sure to select the `my-lab-branch` in the branch selector 
+  3. Navigate to the `cloud-native-storefront` Code Repository in your project, be sure to select the `my-lab-branch` in the branch selector 
   
   ![](images/code-repo-select-my-lab-branch.png)
   
-  7. Navigate the code repo to the `helidon-storefront-full/yaml/build` directory and open the `build_spec.yaml` file, you'll see the updated values (of course these are mine, yours will be different)
+  4. Navigate the code repo to the `helidon-storefront-full/yaml/build` directory and open the `build_spec.yaml` file, you'll see the updated values (of course these are mine, yours will be different)
 
   ![](images/code-repo-updated-build-spec.png)
   
