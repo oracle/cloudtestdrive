@@ -64,7 +64,7 @@ We're now going to add a build stage. A build stage runs in it's build runner (e
   
   ![](images/build-pipeline-pipeline-add-build-stage-part-2-part-1.png)
 
-<details><summary><b>I don't want the build_spec.aml in the repo root ?</b></summary>
+<details><summary><b>I don't want the build_spec.yaml in the repo root ?</b></summary>
 
 You can specify the location as the build_spec.yaml if it is not in the root of the project (though at the time of writing that seemed not to work consistently). The devops build system assigns the variable ${OCI_PRIMARY_SOURCE_DIR} to the location in the build runner where the primary git repo is placed during it's setup so for the cloudnative-helidon-storefront you could set the build spec as `${OCI_PRIMARY_SOURCE_DIR}/helidon-storefront-full/yaml/build/build_spec.yaml` if you wanted to use that version of the file.
 

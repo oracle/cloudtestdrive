@@ -255,7 +255,7 @@ You can see here in this example we're using the Frankfurt region, which is also
 
   ![](images/fra.png)
 
-  5. In this case it means that for the OCIR hostnamne I will be using `fra.ocir.io` If my region has been Sydney it wioudl be `syd.ocir.io` and so on. Note down the OCIR hostname you have just determined.
+  5. In this case it means that for the OCIR hostnamne I will be using `fra.ocir.io` If my region has been Sydney it would be `syd.ocir.io` and so on. Note down the OCIR hostname you have just determined.
   
   
 ### Task 2b: Determining your tenancy Object Storage Namespace
@@ -286,7 +286,7 @@ You can see here in this example we're using the Frankfurt region, which is also
   
   ![](images/vault-create-secret-part-1.png)
   
-  5. In the **Secret Template Type** be sure it's set to plain text. In the **Secret Contents** enter the name you determined for the OCIR in your region, for example in this case that's `lon.ocir.io` but of course it may be different for you if you are in a different region. Click the **Create Secret** button
+  5. In the **Secret Template Type** be sure it's set to plain text. In the **Secret Contents** enter the name you determined for the OCIR in your region, for example in this case that's `lhr.ocir.io` (I know previously I was using Frankfurt, but I had to change regions while writting the lab) but of course it may be different for you if you are in a different region. Click the **Create Secret** button
   
   ![](images/vault-create-secret-part-2.png)
 
