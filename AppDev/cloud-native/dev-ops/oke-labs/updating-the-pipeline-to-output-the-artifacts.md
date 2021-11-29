@@ -304,14 +304,14 @@ The `BuldStorefront` stage should progress as before (we haven't changed anythin
 2021-11-01T18:24:34.178Z Upload UIM artifact path storefront-deployment.yaml, version 1.0.0 completed successfully.   
 2021-11-01T18:24:34.179Z Completed UPLOAD_ARTIFACT deployment_yaml successfully to the deploy artifact ocid1.devopsdeployartifact.oc1.eu-frankfurt-1.amaaaaaa4g77oeyae53hxpr555m4i6tjub6onmtbxm33q6e7gu3uw5c3vdtq   
 2021-11-01T18:24:34.179Z Starting UPLOAD_ARTIFACT storefront_container_image   
-2021-11-01T18:24:46.588Z Starting OCIR upload for artifact storefront_container_image, image uri: lon.ocir.io/oraseemeatechse/tg/storefront:1.0.0  
+2021-11-01T18:24:46.588Z Starting OCIR upload for artifact storefront_container_image, image uri: lhr.ocir.io/oraseemeatechse/tg/storefront:1.0.0  
 2021-11-01T18:25:43.515Z Completed UPLOAD_ARTIFACT storefront_container_image successfully to the deploy artifact ocid1.devopsdeployartifact.oc1.eu-frankfurt-1.amaaaaaa4g77oeyamuwi6xqkqaapflh2xajo2l6mscxqy7wzjrat2lkajmpq   
 2021-11-01T18:25:55.601Z Completed Deliver Artifact stage.   
 ```
 
 A couple of interesting things to note, for the UIM uploads (these are the yaml files being transfered to the artifact repository) you'll see that it's uploading `version 1.0.0` this is based on the `${STOREFRONT_VERSION}` we specified for the version in the upload stage, and of course the actual value of `${STOREFRONT_VERSION}` is the variable we extracted from the source code in the initial steps of the `build_spec.yaml` file (other approaches to identifying the version are of course possible). It is of course critical that we had said that this variable was to be exported form the build stage as otherwise we wouldn't have had a value to use in the `UploadStorefrontArtifacts` stage.
 
-A similar thing has also happened in the container image upload step (the last few lines above) in this case the `OCIR_HOST` variable value was `lon.ocir.io`, the `OCIR_STORAGE_NAMESPACE` variable value was `oraseemeatechse` (both of these were transfered from the vault variables which got their values from the contents of the secrets in the vault) and `YOUR_INITIALS` you set as a pipeline parameter  (of course your values will differ) the `STOREFRONT_VERSION` is extracted from the source code as described above.
+A similar thing has also happened in the container image upload step (the last few lines above) in this case the `OCIR_HOST` variable value was `lhr.ocir.io`, the `OCIR_STORAGE_NAMESPACE` variable value was `oraseemeatechse` (both of these were transfered from the vault variables which got their values from the contents of the secrets in the vault) and `YOUR_INITIALS` you set as a pipeline parameter  (of course your values will differ) the `STOREFRONT_VERSION` is extracted from the source code as described above.
 
 ## Task 6: Examining the resulting artifacts
 
@@ -321,12 +321,48 @@ Let's go and look at what our pipeline has produced
   
   ![](images/ocir-access-service.png)
   
-  2. Expand the repository `<YOUR_INITIALS>/storefront`, you'll see that the image you just created and uploaded is now in the list.
+  2. Expand the repository `<YOUR_INITIALS>/storefront`, you'll see that the version `1.0.0` image you just created and uploaded is now in the list.
+  
+  ![](images/ocir-uploaded-version-1.0.0.png)
+  
 
-On the left of the page click **Artifact Registry** page (or vavigate to it via the Hamburger menu -> Developer services -> Artifact registry) Click on the name of your repository in the list
+  3. On the left of the page click **Artifact Registry** page (or navigate to it via the Hamburger menu -> Developer services -> Artifact registry) Click on the name of your repository in the list
 
-You'll see the artifacts you just created in there. Click the "three dot's" menu on the right side of the storefront-deployment.yaml:0.0.1 row and select download to download this to your computer. Once it's downloaded open the file in a notepad or some form of text editor
+  ![](images/artifact-reg-populated-v1.0.0.png)
 
-Locate the `namespace` section - it still refers to `${KUBERNETES_NAMESPACE}` and the container image still refers to `${OCIR_HOST}/${OCIR_STORAGE_NAMESPACE}/${YOUR_INITIALS}/storefront:${STOREFRONT_VERSION}`. The parameters we specified for the artifact name and version have been substituted, but not the parameters within the actuall artifacts themselves. Clearly this will need to be done - after all Kubernetes has no idea where an image location of `${OCIR_HOST}/${OCIR_STORAGE_NAMESPACE}/${YOUR_INITIALS}/storefront:${STOREFRONT_VERSION}` would be !
+  4. You'll see the artifacts you just created in there. Click the "three dot's" menu on the right side of the `storefront-deployment.yaml:0.0.1` row and select download to download this to your computer. 
+
+  ![](images/artifact-reg-download-storefront-deployment.png)
+  
+  Once it's downloaded open the file in a notepad or some form of text editor
+
+  5. Locate the `namespace` section - it still refers to `${KUBERNETES_NAMESPACE}` 
+
+```yaml
+  metadata:
+  name: storefront
+  namespace: ${KUBERNETES_NAMESPACE}
+spec:
+```
+ 
+   6. Locate  the container image, it  still refers to `${OCIR_HOST}/${OCIR_STORAGE_NAMESPACE}/${YOUR_INITIALS}/storefront:${STOREFRONT_VERSION}`. The parameters we specified for the artifact name and version have been substituted, but not the parameters within the actuall artifacts themselves. Clearly this will need to be done - after all Kubernetes has no idea where an image location of `${OCIR_HOST}/${OCIR_STORAGE_NAMESPACE}/${YOUR_INITIALS}/storefront:${STOREFRONT_VERSION}` would be !
+   
+```yaml
+   containers:
+      - name: storefront
+        # This needs to match the artifact details is using OCI DevOps
+        image: ${OCIR_HOST}/${OCIR_STORAGE_NAMESPACE}/${YOUR_INITIALS}/storefront:${STOREFRONT_VERSION}
+        imagePullPolicy: Always
+        ports:
+```
 
 Fortunately for us the deployment pipelines can do this when they run, which takes is neatly to the next section on how to deploy the artifacts into a deployment environment, Kubernetes in this case.
+
+## End of the Module, what's next ?
+
+We can now extract out artifacts form the build process, the next step is to define a deployment pipeline and have the build pipeline run it automatically when it completes.
+
+## Acknowledgements
+
+* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Last Updated By** - Tim Graves, November 2021
