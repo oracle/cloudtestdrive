@@ -329,10 +329,14 @@ We're about to be making changes to the code, so let's create a new git branch t
 
 Note that our new my-lab-branch branch is the one currently checked out (is has a `*` in front of it)
 
-
-  4. Edit the `helidon-storefront-full/yaml/build/build_spec.yaml` file in the OCI cloud shell (vi and nano are available), locate the `vaultVariables` section in the YAML and REPLACE the current OCI_HOST_VAULT value (`Needs your host secrets OCID`) with the OCID of the OCIR_HOST_VAULT secret you just created. For the and OCIR_STORAGE_NAMEPACE_VAULT variable REPLACE its current value (`Needs your storage namespace OCID`) with the OCID of the OCIR_STORAGE_NAMESPACE_VAULT you just created. The example below if my file, but of course yours will be different.
+  4. Copy the build_spec.yaml file to the root of the project, this is where the build tools loook for it by default.
   
-  **IMPORTANT** Make certain you use the right OCID from the vault to match the variables names in the build_spec.yaml, If you get this wront there will be unusual errors later on. 
+  - `cp helidon-storefront-full/yaml/build/build_spec.yaml .`
+
+
+  5. Edit the `build_spec.yaml` file in the OCI cloud shell (vi and nano are available), locate the `vaultVariables` section in the YAML and REPLACE the current OCI_HOST_VAULT value (`Needs your host secrets OCID`) with the OCID of the OCIR_HOST_VAULT secret you just created. For the and OCIR_STORAGE_NAMEPACE_VAULT variable REPLACE its current value (`Needs your storage namespace OCID`) with the OCID of the OCIR_STORAGE_NAMESPACE_VAULT you just created. The example below if my file, but of course yours will be different.
+  
+  **IMPORTANT** Make certain you use the right OCID from the vault to match the variables names in the build_spec.yaml, If you get this wrong there will be unusual errors later on. 
   
   ```yaml
   env:
@@ -373,7 +377,11 @@ To enable us to confirm the updated when we push a new version through the DevOp
   
 ##  Task 5: Uploading your changes
 
-  1. Let's commit these changes to your local git repo (the one in the cloud shell you are using). In the OCI Cloud shell type
+  1. Add the build_spec we just created to the repo
+  
+  - `git add .`
+  
+  2. Let's commit these changes to your local git repo (the one in the cloud shell you are using). In the OCI Cloud shell type
 
   - `git commit -a -m 'Set secret OCIDs and updated version'`
   
@@ -382,7 +390,7 @@ To enable us to confirm the updated when we push a new version through the DevOp
   2 files changed, 4 insertions(+), 4 deletions(-)
  ```
 
-  2. Now push the repo branch to the OCI Code repo you created earlier. In the OCI Cloud shell type
+  3. Now push the repo branch to the OCI Code repo you created earlier. In the OCI Cloud shell type
 
   - `git push devops my-lab-branch`
 
@@ -400,11 +408,11 @@ To ssh://devops.scmservice.uk-london-1.oci.oraclecloud.com/namespaces/lrn2df6gh9
  
 Our changes (including the creation of the new branch) have now been uploaded to the OCI Code repo.
 
-  3. Navigate to the `cloud-native-storefront` Code Repository in your project, be sure to select the `my-lab-branch` in the branch selector 
+  4. Navigate to the `cloud-native-storefront` Code Repository in your project, be sure to select the `my-lab-branch` in the branch selector - your changes are in this banch, not the main branch.
   
   ![](images/code-repo-select-my-lab-branch.png)
   
-  4. Navigate the code repo to the `helidon-storefront-full/yaml/build` directory and open the `build_spec.yaml` file, you'll see the updated values (of course these are mine, yours will be different)
+  5. Once in the code repo open the `build_spec.yaml` file (this is the new one in the repo root). You'll see the updated values (of course these are mine, yours will be different)
 
   ![](images/code-repo-updated-build-spec.png)
   
