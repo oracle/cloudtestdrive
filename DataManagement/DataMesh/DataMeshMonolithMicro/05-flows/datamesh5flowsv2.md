@@ -167,17 +167,19 @@ We will first register our 2 databases so we can use them in our Goldenate envir
 
 7.  For **Checkpoint Table**, select **"OSM3","CHECKTABLE"**.
 
-    ![Add Replicat - Basic Information](images/03-05-ggs-replicat-basicInfo.png)
+    ![image-20211129123755942](images/image-20211129123755942.png)
 
 6.  Under **Managed Options**, enable **Critical to deployment health**.
 
 7.  Click **Next**.
 
 10. In the **Parameter File** text area, replace 
-   **MAP \*.\*, TARGET \*.\*;**    with    **MAP OSM.CUSTOMERS, TARGET OSM3.CUSTOMERS;**
+   **MAP \*.\*, TARGET \*.\*;**    with    **MAP OSM.\*, TARGET OSM3.\*;**
 
-   ![](images/image-20211101182330909.png)
+   ![image-20211129124135897](images/image-20211129124135897.png)
 
+   
+   
 7.  Click **Create**.
 
 11. In the Rep Replicat **Action** menu, select **Start**.
