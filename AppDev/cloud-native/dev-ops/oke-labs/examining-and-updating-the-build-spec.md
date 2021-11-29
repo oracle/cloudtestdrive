@@ -410,7 +410,7 @@ Our changes (including the creation of the new branch) have now been uploaded to
   
 <details><summary><b>What about the Kubernetes manifest files ?</b></summary>
 
-For this project the original Kubernetes manifest files are also in the same git repo (`helidon-storefront-full/yaml/deployment`) The use of a single git repo is for convenience setting up the lab, but there is no requirement to have them in  the same git repo, you could have them in a different repo and bring them in to the process, or just upload them directly yo the artifact repository and not tough them in the build pipelines at all. Ultimately you need to decide what's best given your environment.
+For this project the original Kubernetes manifest files are also in the same git repo (`helidon-storefront-full/yaml/deployment`) The use of a single git repo is for convenience setting up the lab, but there is no requirement to have them in  the same git repo, you could have them in a different repo and bring them in to the process, or just upload them directly to the artifact repository and not tough them in the build pipelines at all. Ultimately you need to decide what's best given your environment.
 
 ---
 </details>

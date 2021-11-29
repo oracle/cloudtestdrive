@@ -1,48 +1,115 @@
-We're nopw ready to create the actual build pipeline
+![](../../../../common/images/customer.logo2.png)
 
-Navigate to your project page, if need be you can do this form the begininc by : CLick the Hamburger menu -> Developer Services -> Projects (in the DevOps section) and selecting your project.
+# Creating a build pipeline
 
-In the Resources section on the left side of the page click the **Build Pipelies** option
+## Introduction
 
-Click create a build pipeline, name it BuildStorefront, provide a description if you want.
+We're now ready to create the actual build pipeline, this is what will run the build process.
 
-After a short while your newly created pipeine will be displayed in the list
+
+### Objectives
+
+Using the OCI Browser User Interface we will :
+
+  - Create the build pipeline.
+
+  - Add a build stage to the pipeline
+  
+  - Run a test build
+
+ 
+### Prerequisites
+
+You have create the DevOps project, the code repository, secrets in the vault and update the build_spec.yaml file
+
+## Task 1: Creating the build pipeline
+
+The build pipelines exist within your project, for this lab they are created using the OCI Web interface graphical editor, but of course you could script this using Terraform or the OCI command line
+
+  1. Navigate to your projects home page. If you need to you can do this by : Click the "Hamburger" menu select **Developer Services** click on **Projects** (in the DevOps section) and selecting your project from the list.
+
+  2. In the Resources section on the left side of the page click the **Build Pipelies** option
+  
+  ![](images/build-pipelines-access.png)
+
+  3. Click **Create build pipeline** to open the create pipeline popup
+  
+  ![](images/build-pipeline-create-initial.png)
+  
+  4. In the create build pipeline popup name it `BuildStorefront`, provide a description `Builds the storefront service`. Click the **Create** button
+
+  ![](images/build-pipeline-create-pipeline-form.png)
+
+  After a short while your newly created pipeine will be displayed in the list
+  
+  ![](images/build-pipeline-pipeline-created.png)
+  
+## Task 2: Adding a build stage
 
 We're now going to add a build stage. A build stage runs in it's build runner (each stage has it's own runner)
 
-Click the + icon then **Add Build Stage** to add a build stage
+  1. Open your build pipeline by clicking the name `BuildStorefront` in the list
+  
+  ![](images/build-pipeline-open-storefront-pipeline.png)
+  
+  2. Click the + icon then **Add Build Stage** Then click **Add Stage** in the resulting menu to open the new build stage popup
+  
+  ![](images/build-pipeline-pipeline-add-first-build-stage-initial.png)
 
-There are multiple types of build stages, The  stage types are described in their boxes, but initially we will be creating a **Managed Build** stage will actually be used to process our build_spec.yaml file
+  3. There are multiple types of build stages, The  stage types are described in their boxes, but initially we will be creating a **Managed Build** stage will actually be used to process our build_spec.yaml file. Click the **Managed Build** option, then the **Next** button at the bottom of the page to move to the next part of the add stage process.
+  
+  ![](images/build-pipeline-pipeline-add-build-stage-part-1.png)
 
-Click the **Managed Build** option, then the **Next** button at the bottom of the page
+  4. Name the stage `BuildStorefront`, Enter a description if you like, Leave the Base container image unchanged, In the **Build Spec File Path** enter `${OCI_PRIMARY_SOURCE_DIR}/yaml/build/build_spec.yaml`
+  
+  ![](images/build-pipeline-pipeline-add-build-stage-part-2-part-1.png)
 
-Name the stage `BuildStorefront`
-
-Enter a description if you like
-
-Leave the Base container image unchanged
-
-In the **Build Spec File Path** enter `${OCI_PRIMARY_SOURCE_DIR}/yaml/build/build_spec.yaml`
+<details><summary><b>Why specify a location this time, isn't the default ?</b></summary>
 
 Note that we have to specify the location as the build_spec.yaml is not in the root of the project. This is due to the way that Eclipse places projects in a git repo, and I used Eclipse to create the code. (Eclipse allows multiple projects in the same git repo so everything is one level "down" from the top of the repo). If build_spec.yaml has been ad the top level of the git repo the build system would have looked there as the default and we would not have had to specify this.
+
+---
+</details>
+
+<details><summary><b>What's with ${OCI_PRIMARY_SOURCE_DIR} ?</b></summary>
 
 The devops build system assigns the variable ${OCI_PRIMARY_SOURCE_DIR} to the location in the build runner where the primary git repo is placed during it's setup so for the cloudnative-helidon-storefront this means that build spec is in ${OCI_PRIMARY_SOURCE_DIR}/yaml/build/build_spec.yaml
 
 Note for a full list of the variables setup by the build pipeline infrastructure see the **Build Specification Parameters** section in the [build pipeline documentation](https://docs.oracle.com/en-us/iaas/Content/devops/using/build_specs.htm)
 
-Click the **Select** button in the **Primary Code Repository** section, in the selection type dropdown chose **OCI Code Repository** then once the list has updated and select `cloudnative-helidon-storefront` - the git repo you created for this project, Click the **Save** button
+---
+</details>
 
-Leave the **Timeout** blank
-
-Click the **Add** button
+  5. Click the **Select** button in the **Primary Code Repository** section to open the repository selection form 
+  
+  ![](images/build-pipeline-pipeline-add-build-stage-part-2-part-1-select-repo-button.png)
+  
+  6. In the selection type dropdown chose **OCI Code Repository** then once the list has updated and select `cloudnative-helidon-storefront` - the git repo you created for this project, In the **Select Branch** field make sure that `my-lab-branch` is selected in the **Build Source Name** enter `Storefront`. Now Click the **Save** button to return the the stage form
+  
+  ![](images/build-pipeline-pipeline-add-build-stage-part-2-part-1-select-repo-form.png)
+  
+  7. Back on the **Add a stage** form leave the **Timeout** blank, Click the **Add** button
+  
+  ![](images/build-pipeline-pipeline-add-build-stage-part-2-part-2.png)
+  
+<details><summary><b>What if my project has multiple git repo ?</b></summary>
 
 Note - For this lab we are only using a single git repo which contains all of the code as well as the Kubernetes Manifests, However it's perfectly reasonable for a build to have multiple git repositories, for example if the code and Kubernetes manifests were held in separate repositories (which could with careful pipeline design result in a faster CI/CD process if only the manifests were changed)
 
+---
+</details>
 
-Note - For this lab we're only going to create a simple linear pipeline, but if appropriate you can have parallel stages, perhaps you are building multiple library files first which can all be build independently, then combining them all in a last deploy stage and linking the intermediate artifacts with outputArtifact / inputArtifact entries in their build specs
+<details><summary><b>Can I optimize my build with parallel stages ?</b></summary>
 
-Running our first pipeline 
-Let's see this in action, Click the **Start Manual Run** button on the upper right
+Note - For this lab we're only going to create a simple linear pipeline, but if appropriate you can have parallel stages, perhaps you are building multiple library files first which can all be build independently, then combining them all in a last deploy stage and linking the intermediate artifacts with outputArtifact / inputArtifact entries in their build specs.
+
+---
+</details>
+
+## Task 3: Running our first pipeline 
+
+Let's see this in action, Click the **Start Manual Run** button on the upper right of the pipeline editor
+
 
 A window will appear, you can change the Build run name it you needed to, but for now just leave it with the current value. The parameters box should be empty, as for this part of the lab we have not defined any parameters (we will look into this in a little bit) We only using using variables which get their values from inside the build pipeline, from the vault secrets (e.g. OCIR_HOST_VAULT), are determined inside the build stage (e.g. STOREFRONT_VERSION), or are set for us by the build pipeline infrastructure itself (e.g. OCI_PRIMARY_SOURCE_DIR)
 
