@@ -1,10 +1,10 @@
 ![](../../../../common/images/customer.logo2.png)
 
-# DevOps Lab Setup introduction
+# Creating your DevOps project
 
 ## Introduction
 
-One of the ways you can pass information into a OCI DevOps build pipeline is to store it in a secret in an OCI vault. To do this of course we need to create a vault, and a master key to encrypt secrets held within the vault.
+A DevOps project is the core starting point for DevOps activities within OCI. Is contains pipelines, information on artifacts and of course an OCI Code repository.
 
 ### Objectives
 

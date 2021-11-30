@@ -1,6 +1,6 @@
 ![](../../../../common/images/customer.logo2.png)
 
-# Creating a build pipeline
+# Getting artifacts from your build pipeline
 
 ## Introduction
 
