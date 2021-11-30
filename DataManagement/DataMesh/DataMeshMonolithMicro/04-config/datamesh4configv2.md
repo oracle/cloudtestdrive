@@ -28,15 +28,13 @@ First step is to set up the monolith application DB schema in the database **Sou
   
 
 - Click on the database named **SourceATP** to go to the detail screen of the DB Instance, 
-  and click on the **Tools** tab, then open the **Database Actions**
+  and click on the **Database Actions** button
 
-  ![image-20211031191551319](images/image-20211031191551319.png)
+  ![image-20211129145737407](images/image-20211129145737407.png)
 
   
 
-- Login using the username **Admin** and the password you specified during the creation process
-
-  This will take you to the Launchpad, where you can select **SQL**
+- This will take you to the Launchpad, where you can select **SQL**
 
   ![image-20211022210549102](images/image-20211022210549102.png)
 
