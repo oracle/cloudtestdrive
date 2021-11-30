@@ -321,7 +321,7 @@ Let's go and look at what our pipeline has produced
   
   ![](images/ocir-access-service.png)
   
-  2. Expand the repository `<YOUR_INITIALS>/storefront`, you'll see that the version `1.0.0` image you just created and uploaded is now in the list.
+  2. Expand the repository `<YOUR_INITIALS>/storefront`, you'll see that the version `1.0.0` image you just built and uploaded is now in the list.
   
   ![](images/ocir-uploaded-version-1.0.0.png)
   
