@@ -11,10 +11,6 @@
           "filename":"../../../scripted-setup/script-driven-oci-setup.md"
         },
         {
-          "title": "Setup the Kubernrtes environment using scripts",
-          "filename":"../../../scripted-setup/installing-basic-kubernetes-lab-services.md"
-        },
-        {
           "title": "Devops setup - introduction ",
           "filename": "../../../dev-ops/general/setup-introduction-incl-vault.md"
         },
@@ -29,6 +25,10 @@
 		{
           "title": "Devops setup - configuring security policies",
           "filename": "../../../dev-ops/general/environment-setup/security-setup.md"
+        },
+        {
+          "title": "Setup the Kubernrtes environment using scripts",
+          "filename":"../../../scripted-setup/installing-basic-kubernetes-lab-services.md"
         },
 		{
           "title": "Devops - Creating your DevOps project",
