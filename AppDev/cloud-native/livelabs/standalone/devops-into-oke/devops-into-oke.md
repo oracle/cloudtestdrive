@@ -58,6 +58,12 @@ This section describes the steps you will need to to to prepare for using the De
 
 Please read **Devops setup - introductions** section. When you've completed it click the `back` button on your browser to return to this page.
 
+## Devops setup - setting up your vault
+
+To store confidential or frequently changing information you don't want to hard code it into your source code systems, so Dev Ops allows you to store this in an OCI Security vault. This module shows you how to set that vault up.
+
+Please follow the steps in **Devops setup - setting up your vault** section. When you've completed them click the `back` button on your browser to return to this page.
+
 ## Devops setup - configuring ssh access to OCI API's
 
 To manipulate the OCI Code repositories you will need to have an ssh based authentication token setup. This modules takes you through the processes in doing this.
