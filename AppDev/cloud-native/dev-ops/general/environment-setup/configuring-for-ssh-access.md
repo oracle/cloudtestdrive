@@ -23,20 +23,20 @@ Using the OCI Cloud shell and Browser User Interface we will :
 
 In many places through this lab we will be using the OCI Cloud Shell to provide an environment where we can execute commands. The OCI Cloud Shell is a small Linux based instance you access from the OCI Web Interface and it runs within the OCI environment, already logged in and authenticated as you. This means we don't need to configure your local environment to use the **oci** command, but more importantly it ensures that everyone doing the lab will have an environment to use which has all of the commands we need ready to use.
 
-To open this click the Cloud Shell Icon ![](images/cloud-shell-icon.png | width 25) you find this at the upper right of any OCI Web Interface screen
+To open this click the Cloud Shell Icon ![](images/cloud-shell-icon.png) you find this at the upper right of any OCI Web Interface screen
 
-![](images/cloud-shell-icon-on-main-screen.png | width=400)
+  ![](images/cloud-shell-icon-on-main-screen.png)
 
 
 The cloud shell will open at the bottom of the screen
 
 You may have a short delay while the OCI infrastructure gets your home directory, creates an instance for you and connects to it, you can see it in the lower part of the page.
 
-![](images/cloud-shell-after-initial-open-example.png | width=400)
+  ![](images/cloud-shell-after-initial-open-example.png)
 
 Once open you can do normal things like minimize / maximize / restore / close the Cloud Shell using the icons 
 
-![](images/cloud-shell-control-icons.png)
+  ![](images/cloud-shell-control-icons.png)
 
 ### Task 1: Creating an ssh key
 
@@ -116,17 +116,17 @@ Let's set this up as an API key in your account.
   
 This will open your user details page.
 
-  ![](images/bui-user-details-page-top.png | width=400)
+  ![](images/bui-user-details-page-top.png)
 
   2. Go your API Key details
 
   - On the left side Under `Resoures` click  `API Keys` - You may need to scroll down the page a little to see this.
   
-  ![](images/bui-user-details-page-api-keys-link.png | width=400)
+  ![](images/bui-user-details-page-api-keys-link.png)
   
 This will show the **API Keys** view of your user profile.
 
-  ![](images/bui-user-details-api-key-list-initial.png | width=400)
+  ![](images/bui-user-details-api-key-list-initial.png)
 
 Depending on what other work you have done in your account you may have between zero and three keys listed, in this case I have one.
 
@@ -136,7 +136,7 @@ Provided you have less than three API keys listed you can proceed with adding yo
 
   - Click the **Add API Key** button
   
-  ![](images/bui-user-details-api-key-add-button.png | width=400)
+  ![](images/bui-user-details-api-key-add-button.png)
   
 This will open the **Add a key** popup
 
@@ -160,7 +160,7 @@ The UI will update to show a confirmation box, in this case we will be using the
 
 The UI will update to show the summary info for the newly added key.
 
-  ![](images/bui-user-details-api-key-list-key-added.png | width=400)
+  ![](images/bui-user-details-api-key-list-key-added.png)
   
 ### Task 3: Updating your ssh confguration
 
