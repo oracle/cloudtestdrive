@@ -19,7 +19,15 @@ Using the OCI Cloud shell and Browser User Interface we will :
   - Configure our ssh environment to use this key when connecting to the OCI Code Repositories we will create later.
 
 
-## Accessing the OCI Cloud shell
+
+
+## Task 1: Creating an ssh key
+
+To interact with the OCI DevOps Code Repository we will soon be creating we need to authenticate ourselves to OCI using an authentication token, this will be based on your **Users** SSH key. 
+
+**IMPORTANT** The SSH based API authentication we will be doing is not the same as the SSH setup used when accessing a virtual machine using SSH. If you already have setup a SSH key for **User** API access **In the OCI Cloud Shell** then you can skip the following steps and go to the **.ssh/config** session below. If you are doing this lab in a free trial account it is unlikely that you will have configured SSH access.
+
+<details><summary><b>How do I access the OCI Cloud Shell ?</b></summary>
 
 In many places through this lab we will be using the OCI Cloud Shell to provide an environment where we can execute commands. The OCI Cloud Shell is a small Linux based instance you access from the OCI Web Interface and it runs within the OCI environment, already logged in and authenticated as you. This means we don't need to configure your local environment to use the **oci** command, but more importantly it ensures that everyone doing the lab will have an environment to use which has all of the commands we need ready to use.
 
@@ -38,11 +46,7 @@ Once open you can do normal things like minimize / maximize / restore / close th
 
   ![](images/cloud-shell-control-icons.png)
 
-### Task 1: Creating an ssh key
-
-To interact with the OCI DevOps Code Repository we will soon be creating we need to authenticate ourselves to OCI using an authentication token, this will be based on your **Users** SSH key. 
-
-**IMPORTANT** The SSH based API authentication we will be doing is not the same as the SSH setup used when accessing a virtual machine using SSH. If you already have setup a SSH key for **User** API access **In the OCI Cloud Shell** then you can skip the following steps and go to the **.ssh/config** session below. If you are doing this lab in a free trial account it is unlikely that you will have configured SSH access.
+</details>
 
   1. Go to the OCI Cloud shell
 
@@ -100,7 +104,7 @@ xwIDAQAB
 
   6. Copy the resulting text *including the `-----BEGIN PUBLIC KEY-----` and `-----END PUBLIC KEY-----` lines and save it in a note pad or something.
 
-### Task 2: Adding the key to your account
+## Task 2: Adding the key to your account
 
 Let's set this up as an API key in your account.
 
@@ -162,7 +166,7 @@ The UI will update to show the summary info for the newly added key.
 
   ![](images/bui-user-details-api-key-list-key-added.png)
   
-### Task 3: Updating your ssh confguration
+## Task 3: Updating your ssh confguration
 
 Next we need to setup our SSH configuration file, to do that we need to get some further information.
 
