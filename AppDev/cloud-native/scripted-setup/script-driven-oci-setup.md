@@ -108,7 +108,7 @@ Please continue with **Task 2**
 
 The `step` command is used to create a root certificate, you will need this for secure connections
 
-If you have already downloaded `step` as part of a previous lab and have setup a root certificate then you can move on to Task 2
+If you have already downloaded `step` as part of a previous lab and have setup a root certificate then you can move on to Task 3
 
 If you do not know if you have downloaded `step` then you can check
 
