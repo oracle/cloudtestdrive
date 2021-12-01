@@ -120,11 +120,11 @@ Please continue with **Task 2**
 
 ## Task 2: Running the Kubernetes setup scripts
 
-This script will configure the database settings using information in the Wallet.zip file, will setup various database related variables, will then setup the Helm repo, install the Ingress controller and Kubernrtes dashboard, then create a namespace for your work, configure and install the Services, Ingress rules, configuration information and deployments. Lastly it will check if all this correctly deployed.
+This script will configure the database settings using information in the Wallet.zip file, will setup various database related variables, will then setup the Helm repo, install the Ingress controller and Kubernetes dashboard, then create a namespace for your work, configure and install the Services, Ingress rules, configuration information and deployments. Lastly it will check if all this correctly deployed.
 
   1. If you have not already done so open the OCI Cloud shell and go to the scripts directory 
   
-  - `cd $HOME/helidon-kubernrtes/setup/kubernetes-labs`
+  - `cd $HOME/helidon-kubernetes/setup/kubernetes-labs`
   
   2/ Run the installation script, you will need to replace `<your initials>` with your personal initials, or first name in **lower case** (singluar or plural). For example my name is Tim Graves, so my initials will be tg, or I might use `tim` or `tims`. Of course unless your name is also Tim Graves yoiu will be using a different value. If you are running a version of the lab where multiple people are using the same tenancy (your instructor will notify you of this, most people will be using their own free trial) please ensure that you do not duplicate this value.
   

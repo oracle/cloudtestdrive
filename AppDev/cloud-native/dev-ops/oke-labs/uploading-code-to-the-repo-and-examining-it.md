@@ -141,7 +141,7 @@ This command will just return and won't generate any output
  The output should only contain `devops`
  
 
-## Task 3: Uploading form your OCI git repo to your projects OCI Code repo
+## Task 3: Uploading from your OCI git repo to your projects OCI Code repo
 
 We're now ready to upload the contents of our local repo to the OCI Code repo you created in your DevOps project
 
