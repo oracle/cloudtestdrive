@@ -376,21 +376,6 @@ Context "context-cwy64pje7gq" renamed to "one".
 
 You can see the progress of Terraform, and that it spends time waiting for the actions it initiates to complete, but after a while (and assuming you have enough resources available to you) you will see that the process completes. Terraform displays it's outputs and then the script finished the work of setting up your configuration so it's ready to use.
 
-#### Task 5a-1: Update the security list
-
-The Terraform script we are using to create the cluster aims to be create a secure configuration, this means that it won't allow anyone to connect to the Kubernetes management API endpoint. For the purposes of these labs however we are focused on teaching you how to do certain tasks, and to make that easier we want you to be able to easily use the `kubectl` command.
-
-Thus we need to enable access to the Kubernetes management API endpoint from any location (it will still be secure as you'll need the configuration which includes your credentials) to do this we need to :
-
-  1. Open up the VCN for the cluster you just created - Go to the clusters page (Hamburger -> Developer Services -> Kubernrtes Clusters -> your cluster) and in the Network Information click on the VCN Name link.
-  
-  2. On the Resources menu on the left side click **Security Lists**, Then in the resulting list click `oke-control-plane`
-  
-  3. Once on the `oke-control-plane` page on the Resoruces menu on the left click **Ingress rules
-  
-  4. Click **Add Ingress Rules** to add a new ingress rule 
-  
-  5. In the resulting popup ensure that Stateless is unchecked, the Source type is set to CIDE, enter `0.0.0.0/0` in the Source CIDR field, the IP Protocol should be `TCP`, leaf the Source port range blank (all), enter `6443` in the Destination port range field, put `Allows access to the Kubernrtes API endpoint` in the Description field, then click the **Add Ingress Rules** button
 
 ### Task 5b: Confirming that the cluster was created and is running.
 
@@ -409,6 +394,25 @@ NAME          STATUS   ROLES   AGE   VERSION
 
 The nodes will be listed, in this case I was using a cluster with three workers, Of course the specifics (Name, Age, Version) may vary in your output, but really what we are checking is that there *is* output as this shows you can connect to the Kubernetes cluster management system and you can see that there are nodes available in the `Ready` state.
 
+
+<details><summary><b>If kubectl get nodes doesn't respond within a few minutes</b></summary>  
+
+The Terraform script we are using to create the cluster aims to be create a secure configuration, this means that it won't allow anyone to connect to the Kubernetes management API endpoint. We have added settings that should set this up for you, nbut this may have failed. For the purposes of these labs however we are focused on teaching you how to do certain tasks, and to make that easier we want you to be able to easily use the `kubectl` command.
+
+Thus we need to enable access to the Kubernetes management API endpoint from any location (it will still be secure as you'll need the configuration which includes your credentials) to do this we need to :
+
+  1. Open up the VCN for the cluster you just created - Go to the clusters page (Hamburger -> Developer Services -> Kubernrtes Clusters -> your cluster) and in the Network Information click on the VCN Name link.
+  
+  2. On the Resources menu on the left side click **Security Lists**, Then in the resulting list click `oke-control-plane`
+  
+  3. Once on the `oke-control-plane` page on the Resoruces menu on the left click **Ingress rules
+  
+  4. Click **Add Ingress Rules** to add a new ingress rule 
+  
+  5. In the resulting popup ensure that Stateless is unchecked, the Source type is set to CIDE, enter `0.0.0.0/0` in the Source CIDR field, the IP Protocol should be `TCP`, leaf the Source port range blank (all), enter `6443` in the Destination port range field, put `Allows access to the Kubernrtes API endpoint` in the Description field, then click the **Add Ingress Rules** button
+
+---
+</details>
  
 ## Task 6: Creating the database
 
