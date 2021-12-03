@@ -257,6 +257,17 @@ This video is an introduction to the Kubernetes labs. Once you've watched it ple
 
 </details>
 
+## What you are about to create
+
+You will be deploying the storefront and stockmanger microservices (well an image we have provided, though you can use the images you just build if you like) into a Kubernetes cluster. 
+
+Once they are running you will look at how Kubernetes delivers high availability, horizontal scaling and rolling upgrades. There will also be the System services of an Ingress controller with associated load balancer and the Kubernetes dashboard.
+
+Depending on what optional modules you do you may also explore the use of Prometheus and Grafana to capture and visdualize metrics data, Fluend to capture and store log data in Elastic Stack or Object Storage and how the Linkerd service mesh can be used to help monitor and manage your network traffic.
+
+![](../../images/kubernetes-labs-what-will-be-built-incl-optional.png)
+
+
 ## Create your Kubernetes cluster
 
 You will of course need a cluster to work with. Follow the instructions in this module to do that.

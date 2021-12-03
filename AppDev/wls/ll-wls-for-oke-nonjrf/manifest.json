@@ -1,22 +1,27 @@
 {
     "tutorials": [
         {            
-            "title": "WebLogic for OKE - Prerequisites for provisioning the WebLogic Infrastructure",
+            "title": "Part 1 : WebLogic for OKE - Prerequisites for provisioning the WebLogic Infrastructure",
             "filename": "wlsforocionokeprereq.md"
         },
 
         {            
-            "title": "WebLogic for OKE - Creating the stack and provisioning the WebLogic Infrastructure",
-            "filename": "wlsforocionoke.md"
+            "title": "Part 2 : WebLogic for OKE - Creating the stack and provisioning the Kubernetes Infrastructure",
+            "filename": "wlsforocionokepart2.md"
+        },
+
+        {            
+            "title": "Part 3 : WebLogic for OKE - Creating the WebLogic Domain",
+            "filename": "wlsforocionokepart3.md"
         },
 
 		{            
-            "title": "WebLogic for OKE - Deploying Sample Application and Custom Applications",
+            "title": "Part 4 : WebLogic for OKE - Deploying Sample Application and Custom Applications",
             "filename": "wlsforocionokedeploy.md"
         },
 		
 		{            
-            "title": "WebLogic for OKE - Optional lab steps",
+            "title": "Part 5 : WebLogic for OKE - Optional lab steps",
             "filename": "wlsforocionokedelete.md"
         }
     ]

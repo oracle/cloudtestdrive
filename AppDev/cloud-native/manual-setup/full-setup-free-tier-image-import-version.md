@@ -39,11 +39,13 @@ If you are in an **instructor led lab** the instructor may have already done thi
 
   1. Click the `hamburger` menu (three bars on the upper left)
 
-  2. Scroll down the list to the `Governance and Administration` section
+  2. Scroll down the list to the `Identity & Security` section
 
-  3. Under the `Identity` option chose `Compartments`
+  3. Chose `Compartments`
+  
+  ![](images/identity-and-security-compartments.png)
 
-  4. You should see a screen that looks like this : 
+  4. You should see a screen that looks similar to this : 
 
   ![](images/compartments.png)
 
@@ -174,7 +176,9 @@ If you are in an **instructor led lab** the instructor may have already done thi
 
 ### 5a. Create a database
 
-  1. Use the Hamburger menu, and select the Database section, **Autonomous Transaction Processing**
+  1. Use the Hamburger menu, and select the **Oracle Database** section, then chose  **Autonomous Transaction Processing**
+  
+  ![](images/oracle-database-atp.png)
 
   2. Click **Create DB**
 
@@ -208,13 +212,21 @@ Be sure to remember the **admin password**, save it in a notes document for late
 
 ### 5b. Setup your database user
 
-  1. On the details page for the database, click the **Service Console** button
+  1. On the details page for the database, click the **Tools** tab 
+  
+  ![](images/db-15-db-tools-tab.png)
 
-  2. On the left side click the **Development** option
+  2. On the left side click the **Open Database Actions** button
+  
+  ![](images/db-16-db-actions.png)
 
-  3. Open up the **SQL Developer Web** console
+This will open a login form in a new window
 
-  4. Login as ADMIN, using the password you just chose
+  3. Login as ADMIN, using the password you just chose
+  
+  4. Click the **SQL** button to open the web based SQL developer tool
+
+  ![](images/db-17-access-sql-developer-web.png)
 
   5. Copy and paste the below SQL instructions into the top section of the page:
 

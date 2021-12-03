@@ -51,7 +51,7 @@ A canary deployment is a method of doing a small trial deployment, operating wit
 <details><summary><b>Why the term canary ?</b></summary>
 
 
-Historically canaries were used in underground mines as they were far more sensitive to dangerous atmospheric contaminants than humans, and mines frequently had pockets of carbon monoxide,  and other dangerous gases. The miners would carry a canary in a cage (or a [canary resucitator](https://blog.scienceandindustrymuseum.org.uk/canary-resuscitator/)) with them, sometimes at the end of a long pole carried before them, so the canary went first. If the canary remained well then in went the humans. If however the canary became unwell then the humans knew it was not safe for them to proceed, and exited the area (one hopes taking the canary with them!)
+Historically canaries were used in underground mines as they were far more sensitive to dangerous atmospheric contaminants than humans, and mines frequently had pockets of carbon monoxide,  as well other dangerous or explosive gases lik methane. The miners would carry a canary in a cage (or a [canary resucitator](https://blog.scienceandindustrymuseum.org.uk/canary-resuscitator/)) with them, sometimes at the end of a long pole carried before them, so the canary went first. If the canary remained well then in went the humans. If however the canary became unwell then the humans knew it was not safe for them to proceed, and exited the area (one hopes taking the canary with them!)
 
 ---
 
@@ -121,14 +121,13 @@ deployment/stockmanager: deleted
 deployment.apps/stockmanager created
 ```
 
-If we have a look at the pods we'll see that the stockmanager deployment has been restarted, and we have a new pod
+If we have a look at the pods we'll see that the stockmanager deployment has been restarted, and it's a new pod
 
   4. In the OCI Cloud shell type
   - ` kubectl get pods`
 
 ```
 NAME                             READY   STATUS    RESTARTS   AGE
-fault-injector-b5bf94d48-llkwf   2/2     Running   0          135m
 stockmanager-7cbf798cd9-tdk5h    2/2     Running   0          5m48s
 storefront-7667fc5fdc-5zwbr      2/2     Running   0          22h
 zipkin-7db7558998-c5b5j          2/2     Running   0          22h
@@ -136,9 +135,39 @@ zipkin-7db7558998-c5b5j          2/2     Running   0          22h
 
 Let's make sure our service is still running (note that we haven't changed the service itself, it's selector will match the old and new versions of the pod)
 
-  5. In the OCI Cloud shell type the following (as usual replacing `<external IP>` with the IP address of the ingress controller service)
+If your cloud shell session is new or has been restarted then the shell variable `$EXTERNAL_IP` may be invalid, expand this section if you think this may be the case to check and reset it if needed.
+
+<details><summary><b>How to check if $EXTERNAL_IP is set, and re-set it if it's not</b></summary>
+
+**To check if `$EXTERNAL_IP` is set**
+
+If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
+
+**To get the external IP address if you no longer have it**
+
+In the OCI Cloud shell type
+
+  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
   
-  - `curl -i -k  -u jack:password https://store.<external IP>.nip.io/store/stocklevel`
+  ```
+NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
+ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
+```
+
+The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column.
+
+**To set the variable again**
+
+  - `export EXTERNAL_IP=<External IP>`
+  
+---
+
+</details>
+
+
+  5. In the OCI Cloud shell type the following
+  
+  - `curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
 
   ```
 HTTP/2 200 
@@ -155,11 +184,11 @@ As the pod has restarted you may have a delay or have to retry the request as th
 
 ### Task 2d: Create versioned services
 
-Now we have a mechanism to differentiate between the old and new versions of the service we're going to create two new service definitions, one having a selector that matches the  0.0.1 version of the stockmanager service and one for the 0.0.2 version. (We haven't actually deployed the 0.0.2 version, that comes later)
+Now we have a mechanism to differentiate between the 0.0.1 and future versions of the deployment we're going to create two new service definitions, one having a selector that matches the  0.0.1 version of the stockmanager service we just deployed, and one for the 0.0.2 version - we haven't actually deployed the 0.0.2 version yet, that comes later.
 
-We need to do define the version based services now so we can create the traffic split that interposes itself between the original service (stockmanager) and the separate deployments. Remember that the original stockmanager service definition only has a selector for the label `app: stockmanager` so if we created the deployments before we put the traffic split in place (and the version based traffic split can't be done before we've created the per version services) the original stockmanager service would match both the old and new deployments, and we wouldn't have any control over the traffic.
+We need to do define the version based services now so we can create the traffic split that interposes itself between the original service (stockmanager) and the separate deployments. Remember that the original stockmanager service definition only has a selector for the label `app: stockmanager` so if we created the deployments before we put the traffic split in place the original stockmanager service would match both the old and new deployments and we wouldn't have any control over the traffic.  Because of this the traffic split which used versions of services to differentiate and target traffic couldn't be deployed before we've created the per version services.
 
-The versioned services are defined in a couple of yaml files. The key differences are that they are bound to specific versions. This means that the selector specified the version to match. Our previous service (which is still running) allowed connections to any version of the service as it didn't select using the version.
+The versioned services are defined in a couple of yaml files. The key differences are that their selectors mean they are bound to specific versions of the deployment. This means that the selector specifies the version to match. Our previous service (which is still running) allowed connections to any version of the service as it didn't select using the version.
 
 ```
 apiVersion: v1
@@ -181,7 +210,7 @@ spec:
 ```
 
 
-  1. Let's deploy the 0.0.1 service version. In the OCI Cloud shell type the following
+  1. Let's deploy the 0.0.1 service version - this has a service name stockmanagerv0-0-1 (we have to use use `-` because the service name is used by Kubernetes as part of it's internal DNS setup, and of course a `.` represents a break point in the DNS naming scheme). In the OCI Cloud shell type the following
   
   - `kubectl apply -f stockmanager-v0.0.1-service.yaml`
 
@@ -189,7 +218,7 @@ spec:
 service/stockmanagerv0-0-1 created
 ```
 
-  2. And the 0.0.1 service version. In the OCI CLoud shell type the following
+  2. And the 0.0.2 service version - nor surprisingly this has a service name stockmanagerv0-0-2. In the OCI CLoud shell type the following
   
   - `kubectl apply -f stockmanager-v0.0.2-service.yaml`
 
@@ -197,11 +226,11 @@ service/stockmanagerv0-0-1 created
 service/stockmanagerv0-0-2 created
 ```
 
-**For demonstration purposes only** I have supplied a couple of ingress configurations that will let us see the difference between the two versions. In a normal canary deployment you would **not** do this, but in the lab it helps make clear what's happening.
+**For demonstration purposes only** I have supplied a couple of ingress configurations that will let us see the difference between the two versions. In a normal canary deployment you would **not** do this, but in the lab it helps make clear what's happening.   When we installed Linkerd and the ingress rule for it's UI we ran a script that set the IP address of the host and certificate all the other ingress rules files, so we don't need to update it this time.
 
   3. In the OCI CLoud shell type the following
   
-  - `kubectl apply -f stockmanager-canary-ingress.yaml`
+  - `kubectl apply -f ingressStockmanagerCanaryRules.yaml`
 
   ```
 ingress.networking.k8s.io/stockmanager-canary-ingress created
@@ -211,7 +240,7 @@ These ingress rules connect to the versioned services, not the original stockman
 
   4. Let's check them out. Firstly the 0.0.1 specific version. In the OCI CLoud shell type the following
   
-  - `curl -i -k  -u jack:password https://store.<external IP>.nip.io/stockmanagerv0-0-1/stocklevel`
+  - `curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/stockmanagerv0-0-1/stocklevel`
 
   ```
 HTTP/2 200 
@@ -228,7 +257,7 @@ Accessing the 0.0.1 version the ingress connects to the 0.0.1 service which has 
 
   5. Now let's try the 0.0.2 version (expect an error)
   
-  - `curl -i -k  -u jack:password https://store.<external IP>.nip.io/stockmanagerv0-0-2/stocklevel`
+  - `curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/stockmanagerv0-0-2/stocklevel`
 
   ```
 HTTP/2 503 
@@ -251,9 +280,9 @@ For the 0.0.2 version we get a 503 - Service Unavailable response. The ingress c
 
 ### Task 2e: Creating the traffic split
 
-Now we have to create the traffic split. We need to do this before creating the 0.0.2 deployment because the original (un-versioned) stockmanager service is still running and being used by the storefront. The original service has a selector that will match on **any** pod with the label `app: stockmanager` **regardless** of what the version it is. Once the traffic split is in place it will intercept traffic for the original service, so only after that is it safe to create the new deployments.
+Now we have to create the traffic split. We need to do this before creating the 0.0.2 deployment because the original (un-versioned) stockmanager service is still running and being used by the storefront. The original service has a selector that will match on **any** pod with the label `app: stockmanager` **regardless** of what the version it is. Once the traffic split is in place it will intercept traffic for the original service, so only after that is it safe to create the new deployments and still retain full control of the traffic.
 
-We are going to deploy out split on the service `stockmanager` (This is known as the `Apex Service` as it's the actual top level service) The traffic split will split the traffic sent to the `stockmanager` service between the two backend services (also known as `Leaf services`) the `stockmanagerv0-0-1` service and the `stockmanagerv0-0-2` service. In this case there are two backends, but of course you can have more if you need to.
+We are going to deploy our split on the service `stockmanager` (In service mesh terms this is known as the `Apex Service` as it's the actual top level service) The traffic split will intercept any traffic sent to the `stockmanager` service and split it between the backend services (also known as `Leaf services`) it specifies - in this case the `stockmanagerv0-0-1` service and the `stockmanagerv0-0-2` service. The example we are using here has two backends, but of course you can have more if you need to.
 
 As we can see below, that breakdown sends all the traffic to the v0.0.1 version and none to the v0.0.2 version, we need to do this because we haven't setup any pods for the 0.0.2 service yet, so it couldn't respond to requests.
 
@@ -297,9 +326,9 @@ As the traffic split is now in place and it's intercepting requests to the origi
 
 We can confirm this by making a few requests
 
-  2. In the OCI Cloud shell type (remember to replace `<external IP>` with your Ingress IP address)
+  2. In the OCI Cloud shell type
   
-  - `curl -i -k  -u jack:password https://store.<external IP>.nip.io/store/stocklevel`
+  - `curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
   
   ```
 HTTP/2 200 
@@ -327,9 +356,9 @@ deployment.apps/stockmanagerv0-0-2 created
 After waiting a short while for the new deployment to start we can check that the new version is configured using the 0.0.2 ingress. We are using the "broken" version of the stockmanager service we saw in the troubleshooting module, so expect some errors
  
 
-  4. In the OCI Cloud Shell type (remember to replace `<external IP>` with your Ingress IP address)
+  4. In the OCI Cloud Shell type
   
-  - `curl -i -k  -u jack:password https://store.<external IP>.nip.io/stockmanagerv0-0-2/stocklevel`
+  - `curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/stockmanagerv0-0-2/stocklevel`
   
 Note that it may take a short while for the v0.0.2 stockmanager to start, so you may get a 502 Bad Gateway or a delay while the stockmanager does it's lazy initialization and the database connection is established.
 
@@ -371,15 +400,36 @@ If you do this a few times you will find that about half of the requests succeed
 
 Now we've seen that the services are behaving as expected let's start up the load generator
 
-  5. Open a new window using your OCI account and start a cloud shell
+  5. Open a new window using your OCI account and start a cloud shell. You will need to set the `EXTERNAL_IP` variable in this new window, if you can't remember it or don;t have it written down expend ths section below and follow the instructions.
+  
+<details><summary><b>How to get and set $EXTERNAL_IP</b></summary>
+
+**To get the external IP address if you no longer have it**
+
+In the OCI Cloud shell type
+
+  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+  
+  ```
+NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
+ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
+```
+
+The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column.
+  
+---
+
+</details>
+ 
+  - `export EXTERNAL_IP=<External IP>`
   
   6. In the **new** OCI Cloud shell go to the script directory
   
   - `cd $HOME/helidon-kubernetes/service-mesh`
   
-  7. Start the load generator - (remember to replace `<external IP>` with the IP address of your ingress service, no need to prefix it with store or suffix with nip.io)
+  7. Start the load generator
   
-  - `bash generate-service-mesh-load.sh <external IP> 1 &`
+  - `bash generate-service-mesh-load.sh $EXTERNAL_IP 1 &`
   
  ```
  Iteration 1
@@ -393,7 +443,7 @@ Note, the OCI Cloud Shell session will terminate (and thus kill off the load gen
 
 We can use the Linkerd web UI to see how the traffic is working
 
-  8. In your laptop web browser go to `https://linkerd.<external IP>.nip.io`
+  8. In your laptop web browser go to `https://linkerd.<external IP>.nip.io` (Replace `External IP with the load balancers IP)
 
 If needed accept that it's a self signed certificate and login as `admin` with password you set when installing linkerd
 
@@ -463,7 +513,7 @@ trafficsplit.split.smi-spec.io/stockmanager-canary edited
 
 You will see that the split is now 90 to the v0.0.1 stockmanager and 10% to the v0.0.2 stock manager. As only 10% of the requests are going to the 0.0.2 version it may take a short while for data to be displayed for it.
 
-The success rate column for the v0.0.1 is still 100%, but in this case the success rate for the 0.0.2 version is 33.33% Of course the exact number will vary depending on how many requests have been sent to it and the random behavior of it it generates an error or not. Given that the load generator is set to send one request a second, that only 10% of those are being sent to our test v0.0.2 service, and it only errors half the time only about 5% of the requests will actually have an error - so you may have to wait a bit to short time before seeing any errors
+The success rate column for the v0.0.1 is still 100%, but in this case the success rate for the 0.0.2 version is 33.33% Of course the exact number will vary depending on how many requests have been sent to it and the random behavior of it it generates an error or not. Given that the load generator is set to send one request a second, that only 10% of those are being sent to our test v0.0.2 service, and it only errors half the time only about 5% of the requests will actually have an error - so you may have to wait a bit to short time before seeing any errors. Also it can take a bit of time for the statistics to propagate up to the UI.
 
   5. Click on **Namespaces** 
 
@@ -567,7 +617,7 @@ Well spotted! We're going to leave the version in place on the original service.
 
 2/ It's actually a good idea to specify version information as standard. 
 
-3/ It lets you quickly and easily see which version you're dealing with, and also makes it easier to implement traffic splits as the version info is already in place.
+3/ It lets you quickly and easily see which version you're dealing with, and also makes it easier to implement traffic splits in the future (if you wished to do so) as the version info is already in place.
 
 ---
 
@@ -639,27 +689,11 @@ Start the nginx fault injector deployment
 deployment.apps/fault-injector created
 ```
 
-For testing purposes we'll run an ingress, normally you wouldn't need to do this, but I want to show you that the fault injector service does indeed return 504 errors. We need to edit the configuration file to use the righrt IP addresses
-
-  5. In the cloud shell edit the `fault-injector-ingress.yaml` file, in the `spec:` section replace `<External IP>` with the external IP of the load balancer in all of the locations it occurs then save it (this is the external IP we've been using throughout the lab). The updated section of the file should look look like the following, though of course the IP address I've used here is just and example **and you need to use your own**
-  
-  ```
-spec:
-  tls:
-  - hosts: 
-    # <External IP> must be replaced with the IP address of the ingress controller
-    - store.123.456.789.999.nip.io
-    secretName: tls-store
-  rules:
-    # <External IP> must be replaced with the IP address of the ingress controller
-  - host: store.123.456.789.999.nip.io
-    http:
-      paths:
-  ```
+For testing purposes we'll run an ingress, normally you wouldn't need to do this, but I want to show you that the fault injector service does indeed return 504 errors. When we installed Linkerd and the ingress rule for it's UI we ran a script that set the IP address of the host and certificate all the other ingress rules files, so we don't need to that again.
 
   6. In the OCI Cloud shell type
   
-  - `kubectl apply -f fault-injector-ingress.yaml`
+  - `kubectl apply -f ingressFaultInjectorRules.yaml`
 
   ```
 ingress.networking.k8s.io/fault-injector created
@@ -667,9 +701,9 @@ ingress.networking.k8s.io/fault-injector created
 
 Test the fault injection returns the right value
 
-  7. In the OCI Cloud shell type (replace `<external IP>` with **your** ingress controller IP address)
+  7. In the OCI Cloud shell type
 
-  - `curl -i  http://store.<external IP>.nip.io/fault`
+  - `curl -i -k https://store.$EXTERNAL_IP.nip.io/fault`
 
   ```
 Handling connection for 9411
@@ -725,7 +759,7 @@ trafficsplit.split.smi-spec.io/fault-injector-split created
 
 Let's look at the traffic split in the linkerd UI
 
-  2. In your web browser go to `https://<external IP address>`
+  2. In your web browser go to `https://linkerd.<external IP>.nip.io` (replace `External IP` with the IP address of the load balancer as usual)
 
   3. On the upper left click the **Namespace dropdown** (It may display `DEFAULT` or another namespace name)
 
@@ -755,9 +789,9 @@ Keep this page open
 
 Let's generate some requests to see what happens
 
-  1. In the OCI Cloud Shell type the following replacing `<External IP>` with your load balancers IP address  (Be prepared for an error)
+  1. In the OCI Cloud Shell type the following
   
-  - `curl -i -k  -u jack:password https://store.<external ip>.nip.io/store/stocklevel`
+  - `curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
 
   ```  
 HTTP/2 200 
@@ -770,7 +804,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 [{"itemCount":410,"itemName":"Pencil"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":4490,"itemName":"Pins"},{"itemCount":100,"itemName":"Book"}]
 ```
 
-Well the good news is that on this occasion we got a result, make a few more requests, then return to your web browser (hopefully you left it on the details page of the fault-injection traffic split)
+Well the good news is that we got a result, assuming that our requests were randomly assigned to the faulty zipkin sertvice it seems that having a faulty zipkin service does not immediately break the services that depend on it ! Make a few more requests - just in case the first request was assigned to the "good" zipkin (we want it to have a chance to hit the bad one), then return to your web browser (hopefully you left it on the details page of the fault-injection traffic split)
 
 Below is what **I** saw, and it seems that **in this case** the random number generator means that the few requests I made to the traffic split that was connected to the origional zipkin service had all been passed to fault-injector-zipkin which of course failed them all.
 
@@ -806,9 +840,9 @@ This will generate reports from any deployment to the `zipkin` deployment (it is
 
   7. Click the **Start** button
 
-  8. In the OCI cloud shell make multiple curl requests of the form, as always replace `<External ip>` with your load balancer IP address
+  8. In the OCI cloud shell make multiple curl requests of the form
   
-  - `curl -i -k  -u jack:password https://store.<external ip>.nip.io/store/stocklevel`
+  - `curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
   
   9. Looking at the Linkerd UI we can see the result.
 
@@ -849,7 +883,7 @@ zipkin-7db7558998-c5b5j          2/2     Running   0          69m
 
 Now we want to get the logs of the pod itself, in **my** case that's `stockmanager-7945b54576-9f7q7`, but of course yours will be different.
 
-Let's use kubectl to get the logs. Note that as the pod now contains multiple containers due to linkerd injecting them automatically we need to specify the container we want the logs for, as it's names in the deployment. In this case that's the stockmanager container.
+Let's use kubectl to get the logs. Note that as the pod now contains multiple containers due to linkerd injecting them automatically we need to specify the container we want the logs for, as it's named in the deployment. In this case that's the stockmanager container.
 
 
 - In the OCI Cloud Shell type the following, replace the pod name with your stockmanager pod name :

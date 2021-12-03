@@ -123,13 +123,11 @@ Note that if there was an existing Kubernetes config file (most likely because y
 Existing kubeconfig file found at /home/oracle/.kube/config and new config merged into it
 ```
 
-  8. Set the config file to be accessible only by you (This stops warnings from helm about it having the wrong permissions)
+  9. Set the config file to be accessible only by you (This stops warnings from helm about it having the wrong permissions)
   
   - `chmod 600 $HOME/.kube/config`
   
-Your Kubernetes config file is now downloaded into the `.kube/config` file
-
-  9. Verify you can access the cluster:
+  10. Verify you can access the cluster:
   
   -  `kubectl get nodes`
 
@@ -141,7 +139,41 @@ NAME        STATUS   ROLES   AGE     VERSION
 
 If the kubectl command returns `No resources found.` and you have only just created the cluster it may still be initializing the worker nodes (They have to be created, the OS installed and then the Kubernetes software installed before they report ready). Wait a short time and try again until you get the nodes list.
 
-(The details and number of nodes will vary depending on the settings you chose when you created the cluster, they will take a few mins for the nodes to be configured after the cluster management is up and running)
+(The details and number of nodes will vary depending on the settings you chose when you created the cluster, it will take a few mins for the nodes to be configured after the cluster management is up and running)
+  
+Your Kubernetes config file is now downloaded into the `.kube/config` file. It's stored as a context and in situations where you have multiple kubernetes clusters it's possible to use the name of the context to target a kubectl command at a specific cluster.
+
+  11. In the OCI cloud shell type
+  
+  - `kubectl config get-contexts`
+  
+  ```
+CURRENT   NAME   	              CLUSTER               AUTHINFO           NAMESPACE
+*         context-czpet5do3oq   cluster-czpet5do3oq   user-czpet5do3oq   default
+```
+
+Of course this is an example from when I ran the command in my environment, the details returned will be different in your case.
+
+If you are in an environment where you have multiple clusters in use and their kubectl config downloaded you will see multiple entries here. The current context (indicated by the `*` in the `CURRENT` column) is the one that will be used if you don't target a kubectl command at a specific cluster using it's context name. Of course if you were running with multiple clusters having to type `context-czpet5do3oq` every time would be painful, and it's not exactly memorable either, so let's rename it to something easier to work with.
+
+  12. In the OCI Cloud shell type the following, replace `<Context name>` with the context name you just got for your cluster, I'd recommend copy-and-paste ! The output shows it when the context is names `context-czpet5do3oq` as in my example above.
+  
+  - `kubectl config rename-context <Context name> one` 
+  
+  ```
+  Context "context-czpet5do3oq" renamed to "one".
+  ```
+  
+  13. Let's look at the updated info. In the OCI clouds shell type :
+  
+  - `kubectl config get-contexts`
+  
+  ```
+CURRENT   NAME   CLUSTER               AUTHINFO           NAMESPACE
+*         one    cluster-czpet5do3oq   user-czpet5do3oq   default
+```
+  
+Now whenever we run a kubectl command if we did need to specify the cluster we could just use `--context=one` to specify the context and thus kubernetes cluster to target the command to (if you are frequenelt switchign between clusters this is good practice as it will be clear to you which cluster you are working on). Fortunately for us by the most recent context added to the kubectl config file is used as a default, so in the vast majority of steps in this lab you don't need to specify the context at all - we've only made the changes here to make things easier in case you decide to do some of the lab steps where multiple clusters are needed.
 
 
 ## Task 3: Basic cluster infrastructure services install
@@ -181,7 +213,7 @@ Firstly we need to create a namespace for the ingress controller.
 
   2. Run the following command to install **ingress-nginx** using Helm 3:
   
-  - `helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx --version 3.34.0 --set rbac.create=true  --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-protocol"=TCP --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape"=10Mbps`
+  - `helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx --version 3.38.0 --set rbac.create=true  --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-protocol"=TCP --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape"=10Mbps`
   
   ```
 NAME: ingress-nginx
@@ -211,7 +243,7 @@ The helm options are :
 
 - `--namespace ingress-nginx`  The kubernetes namespace to install the software into
 
-- `--version 3.29.0` The version of the helm chart to use to specify the install (the software version is defined in the chart, so is indirectly specified for you)
+- `--version 3.38.0` The version of the helm chart to use to specify the install (the software version is defined in the chart, so is indirectly specified for you)
 
 - `--set rbac.create=true` Tells the helm chart to specifiy the role based access control features, we're not really using these in this lab, but they make this a lot more secure in a production env ironment.
 
@@ -253,9 +285,12 @@ In this case we can see that the load balancer has been created and the external
 
 In the helm command you'll have seen a couple of `--set`` options.  These are oci specific annotations (more on annotations later) which tell Kubernetes to setup the load balancer using the TLS secret we created earlier
 
-  8. **Make a note of this external IP address, you'll be using it a lot!**
+  8. **Make a note of this external IP address, you'll be using it a lot!** We'll also set a OCI Shell variable so you can reference it directly when running subsequent commands that use it, that'll make running those commands much easier ! In the OCI Shell type the following, replacing `<External IP>` with the ip address you've just got.
+  
+  - `export EXTERNAL_IP=<External IP>`
+  
 
-
+**IMPORTANT** Ths OCI Cloud shall variable you've just set will persist for the duration of the cloud shell session (it will "time out" after approximately 20 mins of no interaction), if you exit and re-open the browser window / tab, start using a different OCI Cloud Shell instance, or reconnect after a timeout the variable will need to be set again using the `export EXTERNAL_IP=<External IP>` you just used - if you don't then commands that use the variable will not fail, potentially silently. If you are in doubt if the variable is set then entering `echo $EXTERNAL_IP` into the cloud shell will display the IP address, if it returns nothing or an empty line then you will need to re-set the variable.
 
 Note that in a production environment you might want to terminate the encryption in the load balancer for efficiency reasons, and also between the microservices using a service mesh (which is a later optional lab).
 
@@ -264,11 +299,36 @@ Note that in a production environment you might want to terminate the encryption
 
 Setting up the Kubernetes dashboard (or any) service using helm is pretty easy. it's basically a simple command. 
 
-  1. To install the dashboard you need to replace `<External IP>` with the IP address of the Ingress controller service you got earlier in this helm command, so if the IP address you got was 123.456.789.999 (this is not a valid address, so don;t use it, use yours) the set ingress.hosts section of command below might look like `--set ingress.hosts='{dashboard.kube-system.123.456.789.999.nip.io}'`
+  1. To install the dashboard we will be using the environment variable `EXTERNAL_IP` which we earlier set to the IP address of the Load balancer of the Ingress controller service. The variable `$EXTERNAL_IP` in the test below will be replaced by the value you set it to when the command is run. **IMPORTANT** if you have for any reason had to create a new cloud shell that variable will need to be setup again. 
+
+<details><summary><b>How to check if $EXTERNAL_IP is set, and re-set it if it's not</b></summary>
+
+**To check if `$EXTERNAL_IP` is set**
+
+If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
+
+**To get the external IP address if you no longer have it**
+
+In the OCI Cloud shell type
+
+  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
   
-  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set ingress.enabled=true  --set ingress.hosts='{dashboard.kube-system.<External IP>.nip.io}' --version 4.3.1`
+  ```
+NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
+ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
+```
+
+The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column. If you've only just created the ingress controller it may say `Pending` in which case re-do the request after a few minutes.
+
+**To set the variable again**
+
+  - `export EXTERNAL_IP=<External IP>`
   
-  It it **critical** that you update the `<External IP>` address to match that of **your** ingress controller service, if you get it wrong then though the command will complete you won't be able to access the dashboard with the URL. 
+---
+
+</details>
+  
+  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set ingress.enabled=true  --set ingress.hosts="{dashboard.kube-system.$EXTERNAL_IP.nip.io}" --version 5.0.0`
   
   ```
 NAME: kubernetes-dashboard
@@ -285,17 +345,47 @@ From outside the cluster, the server URL(s) are:
      https://dashboard.kube-system.123.456.789.999.nip.io
 ```
 
-Note the URL to use to access the dashboard (this is of course an example and won't work, the IP address will be the one you specified) 
+Note the URL to use to access the dashboard (this is of course an example and won't work, the IP address will be the one you specified) If there is no IP address in the URL or it's incorrect then you'll need to expand the following section and complete the steps in it
 
-<details><summary><b>What to do if you got your External IP Address wrong</b></summary>
+<details><summary><b>What to do if your External IP Address was not set </b></summary>
 
-If you did not correctly specify the IP address of **your** ingress then you will have to uninstal the dashboard and try again, this time with the right `<External IP>`
+If the variable `$EXTERNAL_IP` was not set or was set incorrectly then you will have to uninstall the dashboard and try again, this time with the right External IP
+
 
   To uninstall the dashboard type 
 
   - `helm uninstall kubernetes-dashboard --namespace kube-system`
   
-It will take a short while to remove the dashboard, after which you can re-try with the **correct external IP address for your ingress service** 
+It will take a short while to remove the dashboard, after which set  re-try with the **correct external IP address for your ingress service** 
+
+<details><summary><b>How to check if $EXTERNAL_IP is set, and re-set it if it's not</b></summary>
+
+**To check if `$EXTERNAL_IP` is set**
+
+If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
+
+**To get the external IP address if you no longer have it**
+
+In the OCI Cloud shell type
+
+  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+  
+  ```
+NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
+ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
+```
+
+The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column. If you've only just created the ingress controller it may say `Pending` in which case re-do the request after a few minutes.
+
+**To set the variable again**
+
+  - `export EXTERNAL_IP=<External IP>`
+  
+---
+
+</details>
+
+---
  
 </details>
 
@@ -324,8 +414,8 @@ The helm options are :
   -  `helm list --namespace kube-system`
 
   ```
-NAME                	NAMESPACE  	REVISION	UPDATED                             	STATUS  	CHART                      	APP VERSION
-kubernetes-dashboard	kube-system	1       	2019-12-24 16:16:48.112474 +0000 UTC	deployed	kubernetes-dashboard-2.8.3	     2.0.4 
+NAME                    NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                           APP VERSION
+kubernetes-dashboard    kube-system     1               2021-10-04 14:56:39.913725424 +0000 UTC deployed        kubernetes-dashboard-5.0.0      2.3.1      
 ```
 
 We've seen it's been deployed by Helm, this doesn't however mean that the pods are actually running yet (they may still be downloading)
@@ -721,7 +811,7 @@ Deleting old tg-helidon namespace
 Creating new tg-helidon namespace
 namespace/tg-helidon created
 Setting default kubectl namespace
-Context "docker-desktop" modified.
+Context "west" modified.
 ```
 The script tries to delete any existing namespace with that name, creates a new one, and sets it as a default. The output above was using tg-helidon as the namespace, but of course you will have used your initials and so will see them in the output instead of tg.
 
@@ -797,7 +887,7 @@ Services determine what pods they will talk to using selectors. Each pod had met
 
 Services can be exposed externally via load balancer on a specific port (the type field is LoadBalancer) or can be mapped on to an external to the cluster port (basically it's randomly assigned when the type is NodePort) but by default are only visible inside the cluster (or if the type is ClusterIP). In this case we're going to be using ingress to provide the access to the services from the outside world so we'll not use a load balancer.
 
-The helidon-kubernetes/base-kubernetes/servicesClusterIP.yaml file defined the services for us. Below is the definition of the storefront service (the file also defines the stock manager and zipkin servcies as well)
+The various services files define the services for us. Below is the definition of the storefront service (there are also files which define the stock manager and zipkin services as well)
 
 ```
 apiVersion: v1
@@ -829,27 +919,44 @@ You need to define the services before defining anything else (e.g. deployments,
 </details>
 
 
-  1. The servicesClusterIP.yaml file in the defines the cluster services for us. We can apply it to make the changes
+  1. The `create-services.sh` script applies the YAML files to create the cluster services for us. Using a script makes this easily reproducible, though of course you could store the YAML in a git repo and use a deployment tool like Oracle DevOps CD or ArgoCD to apply them from the repo. Note that as you may be running this in a the script deletes any existing servcies for saftey first.
 
-  - `kubectl apply -f servicesClusterIP.yaml`
+  - `bash create-services.sh`
 
   ```
-service/storefront created
-service/stockmanager created
+Deleting existing services
+Storefront
+Stockmanager
+Zipkin
+Deleted services
+Services remaining in namespace are
+No resources found in tims namespace.
+Creating services
+Zipkin
 service/zipkin created
+Stockmanager
+service/stockmanager created
+Storefront
+service/storefront created
+Current services in namespace are
+NAME           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
+stockmanager   ClusterIP   10.96.31.251    <none>        8081/TCP,9081/TCP   3s
+storefront     ClusterIP   10.96.17.27     <none>        8080/TCP,9080/TCP   2s
+zipkin         ClusterIP   10.96.236.255   <none>        9411/TCP            5s
 ```
 
-Note that the service defines the endpoint, it's not actually running any code for your service yet.
+Note that the service defines the endpoint, it's not actually running any code for your service yet. It's like creating a DNS entry does not mean there is any thing at that IP address.
 
   2. To see the services we can use kubectl :
 
   - `kubectl get services`
 
   ```
+Current services in namespace are
 NAME           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
-stockmanager   ClusterIP   10.110.57.74    <none>        8081/TCP,9081/TCP   2m15s
-storefront     ClusterIP   10.96.208.163   <none>        8080/TCP,9080/TCP   2m16s
-zipkin         ClusterIP   10.106.227.57   <none>        9411/TCP            2m15s
+stockmanager   ClusterIP   10.96.51.195    <none>        8081/TCP,9081/TCP   9s
+storefront     ClusterIP   10.96.130.202   <none>        8080/TCP,9080/TCP   8s
+zipkin         ClusterIP   10.96.148.204   <none>        9411/TCP            11s
 ```
 
 The clusterIP is the virtual IP address assigned in the cluster for the service, note there is no external IP as we haven't put a load balancer in front of these services. The ports section specified the ports that the service will use (and in this case the target ports in the pods)
@@ -860,9 +967,9 @@ If however you click on the service name in the services list in the dashboard y
 
 ### Task 4c: Accessing your services using an ingress rule
 
-<details><summary><b>Introduction</b></summary>
+<details><summary><b>WHy not use multiple Load Balancers?</b></summary>
 
-Services can configure externally visible load balancers for you, however this is not recommended for several reasons if using REST type access. 
+Services can configure externally visible load balancers for you (and helm did this for you when the ingress controller was installed), however this is not recommended for every REST service for many reasons. 
 
 Firstly the load balancers that are created are not part of Kubernetes, the service needs to communicate with the external cloud infrastructure to create them, this means that the cloud needs to provide load balancers and drivers for Kubernetes to configure them, not all clouds may provide this in a consistent manner, so you may get unexpected behavior.
 
@@ -876,9 +983,6 @@ Fortunately for REST activities there is another option, the ingress controller 
 
 ***Update***
 Saying that an ingress cannot handle TCP / UDP level requests is actually a slight lie, in more recent versions of the nginx ingress controller it's possible to define a configuration that can process TCP / UDP connections and forward those untouched to a service / port. This is however not a standard capability and needs to be configured separately with specific IP addresses for the external port defined in the ingress configuration. However, different ingress controllers will have different capabilities, so you can't rely on this being the case with all ingress controllers.
-
-
-PS I know in this lab we've used a load balancer for the dashboard (and will do so later for a couple of other services - Prometheus and Grafana). We're doing this for time reasons, it's certainly possible to run the dashboard, Prometheus, Grafana via an ingress, and this is the best option, however doing so means you need to get setup reverse proxies, certifcates and DNS entries. Those can take a little time to do (esp waiting for DNS changes to propagate through the world wide internet infrastructure) so for this lab we chose the quicker, though less secure option of just using a Load Balancer.
 
 ---
 
@@ -897,11 +1001,34 @@ ingress-nginx-nginx-ingress-controller        LoadBalancer   10.111.0.168    130
 ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <none>        80/TCP                       4h9m
 ```
 
+Earlier we stored the value of the external IP address in the `$EXTERNAL_IP` variable, if you want to check if it's correct do `echo $EXTERNAL_IP` in the OCI Cloud Shell and compare it to the one shown when you looked at the ingress service.
 
+<details><summary><b>How to check if $EXTERNAL_IP is set, and re-set it if it's not</b></summary>
 
-  2. Note the **External IP address** 
+**To check if `$EXTERNAL_IP` is set**
+
+If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
+
+**To get the external IP address if you no longer have it**
+
+In the OCI Cloud shell type
+
+  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
   
-You will need to use this address to access **your** services in the rest of this lab
+  ```
+NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
+ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
+```
+
+The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column. If you've only just created the ingress controller it may say `Pending` in which case re-do the request after a few minutes.
+
+**To set the variable again**
+
+  - `export EXTERNAL_IP=<External IP>`
+  
+---
+
+</details>
 
 For the moment there are no actual ingress rules defined yet, 
 
@@ -909,20 +1036,22 @@ As we will be providing a secure TLS protected connection we need to create a ce
 
 To enable the lab to complete in a reasonable time we will therefore be generating our own self-signed certificate. For a lab environment that's fine, but in a production environment you wouldn't do this.
 
-  3. Run the following command to generate a certificate (you installed the step command in the cloud shell setup). **VITAL** You must replace `<External IP>` in the subject below with the external IP address of your Ingress service, as an example this might look like `stock.123.456.789.999.nip.io` (That's is only an example, it absolutely will not work in the real world).
+  3. Run the following command to generate a certificate (you installed the step command in the cloud shell setup). The value of the IP address of the Ingress controllers load balancer is in `$EXTERNAL_IP` and will be replaced in the command below automatically.
 
-  - `$HOME/keys/step certificate create store.<External IP>.nip.io tls-store.crt tls-store.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
+  - `$HOME/keys/step certificate create store.$EXTERNAL_IP.nip.io tls-store-$EXTERNAL_IP.crt tls-store-$EXTERNAL_IP.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
 
   ```
-Your certificate has been saved in tls-store.crt.
-Your private key has been saved in tls-store.key
+Your certificate has been saved in tls-store-123.456.789.123.crt.
+Your private key has been saved in tls-store-123.456.789.123.key
 ```
+
+(The above is example output, your files will be based on the IP you provided)
  
 The certificate needs to be in a Kubernetes secret, we'll look at these in more detail, but for now :
 
-  4. Run the following command to save the certificate as a secret in the ingress-nginx namespace
+  4. Run the following command to save the certificate as a secret in the ingress-nginx namespace.
 
-  - `kubectl create secret tls tls-store --key tls-store.key --cert tls-store.crt`
+  - `kubectl create secret tls tls-store --key tls-store-$EXTERNAL_IP.key --cert tls-store-$EXTERNAL_IP.crt`
  
   ```
 secret/tls-store created
@@ -947,33 +1076,34 @@ An ingress rule defines a URL path that is looked for, when it's discovered the 
 There are ***many*** possible types of rules that we could define, but here we're just going to look at two types: Rules that are plain in that the recognize part of a path, and just pass the whole URL along to the actual service, and rules that re-write the URL before passing it on. Let's look at the simpler case first, that of the forwarding.
 
 ```
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: zipkin
+  name: zipkin-direct-ingress
   annotations:
     # use the shared ingress-nginx
     kubernetes.io/ingress.class: "nginx"
 spec:
   tls:
   - hosts: 
-    # <External IP> must be replaced tihe the IP address of the ingress controller
-    - store.158.101.210.253.nip.io
+    # ${EXTERNAL_IP} must be replaced with the IP address of the ingress controller
+    - store.123.456.789.123.nip.io
     secretName: tls-store
   rules:
-    # <External IP> must be replaced tihe the IP address of the ingress controller
-  - host: store.158.101.210.253.nip.io
+    # ${EXTERNAL_IP} must be replaced with the IP address of the ingress controller
+  - host: store.123.456.789.123.nip.io
     http:
       paths:
       - path: /zipkin
+        pathType: Prefix
         backend:
-          serviceName: zipkin
-          servicePort: 9411
-          
-<more paths>
+          service:
+            name: zipkin
+            port:
+              name: zipkin
 ```
 
-Firstly note that the api here is the `networking.k8s.io/v1beta1` API. In recent versions of Kubernetes this was been changed from `extensions/v1beta1` to indicate that Ingress configuration is part of the core Kubernetes networking features.
+Firstly note that the api here is the `networking.k8s.io/v1` API. Since Kubernetes 1.19 was changed from `networking.k8s.io/v1beta1` to indicate that Ingress configuration is part of the core Kubernetes networking released features. This change also resulted in a number of structural changes to the YAML, the version above represents the latet structure.
 
 The metadata specifies the name of the ingress (in this case zipkin) and also the annotations. Annotations are a way of specifying name / value pairs that can be monitored for my other services. In this case we are specifying that this ingress Ingress rule has a label of Kubernetes.io/ingress.class and a value of nginx. The nginx ingress controller will have setup a request in the Kubernetes infrastructure so it will detect any ingress rules with that annotation as being targeted to be processed by it. This allows us to define rules as standalone items, without having to setup and define a configuration for each rule in the ingress controller configuration itself. This annotation based approach is a simple way for services written to be cloud native to identify other Kubernetes objects and determine how to hendle them, as we will see when we look at monitoring in kubenteres.
 
@@ -982,22 +1112,36 @@ The spec section basically defines the rules to do the processing, basically if 
 In some cases we don't want the entire URL to be forwarded however, what if we were using the initial part of the URL to identify a different service, perhaps for the health or metrics capabilities of the microservices which are on a different port (http://storefront:9081/health for example) In this case we want to re-write the incomming URL as it's passed to the target
 
 ```
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: stockmanager-management
+  name: stockmanager-rewrite-ingress
   annotations:
-    # use a re-writer
+    kubernetes.io/ingress.class: "nginx"
+    # nginx.ingress.kubernetes.io/use-regex: "true"
+    # rewrite the requests
     nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
+  tls:
+  - hosts: 
+    # ${EXTERNAL_IP} must be replaced with the IP address of the ingress controller
+    - store.123.456.789.123.nip.io
+    secretName: tls-store
   rules:
-  - http:
+    # ${EXTERNAL_IP} must be replaced with the IP address of the ingress controller
+  - host: store.$123.456.789.123.nip.io
+    http:
       paths:
-        #any path starting with smmtg will have the /smmgt removed before being passed to the service on the specified url
-      - path: /smmgt(/|$)(.*)
+        #any path starting with sm will have the /sm removed before being passed to the service on the specified url
+        #for example this handles /sm/status -> /status on arrival at the storefront server
+      - path: /sm(/|$)(.*)
+        pathType: ImplementationSpecific
         backend:
-          serviceName: stockmanager
-          servicePort: 9081
+          service:
+            name: stockmanager
+            port: 
+              name: stockmanager    
+... more paths ...
 ```
 
 In this case the annotations section is slightly different, it still triggers nginx when the path matches, but it uses a variable so that the URL will be `/` followed by whatever matches the `$2` in the regular expression. The rule itself looks for anything that starts with /smmgt followed by the regexp which matches `/` followed by a sequence of zero or more characters OR the end of the pattern. The regexp will be extracted and substituted for `$2`. The regexp matched two fields, the first match ​`$1` is `(/|$)` which matches either / or no further characters. The 2nd part of the regexp `$2` is `(.*)` which matches zero or more characters (the . being any character and * being a repeat of zero or more).
@@ -1012,58 +1156,59 @@ Note that it is possible to match multiple paths in the same ingress, and they c
 
 </details>
 
-  4. Edit the ingressConfig.yaml file, locate the sections `store.<External IP>.nip.io` replace `<External IP>` with the IP address of your ingress load balancer which you've just got, for example `store.123.456.789.999nip.io` (you need to use your ip address, this is only an example and won't work for you), you don't need to make changes in the comments. There are 4 locations where this needs doing in the actual text (not comments)
+As we've mentioned before for the purposes of this lab we are not setting up official DNS domain entries (we're using `nip.io` to get around that) or creating official certificates (we're creating them locally using `step`) for this to work however that means that we need to use the `nip.io` "Fake" DNS Names with the IP address embedded in them
   
-  - Original version before changing (this is only part of the file, there are other locations that need changing in addition to the ones shown here)
+  4. The multiple ingress rules files have a placeholder in them and there is a script that will replace the placeholder with the IP address in a new version of the file. In the OCI Cloud shell type the following, at the prompt enter `y` (no need to press return)
   
-  ```
-  spec:
-  tls:
-  - hosts: 
-    # <External IP> must be replaced with the IP address of the ingress controller
-    - store.<External IP>.nip.io
-    secretName: tls-store
-  rules:
-    # <External IP> must be replaced with the IP address of the ingress controller
-  - host: store.<External IP>.nip.io
-  ```
-  
-  - Example after changing the text - note that the comments do not need changing (but feel free to do so if you want) Of course the IP address shown below is only an example and will not work, yours will be different
+  - `bash set-ingress-ip.sh $EXTERNAL_IP`
   
   ```
-  spec:
-  tls:
-  - hosts: 
-    # <External IP> must be replaced with the IP address of the ingress controller
-    - store.123.456.789.999.nip.io
-    secretName: tls-store
-  rules:
-    # <External IP> must be replaced with the IP address of the ingress controller
-  - host: store.123.456.789.999nip.io
-  ```
+Updating the ingress config to set 123.456.789.999 as the External IP address.
+Proceed ? y
+Templating ingress rules - updating the template ingress rules yaml in /home/tim_graves/helidon-kubernetes/base-kubernetes setting 123.456.789.999 as the external IP address
+Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules.yaml to /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules-one.yaml
+Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules.yaml replacing ${EXTERNAL_IP}.nip.io with 123.456.789.999.nip.io to destination /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules-one.yaml
+Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules.yaml to /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules-one.yaml
+Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules.yaml replacing ${EXTERNAL_IP}.nip.io with 123.456.789.999.nip.io to destination /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules-one.yaml
+Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules.yaml to /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules-one.yaml
+Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules.yaml replacing ${EXTERNAL_IP}.nip.io with 123.456.789.999.nip.io to destination /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules-one.yaml
 
-
-  5. Let's create the Ingress rules by applying the Ingress Config file : 
-  
-  -  `kubectl apply -f ingressConfig.yaml`
-
-  ```
-ingress.networking.k8s.io/direct-ingress create
-ingress.networking.k8s.io/rewrite-ingress created
 ```
 
+Note that the output above is for an external IP of `123.456.789.999` This is of course not a real world IP address and your output will reflect the IP address of your controller.
+
+  5. There is a shell script that will apply each of the ingress rules yaml files. Using a script here is prefered as it is reproducible and minimises the chance of typo's, mistakes or forgetting to apply a file. of course in a production system you'd probabaly be using an automated deployment tool instead of this script. In the OCI cloud shell type
+  
+  - `bash create-ingress-rules.sh`
+  
+  ```
+Applying /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules-one.yaml
+ingress.networking.k8s.io/stockmanager-direct-ingress created
+ingress.networking.k8s.io/stockmanager-rewrite-ingress created
+Applying /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules-one.yaml
+ingress.networking.k8s.io/storefront-direct-ingress created
+ingress.networking.k8s.io/storefront-rewrite-ingress created
+Applying /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules-one.yaml
+ingress.networking.k8s.io/zipkin-direct-ingress created
+
+```
+  
+  
   6. We can see the resulting ingresses using kubectl
 
   -  `kubectl get ingress`
 
   ```
-PORTS     AGE
-direct-ingress    <none>   store.123.456.789.999.nip.io   123.456.789.999   80, 443   8m18s
-rewrite-ingress   <none>   store.123.456.789.999.nip.io   123.456.789.999   80, 443   8m18s
+NAME                           CLASS    HOSTS                          ADDRESS   PORTS     AGE
+stockmanager-direct-ingress    <none>   store.123.456.789.999.nip.io             80, 443   79s
+stockmanager-rewrite-ingress   <none>   store.123.456.789.999.nip.io             80, 443   79s
+storefront-direct-ingress      <none>   store.123.456.789.999.nip.io             80, 443   77s
+storefront-rewrite-ingress     <none>   store.123.456.789.999.nip.io             80, 443   77s
+zipkin-direct-ingress          <none>   store.123.456.789.999.nip.io             80, 443   75s
 ```
 One thing that you may have noticed is that the ingress controller is running in the ingress-nginx namespace, but when we create the rules we are using the namespace we specified (in this case tg_helidon) This is because the rule needs to be in the same namespace as the service it's defining the connection two, but the ingress controller service exists once for the cluster (we could have more pods if we wanted, but for this lab it's perfectly capable of running all we need) We could put the ingress controller into any namespace we chose, kube-system might be a good choice in a production environment. If we wanted different ingress controllers then for nginx at any rate the --watch-namespace option restricts the controller to only look for ingress rules in specific namespaces.
 
-  7. Look at the ingressConfig.yaml file you'll see the rules in it sets up the following mappings
+  7. Look at the ingress yaml files and you'll see the rules in them sets up the following mappings
 
 Direct mappings
 
@@ -1083,29 +1228,41 @@ Direct mappings
 
 `/openapi -> storefront:8080/openapi`
 
-Notice the different ports in use on the target.
+Notice the different ports in use on the target are actually specified by name in the yaml file, that name comes from the name specified in the service definition, using a name means that if we do need to change the port we only need to change it in a single location.
 
-  8. If you didn't write it down earlier find the external IP address the ingress controller is running on :
+  
+  8. We now have a working endpoint, let's try accessing it using curl (`$EXTERNAL_IP` should contain your Load balancer IP address) - expect an http error, if you get a `Host not found` or similar error then your cloud shell session has been restarted and the variable will need to be reset.
+ 
+ 
+<details><summary><b>How to check if $EXTERNAL_IP is set, and re-set it if it's not</b></summary>
 
-  -  `kubectl get service -n ingress-nginx`
+**To check if `$EXTERNAL_IP` is set**
 
+If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
+
+**To get the external IP address if you no longer have it**
+
+In the OCI Cloud shell type
+
+  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+  
   ```
-NAME                                          TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
-ingress-nginx-nginx-ingress-controller        LoadBalancer   10.111.0.168    132.18.12.23     80:31934/TCP,443:31827/TCP   5h50m
-ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <none>        80/TCP                       5h50m
+NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
+ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
 ```
 
-The external-ip will be the public ip address of the load balancer setup for the ingress controller.
+The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column.
 
-Or look up the ingress service in the namespace `ingress-nginx` in the dashboard, that will provide links to the ingress (though not the url's).
+**To set the variable again**
 
-The image below was going to the ingress-nginx namespace (that being the one the Ingress *controller* is running in) and on the left menu selecting **Services** in the **Service** section of the dashboard. 
+  - `export EXTERNAL_IP=<External IP>`
+  
+---
 
-![Ingress controller service endpoints](images/ingress-controller-service-endpoints.png)
+</details>
 
-  9. We now have a working endpoint, let's try accessing it using curl (replace `<External IP>` with your Load balancer IP address) - expect an error!
 
-  -  `curl -i -k -X GET https://store.<External IP>.nip.io/store`
+  -  `curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/store`
 
   ```
 HTTP/2 503 
@@ -1136,7 +1293,7 @@ We got a **service unavailable** error. This is because that web page is recogni
 
   10. If we tried to go to a URL that's not defined we will as expected get a **404 error**:
 
-  -  `curl -i -k -X GET https://store.<External IP>.nip.io/unknowningress`
+  -  `curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/unknowningress`
 
   ```
 HTTP/2 404 
@@ -1385,7 +1542,7 @@ In the $HOME/helidon-kubernetes/base-kubernetes folder there is a script create-
 
   1. Run the script to create the config maps
 
-  -  `bash create-configmaps.sh `
+  -  `bash create-configmaps.sh`
 
   ```
 Deleting existing config maps
@@ -1871,23 +2028,11 @@ In the dashboard you can click the logs button on the upper right to open a log 
 
 ![The logs from the storefront pod seen in the dashboard](images/storefront-logs-page-startup.png)
 
-We can interact with the deployment using the public side of the ingress (it's load ballancer),  use kubectl to see the public IP address of the ingress controlers load ballancer, or the services section of the dashboard.
+We can interact with the deployment using the public side of the ingress (it's load ballancer),  We stored this in the enviro0nment variable `$EXTERNAL_IP` .
 
-  5. If you can't remember it get the external IP address of the load balancer 
+  5. Let's try to get some data - **you might get an error** if you do wait a short while and try again as your servcies are probabaly still starting up. If you only get a response of `[]` it's fine, you'll just need to setup the test data (expand the section below for details)
   
-  -  `kubectl get services -n ingress-nginx`
-
-  ```
-NAME                                          TYPE           CLUSTER-IP      EXTERNAL-IP    PORT(S)                      AGE
-ingress-nginx-nginx-ingress-controller        LoadBalancer   10.111.0.168    132.145.232.69 80:31934/TCP,443:31827/TCP   2d4h
-ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.108.194.91   <none>         80/TCP                       2d4h
-```
-
-The External_IP column displays the external address. 
-
-  6. Let's try to get some data - **you might get an error** (replace <external IP> with the ingress controllers load ballancer you got earlier) If you only get a response of `[]` it's fine, you'll just need to setup the test data (expand the section below for details)
-  
-  -  `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
+  -  `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
 
   ```
 HTTP/2 200 
@@ -1902,6 +2047,94 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 If you get **424 failed dependency** or timeouts it's because the services are doing their lazy initialization, wait a minute or so and retry the request
 
+<details><summary><b>If you consistently get 424 Failed Dependency /  "Unable to connect to the stock manager service" messages over several minutes</b></summary>
+
+If you are getting messages containing output like `"Unable to connect to the stock manager service"` then this means that the storefront service is working, but it can't connect to the stockmanager service. if this happens once or twice then you start getting data it's fine, it just means that the stockmanager was still initializing.
+
+If you are still getting these messages after several minutes have passed then it's likely that there you have a configuration problem.
+
+Check to see if the stock manager is restarting a lot 
+
+  - In the OCI cloud shell type
+  
+  - `kubectl get pods` 
+  
+  ```
+  NAME                            READY   STATUS    RESTARTS   AGE
+  stockmanager-6b759ddcd7-rz2jm   1/1     CrashLoopBackoff   5          3m46s
+  storefront-74d6d55dcc-bt4cv     1/1     Running   0          3m44s
+  zipkin-7f4676fdcc-rkfsd         1/1     Running   0          3m47s
+```
+
+If the stockmanager pod has multiple restarts or is in the **CrashLoopBackoff** stage then that's probabaly a configuration problem.
+
+You can have a look at the logs of the service 
+
+  - In the OCI Cloud Shell type - note that here I am using the pod ID in my environment, the pod ID you have for your stockmanager service will be different.
+  
+  - `kubectl logs stockmanager-6b759ddcd7-rz2jm`
+  
+Looking at the output you may get usefull information from any stack traces, the example here is a part of the ouput showing a stack trace where the `app.department` property can't be found. This may be because it not been set, the line it's on is incorrectly indented, or it has not had the comment characters removed.
+
+  ```
+  2021.11.11 14:25:58 INFO org.jboss.weld.Bootstrap !thread!: WELD-ENV-002001: Weld SE container 9f74b70e-06aa-4d3f-8e1d-2bee1e25b29f shut down
+Exception in thread "main" org.jboss.weld.exceptions.DeploymentException: Cannot find value for key: app.department
+        at org.jboss.weld.bootstrap.events.AbstractDeploymentContainerEvent.fire(AbstractDeploymentContainerEvent.java:38)
+        at org.jboss.weld.bootstrap.events.AfterDeploymentValidationImpl.fire(AfterDeploymentValidationImpl.java:28)
+        at org.jboss.weld.bootstrap.WeldStartup.validateBeans(WeldStartup.java:505)
+        at org.jboss.weld.bootstrap.WeldBootstrap.validateBeans(WeldBootstrap.java:93)
+        at io.helidon.microprofile.cdi.HelidonContainerImpl.doStart(HelidonContainerImpl.java:297)
+        at io.helidon.common.context.Contexts.runInContext(Contexts.java:137)
+        at io.helidon.microprofile.cdi.HelidonContainerImpl.start(HelidonContainerImpl.java:249)
+        at io.helidon.microprofile.server.ServerImpl.start(ServerImpl.java:85)
+        at com.oracle.labs.helidon.stockmanager.Main.main(Main.java:56)
+Caused by: java.util.NoSuchElementException: Cannot find value for key: app.department
+        at io.helidon.microprofile.config.ConfigCdiExtension.produce(ConfigCdiExtension.java:262)
+        at
+```
+
+In this case you can see from the text `Cannot find value for key: app.department` in the stack trace that a value for the `app.department` property cannot be found. You may have other errors for example unable to connect to the database, invalid database login etc.
+
+In the case of the missing `app.department` then you need to check that you edited the `$HOME/helidon-kubernetes/configurations/stockmanagerconf/conf/stockmanager-config.yaml` file  as described in the **Cloud shell setup** instructions module, **Setting up your department Id** task, one mistake that is sometimes made there is changing the value, but forgetting to uncomment the line. 
+
+**My** version of this file starts like this, but of course yours will probabaly have a different department name, not that none of these three lines are commented !
+
+  ```yaml
+  app:
+    persistenceUnit: "stockmanagerJTA"
+    department: "Tims Shop"
+```
+
+If you do change the `stockmanager-config.yaml` file you will need to re-run the `create-configmaps.sh` script to reflect the changes into Kubernetes.
+
+If you have a problem logging in to the database itself, for example you get invalid user or bad login problems then it is probable that the database user was not correctly created, look at the instructions in the create database part of the cloud setup, and make sure that you executed **all** of the steps in the SQL that create the user.
+
+If you can't get the database connection info then make sure you have downloaded and unpacked the database Wallet file 
+
+  - In the OCI CLoud shell type 
+  
+  - `ls $HOME/helidon-kubernetes/configurations/stockmanagerconf/Wallet_ATP `
+  
+  ```
+cwallet.sso  ewallet.p12  keystore.jks  ojdbc.properties  README  sqlnet.ora  tnsnames.ora  truststore.jks  Wallet.zip
+```
+
+If you get a `not found` or the directory does not contain the file as described above then you need to complete the Wallet download process, as described in the **Cloud Shell setup** module, **Downloading the database wallet file** section. You will probabally also need to setup the JDBC URL as described below and then recreate the secrets by running the `create-secrets.sh` script to reflect the changes into Kubernetes.
+
+If the database connection is not found then make sure that you have correctly set the JDBC URL value in the `$HOME/helidon-kubernetes/configurations/stockmanagerconf/databaseConnectionSecret.yaml` file, the URL should look something like 
+
+```
+  url: jdbc:oracle:thin:@tgdemo_high?TNS_ADMIN=./Wallet_ATP
+```
+
+Of course tgdemo_high is the connection name for **my** database, yours will probabaly be different, if this is not correct then please follow the instructions in the **Secrets, configmaps - external configuration for your containers** section of this module, and then recreate the secrets by running the `create-secrets.sh` script to reflect the changes into Kubernetes.
+
+
+
+---
+
+</details>
+
 <details><summary><b>If you only get `[]` not a list of items</b></summary>
 
 Your database does not have the information that was uploaded in the Helidon part of the labs, or if you did the Helidon labs then you probabaly are using a different department name.
@@ -1910,7 +2143,7 @@ All is not lost, you can create the information easily
 
 - Run the following command, using the external IP address you used above (just the ip address is needed)
 
-  - `bash create-test-data.sh <External ip>`
+  - `bash create-test-data.sh $EXTERNAL_IP`
   
 ```
     Service IP address is 130.61.11.184
@@ -1937,7 +2170,7 @@ If you can run the curl command above you'll see the data you just added
 <details><summary><b>How to find out what pods are connected to a service</b></summary>
 
 
-The service definition maps onto the actual pods in the dpeloyments using the selector as seen above. To find out exactly what pods match the selectors for a service 
+The service definition maps onto the actual pods in the deployments using the selector as seen above. To find out exactly what pods match the selectors for a service 
 
 - `kubectl get endpoints`
 
@@ -1956,7 +2189,7 @@ zipkin         10.244.0.67:9411                    26d
 
 And to see what's happening when we made the request we can look into the pods logs. Here we use --tail=5 to limit the logs output to the last 5 lines of the storefront pod
 
-  7. Looking at the logs now - remember to replace the storefront pod id (`storefront-68bbb5dbd8-vp578` in this case) with **the pod id you got earlier** (from the `kubectl get all`)
+  6. Looking at the logs now - remember to replace the storefront pod id (`storefront-68bbb5dbd8-vp578` in this case) with **the pod id you got earlier** (from the `kubectl get all`)
   
   - `kubectl logs storefront-68bbb5dbd8-vp578 --tail=5`
 
@@ -1968,7 +2201,7 @@ And to see what's happening when we made the request we can look into the pods l
 2019.12.29 18:05:24 INFO com.oracle.labs.helidon.storefront.resources.StorefrontResource Thread[hystrix-io.helidon.microprofile.faulttolerance-1,5,server]: Found 5 items
 ```
 
-  8. And also on the stockmanager pod, you also need to replace the pod id !
+  7. And also on the stockmanager pod, you also need to replace the pod id !
   
   -  `kubectl logs stockmanager-d6cc5c9b7-bbjdp  --tail=20`
 
@@ -2005,11 +2238,11 @@ Using the logs function on the dashboard we'd see the same output, but you'd pro
 
 As we are running zipkin and have an ingress setup to let us access the zipkin pod let's look at just to show it working. 
 
-  9. Open your browser
+  8. Open your browser
   
-  10. Go to the ingress end point for your cluster, for example `https://store.<external IP>.nip.io/zipkin` (replace with `<external IP>` *your* ingress controllers Load balancer IP address)
+  9. Go to the ingress end point for your cluster, for example `https://store.<external IP>.nip.io/zipkin` (replace with `<external IP>` *your* ingress controllers Load balancer IP address when entering in the browser)
 
-  11. In the browser, accept a self signed certificate. The mechanism varies per browser and sometimes version, but below worked as of Summer 2020.
+  10. In the browser, accept a self signed certificate. The mechanism varies per browser and sometimes version, but below worked as of Summer 2020.
   
   - In Safari you will be presented with a page saying "This Connection Is Not Private" Click the "Show details" button, then you will see a link titled `visit this website` click that, then click the `Visit Website` button on the confirmation pop-up. To update the security settings you may need to enter a password, use Touch ID or confirm using your Apple Watch.
   
@@ -2021,13 +2254,13 @@ We have had reports that some versions of Chrome will not allow you to override 
 
   ![Zipkin query](images/zipkin-initial-query.png)
 
-  12. Click the **Run Query** button to get the traces list
+  11. Click the **Run Query** button to get the traces list
 
 In my case I had made two requests before the lazy initialization sorted everything out, so there are a total of three traces.
 
   ![List of traces in Zipkin](images/zipkin-traces-list.png)
 
-  13. Select the most recent trace (click on it) and retrieve the data from that
+  12. Select the most recent trace (click on it) and retrieve the data from that
 
   ![Stock listing trace in Zipkin](images/zipkin-trace.png)
   
@@ -2035,9 +2268,9 @@ We've seen that we can access the core servcies and see the zipkin traces it gen
 
 Of course the other services are also available, for example we can get the minimum change using the re-writer rules
 
-  14. Consult minimum change (replace <external IP> with your address)
+  13. Consult minimum change 
   
-  -  `curl -i -k -X GET https://store.<External IP>.nip.io/sf/minimumChange`
+  -  `curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/sf/minimumChange`
 
   ```
 HTTP/2 200 
@@ -2052,9 +2285,9 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 And in this case we are going to look at data on the admin port for the stock management service and get it's readiness data
 
-  15. Test the Readiness call
+  14. Test the Readiness call
   
-  - `curl -i -k -X GET https://<store.<External IP>.nip.io/smmgt/health/ready`
+  - `curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/smmgt/health/ready`
 
   ```
 HTTP/2 200 
@@ -2072,7 +2305,7 @@ We saw in the helidon labs that it's possible to have the helidon framework moni
 
   1. Get the status resource data 
   
-  -  `curl -i -k -X GET https://<store.<External IP>.nip.io/sf/status`
+  -  `curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/sf/status`
 
   ```
 HTTP/2 200 
@@ -2184,7 +2417,7 @@ If we now get the status resource data again it's also updated
 
   17. Query the status
   
-  - `curl -i -k -X GET https://store.<External IP>.nip.io/sf/status`
+  - `curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/sf/status`
 
   ```
 HTTP/2 200 

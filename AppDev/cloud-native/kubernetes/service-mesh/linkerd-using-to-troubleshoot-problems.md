@@ -57,28 +57,39 @@ Change to the directory for the service mesh scripts
 
 Once you are in the directory start the load generator
 
-<details><summary><b>If you need to remind yourself of the ingress controller IP address</b></summary>
+If your cloud shell session is new or has been restarted then the shell variable `$EXTERNAL_IP` may be invalid, expand this section if you think this may be the case to check and reset it if needed.
 
+<details><summary><b>How to check if $EXTERNAL_IP is set, and re-set it if it's not</b></summary>
 
-- In the OCI Cloud Shell type :
-  - `kubectl get services -n ingress-nginx`
+**To check if `$EXTERNAL_IP` is set**
 
+If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
+
+**To get the external IP address if you no longer have it**
+
+In the OCI Cloud shell type
+
+  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+  
+  ```
+NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
+ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
 ```
-NAME                                          TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)                      AGE
-ingress-nginx-nginx-ingress-controller        LoadBalancer   10.96.196.6    130.61.195.102   80:31969/TCP,443:31302/TCP   3h
-ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.17.121   <none>           80/TCP                       3h
-```
 
-look at the `ingress-nginx-nginx-ingress-controller` row, IP address inthe `EXTERNAL-IP` column is the one you want, in this case that's `130.61.195.102` **but yours will vary**
+The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column.
 
+**To set the variable again**
+
+  - `export EXTERNAL_IP=<External IP>`
+  
 ---
 
 </details>
 
 
-  2. In the OCI Cloud shell type (remember to replace `<external IP>` with the IP address of your ingress service (in this case you do not need to add a `store` prefix or `nip.io` suffix, the script does it for you)
+  2. In the OCI Cloud shell type
   
-  - `bash generate-service-mesh-load.sh <external IP> 2`
+  - `bash generate-service-mesh-load.sh $EXTERNAL_IP 2`
   
  ```
 Iteration 1
@@ -96,7 +107,7 @@ If that happens while you are doing the service mesh labs the solution is to con
 
 Let's just check that the load is running fine
 
-  1. In your web browser go to `https://linkerd.<external IP>.nip.io`
+  1. In your web browser go to `https://linkerd.<external IP>.nip.io` (replace `<External IP> with the IP of the load balancer)
 
 You may be challenged as you have a self signed certificate. Follow the normal procedures in your browser to accept the connection and proceed.
 
@@ -120,7 +131,7 @@ For now let's stop the load generator while we deploy our "broken" service
 
   4. In the OCI cloud shell stop the load generator using Control-C
  
-### Step 2c: Deploying our broken service
+### Task 2c: Deploying our broken service
 
 We are going to edit one of the configurations for the stock manager to specify that we want a 50% failure rate on requests to the stock manager. The deliberately "broken" stockmanager will pay attention to this, but the normal one will not.
 
@@ -181,11 +192,11 @@ This is basically the same stockmanager code that was created in the Helidon lab
   
 Now let's check that the change has applied by going direct to the stockmanager and seeing how it behaves, remember that we said that 0.5 (so 50%) of the requests should generate an error.
 
-  7. In the OCI Cloud shell type the following (remember to replace `<external IP>` )
+  7. In the OCI Cloud shell type the following
   
-  - `curl -i -k -X GET -u jack:password https://store.<external IP>.nip.io/sm/stocklevel`
+  - `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/sm/stocklevel`
 
-(As usual the first response may take a short while, if you get a 503 error it means that the Kubernetes is waiting for the stockmanager to come online.
+(As usual the first response may take a short while, if you get a 503 error it means that the Kubernetes is waiting for the stockmanager to come online. If you get a 'Cannot resolve host' or similar then the `$EXTErNAL_IP` address is wrong, follow the earlier instructions in an expansion section to set it correctly.
  
 Depending on if you get an error you'll get something similar to the following
 
@@ -218,9 +229,9 @@ Repeat the request several times and you should see that approximately half the 
 
 Now try making the request a few times to the storefront service
 
-  8. In the OCI Cloud shell type the following (remember to replace `<external IP>` )
+  8. In the OCI Cloud shell type the following
   
-  - `curl -i -k -X GET -u jack:password https://store.<EXTERNAL IP>.nip.io/store/stocklevel`
+  - `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
   
 You will get either error messages like this
 
@@ -254,8 +265,8 @@ As before repeat this a few times, approximately half the time it will succeed a
 
 Restart the load generator
 
-  9. In the OCI Cloud shell type (remember to replace `<external IP>` with the IP address of your ingress service, no need to prefix with store or suffix with nip.io, the script will do that for you)
-  - `bash generate-service-mesh-load.sh <external IP> 2 `
+  9. In the OCI Cloud shell type
+  - `bash generate-service-mesh-load.sh $EXTERNAL_IP 2`
   
  ```
  Iteration 1

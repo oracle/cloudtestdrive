@@ -1,0 +1,67 @@
+{
+  "workshoptitle": "Creating Microservices with Helidon MP and Packaging using Docker - Extended",
+  "help": "livelabs-help-oci_us@oracle.com",
+	"tutorials": [
+        {
+          "title": "Labs introduction",
+          "filename":"devops-into-oke.md"
+        },
+        {
+          "title": "Setup your tenancy using scripts",
+          "filename":"../../../scripted-setup/script-driven-oci-setup.md"
+        },
+        {
+          "title": "Devops setup - introduction ",
+          "filename": "../../../dev-ops/general/setup-introduction-incl-vault.md"
+        },
+		{
+          "title": "Devops setup - setting up your vault",
+          "filename": "../../../dev-ops/general/environment-setup/vault-setup.md"
+        },
+		{
+          "title": "Devops setup - configuring ssh access to OCI API's'",
+          "filename": "../../../dev-ops/general/environment-setup/configuring-for-ssh-access.md"
+        },
+		{
+          "title": "Devops setup - configuring security policies",
+          "filename": "../../../dev-ops/general/environment-setup/security-setup.md"
+        },
+        {
+          "title": "Setup the Kubernrtes environment using scripts",
+          "filename":"../../../scripted-setup/installing-basic-kubernetes-lab-services.md"
+        },
+		{
+          "title": "Devops - Creating your DevOps project",
+          "filename": "../../../dev-ops/general/creating-the-devops-project.md"
+        },
+		{
+          "title": "Devops - Getting the sample code and uploading to a OCI repository",
+          "filename": "../../../dev-ops/oke-labs/uploading-code-to-the-repo-and-examining-it.md"
+        },
+		{
+          "title": "Devops - Examining and updating the build_spec.yaml file",
+          "filename": "../../../dev-ops/oke-labs/examining-and-updating-the-build-spec.md"
+        },
+		{
+          "title": "Devops - Creating your DevOps build pipeline",
+          "filename": "../../../dev-ops/oke-labs/creating-the-first-pipeline.md"
+        },
+		{
+          "title": "Devops - Updating your build pipeline to output artifacts",
+          "filename": "../../../dev-ops/oke-labs/updating-the-pipeline-to-output-the-artifacts.md"
+        },
+		{
+          "title": "Devops - Creating the deployment pipeline",
+          "filename": "../../../dev-ops/oke-labs/creating-the-oke-deployment-pipeline.md"
+        },
+		{
+          "title": "Devops - Testing the CICD process and automatic triggers",
+          "filename": "../../../dev-ops/oke-labs/running-the-deployment-and-triggering-the-build.md"
+        },
+        {
+          "title": "Need Help?",
+          "description": "Solutions to Common Problems and Directions for Receiving Live Help",
+          "filename": "https://raw.githubusercontent.com/oracle/learning-library/master/oci-library/need-help/need-help-livelabs.md"
+        }
+    ]
+}

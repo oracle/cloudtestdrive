@@ -78,6 +78,35 @@ Depending on which other modules you have done you may see differences in the re
 
 ### Task 2b: Setting up the namespace and security information
 
+If your cloud shell session is new or has been restarted then the shell variable `$EXTERNAL_IP` may be invalid, expand this section if you think this may be the case to check and reset it if needed.
+
+<details><summary><b>How to check if $EXTERNAL_IP is set, and re-set it if it's not</b></summary>
+
+**To check if `$EXTERNAL_IP` is set**
+
+If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
+
+**To get the external IP address if you no longer have it**
+
+In the OCI Cloud shell type
+
+  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+  
+  ```
+NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
+ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
+```
+
+The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column.
+
+**To set the variable again**
+
+  - `export EXTERNAL_IP=<External IP>`
+  
+---
+
+</details>
+
 To separate the monitoring services from the  other services we're going to put them into a new namespace. We will also secure access to prometheus using a password.
 
   1. Switch to the monitoring directory. In the OCI CLoud shell type
@@ -109,18 +138,20 @@ Adding password for user admin
 secret/web-ingress-auth created
 ```
 
-  5. To provide secure access for the ingress we will set this up with a TLS connection , that requires that we create a certificate for the ingress rule. In productin you woudl use a proper certificate, but for this lab we're going to use the self-signed root certificate we created in the cloud shell setup. **IT IS VITAL** that you replace `<External IP>` in the example below with the IP address of your ingress load balancer (this is the IP address you've previously been using for access to the dashboard, zipkin and the curl commands).
+  5. To provide secure access for the ingress we will set this up with a TLS connection , that requires that we create a certificate for the ingress rule. In productin you woudl use a proper certificate, but for this lab we're going to use the self-signed root certificate we created in the cloud shell setup.
   
-  - `$HOME/keys/step certificate create prometheus.monitoring.<External IP>.nip.io tls-prometheus.crt tls-prometheus.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
+  - `$HOME/keys/step certificate create prometheus.monitoring.$EXTERNAL_IP.nip.io tls-prometheus-$EXTERNAL_IP.crt tls-prometheus-$EXTERNAL_IP.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
   
   ```
-  Your certificate has been saved in tls-prometheus.crt.
-  Your private key has been saved in tls-prometheus.key.
+  Your certificate has been saved in tls-prometheus-123.456.789.123.crt.
+  Your private key has been saved in tls-prometheus-123.456.789.123.key.
 ```
 
-  6. Now we will create a tls secret in Kubernetes using this certificate, note that this is in the `monitoring` namespace as that's where Prometheus will be installed
+(The above is example output, your files will be based on the IP you provided)
+
+  6. Now we will create a tls secret in Kubernetes using this certificate, note that this is in the `monitoring` namespace as that's where Prometheus will be installed..
   
-  - `kubectl create secret tls tls-prometheus --key tls-prometheus.key --cert tls-prometheus.crt -n monitoring`
+  - `kubectl create secret tls tls-prometheus --key tls-prometheus-$EXTERNAL_IP.key --cert tls-prometheus-$EXTERNAL_IP.crt -n monitoring`
   
   ```
   secret/tls-prometheus created
@@ -130,9 +161,10 @@ secret/web-ingress-auth created
 ## Task 3: Installing Prometheus
 
 
-<details><summary><b>Older versions of Kubernetes than 1.19.7</b></summary>
+<details><summary><b>Older versions of Kubernetes than 1.20.8</b></summary>
 
-We assume you are using Kubernetes 1.19.7 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the 13.7.0 version of the prometheus helm charts were found to work. If you were using an older version of Kubernetes we found the following version combinations to work.
+We assume you are using Kubernetes 1.20.8 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the 14.4.1 version of the prometheus helm charts were found to work. If you were using an older version of Kubernetes we found the following version combinations to work.
+Kubernetes 1.19.7 Prometheus Helm chart 13.7.0
 
 Kubernetes 1.18.7 Promteheus helm chart 11.12.1 worked for us
 
@@ -155,9 +187,9 @@ The Helm chart will automatically create a couple of small persistent volumes to
 
 
 
-  31 Installing Prometheus is simple, we just use helm. In the OCI Cloud Shell type the following, you must of course replace `<External IP>` with the IP address of the external load balancer
+  31 Installing Prometheus is simple, we just use helm. In the OCI Cloud Shell type the following.
   
-  - `helm install prometheus prometheus-community/prometheus --namespace monitoring --version 14.4.1 --set server.ingress.enabled=true --set server.ingress.hosts='{prometheus.monitoring.<External IP>.nip.io}' --set server.ingress.tls[0].secretName=tls-prometheus --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-type"=basic --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-secret"=web-ingress-auth --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-realm"="Authentication Required"`
+  - `helm install prometheus prometheus-community/prometheus --namespace monitoring --version 14.4.1 --set server.ingress.enabled=true --set server.ingress.hosts="{prometheus.monitoring.$EXTERNAL_IP.nip.io}" --set server.ingress.tls[0].secretName=tls-prometheus --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-type"=basic --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-secret"=web-ingress-auth --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-realm"="Authentication Required"`
   
   ```
   NAME: prometheus
@@ -205,7 +237,7 @@ Note that it will take a short while for the Prometheus service to start. Check 
 ## Task 4 accessing Prometheus
 Let's go to the service web page
 
-  1. In your web browser open up (replace <External IP> with the IP for your Load balancer - you may have to accept it as an unsafe page due to using a self-signed root certificate.
+  1. In your web browser open up the following link (replace <External IP> with the IP for your Load balancer) - you may have to accept it as an unsafe page due to using a self-signed root certificate.
   
   - `https://prometheus.monitoring.<External IP>.nip.io`
   
@@ -231,11 +263,11 @@ Alternatively rather than selecting from the list you can just start to type `ku
 
 Depending on what Prometheus feels like (It seems to very between versions and your starting view) you will initially be presented with either a table of text data
 
-  ![prometheus-http-requests-total-console](images/prometheus-kubelet-http-requests-total-console.png)
+  ![prometheus-kubelet-http-requests-total-console](images/prometheus-kubelet-http-requests-total-console.png)
 
 or a graph
 
-  ![prometheus-http-requests-total-graph](images/prometheus-kubelet-http-requests-total-graph.png)
+  ![prometheus-kubelet-http-requests-total-graph](images/prometheus-kubelet-http-requests-total-graph.png)
 
   5. Click the **Graph** or **Table** tab names to switch between them
 
@@ -482,7 +514,7 @@ Now we have configured Prometheus to scrape the data from our services we can lo
 
   4. Click the **Execute** button.
 
-If you're on the graph screen you'll probabaly see a pretty boring graph
+If you're on the graph screen you'll probably see a pretty boring graph
 
   ![prometheus-list-stock-empty](images/prometheus-list-stock-empty-graph.png)
 
@@ -494,9 +526,40 @@ If we look at the data we can see that the retrieved value is 0 (it may be anoth
 
 Let's make a few calls to list the stock and see what we get
 
-  6. Execute the following command a few times, **replacing <external IP> with your Ingress endpoint (not the prometheus IP):**
+If your cloud shell session is new or has been restarted then the shell variable `$EXTERNAL_IP` may be invalid, expand this section if you think this may be the case to check and reset it if needed.
+
+<details><summary><b>How to check if $EXTERNAL_IP is set, and re-set it if it's not</b></summary>
+
+**To check if `$EXTERNAL_IP` is set**
+
+If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
+
+**To get the external IP address if you no longer have it**
+
+In the OCI Cloud shell type
+
+  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
   
-  -  `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
+  ```
+NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
+ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
+```
+
+The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column.
+
+**To set the variable again**
+
+  - `export EXTERNAL_IP=<External IP>`
+  
+---
+
+</details>
+
+
+
+  6. Execute the following command a few times
+  
+  -  `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
 
   ```
 HTTP/2 200 
@@ -559,9 +622,9 @@ Prometheus was not designed to be a high end graphing tool, the graphs cannot fo
 
 ---
 
-## Task 3: Tidying up the environment
+## Task 6: Tidying up the environment
 
-If you are going to do the Visualizing with Gafana module please do **not** do the following, but return to the introduction of jump to the Visualizing With Grafana module
+If you are going to do the Visualizing with Gafana module please do **not** do the following, but return to the introduction or jump to the Visualizing With Grafana module
 
 **ONLY** do the following if you no longer want the Prometheus environment. **DO NOT** do this if you are planning on running the Visualising with Grafana module.
 

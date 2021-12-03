@@ -39,31 +39,40 @@ These labs look at how that is achieved.
 
 As we've seen a service in Kubernetes is delivered by programs running in containers. The way a container operates is that it runs a single program, once that program exists then the container exits, and the pod is no longer providing the service. 
 
+If your cloud shell session is new or has been restarted then the shell variable `$EXTERNAL_IP` may be invalid, expand this section if you think this may be the case to check and reset it if needed.
 
-<details><summary><b>Getting the service IP address if you don't have it</b></summary>
+<details><summary><b>How to check if $EXTERNAL_IP is set, and re-set it if it's not</b></summary>
 
-If you haven't written it down, or have forgotten how to get the IP address of the ingress controller service you can do the following
+**To check if `$EXTERNAL_IP` is set**
 
-- In the OCI Cloud Shell type the following
-  - `kubectl get services -n ingress-nginx`
+If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
+
+**To get the external IP address if you no longer have it**
+
+In the OCI Cloud shell type
+
+  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
   
-```
-NAME                                          TYPE           CLUSTER-IP      EXTERNAL-IP       PORT(S)                      AGE
-ingress-nginx-nginx-ingress-controller        LoadBalancer   10.96.210.131   132.145.253.186   80:31021/TCP,443:32009/TCP   19m
-ingress-nginx-nginx-ingress-default-backend   ClusterIP      10.96.67.181    <none>            80/TCP                       19m
+  ```
+NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
+ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
 ```
 
-The Column EXTERNAL-IP gives you the IP address, in this case the IP address for the ingress-controller load balancer is `132.145.253.186` ** but this of course will be different in your environment!**
+The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column.
 
+**To set the variable again**
+
+  - `export EXTERNAL_IP=<External IP>`
+  
 ---
 
 </details>
 
-First let's make sure that the service is running, (replace <External IP> with the external ip address of the ingress)
+First let's make sure that the service is running
 
   1. In the OCI Cloud Shell
   
-  - `curl -i -X GET -u jack:password http://store.<External IP>.nip.io/store/stocklevel`
+  - `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
 
   ```
 HTTP/1.1 200 OK
@@ -113,11 +122,11 @@ To be honest this is a bit of inside knowledge, docker images run the command th
 
 Within a second or two of the process being killed the connection to the container in the pod is terminated as the container exits.
 
-If we now try getting the data again it still responds  (replace <External IP> with the one for your service) If you get a 502 or 503 error that just means that the pod is still restarting, wait a few seconds and try again.
+If we now try getting the data again it still responds. If you get a 502 or 503 error that just means that the pod is still restarting, wait a few seconds and try again. If you get a `Cannot resolve host` or similar then follow the instructions in the expansion above to check and if needed reset the `$EXTERNAL_IP` variable.
 
   5. Try getting the data
 
-  - `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
+  - `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
 
   ```
 HTTP/2 200 
@@ -728,9 +737,9 @@ What happens if a request is made to the service while before the pod is ready ?
 
 To see what happens if the readiness probe does not work we can simply undeploy the stock manager service.
 
-  13. First let's check it's running fine  (replace the <external IP> with the one for your service, and be prepared for a short delay as we'd just restarted everything)
+  13. First let's check it's running fine - be prepared for a short delay as we'd just restarted everything
   
-  - `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
+  - `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
 
   ```
 HTTP/1.1 200 OK
@@ -788,9 +797,9 @@ replicaset.apps/zipkin-88c48d8b9       1         1         1       28m
 
 Something else has also happened though, the storefront service has no pods in the ready state, neither does the storefront deployment and replica set. The readiness probe has run against the storefront pod and when the probe checked the results it found that the storefront pod was not in a position to operate, because the service it depended on (the stock manager) was no longer available. 
 
-  17. Let's try accessing the service (replace <external IP> with the one for your service)
+  17. Let's try accessing the service
   
-  -  `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
+  -  `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
 
   ```
 HTTP/1.1 503 Service Temporarily Unavailable
@@ -878,7 +887,7 @@ The storefront readiness probe has kicked in and the services are all back in th
 
   21. Check the service is responding properly now
   
-  - `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
+  - `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
 
   ```
 HTTP/1.1 200 OK

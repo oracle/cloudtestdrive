@@ -37,6 +37,9 @@ Grafana on the other hand is a very powerful open source visualization engine an
 For this lab we will use a small subset of the open source features only.
 
 ## Task 2: Installing Grafana
+
+Reminder - This lab requires that you have the Prometheus service installed and the `monitoring` namespace in place. This is covered in the **Prometheus for metrics capture** module. If at the end of that module you deleted the Promtheus stack and the `monitoring` namespace you will have to re-create them before proceeding with this module.
+
 Like many other Kubernetes services Grafana can be installed using helm. By default the helm chart does not create a volume for the storage of the grafana configuration. This would be a problem in a production environment, so we're going to use the persistent storage option defined in the helm chart for Grafana to create a storage volume. 
 
   1. Add the Helm repository entry for Grafana 
@@ -65,18 +68,50 @@ Update Complete. ⎈ Happy Helming!⎈
 
 Depending on what modules you have done previously the updated repositories list may vary
 
-  3. Create a certificate to protect the connection, we'll use step which we installed in the cloud shell setup section of the lab. Replace `<External IP>` with the IP address of the load balancer we've been using for all the other parts of the lab.
-  
-  - `$HOME/keys/step certificate create grafana.monitoring.<External IP>.nip.io tls-grafana.crt tls-grafana.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
+If your cloud shell session is new or has been restarted then the shell variable `$EXTERNAL_IP` may be invalid, expand this section if you think this may be the case to check and reset it if needed.
+
+<details><summary><b>How to check if $EXTERNAL_IP is set, and re-set it if it's not</b></summary>
+
+**To check if `$EXTERNAL_IP` is set**
+
+If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
+
+**To get the external IP address if you no longer have it**
+
+In the OCI Cloud shell type
+
+  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
   
   ```
-  Your certificate has been saved in tls-grafana.crt.
-  Your private key has been saved in tls-grafana.key.
+NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
+ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
 ```
 
-  4. Now let's create a TLS secret containing this configuration.
+The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column.
+
+**To set the variable again**
+
+  - `export EXTERNAL_IP=<External IP>`
   
-  - `kubectl create secret tls tls-grafana --key tls-grafana.key --cert tls-grafana.crt -n monitoring`
+---
+
+</details>
+
+
+  3. Create a certificate to protect the connection, we'll use step which we installed in the cloud shell setup section of the lab.
+  
+  - `$HOME/keys/step certificate create grafana.monitoring.$EXTERNAL_IP.nip.io tls-grafana-$EXTERNAL_IP.crt tls-grafana-$EXTERNAL_IP.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
+  
+  ```
+  Your certificate has been saved in tls-grafana-123.456.789.123.crt.
+  Your private key has been saved in tls-grafana-123.456.789.123.key.
+```
+
+(The above is example output, your files will be based on the IP you provided)
+
+  4. Now let's create a TLS secret containing this configuration. 
+  
+  - `kubectl create secret tls tls-grafana --key tls-grafana-$EXTERNAL_IP.key --cert tls-grafana-$EXTERNAL_IP.crt -n monitoring`
   
   ```
   secret/tls-grafana created
@@ -84,7 +119,7 @@ Depending on what modules you have done previously the updated repositories list
 
   5. Let's install Grafana itself. In the OCI Cloud Shell type following command, replace `<External IP>` with the IP address of the load balancer we've been using for all the other steps.
   
-  - `helm install grafana grafana/grafana --version 6.13.6 --namespace  monitoring  --set persistence.enabled=true --set ingress.enabled=true --set ingress.hosts='{grafana.monitoring.<External IP>.nip.io}' --set ingress.tls[0].secretName=tls-grafana`
+  - `helm install grafana grafana/grafana --version 6.13.6 --namespace  monitoring  --set persistence.enabled=true --set ingress.enabled=true --set ingress.hosts="{grafana.monitoring.$EXTERNAL_IP.nip.io}" --set ingress.tls[0].secretName=tls-grafana`
 
   ```
 NAME: grafana
@@ -143,9 +178,9 @@ Of course **your** password will vary, this is just an example
 
 We need some data to look at, so :
 
-  8. Using the OCI Cloud Shell or your laptop, make a few requests using curl to generate some new data (replace <external IP> with that of the ingress controller you were using earlier)
+  8. Using the OCI Cloud Shell or your laptop, make a few requests using curl to generate some new data.
   
-  -  `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
+  -  `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
 
 We need to open a web page to the Grafana service. This was displayed in the Helm output, in this example it's `http://grafana.monitoring.123.456.789.999.nip.io` ** but of of thats an example, your's will vary** (and that's not a valid address anyway)
 
@@ -225,12 +260,42 @@ You may recall that this it the data set for the number of list stock requests m
 Once you've selected it then the display will update with the graph you've selected
 
   ![grafana-new-dashboard-first-panel-add-query-list-stock-meter-rate-individual-pods](images/grafana-new-dashboard-first-panel-add-query-list-stock-meter-rate-individual-pods.png)
+  
+If your cloud shell session is new or has been restarted then the shell variable `$EXTERNAL_IP` may be invalid, expand this section if you think this may be the case to check and reset it if needed.
+
+<details><summary><b>How to check if $EXTERNAL_IP is set, and re-set it if it's not</b></summary>
+
+**To check if `$EXTERNAL_IP` is set**
+
+If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
+
+**To get the external IP address if you no longer have it**
+
+In the OCI Cloud shell type
+
+  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+  
+  ```
+NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
+ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
+```
+
+The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column.
+
+**To set the variable again**
+
+  - `export EXTERNAL_IP=<External IP>`
+  
+---
+
+</details>
+  
 
 If you don't have any data displayed then make a few requests 
 
-  4. If needed use curl to generate some new data (replace <external IP> with that of the ingress controller you were using earlier)
+  4. If needed use curl to generate some new data.
   
-  -  `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
+  -  `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
   
   ```
 HTTP/2 200 
@@ -271,9 +336,9 @@ Now any pod that provides the `application_listAllStockMeter_one_min_rate_per_se
 
   ![grafana-new-dashboard-first-panel-added](images/grafana-new-dashboard-first-panel-added.png)
 
-  8. Make a few requests using curl to generate some new data (replace <external IP> with that of the ingress controller you were using earlier)
+  8. Make a few requests using curl to generate some new data.
   
-  -  `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
+  -  `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
 
   ```
 HTTP/2 200 
@@ -470,9 +535,9 @@ Now we have our dashboard let's set the auto refresh so as new data becomes avai
   ![grafana-dashboard-auto-refresh](images/grafana-dashboard-auto-refresh.png)
 
 
-  8. Make a few requests using curl to generate some new data (replace <external IP> with that of the ingress controller you were using earlier)
+  8. Make a few requests using curl to generate some new data
   
-  -  `curl -i -k -X GET -u jack:password https://store.<External IP>.nip.io/store/stocklevel`
+  -  `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
   
 ```
 HTTP/2 200 
