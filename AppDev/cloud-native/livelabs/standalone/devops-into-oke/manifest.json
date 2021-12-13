@@ -1,5 +1,5 @@
 {
-  "workshoptitle": "Creating Microservices with Helidon MP and Packaging using Docker - Extended",
+  "workshoptitle": "Using Oracle DevOps CI/CD pipelines to deploy to Oracle Kubernrtes Environment",
   "help": "livelabs-help-oci_us@oracle.com",
 	"tutorials": [
         {
