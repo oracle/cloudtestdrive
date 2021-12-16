@@ -669,7 +669,11 @@ As with the base services because we are using a certificate with the DNS name e
 
   2. Apply the ingress rule - in the OCI Cloud Shell type
   
-  - `kubectl apply -f ingressLinkerdRules.yaml`
+  ```
+  kubectl apply -f ingressLinkerdRules-`kubectl config current-context`.yaml`
+  ```
+  
+  Outputs
   
 ```
 ingress.networking.k8s.io/web-ingress created
