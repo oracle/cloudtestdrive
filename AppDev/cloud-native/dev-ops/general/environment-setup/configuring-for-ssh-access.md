@@ -187,6 +187,7 @@ Next we need to setup our SSH configuration file, to do that we need to get some
   - Open the cloud shell and using your preferred editor edit the file `$HOME/.ssh/config` (vim, vi, emacs and nano are available, there may be others)
 
   - Add the following details, substitute your username and tenancy name which you just retrieved
+  
 ```
 Host devops.scmservice.*.oci.oraclecloud.com
   User <your username>@<tenancy name>
