@@ -66,7 +66,7 @@ To start with we're going to create a the OCI Code repo in your project.
   
   ![](images/code-repo-home-page-just-created.png)
   
-## Task 2: Populating your cloud shell code repo
+## Task 2: Populating your OCI cloud shell git repo
 
 Now we are going download the original repo with the source code for this lab into the OCI cloud shell. We are using the OCI Cloud shell because it has all of the commands we need to do this lab, so you don't need to setup anything on your laptop, we can even make changes to the source code to demonstrate that the pipelines do deploy them! In a production environment of course you'd use your own development systems.
 
@@ -141,7 +141,7 @@ This command will just return and won't generate any output
  The output should only contain `devops`
  
 
-## Task 3: Uploading from your OCI git repo to your projects OCI Code repo
+## Task 3: Uploading from your local OCI cloud shell git repo to your projects OCI Code repo
 
 We're now ready to upload the contents of our local repo to the OCI Code repo you created in your DevOps project
 
