@@ -15,7 +15,7 @@
           "filename":"../../../scripted-setup/script-driven-oci-setup.md"
         },
         {
-          "title": "Setup the Kubernrtes environment using scripts",
+          "title": "Setup the Kubernetes environment using scripts",
           "filename":"../../../scripted-setup/installing-basic-kubernetes-lab-services.md"
         },
         {

@@ -27,7 +27,7 @@
           "filename": "../../../dev-ops/general/environment-setup/security-setup.md"
         },
         {
-          "title": "Setup the Kubernrtes environment using scripts",
+          "title": "Setup the Kubernetes environment using scripts",
           "filename":"../../../scripted-setup/installing-basic-kubernetes-lab-services.md"
         },
 		{
