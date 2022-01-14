@@ -35,7 +35,11 @@ This tutorial has been tested on the Oracle Cloud Infrastructure Container Engin
 
 ### Prerequisites
 
-An Oracle Paid or LiveLabs Cloud account.
+Access to an Oracle Cloud account
+
+This version of the lab is created for running a hands-on lab **under the guidance of Oracle Experts**, who will provide you with access to an individual Cloud Account during the live session.
+
+If you want to run this lab **independantly**, please use the [LiveLab version](https://apexapps.oracle.com/pls/apex/dbpm/r/livelabs/view-workshop?wid=567&clear=180&session=109068004389019), which includes a section on how to obtain a free Oracle Cloud Trial account.
 
 ## Learn More
 
@@ -43,4 +47,4 @@ An Oracle Paid or LiveLabs Cloud account.
 
 ## Acknowledgements
 * **Author** - Maciej Gruszka, Peter Nagy, September 2020
-* **Last Updated By/Date**
+* **Last Updated By/Date** - Jan Leemans, January 2022

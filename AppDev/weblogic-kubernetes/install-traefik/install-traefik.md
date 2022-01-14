@@ -45,20 +45,6 @@ NAMESPACE: traefik
 STATUS: deployed
 REVISION: 1
 TEST SUITE: None
-NOTES:
-1. Get Traefik\'s load balancer IP/hostname:
-
-     NOTE: It may take a few minutes for this to become available.
-
-     You can watch the status by running:
-
-         $ kubectl get svc traefik-operator --namespace traefik -w
-
-     Once 'EXTERNAL-IP' is no longer '<pending>':
-
-         $ kubectl describe svc traefik-operator --namespace traefik | grep Ingress | awk '{print $3}'
-
-2. Configure DNS records corresponding to Kubernetes ingress resources to point to the load balancer IP/hostname found in step 1
 ```
 
 The Traefik installation is basically done. Verify the Traefik (load balancer) services:

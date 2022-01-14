@@ -4,7 +4,7 @@
 
 This lab walks you through the steps how to create managed Kubernetes environment on Oracle Cloud Infrastructure.
 
-Estimated Lab Time: 25 minutes
+Estimated Lab Time: 15 minutes
 
 ### About Product/Technology
 
@@ -15,16 +15,6 @@ Oracle Cloud Infrastructure Container Engine for Kubernetes is a fully-managed, 
 In this lab, you will:
 * Create OKE (Oracle Kubernetes Engine) instance
 * Open the OCI Cloud Shell and configure `kubectl` to interact with the Kubernetes cluster
-
-### Prerequisites ###
-
-You must have an [Oracle Cloud Infrastructure](https://cloud.oracle.com/en_US/cloud-infrastructure) enabled account.
-
-To create the Container Engine for Kubernetes (OKE), complete the following steps:
-
-- Create the network resources (VCN, subnets, security lists, etc.)
-- Create a cluster
-- Create a `NodePool`
 
 This tutorial shows you the way the *Quick Start* feature creates and configures all the necessary resources for a three node Kubernetes cluster. All the nodes will be deployed in different availability domains to ensure high availability.
 
@@ -37,6 +27,16 @@ The *Quick Create* feature uses the default settings to create a *quick cluster*
 In the Console, open the navigation menu. Under *Solutions, Platform and Edge*, go to *Developer Services* and select **Container Clusters (OKE)**.
 
 ![](images/010.clusters.png)
+
+As this is the first object you will be creating you need to set the correct **Compartment** where you are authorised to work in.
+
+![image-20220114170726477](images/image-20220114170726477.png)
+
+- Click on the **Pick a compartment** selector and expand the **root** compartment by clicking on the **+** sign:
+
+![image-20220114170858854](images/image-20220114170858854.png)
+
+You should now see a list of compartments, select the compartment provided to you by your instructors.
 
 On the Cluster List page, click **Create Cluster**.
 
@@ -124,4 +124,4 @@ You may now **proceed to the next lab**.
 
 ## Acknowledgements
 * **Author** - Maciej Gruszka, Peter Nagy, September 2020
-* **Last Updated By/Date**
+* **Last Updated By/Date** - Jan Leemans, January 2022
