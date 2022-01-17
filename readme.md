@@ -8,7 +8,7 @@ This project contains the lab materials for the Cloud Test Drive events organize
 
 ![](common/images/Introslide.PNG)
 
-During this day you will be able to experience the various cloud services hands-on.  Below you find the link to all labs already available : 
+During this day you will be able to experience the various cloud services hands-on.  Below you find the link to all labs available : 
 
 
 ## Application Development ##
@@ -16,14 +16,15 @@ During this day you will be able to experience the various cloud services hands-
   A simple lab spinning up a Kubernetes container and deploying a hello-world application 
 - [Microservices using Autonomous ATP and Managed Containers](https://oracle.github.io/cloudtestdrive/AppDev/ATP-OKE/livelabs-trial/)
   This lab will cover the complete setup of Developer Cloud, a Kubernetes Cluster and an Autonomous Database, and then build the CI/CD flow to deploy a Node-based microservice onto this infrastructure, starting from a fresh Cloud Free Trial.  If you are joining an instructor-led Cloud Test Drive lab, your instructor might ask you to follow [this](https://oracle.github.io/cloudtestdrive/AppDev/ATP-OKE/livelabs-ctdenv) alternative version of the lab.
-- ***New!***  [GitOps with Oracle Kubernetes Engine](AppDev/OKE-GitOps/README.md) (OKE) : learn how to use Oracle managed Kubernetes with the  GitOps approach, a new paradigm of implementing Continuous Delivery (CD) for cloud-native applications.
+- [GitOps with Oracle Kubernetes Engine](AppDev/OKE-GitOps/README.md) (OKE) : learn how to use Oracle managed Kubernetes with the  GitOps approach, a new paradigm of implementing Continuous Delivery (CD) for cloud-native applications.
 
 + Run your first **serverless Functions** [using the Opensource FnProject](AppDev/functions/function2_lab.md) or by using the Oracle Managed service called [Oracle Functions](https://www.oracle.com/webfolder/technetwork/tutorials/infographics/oci_faas_gettingstarted_quickview/functions_quickview_top/functions_quickview/index.html#).  Or optionally [create a function from an exiting Docker](https://github.com/shaunsmith/functionslab-codeone19/blob/master/6-Container-as-Function.md) container.
 + [Functions and Events](AppDev/functionsandevents/FnHandson.md): showcasing event-driven serverless functions and an Autonomous database. 
 + Discover the **Helidon Microservices framework for Java** by running through the 2 Getting Started [Quickstarts](https://helidon.io/docs/latest/#/guides/01_overview) for the SE and MP flavour, and then continue with more advanced features like Metrics and Healthchecks in [this tutorial](https://github.com/tomas-langer/helidon-conference/blob/master/README.md)
 + [Building Multi-Cloud Apps on Microsoft Azure and Oracle Cloud Infrastructure](AppDev/OCI-Azure-Interconnection/README.md)
   Develop .NET web application hosted on Azure and connect it to Oracle Autonomous Database on OCI through a private cross-cloud interconnection link
-+ ***New!***  [Use Rancher to monitor your OKE deployments](https://github.com/oracle/cloudtestdrive/blob/master/AppDev/oke-rancher/readme.md)
++ [Use Rancher to monitor your OKE deployments](https://github.com/oracle/cloudtestdrive/blob/master/AppDev/oke-rancher/readme.md)
++ ***New!***   [Running a **Helidon** microservice on **Verrazzano** lab](https://oracle.github.io/cloudtestdrive/AppDev/wls/helidon-verrazzano/workshops/)
 
 
 
@@ -37,15 +38,16 @@ During this day you will be able to experience the various cloud services hands-
 + ***New!***  [WebLogic for OKE](https://oracle.github.io/cloudtestdrive/AppDev/wls/ll-wls-for-oke-nonjrf/) - running WLS on Kubernetes via Marketplace
   Launch WebLogic on a Managed Kubernes cluster (OKE), using the pre-configured image provided by Oracle in the Marketplace.
 
-+ [Running WebLogic on Docker](AppDev/wls/WLS_on_Docker.md)
-  Spin up the official Oracle Docker Image for Weblogic and deploy a simple demo application on the server.
-
 + [Running WebLogic on Kubernetes](https://oracle.github.io/cloudtestdrive/AppDev/wls/ll-oke/) with a customer managed Operator
   Launch WebLogic on a Kubernetes cluster, using the WebLogic Operator to control your WebLogic environment.
   
 + [Migrating Java EE "Monolith" application libraries to Cloud Native development using Microservices and Helidon](AppDev/cloud-native/README.md)
 
   
+
+## Data Integration & Data Mesh
+
+- [Data Mesh Lab](https://oracle.github.io/cloudtestdrive/DataManagement/DataMesh/DataMeshMonolithMicro/workshops/freetier2/) : connecting a Monolith application with a Microservice
 
 
 
