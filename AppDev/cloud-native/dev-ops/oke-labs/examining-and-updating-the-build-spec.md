@@ -327,16 +327,16 @@ We're about to be making changes to the code, so let's create a new git branch t
   * my-lab-branch
 ```
 
-Note that our new my-lab-branch branch is the one currently checked out (is has a `*` in front of it)
+Note that your new my-lab-branch branch is the one currently checked out (is has a `*` in front of it)
 
   4. Copy the build_spec.yaml file to the root of the project, this is where the build tools loook for it by default.
   
   - `cp helidon-storefront-full/yaml/build/build_spec.yaml .`
 
 
-  5. Edit the `build_spec.yaml` file in the OCI cloud shell (vi and nano are available), locate the `vaultVariables` section in the YAML and REPLACE the current OCI_HOST_VAULT value (`Needs your host secrets OCID`) with the OCID of the OCIR_HOST_VAULT secret you just created. For the and OCIR_STORAGE_NAMEPACE_VAULT variable REPLACE its current value (`Needs your storage namespace OCID`) with the OCID of the OCIR_STORAGE_NAMESPACE_VAULT you just created. The example below if my file, but of course yours will be different.
+  5. Edit the new `$HOME/cloudnative-helidon-storefront/build_spec.yaml` file in the OCI cloud shell (vi and nano are available), locate the `vaultVariables` section in the YAML and REPLACE the current `OCI_HOST_VAULT` value (`Needs your host secrets OCID`) with the OCID of the `OCIR_HOST_VAULT` secret you just created. For the and `OCIR_STORAGE_NAMEPACE_VAULT` variable REPLACE its current value (`Needs your storage namespace OCID`) with the OCID of the `OCIR_STORAGE_NAMESPACE_VAULT` you just created. The example below if my file, but of course yours will be different.
   
-  **IMPORTANT** Make certain you use the right OCID from the vault to match the variables names in the build_spec.yaml, If you get this wrong there will be unusual errors later on. 
+  **IMPORTANT** Make certain you use the right OCID from the vault to match the variables names in the build_spec.yaml, If you get this wrong (getting them reversed is not uncommon) there will be unusual errors later on. 
   
   ```yaml
   env:
@@ -356,7 +356,7 @@ Note that our new my-lab-branch branch is the one currently checked out (is has 
   # exportedVariables are made available to use as parameters in sucessor Build Pipeline stages
   ```
 
-  Save the file away
+  Save the modified `build_spec.yaml` file using whatever sequence your chosen editor provides
   
 ## Task 4: Updating your version number
 
