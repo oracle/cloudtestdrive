@@ -2,7 +2,7 @@
 
 # Installing the core kubernetes lab services
 
-You can of course if you wish setup the core services in the Kubernrtes lab by hand, and if you have done the core Kubernetes lab you will probably have done so - in which case you can re-use that environment if it's still available to you.
+You can of course if you wish setup the core services in the Kubernetes lab by hand, and if you have done the core Kubernetes lab you will probably have done so - in which case you can re-use that environment if it's still available to you.
 
 If however you are doing a more focused lab where you don't want to be setting up the core Kubernetes services, but are for example planning on examining just the features like the service mesh or DevOps then I have provided a script that will basically automatically perform all of the steps that you would previously have done manually in the basic Kubernetes labs.
 
