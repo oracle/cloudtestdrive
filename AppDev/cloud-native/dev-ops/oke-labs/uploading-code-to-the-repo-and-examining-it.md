@@ -110,9 +110,6 @@ Git operates on the idea of branches, like a tree, there is the `main` branch an
 
 We need to tell git where the OCI Code repo is in your project. For this to work you **must** have setup ssh keys in your account and updated the .ssh/config file as described in the ssh setup step.
 
-switch to the right branch (ONLY NEEDED RIGHT NOW, in the finished lab I'll have committed initial-code-added into the main branch)
-git checkout initial-code-added
-
   1. In the OCI Code Repository page for your newly created repo  page click the **Clone** button to open the clone popup
   
   ![](images/code-repo-project-clone-button.png)
@@ -213,7 +210,7 @@ Let's have a look at the state of our projects OCI code repository. From the Cod
   
   ![](images/code-repo-exploration-to-resources-directory.png)
 
-  3. Click on the StaturResource.java this will open the source code file in the viewer
+  3. Click on the StatusResource.java this will open the source code file in the viewer
   
   ![](images/code-repo-exploration-StatusResource-top.png)
   
