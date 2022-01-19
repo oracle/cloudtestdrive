@@ -255,7 +255,7 @@ Use the Tenancy root (y/n) ?
 
 Unless you are in a shared free trial or are in a commercial tenancy you can use CTDOKE as the compartment name, just enter `y`. If you know you need to use a different compartment (perhaps there are multiple users in the free trial doing the lab, or a commercial tenancy admin has told you to do it elsewhere) then please enter `n` here, and follow the prompts to enter a different name.
   
-If you have chosen a different compartment as the parent (by setting PARENT_COMPARTMENT_OCID in $HOME/hk8sLabsSettings that will be displayed instead of `Tennancy root`. 
+If you have chosen a different compartment as the parent (by setting COMPARTMENT_PARENT_OCID in $HOME/hk8sLabsSettings that will be displayed instead of `Tennancy root`. 
   
 <details>
   
