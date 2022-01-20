@@ -68,17 +68,23 @@ Please look at the instructions in the Prerequisites section for details of how 
 
 If you are in an instructor led lab then clearly just ask your instructor, if you are working through this self guided then each module has a section at the end for getting help. 
 
-## Setup the Tenancy
+## Setting up the core OCI environment using scripts
 
-You will need to do a number of tasks to setup your tenancy, creating the developer VM you will use, creating and configuring a Autonomous Transaction Processing database etc.
+You will need to do a number of tasks to setup your tenancy, creating the compartment, creating and configuring a Autonomous Transaction Processing database etc.
 
-Please follow the tasks in the **Setup your tenancy** section (click the name in the labs index)
+Please follow the tasks in the **Setting up the core OCI environment using scripts** section (click the name in the labs index) then return to this page when complete
 
-## Setup for the Helidon labs
+## Setting up your Development VM core
+
+This lab uses a virtual machine to provide a consistent environment, this module takes you through the process of creating and doing the common configuration tasks for this virtual machine.
+
+Please follow the tasks in the **Setting up your Development VM core** section (click the name in the labs index) then when you've done it come back to this page.
+
+## Configure your Developer VM for the Helidon Labs
 
 You will need to import the template code you will be using into eclipse, and do some small VM configurations. This is in addition to setting up the VM you did earlier.
 
-Please follow **Setup for the Helidon Labs** section. When you've completed them click the `back` button on your browser to return to this page.
+Please follow **Configure your Developer VM for the Helidon Labs** section. When you've completed them click the `back` button on your browser to return to this page.
 
 ---
 

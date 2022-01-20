@@ -11,12 +11,16 @@
           "filename":"https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/cloud-login/pre-register-free-tier-account.md"
         },
         {
-          "title": "Setup your tenancy",
-          "filename":"../../../manual-setup/full-setup-free-tier.md"
+          "title": "Setting up the core OCI environment using scripts",
+          "filename":"../../../../scripted-setup/script-driven-oci-setup-core-environment.md"
         },
         {
-          "title": "Setup for the Helidon Labs",
-          "filename":"../../../helidon/setup/setup.md"
+          "title": "Setting up your Development VM core",
+          "filename":"../../../../scripted-setup/helidon-vm-setup.md"
+        },
+        {
+          "title": "Configure your Developer VM for the Helidon Labs",
+          "filename":"../../../../helidon/setup/setup.md"
         },
         {
           "title": "Helidon - Part 1: Core Helidon ",

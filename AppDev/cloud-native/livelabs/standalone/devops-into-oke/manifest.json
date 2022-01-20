@@ -15,7 +15,7 @@
           "filename":"../../../scripted-setup/script-driven-oci-setup-core-environment.md"
         },
         {
-          "title": "Setup your kubernetes environment using scripts",
+          "title": "Setup your kubernetes cluster using scripts",
           "filename":"../../../scripted-setup/script-driven-oci-setup-kubernetes-environment.md"
         },
         {

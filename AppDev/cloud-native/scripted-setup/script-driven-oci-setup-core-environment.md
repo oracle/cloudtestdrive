@@ -2,9 +2,49 @@
 
 # Setting up the core OCI environment using scripts
 
-For people who have done some of the other Helidon and Kubernetes labs they will have setup the core OCI environment in those labs and perhaps retained it, however to speed things up for people who are only doing a specific lab (or deleted their previously created environment) I have provided some scripts that you can use to set things up.
+This module walks you through the process of setting up the core OCI features needed for all of the related labs.
 
-If you want to get a better understanding of the steps involved follow the instructions in the Kubernetes labs for manually setting up the environment.
+To speed things up for people who are just starting with this set of labs (or deleted their previously created environment) we have provided some scripts that you can use to set things up quickly, consistently and with less opportunity for mistakes.
+
+<details><summary><b>Already done some of the labs ?</b></summary>
+
+If you have done some of the other Helidon and Kubernetes labs connected to the one you are currently doing you will have setup the core OCI environment in those labs and perhaps retained it, as long as you have the following setup you're fine (if all of the following are missing it's easiest to just proceed with running the module below from Task 1.)
+
+Step installed - The `$HOME/keys directory` exists and contains the `step` command and `root.crt` `root.key` files) 
+
+<details><summary><b>Step not installed ?</b></summary>
+
+Can download step and create the certificates using the `$HOME/helidon-kubernetes/setup/common/download-step.sh` script
+
+</details>
+
+User information captured (initials and user identity) Entries for `USER_INITIALS` and `USER_OCID` in `$HOME/hk8sLabsSettings`
+
+<details><summary><b>User information or initials missing ?</b></summary>
+
+Can setup the user initials using the `$HOME/helidon-kubernetes/setup/common/initials-step.sh` script
+
+Can setup the user ocid using the `$HOME/helidon-kubernetes/setup/common/user-identity-step.sh` script
+
+</details>
+
+Compartment created - Entry for `COMPARTMENT_OCID`  in `$HOME/hk8sLabsSettings`
+
+<details><summary><b>Compartment info missing ?</b></summary>
+
+Can setup the compartment (or re-use and existing one) using the `$HOME/helidon-kubernetes/setup/common/compartment-step.sh` script
+
+</details>
+
+Database created - Entry for `ATPDB_OCID`  in `$HOME/hk8sLabsSettings` and `$HOME/Wallet.zip` exists
+
+<details><summary><b>Database info missing ?</b></summary>
+
+Can setup the database (or re-use and existing one) using the `$HOME/helidon-kubernetes/setup/common/database-step.sh` script
+
+</details>
+---
+</details>
 
 ## Task 1: Downloading the latest scripts
 

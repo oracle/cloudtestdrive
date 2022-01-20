@@ -1,6 +1,6 @@
 ![](../../../../common/images/customer.logo2.png)
 
-# Cloud Native - Setup for Helidon labs
+# Cloud Native - Configure your Developer VM for Helidon labs
 
 ## Introduction
 
