@@ -4,8 +4,6 @@
 
 ## Introduction
 
-The following instructions are for the January 2022 version of the virtual machine image in the market place which we are in the prtocess of publishing. for the October 2020 version please [follow the instructions at this link](https://github.com/oracle/cloudtestdrive/tree/master/AppDev/cloud-native/scripted-setup/helidon-vm-setup-2020.md)
-
 **Estimated module duration** 15 mins.
 
 ### Objectives
@@ -216,40 +214,18 @@ You need to let your VM run for a couple of mins to fully boot and start the VNC
 Once you have logged in you will see the Linux desktop, it will look similar to this, though the background and specific icons may differ.
 
   ![](images/03-desktop.png)
-  
-### Step 3c: Opening a terminal
 
-For a number of the following steps you will need to open a terminal, if you already have a terminal open you can just re-use it, if you don't then the following steps will help you open a new terminal.
-
-  1. Click on the **Activities** menu on the upper left of the VNC screen
-  
-  2. A activity selection menu will appear with commonly used activities, click on the Terminal icon
-  
-  ![](images/ol-desktop-activities-open-terminal.png)
-  
-  3. A terminal will appear on the desktop.
-  
-  ![](images/ol-desktop-open-terminal.png)
-  
-#### Accessing an existing terminal or other application
-  
-  If you have lost an application, for example a terminbal window is hiding behind a web browser then you can go back to the application using the activities menu
-  
-  Click the **Activities** menu option on the upper left
-  
-  The screen will display the activity selection menu on the left, but images for any existing applications will also be shown, just click on the image of the application you want to switch to it's window
-  
-  ![](images/ol-desktop-activities-select-existing-open-application.png)
-
-### Step 3e: Changing the VNC Password (optional)
+### Step 3c: Changing the VNC Password (optional)
 
 We have provided a pre-set VNC password. If you are in a instructor led lab this may have been provided to you by your lab instructor, or it may be in the image location file you downloaded earlier.
 
 While not required we do recommend that you change this password to prevent access by other people, this is especially important if you plan on leaving the VM running for a while.
 
-  1. Open a terminal window following the instructions above
+  1. On the desktop background click right, then the **Open Terminal** option
 
-  2. In the terminal window type `vncpasswd`
+  ![](images/vnc-01-open-terminal.png)
+
+  2. In the resulting terminal window type `vncpasswd`
 
   3. At first the prompt enter your new VNC password
 
@@ -277,39 +253,31 @@ There are many IDE's available. We have chosen Eclipse as it's open source licen
 
 ### Step 4a: Downloading Eclipse
 
-We have installed the Eclipse installer and placed is in a folder on your home directory.  
+We have installed the Eclipse installer and places a short cut to it on the desktop.  
 
-  1. Open the File manager by clicking on the **Activities** menu on the upper left of the VNC window, then the Filling cabinet icon
+  1. Double click on the **eclipse-installer** icon on the desktop. This will open the installer. It may look like a text page and be named `eclipse-installer.desktop` rather than the icon shown below, if it does still click it. You may be warned it's an **Untrusted application launcher**, if this happens click the **Trust and launch** option. **Do not** click the Post Eclipse Installer icon.
  
-  ![](images/ol-desktop-activities-select-filemanager.png)
-  
-  2. The file manager will start, open the **eclipse-installer** folder by double clicking on it, note that the exact location in the window may vary
-  
-  ![](images/ol-desktop-filemanager-select-eclipse-installer-folder.png)
-  
-  3. Start the Eclipse installer by double clicking on the **eclipse-inst** icon, note that the exact location in the window may vary. **DO NOT** click on the .ini file
-  
-  ![](images/ol-desktop-filemanager-start-eclipse-installer.png)
+  ![](images/04-eclipse-installer-icon.png)
 
 The Eclipse installer will start.
 
-  4. Select the **Eclipse IDE for Enterprise Java Developers** option
+  2. Select the **Eclipse IDE for Enterprise Java Developers** option
 
   ![](images/05-eclipse-installer-selection.png)
 
 The installer switched to the next page
 
-  5. In the **Java JVM dropdown** Select the `/usr/lib/jvm/java-11-openjdk`  ** DO NOT PRESS INSTALL YET**
+  3. In the **Java JVM dropdown** Select the `/usr/lib/jvm/java-11-openjdk`  ** DO NOT PRESS INSTALL YET**
  
-  6. Set the **Install Path** to be `/home/opc`
+  4. Set the **Install Path** to be `/home/opc`
   
   (It's really important that you do this, otherwise you'll have to manually setup a lot of the following)
 
   ![](images/06-eclipse-installer-selections.png)
  
-  7. Then click the **Install** button
+  5. Then click the **Install** button
  
-  8. Assuming you agree with it click **Accept Now** on the license page. (If you don't agree with the license you can install your own IDE but all of the instructions are on the basis of using Eclipse.)
+  6. Assuming you agree with it click **Accept Now** on the license page. (If you don't agree with the license you can install your own IDE but all of the instructions are on the basis of using Eclipse.)
  
   ![](images/07-eclipse-installer-license.png)
  
@@ -317,33 +285,37 @@ The installer progress will be displayed
  
   ![](images/08-eclipse-installer-progress.png)
  
-  9. You **may** be presented with warnings about unsigned content, if you are click the **Accept** button
+  7. You **may** be presented with warnings about unsigned content, if you are click the **Accept** button
  
   ![](images/09-eclipse-installer-unsigned-warning.png)
  
-  10. You **may** be presented with warnings about certificates. If you are click the **Select All** button, then the **Accept Selected** button (this is not enabled until certificates have been selected)
+  8. You **may** be presented with warnings about certificates. If you are click the **Select All** button, then the **Accept Selected** button (this is not enabled until certificates have been selected)
   
   ![](images/10-eclipse-installer-accept-unsigned.png)
   
-  11. On completion close the installer window (X on the upper right.) **Do not** click the Launch button.
+  9. On completion close the installer window (X on the upper right.) **Do not** click the Launch button.
  
   ![](images/11-eclipse-installer-finished-install-path.png)
 
-  12. Click **No** on the exit launcher page that's displayed to confirm you do not want to launch Eclipse at this point.
+  10. Click **No** on the exit launcher page that's displayed to confirm you do not want to launch Eclipse at this point.
 
   ![](images/12-eclipse-installer-finished-exit-without-launching.png)
   
 ### Step 4b: Configuring post Eclipse install
 
+We're now going to run a script that tidies up the desktop and creates an eclipse desktop icon
+
+  1. Double click on the **Post Eclipse Installer** icon on the desktop. This will run the script. It may look like a text page and be called `posteclipseinstal.desktop` rather than the icon shown below, if it does still click it. You may be warned it's an **Untrusted application launcher**, if this happens click the **Trust and launch** option.
+
+  ![](images/13-post-eclipse-installer-icon.png)
+
+If the eclipse installation was in the right place then the two desktop icons will disappear and be replaced with an `Eclipse` icon (**Do not start eclipse now**). If the Eclipse installation was in the wrong place then it will exit immediately without making any changes. In that case re-run the installer and ensure you use `/home/opc` as the Eclipse installation path.
+
 To enable us to update the labs without having to update the Developer VM image each time we hold the setup code in a git repository (where we can update it as the lab is enhanced) You need to download this into your development VM and run the setup script.
 
-  1. In the VM Open a terminal or reuse an existing one if you have one already open
+  2. In the VM Open a terminal
   
   ![Open Terminal](images/10-open-terminal.png)
-  
-  2. If you are reusing a termnal make sure you are in your home directory by typing
-  
-  - `cd`
   
   3. In the terminal execute the following command to download the latest setup
   
@@ -404,25 +376,19 @@ LombokHelloWorld(hello=World)
 
 ### Step 4c: Starting Eclipse for the first time
 
-The first tine you start Eclipse there are some additional steps to take, but if you ever need to restart it you just need to follow steps 1., 2. & 3.
+Note that sometimes the Eclipse installer will create it's own desktop icon to start Eclipse. This does not happen every time, but if it does create one you can also use that icon to start Eclipse as well.
 
-  1. Click on the **Activities** menu on the upper left of the session
-  
-  2. Select the application grid in the menu
-  
-  ![](images/ol-desktop-activities-open-applications-choice.png)
-  
-  3. In the applications grid that is now displayed click the Eclipse icon, note that it's location in the grid may vary
-  
-  ![](images/ol-desktop-activities-select-eclipse.png)
+  1. Double click on the **Eclipse** icon on the desktop. It may look like a text page rather than the icon shown below, if it does still click it. You may be warned it's an **Untrusted application launcher**, if this happens click the **Trust and launch** option.
+
+  ![](images/14-eclipse-icon.png)
 
 As Eclipse starts you will be presented with a start up "splash" then workspace selection option. 
 
-  3. Set the Eclipse workspace to be `/home/opc/workspace` (If you chose a different location you will have to remember to use that new location in many later stages.)
+  2. Set the eclipse workspace to be `/home/opc/workspace` (If you chose a different location you will have to remember to use that new location in many later stages.)
 
   ![](images/20-eclipse-start-workspace-selection.png)
 
-  4. Click the **Use this as the default and do not ask again** option, then the **Launch** button
+  3. Click the **Use this as the default and do not ask again** option, then the **Launch** button
 
   ![](images/20a-eclipse-start-default-workspace-selection.png)
 
@@ -430,7 +396,7 @@ You will be presented with the Eclipse startup. This may include a welcome page.
 
   ![](images/21-eclipse-welcome-page.png)
 
-  5. You can close the **Donate**, **Outline** and **Task list** tabs to get the most usage from the screen.
+  4. You can close the **Donate**, **Outline** and **Task list** tabs to get the most usage from the screen.
 
   ![](images/22-eclipse-donate-page.png)
 
@@ -440,12 +406,15 @@ This image shows you the empty Eclipse workspace with the non required tabs all 
 
 We need to configure Eclipse to display the course files in a hierarchical manner (this is so it matches the images you will have in the lab instructions, if you prefer to use the Eclipse  "Flat" view then you can ignore this step)
 
-  6. Click on the Three dots in the Project Explorer panel, then take the **Package Presentation** menu option and click the radio button for **Hierarchical**
+  5. Click on the Three dots in the Project Explorer panel, then take the **Package Presentation** menu option and click the radio button for **Hierarchical**
 
   ![](images/24-eclipse-package-presentation-hierarchical.png)
-  
-  In the specific labs (e.g. the Helidon core labs) there are additional instructions on how to get the relevant source code and open it in Eclipse.
 
+### Step 4d: How to re-open Eclipse if it's been closed
+
+Double click on the **Eclipse** icon on the desktop. It may look like a text page rather than the icon shown below, if it does still click it. You may be warned it's an **Untrusted application launcher**, if this happens click the **Trust and launch** option.
+
+![](images/14-eclipse-icon.png)
 
 
 ## Step 5: Downloading the database Wallet file.
@@ -454,11 +423,9 @@ The database Wallet file contains the details needed to connect to your database
 
 The easiest way to get the database Wallet file into your virtual machine is to use the cloud console to download it.
 
-  1. Open a web browser **inside the virtual machine** by clicking the **Activities** menu on the upper left of the VNC window, then clicking the **Firefox** icon
+  1. Open a web browser **inside the virtual machine**
   
-  ![](images/ol-desktop-activities-open-firefox.png)
-  
-  2. Login to the Oracle Cloud Console with your tenancy details
+  2. Login to the Oracle Cloud Console
   
   3. Open the "Hamburger" menu (three bars on the top left)
   

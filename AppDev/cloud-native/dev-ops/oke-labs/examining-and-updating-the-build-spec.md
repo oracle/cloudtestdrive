@@ -286,7 +286,7 @@ You can see here in this example we're using the Frankfurt region, which is also
   
   ![](images/vault-create-secret-part-1.png)
   
-  5. In the **Secret Template Type** be sure it's set to plain text. In the **Secret Contents** enter the name you determined for the OCIR in your region, for example in this case that's `lhr.ocir.io` (I know previously I was using Frankfurt, but I had to change regions while writting the lab) but of course it may be different for you if you are in a different region. Click the **Create Secret** button
+  5. In the **Secret Template Type** be sure it's set to plain text. In the **Secret Contents** enter the name you determined for the OCIR in your region, for example in this case that's `lhr.ocir.io` please only enter the host name, you don't need to put in `https://`  (I know previously I was using Frankfurt, but I had to change regions while writing the lab) but of course it may be different for you if you are in a different region. Click the **Create Secret** button
   
   ![](images/vault-create-secret-part-2.png)
 
@@ -294,7 +294,7 @@ It will take a short while to create the secret, but you can carry on while that
 
   6. Click the three dots on the left of the row containing your secret, take the **Copy OCID** option, paste the OCID into a note pad or something, being sure to identify it so you know its for the `OCIR_HOST_VAULT` secret
 
-  7. Follow the steps above to create a `OCIR_STORAGE_NAMESPACE_VAULT` secret, with a description `Secret to hold the storage namespace info` but in this case the contents will be the tenancy storage namespace you determined earlier, remember when you save its OCID away to identify it as the tenancy storage OCID.
+  7. Follow the steps above to create a `OCIR_STORAGE_NAMESPACE_VAULT` secret, with a description `Secret to hold the storage namespace info` but in this case the contents will be the tenancy storage namespace you determined earlier from the tenancy web page (it's not the OCIR host name) remember when you save its OCID away to identify it as the tenancy storage OCID.
   
   Once you have finished you will have two secrets in your vault.
   
