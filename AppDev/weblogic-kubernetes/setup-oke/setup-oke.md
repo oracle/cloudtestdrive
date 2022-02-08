@@ -30,6 +30,8 @@ In the Console, open the navigation menu. Under *Solutions, Platform and Edge*, 
 
 As this is the first object you will be creating you need to set the correct **Compartment** where you are authorised to work in.
 
+- You need to select the **compartment name** that was communicated by the Oracle Instructors running this workshop.
+
 ![image-20220114170726477](images/image-20220114170726477.png)
 
 - Click on the **Pick a compartment** selector and expand the **root** compartment by clicking on the **+** sign:
@@ -49,14 +51,15 @@ In the Create Cluster Solution dialog, select *Quick Create* and click **Launch 
 **Quick Create** will create a new cluster with default settings, along with new network resources for the new cluster.
 
 Specify the following configuration details on the Cluster Creation page:
-- **Name**: The name of the cluster. Leave the default value.
-- **Compartment**: The name of the compartment. Leave the default value.
-- **Kubernetes version**: The version of Kubernetes. Leave the default value which should be `1.16.8`.
-- **Choose Visibility Type**: Is the cluster going to be routable or not. Leave the default *Private* value.
-- **Shape**: The shape to use for each node in the node pool. The shape determines the number of CPUs and the amount of memory allocated to each node. The list shows only those shapes available in your tenancy that are supported by OKE. Select the available *VM.Standard2.1*.
+- **Name**: The name of the cluster. Use a number or your name to distinguish your cluster from the one created by other participants.
+- **Compartment**: The name of the compartment. Make sure this is the compartment provided to you by your instructors.
+- **Kubernetes version**: The version of Kubernetes. Leave the default value .
+- **Kubernetes API Endpoint**: keep the default **Public Endpoint** option
+- **Kubernetes Worker Nodes**: keep the default.
+- **Shape**: The shape to use for each node in the node pool. The shape determines the number of CPUs and the amount of memory allocated to each node. Use the default value provided.
 - **Number of nodes**: The number of worker nodes to create. Leave the default value, *3*
 
-![](images/040.quick.details.png)
+![image-20220121151145174](images/image-20220121151145174.png)
 
 Click **Next** to review the details you entered for the new cluster.
 
