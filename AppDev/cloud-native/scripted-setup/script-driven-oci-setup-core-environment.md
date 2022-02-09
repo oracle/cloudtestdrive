@@ -223,7 +223,51 @@ This output is for `step` version 0.18.0 the output you get will probably vary.
 
 This has downloaded the latest version of `step` and created the root certificate, please continue with **Task 3**
 
-## Task 3: Configuring the core environment in one go
+## Task 3: Checking resources are available
+
+This lab uses a number of compute and networking resources, this task checks to see to see if enough resources are available to run the core capabilities (some optional labs have additional requirements and may not be checked).  Generally if there is a resource limitation it's best to find out before starting a lab rather than later !
+
+We do this check in-case lab students may be running multiple activities in their tenancies that have already consumed resources, or in the case of a free trial that has exceeded the 30 day period the resources available are reduced and these labs will not fit into the "always free" capacity. In some situations (e.g. a shared tenancy with lots of people doing a lab) resource availability may change between running this script and creating the resources, but this is a good indicator. If you have already created the resources as part of another lab in this series it will try and correctly handle that.
+
+  1. If you are not already there open the OCI cloud shall and go to the scripts directory, type
+  
+  - `cd $HOME/helidon-kubernetes/setup/common`
+  
+  2. Run the script
+  
+  - `bash check-minimum-resources.sh`
+  
+  ```
+Using default context name of one
+No existing settings
+No existing compartment information
+Checking for compartment availability
+You asked for 1 of resource compartment-count in service compartments in region congratulations 999 are available
+You have enough compartments available to run this lab
+No existing database information
+Checking for database resource availability
+You asked for 1 of resource atp-ocpu-count in service database in region congratulations 8 are available
+You have enough ATP database cpus available to run this lab
+No already configured OKE context one, checking resource availability
+Checking for VCN availability for Kubernetes workers
+You asked for 1 of resource vcn-count in service vcn in region congratulations 50 are available
+You have enough Virtual CLoud Networks to create the OKE cluster
+Checking for E4 or E3 processor core availability for Kubernetes workers
+You asked for 3 of resource standard-e4-core-count in service compute in availability domain gKLQ:ME-DUBAI-1-AD-1, congratulations 100 are available
+You asked for 3 of resource standard-e3-core-ad-count in service compute in availability domain gKLQ:ME-DUBAI-1-AD-1, congratulations 100 are available
+You have enough E4 shapes to create the OKE cluster
+You asked for 1 of resource lb-10mbps-count in service load-balancer in region congratulations 2 are available
+You have enough load balancers available to setup your core cluster services
+Congratulations, you have either got an existing compartment and / or OKE cluster created from other labs, or
+if not based on current resource availability (which if other people are using this tenancy
+may of course change before the OKE cluster is created) there are sufficient resources to do this lab
+```
+
+  In a new free trial where none of this set of labs have been run the output will be **similar** to the above, and in the vast majority of cases all the resources will be available. The output is I hope fairly self explanatory, if there are resource limits that mean the lab cannot be run then they should be reported by the script, and guidance on fixing them provided. If you have previously run related labs and those resources are still in use then the output will report that and not check for unneeded additional resources.
+  
+  Assuming you have the available resources please proceed with Task 4.
+  
+## Task 4: Configuring the core environment in one go
 
 If you are running in a free trial tenancy allocated to you then follow the process outlined below, so please skip over the expansion.
 
@@ -235,7 +279,7 @@ If you are running in a shared or commercial tenancy, or are sharing your free t
 
 </details>
 
-There are a number of activities required to configure the core environment, these include identifying your self by your initials, locating your user information, setting up compartments, and creating a database. The core-environment-setup script will gather some information and then do the core work for you.
+There are a number of activities required to configure the core environment, these include identifying your self by your initials, locating your user information, setting up compartments, and creating a database. The core-environment-setup script will gather some information and then do the core work for you. You may have already done this as part of a related lab in your tenancy, if so the scripts will recognize previously created resources (provided they have not been destroyed of course) so there is no harm in re-running the scripts.
 
   1. If you are not already there open the OCI cloud shall and go to the scripts directory, type
   
