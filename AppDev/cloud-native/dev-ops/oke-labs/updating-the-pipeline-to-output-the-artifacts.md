@@ -38,11 +38,11 @@ We're going to create the container repo first, this will give us a location to 
   
   ![](images/ocir-access-service.png)
   
-  2. Check that the compartment on the left is your compartment, Click the **Create Repository** button to open the create repository popup
+  2. Check that the compartment on the left is your compartment, Note that there may be existing repos in the compartment which will contain the basic images created during the environment setup process. Click the **Create Repository** button to open the create repository popup
 
   ![](images/ocir-create-registry-button.png)
   
-  3. Create the repo `<YOUR_INITIALS>/storefront` (remembering to replace `<your initials>`  Click the **Public** checkbox (in the example below I've used my initials, yours will of course probably be different), Click the **Create repository** button to complete the process
+  3. Create the repo `<YOUR_INITIALS>devops/storefront` (remembering to replace `<your initials>` which need to be in lower case) Click the **Public** checkbox (in the example below I've used my initials, yours will of course probably be different), Click the **Create repository** button to complete the process
   
   ![](images/ocir-create-repo-popup.png)
   
@@ -62,7 +62,7 @@ Now we'll create  the artifact registry, this will hold the Kubernetes manifests
   
   ![](images/artifact-reg-create-reg-button.png)
   
-  3. In the **Create repository** popup name it <Your initials>DevOps, **CRITICAL** set the immutable to be off, in production you  wouldn't do this as immutable artifacts can never be re-used (this is for security purposes, and also to ensure that deployments are reproducible) but for the lab where you will be doing multiple runs that would just make things difficult as we'd need to update the version everytime we did a run, so we'll allow for artifacts to be changed for now. Click the **Create button.
+  3. In the **Create repository** popup name it <Your initials>DevOps, **CRITICAL** set the immutable to be off, in production you  wouldn't do this as immutable artifacts can never be re-used (this is for security purposes, and also to ensure that deployments are reproducible) but for the lab where you will be doing multiple runs that would just make things difficult as we'd need to update the version everytime we did a run, so we'll allow for artifacts to be changed for now. Click the **Create** button.
   
   ![](images/artifact-repo-create-instance-form.png)
   
@@ -91,7 +91,7 @@ We will next define some paramaters for the build pipeline. These are automatica
   
   [](images/build-pipelines-select-params-tab-no-params-yet.png)
 
-  4. In the **Name** field enter `YOUR_INITIALS` (do not substitute this name). Set the default value to be <your initials> (the ones you used when you created the container repo as these will be used by the output artifacts stage we are about to create to upload the container image to that OCIR repo, add a description then to "commit" the param we need to click the + button on the right of the row, this will save the details away **IMPORTANT** you do need to save the params with **+**, if you don't it will be lost. There is no mechanism to specify params for each stage so we need to do it on the entire build pipeline.
+  4. In the **Name** field enter `YOUR_INITIALS` (this is the actual words, do not substitute this). Set the default value to be `<your initials> `(for this second field substitute the ones you used when you created the container repo as these will be used by the output artifacts stage we are about to create to upload the container image to that OCIR repo, add a description then to "commit" the param we need to click the + button on the right of the row, this will save the details away **IMPORTANT** you do need to save the params with **+**, if you don't it will be lost. There is no mechanism to specify params for each stage so we need to do it on the entire build pipeline.
   
   ![](images/build-pipelines-parameters-adding-your-initials-param.png)
   
@@ -110,7 +110,7 @@ I appreciate that this as an additional stage is a bit of an irritation - esp fo
 ---
 </details>
 
-The output artifacts stage  is where we do the tagging and so on, here we will use the build pipeline variables (e.g. the exported variables like STOREFRONT_VERSION) as well as pipeline parameters (like the YOUR_INIATIALS) as part of the naming when artifacts are uploaded. There is not need to use both, but I wanted so show you how you can incase you want to  do so at some point.
+The output artifacts stage  is where we do the tagging and so on, here we will use the build pipeline variables (e.g. the exported variables like `STOREFRONT_VERSION`) as well as pipeline parameters (like the `YOUR_INIATIALS`) as part of the naming when artifacts are uploaded. There is not need to use both, but I wanted so show you how you can in case you want to  do so at some point.
 
   1. Click the **Build Pipeline** to switch to the pipeline designer tab.
   
@@ -181,7 +181,7 @@ Now we need to define the artifact. We could have previously defined the artifac
 
   ![](images/build-pipeline-pipeline-add-second-stage-deliver-artifacts-part-2-define-container-artifact-start.png)
   
-  11. Name it `StorefrontContainer`, This time the type should **Container image repository**, Artifact source is `${OCIR_HOST}/${OCIR_STORAGE_NAMESPACE}/${YOUR_INITIALS}/storefront:${STOREFRONT_VERSION}`, Make sure that **Replace parameters used in this artifact** is set to `Yes substitute placeholders`. Click the **Add** button.
+  11. Name it `StorefrontContainer`, This time the type should **Container image repository**, Artifact source is `${OCIR_HOST}/${OCIR_STORAGE_NAMESPACE}/${YOUR_INITIALS}devops/storefront:${STOREFRONT_VERSION}`, Make sure that **Replace parameters used in this artifact** is set to `Yes substitute placeholders`. Click the **Add** button.
 
   ![](images/build-pipeline-pipeline-add-second-stage-deliver-artifacts-part-2-define-container-artifact-form.png)
 
@@ -304,7 +304,7 @@ The `BuldStorefront` stage should progress as before (we haven't changed anythin
 2021-11-01T18:24:34.178Z Upload UIM artifact path storefront-deployment.yaml, version 1.0.0 completed successfully.   
 2021-11-01T18:24:34.179Z Completed UPLOAD_ARTIFACT deployment_yaml successfully to the deploy artifact ocid1.devopsdeployartifact.oc1.eu-frankfurt-1.amaaaaaa4g77oeyae53hxpr555m4i6tjub6onmtbxm33q6e7gu3uw5c3vdtq   
 2021-11-01T18:24:34.179Z Starting UPLOAD_ARTIFACT storefront_container_image   
-2021-11-01T18:24:46.588Z Starting OCIR upload for artifact storefront_container_image, image uri: lhr.ocir.io/oraseemeatechse/tg/storefront:1.0.0  
+2021-11-01T18:24:46.588Z Starting OCIR upload for artifact storefront_container_image, image uri: lhr.ocir.io/oraseemeatechse/tgdevops/storefront:1.0.0  
 2021-11-01T18:25:43.515Z Completed UPLOAD_ARTIFACT storefront_container_image successfully to the deploy artifact ocid1.devopsdeployartifact.oc1.eu-frankfurt-1.amaaaaaa4g77oeyamuwi6xqkqaapflh2xajo2l6mscxqy7wzjrat2lkajmpq   
 2021-11-01T18:25:55.601Z Completed Deliver Artifact stage.   
 ```
@@ -345,7 +345,7 @@ Let's go and look at what our pipeline has produced
 spec:
 ```
  
-   6. Locate  the container image, it  still refers to `${OCIR_HOST}/${OCIR_STORAGE_NAMESPACE}/${YOUR_INITIALS}/storefront:${STOREFRONT_VERSION}`. The parameters we specified for the artifact name and version have been substituted, but not the parameters within the actuall artifacts themselves. Clearly this will need to be done - after all Kubernetes has no idea where an image location of `${OCIR_HOST}/${OCIR_STORAGE_NAMESPACE}/${YOUR_INITIALS}/storefront:${STOREFRONT_VERSION}` would be !
+   6. Locate  the container image, it  still refers to `${OCIR_HOST}/${OCIR_STORAGE_NAMESPACE}/${YOUR_INITIALS}devops/storefront:${STOREFRONT_VERSION}`. The parameters we specified for the artifact name and version have been substituted, but not the parameters within the actuall artifacts themselves. Clearly this will need to be done - after all Kubernetes has no idea where an image location of `${OCIR_HOST}/${OCIR_STORAGE_NAMESPACE}/${YOUR_INITIALS}devops/storefront:${STOREFRONT_VERSION}` would be !
    
 ```yaml
    containers:

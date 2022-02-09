@@ -62,7 +62,9 @@ For the Oracle load balancer there are some annotations you can apply when creat
 
 ### With an API Gateway
 
-Technologies such as an API gateway are applied (usually with their own load balancer) to examine the REST API Requests and to externally apply policy to those requests, this is done on the edge of your environment and prevents out of policy REST API calls even reaching your micro-service. For example an API Gateway would typically be configured with policies that ensure that the correct authentication details are applied to the connection, often also validating the supplied details are correct. Other typical functions are ensuring that the data is in the correct format, potentially applying checks against SQL Injection, and performing functions such as rate lmiting and API key management (for example limiting access only to applications form organizations that have been issued with an access key.
+Technologies such as an API gateway are applied (usually with their own load balancer) to examine the REST API Requests and to externally apply policy to those requests, this is done on the edge of your environment and prevents out of policy REST API calls even reaching your micro-service. For example an API Gateway would typically be configured with policies that ensure that the correct authentication details are applied to the connection, often also validating the supplied details are correct. Other typical functions are ensuring that the data is in the correct format, potentially applying checks against SQL Injection, and performing functions such as rate limiting and API key management (for example limiting access only to applications from organizations that have been issued with an access key.
+
+API Gateways usually act as an encryption endpoint for incoming / outgoing traffic, though they can often also then re-encrypt the traffic to pass it on to your actual service (or ingress controller)
 
 ## Internal to the cluster data encryption
 

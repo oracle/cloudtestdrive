@@ -1,6 +1,6 @@
 ![](../../../../common/images/customer.logo2.png)
 
-# Cloud Native - Setup for Helidon labs
+# Cloud Native - Configure your Developer VM for the Helidon labs
 
 ## Introduction
 
@@ -20,9 +20,9 @@ To make it easier to switch to the Kubernetes environment we are using hostnames
 
 The cloud-native-support project you downloaded during the initial setup has a script that will do this for you.
 
-  1. Click right on the Virtual Machine desktop and chose the `Open Terminal` option
+  1. Open a terminal by clicking the **Activities** m enu on the upper left of your VNC window, then the terminal icon
 
-  ![](images/10-open-terminal.png)
+  ![](images/ol-desktop-activities-open-terminal.png)
 
   2. In the terminal switch to the script directory
 
@@ -56,9 +56,9 @@ To save you from having to completely create all of the Eclipse projects and cla
 
 ### Task 2a. Downloading the code zip file.
 
-  1. In the **virtual machine** open the Firefox web browser in the virtual machine - Click `Applications` then `Internet` then `Firefox`
+  1. In the **virtual machine** open the Firefox web browser in the virtual machine - Click **Activities** on thge upper left of the VNC window, then click the **Firefox** icon 
 
-  ![](images/40-open-firefox-menu.png)
+  ![](images/ol-desktop-activities-open-firefox.png)
 
   2. In the browser **in the virtual machine** go to the URL `https://github.com/CloudTestDrive/helidon-labs`
 
@@ -108,7 +108,7 @@ Eclipse will import the projects and start importing the Maven dependencies. Not
 
   ![](images/55-eclipse-import-progress.png)
 
-This may take a few mins. **Do not worry if you see errors during this process** (usually indicated by a white cross in a red box). These are to be expected as Eclipse imports the code, then updates the Maven configuration and other elements. Once the building indicator (lower right) has gone away the errors should have gone. Expect to see yellow warning triangles though - these are telling about unused code that we will be completing during the lab modules.
+This may take a few mins. **Do not worry if you see errors during this process** (usually indicated by a white cross in a red box, as seem by the helidon-labs-stockmanager projectr in the above image). These are to be expected as Eclipse imports the code, then updates the Maven configuration and other elements. Once the building indicator (lower right) has gone away the errors should have gone. Expect to see yellow warning triangles though - these are telling about unused code that we will be completing during the lab modules.
 
 ## Task 3: Configuring to use the Wallet file
 

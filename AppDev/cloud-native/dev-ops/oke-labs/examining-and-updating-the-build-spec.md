@@ -286,7 +286,7 @@ You can see here in this example we're using the Frankfurt region, which is also
   
   ![](images/vault-create-secret-part-1.png)
   
-  5. In the **Secret Template Type** be sure it's set to plain text. In the **Secret Contents** enter the name you determined for the OCIR in your region, for example in this case that's `lhr.ocir.io` (I know previously I was using Frankfurt, but I had to change regions while writting the lab) but of course it may be different for you if you are in a different region. Click the **Create Secret** button
+  5. In the **Secret Template Type** be sure it's set to plain text. In the **Secret Contents** enter the name you determined for the OCIR in your region, for example in this case that's `lhr.ocir.io` please only enter the host name, you don't need to put in `https://`  (I know previously I was using Frankfurt, but I had to change regions while writing the lab) but of course it may be different for you if you are in a different region. Click the **Create Secret** button
   
   ![](images/vault-create-secret-part-2.png)
 
@@ -294,7 +294,7 @@ It will take a short while to create the secret, but you can carry on while that
 
   6. Click the three dots on the left of the row containing your secret, take the **Copy OCID** option, paste the OCID into a note pad or something, being sure to identify it so you know its for the `OCIR_HOST_VAULT` secret
 
-  7. Follow the steps above to create a `OCIR_STORAGE_NAMESPACE_VAULT` secret, with a description `Secret to hold the storage namespace info` but in this case the contents will be the tenancy storage namespace you determined earlier, remember when you save its OCID away to identify it as the tenancy storage OCID.
+  7. Follow the steps above to create a `OCIR_STORAGE_NAMESPACE_VAULT` secret, with a description `Secret to hold the storage namespace info` but in this case the contents will be the tenancy storage namespace you determined earlier from the tenancy web page (it's not the OCIR host name) remember when you save its OCID away to identify it as the tenancy storage OCID.
   
   Once you have finished you will have two secrets in your vault.
   
@@ -327,16 +327,16 @@ We're about to be making changes to the code, so let's create a new git branch t
   * my-lab-branch
 ```
 
-Note that our new my-lab-branch branch is the one currently checked out (is has a `*` in front of it)
+Note that your new my-lab-branch branch is the one currently checked out (is has a `*` in front of it)
 
   4. Copy the build_spec.yaml file to the root of the project, this is where the build tools loook for it by default.
   
   - `cp helidon-storefront-full/yaml/build/build_spec.yaml .`
 
 
-  5. Edit the `build_spec.yaml` file in the OCI cloud shell (vi and nano are available), locate the `vaultVariables` section in the YAML and REPLACE the current OCI_HOST_VAULT value (`Needs your host secrets OCID`) with the OCID of the OCIR_HOST_VAULT secret you just created. For the and OCIR_STORAGE_NAMEPACE_VAULT variable REPLACE its current value (`Needs your storage namespace OCID`) with the OCID of the OCIR_STORAGE_NAMESPACE_VAULT you just created. The example below if my file, but of course yours will be different.
+  5. Edit the new `$HOME/cloudnative-helidon-storefront/build_spec.yaml` file in the OCI cloud shell (vi and nano are available), locate the `vaultVariables` section in the YAML and REPLACE the current `OCI_HOST_VAULT` value (`Needs your host secrets OCID`) with the OCID of the `OCIR_HOST_VAULT` secret you just created. For the and `OCIR_STORAGE_NAMEPACE_VAULT` variable REPLACE its current value (`Needs your storage namespace OCID`) with the OCID of the `OCIR_STORAGE_NAMESPACE_VAULT` you just created. The example below if my file, but of course yours will be different.
   
-  **IMPORTANT** Make certain you use the right OCID from the vault to match the variables names in the build_spec.yaml, If you get this wrong there will be unusual errors later on. 
+  **IMPORTANT** Make certain you use the right OCID from the vault to match the variables names in the build_spec.yaml, If you get this wrong (getting them reversed is not uncommon) there will be unusual errors later on. 
   
   ```yaml
   env:
@@ -356,7 +356,7 @@ Note that our new my-lab-branch branch is the one currently checked out (is has 
   # exportedVariables are made available to use as parameters in sucessor Build Pipeline stages
   ```
 
-  Save the file away
+  Save the modified `build_spec.yaml` file using whatever sequence your chosen editor provides
   
 ## Task 4: Updating your version number
 

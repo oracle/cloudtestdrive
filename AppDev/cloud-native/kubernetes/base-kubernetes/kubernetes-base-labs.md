@@ -78,7 +78,25 @@ Update Complete. ⎈ Happy Helming!⎈
 
 ## Task 2: Getting your cluster access details
 
-Access to the cluster is managed via a config file that by default is located in the `$HOME/.kube` folder, and is called `config`.  To check the setup, make sure to have copied your personal kubeconfig file to this location : 
+Access to the cluster is managed via a config file that by default is located in the `$HOME/.kube` folder, and is called `config`. 
+
+If you used the scripts to create your OKE cluster this will have been configured for you.
+
+Verify you can access the cluster:
+  
+  -  `kubectl get nodes`
+
+  ```
+NAME        STATUS   ROLES   AGE     VERSION
+10.0.10.2   Ready    node    9m16s   v1.16.8
+10.0.10.3   Ready    node    9m2s    v1.16.8
+```
+
+Of course the details and number of nodes will vary depending on the settings you set when you created the cluster, be warned it may take a few mins for the nodes to be configured after the cluster management is up and running, so if you get a `No resources found.` message try again in a short while.
+
+<details><summary><b>How would I get the config file by hand ?</b></summary>
+
+To check the setup, make sure to have copied your personal kubeconfig file to this location : 
 
   1. Create a directory for the Kubernetes config
   
@@ -138,8 +156,6 @@ NAME        STATUS   ROLES   AGE     VERSION
 ```
 
 If the kubectl command returns `No resources found.` and you have only just created the cluster it may still be initializing the worker nodes (They have to be created, the OS installed and then the Kubernetes software installed before they report ready). Wait a short time and try again until you get the nodes list.
-
-(The details and number of nodes will vary depending on the settings you chose when you created the cluster, it will take a few mins for the nodes to be configured after the cluster management is up and running)
   
 Your Kubernetes config file is now downloaded into the `.kube/config` file. It's stored as a context and in situations where you have multiple kubernetes clusters it's possible to use the name of the context to target a kubectl command at a specific cluster.
 
@@ -174,6 +190,8 @@ CURRENT   NAME   CLUSTER               AUTHINFO           NAMESPACE
 ```
   
 Now whenever we run a kubectl command if we did need to specify the cluster we could just use `--context=one` to specify the context and thus kubernetes cluster to target the command to (if you are frequenelt switchign between clusters this is good practice as it will be clear to you which cluster you are working on). Fortunately for us by the most recent context added to the kubectl config file is used as a default, so in the vast majority of steps in this lab you don't need to specify the context at all - we've only made the changes here to make things easier in case you decide to do some of the lab steps where multiple clusters are needed.
+
+</details>
 
 
 ## Task 3: Basic cluster infrastructure services install

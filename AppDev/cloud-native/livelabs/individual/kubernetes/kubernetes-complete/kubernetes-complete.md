@@ -57,20 +57,23 @@ Depending on what optional modules you do you may also explore the use of Promet
 
 ![](../../../images/kubernetes-labs-what-will-be-built-incl-optional.png)
 
-## Setup your tenancy
+## Setup your core tenancy using scripts
 
-You need to perform some initial steps to setup your tenancy so it's in the state expected by the various scripts and Docker images you will be using, for example you need to setup an Autonomous Data Processing database. Follow the instructions in the "Tenancy Setup for Kubernetes Labs" on the menu.
+This module takes you through the process of using the scripts we have provided to gather data, create compartments,and a database used by the microservices running in Kubernetes. If you have already created these in a previous lab you can skip this module
 
-## Create your Kubernetes cluster
+Please follow the tasks in the **Setup your core tenancy using scripts** section (click the name in the labs index)
 
-You will of course need a cluster to work with. Follow the instructions in this module to do that.
+## Setup the Kubernetes environment using scripts
 
-## Cloud shell and setup
+This module takes you through the process of using the scripts we have provided to create a Kubernetes cluster. If you have already created this in a previous lab you can skip this module
 
-You will be using the OCI Cloud Shell to execute commands and scripts during these labs. 
+Please follow the tasks in the **Setup your kubernetes environment using scripts** section (click the name in the labs index)
 
-You need to follow the cloud shell setup instructions to download the scripts and template files into the cloud shell before you continue with the labs.
+## Setup your container images using scripts
 
+This module takes you through the process of using the scripts we have provided to build the container images you will be using in your Kubernetes cluster and to push them into the Oracle Container Image Registry (OCIR) If you have already created these in a previous lab you can skip this module
+
+Please follow the tasks in the **Setup your container images using scripts** section (click the name in the labs index)
 
 ## Basic Kubernetes - Setting up your cluster and running your services
 

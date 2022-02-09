@@ -10,9 +10,14 @@ In this deployment section we will create a deployment pipeline which will deplo
 
 <details><summary><b>Why are we not using the deployment pipelines to deploy the entire services stack ?</b></summary>
 
-There are a few reasons, firstly there are several elements to the already existing deployment (for example the database wallet secrets) which are unique to each user and are potentially shared across services. While we absolutely could setup vault secrets with each of files in the database wallet and then setup a config map that of course would result in the vault secrets being tied to the deployment (and having to maintain and update them as the database access credentials changed over time)
+There are a few reasons which relate that we are working in a lab that is composed of multiple modules. 
+
+Firstly there are several elements to the already existing deployment (for example the database wallet secrets) which are unique to each user and are potentially shared across services. While we absolutely could setup vault secrets with each of files in the database wallet and then setup a config map that of course would result in the vault secrets being tied to the deployment (and having to maintain and update them as the database access credentials changed over time)
+
 The next reason is that the configuration information may well need to be updated independently of deploying new versions of the code, for example configuring destinations for tracing.
+
 Another reason specifically to do with the database is that with the Oracle Service Operator for Kubernetes you would dynamically retrieve the database configuration, and thus there would be no need to bring it in as part of each individual deployment, admittedly the service operator manifest used to identify the database could be part of a deployment.
+
 However for this lab the main reason is that this lab is part of a larger set of interconnected labs, and in those we show how to install the database credentials as a Kubernetes secret, and I need to maintain consistency between the labs.
 
 ---
@@ -56,11 +61,11 @@ Before we can create a deployment pipeline we need to create a target for the de
  
  ![](images/devops-environments-create-environment-button.png)
  
- 4. Select **Oracle Kubernetes Engine**, Name this `<YOUR INITIALS`_OKE in my case that's going to be `TG_OKE` but of course you probably have different initials than I do, so remember to use yours! If you like add a description of your choice. Click **Next** at the bottom of the form to progress to the next page.
+ 4. Select **Oracle Kubernetes Engine**, Name this `<YOUR INITIALS>`_OKE in my case that's going to be `TG_OKE` but of course you probably have different initials than I do, so remember to use yours! If you like add a description of your choice. Click **Next** at the bottom of the form to progress to the next page.
  
  ![](images/devops-environment-create-env-part-1.png)
   
- 5. On the **Environment details** page select the region your OKE cluster is in, this is probably the region you're already using and it may already have been selected as the default, Check that the **Compartment** is the compartment you are using for the OKE cluster - this should be the same as the one you're using for this lab, Click `Select a cluster` in the **Cluster**  field and chose your OKE cluster, remember that in some labs there may be multiuple people using the same environment, so be sure to double check it's your cluster, not someone elses. Click **Create environment** at the bottom of the page, after a short while you will be taken to the page for this environment.
+ 5. On the **Environment details** page select the region your OKE cluster is in, this is probably the region you're already using and it may already have been selected as the default, Check that the **Compartment** is the compartment you are using for the OKE cluster - this should be the same as the one you're using for this lab, Click `Select a cluster` in the **Cluster**  field and chose your OKE cluster, remember that in some labs there may be multiple people using the same environment, so be sure to double check it's your cluster, not someone elses. Click **Create environment** at the bottom of the page, after a short while you will be taken to the page for this environment.
  
  ![](images/devops-environment-create-env-part-2.png)
  
@@ -189,7 +194,9 @@ ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>      
 <details><summary><b>Why do we need the IP address ?</b></summary>
 
 Normally a DNS name would not include an IP address, but setting up a DNS entry requires several steps, many of which take time, and then setting up a security certificate using it can take longer, especially if you need to prove that you have the authority from your organization do get certificates in their name. 
-Because of this in the OKE labs we use a DNS service called nip.io This is basically a special DNS server that doesn't hold any IP to DNS mappings at all, what it does do is look for an IP address in the DNS name it's asked to resolve, and it then returns that as if it were a real DNS mapping. For example if asked to resolve a DNS name of `myservice.123.456.789.123.nip.io` you will have `123.456.789.123` returned for the IP address. 
+
+Because of this in the OKE labs we use a DNS service called nip.io This is basically a special DNS server that doesn't hold any IP to DNS mappings at all, what it does do is look for an IP address in the DNS name it's asked to resolve, and it then returns that as if it were a real DNS mapping. For example if asked to resolve a DNS name of `myservice.123.456.789.123.nip.io` you will have `123.456.789.123` returned for the IP address.
+ 
 Doing this does however mean that you do need to include the IP address in the DNS name. As an ingress rule uses DNS names to determine which security certificate to use for the incoming connection, and what hostnames to use when determining where to send an incoming request that of course means that we will need to update the artifact containing the ingress rule (`StorefrontIngressRuleYAML` in this case) with the IP address
 
 ---

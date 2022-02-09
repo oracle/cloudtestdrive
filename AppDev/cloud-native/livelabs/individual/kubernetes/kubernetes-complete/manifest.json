@@ -11,16 +11,16 @@
           "filename":"https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/cloud-login/pre-register-free-tier-account.md"
         },
         {
-          "title": "Tenancy Setup for the Kubernetes Labs",
-          "filename":"../../../../manual-setup/kubernetes-setup.md"
+          "title": "Setup your core tenancy using scripts",
+          "filename":"../../../scripted-setup/script-driven-oci-setup-core-environment.md"
         },
         {
-          "title": "Create your Kubernetes cluster",
-          "filename":"../../../../manual-setup/create-kubernetes-cluster.md"
+          "title": "Setup your kubernetes cluster using scripts",
+          "filename":"../../../scripted-setup/script-driven-oci-setup-kubernetes-environment.md"
         },
         {
-          "title": "Cloud Shell Setup for the Kubernetes Labs",
-          "filename":"../../../../kubernetes/setup/cloud-shell-setup.md"
+          "title": "Setup your container images using scripts",
+          "filename":"../../../scripted-setup/script-driven-oci-setup-container-images.md"
         },
         {
           "title": "Part 1: Setting up the cluster and getting your services running in Kubernetes",

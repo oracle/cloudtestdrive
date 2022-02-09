@@ -37,17 +37,32 @@ If you are in an instructor led lab then clearly just ask your instructor, if yo
 
 You will need to sign up for the OCI free trial. For this lab on 2nd December 2021 **only** please use [this free tier sign-up link](https://bit.ly/free_tier_2dec)
 
-## Setup your tenancy using scripts
+## Setup your core tenancy using scripts
 
-This module takes you through the process of using the scripts we have provided to create compartments, dKubernrtes clusters, and a database used by the microservices running in Kubernetes. If you have already created these in a previous lab you can skip this module
+This module takes you through the process of using the scripts we have provided to gather data, create compartments,and a database used by the microservices running in Kubernetes. If you have already created these in a previous lab you can skip this module
 
-Please follow the tasks in the **Setup your tenancy using scripts** section (click the name in the labs index)
+Please follow the tasks in the **Setup your core tenancy using scripts** section (click the name in the labs index)
 
 ## Setup the Kubernetes environment using scripts
 
-To get the microservices we will beu using running in Kubernetes there are a number of tasks, to make it easier and allow for a Dev Ops focused lab we have created a script that will automatically go through the steps in the main Kubernetes lab. If you already have the storefront and stockmanager microservices running in Kubernetes you can skip this module.
+This module takes you through the process of using the scripts we have provided to create a Kubernetes cluster. If you have already created this in a previous lab you can skip this module
 
-Please follow **Setup the Kubernetes environment using scripts** section. When you've completed them click the `back` button on your browser to return to this page.
+Please follow the tasks in the **Setup your kubernetes environment using scripts** section (click the name in the labs index)
+
+## Setup your container images using scripts
+
+This module takes you through the process of using the scripts we have provided to build the container images you will be using in your Kubernetes c luster and to push them into the Oracle Container Image Registry (OCIR) If you have already created these in a previous lab you can skip this module
+
+Please follow the tasks in the **Setup your container images using scripts** section (click the name in the labs index)
+
+
+## Installing the initial Kubernetes services using scripts
+
+To get the microservices we will be using running in Kubernetes there are a number of tasks, to make it easier and allow for a Dev Ops focused lab we have created a script that will automatically go through the steps in the main Kubernetes lab. If you already have the storefront and stockmanager microservices running in Kubernetes you can skip this module.
+
+Note that if the Kubernetes cluster has not finished being created you can proceed to a subsequent module, then return to this one later (as long as you complete it before you start the deployments process it's fine)
+
+Please follow **Installing the initial Kubernetes services using scripts** section.
 
 ## Devops setup - introduction
 

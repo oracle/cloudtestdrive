@@ -1,5 +1,5 @@
 {
-  "workshoptitle": "Using Oracle DevOps CI/CD pipelines to deploy to Oracle Kubernrtes Environment",
+  "workshoptitle": "Using Oracle DevOps CI/CD pipelines to deploy to Oracle Kubernetes Environment",
   "help": "livelabs-help-oci_us@oracle.com",
 	"tutorials": [
         {
@@ -7,8 +7,16 @@
           "filename":"devops-into-oke.md"
         },
         {
-          "title": "Setup your tenancy using scripts",
-          "filename":"../../../scripted-setup/script-driven-oci-setup.md"
+          "title": "Setup your core tenancy using scripts",
+          "filename":"../../../scripted-setup/script-driven-oci-setup-core-environment.md"
+        },
+        {
+          "title": "Setup your kubernetes environment using scripts",
+          "filename":"../../../scripted-setup/script-driven-oci-setup-kubernetes-environment.md"
+        },
+        {
+          "title": "Setup your container images using scripts",
+          "filename":"../../../scripted-setup/script-driven-oci-setup-container-images.md"
         },
         {
           "title": "Devops setup - introduction ",
@@ -27,7 +35,7 @@
           "filename": "../../../dev-ops/general/environment-setup/security-setup.md"
         },
         {
-          "title": "Setup the Kubernetes environment using scripts",
+          "title": "Installing the Kubernetes services using scripts",
           "filename":"../../../scripted-setup/installing-basic-kubernetes-lab-services.md"
         },
 		{

@@ -60,15 +60,13 @@ We're now going to add a build stage. A build stage runs in it's build runner (e
   
   ![](images/build-pipeline-pipeline-add-build-stage-part-1.png)
 
-  4. Name the stage `BuildStorefront`, Enter a description if you like, Leave the **Base container image** unchanged, Leave the **Build Spec File Path** blank
+  4. Name the stage `BuildStorefront`, Enter a description if you like, Leave the **Base container image** unchanged, set the **Build Spec File Path** blank
   
   ![](images/build-pipeline-pipeline-add-build-stage-part-2-part-1.png)
 
 <details><summary><b>I don't want the build_spec.yaml in the repo root ?</b></summary>
 
-You can specify the location as the build_spec.yaml if it is not in the root of the project (though at the time of writing that seemed not to work consistently). The devops build system assigns the variable ${OCI_PRIMARY_SOURCE_DIR} to the location in the build runner where the primary git repo is placed during it's setup so for the cloudnative-helidon-storefront you could set the build spec as `${OCI_PRIMARY_SOURCE_DIR}/helidon-storefront-full/yaml/build/build_spec.yaml` if you wanted to use that version of the file.
-
-Note for a full list of the variables setup by the build pipeline infrastructure see the **Build Specification Parameters** section in the [build pipeline documentation](https://docs.oracle.com/en-us/iaas/Content/devops/using/build_specs.htm)
+You can specify the location as the build_spec.yaml if it is not in the root of the project to relative location in the primary repo, so for the cloudnative-helidon-storefront you could set the build spec as `helidon-storefront-full/yaml/build/build_spec.yaml` if you wanted to use that version of the file (but don't do that in this lab !)
 
 ---
 </details>
@@ -94,7 +92,7 @@ For this lab we are only using a single git repo which contains all of the code 
 
 <details><summary><b>Can I optimize my build with parallel stages ?</b></summary>
 
-For this lab we're only going to create a simple linear pipeline, but if appropriate you can have parallel stages, perhaps you are building multiple library files first which can all be build independently, then combining them all in a last deploy stage and linking the intermediate artifacts with outputArtifact / inputArtifact entries in their build specs.
+For this lab we're only going to create a simple linear pipeline, but if appropriate you can have parallel stages, perhaps you are building multiple library files first which can all be built independently, then combining them all in a last deploy stage and linking the intermediate artifacts with outputArtifact / inputArtifact entries in their build specs.
 
 ---
 </details>
@@ -112,7 +110,7 @@ Let's see this in action,
   ![](images/build-pipeline-manual-run-start-button.png)
 
 
-  A window will appear, you can change the Build run name it you needed to, but for now just leave it with the current value. The parameters box should be empty, as for this part of the lab we have not defined any parameters (we will look into this in a little bit) We only using using variables which get their values from inside the build pipeline, from the vault secrets (e.g. OCIR_HOST_VAULT), are determined inside the build stage (e.g. STOREFRONT_VERSION), or are set for us by the build pipeline infrastructure itself (e.g. OCI_PRIMARY_SOURCE_DIR)
+  A window will appear, you can change the Build run name it you needed to, but for now just leave it with the current value. The parameters box should be empty, as for this part of the lab we have not defined any parameters (we will look into this in a little bit) We only using using variables which get their values from inside the build pipeline, from the vault secrets (e.g. `OCIR_HOST_VAULT`), are determined inside the build stage (e.g. `STOREFRONT_VERSION`), or are set for us by the build pipeline infrastructure itself (e.g. `OCI_PRIMARY_SOURCE_DIR`)
 
   2. Click the **Start Manual Run** button on the lower left to start the build process.
   
