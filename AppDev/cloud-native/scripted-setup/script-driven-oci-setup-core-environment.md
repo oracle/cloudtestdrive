@@ -97,7 +97,7 @@ Note that the precise details will vary as the lab is updated over time.
 
 Please go to **Task 2** Do not continue with anything else in task 1
 
-### Task 1b: Updating the scripts
+### Task 1b: Updating previously downloaded scripts
 
 We will use git to update the scripts
 
@@ -148,7 +148,7 @@ Please continue with **Task 2**
 
 The `step` command is used to create a root certificate, you will need this for secure connections
 
-If you have already downloaded `step` as part of a previous lab and have setup a root certificate then you can move on to Task 3
+If you have already downloaded `step` as part of a previous lab and have setup a root certificate then you can move on to **Task 3**, do not continue with any other steps in task 2
 
 If you do not know if you have downloaded `step` then you can check
 
@@ -169,7 +169,7 @@ step
 ```
 
 
-If you get output like this then you need to download `step` and create the root certificate, follow the process in **Task 2b**
+If you get output like this then you need to download `step` and create the root certificate, follow the process in **Task 2b**, do not follof the steps in task 2a
 
 ```
 ls: cannot access /home/tim_graves/key: No such file or directory
@@ -377,10 +377,14 @@ Do you want to use tgdb as the name of the database to create or re-use in CTDOK
   11. The script will create the database 
    
   ```
-  OK, going to use tgdb as the database name
+OK, going to use tgdb as the database name
 Checking for database tgdb in compartment CTDOKE
-Database named tgdb doesn't exist, creating it, there may be a short delay
-The generated database admin password is 2005758405_SeCrEt Please ensure that you save this information in case you need it later
+Database named tgdb doesn't exist, creating it, there may be a few minutes delay
+Action completed. Waiting until the resource has entered state: ('AVAILABLE',)
+Database creation started
+The generated database admin password is 19342873846_SeCrEt Please ensure that you save this information in case you need it later
+Downloading DB Wallet file
+There may be a delay of several minutes while the database completes its creation process, dont worry.
   
   ```
   
@@ -442,4 +446,4 @@ The database admin password is 2005758405_SeCrEt Please ensure that you save thi
 ## Acknowledgements
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
-* **Last Updated By** - Tim Graves, January 2022
+* **Last Updated By** - Tim Graves, February 2022

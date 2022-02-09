@@ -8,7 +8,7 @@ If you have already created the container images in a previous Kubernetes lab an
 
 ## Task 1: Downloading the latest scripts
 
-There are a number of scripts that we have created for this lab to make life easier, if you have previously downloaded those recently then you should ensure you have the latest version, if you haven't downloaded them then you will need to do so.
+There are a number of scripts that we have created for this lab to make life easier, if you have previously downloaded those recently (in the last few hours) then you can skip this Task and go to task 2. If you downloaded them longer ago then you should ensure you have the latest version, if you haven't downloaded them then you will need to do so.
 
 If you have recently downloaded the scripts then please jump to **Task 2**
 
@@ -156,7 +156,7 @@ Save the auth token ?
 
   4. The script will create a auth token for you automatically if you don't have one, if you do it will let you chose between creating a new one (if possible) or selecting an existing one. In the example above it created a new one.
   
-  5. You are asked if you want to save the auth token, If you are running in a free trial account I would recommend doing so by entering `y` at the prompt, however in a non trial tenancy you should not save it. **IMPORTANT** this is the only time you will see the value of the auth token, unless you chose to save it you **MUST** be sure to save the value somewhere save as you will need to provide it later on.
+  5. You are asked if you want to save the auth token, If you are running in a free trial account I would recommend doing so by entering `y` at the prompt, however in a non trial tenancy you should not save it. **IMPORTANT** this is the only time you will see the value of the auth token, unless you chose to save it you **MUST** be sure to save the value somewhere save as you will need to provide it later on, and you cannot get this value again later.
   
   In this case I chose to save it.
   
@@ -202,4 +202,4 @@ Login Succeeded
 ## Acknowledgements
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
-* **Last Updated By** - Tim Graves, January 2022
+* **Last Updated By** - Tim Graves, February 2022

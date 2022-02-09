@@ -10,9 +10,9 @@ If you have already created a kubernetes cluster in a previous lab and not delet
 
 ## Task 1: Downloading the latest scripts
 
-There are a number of scripts that we have created for this lab to make life easier, if you have previously downloaded those recently then you should ensure you have the latest version, if you haven't downloaded them then you will need to do so.
+There are a number of scripts that we have created for this lab to make life easier, if you have previously downloaded those recently (in the last few hours) then you can skip this Task and go to task 2. If you downloaded them longer ago then you should ensure you have the latest version, if you haven't downloaded them then you will need to do so.
 
-If you have recently downloaded the scripts then please jump to **Task 2**
+If you have recently downloaded the scripts then please jump to **Task 2**, and skip the remainder of task 1.
 
 If you are not sure if you have downloaded the latest version then you can check
 
@@ -129,15 +129,24 @@ This script will do some data gathering and then if a new cluster is required wi
   If you have just created the compartment get a message "Authorization failed or requested resource not found" and that "The provided COMPARTMENT_OCID or ocid1.co....oycu3a cant be located" then please wait a short while for the compartment information to propagate and try running the script again. 
 
 ```
+Using default context name of one
 Loading existing settings information
-No reuse information for OKE
+No reuse information for OKE context one
+Using context name of one
 Operating in compartment CTDOKE
 Do you want to use tglab as the name of the Kubernetes cluster to create or re-use in CTDOKE?
 ```
   3. If you already have an existing cluster in this compartment with a different name you want to reuse, or you just want a different name then type `n` and when prompted enter the name for the cluster to create or reuse. If you do not have an existing cluster to reuse and are happy with the proposed name type `y`
   
   ```
-Checking for cluster tglab
+OK, going to use tglab as the Kubernetes cluster name
+Checking for active cluster named tglab
+Checking for VCN availability
+You asked for 1 of resource vcn-count in service vcn in region congratulations 50 are available
+You have enough Virtual CLoud Networks to create the OKE cluster
+Checking for E4 or E3 processor core availability for Kubernetes workers
+You asked for 3 of resource standard-e4-core-count in service compute in availability domain gKLQ:ME-DUBAI-1-AD-1, congratulations 100 are available
+You asked for 3 of resource standard-e3-core-ad-count in service compute in availability domain gKLQ:ME-DUBAI-1-AD-1, congratulations 100 are available
 Creating cluster tglab
 Downloading terraform
 Cloning into 'terraform-oci-oke'...
@@ -280,4 +289,4 @@ Thus we need to enable access to the Kubernetes management API endpoint from any
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
 * **Kubernetes Terraform Script author** Ali Mukadam
-* **Last Updated By** - Tim Graves, January 2022
+* **Last Updated By** - Tim Graves, February 2022
