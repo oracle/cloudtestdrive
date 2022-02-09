@@ -322,7 +322,8 @@ You are a federated user, your user name is oracleidentitycloudservice/tim.grave
 <details><summary><b>Only read if you are not in a free trial or are sharing it !</b></summary>
 
   You should chose the tenancy root unless you are in a shared trial or a commercial tenancy and you explicitly understand you need to work somewhere other than the tenancy root. If you really want to create or reuse a compartment somewhere other than the tenancy root enter `n` and follow the instructions that will be displayed.
-<details>
+  
+</details>
   
   ```
   Loading existing settings
@@ -341,7 +342,7 @@ Unless you are in a shared free trial or are in a commercial tenancy you can use
   
 If you have chosen a different compartment as the parent (by setting COMPARTMENT_PARENT_OCID in $HOME/hk8sLabsSettings that will be displayed instead of `Tennancy root`. 
   
-<details>
+</details>
   
   ```
   We are going to create or if it already exists reuse use a compartment called CTDOKE in Tenancy root, if you want you can change the compartment name from CTDOKE - this is not recommended and you will need to remember to use a different name in the lab.
@@ -361,7 +362,7 @@ It may take a short while before new compartment has propogated and the web UI r
 
  10. If you are in a trial tenancy you will be creating a new database so enter `y` 
   
-<details><summary><b>Only read if you are not in a free trial and hand an existing database</b></summary>
+<details><summary><b>Only read if you are not in a free trial and have an existing database</b></summary>
  
 If you have an existing database in this compartment, perhaps created doing another lab which used a different database then please enter `n` and when prompted enter that name - you will need to know the ADMIN password for that database and will be prompted for it.
 
