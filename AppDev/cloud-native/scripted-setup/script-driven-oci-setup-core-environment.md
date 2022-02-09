@@ -317,7 +317,7 @@ You are a federated user, getting information
 You are a federated user, your user name is oracleidentitycloudservice/tim.graves@oracle.com, saved details
 ```
 
-  6. The script next creates a compartment to work in, you will be asked if you want to change from the default of the tenancy root, if you are in a free trial then enter `n` 
+  6. The script next creates a compartment to work in, you will be asked if you want to use the tenancy root as the parent, if you are in a free trial then enter `y` 
   
 <details><summary><b>Only read if you are not in a free trial or are sharing it !</b></summary>
 
