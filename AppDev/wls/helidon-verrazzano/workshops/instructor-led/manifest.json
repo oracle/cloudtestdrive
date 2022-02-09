@@ -1,0 +1,44 @@
+{
+    "workshoptitle": "Helidon and Verrazzano Fundamentals",
+    "help": "livelabs-help-weblogic_us@oracle.com",
+    "tutorials": [
+        {
+            "title": "Introduction",
+            "filename": "../intro/intro.md"
+        },
+        {
+            "title": "Getting Started",
+            "description": "Prerequisites",
+            "filename": "https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/cloud-login/pre-register-free-tier-account.md"
+        },
+        {
+            "title": "Lab 1: Set up an Oracle Kubernetes Engine instance on the Oracle Cloud Infrastructure",
+            "filename": "../setup-oke-ocishell/setup-oke-ocishell.md"
+        },
+        {
+            "title": "Lab 2: Develop Helidon Application",
+            "filename": "../develop-application/develop-application.md"
+        },
+        {
+            "title": "Lab 3: Install Verrazzano",
+            "filename": "../install-verrazzano/install-verrazzano.md"
+        },
+        {
+            "title": "Lab 4: Push Helidon Application Image to Oracle Cloud Container Registry",
+            "filename": "../build-and-push-app-image/build-and-push-app-image.md"
+        },
+        {
+            "title": "Lab 5: Deploy Helidon Application on Verrazzano",
+            "filename": "../deploy-app-on-verrazzano/deploy-app-on-verrazzano.md"
+        },
+		    {
+            "title": "Lab 6: Use Verrazzano to Access and Monitor the Application",
+            "filename": "../access-verrazzano/access-verrazzano.md"
+        },
+        {
+          "title": "Need Help?",
+          "description": "Solutions to Common Problems and Directions for Receiving Live Help",
+          "filename":"https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/need-help/need-help-freetier.md"
+        }
+   ]
+}

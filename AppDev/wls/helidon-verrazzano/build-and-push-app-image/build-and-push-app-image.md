@@ -50,17 +50,28 @@ Refer to the table documented at this URL [https://docs.oracle.com/en-us/iaas/Co
 
 >Now you have both the tenancy namespace and endpoint for your region.
 
-4. Copy the following command and paste it in your text editor. Then replace the `ENDPOINT_OF_YOUR_REGION` with the endpoint of your region name and `NAMESPACE_OF_YOUR_TENANCY` with your tenancy's namespace.
+Attention, the **endpoint** is only the characters, **not** the URL! For example for Frankfurt, the endpoint is **fra.ocir.io**
+
+4. Make sure you are still in the **quickstart-mp** directory before executing the docker command
+
+   ```
+   cd ~/quickstart-mp/
+   ```
+
+   
+
+5. Copy the following command and paste it in your text editor. Then replace the `ENDPOINT_OF_YOUR_REGION` with the endpoint of your region name,
+   `NAMESPACE_OF_YOUR_TENANCY` with your tenancy's namespace, 
+   and `YOUR_INITIALS` with your initials - the repository is shared between all people on the tenancy!
 
 ```bash
-<copy>docker build -t ENDPOINT_OF_YOUR_REGION/NAMESPACE_OF_YOUR_TENANCY/quickstart-mp:1.0 .</copy>
+<copy>docker build -t ENDPOINT_OF_YOUR_REGION/NAMESPACE_OF_YOUR_TENANCY/quickstart-mp-YOUR_INITIALS:1.0 .</copy>
 ```
 When the command is ready then run in the Cloud Shell  from the `~/quickstart-mp/` directory. The build will produce the following result:
 
 ```bash
-$ cd ~/quickstart-mp/
-$ docker build iad.ocir.io/tenancynamespace/quickstart-mp:1.0 .
-> docker pull iad.ocir.io/tenancynamespace/quickstart-mp:1.0
+$ docker build iad.ocir.io/tenancynamespace/quickstart-mp-abc:1.0 .
+> docker pull iad.ocir.io/tenancynamespace/quickstart-mp-abc:1.0
 [+] Building 107.5s (19/19) FINISHED                                                                                                            
  => [internal] load build definition from Dockerfile                                                                                       0.1s
  => => transferring dockerfile: 785B                                                                                                       0.1s
@@ -108,35 +119,31 @@ This creates the Docker image, what you can check in your local repository.
 $ docker images
 
 REPOSITORY                                                                           TAG                               IMAGE ID       CREATED         SIZE
-iad.ocir.io/tenancynamespace/quickstart-mp                                                1.0                               587a079ad854   5 minutes ago   243MB
+iad.ocir.io/tenancynamespace/quickstart-mp-abc                                                1.0                               587a079ad854   5 minutes ago   243MB
 ```
-Copy to your text editor the replaced full image name `ENDPOINT_OF_YOUR_REGION/NAMESPACE_OF_YOUR_TENANCY/quickstart-mp:1.0` because you will need it later.
+Copy to your text editor the replaced full image name `ENDPOINT_OF_YOUR_REGION/NAMESPACE_OF_YOUR_TENANCY/quickstart-mp-YOUR_INITITALS:1.0` because you will need it later.
 
 ## Task 2: Generate an Authentication Token to Login to the Oracle Cloud Container Registry
 
 In this step, we are going to generate an *Authentication Token*, that we will use to log in to the Oracle Cloud Container Registry.
 
-1. In the Console, open the navigation menu and click **Identity and Security**. Under **Identity**, click **Users**.
+1. In the top level search bar, type in your username, and click on the entry in the list that is preceded by **oracleidentitycloudservice**, and is of type **Users** :
 
-![Users](images/1.png)
+   ![image-20220209163234023](images/image-20220209163234023.png)
 
-2. Click on the non federated user name to view the details. (The non federated user name should be your email address -without any prefix- what was used during the trial signup.)
-
-![User](images/14.png)
-
-3. In the User Detail page scroll down and click **Auth Tokens**.
+2. In the User Detail page scroll down and click **Auth Tokens**.
 
 ![Auth tokens](images/2.png)
 
-4. Click **Generate Token**.
+3. Click **Generate Token**.
 
 ![Generate Token](images/3.png)
 
-5. Copy *quickstart-mp* and paste it in the *Description* box and click **Generate Token**.
+4. Copy *quickstart-mp* and paste it in the *Description* box and click **Generate Token**.
 
 ![Token create](images/4.png)
 
-6. Click **Copy** under Generated Token and paste it in the text editor. You cannot copy it later, so make sure you have a copy of this token saved.
+5. Click **Copy** under Generated Token and paste it in the text editor. You cannot copy it later, so make sure you have a copy of this token saved.
 
 ![Generated Token](images/13.png)
 
@@ -155,13 +162,15 @@ In Task 1 of this lab you opened a URL [https://docs.oracle.com/en-us/iaas/Conte
 ```
 
 2. In the previous step, you also determined the tenancy namespace.
-Enter the Username as follows: `NAMESPACE_OF_YOUR_TENANCY`/`YOUR_ORACLE_CLOUD_USERNAME`. <br>
+Enter the Username as follows: `NAMESPACE_OF_YOUR_TENANCY`/oracleidentitycloudservice/`YOUR_ORACLE_CLOUD_USERNAME`. <br>
 * Replace `NAMESPACE_OF_YOUR_TENANCY` with your tenancy's namespace
 * Replace `YOUR_ORACLE_CLOUD_USERNAME` with your Oracle Cloud Account user name and then copy the replaced username from your text editor and paste it in the *Cloud Shell*.
-* For Password, copy and paste the Authentication Token from your text editor (or wherever you saved it.)
+* For Password, copy and paste the **Authentication Token** from your text editor (or wherever you saved it.)
+* Reminder: do **NOT** use your account password, use the **authentication token** you generated, even when the prompt asks for a password !!
+* Reminder bis: replace the string **iac** in the example below with **your region abbreviation** !!
 ```bash
 $ docker login iad.ocir.io
-Username: NAMESPACE_OF_YOUR_TENANCY/YOUR_ORACLE_CLOUD_USERNAME
+Username: NAMESPACE_OF_YOUR_TENANCY/oracleidentitycloudservice/YOUR_ORACLE_CLOUD_USERNAME
 Password:
 Login Succeeded
 ```
@@ -174,23 +183,24 @@ Login Succeeded
 
 ![Repository Create](images/8.png)
 
-5. Select the compartment and enter *quickstart-mp* as the Repository Name, then choose Access as **Public** and click **Create Repository**.
+5. Select the compartment and enter *quickstart-mp*-YOUR_INIALS as the Repository Name, then choose Access as **Public** and click **Create Repository**.
+   This repository is visible tenancy-wide, this is why you need to have a different name from other people running this lab in the same tenancy.
 
 ![Repository Description](images/9.png)
 
-6. After the repository *quickstart-mp* has been created you can verify in the repository list and its settings.
+6. After the repository *quickstart-mp*-YOUR_INITIALS has been created you can verify in the repository list and its settings.
 
 ![Verify Namespace](images/10.png)
 
-7. To push your Docker image into your repository inside the Oracle Cloud Container Registry, copy and paste the following command in your text editor and then replace `ENDPOINT_OF_YOUR_REGION_NAME`/`NAMESPACE_OF_YOUR_TENANCY`/quickstar-mp:1.0 with Docker image full name, which you saved earlier.
+7. To push your Docker image into your repository inside the Oracle Cloud Container Registry, copy and paste the following command in your text editor and then replace `ENDPOINT_OF_YOUR_REGION_NAME`/`NAMESPACE_OF_YOUR_TENANCY`/quickstar-mp-YOUR_INITIALS:1.0 with Docker image full name, which you saved earlier.
 
 ```bash
-<copy>docker push ENDPOINT_OF_YOUR_REGION_NAME/NAMESPACE_OF_YOUR_TENANCY/quickstart-mp:1.0</copy>
+<copy>docker push ENDPOINT_OF_YOUR_REGION_NAME/NAMESPACE_OF_YOUR_TENANCY/quickstart-mp-YOUR_INITIALS:1.0</copy>
 ```
 The result should look like this:
 ```bash
-$ docker push iad.ocir.io/tenancynamespace/quickstart-mp:1.0
-The push refers to repository [iad.ocir.io/tenancynamespace/quickstart-mp]
+$ docker push iad.ocir.io/tenancynamespace/quickstart-mp-abc:1.0
+The push refers to repository [iad.ocir.io/tenancynamespace/quickstart-mp-abc]
 0795b8384c47: Pushed
 131452972f9d: Pushed
 93c53f2e9519: Pushed
@@ -211,4 +221,4 @@ e1434e7d0308: Pushed
 
 * **Author** -  Peter Nagy
 * **Contributors** - Maciej Gruszka, Peter Nagy
-* **Last Updated By/Date** - Peter Nagy, September 2021
+* **Last Updated By/Date** - Jan Leemans, Feb 2022

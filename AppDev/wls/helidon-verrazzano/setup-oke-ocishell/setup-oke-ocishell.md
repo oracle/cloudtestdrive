@@ -27,7 +27,8 @@ You must have an [Oracle Cloud Infrastructure](https://cloud.oracle.com/en_US/cl
 
     ![Hamburger Menu](images/1.png)
 
-2. On the Cluster List dialog, select the Compartment where you are allowed to create a cluster and then click **Create Cluster**.
+2. On the Cluster List dialog, select the **Compartment** where you are allowed to create a cluster and then click **Create Cluster**.
+    You might need to use the small **+** sign to reveal the compartment name you are looking for.
 
     > You must select a compartment that allows you to create a cluster and a repository inside the Oracle Container Registry.
 
@@ -41,8 +42,8 @@ You must have an [Oracle Cloud Infrastructure](https://cloud.oracle.com/en_US/cl
 
 4. Specify the following configuration details on the Cluster Creation dialog (pay attention to the value you place in the **Shape** field):
 
-    * **Name**: The name of the cluster. Accept the default value.
-    * **Compartment**: The name of the compartment. Accept the default value.
+    * **Name**: The name of the cluster.  Add your **initials** to the cluser name, so you can easily locate your cluser, as more people might be creating clusters in the same tenancy.
+    * **Compartment**: The name of the compartment. Use the value provided by your instructors.
     * **Kubernetes Version**: The version of Kubernetes. Select the **v1.19.7** version.
     > **Caution**: *Do not accept the default, highest available version of Kubernetes due to a known Kibana/Elasticsearch issue*.
 
@@ -73,10 +74,10 @@ You must have an [Oracle Cloud Infrastructure](https://cloud.oracle.com/en_US/cl
 
     ![cluster1](images/9.png)
 
-7. To save time don't wait to the Active state, continue with the next Helidon application development lab. Before the Verrazzano installation you will come back to verify and configure the OKE cluster access.
+7. To save time **don't wait for the Active state**, you can continue with the next Helidon application development lab. Before the Verrazzano installation you will come back to verify and configure the OKE cluster access.
 
 ## Acknowledgements
 
 * **Author** -  Ankit Pandey
 * **Contributors** - Maciej Gruszka, Peter Nagy
-* **Last Updated By/Date** - Peter Nagy, September 2021
+* **Last Updated By/Date** - Jan Leemans, Feb-2022

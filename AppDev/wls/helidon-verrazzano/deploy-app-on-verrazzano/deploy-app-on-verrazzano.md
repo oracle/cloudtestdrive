@@ -175,11 +175,11 @@ cd ~
 
 3. Use `i` to change insert mode and modify the image name to reflect your repository path at line 23:
 ```yaml
-image: "END_POINT_OF_YOUR_REGION/NAMESPACE_OF_YOUR_TENANCY/quickstart-mp:1.0"
+image: "END_POINT_OF_YOUR_REGION/NAMESPACE_OF_YOUR_TENANCY/quickstart-mp-YOUR_INITIALS:1.0"
 ```
 For example:
 ```yaml
-image: "ocir.io/tenancynamespace/quickstart-mp:1.0"
+image: "iad.ocir.io/tenancynamespace/quickstart-mp-abc:1.0"
 ```
 4. Use `Esc` the quit insert mode and type `:wq` to save changes and close the editor.
 

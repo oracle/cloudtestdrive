@@ -29,9 +29,7 @@ In this lab, you will:
 
 Verrazzano requires the following:
 
-* A Kubernetes cluster and a compatible `kubectl`.
-* At least 2 CPUs, 100GB disk storage, and 16GB RAM available on the Kubernetes worker nodes. This is sufficient to install the development profile of Verrazzano. Depending on the resource requirements of the applications you deploy, this may or may not be sufficient for deploying your applications.
-* In Lab 1, you created a Kubernetes cluster on the Oracle Cloud Infrastructure. You will use that Kubernetes cluster, *cluster1*, for installing the development profile of Verrazzano.
+* In Lab 1, you created a Kubernetes cluster on the Oracle Cloud Infrastructure. You will use that Kubernetes cluster for installing the development profile of Verrazzano.
 
 ## Task 1: Configure `kubectl` (Kubernetes Cluster CLI)
 
@@ -144,7 +142,16 @@ According to our DNS choice, we can use nip.io (wildcard DNS) or [Oracle OCI DNS
 
 >An ingress controller is something that helps provide access to Docker containers to the outside world (by providing an IP address). The ingress routes the IP address to different clusters.
 
-1. Install using the nip.io DNS Method. Copy the following command and paste it in the *Cloud Shell* to install Verrazzano.
+1. Set the environment variable to dev
+
+    ```bash
+    <copy>VZ_PROFILE=dev
+    </copy>
+    ```
+    
+    
+    
+2. Install using the nip.io DNS Method. Copy the following command and paste it in the *Cloud Shell* to install Verrazzano.
 
     ```bash
     <copy>kubectl apply -f - <<EOF
@@ -160,9 +167,9 @@ According to our DNS choice, we can use nip.io (wildcard DNS) or [Oracle OCI DNS
 
     ![wait for installation to complete](images/13.png)
 
-    > It takes around 15 to 20 minutes to complete the installation. To view the installation logs, go to the next commands.
+    > It takes around 15 to 20 minutes to complete the installation. To view the installation logs, go to the next commands.  WHile the install is running we will continue work on the following lab.
 
-2. To find out how the installation process is going, you can copy and paste the following command in the *Cloud Shell* to monitor the console log.
+3. To find out how the installation process is going, you can copy and paste the following command in the *Cloud Shell* to monitor the console log.
 
     ```bash
     <copy>kubectl logs -f $(kubectl get pod -l job-name=verrazzano-install-my-verrazzano -o jsonpath="{.items[0].metadata.name}")</copy>
@@ -172,7 +179,7 @@ According to our DNS choice, we can use nip.io (wildcard DNS) or [Oracle OCI DNS
 
     ![view logs](images/15.png)
 
-3. Leave the *Cloud Shell* open and let the installation running. Please continue with the next lab.
+4. Leave the *Cloud Shell* open and let the installation running. Please continue with the next lab.
 
 ## Acknowledgements
 
