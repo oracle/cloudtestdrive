@@ -12,7 +12,7 @@
         },
         {
           "title": "Setting up the core OCI environment using scripts",
-          "filename":"../../../../scripted-setup/script-driven-oci-setup-core-environment.md"
+          "filename":"../../../../scripted-setup/helidon-vm-only-script-driven-oci-setup-core-environment.md"
         },
         {
           "title": "Setting up your Development VM core",
