@@ -10,7 +10,9 @@ To speed things up for people who are just starting with this set of labs (or de
 
 If you have done some of the other Helidon and Kubernetes labs connected to the one you are currently doing you will have setup the core OCI environment in those labs and perhaps retained it, as long as you have the following setup you're fine (if all of the following are missing it's easiest to just proceed with running the module below from Task 1.)
 
-Step installed - The `$HOME/keys directory` exists and contains the `step` command and `root.crt` `root.key` files) 
+Step installed - The `$HOME/keys directory` exists and contains the `step` command and `root.crt` `root.key` files).
+
+Note that if you have only done the Helidon VM based labs you will not have installed Step.
 
 <details><summary><b>Step not installed ?</b></summary>
 
