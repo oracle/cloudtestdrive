@@ -1,0 +1,75 @@
+{
+  "workshoptitle": "Doing Monitoring, Logging and Service Meshes with Kubernetes",
+  "help": "livelabs-help-oci_us@oracle.com",
+	"tutorials": [
+        {
+          "title": "Labs introduction",
+          "filename":"kubernetes-monitoriong-logs-linkerd.md"
+        },
+        {
+          "title": "Getting Started",
+          "filename":"https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/cloud-login/pre-register-free-tier-account.md"
+        },
+        {
+          "title": "Setup your core tenancy using scripts",
+          "filename":"../../../scripted-setup/script-driven-oci-setup-core-environment.md"
+        },
+        {
+          "title": "Setup your kubernetes cluster using scripts",
+          "filename":"../../../scripted-setup/script-driven-oci-setup-kubernetes-environment.md"
+        },
+        {
+          "title": "Setup your container images using scripts",
+          "filename":"../../../scripted-setup/script-driven-oci-setup-container-images.md"
+        },
+        {
+          "title": "Installing the Kubernetes services using scripts",
+          "filename":"../../../scripted-setup/installing-basic-kubernetes-lab-services.md"
+        },
+        {
+          "title": "Part 1a: Prometheus for metrics capture",
+          "filename": "../../../kubernetes/monitoring-kubernetes/monitoring-with-prometheus-lab.md"
+        },
+		{
+          "title": "Part 1b: Visualizing metrics with Grafana",
+          "filename": "../../../kubernetes/monitoring-kubernetes/visualizing-with-grafana-lab.md"
+        },
+		{
+          "title": "Part 2a: Capturing log data for processing",
+          "filename": "../../../kubernetes/management/logging/log-capture-for-processing.md"
+        },
+        {
+          "title": "Part 2b: Capturing log data for archive",
+          "filename": "../../../kubernetes/management/logging/log-capture-for-archive.md"
+        },
+		{
+          "title": "Part 3a: Installing the Linkerd service mesh",
+          "filename": "../../../kubernetes/service-mesh/linkerd-install.md"
+        },
+        {
+          "title": "Part 3b: Traffic monitoring with a Linkerd service mesh",
+          "filename": "../../../kubernetes/service-mesh/linkerd-monitoring-traffic-flows.md"
+        },
+		{
+          "title": "Part 3c: Using the Linkerd service mesh for troubleshooting",
+          "filename": "../../../kubernetes/service-mesh/linkerd-using-to-troubleshoot-problems.md"
+        },
+        {
+          "title": "Part 3d: Traffic splits with the Linkerd service mesh (Canary deployments, and chaos engineering)",
+          "filename": "../../../kubernetes/service-mesh/linkerd-exploring-traffic-splits.md"
+        },
+		{
+          "title": "Part 3e: Uninstalling the Linkerd service mesh",
+          "filename": "../../../kubernetes/service-mesh/linkerd-uninstall.md"
+        },
+        {
+          "title": "Further Information on Kubernetes",
+          "filename": "../../../kubernetes/further-information/further-information.md"
+        },
+        {
+          "title": "Need Help?",
+          "description": "Solutions to Common Problems and Directions for Receiving Live Help",
+          "filename": "https://raw.githubusercontent.com/oracle/learning-library/master/oci-library/need-help/need-help-livelabs.md"
+        }
+    ]
+}

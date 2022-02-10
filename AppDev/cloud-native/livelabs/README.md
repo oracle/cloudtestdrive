@@ -38,7 +38,14 @@ These cover multiple subject areas in a single larger lab structure, they includ
 
 [Combined Helidon Docker and Kubernetes lab](https://oracle.github.io/cloudtestdrive/AppDev/cloud-native/livelabs/combined/helidon-docker-kubernetes-complete/index.html?lab=labs-introduction)
 
+
 ## Standalone labs
-These are single modules, often part of the larger labs
+These are single modules, they may depend on elements and modules from the larger labs
+
+### Labs built on selected moduled fromm other labs
+
+[Kubernetes labs optional modules only](https://oracle.github.io/cloudtestdrive/AppDev/cloud-native/livelabs/optional-modules-based/kubernetes-monitoring-logs-linkerd/index.html)
+
+### Self standing labs
 
 [DevOps deploying into OKE](https://oracle.github.io/cloudtestdrive/AppDev/cloud-native/livelabs/standalone/devops-into-oke/index.html?lab=labs-introduction)
