@@ -12,15 +12,15 @@
         },
         {
           "title": "Setting up the core OCI environment using scripts",
-          "filename":"../../../../scripted-setup/script-driven-oci-setup-core-environment.md"
+          "filename":"../../../scripted-setup/script-driven-oci-setup-core-environment.md"
         },
         {
           "title": "Setting up your Development VM core",
-          "filename":"../../../../scripted-setup/helidon-vm-setup.md"
+          "filename":"../../../scripted-setup/helidon-vm-setup.md"
         },
         {
           "title": "Configure your Developer VM for the Helidon Labs",
-          "filename":"../../../../helidon/setup/setup.md"
+          "filename":"../../../helidon/setup/setup.md"
         },
         {
           "title": "Helidon - Part 1: Core Helidon ",
