@@ -4,6 +4,8 @@
 
 This module walks you through the process of setting up the core OCI features needed for all of the related labs.
 
+Note that at some points you will need to say if you are in a `free trial tenancy`. This is referring to the 30 day free trial tenancies that Oracle offers with a few hundred US$ of resources available to you at no cost. In most cases for these labs you will be using a `free trial tenancy`, but it is also possible to run these labs where multiple people are sharing a free trial tenancy, or you are using a commercial (paid for) tenancy to run the labs (this is usually if a dedicated session is being rub for your organization). In that case you may be told to follow slightly different instructions, for example to ensure that you each use a different compartment to separate your work for each other or anything that your company may have already setup.
+
 To speed things up for people who are just starting with this set of labs (or deleted their previously created environment) we have provided some scripts that you can use to set things up quickly, consistently and with less opportunity for mistakes.
 
 <details><summary><b>Already done some of the labs ?</b></summary>
@@ -229,7 +231,7 @@ This has downloaded the latest version of `step` and created the root certificat
 
 This lab uses a number of compute and networking resources, this task checks to see to see if enough resources are available to run the core capabilities (some optional labs have additional requirements and may not be checked).  Generally if there is a resource limitation it's best to find out before starting a lab rather than later !
 
-We do this check in-case lab students may be running multiple activities in their tenancies that have already consumed resources, or in the case of a free trial that has exceeded the 30 day period the resources available are reduced and these labs will not fit into the "always free" capacity. In some situations (e.g. a shared tenancy with lots of people doing a lab) resource availability may change between running this script and creating the resources, but this is a good indicator. If you have already created the resources as part of another lab in this series it will try and correctly handle that.
+We do this check in-case lab students may be running multiple activities in their tenancies that have already consumed resources, or in the case of a free trial tenancy that has exceeded the trial limits the resources available are reduced, and these labs will not fit into the remaining "always free" capacity. In some situations (e.g. a shared tenancy with lots of people doing a lab) resource availability may change between running this script and creating the resources, but this is a good indicator. If you have already created the resources as part of another lab in this series it will try and correctly handle that.
 
   1. If you are not already there open the OCI cloud shall and go to the scripts directory, type
   
@@ -265,7 +267,7 @@ if not based on current resource availability (which if other people are using t
 may of course change before the OKE cluster is created) there are sufficient resources to do this lab
 ```
 
-  In a new free trial where none of this set of labs have been run the output will be **similar** to the above, and in the vast majority of cases all the resources will be available. The output is I hope fairly self explanatory, if there are resource limits that mean the lab cannot be run then they should be reported by the script, and guidance on fixing them provided. If you have previously run related labs and those resources are still in use then the output will report that and not check for unneeded additional resources.
+  In a new free trial tenancy where you are just staring to use it the output will be **similar** to the above, and in the vast majority of cases all the resources will be available. The output is I hope fairly self explanatory, if there are resource limits that mean the lab cannot be run then they should be reported by the script, and guidance on fixing them provided. If you have previously run related labs and those resources are still in use then the output will report that and not check for unneeded additional resources.
   
   Assuming you have the available resources please proceed with Task 4.
   
@@ -273,9 +275,9 @@ may of course change before the OKE cluster is created) there are sufficient res
 
 If you are running in a free trial tenancy allocated to you then follow the process outlined below, so please skip over the expansion.
 
-<details><summary><b>Only read if you are not in a free trial or are sharing it !</b></summary>
+<details><summary><b>Only read if you are not in a free trial tenancy, or are sharing a free trial with other people !</b></summary>
 
-If you are running in a shared or commercial tenancy, or are sharing your free trial then the process below will generally work, however you will want to be sure to say that you are not in a free trial when asked and follow the instructions given to perform the required processes step by step, there is more information on those individual steps [at this location](https://github.com/oracle/cloudtestdrive/blob/master/AppDev/cloud-native/scripted-setup/per-script-instructions-core-environment.md) if you chose to follow them rather than these instructions then when you have completed them skip to Task 4
+If you are running in a shared or commercial tenancy, or are sharing your free trial tenancy with other users then the process below will generally work, however you will want to be sure to say that you are not in a free trial tenancy when asked and follow the instructions given to perform the required processes step by step. There is more information on those individual steps [at this location](https://github.com/oracle/cloudtestdrive/blob/master/AppDev/cloud-native/scripted-setup/per-script-instructions-core-environment.md) if you chose to follow them rather than these instructions then when you have completed them skip to Task 4
 
 ---
 
@@ -291,7 +293,7 @@ There are a number of activities required to configure the core environment, the
   
   - `bash ./core-environment-setup.sh`
   
-  3. When asked if you are in a Free trial enter `y` if you are (if you are not sure then you probably are in a free trial, in a taught class your instructor will make it clear if you are not). If you are not then enter `n` and follow the instructions (possibly also doing this step by step, see the link in the expansion if you need more information n this)
+  3. When asked if you are in a Free trial tenancy enter `y` if you are (if you are not sure then you probably are in a free trial tenancy, in a taught class your instructor will make it clear if you are not). If you are not then enter `n` and follow the instructions (possibly also doing this step by step, see the link in the expansion if you need more information n this)
   
   ```
   This script will run the required commands to setup your core environment
@@ -319,11 +321,11 @@ You are a federated user, getting information
 You are a federated user, your user name is oracleidentitycloudservice/tim.graves@oracle.com, saved details
 ```
 
-  6. The script next creates a compartment to work in, you will be asked if you want to use the tenancy root as the parent, if you are in a free trial then enter `y` 
+  6. The script next creates a compartment to work in, you will be asked if you want to use the tenancy root as the parent, if you are in a free trial tenancy then enter `y` 
   
-<details><summary><b>Only read if you are not in a free trial or are sharing it !</b></summary>
+<details><summary><b>Only read if you are not in a free trial tenancy !</b></summary>
 
-  You should chose the tenancy root unless you are in a shared trial or a commercial tenancy and you explicitly understand you need to work somewhere other than the tenancy root. If you really want to create or reuse a compartment somewhere other than the tenancy root enter `n` and follow the instructions that will be displayed.
+  You should chose the tenancy root unless you are in a commercial tenancy and you explicitly understand you need to work somewhere other than the tenancy root. If you really want to create or reuse a compartment somewhere other than the tenancy root enter `n` and follow the instructions that will be displayed.
   
 </details>
   
@@ -336,11 +338,11 @@ If you want to use somewhere different from Tenancy root as the parent of the co
 Use the Tenancy root (y/n) ?
 ```
 
-  7. You will be asked if you want to use CTDOKE as the compartment name, if you are in a free trial enter `y`
+  7. You will be asked if you want to use CTDOKE as the compartment name, if you are in a free trial tenancy enter `y`
   
-<details><summary><b>Only read if you are not in a free trial</b></summary>
+<details><summary><b>Only read if you are not in a free trial tenancy, or are sharing a free trial with other people !</b></summary>
 
-Unless you are in a shared free trial or are in a commercial tenancy you can use CTDOKE as the compartment name, just enter `y`. If you know you need to use a different compartment (perhaps there are multiple users in the free trial doing the lab, or a commercial tenancy admin has told you to do it elsewhere) then please enter `n` here, and follow the prompts to enter a different name.
+Unless you are in a commercial tenancy or sharing a free trial tenancy with outer users you can use CTDOKE as the compartment name, just enter `y`. If you know you need to use a different compartment (perhaps there are multiple users in the free trial doing the lab, or a commercial tenancy admin has told you to do it elsewhere) then please enter `n` here, and follow the prompts to enter a different name.
   
 If you have chosen a different compartment as the parent (by setting COMPARTMENT_PARENT_OCID in $HOME/hk8sLabsSettings that will be displayed instead of `Tennancy root`. 
   
@@ -362,9 +364,9 @@ It may take a short while before new compartment has propogated and the web UI r
   
  9. The microservices that form the base content of these labs use a database to store their data, so we need to create a database. The  script will create the database in the compartment we just created, then download the connection information (the "Wallet") and use that to connect to the database and create the user used by the labs.
 
- 10. If you are in a trial tenancy you will be creating a new database so enter `y` 
+ 10. If you are in a free trial tenancy you will be creating a new database so enter `y` 
   
-<details><summary><b>Only read if you are not in a free trial and have an existing database</b></summary>
+<details><summary><b>Only read if you have an existing database to re-use</b></summary>
  
 If you have an existing database in this compartment, perhaps created doing another lab which used a different database then please enter `n` and when prompted enter that name - you will need to know the ADMIN password for that database and will be prompted for it.
 
