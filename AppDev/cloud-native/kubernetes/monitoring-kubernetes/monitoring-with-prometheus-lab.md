@@ -161,10 +161,13 @@ secret/web-ingress-auth created
 ## Task 3: Installing Prometheus
 
 
-<details><summary><b>Older versions of Kubernetes than 1.20.8</b></summary>
+<details><summary><b>Older versions of Kubernetes than 1.21.5</b></summary>
 
-We assume you are using Kubernetes 1.20.8 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the 14.4.1 version of the prometheus helm charts were found to work. If you were using an older version of Kubernetes we found the following version combinations to work.
-Kubernetes 1.19.7 Prometheus Helm chart 13.7.0
+We assume you are using Kubernetes 1.21.5 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the 15.2.0 version of the prometheus helm charts were found to work. If you were using an older version of Kubernetes we found the following version combinations to work.
+
+Kubernetes 1.20.8 Prometheus Helm chart 14.4.1 worked for us
+
+Kubernetes 1.19.7 Prometheus Helm chart 13.7.0 worked for us
 
 Kubernetes 1.18.7 Promteheus helm chart 11.12.1 worked for us
 
@@ -181,6 +184,7 @@ To specify a specific older version use the version keyword in your help command
 ---
 
 </details>
+
 Note the name given to the Prometheus server within the cluster, in this case `prometheus-server.monitoring.svc.cluster.local`  and also the alert manager's assigned name, in this case `prometheus-alertmanager.monitoring.svc.cluster.local`
 
 The Helm chart will automatically create a couple of small persistent volumes to hold the data it captures. If you want to see more on the volume in the dashboard (namespace monitoring) look at the Config and storage section / Persistent volume claims section, chose the prometheus-server link to get more details, then to locate the volume in the storage click on the Volume link in the details section) Alternatively in the Workloads / Pods section click on the prometheus server pod and scroll down to see the persistent volumes assigned to it. It will also use the tls-prometheus secret and the password auth we just setup
@@ -428,7 +432,7 @@ replicaset.apps/zipkin-88c48d8b9         1         1         1       8h
 ```
 This script just does a kubectl delete -f on each of the deployments. 
 
-  12. Now recreate the deployments
+  12. Now recreate the deployments using the updated yaml
   
   -  `bash deploy.sh `
 
@@ -522,7 +526,7 @@ If you're on the graph screen you'll probably see a pretty boring graph
 
   ![prometheus-list-stock-empty-console](images/prometheus-list-stock-empty-console.png)
 
-If we look at the data we can see that the retrieved value is 0 (it may be another number, depends on how often you made the call to list the stock in previous labs) of course our graph looks boring, since we setup prometheus we haven't actually done anything)
+If we look at the data we can see that the retrieved value (in the **Value** column on the right) in this case is 0  (it may be another number, depends on how often you made the call to list the stock in previous labs) of course our graph looks boring, since we've just setup Prometheus we haven't actually done anything)
 
 Let's make a few calls to list the stock and see what we get
 
@@ -574,9 +578,9 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
   7. Go back to the Prometheus browser window
   
-  8. Reload the page and make sure you're on the **Console** tab
+  8. Click the **Execute** button to update the query the page and make sure you're on the **Table** tab
 
-We see that our changes have been applied.  Note it may take up to 60 seconds for Prometheus to get round to scraping the metrics form the service, it doesn't do it continuously as that may put a significant load on the services it's monitoring.
+We see that our changes have been applied, herwe we see that there were 9 calls (the **Value** column on the right), but of course the number may vary depending on how many requests you made.  Note it may take up to 60 seconds for Prometheus to get round to scraping the metrics from the service, it doesn't do it continuously as that may put a significant load on the services it's monitoring.
 
 In the console we can see the number of requests we have made
 
@@ -612,7 +616,7 @@ We can see that 50% of the requests are within 0.12 seconds, and 99.9% are withi
 
 It's not possible to show in a static screen grab but in your browser as you move your mouse over the legend the selected data is highlighted, and if you click on a line in the legend only that data is displayed.
 
-Prometheus has a number of mathematical functions we can apply to the graphs it produces, these are perhaps not so much use if there's only a single pod servicing requests, but if there are multiple pods all generating the same statistics (perhaps because of a replica set providing multiple pods to a service for horizontal scaling) then when you gather information such as call rates (the  `application_listAllStockMeter_one_min_rate_per_second` metric) instead of just generating and displaying the data per pod you could also generate data such as `sum(application_listAllStockMeter_one_min_rate_per_second)` which would tell you the total number of requests across ***all*** the pods providing the service.
+Prometheus has a number of mathematical functions we can apply to the graphs it produces, these are perhaps not so much use if there's only a single pod servicing requests, but if there are multiple pods all generating the same statistics (perhaps because of a replica set providing multiple pods to a service for horizontal scaling) then when you gather information such as call rates (the  `application_listAllStockMeter_one_min_rate_per_second` metric) instead of just generating and displaying the data per pod you could also generate data such as `sum(application_listAllStockMeter_one_min_rate_per_second)` which would tell you the total number of requests across ***all*** the pods providing the service (trhis f course assumes that you do have multiple pods).
 
 It's also possible to do things like separate out pods that are being used for testing (say they have a deployment type of test rather than production) or many other parameters. If you want more details there is a link to the Prometheus Query language description in the further-information document
 
