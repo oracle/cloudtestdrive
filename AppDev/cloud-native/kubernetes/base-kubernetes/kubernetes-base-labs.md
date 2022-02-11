@@ -346,7 +346,7 @@ The External IP of the Load Balancer connected to the ingresss controller is sho
 
 </details>
   
-  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set ingress.enabled=true  --set ingress.hosts="{dashboard.kube-system.$EXTERNAL_IP.nip.io}" --version 5.0.0`
+  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set ingress.enabled=true  --set ingress.hosts="{dashboard.kube-system.$EXTERNAL_IP.nip.io}" --version 5.2.0`
   
   ```
 NAME: kubernetes-dashboard
