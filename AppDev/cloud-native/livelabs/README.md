@@ -42,7 +42,7 @@ These cover multiple subject areas in a single larger lab structure, they includ
 ## Standalone labs
 These are single modules, they may depend on elements and modules from the larger labs
 
-### Labs built on selected moduled fromm other labs
+### Labs built on selected modules from other labs
 
 [Kubernetes labs optional modules only](https://oracle.github.io/cloudtestdrive/AppDev/cloud-native/livelabs/optional-modules-based/kubernetes-monitoring-logs-linkerd/index.html)
 
