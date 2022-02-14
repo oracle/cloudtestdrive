@@ -20,40 +20,8 @@ This is one of the optional sets of Kubernetes labs
 
 ### Objectives
 
-This module shows how to install and configure the log capture tool Fluentd, and write data to an elastic search instance where it could be subsequently processed or analyzed (this processing / analysis is not covered in this module)
+This module shows how to install and configure the log capture tool Fluentd, and write data to an elastic search instance where it could be subsequently processed or analyzed (the actual processing / analysis is not covered in this module)
 
-### Prerequisites
-
-You need to complete the **Rolling update** module (last of the core Kubernetes labs modules). You can have done any of the other optional module sets. The **Log capture for archive** module is also optional.
-
-If your cloud shell session is new or has been restarted then the shell variable `$EXTERNAL_IP` may be invalid, expand this section if you think this may be the case to check and reset it if needed.
-
-<details><summary><b>How to check if $EXTERNAL_IP is set, and re-set it if it's not</b></summary>
-
-**To check if `$EXTERNAL_IP` is set**
-
-If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
-
-**To get the external IP address if you no longer have it**
-
-In the OCI Cloud shell type
-
-  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
-  
-  ```
-NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
-ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
-```
-
-The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column.
-
-**To set the variable again**
-
-  - `export EXTERNAL_IP=<External IP>`
-  
----
-
-</details>
 
 ## Task 1: Log capture for processing and analysis
 
@@ -81,6 +49,63 @@ This is good, but with in a distributed architecture a single request may (almos
 ---
 
 </details>
+
+If your cloud shell session is new or has been restarted then the shell variable `$EXTERNAL_IP` may be invalid, expand this section if you think this may be the case to check and reset it if needed.
+
+<details><summary><b>How to check if $EXTERNAL_IP is set, and re-set it if it's not</b></summary>
+
+**To check if `$EXTERNAL_IP` is set**
+
+If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it, there are a couple of ways to do this, expand the appropriate section below.
+  
+<details><summary><b>If you used the automated scripts in the kubernetes-lab directory to setup the microservices in Kubernetes</b></summary>
+
+  - Open the OCI cloud shell 
+
+The automated scripts will create a script file `$HOME/clusterSettings.one` this can be executed using the shell built in `source` to set the EXTERNAL_IP variable for you.
+
+  - `source $HOME/clusterSettings.one`
+  
+```
+EXTERNAL_IP set to 139.185.45.98
+NAMESPACE set to tg
+```
+
+  Of course the actual IP address and namespace will almost certainly be different from the example here !
+  
+---
+
+</details>
+
+<details><summary><b>If you manually setup the Kubernetes ingress services using helm</b></summary>
+
+In this case as you manually set this up you will need to get the information from Kubernetes itself
+
+
+  - Open the OCI cloud shell 
+
+  - You are going to get the value of the `EXTERNAL_IP` for your environment. This is used to identify the DNS name used by an incoming connection. In the OCI cloud shell type
+
+  - `kubectl get services -n ingress-nginx`
+
+```
+NAME                                 TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)                      AGE
+ingress-nginx-controller             LoadBalancer   10.96.182.204   130.162.40.241   80:31834/TCP,443:31118/TCP   2h
+ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>           443/TCP                      2h
+```
+
+  - Look for the `ingress-nginx-controller` line and note the IP address in the `EXTERNAL-IP` column, in this case that's `130.162.40.121` but it's almost certain that the IP address you have will differ. IMPORTANT, be sure to use the IP in the `EXTERNAL-IP` column, ignore anything that looks like an IP address in any other column as those are internal to the OKE cluster and not used externally. 
+
+  - IN the OCI CLoud shell type the following, replacing `<external ip>` with the IP address you retrieved above.
+  
+  - `export EXTERNAL_IP=<external ip>`
+  
+---
+
+</details>
+
+</details>
+
 
 ## Task 2: Setting up Elastic search
 
@@ -159,6 +184,8 @@ secret/web-ingress-auth created
 
 (The above is example output, your files will be based on the IP you provided)
 
+If your output says it's created key files like `tls-search.crt` and does not include the IP address then the `EXTERNAL_IP` variable is not set, please follow the instructions in Task 1 and re-run the step certificate creation command
+
   4. Create the tls secret from the certificate. In the OCI cloud shell type the following., as usual you must replace `<External IP>` with the IP address of the ingress controller
   
   - `kubectl create secret tls tls-search --key tls-search-$EXTERNAL_IP.key --cert tls-search-$EXTERNAL_IP.crt -n logging`
@@ -186,7 +213,7 @@ NOTES:
   $ helm test elasticsearch
 ```
 
-There are a lot of options in this command, this is bacause the elastic search helm stack is written slightly differently from some of the others we've used so far (it doesn't have a single "Set up an ingress" option) so we need to define the ingress host and tls details more precisely. Additionally to protect thge actuall elastic search service we are also specifying the annotations to make the ingress controller ask for a security password.
+There are a lot of options in this command, this is because the elastic search helm stack is written slightly differently from some of the others we've used so far (it doesn't have a single "Set up an ingress" option) so we need to define the ingress host and tls details more precisely. Additionally to protect thge actuall elastic search service we are also specifying the annotations to make the ingress controller ask for a security password.
 
 Let's check on the installation, note that is can take a few mins for the elastic search to be loaded and installed.
 
@@ -474,6 +501,8 @@ Strict-Transport-Security: max-age=15724800; includeSubDomains
 
 [{"itemCount":100,"itemName":"Book"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":500,"itemName":"Pencil"},{"itemCount":5000,"itemName":"Pins"}]
 ```
+
+If you get a DNS error that `store..nip.io` cannot be found this means that `EXTERNAL_IP` is not set, follow the instructions above to set it. Hopefully you did have it set when you installed Elastic !.
 
   6. Do this several times, then look at the log URL again
 

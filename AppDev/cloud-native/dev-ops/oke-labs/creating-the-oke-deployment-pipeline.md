@@ -175,11 +175,36 @@ Integrations types : Run a custom logic through a function allows you to trigger
 
 Now we have our deployment pipeline ready to run, but there are a couple of parameters that we need, specifically `KUBERNETES_NAMESPACE` and `EXTERNAL_IP` Those are very specific to deployments into OKE, and are not set in the build pipeline - We need to set them.
 
-First we are going to gather the information we need, this will come from using the OCI Cloud shell to run some kubectl commands
+  1. 
+First we are going to gather the information we need. There are to possible ways to do this depending on how you setup your microservices in Kubernrtes, please open the expansion section below that matches the approach you took for instructions
+  
+<details><summary><b>If you used the automated scripts in the kubernetes-lab directory to setup the microservices in Kubernetes</b></summary>
 
-Open the OCI Cloud shell if it's not already open, if it's been a while since you previously used it you may need to reconnect.
+  - Open the OCI cloud shell 
 
-  1. You are going to get the value of the `EXTERNAL_IP` for your environment. This is used to identify the DNS name used by an incoming connection. In the OCI cloud shell type
+The automated scripts will create a script file `$HOME/clusterSettings.one` this can be executed using the shell built in `source` to set the EXTERNAL_IP variable for you.
+
+  - `source $HOME/clusterSettings.one`
+  
+```
+EXTERNAL_IP set to 139.185.45.98
+NAMESPACE set to tims
+```
+
+  Of course the actual IP address and namespace will almost certainly be different from the example here !
+  
+---
+
+</details>
+
+<details><summary><b>If you manually setup the Kubernetes namespace and ingress services using helm</b></summary>
+
+In this case as you manually set this up you will need to get the information from Kubernetes itself
+
+
+  - Open the OCI cloud shell 
+
+  - You are going to get the value of the `EXTERNAL_IP` for your environment. This is used to identify the DNS name used by an incoming connection. In the OCI cloud shell type
 
   - `kubectl get services -n ingress-nginx`
 
@@ -189,24 +214,15 @@ ingress-nginx-controller             LoadBalancer   10.96.182.204   130.162.40.2
 ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>           443/TCP                      2h
 ```
 
-  2. Look for the `ingress-nginx-controller` line and note the IP address in the `EXTERNAL-IP` column, in this case that's `130.162.40.121` but it's almost certain that the IP address you have will differ. IMPORTANT, be sure to use the IP in the `EXTERNAL-IP` column, ignore anything that looks like an IP address in any other column as those are internal to the OKE cluster and not used externally. Please save this IP address in a note pad or similar as we will be using this in several times in the remainder of the lab.
+  - Look for the `ingress-nginx-controller` line and note the IP address in the `EXTERNAL-IP` column, in this case that's `130.162.40.121` but it's almost certain that the IP address you have will differ. IMPORTANT, be sure to use the IP in the `EXTERNAL-IP` column, ignore anything that looks like an IP address in any other column as those are internal to the OKE cluster and not used externally. 
 
-<details><summary><b>Why do we need the IP address ?</b></summary>
+  - IN the OCI CLoud shell type the following, replacing `<external ip>` with the IP address you retrieved above.
+  
+  - `export EXTERNAL_IP=<external ip>`
+  
+  Now we are going to get the namespace used by your current deployments, as we are going to be replacing an existing deployment it's critical that we get this correct. When you did the original Kubernetes lab, you specified this when you created the namespace.
 
-Normally a DNS name would not include an IP address, but setting up a DNS entry requires several steps, many of which take time, and then setting up a security certificate using it can take longer, especially if you need to prove that you have the authority from your organization do get certificates in their name. 
-
-Because of this in the OKE labs we use a DNS service called nip.io This is basically a special DNS server that doesn't hold any IP to DNS mappings at all, what it does do is look for an IP address in the DNS name it's asked to resolve, and it then returns that as if it were a real DNS mapping. For example if asked to resolve a DNS name of `myservice.123.456.789.123.nip.io` you will have `123.456.789.123` returned for the IP address.
- 
-Doing this does however mean that you do need to include the IP address in the DNS name. As an ingress rule uses DNS names to determine which security certificate to use for the incoming connection, and what hostnames to use when determining where to send an incoming request that of course means that we will need to update the artifact containing the ingress rule (`StorefrontIngressRuleYAML` in this case) with the IP address
-
----
-</details>
-
-Now we are going to get the namespace used by your current deployments, as we are going to be replacing an existing deployment it's critical that we get this correct.
-
-When you did the original Kubernetes lab, or if you used a scripted setup you specified this. To remind you of the options and to confirm your memory we will look at all of the namespaces.
-
-  3. List all of the Kubernetes namespaces. In the OCI Cloud Shell type
+  - List all of the Kubernetes namespaces so identify the one you created. In the OCI Cloud Shell type
 
   - `kubectl get namespaces`
 
@@ -221,20 +237,36 @@ tims              Active   13d
 ```
 
 In this case the namespace I created is `tims`. If you are in doubt as to which namespace in the list relates to you please ignore any namespace starting with `kube`, `ingress`, and `default`. If you have done the Kubernetes lab and completed the other optional modules you may also have namespaces for `logging`, `monitoring` or starting with `linkerd` ignore those as well.
+  
+</details>
+
+
 
 Now we have the values for our parameters we will go and set them in the Deployment pipeline. We're doing this really to show that the deploy pipeline supports parameters, we could have set them on the build pipeline.
 
-  4. In the Deploy pipeline editor page click the `Parameters` tab to access the parameters form.
+  2. In the Deploy pipeline editor page click the `Parameters` tab to access the parameters form.
   
   ![](images/deploy-pipelines-access-parameters-tab.png)
 
-  5. First we will define the `EXTERNAL_IP` parameter, In the **Name** field enter `EXTERNAL_IP` In the **Default Value** field enter the IP address for the ingress-controller you retrieved above. In the **description** field enter `Ingress controller external IP` (For some reason in this case you have to specify a description). Click the **+** button to save this paramter
+  3. First we will define the `EXTERNAL_IP` parameter, In the **Name** field enter `EXTERNAL_IP` In the **Default Value** field enter the IP address for the ingress-controller you retrieved above. In the **description** field enter `Ingress controller external IP` (For some reason in this case you have to specify a description). Click the **+** button to save this paramter
 
   In this screenshot the IP address I used is of course for my deployment, yours will almost certainly differ.
 
   ![](images/deploy-pipelines-params-external-ip.png)
+
+<details><summary><b>Why do we need the IP address ?</b></summary>
+
+Normally a DNS name would not include an IP address, but setting up a DNS entry requires several steps, many of which take time, and then setting up a security certificate using it can take longer, especially if you need to prove that you have the authority from your organization do get certificates in their name. 
+
+Because of this in the OKE labs we use a DNS service called nip.io This is basically a special DNS server that doesn't hold any DNS to IP mappings at all, what it does do is look for an IP address in the DNS name it's asked to resolve, and it then returns that as if it were a real DNS mapping. For example if asked to resolve a DNS name of `myservice.123.456.789.123.nip.io` you will have `123.456.789.123` returned for the IP address.
+ 
+Doing this does however mean that you do need to include the IP address in the DNS name. As an ingress rule uses DNS names to determine which security certificate to use for the incoming connection, and what hostnames to use when determining where to send an incoming request that of course means that we will need to update the artifact containing the ingress rule (`StorefrontIngressRuleYAML` in this case) with the IP address
+
+---
+</details>
+
   
-  6. Now we will create a parameter for the Kubernetes namespace the manifests use to specify where the deployment will go. In the **Name** field enter `KUBERNETES_NAMESPACE` In the **Default value** field enter the namespace you identified above for your deployments (in my case that's `tims` yours will be different). In the **Description** field enter `OKE Deployment namespace` Click the **+** button.
+  4. Now we will create a parameter for the Kubernetes namespace the manifests use to specify where the deployment will go. In the **Name** field enter `KUBERNETES_NAMESPACE` In the **Default value** field enter the namespace you identified above for your deployments (in my case that's `tims` yours will be different). In the **Description** field enter `OKE Deployment namespace` Click the **+** button.
 
   ![](images/deploy-pipelines-both-params-defined.png)
   

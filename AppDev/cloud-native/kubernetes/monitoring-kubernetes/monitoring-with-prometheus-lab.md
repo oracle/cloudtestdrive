@@ -78,36 +78,64 @@ Depending on which other modules you have done you may see differences in the re
 
 ### Task 2b: Setting up the namespace and security information
 
+To separate the monitoring services from the  other services we're going to put them into a new namespace. We will also secure access to prometheus using a password.
+
 If your cloud shell session is new or has been restarted then the shell variable `$EXTERNAL_IP` may be invalid, expand this section if you think this may be the case to check and reset it if needed.
 
 <details><summary><b>How to check if $EXTERNAL_IP is set, and re-set it if it's not</b></summary>
 
 **To check if `$EXTERNAL_IP` is set**
 
-If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
-
-**To get the external IP address if you no longer have it**
-
-In the OCI Cloud shell type
-
-  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it, there are a couple of ways to do this, expand the appropriate section below.
   
-  ```
-NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
-ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
+<details><summary><b>If you used the automated scripts in the kubernetes-lab directory to setup the microservices in Kubernetes</b></summary>
+
+  - Open the OCI cloud shell 
+
+The automated scripts will create a script file `$HOME/clusterSettings.one` this can be executed using the shell built in `source` to set the EXTERNAL_IP variable for you.
+
+  - `source $HOME/clusterSettings.one`
+  
+```
+EXTERNAL_IP set to 139.185.45.98
+NAMESPACE set to tg
 ```
 
-The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column.
-
-**To set the variable again**
-
-  - `export EXTERNAL_IP=<External IP>`
+  Of course the actual IP address and namespace will almost certainly be different from the example here !
   
 ---
 
 </details>
 
-To separate the monitoring services from the  other services we're going to put them into a new namespace. We will also secure access to prometheus using a password.
+<details><summary><b>If you manually setup the Kubernetes ingress services using helm</b></summary>
+
+In this case as you manually set this up you will need to get the information from Kubernetes itself
+
+
+  - Open the OCI cloud shell 
+
+  - You are going to get the value of the `EXTERNAL_IP` for your environment. This is used to identify the DNS name used by an incoming connection. In the OCI cloud shell type
+
+  - `kubectl get services -n ingress-nginx`
+
+```
+NAME                                 TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)                      AGE
+ingress-nginx-controller             LoadBalancer   10.96.182.204   130.162.40.241   80:31834/TCP,443:31118/TCP   2h
+ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>           443/TCP                      2h
+```
+
+  - Look for the `ingress-nginx-controller` line and note the IP address in the `EXTERNAL-IP` column, in this case that's `130.162.40.121` but it's almost certain that the IP address you have will differ. IMPORTANT, be sure to use the IP in the `EXTERNAL-IP` column, ignore anything that looks like an IP address in any other column as those are internal to the OKE cluster and not used externally. 
+
+  - IN the OCI CLoud shell type the following, replacing `<external ip>` with the IP address you retrieved above.
+  
+  - `export EXTERNAL_IP=<external ip>`
+  
+---
+
+</details>
+
+</details>
+
 
   1. Switch to the monitoring directory. In the OCI CLoud shell type
   
@@ -138,7 +166,7 @@ Adding password for user admin
 secret/web-ingress-auth created
 ```
 
-  5. To provide secure access for the ingress we will set this up with a TLS connection , that requires that we create a certificate for the ingress rule. In productin you woudl use a proper certificate, but for this lab we're going to use the self-signed root certificate we created in the cloud shell setup.
+  5. To provide secure access for the ingress we will set this up with a TLS connection , that requires that we create a certificate for the ingress rule. In production you would of course use a proper certificate, but for this lab we're going to use the self-signed root certificate we created in the cloud shell setup.
   
   - `$HOME/keys/step certificate create prometheus.monitoring.$EXTERNAL_IP.nip.io tls-prometheus-$EXTERNAL_IP.crt tls-prometheus-$EXTERNAL_IP.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
   
@@ -148,6 +176,8 @@ secret/web-ingress-auth created
 ```
 
 (The above is example output, your files will be based on the IP you provided)
+
+If your output says it's created key files like `tls-prometheus-.crt` and does not include the IP address then the `EXTERNAL_IP` variable is not set, please follow the instructions in Task 1 and re-run the step certificate creation command
 
   6. Now we will create a tls secret in Kubernetes using this certificate, note that this is in the `monitoring` namespace as that's where Prometheus will be installed..
   
@@ -169,17 +199,9 @@ Kubernetes 1.20.8 Prometheus Helm chart 14.4.1 worked for us
 
 Kubernetes 1.19.7 Prometheus Helm chart 13.7.0 worked for us
 
-Kubernetes 1.18.7 Promteheus helm chart 11.12.1 worked for us
+Kubernetes 1.18.7 Prometheus helm chart 11.12.1 worked for us
 
-Kubernetes 1.17.9 Promteheus helm chart 11.12.1 worked for us
-
-Kubernetes 1.16.9 Promteheus helm chart 11.6.8 worked for us
-
-Kubernetes 1.15.7 Prometheus helm chart 9.7.4 worked for us
-
-Kubernetes 1.14.8 Prometheus helm chart 9.7.1 worked for us
-
-To specify a specific older version use the version keyword in your help command, e.g. `--version 9.1.0`
+To specify a specific older version use the version keyword in your helm command, e.g. `--version 14.1.1`
 
 ---
 
