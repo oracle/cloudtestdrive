@@ -47,7 +47,7 @@ tar -xvf apache-maven-3.6.3-bin.tar.gz
 wget https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz
 tar -xzvf openjdk-14.0.2_linux-x64_bin.tar.gz
 PATH=~/jdk-14.0.2/bin:~/apache-maven-3.6.3/bin:$PATH
-JAVA=~/jdk-14.0.2
+JAVA_HOME=~/jdk-14.0.2
 cd ~
 </copy>
 ```
