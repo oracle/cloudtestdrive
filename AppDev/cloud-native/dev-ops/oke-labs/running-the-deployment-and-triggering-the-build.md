@@ -54,11 +54,54 @@ We have now updated the build pipeline to trigger our deployment process.
   
 ## Task 2: Checking the current deployed storefront version.
 
-Before we update the pipeline let's check the version that's currently running - remember that though we have done builds we haven't yet done a depoloyment, so the service will be whatever was there before you started this lab.
+Before we update the pipeline let's check the version that's currently running - remember that though we have done builds we haven't yet done a deployment, so the service will be whatever was there before you started this lab.
 
-  1. To make things easier we're going to save the external IP address you retrieed earlier in a shell environment variable. In the OCI Cloud shell type the following *replace `<external ip>` with the external IP address of your load balancer* In the previous module **FOR MY CLUSTER** this was `130.162.40.241` but of course yours will almost certainly vary 
+  1. We need to define the cloud shell environment variable `EXTERNAL_IP` There are a couple of ways to do this, expand the appropriate section below
+  
+<details><summary><b>If you used the automated scripts in the kubernetes-lab directory to setup the microservices in Kubernetes</b></summary>
+
+  - Open the OCI cloud shell 
+
+The automated scripts will create a script file `$HOME/clusterSettings.one` this can be executed using the shell built in `source` to set the EXTERNAL_IP variable for you.
+
+  - `source $HOME/clusterSettings.one`
+  
+```
+EXTERNAL_IP set to 139.185.45.98
+NAMESPACE set to tg
+```
+
+  Of course the actual IP address and namespace will almost certainly be different from the example here !
+  
+---
+
+</details>
+
+<details><summary><b>If you manually setup the Kubernetes ingress services using helm</b></summary>
+
+In this case as you manually set this up you will need to get the information from Kubernetes itself
+
+
+  - Open the OCI cloud shell 
+
+  - You are going to get the value of the `EXTERNAL_IP` for your environment. This is used to identify the DNS name used by an incoming connection. In the OCI cloud shell type
+
+  - `kubectl get services -n ingress-nginx`
+
+```
+NAME                                 TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)                      AGE
+ingress-nginx-controller             LoadBalancer   10.96.182.204   130.162.40.241   80:31834/TCP,443:31118/TCP   2h
+ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>           443/TCP                      2h
+```
+
+  - Look for the `ingress-nginx-controller` line and note the IP address in the `EXTERNAL-IP` column, in this case that's `130.162.40.121` but it's almost certain that the IP address you have will differ. IMPORTANT, be sure to use the IP in the `EXTERNAL-IP` column, ignore anything that looks like an IP address in any other column as those are internal to the OKE cluster and not used externally. 
+
+  - IN the OCI CLoud shell type the following, replacing `<external ip>` with the IP address you retrieved above.
   
   - `export EXTERNAL_IP=<external ip>`
+  
+</details>
+
 
   2. Let's use this variable to confirm that we can talk to the storefront service status REST API
 
