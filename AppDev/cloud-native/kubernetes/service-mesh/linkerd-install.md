@@ -575,32 +575,62 @@ kubectl will pick them up and apply them, Kubernetes will restart the linkerd-we
 
 ### Task 5b: Securing the connection to the linkerd UI
 
+If your cloud shell session is new or has been restarted then the shell variable `$EXTERNAL_IP` may be invalid, expand this section if you think this may be the case to check and reset it if needed.
+
 <details><summary><b>How to check if $EXTERNAL_IP is set, and re-set it if it's not</b></summary>
 
 **To check if `$EXTERNAL_IP` is set**
 
-If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
-
-**To get the external IP address if you no longer have it**
-
-In the OCI Cloud shell type
-
-  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it, there are a couple of ways to do this, expand the appropriate section below.
   
-  ```
-NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
-ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:31387/TCP,443:32404/TCP   45s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
+<details><summary><b>If you used the automated scripts in the kubernetes-lab directory to setup the microservices in Kubernetes</b></summary>
+
+  - Open the OCI cloud shell 
+
+The automated scripts will create a script file `$HOME/clusterSettings.one` this can be executed using the shell built in `source` to set the EXTERNAL_IP variable for you.
+
+  - `source $HOME/clusterSettings.one`
+  
+```
+EXTERNAL_IP set to 139.185.45.98
+NAMESPACE set to tg
 ```
 
-The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column.
-
-**To set the variable again**
-
-  - `export EXTERNAL_IP=<External IP>`
+  Of course the actual IP address and namespace will almost certainly be different from the example here !
   
 ---
 
 </details>
+
+<details><summary><b>If you manually setup the Kubernetes ingress services using helm</b></summary>
+
+In this case as you manually set this up you will need to get the information from Kubernetes itself
+
+
+  - Open the OCI cloud shell 
+
+  - You are going to get the value of the `EXTERNAL_IP` for your environment. This is used to identify the DNS name used by an incoming connection. In the OCI cloud shell type
+
+  - `kubectl get services -n ingress-nginx`
+
+```
+NAME                                 TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)                      AGE
+ingress-nginx-controller             LoadBalancer   10.96.182.204   130.162.40.241   80:31834/TCP,443:31118/TCP   2h
+ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>           443/TCP                      2h
+```
+
+  - Look for the `ingress-nginx-controller` line and note the IP address in the `EXTERNAL-IP` column, in this case that's `130.162.40.121` but it's almost certain that the IP address you have will differ. IMPORTANT, be sure to use the IP in the `EXTERNAL-IP` column, ignore anything that looks like an IP address in any other column as those are internal to the OKE cluster and not used externally. 
+
+  - IN the OCI CLoud shell type the following, replacing `<external ip>` with the IP address you retrieved above.
+  
+  - `export EXTERNAL_IP=<external ip>`
+  
+---
+
+</details>
+
+</details>
+
 
 Curiously the linkerd-web ingress does not by default use a TLS certificate to ensure that the connection to it is encrypted, as we will be sending passwords we want to ensure it is encrypted, to do which we need to create a TLS secret in Kubernetes that the ingress controller can use.
 
@@ -620,6 +650,8 @@ We will use step to help us here, it was installed when you did the cloud shell 
 ```
 
 (The above is example output, your files will be based on the IP you provided)
+
+If your output says it's created key files like `tls-linkerd-.crt` and does not include the IP address then the `EXTERNAL_IP` variable is not set, please follow the instructions in Task 1 and re-run the step certificate creation command
 
   3. Now let's put this in a Kubernetes TLS secret. In the OCI Cloud shell
   
