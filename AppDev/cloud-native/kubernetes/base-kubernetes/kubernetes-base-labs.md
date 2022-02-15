@@ -2085,7 +2085,40 @@ In the dashboard you can click the logs button on the upper right to open a log 
 
 ![The logs from the storefront pod seen in the dashboard](images/storefront-logs-page-startup.png)
 
-We can interact with the deployment using the public side of the ingress (it's load ballancer),  We stored this in the enviro0nment variable `$EXTERNAL_IP` .
+
+If you haven't run the Helidon labs you won't have  setup the test data, expand the following to do this
+
+<details><summary><b>Creating test data</b></summary>
+
+  - Make sure you're in the right directory
+  
+  - `cd $HOME/helidon-kubernetes`
+
+  - Run the following command, using the external IP address you used above (just the ip address is needed)
+
+  - `bash create-test-data.sh $EXTERNAL_IP`
+  
+```
+    Service IP address is 130.61.11.184
+    HTTP/1.1 200 OK
+    Server: nginx/1.17.8
+    Date: Fri, 20 Mar 2020 16:58:24 GMT
+    Content-Type: application/json
+    Content-Length: 36
+    Connection: keep-alive
+
+    {"itemCount":5000,"itemName":"Pins"}HTTP/1.1 200 OK
+    
+    <Additional lines of output>
+```
+
+This will populate the database for you so you have some test data.
+
+---
+
+</details>
+
+We can interact with the deployment using the public side of the ingress (it's load ballancer),  We stored this in the environment variable `$EXTERNAL_IP` .
 
   5. Let's try to get some data - **you might get an error** if you do wait a short while and try again as your servcies are probabaly still starting up. If you only get a response of `[]` it's fine, you'll just need to setup the test data (expand the section below for details)
   
@@ -2187,38 +2220,6 @@ If the database connection is not found then make sure that you have correctly s
 Of course tgdemo_high is the connection name for **my** database, yours will probabaly be different, if this is not correct then please follow the instructions in the **Secrets, configmaps - external configuration for your containers** section of this module, and then recreate the secrets by running the `create-secrets.sh` script to reflect the changes into Kubernetes.
 
 
-
----
-
-</details>
-
-<details><summary><b>If you only get `[]` not a list of items</b></summary>
-
-Your database does not have the information that was uploaded in the Helidon part of the labs, or if you did the Helidon labs then you probabaly are using a different department name.
-
-All is not lost, you can create the information easily
-
-- Run the following command, using the external IP address you used above (just the ip address is needed)
-
-  - `bash create-test-data.sh $EXTERNAL_IP`
-  
-```
-    Service IP address is 130.61.11.184
-    HTTP/1.1 200 OK
-    Server: nginx/1.17.8
-    Date: Fri, 20 Mar 2020 16:58:24 GMT
-    Content-Type: application/json
-    Content-Length: 36
-    Connection: keep-alive
-
-    {"itemCount":5000,"itemName":"Pins"}HTTP/1.1 200 OK
-    
-    <Additional lines of output>
-```
-
-This will populate the database for you so you have some test data.
-
-If you can run the curl command above you'll see the data you just added
 
 ---
 
