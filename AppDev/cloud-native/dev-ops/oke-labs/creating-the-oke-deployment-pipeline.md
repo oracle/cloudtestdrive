@@ -43,7 +43,7 @@ Using the OCI Browser User Interface we will :
  
 ### Prerequisites
 
-You have your basic build pipeline running the build process and generating output artifacts, you have the deploemnt environemnt created and running it's initial services (storefront and stock manager).
+You have your basic build pipeline running the build process and generating output artifacts, you have the deployment environment created and running it's initial services (storefront and stock manager).
 
 ## Task 1: Creating the deployment environment
 
@@ -164,9 +164,9 @@ We don't need to add the container image here as it's specified in the deploymen
 Note - other types of stage are :
 Deploy types Deploy to Oracle Functions and OCI Instance groups (this allows for deployment into virtual machines and bare metal services)
 Control types : Pause the deployment for approvals  - allow for a manual approval stage (perhaps to confirm before deploying to a production environment) 
-Traffic Shift - when used with a multiple deployment environments with a front end load balancer can gradually shift traffic from one backend to another enabling a controlled roll-out
+Traffic Shift - when used with a multiple deployment environments with a front end load balancer can gradually shift traffic from one back end to another enabling a controlled roll-out
 Wait - introduces a delay in the pipeline running, perhaps to enable long running activities in a previous stage to complete
-Integrations types : Run a custom logic through a function allows you to trigger external code running using the Oracle Functions service, this could do pretty much anything, for example examining the results of a container image scan to ensure there are no critical vulnerabilityes discovered before processing, or simply triggering an async action to record details of the process
+Integrations types : Run a custom logic through a function allows you to trigger external code running using the Oracle Functions service, this could do pretty much anything, for example examining the results of a container image scan to ensure there are no critical vulnerabilities discovered before processing, or simply triggering an async action to record details of the process
 
 ---
 </details>
@@ -175,8 +175,7 @@ Integrations types : Run a custom logic through a function allows you to trigger
 
 Now we have our deployment pipeline ready to run, but there are a couple of parameters that we need, specifically `KUBERNETES_NAMESPACE` and `EXTERNAL_IP` Those are very specific to deployments into OKE, and are not set in the build pipeline - We need to set them.
 
-  1. 
-First we are going to gather the information we need. There are to possible ways to do this depending on how you setup your microservices in Kubernrtes, please open the expansion section below that matches the approach you took for instructions
+  1. First we are going to gather the information we need. There are to possible ways to do this depending on how you setup your microservices in Kubernetes, please open the expansion section below that matches the approach you took for instructions
   
 <details><summary><b>If you used the automated scripts in the kubernetes-lab directory to setup the microservices in Kubernetes</b></summary>
 
@@ -248,7 +247,7 @@ Now we have the values for our parameters we will go and set them in the Deploym
   
   ![](images/deploy-pipelines-access-parameters-tab.png)
 
-  3. First we will define the `EXTERNAL_IP` parameter, In the **Name** field enter `EXTERNAL_IP` In the **Default Value** field enter the IP address for the ingress-controller you retrieved above. In the **description** field enter `Ingress controller external IP` (For some reason in this case you have to specify a description). Click the **+** button to save this paramter
+  3. First we will define the `EXTERNAL_IP` parameter, In the **Name** field enter `EXTERNAL_IP` In the **Default Value** field enter the IP address for the ingress-controller you retrieved above. In the **description** field enter `Ingress controller external IP` (For some reason in this case you have to specify a description). Click the **+** button to save this parameter
 
   In this screenshot the IP address I used is of course for my deployment, yours will almost certainly differ.
 
@@ -284,4 +283,4 @@ In the next module we will look at how to have a successful build trigger the de
 ## Acknowledgements
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
-* **Last Updated By** - Tim Graves, November 2021
+* **Last Updated By** - Tim Graves, February 2022

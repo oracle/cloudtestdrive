@@ -30,7 +30,7 @@ You have your basic build pipeline running the build process.
 
 ## Task 1: Creating the container repo
 
-We could have done a docker push in the build pipeline, but that yud have required docker logins and so on, it's certainly possible to pass the required parameters into the build runners, and the `oci` command is installed in the build runners for us, so we can manipulate the OCI environment, but there is a far easier way to handle the container image we created and that's to use the deliver artifacts stage. That will allow us to define the artifacts in the artifact and container repos, and to map the build pipeline outputs to the repo locations.
+We could have done a docker push in the build pipeline, but that would have required docker logins and so on, it's certainly possible to pass the required parameters into the build runners, and the `oci` command is installed in the build runners for us, so we can manipulate the OCI environment, but there is a far easier way to handle the container image we created and that's to use the deliver artifacts stage. That will allow us to define the artifacts in the artifact and container repos, and to map the build pipeline outputs to the repo locations.
 
 We're going to create the container repo first, this will give us a location to upload the container images.
 
@@ -54,7 +54,7 @@ We'd need one of these for each container image you will upload (but not for eac
 
 Now we'll create  the artifact registry, this will hold the Kubernetes manifests output from the build process.
 
-  1. Navigate to the Artifact registry service page - Click the "Hamburger" menu, then selct **Developer Services** then click on **Artifact Registry**
+  1. Navigate to the Artifact registry service page - Click the "Hamburger" menu, then select **Developer Services** then click on **Artifact Registry**
   
   ![](images/artifact-reg-access-service.png)
   
@@ -62,7 +62,7 @@ Now we'll create  the artifact registry, this will hold the Kubernetes manifests
   
   ![](images/artifact-reg-create-reg-button.png)
   
-  3. In the **Create repository** popup name it <Your initials>DevOps, **CRITICAL** set the immutable to be off, in production you  wouldn't do this as immutable artifacts can never be re-used (this is for security purposes, and also to ensure that deployments are reproducible) but for the lab where you will be doing multiple runs that would just make things difficult as we'd need to update the version everytime we did a run, so we'll allow for artifacts to be changed for now. Click the **Create** button.
+  3. In the **Create repository** popup name it <Your initials>DevOps, **CRITICAL** set the immutable to be off, in production you  wouldn't do this as immutable artifacts can never be re-used (this is for security purposes, and also to ensure that deployments are reproducible) but for the lab where you will be doing multiple runs that would just make things difficult as we'd need to update the version every time we did a run, so we'll allow for artifacts to be changed for now. Click the **Create** button.
   
   ![](images/artifact-repo-create-instance-form.png)
   
@@ -72,7 +72,7 @@ Now we'll create  the artifact registry, this will hold the Kubernetes manifests
   
 ## Task 3: Passing parameters into the build pipeline
 
-We will next define some paramaters for the build pipeline. These are automatically made available to the build stages, they can also be used to name the outputs of the build process.
+We will next define some parameters for the build pipeline. These are automatically made available to the build stages, they can also be used to name the outputs of the build process.
 
   1. Go to the DevOps service page - Click the "Hamburger" menu select **Developer Services** click **Projects** (in the DevOps section) 
   
@@ -255,7 +255,7 @@ Note that we have not provided any OCI credentials, this is a major advantage of
 
 <details><summary><b>How do I use the parameters to specify the image in my deployment ?</b></summary>
 
-The YAML files themselves contain parameters. If you want to see what this looks like go the Code repository for this project and navigate to `helidon-storefront-full/yaml/deployment/storefront-deployment.yaml` file and see the namespace used for the deployment is set to `$KUBERNETES_NAMESPACE` and the image location is `${OCIR_HOST}/${OCIR_STORAGE_NAMESPACE}/${YOUR_INITIALS}/storefront:${STOREFRONT_VERSION}` matching the definition in the outputArtifacs stage) 
+The YAML files themselves contain parameters. If you want to see what this looks like go the Code repository for this project and navigate to `helidon-storefront-full/yaml/deployment/storefront-deployment.yaml` file and see the namespace used for the deployment is set to `$KUBERNETES_NAMESPACE` and the image location is `${OCIR_HOST}/${OCIR_STORAGE_NAMESPACE}/${YOUR_INITIALS}devops/storefront:${STOREFRONT_VERSION}` matching the definition in the outputArtifacs stage) 
 
 Clearly at some point the parameters actual values need to be set in the various Kubernetes manifests, but we haven't done that yet. Ths param substitution **within** the artifacts happens in the deployment pipeline, not the build pipelines.
 
@@ -321,7 +321,7 @@ Let's go and look at what our pipeline has produced
   
   ![](images/ocir-access-service.png)
   
-  2. Expand the repository `<YOUR_INITIALS>/storefront`, you'll see that the version `1.0.0` image you just built and uploaded is now in the list.
+  2. Expand the repository `<YOUR_INITIALS>devops/storefront`, you'll see that the version `1.0.0` image you just built and uploaded is now in the list.
   
   ![](images/ocir-uploaded-version-1.0.0.png)
   
@@ -345,13 +345,13 @@ Let's go and look at what our pipeline has produced
 spec:
 ```
  
-   6. Locate  the container image, it  still refers to `${OCIR_HOST}/${OCIR_STORAGE_NAMESPACE}/${YOUR_INITIALS}devops/storefront:${STOREFRONT_VERSION}`. The parameters we specified for the artifact name and version have been substituted, but not the parameters within the actuall artifacts themselves. Clearly this will need to be done - after all Kubernetes has no idea where an image location of `${OCIR_HOST}/${OCIR_STORAGE_NAMESPACE}/${YOUR_INITIALS}devops/storefront:${STOREFRONT_VERSION}` would be !
+   6. Locate  the container image, it  still refers to `${OCIR_HOST}/${OCIR_STORAGE_NAMESPACE}/${YOUR_INITIALS}devops/storefront:${STOREFRONT_VERSION}`. The parameters we specified for the artifact name and version have been substituted, but not the parameters within the actual artifacts themselves. Clearly this will need to be done - after all Kubernetes has no idea where an image location of `${OCIR_HOST}/${OCIR_STORAGE_NAMESPACE}/${YOUR_INITIALS}devops/storefront:${STOREFRONT_VERSION}` would be !
    
 ```yaml
    containers:
       - name: storefront
         # This needs to match the artifact details is using OCI DevOps
-        image: ${OCIR_HOST}/${OCIR_STORAGE_NAMESPACE}/${YOUR_INITIALS}/storefront:${STOREFRONT_VERSION}
+        image: ${OCIR_HOST}/${OCIR_STORAGE_NAMESPACE}/${YOUR_INITIALS}devops/storefront:${STOREFRONT_VERSION}
         imagePullPolicy: Always
         ports:
 ```
@@ -365,4 +365,4 @@ We can now extract out artifacts form the build process, the next step is to def
 ## Acknowledgements
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
-* **Last Updated By** - Tim Graves, November 2021
+* **Last Updated By** - Tim Graves, February 2022

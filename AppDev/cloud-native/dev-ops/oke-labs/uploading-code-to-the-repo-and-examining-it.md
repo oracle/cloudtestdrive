@@ -4,9 +4,9 @@
 
 ## Introduction
 
-We need a git repo to work with. There are many ways we can work with git in the DevOps service, we could use a repo in github or gitlab directly or create a OCI Code repo (basically a git repo) inside your project which is an automatically updating a mirror of an external git repo on gitlab or github. You could even create your own separate copy of the origional rep in github, but for all of these options you would need to have a github account and also a personal access token and that complicates things (and keeping up with changes to the OCI web UI is hard enough, having to keep up with github / gitlab changes as well would make it difficult to keep this lab up to date.
+We need a git repo to work with. There are many ways we can work with git in the DevOps service, we could use a repo in github or gitlab directly or create a OCI Code repo (basically a git repo) inside your project which is an automatically updating a mirror of an external git repo on gitlab or github. You could even create your own separate copy of the original rep in github, but for all of these options you would need to have a github account and also a personal access token and that complicates things (and keeping up with changes to the OCI web UI is hard enough, having to keep up with github / gitlab changes as well would make it difficult to keep this lab up to date.
 
-For this lab we are going to take the different approach where every one has a Git repo (officially here an OCI Code repo) in their own project, that way you can easily update it without having conflichts with other users - and I don't have to worry about trying to push changes into my main repo holding the demo code !
+For this lab we are going to take the different approach where every one has a Git repo (officially here an OCI Code repo) in their own project, that way you can easily update it without having conflicts with other users - and I don't have to worry about trying to push changes into my main repo holding the demo code !
 
 ### Objectives
 
@@ -70,7 +70,7 @@ To start with we're going to create a the OCI Code repo in your project.
 
 Now we are going download the original repo with the source code for this lab into the OCI cloud shell. We are using the OCI Cloud shell because it has all of the commands we need to do this lab, so you don't need to setup anything on your laptop, we can even make changes to the source code to demonstrate that the pipelines do deploy them! In a production environment of course you'd use your own development systems.
 
-First we are going to download the origional repo from github. This is a public repo so you don't need a github account.
+First we are going to download the original repo from github. This is a public repo so you don't need a github account.
 
   1. Open the OCI Cloud Shell, if you are not already there go to your home directory
   
@@ -124,7 +124,7 @@ We need to tell git where the OCI Code repo is in your project. For this to work
   
 This command will just return and won't generate any output
 
-  4. For saftey remove the connection to the original repo in github - you shouldn't be able to push to this anyway, but it will prevent me getting lot's of pull requests !
+  4. For safety remove the connection to the original repo in github - you shouldn't be able to push to this anyway, but it will prevent me getting lot's of pull requests !
 
   - `git remote remove origin`
   
@@ -190,7 +190,7 @@ To ssh://devops.scmservice.eu-frankfurt-1.oci.oraclecloud.com/namespaces/oraseem
    83da6f7..17b624d  main -> main
 ```
 
-  8. If you have not already done so you can now close the Clone repo popup by clicking the **Close** button
+  8. If you have not already done so you can now close the Clone repo pop-up by clicking the **Close** button
   
   ![](images/code-repo-project-clone-info-close.png)
   
@@ -215,7 +215,7 @@ Let's have a look at the state of our projects OCI code repository. From the Cod
   ![](images/code-repo-exploration-StatusResource-top.png)
   
   
-  4. This is a simple file, scoll down past the copyright (Sorry, but Oracle require that's there) and if you have done the Helidon labs you will see that it's the code that is run when  the `/status` REST API is called, Note the line
+  4. This is a simple file, scroll down past the copyright (Sorry, but Oracle require that's there) and if you have done the Helidon labs you will recognize that it's the code that is run when  the `/status` REST API is called, Note the line
 
 ```java
 public final static String VERSION = "0.0.1";
@@ -237,4 +237,4 @@ Congratulations, you've added the sample content to your OCI Code repo.
 ## Acknowledgements
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
-* **Last Updated By** - Tim Graves, November 2021
+* **Last Updated By** - Tim Graves, February 2022

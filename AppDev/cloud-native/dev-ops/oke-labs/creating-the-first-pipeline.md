@@ -122,13 +122,13 @@ Let's see this in action,
 
 On the left is the build pipeline, at the moment there's only one stage, but if there were multiple the color coding would indicate the progress with completed stages being in green and in progress stages in Amber and pending stages in grey.
 
-In the centre section you will see the list of stages, if you click the arrow to the left of the stage name you will see the individual steps in the stage (these correspond to the steps in your `build_spec.yaml` file. As each stage completed a green checkmark will be displayed next to it
+In the center section you will see the list of stages, if you click the arrow to the left of the stage name you will see the individual steps in the stage (these correspond to the steps in your `build_spec.yaml` file. As each stage completed a green check mark will be displayed next to it
 
 Finally on the right you will see the logs from the build stages, note that if there are multiple steps in a build stage they will all be displayed in the logs for the stage. It can take a while for the logs to start being displayed as they do not update immediately, they can lag by 30 seconds or more between the data being generated and displayed. 
 
 The build process can take a few minutes to run, please be patient.
 
-<details><summary><b>End timebefore start time warning ?</b></summary>
+<details><summary><b>End time before start time warning ?</b></summary>
 
 If you see a warning about end time cannot be before start time do not worry, that's just the log viewer getting a little confused as the build process is initialized, it will sort itself out once the log data starts arriving.
 
@@ -157,7 +157,7 @@ The other way to access the build history is to use the "Breadcrumb" trail at th
 
   ![](images/build-pipeline-build-history-list-all-builds.png)
 
-Admittedly at the moment you probably only have a single build, named something like `BuildStorefront-20211101-21-37` If it's not obvious `BuildStorefront` is the build pipeline name, the `20211101` references the date of the build in YYMMDD format and the `21-37` references the time of the build though I personally find looking at the **Timestamp** column to be easier. Also note that the **Triggerd by** column only contains `-`  this indicates a build process you started manually, it's possible (as we shall see later) to automatically trigger a build pipeline based on a git commit, in that case the **Build Runs** column will include the name of the trigger and the **Triggerd by** will contain the OCID of the trigger (the OCID is unique, wheras a name could be re-used, so this makes traceability easier).
+Admittedly at the moment you probably only have a single build, named something like `BuildStorefront-20211101-21-37` If it's not obvious `BuildStorefront` is the build pipeline name, the `20211101` references the date of the build in YYMMDD format and the `21-37` references the time of the build though I personally find looking at the **Timestamp** column to be easier. Also note that the **Triggerd by** column only contains `-`  this indicates a build process you started manually, it's possible (as we shall see later) to automatically trigger a build pipeline based on a git commit, in that case the **Build Runs** column will include the name of the trigger and the **Triggerd by** will contain the OCID of the trigger (the OCID is unique, whereas a name could be re-used, so this makes traceability easier).
 
 Hopefully, unless there was an error in the `build_spec.yaml` file the build will complete, either using the log viewer or if you prefer by downloading to your own machine and opening it there let's have a look at the build log output.
 
@@ -184,7 +184,7 @@ Once the build runner is ready then the build runtime does some parsing of the `
 2021-11-29T14:19:48.810Z Completed DOWNLOAD_INPUT_ARTIFACTS successfully
 ```
 
-We then see the build process doing a phase **DOWNLOAD_INPUT_ARTIFACTS** This is basically a empty phase as in our build spec we didn't define any input artifacts, but if there had been multiple build phases in our pipeline (for example creating library files in one build phase, then using them in a subsequent phase) this would allow the import of those artifacts form the previous stage into the current one - that's important because each phase get's it's own brand new runner, which of course initially doesn't know about what has happened in previous stages, so we need a way to transfer resulting artifacts between the stages.
+We then see the build process doing a phase **DOWNLOAD_INPUT_ARTIFACTS** This is basically a empty phase as in our build spec we didn't define any input artifacts, but if there had been multiple build phases in our pipeline (for example creating library files in one build phase, then using them in a subsequent phase) this would allow the import of those artifacts from the previous stage into the current one - that's important because each phase get's it's own brand new runner, which of course initially doesn't know about what has happened in previous stages, so we need a way to transfer resulting artifacts between the stages.
 
 ```
 2021-11-29T14:19:49.337Z Executing BUILD_SPEC_STEP : Extract Export variables
@@ -260,13 +260,13 @@ This phase is the build runner copying the artifacts that we specified in the `o
 2021-11-29T14:22:02.517Z Completed Build stage.
 ```
 
-Lastly we see the phase `SAVE_EXPORTED_VARIABLES` This phase is extracting the variables that we specified in the `vars.exportVariables` section in the `build_spec.yaml` file, as tith the output artifacts if we didn't do this they would die when the stage completes (along with everything else not copied out of the the build runner). By requiring the explicit identification of the output from a build stage we avoid polluting subsequent stages with unexpected artifacts and variables - and remember that the people designing one build stage may be different than those designing another, so coordination between the teams designing a build phase is essential to ensure that the expected variables and artifacts (and only those) are transfered between stages.
+Lastly we see the phase `SAVE_EXPORTED_VARIABLES` This phase is extracting the variables that we specified in the `vars.exportVariables` section in the `build_spec.yaml` file, as with the output artifacts if we didn't do this they would die when the stage completes (along with everything else not copied out of the the build runner). By requiring the explicit identification of the output from a build stage we avoid polluting subsequent stages with unexpected artifacts and variables - and remember that the people designing one build stage may be different than those designing another, so coordination between the teams designing a build phase is essential to ensure that the expected variables and artifacts (and only those) are transfered between stages.
 
 ## End of the Module, what's next ?
 
 So we've seen how to setup the build pipeline and how the `build_spec.yaml` is processed by the build runner, but all this has done is shown us the compilation process and how to look at the results. The next stage is to look at how to get the artifacts we have created out of the pipeline and into a longer term storage so they can be used for a deployment.
 
-## Acknowledgements
+## Acknowledgments
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
-* **Last Updated By** - Tim Graves, November 2021
+* **Last Updated By** - Tim Graves, February 2022

@@ -47,7 +47,7 @@ runAs: root
 shell: bash
 ```
 
-This content provides the basic information needed by the build system, defining the version of the build spec used, how long the entire build process should take before being stopped, the user running the build (at the time of writing this is limited to root) and what shell should be used when execuring commands.
+This content provides the basic information needed by the build system, defining the version of the build spec used, how long the entire build process should take before being stopped, the user running the build (at the time of writing this is limited to root) and what shell should be used when executing commands.
  
 ### Environment / Variables
 
@@ -69,7 +69,7 @@ The variables specified in this section persist across build steps, but not acro
     OCIR_HOST_VAULT: Needs your host secrets OCID
     OCIR_STORAGE_NAMESPACE_VAULT: Needs your storage namespace OCID
  ```
-The vaultVariables are replaced with the content of the vault secrets we will setup soon, these also persist across steps, but they cannot be exported outside the build_spec to prevent leakage of confidential information like logins and so on that are often stored in these variables. The "Needs ... OCID" text is just a placeholder for now, later in this module we will setup the variables in the vauld and will replace the placeholder text with the OCID of the vault secrets.
+The vaultVariables are replaced with the content of the vault secrets we will setup soon, these also persist across steps, but they cannot be exported outside the build_spec to prevent leakage of confidential information like logins and so on that are often stored in these variables. The "Needs ... OCID" text is just a placeholder for now, later in this module we will setup the variables in the vault and will replace the placeholder text with the OCID of the vault secrets.
 
 
 #### The exportedVariables block
@@ -105,7 +105,7 @@ steps:
       echo Extracting export variables - Working in `pwd`
       export STOREFRONT_VERSION=`grep "VERSION = " helidon-storefront-full/src/main/java/com/oracle/labs/helidon/storefront/resources/StatusResource.java  | awk '{print $7}' | sed -e 's/"//g' -e s'/;//'`
       echo "STOREFRONT_VERSION: " $STOREFRONT_VERSION
-      echo image will be stored to ${OCIR_HOST}/${OCIR_STORAGE_NAMEPACE}/${YOUR_INITIALS}/storefront:${STOREFRONT_VERSION}
+      echo image will be stored to ${OCIR_HOST}/${OCIR_STORAGE_NAMEPACE}/${YOUR_INITIALS}devops/storefront:${STOREFRONT_VERSION}
       echo transferring the OCIR_HOST and OCIR_STORAGE_NAMESPACE vault variables
       export OCIR_HOST=$OCIR_HOST_VAULT
       echo OCIR_HOST is $OCIR_HOST
@@ -127,10 +127,10 @@ Each step has a name and timeout (in case the step hands for some reason) unless
 The core of the step is the commands that it runs, 
 
 In our step 1 "Extract Export variables" we setup the variables and extract the version information from the code, other ways to get the version are of course available, we could even feed it into the pipeline and then modify the code to match the version if we wanted !
-Note that we also "transfer" the values from our vaultVariables OCIR_HOST_VAULT to the exported variable OCIR_HOST and OCIR_STORAGE_NAMESPACE_VAULT to OCIR_STORAGE_NAMESPACE, this is because vaultVariables cannot be exported (as mentioned earlier they coudl contain confidential information so we don;t want any accidental leakage of their contents - deliberate transfer is of course acceptable !) but we can of course create another variable that is exported and deliberately copy the value over and that's what we're doing here.
-Notice the cd ${OCI_PRIMARY_SOURCE_DIR} - this is how we make sure we are in the location for the git project that has been automatically imported into the build pipeline for us. OCI_PRIMARY_SOURCE_DIR contains the location in the build image of that git repo.
+Note that we also "transfer" the values from our vaultVariables OCIR_HOST_VAULT to the exported variable OCIR_HOST and OCIR_STORAGE_NAMESPACE_VAULT to OCIR_STORAGE_NAMESPACE, this is because vaultVariables cannot be exported (as mentioned earlier they could contain confidential information so we don't want any accidental leakage of their contents - deliberate transfer is of course acceptable !) but we can of course create another variable that is exported and deliberately copy the value over and that's what we're doing here.
+Notice the `cd ${OCI_PRIMARY_SOURCE_DIR}` - this is how we make sure we are in the location for the git project that has been automatically imported into the build pipeline for us. OCI_PRIMARY_SOURCE_DIR contains the location in the build image of that git repo.
 
-One other section that's important is the onFailure section. There can be many reasons for a failure, in the case of this pipeline everything is handled in the build instance, but in some cases there may be external side effects and cleanup may need to be done. The onFaliure section allows us to specify what to do, though in this case it's just displaying a message, Like the main step a failure handler can also have a time out and may need to run as a specific user.
+One other section that's important is the **onFailure** section. There can be many reasons for a failure, in the case of this pipeline everything is handled in the build instance, but in some cases there may be external side effects and cleanup may need to be done. The onFaliure section allows us to specify what to do, though in this case it's just displaying a message, Like the main step a failure handler can also have a time out and may need to run as a specific user.
 
 Let's have a look at the other steps, note that from now on I won't include the error handling as its basically all the same.
 
@@ -154,7 +154,7 @@ Let's have a look at the other steps, note that from now on I won't include the 
       java -version
 ```
 
-The 2nd step named "Install local JDK11" this has the same structure as the previous step, but it downloads and installs a JDK for us. We need to do this to ensure that we know exactly what JDK is used to run the build. The image used to run the buiuld process does have a JDK in it, but it may not be the one we expect, so this way we know wehat we're getting
+The 2nd step named "Install local JDK17" this has the same structure as the previous step, but it downloads and installs a JDK for us. We need to do this to ensure that we know exactly what JDK is used to run the build. The image used to run the build process does have a JDK in it, but it may not be the one we expect, so this way we know what we're getting
 
 As you can see this updates  JAVA_HOME which we defined earlier as a variable so it will be automatically transfered between build stages. The PATH is automatically transfered
 
@@ -189,7 +189,7 @@ Step 3 "Confirm Variables and versions" it really there to enable us to confirm 
       mvn package  
       docker images
 ```
-Step 4 "Build Source and pack into container image" is what does the actual work, this really just calls mvn, we should really have installed the version of mvn as well, but as mvn is basically a framework that doenloads it's own build engine (using the version specified in the pom.xml file) for now that's not critical - and I don't want to spend all day downloading stuff !
+Step 4 "Build Source and pack into container image" is what does the actual work, this really just calls mvn, we should really have installed the version of mvn as well, but as mvn is basically a framework that downloads it's own build engine (using the version specified in the pom.xml file) for now that's not critical - and I don't want to spend all day downloading stuff !
 The mvn package process uses a tool called JIB (Java Image Builder) that will create a local docker image called jib-storefront (have a look at the pom.xml file to see more on how that's configured) we'll see the images in the output of the docker images command which is run once the mvn command has finished.
 
 ```
@@ -204,10 +204,10 @@ The mvn package process uses a tool called JIB (Java Image Builder) that will cr
       docker images
 ```
 
-Step 5 "Fix resources location in container image" is needed because jib doesn't put the resouces in the locations expected by the Helidon framework and the Java run time (in theory the location is correct, but if you just use that image the code fails as it can't find the resoiurces, I'm still trying to resolve that one)
+Step 5 "Fix resources location in container image" is needed because jib doesn't put the resources in the locations expected by the Helidon framework and the Java run time (in theory the location is correct, but if you just use that image the code fails as it can't find the resources, I'm still trying to resolve that one)
 This step runs a small docker file which copies the commands to the correct location in the image then deletes the old resources location 
 
-Notice that we didn't do a docker push to upload the image to the container registry, we could have, but that woudl mean getting the users login credentials in to the image, and fortunately for us the devops tooling provides a way to avoid doing that using the outputArtifacts section.
+Notice that we didn't do a docker push to upload the image to the container registry, we could have, but that would mean getting the users login credentials in to the image, and fortunately for us the devops tooling provides a way to avoid doing that using the outputArtifacts section.
 
 
 ```
@@ -225,7 +225,7 @@ outputArtifacts:
     type: BINARY
     location: ${OCI_PRIMARY_SOURCE_DIR}/helidon-storefront-full/yaml/deployment/storefront-deployment.yaml
 ```
-outputArtifacts tells the build pipline what the results of the build are, once it's completed the steps you specified the pipeline will automatically extract the items specified in the output artifacts section and save them away for later use in the next staged of the pipeline, thois could be another build stage (in which case the build_spec of that stage will define input artifacts that match the ones you've just outputted)
+outputArtifacts tells the build pipline what the results of the build are, once it's completed the steps you specified the pipeline will automatically extract the items specified in the output artifacts section and save them away for later use in the next staged of the pipeline, this could be another build stage (in which case the build_spec of that stage will define input artifacts that match the ones you've just out put)
 
 Note that the output artifacts include not only the container image we build, but alto the YAML files containing the Kubernetes manifests. We're not modifying those in the build pipeline, but as we want to use them later on we need to specify that they are also output artifacts
 
@@ -255,7 +255,7 @@ You can see here in this example we're using the Frankfurt region, which is also
 
   ![](images/fra.png)
 
-  5. In this case it means that for the OCIR hostnamne I will be using `fra.ocir.io` If my region has been Sydney it would be `syd.ocir.io` and so on. Note down the OCIR hostname you have just determined.
+  5. In this case it means that for the OCIR hostname I will be using `fra.ocir.io` If my region has been Sydney it would be `syd.ocir.io` and so on. Note down the OCIR hostname you have just determined.
   
   
 ### Task 2b: Determining your tenancy Object Storage Namespace
@@ -430,4 +430,4 @@ Congratulations, you've updated the sample content to your OCI Code repo.
 ## Acknowledgements
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
-* **Last Updated By** - Tim Graves, November 2021
+* **Last Updated By** - Tim Graves, February 2022

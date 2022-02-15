@@ -6,7 +6,7 @@
 
 We now have a build pipeline that builds the code and uploads the resulting artifacts, and the deployment pipeline is ready to go, though admittedly we haven't run it yet.
 
-We could if we wanted have run the deploy pipeline we just created in a previous module, though we would have has to define a few more params (e.g. `STOREFRONT_VERSION`,`OCIR_HOST` etc.) but as this is a lab showing how the use of continuous integration and continuous deployment let's show how to connect the two and run a full CI/CD process.
+We could if we wanted have run the deploy pipeline we just created in a previous module, though we would have has to define a few more parameters (e.g. `STOREFRONT_VERSION`,`OCIR_HOST` etc.) but as this is a lab showing how the use of continuous integration and continuous deployment let's show how to connect the two and run a full CI/CD process.
 
 ### Objectives
 
@@ -243,7 +243,7 @@ This mechanism allows you to have different build pipelines for different situat
 
 Now we are going to make a change to our code, to show the process working.
 
-  1. Open the OCI CLoud chell, make sure you are in the local code repo
+  1. Open the OCI CLoud shell, make sure you are in the local code repo
   
   - `cd $HOME/cloudnative-helidon-storefront`
 
@@ -257,7 +257,7 @@ Now we are going to make a change to our code, to show the process working.
         private static final JsonBuilderFactory JSON = Json.createBuilderFactory(Collections.emptyMap());
   ```
   
-  3. Commit these changes to your local git repo (the one in the cloud shell you are using). In the OCI Cloud shell typem
+  3. Commit these changes to your local git repo (the one in the cloud shell you are using). In the OCI Cloud shell type
   
   - `git commit -a -m 'Updated version number'`
   
@@ -322,7 +322,7 @@ Firstly you should ensure that your build tools run tests (Maven does this autom
 
 Whatever approach you take we would suggest that you consider putting in a manual confirmation step in the deployment pipeline before deploying to the production environment, you could combine this by having the deployment pipeline initially deploy to a test system where you can run more detailed (and potentially intensive tests) allowing you to extent the unit testing and additionally look for non fatal errors such as performance regressions.
 
-If you are deploying into Kubernetes you may chose to miss the final production deployment step, and instead use a tool like Spinaker or ArgoCD to do the deployment, these can work with a service mesh like Linkerd to do a gradual rollout or a canary deployment, enabling a small portion of your traffic to test the new version first before expanding it to all customers. Currently this would be done using a Function to trigger that process.
+If you are deploying into Kubernetes you may chose to miss the final production deployment step, and instead use a tool like Spinaker or ArgoCD to do the deployment, these can work with a service mesh like Linkerd to do a gradual roll out or a canary deployment, enabling a small portion of your traffic to test the new version first before expanding it to all customers. Currently this would be done using a Function to trigger that process.
 
 </details>
 
@@ -335,5 +335,5 @@ This has been a quick overview, we encourage you to explore the DevOps service a
 ## Acknowledgements
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
-* **Last Updated By** - Tim Graves, November 2021
+* **Last Updated By** - Tim Graves, February 2022
 
