@@ -302,7 +302,7 @@ There are a number of activities required to configure the core environment, the
   Are you running in a free trial environment (y/n) ?
 ```
    
-  4.  to gather and save your initials, when prompted by the script enter your initials and press return, in the example below as my name is Tim Graves I used `tg` as the initials. Of course unless your initials are also `tg` you would enter something different !
+  4.  When prompted by the script enter your initials and press return, it is important that when you enter your initials you use lower case only and only the letters a-z, no numbers of special characters. In the example below as my name is Tim Graves I used `tg` as the initials. Of course unless your initials are also `tg` you would enter something different !
   
   
   ```
