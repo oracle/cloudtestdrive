@@ -1365,33 +1365,72 @@ There are also more specific secrets used for TLS certificates and pulling docke
 
 In The Helidon labs we provided the database details via Java system properties using the command line. We don't want to do that here as it we would have to place them in the image (making it insecure, and also hard to update) To get around that (and to show the flexibility of the Helidon framework) here we will be specifying them using environment variables, because Helidon uses a hierarchy of sources for the configuration we don't even need to change the code to do this!
 
-We will of course be using a Kubernetes secret to hold them (they are sensitive, so placing them in a deployment yaml file which might be accessible by many folks would also be a bad idea) **You** need to update them with the setting for **your** database
+We will of course be using a Kubernetes secret to hold them (they are sensitive, so placing them in a deployment yaml file which might be accessible by many folks would also be a bad idea) **You** need to update them with the setting for **your** database, these were downloaded for you by the database setup scripts.
 
-  1. Switch to the config files directory
+  1. Create the wallet directory and navigate to it:
+  
+  - `mkdir -p $HOME/helidon-kubernetes/configurations/stockmanagerconf/Wallet_ATP`
+  
+  - `cd $HOME/helidon-kubernetes/configurations/stockmanagerconf/Wallet_ATP`
+  
+  2. Copy the wallet file to the directory
+  
+  - `cp $HOME/Wallet.zip .`
+  
+  3. Unzip the wallet file
+  
+  - `unzip Wallet.zip`
+  
+  4. Look at the contents of the tnsnames.ora file to get the database connection names
+  
+  - `cat tnsnames.ora`
+
+  ```
+jleoow_high = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_high.atp.oraclecloud.com))(security=(ssl_server
+_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
+
+jleoow_low = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_low.atp.oraclecloud.com))(security=(ssl_server_c
+ert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
+
+jleoow_medium = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_medium.atp.oraclecloud.com))(security=(ssl_se
+rver_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
+
+jleoow_tp = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_tp.atp.oraclecloud.com))(security=(ssl_server_cer
+t_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
+
+jleoow_tpurgent = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_tpurgent.atp.oraclecloud.com))(security=(ss
+l_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFURT,O=Oracle Corporation,L=Redwood City,ST=California,C=US")))
+```
+
+  You will see a list of the various connection types to your database.
+
+  5. Locate the "high" connection type to your database and take a note of the full name, in the example above that's `jleoow_high` **but yours will differ**
+
+  6. Switch to the config files directory
   
   - `cd $HOME/helidon-kubernetes/configurations/stockmanagerconf`
 
-  2. **Edit** the file `databaseConnectionSecret.yaml`
+  7. **Edit** the file `databaseConnectionSecret.yaml`
 
-  3. Locate the `url` (in the `stringData` section)
+  8. Locate the `url` (in the `stringData` section)
 
   ```yaml
   url: jdbc:oracle:thin:@<database connection name>?TNS_ADMIN=./Wallet_ATP
 ```
 
-  4. Replace `<database connection name>` with the connection name for **your** database you got from the `tnsnames.ora` file earlier. In my case that was `tg_high`, **but yours will be different**
+  9. Replace `<database connection name>` with the connection name for **your** database you got from the `tnsnames.ora` file earlier. In my case that was `jleoow_high`, **but yours will be different**
 
 For **me** the line looked like this, **YOURS WILL BE DIFFERENT**
 
 ```yaml
-  url: jdbc:oracle:thin:@tg_high?TNS_ADMIN=./Wallet_ATP
+  url: jdbc:oracle:thin:@jleoow_high?TNS_ADMIN=./Wallet_ATP
 ```
 
 If you used a different username or password then you will need to update those fields as well.
 
-  5. Save the changes to the file and exit the editor
+  10. Save the changes to the file and exit the editor
 
-We will create the secret using a script later.
+We will create the secret that contain this information using a script later.
 
 <details><summary><b>How do these values get into the container ?</b></summary>
 
