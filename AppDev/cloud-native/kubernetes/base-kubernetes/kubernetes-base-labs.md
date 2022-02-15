@@ -1576,7 +1576,40 @@ The dashboard is actually a lot easier in this case.
   
 For security reasons Kubernetes only stores the secrets in memory, they are not written to permenant storage.
 
-### Task 5c: Config Maps
+### Task 5c: Configuration
+
+Now all configuration information needs to be secreat, we'e going to look at config maps in a moment, but first we need to add some configuration information
+
+To allow for some lab situations where there are multiple users in the same database we separate tables by department Id, like many other parts of these labs this will be based on your name or initials.
+
+We need to configure the stockmanager-config.yaml file. You need to do this even if you have done the Helidon labs as the set of configuration data downloaded into the OCI Cloud Shell is generic and does not include the customizations you made in the Helidon labs 
+
+  1. Navigate into the folder 
+  
+  - `cd $HOME/helidon-kubernetes/configurations/stockmanagerconf/conf`
+  
+  2. Open the file **stockmanager-config.yaml**
+  
+  3. In the `app:` section, add a property **department** with **your** your name, initials or something that's going to be **unique**
+  
+  -  `department: "your_name"`
+
+Example (Yours will be different of course)
+
+```yaml
+app:
+  persistenceUnit: "stockmanagerJTA"
+  department: "timsDepartment"
+```
+ 
+  4. Save the changes to the file
+  
+  
+  5. Switch back to the scripts directory
+  
+  - `cd $HOME/helidon-kubernetes/base-kubernetes`
+
+### Task 5d: Config Maps
 
 <details><summary><b>Intro to Kubernetes Config Maps</b></summary>
 
@@ -1594,7 +1627,7 @@ For example (**don't type this**) `$ kubectl create configmap sf-config-map --fr
 ---
 
 </details>
-
+  
 In the $HOME/helidon-kubernetes/base-kubernetes folder there is a script create-configmaps.sh. We have created this to help you setup the configuration maps (though you can of course do this by hand instead of creating a script). If you run this script it will delete existing config maps and create an up to date config for us :
 
   1. Run the script to create the config maps
