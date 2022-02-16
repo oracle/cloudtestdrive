@@ -480,7 +480,7 @@ We see all the elements of the dashboard: a pod, a replica set, a deployment and
 
 If you want more detailed information then you can extract it, for example to get the details on the pods do the following
 
-  4.  Execute below command, replacing the ID with the ID of your pod
+  4.  Execute below command, replacing the ID with the ID of your pod. You can get the ID of your pod by looking at the output from the previous kubectl command, in the pods list for a pod starting kubernetes-dashboard.
   
   -  `kubectl get pod kubernetes-dashboard-bfdf5fc85-djnvb  -n kube-system -o yaml`
 
