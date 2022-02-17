@@ -148,13 +148,7 @@ Checking for E4 or E3 processor core availability for Kubernetes workers
 You asked for 3 of resource standard-e4-core-count in service compute in availability domain gKLQ:ME-DUBAI-1-AD-1, congratulations 100 are available
 You asked for 3 of resource standard-e3-core-ad-count in service compute in availability domain gKLQ:ME-DUBAI-1-AD-1, congratulations 100 are available
 Creating cluster tglab
-Downloading terraform
-Cloning into 'terraform-oci-oke'...
-...
-<Git download information for the terraform module>
-...
-Resolving deltas: 100% (2190/2190), done.
-Configuring terraform
+Preparing terraform directory
 Update provider.tf set OCI_REGION to eu-frankfurt-1
 Updating /home/tim_graves/helidon-kubernetes/setup/common/terraform-oci-oke/provider.tf replacing OCI_REGION with eu-frankfurt-1
 ...
