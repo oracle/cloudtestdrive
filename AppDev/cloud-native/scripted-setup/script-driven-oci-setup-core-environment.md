@@ -164,43 +164,27 @@ If you get output like this then you have setup both the `step` command and the 
 
 ```
 root.crt  root.key  step
+
 ```
 
-If you get output like this then you have the `step` command you just need to setup the root certificate, please go to **Task 2a**
+If you get output like this then you need to download `step` and create the root certificate, follow the process in **Task 2a**, do not do any of the steps in task 2b
+
+```
+ls: cannot access /home/tim_graves/key: No such file or directory
+```
+
+If you get output like this then you have the `step` command you just need to setup the root certificate, please go to **Task 2b**, do not do any of the steps in Task 2a
 
 ```
 step
 ```
 
 
-If you get output like this then you need to download `step` and create the root certificate, follow the process in **Task 2b**, do not follof the steps in task 2a
+### Task 2a: Scripted download of step and creating the root certificate
 
-```
-ls: cannot access /home/tim_graves/key: No such file or directory
-```
+To make setting `step` up easier (manually it requires a lot of visits to different pages to get the download details) I have created a script that will do the page navigation, parsing, downloads, unpacking, and installation of `step` for you.
 
-### Task 2a: Creating the root certificate
-
-Assuming you have `step` you can easily create the self signed root certificate
-
-  1. Open the OCI Cloud shell and type
-    
-  - `./step certificate create root.cluster.local root.crt root.key --profile root-ca --no-password --insecure`
-  
-  ```
-  Your certificate has been saved in root.crt.
-  Your private key has been saved in root.key.
-```
-
-Your root certificate is now created and you're ready to go.
-
-Now please go to **Task 3**, do not continue with any other steps in task 2
-
-### Task 2b: Scripted download of step and creating the root certificate
-
-To make setting `step` up easier (manually it requires a lot of visits to different pages to get the download details) I have created a script that will dso the page navigation, parsing, downloads, unpacking, and installation of `step` for you.
-
-  1. Open the OCI cloud shall and go to the scripts directory, type
+  1. Open the OCI cloud shell and go to the scripts directory, type
   
   - `cd $HOME/helidon-kubernetes/setup/common`
   
@@ -226,6 +210,25 @@ Your private key has been saved in root.key.
 This output is for `step` version 0.18.0 the output you get will probably vary.
 
 This has downloaded the latest version of `step` and created the root certificate, please continue with **Task 3**
+
+
+### Task 2b: Creating the root certificate
+
+Assuming you have `step` you can easily create the self signed root certificate
+
+  1. Open the OCI Cloud shell and type
+    
+  - `./step certificate create root.cluster.local root.crt root.key --profile root-ca --no-password --insecure`
+  
+  ```
+  Your certificate has been saved in root.crt.
+  Your private key has been saved in root.key.
+```
+
+Your root certificate is now created and you're ready to go.
+
+Now please go to **Task 3**, do not continue with any other steps in task 2
+
 
 ## Task 3: Checking resources are available
 
