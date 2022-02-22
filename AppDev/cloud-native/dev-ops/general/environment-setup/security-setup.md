@@ -6,7 +6,7 @@
 
 The Oracle Cloud Infrastructure (OCI) provides a comprehensive set of security mechanisms to control actions within tenancies. One core element of this approach is that security is enabled by default, so to take actions users need to be granted permissions. The tenancy admin of course has full capabilities when the tenancy is setup.
 
-Even though tenancy admins may have full admin rights the DevOps service itself needs to be able to manage other resources, for example to run a build it needs a compute instance and to deploy it needs to be able issue commands against the deployment target (Functions, Kubernrtes etc.) so we need to configure policies to allow this.
+Even though tenancy admins may have full admin rights the DevOps service itself needs to be able to manage other resources, for example to run a build it needs a compute instance and to deploy it needs to be able issue commands against the deployment target (Functions, Kubernetes etc.) so we need to configure policies to allow this.
 
 ### Objectives
 
