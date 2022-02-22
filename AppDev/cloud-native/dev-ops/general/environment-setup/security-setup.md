@@ -14,7 +14,7 @@ Using the OCI Cloud shell and Browser User Interface we will :
 
   - Create user group of users that will run the DevOps services
   
-  - Define a policy allowing that group to dun DevOps activities in a compartment
+  - Define a policy allowing that group to run DevOps activities in a compartment
   
   - Create dynamic groups defining the DevOps service elements
   
