@@ -31,7 +31,7 @@ Ensure that you have Created your Kubernetes environment, your devops project, y
   
   2. Scroll down past the Copyright text
 
-Let's explain the build pipeline, this is sadly in YAML (I loathe YAML because it's whitespace sensitive, virtually every problem I've had with a YAML file has been because of that, it'a like going back to my very early days of programming at university when I had to use punch cards for Fortran before being allowed to use the CRT terminals - but at least punch cards always reserved 8 characters for the line number and didn't vary that indentation) 
+Let's explain the build pipeline, this is sadly in YAML (I loathe YAML because it's whitespace sensitive, virtually every problem I've had with a YAML file has been because of that, it's like going back to my very early days of programming at university when I had to use punch cards for Fortran before being allowed to use the CRT terminals - but at least punch cards always reserved 8 characters for the line number and didn't vary that level of indentation !) 
 
 ### General header
 
@@ -225,7 +225,7 @@ outputArtifacts:
     type: BINARY
     location: ${OCI_PRIMARY_SOURCE_DIR}/helidon-storefront-full/yaml/deployment/storefront-deployment.yaml
 ```
-outputArtifacts tells the build pipline what the results of the build are, once it's completed the steps you specified the pipeline will automatically extract the items specified in the output artifacts section and save them away for later use in the next staged of the pipeline, this could be another build stage (in which case the build_spec of that stage will define input artifacts that match the ones you've just out put)
+outputArtifacts tells the build pipeline what the results of the build are, once it's completed the steps you specified the pipeline will automatically extract the items specified in the output artifacts section and save them away for later use in the next staged of the pipeline, this could be another build stage (in which case the build_spec of that stage will define input artifacts that match the ones you've just out put)
 
 Note that the output artifacts include not only the container image we build, but alto the YAML files containing the Kubernetes manifests. We're not modifying those in the build pipeline, but as we want to use them later on we need to specify that they are also output artifacts
 
@@ -233,9 +233,13 @@ Note that the output artifacts include not only the container image we build, bu
 
 We're going to setup some secrets in the OCI vault, we created the vault and the master encryption key earlier so we can just setup the secrets
 
-Before we can do this however we need to work out what values we will be using for those secrets which will be the region code for the OCI Registry (where the container images will be stored) and your tenancy storage namespace
+Before we can do this however we need to work out what values we will be using for those secrets which will be the region code for the OCI Registry (where the container images will be stored) and your tenancy storage namespace. Then we can store this information in secrets in the Vault.
 
-### Task 2a: Determining the Oracle Cloud Infrastructure Registry region code
+To make things easier we have a script that will use the information saved when the OCIR images were setup to create the secrets in the vault and report on the OCID's of the secrets it's just created. If you want to do this yourself rather then use the script open the expansion below and follow the instructions. In running the script is easier though !
+
+<details><summary><b>But I really want to set these up manually !</b></summary>
+
+### Determining the Oracle Cloud Infrastructure Registry region code
 
 The OCIR region code is based on the IATA code for the city hosting the region, for example Frankfurt has an IATA core of `fra` and Amsterdam is `ams`. Unfortunately some cities (e.g. London) have multiple airports, in others the IATA airport code refers to an old name for the city, or the airport itself is not directly named after the city it serves, so we need to look the right code up based on our region.
 
@@ -258,7 +262,7 @@ You can see here in this example we're using the Frankfurt region, which is also
   5. In this case it means that for the OCIR hostname I will be using `fra.ocir.io` If my region has been Sydney it would be `syd.ocir.io` and so on. Note down the OCIR hostname you have just determined.
   
   
-### Task 2b: Determining your tenancy Object Storage Namespace
+### Determining your tenancy Object Storage Namespace
 
   1. Click the shadow person image on the upper right of any page
 
@@ -268,13 +272,13 @@ You can see here in this example we're using the Frankfurt region, which is also
 
   3. Note down the **Object Storage Namespace** of your tenancy, in the example above this is `frjqogy3byob` **but yours will be different** (this is what we mean when we say tenancy storage namespace in these labs)
   
-### Task 3 Creating the vault variables
+### Creating the vault variables
 
   1. In the OCI browser UI go to the vault. Click on the "Hamburger" menu select **Identity and security** click on **Vault**
   
   ![](images/vault-access-service.png)
 
-  2. Click on the name of your vault in the list (If it's not showing be cure to check you are in the right compartment using the compartment selector on the left of the page) In my case the vault is called `tgDevOps` but yours will probably be different.
+  2. Click on the name of your vault in the list (If it's not showing be cure to check you are in the right compartment using the compartment selector on the left of the page) In my case the vault is called `tgDevOps` but yours will probably be different for example it may be something like `tgLabsVault`.
   
   ![](images/vault-select-vault.png)
 
@@ -299,7 +303,44 @@ It will take a short while to create the secret, but you can carry on while that
   Once you have finished you will have two secrets in your vault.
   
   ![](images/vault-secrets-created.png)
+  
+  Now please move onto **Task 3** you don't need to run the script.
+  
+</details>
 
+  Let's run the script to set everything up. You must have already setup the OCIR images in the earlier setup stage.
+  
+  Switch to the right directory. In the OCI cloud shell type
+  
+  - `cd $HOME/helidon-kubernetes/setup/devops-labs`
+  
+  Now run the script
+  
+  - `bash vault-secrets-setup.sh`
+  
+  ```
+  Loading existing settings information
+Found vault
+Found vault key
+Loading existing settings information
+Found vault
+Found vault key
+No existing reuse information for OCIR_HOST_VAULT, continuing
+Checking if secret OCIR_HOST_VAULT already exists
+secret OCIR_HOST_VAULT Does not exist, creating it and setting it to dxb.ocir.io and description OCIR hostname
+The OCID for the OCIR_HOST_VAULT secret is ocid1.vaultsecret.oc1.uk-london-1.amaaaaaaq54j26aaquv2oxfcvd7lm2sex4aqwfzy5ubwd6znzjhsv6obpcna
+Loading existing settings information
+Found vault
+Found vault key
+No existing reuse information for OCIR_STORAGE_NAMESPACE_VAULT, continuing
+Checking if secret OCIR_STORAGE_NAMESPACE_VAULT already exists
+secret OCIR_STORAGE_NAMESPACE_VAULT Does not exist, creating it and setting it to axqyfhi1mo8s and description OCIR Storage namespace
+The OCID for the OCIR_STORAGE_NAMESPACE_VAULT secret is ocid1.vaultsecret.oc1.uk-london-1.amaaaaaaq54j26acrs3y52m7y6ynmqc2ewsjirew6ta5vncjxi63z5c3kzoa
+  ```
+  
+  The script will set the secrets up based on information gathered when the OCIR container images were created. It will display the OCID's for the two secrets. When you do the next step these will no longer be visible, so please copy these into a text editor (along with the associate secret name !) or note pad as you will need this information when you update the build_spec.yaml file.
+  
+  Note that if the secrets with the same names already exist or have been scheduled for deletion the output will vary slightly, you will be prompted by the script if any input is needed, and it will warn you if any existing values do not match the values used by the script. 
 
 ## Task 3: Updating the build_spec.yaml
 
