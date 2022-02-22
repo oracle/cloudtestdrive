@@ -27,7 +27,7 @@ We need to go to the Vault service page
   ![](images/vault-service-chose-compartment.png)  
   
 
-  3. Once you have the right compartment selected you will see a list of vaults in it. The tenancy I used to do the screen grabs is used for many things so there are multiple vaults already listed, but in a free trial there probabaly won't be any in the list. Click the **Create Vault** button to start the wizard
+  3. Once you have the right compartment selected you will see a list of vaults in it. The tenancy I used to do the screen grabs is used for many things so there are multiple vaults already listed, but in a free trial there probably won't be any in the list. Click the **Create Vault** button to start the wizard
   
   ![](images/vault-create-vault.png)
 

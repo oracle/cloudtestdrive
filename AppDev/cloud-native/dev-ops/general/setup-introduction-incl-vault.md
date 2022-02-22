@@ -50,3 +50,10 @@ It may sometimes be in a rather inconveniently placed and obscuring part of the 
 ### Prerequisites
 
 You must have an existing Oracle Kubernetes  cluster with the storefront and stockmanmager microservices deployed and connected to an Oracle Autonomous Transaction Processing database. If you are running this as part of the larger Kubernetes or Helidon and Kubernetes labs you will have already created that environment, if you are doing this as a standalone lab then you should have completed the **Creating the environment** modules and tested that you can retrieve data from the microservices.
+
+Right, let's get started with the lab setup, please click the **Devops setup - setting up your vault** in the labs modules list to get going on the lab specific setup.
+
+## Acknowledgements
+
+* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Last Updated By** - Tim Graves, February 2022

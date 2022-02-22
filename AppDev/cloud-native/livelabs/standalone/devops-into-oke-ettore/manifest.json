@@ -24,7 +24,7 @@
         },
 		{
           "title": "Devops setup - setting up your vault",
-          "filename": "../../../dev-ops/general/environment-setup/vault-setup.md"
+          "filename": "../../../scripted-setup/script-driven-vault-setup.md"
         },
 		{
           "title": "Devops setup - configuring ssh access to OCI API's'",
