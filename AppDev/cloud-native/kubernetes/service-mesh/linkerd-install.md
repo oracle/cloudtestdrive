@@ -773,7 +773,7 @@ This will setup the tunnel for you. You can then access linkerd and the grafana 
 
 </details>
 
-### Task 5e: Enabling our pods for linkerd
+## Task 6: Enabling our namespace and pods for linkerd
 
 In the linkerd UI you will have seen that it was only active on the linkerd namespace, none of the other services were reporting (in the Grafana output would have seen the namespaces monitored count was 1, in the main web page there was only information displayed on the linkerd namespace)
 
