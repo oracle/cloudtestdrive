@@ -443,7 +443,7 @@ You can see that the storefront pod (port 9080) and stockmanager (port 9081) pod
 
   ![prometheus-pods-storefront-updated](images/prometheus-pods-storefront-updated.png)
 
-### Task 6: Let's look at our captured data
+## Task 6: Let's look at our captured data
 Now we have configured Prometheus to scrape the data from our services we can look at the data it's been capturing.
 
   1. Return to the Graph page in the Prometheus web page
