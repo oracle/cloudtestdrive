@@ -213,9 +213,9 @@ The Helm chart will automatically create a couple of small persistent volumes to
 
 
 
-  31 Installing Prometheus is simple, we just use helm. In the OCI Cloud Shell type the following.
+  1. Installing Prometheus is simple, we just use helm. In the OCI Cloud Shell type the following.
   
-  - `helm install prometheus prometheus-community/prometheus --namespace monitoring --version 14.4.1 --set server.ingress.enabled=true --set server.ingress.hosts="{prometheus.monitoring.$EXTERNAL_IP.nip.io}" --set server.ingress.tls[0].secretName=tls-prometheus --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-type"=basic --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-secret"=web-ingress-auth --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-realm"="Authentication Required"`
+  - `helm install prometheus prometheus-community/prometheus --namespace monitoring --version 14.4.1 --set server.ingress.enabled=true --set server.ingress.hosts="{prometheus.monitoring.$EXTERNAL_IP.nip.io}" --set server.ingress.tls[0].secretName=tls-prometheus --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-type"=basic --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-secret"=web-ingress-auth --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-realm"="Authentication Required" --set alertmanager.persistentVolume.enabled=false --set server.persistentVolume.enabled=false --set pushgateway.persistentVolume.enabled=false`
   
   ```
   NAME: prometheus
@@ -258,9 +258,10 @@ Get the PushGateway URL by running these commands in the same shell:
 For more information on running Prometheus, visit:
 https://prometheus.io/
 ```
-Note that it will take a short while for the Prometheus service to start. Check the dashboard and wait for the `prometheus-service` pod to be Ready or if you prefer the CLI `kubectl get pods -n monitoring`.
+
+Note that it will take a short while for the Prometheus service to start, but to speed this up we have disabled the use of persistent storage - of course in a production environment you would **not** do this ! Check the dashboard and wait for the `prometheus-service` pod to be Ready or if you prefer the CLI `kubectl get pods -n monitoring`.
   
-## Task 4 accessing Prometheus
+## Task 4 Accessing Prometheus
 Let's go to the service web page
 
   1. In your web browser open up the following link (replace <External IP> with the IP for your Load balancer) - you may have to accept it as an unsafe page due to using a self-signed root certificate.
@@ -370,128 +371,39 @@ map[prometheus.io/path:/metrics prometheus.io/port:9080 prometheus.io/scrape:tru
 ***However***
 In most cases we don't want these to be a temporary change, we want the Prometheus to monitor our pods if they restart (or we re-deploy)
 
-  5. In the OCI Cloud Shell Navigate to the helidon-kubernetes folder
-  
-  - `cd $HOME/helidon-kubernetes` 
-  
-  6. Edit the file `storefront-deployment.yaml`
-  
-  7. Locate the pod annotations (part of the spec / template / metadata section) which are currently commented out :
+ The deployment files in the `$HOME/helidon-kubernetes` directory have the annotations commented out when they were cloned from git. Rather than edit the YAML (which can lead to format errors if the indentation doesn't line up) we're going to run a script that will remove the comments and redeploy the services with the updated annotations for us, if you wanted you could of course do this by hand !
 
+  5. Switch to the monitoring directory. In the OCI CLoud shell type
+  
+   - `cd $HOME/helidon-kubernetes/monitoring-kubernetes` 
+  
+  6. Run the script
+  
+  - `bash configure-pods-for-prometheus.sh `
+  
   ```
-   metadata:
-      labels:
-        app: storefront
-#      annotations:
-#        prometheus.io/path: /metrics
-#        prometheus.io/port: "9080"
-#        prometheus.io/scrape: "true"
-    spec:
-      containers:
-      - name: storefront
+deployment.apps/stockmanager configured
+deployment.apps/storefront configured
 ```
-
-  8. Remove the comment symbol (the #) in front of the annotations so the section now looks like
+  
+  7. The deployment files now contains annotations like the following
    
   ```
-   metadata:
-      labels:
-        app: storefront
       annotations:
         prometheus.io/path: /metrics
         prometheus.io/port: "9080"
         prometheus.io/scrape: "true"
     spec:
       containers:
-      - name: storefront
 ```
-Be **very** careful to only remove the # character and **no other whitespace**.
 
-  9. Save the changes in this file
+  The first path and port annotations define the path and port the metrics service is running on.
   
-  10. Edit the file `stockmanager-deployment.yaml` so it now has a pod annotations section that looks like 
-
-  ```
- template:
-    metadata:
-      labels:
-        app: stockmanager
-      annotations:
-        prometheus.io/path: /metrics
-        prometheus.io/port: "9081"
-        prometheus.io/scrape: "true"
-    spec:
-      containers:
-      - name: stockmanager
-```
-
-  11. Now run the script **undeploy.sh** to remove the deployments
-  
-  -  `bash undeploy.sh`
-
-  ``` 
-Deleting storefront deployment
-deployment.apps "storefront" deleted
-Deleting stockmanager deployment
-deployment.apps "stockmanager" deleted
-Deleting zipkin deployment
-deployment.apps "zipkin" deleted
-Kubenetes config is
-NAME                               READY   STATUS    RESTARTS   AGE
-pod/stockmanager-bd44bbbb7-qk6g9   1/1     Running   0          8h
-pod/storefront-564dd99db9-fzf8s    1/1     Running   0          8h
-pod/zipkin-88c48d8b9-tjvcg         1/1     Running   0          8h
-
-NAME                   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE
-service/stockmanager   ClusterIP   10.100.156.12    <none>        8081/TCP,9081/TCP   8h
-service/storefront     ClusterIP   10.110.88.187    <none>        8080/TCP,9080/TCP   8h
-service/zipkin         ClusterIP   10.101.129.223   <none>        9411/TCP            8h
-
-NAME                                     DESIRED   CURRENT   READY   AGE
-replicaset.apps/stockmanager-bd44bbbb7   1         1         1       8h
-replicaset.apps/storefront-564dd99db9    1         1         1       8h
-replicaset.apps/zipkin-88c48d8b9         1         1         1       8h
-```
-This script just does a kubectl delete -f on each of the deployments. 
-
-  12. Now recreate the deployments using the updated yaml
-  
-  -  `bash deploy.sh `
-
-  ```
-Creating zipkin deployment
-deployment.apps/zipkin created
-Creating stockmanager deployment
-deployment.apps/stockmanager created
-Creating storefront deployment
-deployment.apps/storefront created
-Kubenetes config is
-NAME                               READY   STATUS              RESTARTS   AGE
-pod/stockmanager-d6cc5c9b7-f9dnf   0/1     ContainerCreating   0          1s
-pod/storefront-588b4d69db-vnxgg    0/1     ContainerCreating   0          1s
-pod/zipkin-88c48d8b9-x8b6t         0/1     ContainerCreating   0          1s
-
-NAME                   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE
-service/stockmanager   ClusterIP   10.100.156.12    <none>        8081/TCP,9081/TCP   8h
-service/storefront     ClusterIP   10.110.88.187    <none>        8080/TCP,9080/TCP   8h
-service/zipkin         ClusterIP   10.101.129.223   <none>        9411/TCP            8h
-
-NAME                           READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/stockmanager   0/1     1            0           1s
-deployment.apps/storefront     0/1     1            0           1s
-deployment.apps/zipkin         0/1     1            0           1s
-
-NAME                                     DESIRED   CURRENT   READY   AGE
-replicaset.apps/stockmanager-d6cc5c9b7   1         1         0       1s
-replicaset.apps/storefront-588b4d69db    1         1         0       1s
-replicaset.apps/zipkin-88c48d8b9         1         1         0       1s
-```
-
-This script just does a kubectl apply -f on each of the deployments. 
+  The scrape annotation is detected by Prometheus and as in this case it's set to true will trigger Prometheus to start looking for metrics data. This is why we didn't have to configure Prometheus itself, and only needed to 
 
 If we use kubectl to get the status after a short while (the pods may have to wait for their readiness probes to be operational) we'll see everything is working as expected and the pods are Running
 
-  13. View status: `kubectl get all`
+  8. View status: `kubectl get all`
 
   ```
 NAME                               READY   STATUS    RESTARTS   AGE
@@ -505,31 +417,33 @@ service/storefront     ClusterIP   10.110.88.187    <none>        8080/TCP,9080/
 service/zipkin         ClusterIP   10.101.129.223   <none>        9411/TCP            8h
 
 NAME                           READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/stockmanager   1/1     1            1           79s
-deployment.apps/storefront     1/1     1            1           79s
-deployment.apps/zipkin         1/1     1            1           79s
+deployment.apps/stockmanager   1/1     1            1           1h
+deployment.apps/storefront     1/1     1            1           1h
+deployment.apps/zipkin         1/1     1            1           1h
 
 NAME                                     DESIRED   CURRENT   READY   AGE
 replicaset.apps/stockmanager-d6cc5c9b7   1         1         1       79s
 replicaset.apps/storefront-588b4d69db    1         1         1       79s
-replicaset.apps/zipkin-88c48d8b9         1         1         1       79s
+replicaset.apps/stockmanager-2fae51269   1         1         1       1h
+replicaset.apps/storefront-a458e8bc51    1         1         1       1h
+replicaset.apps/zipkin-88c48d8b9         1         1         1       1h
 ```
 
-Note we are doing an undeploy and deploy to ensure we have a known state. If we'd just re-done the deploy only, Kubernetes would have acted like it was an upgrade of the deployments and we'd have seen pods terminating, while new ones were being created and additional replica sets. We saw how this actually works in the rolling upgrade lab.
+  We actually redeployed tghe pods (so applied an updated configuration) this is why we see multiple replica sets. Kubernetes has acted in the same way as if it was an upgrade of the deployment images of other configuration information and if we'd run the kubectl command quickly enough the new replica sets and pods being created before the old pods were terminated. We saw how this actually works in the rolling upgrade lab.
 
-  14. Return to your browser and reload the Prometheus Status page
+  9. Return to your browser and reload the Prometheus Status page
 
 You will see that there are 2 pods showing as being discovered, previously it was 0
 
   ![prometheus-pods-list-updated](images/prometheus-pods-list-updated.png)
 
-  15. Click on the **show more** button next to the kubernetes-pods label
+  10. Click on the **show more** button next to the kubernetes-pods label
 
 You can see that the storefront pod (port 9080) and stockmanager (port 9081) pods are no longer being dropped and there is now data in the target labels column. The actual data services for storefont (port 8080) and stockmanager (port 8081) are however still dropped.
 
   ![prometheus-pods-storefront-updated](images/prometheus-pods-storefront-updated.png)
 
-### Task 3c: Let's look at our captured data
+### Task 6: Let's look at our captured data
 Now we have configured Prometheus to scrape the data from our services we can look at the data it's been capturing.
 
   1. Return to the Graph page in the Prometheus web page
@@ -648,7 +562,7 @@ Prometheus was not designed to be a high end graphing tool, the graphs cannot fo
 
 ---
 
-## Task 6: Tidying up the environment
+## Task 7: Tidying up the environment
 
 If you are going to do the Visualizing with Gafana module please do **not** do the following, but return to the introduction or jump to the Visualizing With Grafana module
 
