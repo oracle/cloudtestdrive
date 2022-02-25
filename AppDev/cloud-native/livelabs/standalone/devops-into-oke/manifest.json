@@ -35,12 +35,8 @@
           "filename": "../../../scripted-setup/script-driven-vault-setup.md"
         },
 		{
-          "title": "Devops setup - configuring ssh access to OCI API's'",
-          "filename": "../../../dev-ops/general/environment-setup/configuring-for-ssh-access.md"
-        },
-		{
-          "title": "Devops setup - configuring security policies",
-          "filename": "../../../dev-ops/general/environment-setup/security-setup.md"
+          "title": "Devops setup - configuring ssh access to OCI API's, defining groups and policies",
+          "filename": "../../../dev-ops/general/environment-setup/configuring-for-devops.md"
         },
 		{
           "title": "Devops - Creating your DevOps project",

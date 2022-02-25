@@ -25,6 +25,9 @@ Using the OCI Cloud shell and Browser User Interface we will :
 
 Ensure that you have Created your Kubernetes environment, your devops project, your OCI code repo and uploaded the sample code.
 
+If you use the scripts to help setup your vault variables  you are assumed to have the latest version in the `$HOME/helidon-kubernetes` folder, you will probably have checked this earlier in the lab.
+
+
 ## Task 1: Exploring the build_spec.yaml
 
   1. Open the OCI Code repo (called `cloudnative-helidon-storefront`) you created in your project, navigate to the `helidon-storefront-full/yaml/build` directory, open the `build_spec.yaml` file
@@ -308,7 +311,7 @@ It will take a short while to create the secret, but you can carry on while that
   
 </details>
 
-  Let's run the script to set everything up. You must have already setup the OCIR images in the earlier setup stage.
+  Assuming you chose to use the scripts rather than setting this up manually let's run it. You must have already setup the OCIR images in the earlier setup stage.
   
   Switch to the right directory. In the OCI cloud shell type
   
