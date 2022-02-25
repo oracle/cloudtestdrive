@@ -58,7 +58,7 @@ To start with we're going to create a the OCI Code repo in your project.
   
   ![](images/code-repo-create-repo-button.png)
 
-  4. Name the repository `cloudnative-storefront-helidon`, Provide a description if you like, but leave the default branch name blank (it will be set to `main`). Click the **Create repository** button
+  4. Name the repository `cloudnative-helidon-storefront`, Provide a description if you like, but leave the default branch name blank (it will be set to `main`). Click the **Create repository** button
   
   ![](images/code-repo-create-form.png)
 

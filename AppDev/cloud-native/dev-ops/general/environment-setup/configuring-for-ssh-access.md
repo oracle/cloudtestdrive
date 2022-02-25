@@ -190,7 +190,7 @@ Next we need to setup our SSH configuration file, to do that we need to get some
   
 ```
 Host devops.scmservice.*.oci.oraclecloud.com
-  User <your username>@<tenancy name>
+  User \<your username\>@\<tenancy name\>
   IdentityFile ~/.ssh/id_rsa
 ```
 
