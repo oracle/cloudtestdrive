@@ -338,7 +338,7 @@ secret OCIR_STORAGE_NAMESPACE_VAULT Does not exist, creating it and setting it t
 The OCID for the OCIR_STORAGE_NAMESPACE_VAULT secret is ocid1.vaultsecret.oc1.uk-london-1.amaaaaaaq54j26acrs3y52m7y6ynmqc2ewsjirew6ta5vncjxi63z5c3kzoa
   ```
   
-  The script will set the secrets up based on information gathered when the OCIR container images were created. It will display the OCID's for the two secrets. When you do the next step these will no longer be visible, so please copy these into a text editor (along with the associate secret name !) or note pad as you will need this information when you update the build_spec.yaml file.
+  The script will set the secrets up based on information gathered when the OCIR container images were created. It will display the OCID's for the two secrets. When you do the next step these will no longer be visible, so please copy these into a text editor (along with the associated secret name !) or note pad as you will need this information when you update the build_spec.yaml file.
   
   Note that if the secrets with the same names already exist or have been scheduled for deletion the output will vary slightly, you will be prompted by the script if any input is needed, and it will warn you if any existing values do not match the values used by the script. 
 
