@@ -27,7 +27,7 @@ Ensure that you have Created your Kubernetes environment, your devops project, y
 
 ## Task 1: Exploring the build_spec.yaml
 
-  1. Open the OCI Code repo (called `cloudnative-storefront-helidon`) you created in your project, navigate to the `helidon-storefront-full/yaml/build` directory, open the `build_spec.yaml` file
+  1. Open the OCI Code repo (called `cloudnative-helidon-storefront`) you created in your project, navigate to the `helidon-storefront-full/yaml/build` directory, open the `build_spec.yaml` file
   
   2. Scroll down past the Copyright text
 
@@ -136,16 +136,16 @@ Let's have a look at the other steps, note that from now on I won't include the 
 
 ```
  - type: Command
-    name: "Install local JDK11"
+    name: "Install local JDK17"
     timeoutInSeconds: 10000
     command: |
-      cd ~
       mkdir InstalledSoftware
       cd InstalledSoftware
-      wget -q https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_linux-x64_bin.tar.gz
-      tar -xf openjdk-11+28_linux-x64_bin.tar.gz
+      wget -q https://download.oracle.com/java/17/latest/jdk-17_linux-x64_bin.tar.gz
+      tar xf *tar.gz
+      rm *tar.gz
       ls -l
-      export JAVA_HOME=~/InstalledSoftware/jdk-11
+      export JAVA_HOME=`echo -n ~/InstalledSoftware/jdk-*`
       export PATH=$JAVA_HOME/bin:$PATH
       echo Path is
       echo $PATH
