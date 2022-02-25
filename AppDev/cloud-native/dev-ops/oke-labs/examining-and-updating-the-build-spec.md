@@ -449,7 +449,7 @@ To ssh://devops.scmservice.uk-london-1.oci.oraclecloud.com/namespaces/lrn2df6gh9
  
 Our changes (including the creation of the new branch) have now been uploaded to the OCI Code repo.
 
-  4. Navigate to the `cloud-native-storefront` Code Repository in your project, be sure to select the `my-lab-branch` in the branch selector - your changes are in this banch, not the main branch.
+  4. Navigate to the `cloudnative-helidon-storefront` Code Repository in your project, be sure to select the `my-lab-branch` in the branch selector - your changes are in this branch, not the main branch.
   
   ![](images/code-repo-select-my-lab-branch.png)
   

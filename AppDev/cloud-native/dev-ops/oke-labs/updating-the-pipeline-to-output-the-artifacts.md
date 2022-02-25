@@ -62,7 +62,7 @@ Now we'll create  the artifact registry, this will hold the Kubernetes manifests
   
   ![](images/artifact-reg-create-reg-button.png)
   
-  3. In the **Create repository** popup name it <Your initials>DevOps, **CRITICAL** set the immutable to be off, in production you  wouldn't do this as immutable artifacts can never be re-used (this is for security purposes, and also to ensure that deployments are reproducible) but for the lab where you will be doing multiple runs that would just make things difficult as we'd need to update the version every time we did a run, so we'll allow for artifacts to be changed for now. Click the **Create** button.
+  3. In the **Create repository** popup name it `<Your initials>DevOps`, **CRITICAL** set the immutable to be off, in production you  wouldn't do this as immutable artifacts can never be re-used (this is for security purposes, and also to ensure that deployments are reproducible) but for the lab where you will be doing multiple runs that would just make things difficult as we'd need to update the version every time we did a run, so we'll allow for artifacts to be changed for now. Click the **Create** button.
   
   ![](images/artifact-repo-create-instance-form.png)
   

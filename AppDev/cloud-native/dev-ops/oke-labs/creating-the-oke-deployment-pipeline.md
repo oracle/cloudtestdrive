@@ -129,7 +129,7 @@ Our stage that applies the manifests for the deployment and service will wait fo
 
 Let's add a stage that will deploy the ingress rule to the OKE cluster.
 
-  1. **Below** the stage we just added click the **+** symbol, Then int he manu select **Add stage**
+  1. **Below** the stage we just added click the **+** symbol, Then in the menu select **Add stage**
   
   ![](images/deploy-pipelines-add-second-stage-start.png)
 
@@ -159,7 +159,7 @@ We don't need to add the container image here as it's specified in the deploymen
 
 ---
 </details>
-<details><summary><b>Why are the other stage types ?</b></summary>
+<details><summary><b>What are the other stage types ?</b></summary>
 
 Note - other types of stage are :
 Deploy types Deploy to Oracle Functions and OCI Instance groups (this allows for deployment into virtual machines and bare metal services)
