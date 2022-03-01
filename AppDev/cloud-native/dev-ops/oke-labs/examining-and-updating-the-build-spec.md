@@ -373,7 +373,7 @@ We're about to be making changes to the code, so let's create a new git branch t
 
 Note that your new my-lab-branch branch is the one currently checked out (is has a `*` in front of it)
 
-  4. Copy the build_spec.yaml file to the root of the project, this is where the build tools loook for it by default.
+  4. Copy the build_spec.yaml file to the root of the project, this is where the build tools look for it by default.
   
   - `cp helidon-storefront-full/yaml/build/build_spec.yaml .`
 
