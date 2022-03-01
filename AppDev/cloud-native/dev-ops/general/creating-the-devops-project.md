@@ -56,7 +56,7 @@ Now we can create the DevOps service instance
   
   ![](images/devops-create-project-initial.png)
 
-  3. Provide a name for your project along the lines of `<YOUR INITIALS>DevOpsProject`, Add a description if you want, Click the **Select Topic** button, this will open a new topic selection popup
+  3. Provide a name for your project, this should be `<YOUR INITIALS>DevOpsProject` where you replace `<YOUR INITIALS>` with the actual initials you provided when you ran the `core-environment-setup.sh` script at the start of the lab, sofor me the name would be `tgDevOpsProject` If you don't name your project  like this then you will be unable to use the scripts we provide to do some tasks which will mean you take longer in the labs. Add a description if you want, Click the **Select Topic** button, this will open a new topic selection popup
   
   ![](images/devops-create-project-form-part1.png)
   
@@ -74,7 +74,7 @@ After a short while the project will be created and you will be at the main page
   
 ## Task 3: Enable logging in the project
 
-The DevOps services usine the OCI logging service to record ths output it generates during the pipeline runs. This will mean that the build logs are available for use in other tooling.
+The DevOps services used the OCI logging service to record the output it generates during the pipeline runs. This will mean that the build logs are available for use in other tooling.
 
   1. On the page of your newly created project click the **Enable Log** button which will take you to the log management page
   

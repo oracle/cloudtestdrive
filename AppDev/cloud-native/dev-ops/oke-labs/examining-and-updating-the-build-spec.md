@@ -25,6 +25,9 @@ Using the OCI Cloud shell and Browser User Interface we will :
 
 Ensure that you have Created your Kubernetes environment, your devops project, your OCI code repo and uploaded the sample code.
 
+If you use the scripts to help setup your vault variables  you are assumed to have the latest version in the `$HOME/helidon-kubernetes` folder, you will probably have checked this earlier in the lab.
+
+
 ## Task 1: Exploring the build_spec.yaml
 
   1. Open the OCI Code repo (called `cloudnative-helidon-storefront`) you created in your project, navigate to the `helidon-storefront-full/yaml/build` directory, open the `build_spec.yaml` file
@@ -308,7 +311,7 @@ It will take a short while to create the secret, but you can carry on while that
   
 </details>
 
-  Let's run the script to set everything up. You must have already setup the OCIR images in the earlier setup stage.
+  Assuming you chose to use the scripts rather than setting this up manually let's run it. You must have already setup the OCIR images in the earlier setup stage.
   
   Switch to the right directory. In the OCI cloud shell type
   
@@ -338,7 +341,7 @@ secret OCIR_STORAGE_NAMESPACE_VAULT Does not exist, creating it and setting it t
 The OCID for the OCIR_STORAGE_NAMESPACE_VAULT secret is ocid1.vaultsecret.oc1.uk-london-1.amaaaaaaq54j26acrs3y52m7y6ynmqc2ewsjirew6ta5vncjxi63z5c3kzoa
   ```
   
-  The script will set the secrets up based on information gathered when the OCIR container images were created. It will display the OCID's for the two secrets. When you do the next step these will no longer be visible, so please copy these into a text editor (along with the associate secret name !) or note pad as you will need this information when you update the build_spec.yaml file.
+  The script will set the secrets up based on information gathered when the OCIR container images were created. It will display the OCID's for the two secrets. When you do the next step these will no longer be visible, so please copy these into a text editor (along with the associated secret name !) or note pad as you will need this information when you update the build_spec.yaml file.
   
   Note that if the secrets with the same names already exist or have been scheduled for deletion the output will vary slightly, you will be prompted by the script if any input is needed, and it will warn you if any existing values do not match the values used by the script. 
 
@@ -370,7 +373,7 @@ We're about to be making changes to the code, so let's create a new git branch t
 
 Note that your new my-lab-branch branch is the one currently checked out (is has a `*` in front of it)
 
-  4. Copy the build_spec.yaml file to the root of the project, this is where the build tools loook for it by default.
+  4. Copy the build_spec.yaml file to the root of the project, this is where the build tools look for it by default.
   
   - `cp helidon-storefront-full/yaml/build/build_spec.yaml .`
 

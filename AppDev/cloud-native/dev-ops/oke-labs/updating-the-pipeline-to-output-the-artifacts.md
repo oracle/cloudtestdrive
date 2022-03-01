@@ -181,7 +181,7 @@ Now we need to define the artifact. We could have previously defined the artifac
 
   ![](images/build-pipeline-pipeline-add-second-stage-deliver-artifacts-part-2-define-container-artifact-start.png)
   
-  11. Name it `StorefrontContainer`, This time the type should **Container image repository**, Artifact source is `${OCIR_HOST}/${OCIR_STORAGE_NAMESPACE}/${YOUR_INITIALS}devops/storefront:${STOREFRONT_VERSION}`, Make sure that **Replace parameters used in this artifact** is set to `Yes substitute placeholders`. Click the **Add** button.
+  11. Name it `StorefrontContainer`, This time the type should **Container image repository**, Artifact source is `${OCIR_HOST}/${OCIR_STORAGE_NAMESPACE}/${YOUR_INITIALS}devops/storefront:${STOREFRONT_VERSION}` Make sure that **Replace parameters used in this artifact** is set to `Yes substitute placeholders`. Click the **Add** button.
 
   ![](images/build-pipeline-pipeline-add-second-stage-deliver-artifacts-part-2-define-container-artifact-form.png)
 
