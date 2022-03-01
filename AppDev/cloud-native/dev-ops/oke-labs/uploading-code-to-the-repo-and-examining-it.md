@@ -142,7 +142,7 @@ RSA key fingerprint is SHA1:YFX2kIUoZYJ1y0SSn1E+MmCOPiE.
 Are you sure you want to continue connecting (yes/no)?
 ```
   
-  You **may** be warned that there is a problem proving the authenticity of the remove service (this only happens once, the first time you try connecting to an OCI code repo with this ssh key). If you are prompted just enter `yes`
+  You **may** be warned that there is a problem proving the authenticity of the remove service (this only happens once, the first time you try connecting to an OCI code repo with this ssh key). If you are prompted just enter `yes` (I know usually my scripts ask you to enter `y` but this isn't one of mine and the prompt comes from the ssh code -  you do actually need to enter `yes`)
   
   ```
   Warning: Permanently added 'devops.scmservice.me-dubai-1.oci.oraclecloud.com,129.148.213.133' (RSA) to the list of known hosts.
