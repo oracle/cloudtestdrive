@@ -43,7 +43,7 @@ D/ You want to automatically create code based on the API.
 
 To address this the idea of self describing API end points was developed, originally this was developed by an application having a "well known" URL that just returned a manually maintained text document that was distributed as part of the jar file. It then evolved into machine readable data formats, for example the Swagger REST API description format based on JSON, which has since been donated to the community under the name Open API and is now the de-facto data format. For a more detailed history see the Wikipedia [Open API page.](https://en.wikipedia.org/wiki/OpenAPI_Specification)
 
-OpenAPI describes the data format, but there has also been the development of tooling and programming approaches to the automatic runtime generation of the OpenAPI data based on information in the source code. This means that the OpenAPI docuemntation delivered by the service is automatically in sync with the actuall code of the service itself.
+OpenAPI describes the data format, but there has also been the development of tooling and programming approaches to the automatic runtime generation of the OpenAPI data based on information in the source code. This means that the OpenAPI documentation delivered by the service is automatically in sync with the actual code of the service itself.
 
 In the case of Microprofile (and this Helidon as a Microprofile implementation) this was done through the MicroProfile OpenAPI specification which defines annotations to be used when generating the OpenAPI documents and associated the control mechanisms (for example to exclude API elements that are not intended to be publicly exposed)
 
@@ -59,6 +59,12 @@ B/ When the service is built the build process creates an index (usually package
 
 In general the costs of building and storing an index are way smaller than those of scanning each time, and this is the approach that Helidon uses when packaging a service using Maven builds, though when working with within Eclipse (which has it's own built in version of Maven) the compile process only does a scan as otherwise you'd have to build the index each time you saved a file which would slow down the development process (This is why you may see warning messages about missing jandex.idx files when running the micro-servcies in Eclipse)
 
+<details><summary><b>How do I enable the OpenAPI support in Helidon</b></summary>
+
+To use OpenAPI you need to include the right jar files in your build. That's already been done for you in the Maven pom.xml file when the Helidon parent project was imported, so you don;t need to do anything.
+ 
+</details>
+
 To build the index Heldion uses a tool called jandex (Java ANnotaiton inDEXer) to build the index. We will see later in this section how that's run.
 
 ## Task 3: Annotating the Storefront
@@ -69,7 +75,7 @@ You may of course chose to document other services, for example the stockmanager
 
 ### Task 3a: Accessing the OpenAPI documentation
 
-  1. Make sure that the storefront microservcies is running.
+  1. Make sure that the storefront microservice is running.
   
   2. Check you can access the generated OpenAPI documentation using curl
 
@@ -79,7 +85,7 @@ You may of course chose to document other services, for example the stockmanager
 info: 
   title: Generated API
   version: '1.0'
-openapi: 3.0.1
+openapi: 3.0.3
 paths:
   /minimumChange: 
     post: 
@@ -107,11 +113,17 @@ paths:
           description: OK
   /store/reserveStock: 
     post: 
-      requestBody:  {}
+      requestBody: 
+        content:
+          application/json: 
+            schema: 
+              type: object
       responses:
         '200': 
           content:
-            application/json:  {}
+            application/json: 
+              schema: 
+                type: object
           description: OK
   /store/stocklevel: 
     get: 
@@ -179,7 +191,7 @@ info:
   description: Acts as a simple stock level tool for a post room or similar
   title: StorefrontApplication
   version: 0.0.1
-openapi: 3.0.1
+openapi: 3.0.3
 paths:
   /minimumChange: 
     post: 
@@ -229,7 +241,7 @@ info:
 
 This contains the information you supplied to the `@OpenAPIDefinition` annotation.
 
-  2. The `openapi: 3.0.1` simply defines what version of the OpenAPI document specification this document conforms to.
+  2. The `openapi: 3.0.3` simply defines what version of the OpenAPI document specification this document conforms to.
 
   3. Now let's look at the `paths` section
 
@@ -261,11 +273,17 @@ paths:
           description: OK
   /store/reserveStock: 
     post: 
-      requestBody:  {}
+      requestBody: 
+        content:
+          application/json: 
+            schema: 
+              type: object
       responses:
         '200': 
           content:
-            application/json:  {}
+            application/json: 
+              schema: 
+                type: object
           description: OK
   /store/stocklevel: 
     get: 
@@ -296,7 +314,7 @@ Helidon can generate the OpenAPI document in yaml (the default) or in JSON. To g
     "title": "StorefrontApplication",
     "version": "0.0.1"
   },
-  "openapi": "3.0.1",
+  "openapi": "3.0.3",
   "paths": {
     "/minimumChange":  {
       "post":  {
@@ -343,12 +361,22 @@ Helidon can generate the OpenAPI document in yaml (the default) or in JSON. To g
     "/store/reserveStock":  {
       "post":  {
         "requestBody":  {
-          },
+          "content": {
+            "application/json":  {
+              "schema":  {
+                "type": "object"
+              }
+            }
+          }
+        },
         "responses": {
           "200":  {
             "content": {
               "application/json":  {
+                "schema":  {
+                  "type": "object"
                 }
+              }
             },
             "description": "OK"
           }
@@ -375,6 +403,7 @@ Helidon can generate the OpenAPI document in yaml (the default) or in JSON. To g
     }
   }
 }
+
 
 ```
 
@@ -437,15 +466,21 @@ info:
   description: Acts as a simple stock level tool for a post room or similar
   title: StorefrontApplication
   version: 0.0.1
-openapi: 3.0.1
+openapi: 3.0.3
 paths:
   /store/reserveStock: 
     post: 
-      requestBody:  {}
+      requestBody: 
+        content:
+          application/json: 
+            schema: 
+              type: object
       responses:
         '200': 
           content:
-            application/json:  {}
+            application/json: 
+              schema: 
+                type: object
           description: OK
   /store/stocklevel: 
     get: 
@@ -479,11 +514,11 @@ As we've excluded the StartResource and ConfigurationResource on the basis that 
 The result will look like
 
   ```java
-
-    @Operation(summary = "List stock items", description = "Returns a list of all of the stock items currently held in the database (the list may be empty if there are no items)")
-	@APIResponse(description = "A set of ItemDetails representing the current data in the database", responseCode = "200", content = @Content(schema = @Schema(implementation = ItemDetails.class, type = SchemaType.ARRAY, example = "[{\"itemCount\": 10, \"itemName\": \"Pencil\"},"
-			+ "{\"itemCount\": 50, \"itemName\": \"Eraserl\"}," + "{\"itemCount\": 4600, \"itemName\": \"Pin\"},"
-			+ "{\"itemCount\": 100, \"itemName\": \"Book\"}]")))
+	@Metered(name = "listAllStockMeter", absolute = true)
+	@Operation(summary = "List stock items", description = "Returns a list of all of the stock items currently held in the database (the list may be empty if there are no items)")
+	@APIResponse(description = "A set of ItemDetails representing the current data in the database", responseCode = "200", content = @Content(schema = @Schema(name = "ItemDetails", implementation = ItemDetails.class, type = SchemaType.ARRAY), example = "[{\"itemCount\": 10, \"itemName\": \"Pencil\"},"
+			+ "{\"itemCount\": 50, \"itemName\": \"Eraser\"}," + "{\"itemCount\": 4600, \"itemName\": \"Pin\"},"
+			+ "{\"itemCount\": 100, \"itemName\": \"Book\"}]"))
 	public Collection<ItemDetails> listAllStock() {
 	....
 ```
@@ -512,7 +547,7 @@ There is one useful attribute for the `@Operation` annotation which is the `hidd
 
 `@APIResponse` defines what the results of the operation are, hopefully the responseCode indicates the HTTP status code this defines (more on different codes later) For reasons that are unclear this is defined as a String rather than a numeric code, or a StatusType value, I suspect this means you could use the response name rather than just the numeric code, but as most code generators would use the numeric value this seems a bit odd.
 
-The content attribute of the `@APIResponse` defines what the method returns, in this case an array of instances of ItemDetails.
+The content attribute of the `@APIResponse` defines what the method returns, in this case an array of instances of ItemDetails (we specify the name and that will be used later to refer to the ItemDetails, I'm unclear why it can't just extract the name automatically from the implementation class if a name isn't provided though). Note that it also shows some example text, This can be used by some code generation tools to auto generate a "stub" response for you.
 
 ---
 
@@ -520,24 +555,15 @@ The content attribute of the `@APIResponse` defines what the method returns, in 
 
 Let's look at the updated REST API description 
 
-  3. Stop the existing instance of storefront and restart it, tis will do a scan and the new annotations will be recognised.
+  3. Stop the existing instance of storefront and restart it, this will do it's usual scan and the new annotations will be recognized.
 
   4. Get the updated documentation, in a terminal window type
 
   - `curl -i http://localhost:8080/openapi`
   
-(The following has been truncated to only include the `paths:` section)
+(The following has been truncated to only include the `/store/stocklevel` part of the `paths:` section)
 
   ```yaml
-paths:
-  /store/reserveStock: 
-    post: 
-      requestBody:  {}
-      responses:
-        '200': 
-          content:
-            application/json:  {}
-          description: OK
   /store/stocklevel: 
     get: 
       description: Returns a list of all of the stock items currently held in the
@@ -546,10 +572,12 @@ paths:
         '200': 
           content:
             application/json: 
+              example: '[{"itemCount": 10, "itemName": "Pencil"},{"itemCount": 50,
+                "itemName": "Eraser"},{"itemCount": 4600, "itemName": "Pin"},{"itemCount":
+                100, "itemName": "Book"}]'
               schema: 
-                example: '[{"itemCount": 10, "itemName": "Pencil"},{"itemCount": 50,
-                  "itemName": "Eraserl"},{"itemCount": 4600, "itemName": "Pin"},{"itemCount":
-                  100, "itemName": "Book"}]'
+                items: 
+                  type: object
                 type: array
           description: A set of ItemDetails representing the current data in the database
       summary: List stock items
@@ -566,29 +594,29 @@ Let's now add annotations to the `/store/reserveStock` method that let's us desc
   6. Add the following annotations to the reserveStock method
 
   ```java
-    @Operation(summary = "Reserves a number of stock items", description = "reserves a number of stock items in the database. The number of stock items being reserved must be greater than the defined minimum change")
-	@APIResponse(description = "The updated stock details for the item", responseCode = "200", content = @Content(schema = @Schema(implementation = ItemDetails.class, example = "{\"itemCount\": 10, \"itemName\": \"Pencil\"}")))
+    	@Operation(summary = "Reserves a number of stock items", description = "reserves a number of stock items in the database. The number of stock items being reserved must be greater than the defined minimum change")
+	@APIResponse(description = "The updated stock details for the item", responseCode = "200", content = @Content(schema = @Schema(name = "ItemDetails", implementation = ItemDetails.class), example = "{\"itemCount\": 10, \"itemName\": \"Pencil\"}"))
 ```
 
   9. Add the following annotation to the reserveStock method itemRequest parameter
 
   ```java
-    @RequestBody(description = "The details of the item being requested", required = true, content = @Content(schema = @Schema(implementation = ItemRequest.class, example = "{\"requestedItem\", \"Pin\", \"requestedCount\",5}")))
+    @RequestBody(description = "The details of the item being requested", required = true, content = @Content(schema = @Schema(name = "ItemRequest", implementation = ItemRequest.class), example = "{\"requestedItem\",\"Pencil\",\"requestedCount\",5}"))
 ```
 
 The updated method declaration should now look like the following. Note that other annotations for metrics, timers etc. may not be as displayed here depending on what sections of the lab you've done. Comments have been omitted to simplify the text
 
   ```java
-	@POST
+    @POST
 	@Path("/reserveStock")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Timed(name = "reserveStockTimer")
 	@Fallback(StorefrontFallbackHandler.class)
 	@Operation(summary = "Reserves a number of stock items", description = "reserves a number of stock items in the database. The number of stock items being reserved must be greater than the defined minimum change")
-	@APIResponse(description = "The updated stock details for the item", responseCode = "200", content = @Content(schema = @Schema(implementation = ItemDetails.class, example = "{\"itemCount\": 10, \"itemName\": \"Pencil\"}")))
+	@APIResponse(description = "The updated stock details for the item", responseCode = "200", content = @Content(schema = @Schema(name = "ItemDetails", implementation = ItemDetails.class), example = "{\"itemCount\": 10, \"itemName\": \"Pencil\"}"))
 	public ItemDetails reserveStockItem(
-			@RequestBody(description = "The details of the item being requested", required = true, content = @Content(schema = @Schema(implementation = ItemRequest.class, example = "{\"requestedItem\", \"Pin\", \"requestedCount\",5}"))) ItemRequest itemRequest)
+			@RequestBody(description = "The details of the item being requested", required = true, content = @Content(schema = @Schema(name = "ItemRequest", implementation = ItemRequest.class), example = "{\"requestedItem\",\"Pencil\",\"requestedCount\",5}")) ItemRequest itemRequest)
 			throws MinimumChangeException, UnknownItemException, NotEnoughItemsException {
 ```
 
@@ -614,7 +642,6 @@ import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 (The following has been truncated to only include the reserveStock path in the `paths:` section)
 
   ```yaml
-paths:
   /store/reserveStock: 
     post: 
       description: reserves a number of stock items in the database. The number of
@@ -622,24 +649,24 @@ paths:
       requestBody: 
         content:
           application/json: 
+            example: '{"requestedItem","Pencil","requestedCount",5}'
             schema: 
-              example: '{"requestedItem", "Pin","requestedCount",5}'
+              type: object
         description: The details of the item being requested
         required: true
       responses:
         '200': 
           content:
             application/json: 
+              example: '{"itemCount": 10, "itemName": "Pencil"}'
               schema: 
-                example: '{"itemCount": 10, "itemName": "Pencil"}'
+                type: object
           description: The updated stock details for the item
       summary: Reserves a number of stock items
 
-
-
 ```
 
-We can see that there is a lot more into on the `/store/reserveStock` REST endpoint, and also on the argument, we can see that it's required and also a description.
+We can see that there is a lot more info on the `/store/reserveStock` REST endpoint, and also on the argument, we can see that it's required and also a description, but we don't actually see the details of the 
 
 ### Task 5c: Documenting the error status codes 
 
@@ -663,15 +690,13 @@ The updated method declaration should now look like this (comments omitted for c
 	@Timed(name = "reserveStockTimer")
 	@Fallback(StorefrontFallbackHandler.class)
 	@Operation(summary = "Reserves a number of stock items", description = "reserves a number of stock items in the database. The number of stock items being reserved must be greater than the defined minimum change")
-	@APIResponse(description = "The updated stock details for the item", responseCode = "200", content = @Content(schema = @Schema(implementation = ItemDetails.class, example = "{\"itemCount\": 10, \"itemName\": \"Pencil\"}")))
+	@APIResponse(description = "The updated stock details for the item", responseCode = "200", content = @Content(schema = @Schema(name = "ItemDetails", implementation = ItemDetails.class), example = "{\"itemCount\": 10, \"itemName\": \"Pencil\"}"))
 	@APIResponse(description = "The requested item does not exist", responseCode = "404")
 	@APIResponse(description = "The requested change does not meet the minimum level required for the change (i.e. is <= the minimumChange value)", responseCode = "406")
 	@APIResponse(description = "There are not enough of the requested item to fulfil your request", responseCode = "409")
 	public ItemDetails reserveStockItem(
-			@RequestBody(description = "The details of the item being requested", required = true, content = @Content(schema = @Schema(implementation = ItemRequest.class, example = "{\"requestedItem\", \"Pin\", \"requestedCount\",5}"))) ItemRequest itemRequest)
+			@RequestBody(description = "The details of the item being requested", required = true, content = @Content(schema = @Schema(name = "ItemRequest", implementation = ItemRequest.class), example = "{\"requestedItem\",\"Pencil\",\"requestedCount\",5}")) ItemRequest itemRequest)
 			throws MinimumChangeException, UnknownItemException, NotEnoughItemsException {
-		log.info("Requesting the reservation of " + itemRequest.getRequestedCount() + " items of "
-				+ itemRequest.getRequestedItem());
 ```
 
   2. Stop the storefront, re-start it as usual
@@ -680,10 +705,9 @@ The updated method declaration should now look like this (comments omitted for c
 
   - `curl -i http://localhost:8080/openapi`
   
-(The following has been truncated to only include the reseve stock path in the `paths:` section)
+(The following has been truncated to only include the `/store/reserveStock` path in the `paths:` section)
 
   ```yaml
-paths:
   /store/reserveStock: 
     post: 
       description: reserves a number of stock items in the database. The number of
@@ -691,11 +715,19 @@ paths:
       requestBody: 
         content:
           application/json: 
+            example: '{"requestedItem","Pencil","requestedCount",5}'
             schema: 
-              example: '{"requestedItem", "Pin","requestedCount",5}'
+              type: object
         description: The details of the item being requested
         required: true
       responses:
+        '200': 
+          content:
+            application/json: 
+              example: '{"itemCount": 10, "itemName": "Pencil"}'
+              schema: 
+                type: object
+          description: The updated stock details for the item
         '404': 
           description: The requested item does not exist
         '406': 
@@ -703,12 +735,6 @@ paths:
             for the change (i.e. is <= the minimumChange value)
         '409': 
           description: There are not enough of the requested item to fulfil your request
-        '200': 
-          content:
-            application/json: 
-              schema: 
-                example: '{"itemCount": 10, "itemName": "Pencil"}'
-          description: The updated stock details for the item
       summary: Reserves a number of stock items
 
 ```
@@ -731,6 +757,8 @@ Here we have documented a the typical set of http status codes that the method c
 
 
 ## Task 6: Defining our data
+
+You may have noticed that we don;t ac tually have any details of the data being transfered though, the content schema type is just object.
 
   1. Open the ItemRequest class in the com.oracle.labs.helidon.storefront.data package and add @Schema annotations
 
@@ -813,7 +841,7 @@ Where is the data we just added ? When we run the storefront and look in the Ope
 We've been relying on Java introspection to generate the index used for the OpenAPI documentation, though this is effective (up to a point), and means that the returned OpenAPI document represents your input it's not that efficient, or complete. In fact you may have noticed content similar to the following in your output
 
 ```
-2021.09.16 17:43:08.473 INFO io.helidon.microprofile.openapi.OpenApiCdiExtension !thread!: OpenAPI support could not locate the Jandex index file META-INF/jandex.idx so will build an in-memory index.
+2022.03.03 11:07:55.801 INFO io.helidon.microprofile.openapi.OpenApiCdiExtension !thread!: OpenAPI support could not locate the Jandex index file META-INF/jandex.idx so will build an in-memory index.
 This slows your app start-up and, depending on CDI configuration, might omit some type information needed for a complete OpenAPI document.
 Consider using the Jandex maven plug-in during your build to create the index and add it to your app.
 ```
@@ -859,19 +887,18 @@ Depending on the precise eclispe configuration there **may** be a resulting popu
 In the console tab you'll see output similar to the following
 
   ```
-[INFO] Scanning for projects...
 [INFO] ------------------------------------------------------------------------
 [INFO] Detecting the operating system and CPU architecture
 [INFO] ------------------------------------------------------------------------
 [INFO] os.detected.name: osx
 [INFO] os.detected.arch: x86_64
-[INFO] os.detected.version: 10.15
-[INFO] os.detected.version.major: 10
-[INFO] os.detected.version.minor: 15
+[INFO] os.detected.version: 12.2
+[INFO] os.detected.version.major: 12
+[INFO] os.detected.version.minor: 2
 [INFO] os.detected.classifier: osx-x86_64
 [INFO] 
 [INFO] -----------------< com.oracle.labs.helidon:storefront >-----------------
-[INFO] Building storefront 0.0.1
+[INFO] Building storefront 2.4.1
 [INFO] --------------------------------[ jar ]---------------------------------
 [INFO] 
 [INFO] --- maven-resources-plugin:2.7:resources (default-resources) @ storefront ---
@@ -885,8 +912,8 @@ In the console tab you'll see output similar to the following
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  1.233 s
-[INFO] Finished at: 2020-08-17T18:40:22+01:00
+[INFO] Total time:  13.783 s
+[INFO] Finished at: 2022-03-03T11:09:19Z
 [INFO] ------------------------------------------------------------------------
 
 ```
@@ -903,7 +930,7 @@ Towards the end of the output you can see that the Maven jandex plugin is run.
 
 Now we have created the index file we can use it.
 
-One key point here, the index file will always be used if it's present, this means that now you've created it if you make changes to the OpenAPI annotations unless you re-build the jandex.idx file (or delete it) then you will not get your updates changes. To re-build it just run the maven build again with the process-classes target.
+One key point here, the index file will always be used if it's present abd the code will not use introspection, this means that now you've created it if you make changes to the OpenAPI annotations unless you re-build the jandex.idx file (or delete it) then you will not get your updates changes. To re-build it just run the maven build again with the process-classes target.
 
   1. Run the storefront again
   
@@ -925,7 +952,7 @@ components:
       properties:
         itemCount: 
           description: The number of items listed as being available
-          example: '10'
+          example: 10
           format: int32
           type: integer
         itemName: 
@@ -933,7 +960,9 @@ components:
           example: Pencil
           type: string
       description: Details of the item in the database
-      example: '{"itemCount": 10, "itemName": "Pencil"}'
+      example:
+        itemCount: 10
+        itemName: Pencil
       type: object
     ItemRequest: 
       required:
@@ -943,7 +972,7 @@ components:
         requestedCount: 
           description: Number of the items being requested, this must be larger than
             the minimumChange
-          example: '5'
+          example: 5
           format: int32
           type: integer
         requestedItem: 
@@ -951,9 +980,8 @@ components:
           example: Pin
           type: string
       description: Details of a Item reservation request
-      example: '{"requestedItem", "Pin","requestedCount",5}'
+      example: '{"requestedItem", "Pin", "requestedCount",5}'
       type: object
-
 
 ```
 
@@ -969,27 +997,19 @@ The `components` section included details of the classes we use to transfer the 
       requestBody: 
         content:
           application/json: 
+            example: '{"requestedItem","Pencil","requestedCount",5}'
             schema: 
-              required:
-              - requestedCount
-              - requestedItem
-              properties:
-                requestedCount: 
-                  description: Number of the items being requested, this must be larger
-                    than the minimumChange
-                  example: '5'
-                  format: int32
-                  type: integer
-                requestedItem: 
-                  description: Name of the item being requested
-                  example: Pin
-                  type: string
-              description: Details of a Item reservation request
-              example: '{"requestedItem", "Pin","requestedCount",5}'
-              type: object
+              $ref: '#/components/schemas/ItemRequest'
         description: The details of the item being requested
         required: true
       responses:
+        '200': 
+          content:
+            application/json: 
+              example: '{"itemCount": 10, "itemName": "Pencil"}'
+              schema: 
+                $ref: '#/components/schemas/ItemDetails'
+          description: The updated stock details for the item
         '404': 
           description: The requested item does not exist
         '406': 
@@ -997,31 +1017,10 @@ The `components` section included details of the classes we use to transfer the 
             for the change (i.e. is <= the minimumChange value)
         '409': 
           description: There are not enough of the requested item to fulfil your request
-        '200': 
-          content:
-            application/json: 
-              schema: 
-                required:
-                - itemCount
-                - itemName
-                properties:
-                  itemCount: 
-                    description: The number of items listed as being available
-                    example: '10'
-                    format: int32
-                    type: integer
-                  itemName: 
-                    description: The name of the item
-                    example: Pencil
-                    type: string
-                description: Details of the item in the database
-                example: '{"itemCount": 10, "itemName": "Pencil"}'
-                type: object
-          description: The updated stock details for the item
       summary: Reserves a number of stock items
 ```
 
-Note that the description of the request now included information taken from the `@Schema` for the ItemRequest including the data types. the `200` response also includes more detailed information
+Note that the description of the request now has a schema field that refers into the components section (using the name we provided in the`@Schema`). The `200` response also does the same.
 
 ## More information
 The Microprofile OpenAPI specification is available from the [Microprofile open api guthub project page.](https://github.com/eclipse/microprofile-open-api)
