@@ -26,9 +26,9 @@ User information captured (initials and user identity) Entries for `USER_INITIAL
 
 <details><summary><b>User information or initials missing ?</b></summary>
 
-Can setup the user initials using the `$HOME/helidon-kubernetes/setup/common/initials-step.sh` script
+Can setup the user initials using the `$HOME/helidon-kubernetes/setup/common/initials-setup.sh` script
 
-Can setup the user ocid using the `$HOME/helidon-kubernetes/setup/common/user-identity-step.sh` script
+Can setup the user ocid using the `$HOME/helidon-kubernetes/setup/common/user-identity-setup.sh` script
 
 </details>
 
@@ -36,7 +36,7 @@ Compartment created - Entry for `COMPARTMENT_OCID`  in `$HOME/hk8sLabsSettings`
 
 <details><summary><b>Compartment info missing ?</b></summary>
 
-Can setup the compartment (or re-use and existing one) using the `$HOME/helidon-kubernetes/setup/common/compartment-step.sh` script
+Can setup the compartment (or re-use and existing one) using the `$HOME/helidon-kubernetes/setup/common/compartment-setup.sh` script
 
 </details>
 
@@ -44,7 +44,7 @@ Database created - Entry for `ATPDB_OCID`  in `$HOME/hk8sLabsSettings` and `$HOM
 
 <details><summary><b>Database info missing ?</b></summary>
 
-Can setup the database (or re-use and existing one) using the `$HOME/helidon-kubernetes/setup/common/database-step.sh` script
+Can setup the database (or re-use and existing one) using the `$HOME/helidon-kubernetes/setup/common/database-setup.sh` script
 
 </details>
 ---
@@ -218,7 +218,7 @@ Assuming you have `step` you can easily create the self signed root certificate
 
   1. Open the OCI Cloud shell and type
     
-  - `./step certificate create root.cluster.local root.crt root.key --profile root-ca --no-password --insecure`
+  - `$HOME/keys/step certificate create root.cluster.local $HOME/keys/root.crt $HOME/keys/root.key --kty=RSA --profile root-ca --no-password --insecure`
   
   ```
   Your certificate has been saved in root.crt.

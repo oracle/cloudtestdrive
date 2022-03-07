@@ -642,7 +642,7 @@ We will use step to help us here, it was installed when you did the cloud shell 
 
   2. In the OCI Cloud shell run the following.
   
-  - `$HOME/keys/step certificate create linkerd.$EXTERNAL_IP.nip.io tls-linkerd-$EXTERNAL_IP.crt tls-linkerd-$EXTERNAL_IP.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
+  - `$HOME/keys/step certificate create linkerd.$EXTERNAL_IP.nip.io tls-linkerd-$EXTERNAL_IP.crt tls-linkerd-$EXTERNAL_IP.key --profile leaf  --not-after 8760h --no-password --insecure --kty=RSA --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
 
   ```
   Your certificate has been saved in tls-linkerd-123.456.789.123.crt.
