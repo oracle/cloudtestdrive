@@ -131,7 +131,7 @@ ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>      
 
   4. Create a certificate to protect the connection, we'll use step which we installed in the cloud shell setup section of the lab.
   
-  - `$HOME/keys/step certificate create grafana.monitoring.$EXTERNAL_IP.nip.io tls-grafana-$EXTERNAL_IP.crt tls-grafana-$EXTERNAL_IP.key --profile leaf  --not-after 8760h --no-password --insecure --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
+  - `$HOME/keys/step certificate create grafana.monitoring.$EXTERNAL_IP.nip.io tls-grafana-$EXTERNAL_IP.crt tls-grafana-$EXTERNAL_IP.key --profile leaf  --not-after 8760h --no-password --insecure --kty=RSA --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
   
   ```
   Your certificate has been saved in tls-grafana-123.456.789.123.crt.
