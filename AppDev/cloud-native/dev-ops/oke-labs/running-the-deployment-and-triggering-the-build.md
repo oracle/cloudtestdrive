@@ -253,7 +253,7 @@ Now we are going to make a change to our code, to show the process working.
   
   ```java
   public class StatusResource {
-        public final static String VERSION = "1.0.0";
+        public final static String VERSION = "1.0.1";
         private static final JsonBuilderFactory JSON = Json.createBuilderFactory(Collections.emptyMap());
   ```
   
