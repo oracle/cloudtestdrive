@@ -1,6 +1,8 @@
 ![](../../../images/customer.logo2.png)
 
-# Using the OCI DevOps service to update and re-deploy an example microservice into the Oracle Kubernetes Environment.
+# Pi Day 2022
+
+## Using the OCI DevOps service to update and re-deploy an example microservice into the Oracle Kubernetes Environment.
 
 **Lab conventions**
 
