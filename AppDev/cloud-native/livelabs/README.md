@@ -54,4 +54,4 @@ These are single modules, they may depend on elements and modules from the large
 
 These labs are variants of the other, but customised for a specific event
 
-[Pi-Day 2022]((https://oracle.github.io/cloudtestdrive/AppDev/cloud-native/livelabs/special-events/pi-day-2022/index.html?lab=labs-introduction)
+[Pi-Day 2022](https://oracle.github.io/cloudtestdrive/AppDev/cloud-native/livelabs/special-events/pi-day-2022/index.html?lab=labs-introduction)
