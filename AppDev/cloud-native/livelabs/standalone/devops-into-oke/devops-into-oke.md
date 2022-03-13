@@ -75,70 +75,70 @@ Note that if the Kubernetes cluster has not finished being created you can proce
 
 Please follow **Installing the initial Kubernetes services using scripts** section.
 
-### Devops setup - introduction
+## Devops setup - introduction
 
 This section describes the steps you will need to to to prepare for using the DevOps environment.
 
 Please read **Devops setup - introductions** section. When you've completed it click the `back` button on your browser to return to this page.
 
-### Devops setup - setting up your vault
+## Devops setup - setting up your vault
 
 To store confidential or frequently changing information you don't want to hard code it into your source code systems, so Dev Ops allows you to store this in an OCI Security vault. This module shows you how to set that vault up.
 
 Please follow the steps in **Devops setup - setting up your vault** section. When you've completed them click the `back` button on your browser to return to this page.
 
-### Devops setup - configuring ssh access to OCI API's
+## Devops setup - configuring ssh access to OCI API's
 
 To manipulate the OCI Code repositories you will need to have an ssh based authentication token setup. This modules takes you through the processes in doing this.
 
 Please follow the steps in **Devops setup - configuring ssh access to OCI API's** section. When you've completed them click the `back` button on your browser to return to this page.
 
 
-### Devops setup - configuring security policies
+## Devops setup - configuring security policies
 
 Like all of the servcies within OCI the DevOps service requires a specific set of security policies, This module takes you through the steps needed to set those up.
 
 Please follow the steps in **Devops setup - configuring security policies** section. When you've completed them click the `back` button on your browser to return to this page.
 
-### Devops - Creating your DevOps project
+## Devops - Creating your DevOps project
 
 To do devops work you need a DevOps project, this module shows you how to create and configure that.
 
 Please follow the steps in **Devops - Creating your DevOps project** section. When you've completed them click the `back` button on your browser to return to this page.
 
 
-### Devops - Getting the sample code and uploading to a OCI repository
+## Devops - Getting the sample code and uploading to a OCI repository
 
 To run a build you need code to actually compile, this module shows you how to download the sample code, create your own OCI Code repository and to transfer the sample code to that.
 
 Please follow the steps in **Devops - Getting the sample code and uploading to a OCI repository** section. When you've completed them click the `back` button on your browser to return to this page.
 
 
-### Devops - Examining and updating the build_spec.yaml file
+## Devops - Examining and updating the build_spec.yaml file
 
 The build_spec.yaml file is the core of the build process. This module explains the various parts of the build_spec.yaml file, and then shows you how to setup some vault secrets to use within it. The you upload your version of the build_spec.yaml file to the OCI Code Repository
 
 Please follow the steps in **Devops - Examining and updating the build_spec.yaml file** section. When you've completed them click the `back` button on your browser to return to this page.
 
-### Devops - Creating your DevOps build pipeline
+## Devops - Creating your DevOps build pipeline
 
 DevOps build pipelines provide an ordered sequence of stages for running abuild and creating the results. This module shows you how to set one up and get it running.
 
 Please follow the steps in **Devops - Creating your DevOps build pipeline** section. When you've completed them click the `back` button on your browser to return to this page.
 
-### Devops - Updating your build pipeline to output artifacts
+## Devops - Updating your build pipeline to output artifacts
 
 Once you have build artifacts in yur build pipeline you need to pass them from the pipeline to registries and image repositories. This module shows you how to add a new stage to your build pipeline to do this transfer.
 
 Please follow the steps in **Devops - Updating your build pipelie to output artifacts** section. When you've completed them click the `back` button on your browser to return to this page.
 
-### Devops - Creating the deployment pipeline
+## Devops - Creating the deployment pipeline
 
 Creating artifacts form a build pipeline is good, but even better is having them automatically deployed into the target environments. This module shows you how to create a deployment pipeline to run this process.
 
 Please follow the steps in **Devops - Creating the deployment pipeline** section. When you've completed them click the `back` button on your browser to return to this page.
 
-### Devops - Devops - Testing the CICD process and automatic triggers
+## Devops - Devops - Testing the CICD process and automatic triggers
 
 This final module of the lab shows you how to have your deployment pipeline automatically triggered from the build pipeline, and then lets you test out the process. Lastly you then look at how to have this process triggered automatically when code is pushed into your OCI Code repo.
 
@@ -153,5 +153,5 @@ When you finish the modules in this lab the take the time for a cup of tea (or o
 ## Acknowledgements
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
-* **Last Updated By** - Tim Graves, December 2021
+* **Last Updated By** - Tim Graves, March 2022
 
