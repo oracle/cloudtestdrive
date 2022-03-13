@@ -77,7 +77,7 @@ Now we are going download the original repo with the sample source code for this
 
 <details><summary><b>What does this script actually do ?</b></summary>  
 
-The script first of all checks that is can locate a project names `<your initials>DevOpsProject` and then a Code Rerpo in that project called `cloudnative-helidon-storefront` within that project. It will also check for a local directory called `cloudnative-helidon-storefront` as it uses that directory and doesn't want to overwrite any existing contents.
+The script first of all checks that is can locate a project names `<your initials>DevOpsProject` and then a Code Rerpo in that project called `cloudnative-helidon-storefront` within that project, that repo mush be newly created and empty so as to not overwrite anything you may have already done in it. It will also check for a local directory called `cloudnative-helidon-storefront` as it uses that directory and doesn't want to overwrite any existing contents.
 
 Assuming all the checks pass it will then download the sample code from a public git repo into a local git repo that it creates, then it will remove the origin remote (where the code was cloned from) and configure your OCI repo as a new remote (to upload the code to) based on the information for your OCIR code repo in your project.
 
