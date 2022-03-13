@@ -34,6 +34,20 @@ You are assumed to have the latest version of the scripts in the `$HOME/helidon-
 
 ## Task 1: Running the security setup script.
 
+<details><summary><b>What does this script actually do ?</b></summary>  
+
+The script first of all checks the `$HOME/hk8sLabsSettings` file to see if you've already setup groups, policies and ssh key. It will also try and check if there are sufficient resources to complete the tasks. 
+
+It then creates an ssh key (in $HOME/ssh, not the usual .ssh to help avoid overwriting any existing keys you may have) and uploads it to the OCI security system for use when authenticating with SSH, it also configures the $HOME/.ssh/config file to use this key when connecting to the OCI code repos.
+
+Next it will try and create dynamic groups which identify the various services used in the labs, these groups will be used to setup the policies that allow these services to manage other servcies running in your complartment, for example the devops service needs to be able to create compute instances to run the buld process.
+
+It will save the OCID's of the resources created so that they can be removed later if desired.
+
+---
+
+</details>
+
   1. Make sure you are in the right directory, in the OCI Cloud shell
   
   - `cd $HOME/helidon-kubernetes/setup/devops-labs`

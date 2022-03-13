@@ -313,6 +313,18 @@ It will take a short while to create the secret, but you can carry on while that
 
   Assuming you chose to use the scripts rather than setting this up manually let's run it. You must have already setup the OCIR images in the earlier setup stage.
   
+<details><summary><b>What does this script actually do ?</b></summary>  
+
+The script first of all checks the `$HOME/hk8sLabsSettings` file to see if you've already setup the secrets, it will check that you have created a vault and a master key with the vault setup scripts, and also check that the information needed to setup the OCIR connections has been created (This will have happened when you build the container images). 
+
+It then creates two secrets in the vault you created with the vault setup scripts, one (OCIR_HOST_VAULT) contains the DNS name used for the images in OCIR (e.g. lhr.ocir.io) and the other (OCIR_STORAGE_NAMESPACE_VAULT) contains the Kubernetes namespace that the service you are about to build will be deployed into 
+
+It will save the OCID's of the resources created so that they can be removed later if desired.
+
+---
+
+</details>
+  
   Switch to the right directory. In the OCI cloud shell type
   
   - `cd $HOME/helidon-kubernetes/setup/devops-labs`

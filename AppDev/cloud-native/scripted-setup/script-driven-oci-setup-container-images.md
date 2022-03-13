@@ -114,6 +114,26 @@ To do this we need to obtain an authentication token (needed to push the images 
 
 We have provided a script that will do all of this.
 
+<details><summary><b>What does this script actually do ?</b></summary>  
+
+The script is a wrapper around several other scripts that create and configure resources that will be deployed into Kubernetes.
+
+The information gathered and the OCID's of the resource created are stored in the `$HOME/hk8sLabsSettings` file for reuse by other scripts and also to identify resources that have already been created so they can be reused.
+
+To start with it will create an auth token that can be used to log into the OCIR to upload the images. If you have existing tokens you can re-use them as long as you know their value. The script will also offer to  save the value of the token away so you can reuse it later without having to re-enter it. For a free tier trial this is OK as it;s saved within your cloud shell home directory so is only accessible by you, but in a commercial environment you should take note of the generated token and re-enter when prompted.
+
+After this it will determine the details needed to create the OCIR URL used to upload images in a docker push command. It then updates the image location in the Kubernrtes deployments and the docker build scripts with this location.
+
+Next it will create the OCIR image repos in your compartment. This is done because the docker v2 registry API does not understand about specific containers, so by default they would be created in the root of the tenancy if you do not precreate them in a specific compartment,this makes running the labs a lot easier if people are charing a tenancy and using different compartments.
+
+The last step is to build and upload the container images to the OCIR using the location found earlier. This process is multi step in it's own right and includes downloading the appropriate JDK and the source code of the microservices. It then runs the build scripts in the downloaded microservices, these use Maven to run the build process, JIB to create the images (though there is a little after the event manipulation). Do allow for different versions it then does the same build and push process with t different version.
+
+The build process using maven can take a long time as the first time it's run Maven needs to download a **lot** of jar files, however once they have been downloaded once they can be reused by the subsequent builds.
+
+---
+
+</details>
+
 **If your Kubernetes cluster creation script is still running** you do not need to wait for it to complete, simply open another window onto the OCI console then open a cloud shell in it (The precise mechanism is browser specific, but often Shift clicking on the [Oracle Cloud logo](images/oracle-cloud-logo.png) on the upper left will open a new window, then just open a new cloud shell) 
 
   1. If you are not already there open the OCI cloud shell and go to the scripts directory, type

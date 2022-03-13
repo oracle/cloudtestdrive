@@ -182,6 +182,16 @@ step
 
 ### Task 2a: Scripted download of step and creating the root certificate
 
+<details><summary><b>What does this script actually do ?</b></summary>  
+
+The script goes to a web page that lists the latest version of the step distribution, from there it works out the actual download location, downloads and unpacks step
+
+It then used step to create a self signed "root" certificate that can be used to sign certificates for the web services later on in the lab.
+
+---
+
+</details>
+
 To make setting `step` up easier (manually it requires a lot of visits to different pages to get the download details) I have created a script that will do the page navigation, parsing, downloads, unpacking, and installation of `step` for you.
 
   1. Open the OCI cloud shell and go to the scripts directory, type
@@ -231,6 +241,18 @@ Now please go to **Task 3**, do not continue with any other steps in task 2
 
 
 ## Task 3: Checking resources are available
+
+<details><summary><b>What does this script actually do ?</b></summary>  
+
+The script basically has a list of resources that are needed to do the core lab setup (some of the labs based on this core content have their own requirements checking scripts that are detailed in those labs)
+
+In effect it tries to make sure that there are enough resources to create the compartments, databases and kuernetes cluster needed.
+
+It also looks in the the "state" file (`$HOME/hk8sLabsSettings`) maintained by the scripts to see if a resource has already been created, if they have it skips that check.
+
+---
+
+</details>
 
 This lab uses a number of compute and networking resources, this task checks to see to see if enough resources are available to run the core capabilities (some optional labs have additional requirements and may not be checked).  Generally if there is a resource limitation it's best to find out before starting a lab rather than later !
 
@@ -287,6 +309,27 @@ If you are running in a shared or commercial tenancy, or are sharing your free t
 </details>
 
 There are a number of activities required to configure the core environment, these include identifying your self by your initials, locating your user information, setting up compartments, and creating a database. The core-environment-setup script will gather some information and then do the core work for you. You may have already done this as part of a related lab in your tenancy, if so the scripts will recognize previously created resources (provided they have not been destroyed of course) so there is no harm in re-running the scripts.
+
+<details><summary><b>What does this script actually do ?</b></summary>  
+
+The script is a wrapper around several other scripts that create and configure resources for us needed to do any of these code OKE based labs.
+
+The information gathered and the OCID's of the resource created are stored in the `$HOME/hk8sLabsSettings` file for reuse by other scripts and also to identify resources that have already been created so they can be reused.
+
+To start with it asks for your initials as these are used on multiple places for default resource names.
+
+Next it automatically gathers information about your user, this is also saved so for example when creating a authentication token it can access your account.
+
+After that it will create a compartment to create resources in, by default this is called CTDOKE as a sub compartment of the tenancy root, though you can override the name if you want or use an existing compartment. If you do not want to create this compartment in the tenancy root then set the value of  `COMPARTMENT_PARENT_OCID` in the `$HOME/hk8sLabsSettings` to be that of the compartment that will be the parent of your CTDOKE compartment (this is most often used in non free trial tenancies)
+
+Next it creates an Autonomous Transaction Processing database using a admin  password it generates, it will then download the wallet file so it can be used later.
+
+Finally it extracts connection information from the downloaded wallet file, and using that establishes a connection to the database and creates the user that will be used by the microservices , tidying up after itself.
+
+---
+
+</details>
+
 
   1. If you are not already there open the OCI cloud shall and go to the scripts directory, type
   

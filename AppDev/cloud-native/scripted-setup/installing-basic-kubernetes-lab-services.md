@@ -122,6 +122,36 @@ Please continue with **Task 2**
 
 This script will configure the database settings using information in the Wallet.zip file, will setup various database related variables, will then setup the Helm repo, install the Ingress controller and Kubernetes dashboard, then create a namespace for your work, configure and install the Services, Ingress rules, configuration information and deployments. Lastly it will check if all this correctly deployed.
 
+<details><summary><b>What does this script actually do ?</b></summary>  
+
+The script is a wrapper around several other scripts that configure your Kubernetes environment. You can specify the kubernetes cluster to use by using it's context name as a second argument (this defaults to `one`
+
+The scripts generate a couple of files that hold information that may be of use (e.g. dashboard access token, IP address of the services and so on). These are in your home directory and are named `clusterInfo.one` and `clusterSetttings.one` (`one` represents the clusters context name, if your contact was different it would have a different name) the clusterSettings file can be sourced to sets the EXTERNAL_IP and NAMESPACE variables for you to save you having to go look them up yourself.
+
+Initially the script will configure the database and department information that will later on be uploaded into the Kubernrtes cluster as secrets and config maps
+
+It then ensures that the helm repos list is up to date so it can download the helm charts when needed
+
+Next it will start working on the cluster, it will install an ingress controller using helm and extracts the IP address
+
+Now it installs a kubernetes dashboard for you, arranging access via the ingress controller it just installed.
+
+Now it will create the Kubernetes service objects for our microservcies.
+
+Next it creates a certificate for the core services using step and the root certificate you created earlier. Here we cheat a little as we embed the IP address into the certificate and also the DNS name. This is because we are doing a cloud native lab, not a DNS lab, and we don;t want to spend the time to setup DNS zones and create certificates using them (in the real world you would do those steps) Instead we use a DNS recover at `nip.io` and use that to examine the provided DNS address for an IP address, if it finds one it returns that as the actuall IP address that the DNS name maps to, so `store.123.123.123.123.nip.io` will get resolved to an ip address of `123.123.123.122` This makes thew labs simpler (we don't need to setup DNS and prove out identity to get the right certs) but it also complicates things because the certificates need to include the DNS name, which will of course vary for everyone as the IP address embedded into it will be different.
+
+Once it has the IP address it creates versions of the ingress rules which have the IP address in their DNS names, then it will deploy them.
+
+Next it will deploy the secrets and config maps that the microservcies need to configure themselves
+
+Now it deploys the microservices, and waits for them to start
+
+Finally it will use the microservices to create test data in the database. If that data has already been added you may see errors, but that's fine.
+
+---
+
+</details>
+
   1. If you have not already done so open the OCI Cloud shell and go to the scripts directory 
   
   - `cd $HOME/helidon-kubernetes/setup/kubernetes-labs`

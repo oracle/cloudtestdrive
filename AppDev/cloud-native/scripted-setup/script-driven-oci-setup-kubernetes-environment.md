@@ -116,6 +116,18 @@ While gathering the information on an existing cluster is fast, unlike the creat
 
 ### Task 2a: Running the script
 
+<details><summary><b>What does this script actually do ?</b></summary>  
+
+The script first of all checks by ooking in the  to see if you've already setup a cluster (or told it about a specific cluster to use) if so it will use that and just exit
+
+It then checks for the required resources to make sure that you have enough to create the cluster (there's no point in starting something that won't complete.)
+
+After checking it downloads a teraform file and set's up the terraform config based on the environment you're running in, and them dopes a terraform plan and apply to actually build the cluster.
+
+Once the cluster exists it captures the information on the clusters (OCID) and sets up the kube config file renamign the cluster form the ranxom set of latters to the name you specified (this default to one if not specified)
+
+</details>
+
 This script will do some data gathering and then if a new cluster is required will create it (or you can re-use an existing one if you already have one). It then downloads and sets up the configuration to let you interact with the Kubernetes cluster.
 
   1. If you are not already there open the OCI cloud shell and go to the scripts directory, type

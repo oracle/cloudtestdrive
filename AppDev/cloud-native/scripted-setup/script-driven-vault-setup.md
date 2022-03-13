@@ -120,6 +120,18 @@ Please continue with **Task 2**
 
 ## Task2: Running the vault setup script
 
+<details><summary><b>What does this script actually do ?</b></summary>  
+
+The script first of all checks the `$HOME/hk8sLabsSettings` file to see if you've already setup a vault and master key (or told it about a specific vault and master key to use) if so it will use that and just exit.
+
+It then checks for the required resources to make sure that you have enough to create the vault and master key (there's no point in starting something that won't complete.)
+
+After checking it will create a vault, and once created create a master key. The OCID's of these will be written to the `$HOME/hk8sLabsSettings` file so they can be checked and used later.
+
+---
+
+</details>
+
   1. If you are not already there open the OCI cloud shell and go to the scripts directory, type
   
   - `cd $HOME/helidon-kubernetes/setup/common`
