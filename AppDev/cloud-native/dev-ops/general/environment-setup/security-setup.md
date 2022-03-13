@@ -95,7 +95,7 @@ We need to define a group of users, we will later use this group to create a OCI
   
   ![](images/group-add-member-completed.png)
   
-## Task 2: Creating the dynamic groups
+## Task 3: Creating the dynamic groups
 
 In OCI there are multiple types of groups, we've seen a group based on users, but it's also possible to create a **dynamic group** which represents resources within OCI itself,usually based on resources in a compartment, and can be further limited to a specific resource type. It's called a **dynamic group** because it matches on any resource, regardless of if the resource was created after the group was created. This means that we can define the group now, and then create the resources it matches against later on.
 
