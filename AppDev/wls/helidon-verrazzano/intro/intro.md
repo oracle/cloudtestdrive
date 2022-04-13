@@ -15,19 +15,17 @@ This workshop is designed to be as self-explanatory as possible, but feel free t
 ### Objectives
 
 * Set up your Oracle Cloud Free Tier account (if you haven't done so already).
-  * In case you are running this lab with instructors, they will provide you the login credentials for the environments.
-
+* In case you are running this lab with instructors, they will provide you the login credentials for the environments.
 * Set up an Oracle Kubernetes Engine instance on the Oracle Cloud Infrastructure.
 * Install the Verrazzano platform.
 * Deploy the *Helidon MP* application.
-* Monitor the *Helidon MP* application using Verrazzano tools, including Kibana, Grafana and Prometheus.
+* Monitor the *Helidon MP* application using Verrazzano tools, including OpenSearch, Grafana and Prometheus.
 
 ### Prerequisites
 This lab assumes you have the following installed on your machine:
 * A browser
-  * Window 1 : to read the tutorial
-  * Window 2 : operations on the cloud environment, including access to the cloud shell where you will install Helidon etc.
-
+* Window 1 : to read the tutorial
+* Window 2 : operations on the cloud environment, including access to the cloud shell where you will install Helidon etc.
 
 
 ## About Helidon
@@ -59,6 +57,6 @@ Verrazzano includes the following capabilities:
 
 ## Acknowledgements
 
-* **Author** -  Peter Nagy
+* **Author** -  Ankit Pandey
 * **Contributors** - Maciej Gruszka, Peter Nagy
-* **Last Updated By/Date** - Jan Leemans, Feb 2022
+* **Last Updated By/Date** - Ankit Pandey, April 2022

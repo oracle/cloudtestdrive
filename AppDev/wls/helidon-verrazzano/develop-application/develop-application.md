@@ -29,7 +29,7 @@ The CLI is distributed as a standalone executable (compiled using GraalVM) for e
 * Maven 3.6.x
 * Java and `mvn` are in your path.
 
-
+ 
 Oracle Cloud Infrastructure (OCI) Cloud Shell is a web browser-based terminal, accessible from the Oracle Cloud Console. The Cloud Shell provides access to a Linux shell, with a pre-authenticated Oracle Cloud Infrastructure CLI and other useful tools (*Git, kubectl, helm, OCI CLI*) to complete the Verrazzano tutorials. The Cloud Shell is accessible from the Console. Your Cloud Shell will appear in the Oracle Cloud Console as a persistent frame of the Console, and will stay active as you navigate to different pages of the Console.
 
 1. Click on Cloud Shell icon to launch the "Cloud Shell".
@@ -62,8 +62,6 @@ cd ~
 mvn -v
 </copy>
 ```
-**Chech both**  the Apache Maven version (should be 3.6.3) as well as the Java version used by maven (should be 14.0.2)
-
 ![](images/10.png)
 
 ## Task 2: Install the Helidon CLI
@@ -80,7 +78,7 @@ chmod +x ./helidon
 ## Task 3: Create Helidon Greeting Application
 1. In your console enter:
 ```bash
-<copy>./helidon init --version 2.4.1 </copy>
+<copy>./helidon init --version 2.4.0 </copy>
 ```
 
 
@@ -89,7 +87,7 @@ chmod +x ./helidon
 2. For this demo we will create a MicroProfile supported microservice, so choose option **(2)** for **Helidon MP Flavor**:
 
 ```bash
-Using Helidon version 2.4.1
+Using Helidon version 2.4.0
 Helidon flavor
   (1) SE
   (2) MP
@@ -242,8 +240,6 @@ curl -H 'Accept: application/json' -X GET http://localhost:8080/metrics
 
 ```java
 <copy>
-package me.YOUR_USERNAME.mp.quickstart;
-  
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
@@ -280,9 +276,7 @@ vi ~/quickstart-mp/src/main/java/me/<user_name>/mp/quickstart/GreetHelpResource.
 ![](images/17.png)
 ![](images/18.png)
 
->The class has only one method *getAllGreetings* which returns a list with greetings in different languages. While copying the code, be sure to add the necessary package name on top of class.
-
-**Replace** the placeholder in the package definition on the first line with **your username**, like the path you had to enter to get to this directory!
+>**IMPORTANT**: The class has only one method *getAllGreetings* which returns a list with greetings in different languages. While copying the code, be sure to *add the necessary package name* on top of class as shown in screenshot above.
 
 Press Esc and then :wq to save the changes.
 
@@ -340,4 +334,4 @@ And the new endpoint has been added.
 
 * **Author** -  Dmitry Aleksandrov
 * **Contributors** - Maciej Gruszka, Peter Nagy
-* **Last Updated By/Date** - Jan Leemans, Feb-2022
+* **Last Updated By/Date** - Ankit Pandey, April 2022
