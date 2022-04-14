@@ -48,6 +48,12 @@ This document is a summary of the various modules in the lab. This document itse
 
 This explains how to get access to a Free trial tenancy if you need one. In many lab situations you will have already done this.
 
+## Setup using the all-in-one script
+
+This module shows you how to use the "all-in-one" scripts to setup the environment for your lab in one go. If you are running in a free trial, or have full admin rights to your tenancy **and** are running in your home region this is the preferred approach, just follow the instructions in this module then once completed jump directly to module **Part 1** skipping the remaining setup modules.
+
+If however you are not in a free trial, do not have full admin rights, not in your home region, or need to modify the default choices for some reason then please use the remaining setup modules instead.
+
 ## Setup your core tenancy using scripts
 
 This module takes you through the process of using the scripts we have provided to gather data, create compartments,and a database used by the microservices running in Kubernetes. If you have already created these in a previous lab you can skip this module
@@ -143,6 +149,11 @@ Please follow the steps in **Devops - Creating the deployment pipeline** section
 This final module of the lab shows you how to have your deployment pipeline automatically triggered from the build pipeline, and then lets you test out the process. Lastly you then look at how to have this process triggered automatically when code is pushed into your OCI Code repo.
 
 Please follow the steps in **Devops - Testing the CICD process and automatic triggers** section. When you've completed them click the `back` button on your browser to return to this page.
+
+## Resetting your tenancy
+
+Should you wish (or need) to do so this module shows you how to use a script to remove the resources you created in this lab
+
 
 ## At the end of the tutorial
 

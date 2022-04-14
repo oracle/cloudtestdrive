@@ -11,6 +11,10 @@
           "filename":"https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/cloud-login/pre-register-free-tier-account.md"
         },
         {
+          "title": "Setup using the all-in-one script",
+          "filename":"../../../scripted-setup/lab-specific-scripts/script-driven-devops-setup.md"
+        },
+        {
           "title": "Setup your core tenancy using scripts",
           "filename":"../../../scripted-setup/script-driven-oci-setup-core-environment.md"
         },
@@ -23,48 +27,52 @@
           "filename":"../../../scripted-setup/script-driven-oci-setup-container-images.md"
         },
         {
-          "title": "Installing the initial Kubernetes services using scripts",
+          "title": "Setup Installing the initial Kubernetes services using scripts",
           "filename":"../../../scripted-setup/installing-basic-kubernetes-lab-services.md"
         },
         {
-          "title": "Devops setup - introduction ",
+          "title": "Setup : Devops setup - introduction ",
           "filename": "../../../dev-ops/general/setup-introduction-incl-vault.md"
         },
 		{
-          "title": "Devops setup - setting up your vault",
+          "title": "Setup Devops setup - setting up your vault",
           "filename": "../../../scripted-setup/script-driven-vault-setup.md"
         },
 		{
-          "title": "Devops setup - configuring ssh access to OCI API's, defining groups and policies",
+          "title": "Setup Devops setup - configuring ssh access to OCI API's, defining groups and policies",
           "filename": "../../../dev-ops/general/environment-setup/configuring-for-devops.md"
         },
 		{
-          "title": "Devops - Creating your DevOps project",
+          "title": "Part 1: Devops - Creating your DevOps project",
           "filename": "../../../dev-ops/general/creating-the-devops-project.md"
         },
 		{
-          "title": "Devops - Getting the sample code and uploading to a OCI repository",
+          "title": "Part 2: Devops - Getting the sample code and uploading to a OCI repository",
           "filename": "../../../dev-ops/oke-labs/uploading-code-to-the-repo-and-examining-it.md"
         },
 		{
-          "title": "Devops - Examining and updating the build_spec.yaml file",
+          "title": "Part 3: Devops - Examining and updating the build_spec.yaml file",
           "filename": "../../../dev-ops/oke-labs/examining-and-updating-the-build-spec.md"
         },
 		{
-          "title": "Devops - Creating your DevOps build pipeline",
+          "title": "Part 4: Devops - Creating your DevOps build pipeline",
           "filename": "../../../dev-ops/oke-labs/creating-the-first-pipeline.md"
         },
 		{
-          "title": "Devops - Updating your build pipeline to output artifacts",
+          "title": "Part 5: Devops - Updating your build pipeline to output artifacts",
           "filename": "../../../dev-ops/oke-labs/updating-the-pipeline-to-output-the-artifacts.md"
         },
 		{
-          "title": "Devops - Creating the deployment pipeline",
+          "title": "Part 6: Devops - Creating the deployment pipeline",
           "filename": "../../../dev-ops/oke-labs/creating-the-oke-deployment-pipeline.md"
         },
 		{
-          "title": "Devops - Testing the CICD process and automatic triggers",
+          "title": "Part 7: Devops - Testing the CICD process and automatic triggers",
           "filename": "../../../dev-ops/oke-labs/running-the-deployment-and-triggering-the-build.md"
+        },
+        {
+          "title": "Resetting your tenancy",
+          "filename":"../../../scripted-setup/lab-specific-scripts/script-driven-devops-destroy.md"
         },
         {
           "title": "Need Help?",

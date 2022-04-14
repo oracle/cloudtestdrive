@@ -57,6 +57,13 @@ Depending on what optional modules you do you may also explore the use of Promet
 
 ![](../../../images/kubernetes-labs-what-will-be-built-incl-optional.png)
 
+
+## Setup using the all-in-one script
+
+This module shows you how to use the "all-in-one" scripts to setup the environment for your lab in one go. If you are running in a free trial, or have full admin rights to your tenancy **and** are running in your home region this is the preferred approach, just follow the instructions in this module then once completed jump directly to module **Part 1** skipping the remaining setup modules.
+
+If however you are not in a free trial, do not have full admin rights, not in your home region, or need to modify the default choices for some reason then please use the remaining setup modules instead.
+
 ## Setup your core tenancy using scripts
 
 This module takes you through the process of using the scripts we have provided to gather data, create compartments,and a database used by the microservices running in Kubernetes. If you have already created these in a previous lab you can skip this module
@@ -75,19 +82,19 @@ This module takes you through the process of using the scripts we have provided 
 
 Please follow the tasks in the **Setup your container images using scripts** section (click the name in the labs index)
 
-## Basic Kubernetes - Setting up your cluster and running your services
+## BPart 1:  Setting up your cluster and running your services
 
 This section covers how to run the docker images in kubenetes, how to use Kubernetes secrets to hold configuration and access information, how to use an ingress to expose your application on a web port. Basically this covers how to make your docker based services run in in a Kubernetes cluster.
 
 We also look at using Helm to install Kubernetes "infrastructure" such as the ingress server
 
-## Cloud Native with Kubernetes
+## Part 2: Cloud Native with Kubernetes
 
 ### Is it running, and what to do if it isn't
 
 Kubernetes doesn't just provide a platform to run containers in, it also provides a base for many other things including a comprehensive service availability framework which handles monitoring containers and services to see if they are still running, are still alive and are capable of responding to requests.
 
-## Horizontal and Auto Scaling
+## Part 3a&b: Horizontal and Auto Scaling
 
 Kubernetes also supports horizontal scaling of services, enabling multiple instances of a service to run with the load being shared amongst all of them. 
 
@@ -97,7 +104,7 @@ Horizontal scaling provides you with a manual process to control how many instan
 
 This auto scaling labs shows how you can have Kubernetes automatically scale the number of instances for you.
 
-## Rolling out deployment updates
+## Part 4: Rolling out deployment updates
 
 Commonly when a service is deployed it will be updated, Kubernetes provides support for performing rolling upgrades, ensuring that the service continues running during the upgrade. Built into this are easy ways to reverse a deployment roll out to one of it's previous states.
 
@@ -196,6 +203,10 @@ Discover what you can do with a service mesh traffic splits in the Traffic split
 
 To learn how to uninstall the service mesh see the it Uninstalling the Linkerd service mesh module.
 
+## Resetting your tenancy
+
+Should you wish (or need) to do so this module shows you how to use a script to remove the resources you created in this lab
+
 
 ### Additional optional modules in development.
 
@@ -224,6 +235,6 @@ When you finish the modules in this lab the take the time for a cup of tea (or o
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
-* **Last Updated By** - Tim Graves, November 2020
+* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
+* **Last Updated By** - Tim Graves, April 2022
 
