@@ -138,7 +138,7 @@ Firstly setup a Kubernetes environment for you to deploy into :
   - Start core Kubernetes services (Ingress contrtoller, Kubernetes dashboard)
   - Create service certificates and associated secrets based on Ingress load balancer IP
   - Create ingress rules, secrets and config maps based on the above info
-  - Start three microservcies (storefront, stockmanager and zipkin)
+  - Start three microservices (storefront, stockmanager and zipkin)
   - Upload test data to the database
   
 It will then configure for the DevOps services labs by :
