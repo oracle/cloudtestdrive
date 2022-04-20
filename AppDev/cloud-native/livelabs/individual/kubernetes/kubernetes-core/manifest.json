@@ -11,6 +11,10 @@
           "filename":"https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/cloud-login/pre-register-free-tier-account.md"
         },
         {
+          "title": "Setup using the all-in-one script",
+          "filename":"../../../../scripted-setup/lab-specific-scripts/script-driven-oke-core-and-complete-setup.md"
+        },
+        {
           "title": "Setup your core tenancy using scripts",
           "filename":"../../../../scripted-setup/script-driven-oci-setup-core-environment.md"
         },
@@ -41,6 +45,10 @@
         {
           "title": "Part 4: Rolling Updates",
           "filename": "../../../../kubernetes/cloud-native-labs/rolling-updates/rolling-updates.md"
+        },
+        {
+          "title": "Resetting your tenancy",
+          "filename":"../../../../scripted-setup/lab-specific-scripts/script-driven-oke-core-and-complete-destroy.md"
         },
         {
           "title": "Further Information on Kubernetes",

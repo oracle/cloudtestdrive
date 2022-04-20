@@ -48,6 +48,13 @@ The image below shows the basic structure of the microservices we will be workin
 
 ![](../../images/kubernetes-labs-what-will-be-built-incl-optional.png)
 
+
+## Setup using the all-in-one script
+
+This module shows you how to use the "all-in-one" scripts to setup the environment for your lab in one go. If you are running in a free trial, or have full admin rights to your tenancy **and** are running in your home region this is the preferred approach, just follow the instructions in this module then once completed jump directly to module **Part 1** skipping the remaining setup modules.
+
+If however you are not in a free trial, do not have full admin rights, not in your home region, or need to modify the default choices for some reason then please use the remaining setup modules instead.
+
 ## Setup your core tenancy using scripts
 
 This module takes you through the process of using the scripts we have provided to gather data, create compartments,and a database used by the microservices running in Kubernetes. If you have already created these in a previous lab you can skip this module
@@ -168,6 +175,11 @@ Discover what you can do with a service mesh traffic splits in the Traffic split
 **Only** do this after you have completed the service mesh lab modules you want to do.
 
 To learn how to uninstall the service mesh see the it Uninstalling the Linkerd service mesh module.
+
+## Resetting your tenancy
+
+Should you wish (or need) to do so this module shows you how to use a script to remove the resources you created in this lab
+
 
 ---
 
