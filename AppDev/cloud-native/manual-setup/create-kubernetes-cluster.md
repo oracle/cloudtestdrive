@@ -91,5 +91,5 @@ You can move on to the **Cloud Shell Setup for the Kubernetes Labs** module whil
 ## Acknowledgements
 
 * **Author** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Contributor** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Contributor** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
 * **Last Updated By** - Tim Graves, November 2020

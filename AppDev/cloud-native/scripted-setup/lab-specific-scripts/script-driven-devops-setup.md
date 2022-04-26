@@ -160,14 +160,14 @@ It will then configure for the DevOps services labs by :
   
   - In the OCI Cloud shell type
   
-  - `bash ./optional-kubernetes-lab-setup.sh`
+  - `bash ./devops-lab-setup.sh`
   
   The script will ask for a few core bits of information before continuing.
   
   ```
   
 Configuring location information
-Welcome the the core kubernetes specific lab setup script.
+Welcome to the DevOps specific lab setup script.
 You are in your home region and this script will continue
 Are you running in a free trial account, or in an account where you have full administrator rights ?
 ```

@@ -293,6 +293,6 @@ Thus we need to enable access to the Kubernetes management API endpoint from any
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
-* **Kubernetes Terraform Script author** Ali Mukadam
+* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
+* **Kubernetes Terraform Script author** Ali Mukadam, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Open Source program
 * **Last Updated By** - Tim Graves, February 2022

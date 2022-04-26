@@ -90,5 +90,5 @@ That's all folks, you're finished. We hope that you have enjoyed doing the labs.
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
 * **Last Updated By** - Tim Graves, November 2020

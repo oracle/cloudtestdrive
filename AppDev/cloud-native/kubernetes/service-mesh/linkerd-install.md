@@ -1406,6 +1406,6 @@ You can chose from the remaining `Linkerd service mesh` modules or switch to one
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
 * **Contributor** - Charles Pretzer, Bouyant, Inc for reviewing and sanity checking parts of this document.
 * **Last Updated By** - Tim Graves, August 2021

@@ -229,6 +229,6 @@ Go to the **Setting up the cluster and getting your services running in Kubernet
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
 * **Last Updated By** - Tim Graves, November 2020

@@ -658,6 +658,6 @@ You can chose from the various Kubernetes optional module sets.
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
 * **Last Updated By** - Tim Graves, August 2021

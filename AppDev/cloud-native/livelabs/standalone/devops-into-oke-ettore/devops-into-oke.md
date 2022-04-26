@@ -141,6 +141,6 @@ When you finish the modules in this lab the take the time for a cup of tea (or o
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
 * **Last Updated By** - Tim Graves, November 2021
 

@@ -173,5 +173,5 @@ Vault master key created with OCID ocid1.key.oc1.uk-london-1.ejrbjv6qaadrw.abshq
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
 * **Last Updated By** - Tim Graves, February 2022
