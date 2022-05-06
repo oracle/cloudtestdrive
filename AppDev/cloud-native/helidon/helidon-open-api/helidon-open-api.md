@@ -1022,7 +1022,78 @@ The `components` section included details of the classes we use to transfer the 
 
 Note that the description of the request now has a schema field that refers into the components section (using the name we provided in the`@Schema`). The `200` response also does the same.
 
+## Task 8 Documenting your security requirements
+
+The OpenAPI document doesn't specify what's required security wise. Let's add the annotations to do that
+
+  1. At the start of the Storefront class add the following annotations on the Storefront class
+
+```java
+@SecurityScheme(securitySchemeName = "httpBasic", type = SecuritySchemeType.HTTP, scheme = "Basic")
+@SecurityRequirement(name = "httpBasic")
+```
+
+The class should now have the following annotations (commends have been removed for brevity
+
+```java
+@Path("/store")
+@RequestScoped
+@Counted
+@Authenticated
+@Timeout(value = 15, unit = ChronoUnit.SECONDS)
+@Slf4j
+@NoArgsConstructor
+@SecurityScheme(securitySchemeName = "httpBasic", type = SecuritySchemeType.HTTP, scheme = "Basic")
+@SecurityRequirement(name = "httpBasic")
+public class StorefrontResource {
+```
+
+<details><summary><b>Explaining the annotations</b></summary>
+
+`@SecurityScheme` is used to provide a re-usable definition, in this case named `http-basic` whic used the `HTTP` headers as the type of scheme and `Basic` as the actually type. There are many other types available including OAUTH, it's possible to define multiple security schemes inside a `@SecuritySchemes` annotation.  This may be needed if some parts of your code use differing sc hemes, for example some may use OAUTH but others basic http.
+
+ `@SecurityRequirement` specifies the scheme to be used, the name must map onto a SecurityScheme. In this case it applies to the entire class, but it could also be used for a specific method. You can document the need for multiple security schemes using the `@SecurityResuirements` annotation which lets you define multiple schemes of which any can match or `@SecurityRequirementsSets` in which case all the requirements must be satisfied.
+
+---
+
+</details>
+
+  2. Save the Storefront.java fail and rebuild **using the Maven build sequence** (right click on the project then Run As -> Maven Build ....) as described above in Task 7a
+  
+  3. Run the code again
+  
+  4. Get the updated documentation, in a terminal window type
+
+  - `curl -i http://localhost:8080/openapi`
+  
+  Note that there is a new section in the `components` section 
+  
+  ```yaml
+  components: 
+  securitySchemes:
+    httpBasic: 
+      scheme: Basic
+      type: http
+```
+
+  This describes the security options for the storefront class as a whole.
+  
+  If you look at the paths section for one of the paths you will see that it now has a security section that referes tot he security scheme we defineds
+  
+  ```yaml
+  
+  /store/reserveStock: 
+    post: 
+      security:
+      - httpBasic: []
+      description: reserves a number of stock items in the database. The number of
+        stock items being reserved must be greater than the defined minimum change
+```
+ 
+   
+
 ## More information
+
 The Microprofile OpenAPI specification is available from the [Microprofile open api guthub project page.](https://github.com/eclipse/microprofile-open-api)
 
 ---
