@@ -195,11 +195,7 @@ If your output says it's created key files like `tls-prometheus-.crt` and does n
 
 We assume you are using Kubernetes 1.21.5 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the 15.2.0 version of the prometheus helm charts were found to work. If you were using an older version of Kubernetes we found the following version combinations to work.
 
-Kubernetes 1.20.8 Prometheus Helm chart 14.4.1 worked for us
-
-Kubernetes 1.19.7 Prometheus Helm chart 13.7.0 worked for us
-
-Kubernetes 1.18.7 Prometheus helm chart 11.12.1 worked for us
+Kubernetes 1.22.5 Prometheus Helm chart 14.4.1 worked for us
 
 To specify a specific older version use the version keyword in your helm command, e.g. `--version 14.1.1`
 
@@ -215,7 +211,7 @@ The Helm chart will automatically create a couple of small persistent volumes to
 
   1. Installing Prometheus is simple, we just use helm. In the OCI Cloud Shell type the following.
   
-  - `helm install prometheus prometheus-community/prometheus --namespace monitoring --version 14.4.1 --set server.ingress.enabled=true --set server.ingress.hosts="{prometheus.monitoring.$EXTERNAL_IP.nip.io}" --set server.ingress.tls[0].secretName=tls-prometheus --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-type"=basic --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-secret"=web-ingress-auth --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-realm"="Authentication Required" --set alertmanager.persistentVolume.enabled=false --set server.persistentVolume.enabled=false --set pushgateway.persistentVolume.enabled=false`
+  - `helm install prometheus prometheus-community/prometheus --namespace monitoring --version 14.4.1 --set server.ingress.enabled=true --set server.ingress.hosts="{prometheus.monitoring.$EXTERNAL_IP.nip.io}" --set server.ingress.tls[0].secretName=tls-prometheus --set server.ingress.annotations."kubernetes\.io/ingress\.class"=nginx --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-type"=basic --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-secret"=web-ingress-auth --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-realm"="Authentication Required" --set alertmanager.persistentVolume.enabled=false --set server.persistentVolume.enabled=false --set pushgateway.persistentVolume.enabled=false`
   
   ```
   NAME: prometheus
