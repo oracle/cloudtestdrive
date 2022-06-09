@@ -265,9 +265,11 @@ The helm options are :
 
 - `--set rbac.create=true` Tells the helm chart to specifiy the role based access control features, we're not really using these in this lab, but they make this a lot more secure in a production env ironment.
 
-- `--set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-protocol"=TCP` This sells helm to set a specific attribute, in this case to be passed to OCI to create a load balancer that uses TCP and not any other protocol.
+- `--set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-protocol"=TCP` This tells helm to set a specific attribute, in this case to be passed to OCI to create a load balancer that uses TCP and not any other protocol.
 
-- `--set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape"=10Mbps` As above this sets a specific flag, in this case to be passed to OCI to create a load balancer which allows up to 10Mbps throughput.
+- `--set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape"=flexible` As above this sets a specific flag, in this case to be passed to OCI to create a load balancer which supports variable levels of throughput.
+
+- `--set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape-flex-min"=10` and `--set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape-flex-max"=100` also set specific flags which are passed on when creating the load balancer and specify the minimum and maximum throughput for the flexible load balancer
 
 </details>
 
@@ -346,7 +348,7 @@ The External IP of the Load Balancer connected to the ingresss controller is sho
 
 </details>
   
-  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set ingress.enabled=true  --set ingress.annotations."kubernetes\.io/ingress\.class"=nginx --set ingress.hosts="{dashboard.kube-system.$EXTERNAL_IP.nip.io}" --version 5.4.1`
+  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set ingress.enabled=true  --set ingress.annotations."kubernetes\.io/ingress\.class"=nginx --set ingress.hosts="{dashboard.kube-system.$EXTERNAL_IP.nip.io}" --version 5.7.0`
   
   ```
 NAME: kubernetes-dashboard
@@ -421,7 +423,7 @@ The helm options are :
 
 - `--set ingress.enabled=true`, `--set ingress.annotations."kubernetes\.io/ingress\.class"=nginx` and `--set ingress.hosts='{dashboard.kube-system.158.101.210.253.nip.io}'` These tell helm to configure an ingress rule, this basically tells the nginx ingress controller we installed earlier how to identify requests to the dashboard, and send them to the dashboard service.
 
-- `--version 5.4.1` This tells helm to use a specific version of the helm chart.
+- `--version 5.7.0` This tells helm to use a specific version of the helm chart.
 
 ---
 
