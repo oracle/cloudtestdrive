@@ -425,7 +425,7 @@ replicaset.apps/storefront-a458e8bc51    1         1         1       1h
 replicaset.apps/zipkin-88c48d8b9         1         1         1       1h
 ```
 
-  We actually redeployed tghe pods (so applied an updated configuration) this is why we see multiple replica sets. Kubernetes has acted in the same way as if it was an upgrade of the deployment images of other configuration information and if we'd run the kubectl command quickly enough the new replica sets and pods being created before the old pods were terminated. We saw how this actually works in the rolling upgrade lab.
+  We actually redeployed the pods (so applied an updated configuration) this is why we see multiple replica sets. Kubernetes has acted in the same way as if it was an upgrade of the deployment images of other configuration information and if we'd run the kubectl command quickly enough the new replica sets and pods being created before the old pods were terminated. We saw how this actually works in the rolling upgrade lab.
 
   9. Return to your browser and reload the Prometheus Status page
 
