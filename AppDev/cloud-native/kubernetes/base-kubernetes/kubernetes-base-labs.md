@@ -1783,14 +1783,14 @@ The resources provides a limit for how much CPU each instance of a pod can utili
 ```yaml
         volumeMounts:
         - name: sf-conf-secure-vol
-          mountPath: /confsecure
+          mountPath: /app/confsecure
           readOnly: true
         - name: sf-config-map-vol
-          mountPath: /conf
+          mountPath: /app/conf
           readOnly: true
 ```
 
-We now specify what volumes will be imported into the pods. Note that this defines what volume is connected the pod, the volume definitions themselves are later, in this case the contents of the sf-config-map-vol volume will be mounded on /conf and sf-config-secure-vol on /confsecure
+We now specify what volumes will be imported into the pods. Note that this defines what volume is connected the pod, the volume definitions themselves are later, in this case the contents of the sf-config-map-vol volume will be mounded on `/app/conf` and sf-config-secure-vol on `/app/confsecure` The code looks for config files relative to it's working directory and jib (the tool that's used to build the containers) configures things to run in `/app` so we need to have the configuration as subdirectories of that.
 
 Both are mounted read only as there's no need for the programs to modify them, so it's good practice to make sure that can't happen accidensally (or deliberately if someone hacks into your application and tries to use that as a way to change the config).
 
