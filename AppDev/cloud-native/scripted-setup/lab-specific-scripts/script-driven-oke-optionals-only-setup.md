@@ -185,10 +185,24 @@ Note that for some inputs (e.g. entering your initials) it is not possible to ma
 you will still be prompted for input.
 Do you want to use the automatic defaults ?
 ```
-
-  Next the script asks you if you want to use the automatic defaults, if you do so the case the script will automatically assume the answer to any yes / no question is `y` If you are in a free trial account it's safe to enter `y` as this will significantly speed up the setup process as the script will not have to wait for your inputs - as mentioned above though you will have to interact with the CLoud Shell occasionally while the script is running to prevent it timing out.
   
-  Assuming you have entered `y` (the recommended choice for free trial users) the script will perform some actions like downloading the certificate tools, and checking resource availability 
+  Next the script asks you if you want to use the automatic defaults, if you do so the case the script will automatically assume the answer to any yes / no question is `y` If you are in a free trial account it's safe to enter `y` as this will significantly speed up the setup process as the script will not have to wait for your inputs - as mentioned above though you will have to interact with the Cloud Shell occasionally while the script is running to prevent it timing out and the scripts being aborted.
+    
+  ```
+  This script can perform certain setup operations in parallel, doing so will speed
+the overall process up but you won't see the detailed output unless you look at the
+log files (they are in /home/tim_graves/setup-logs)
+If you want to follow their progress as script is running (don't interrupt it!) you'll
+need to do something like
+tail -f <log name>
+in a separate cloud shell while this script is running)
+Do you want to run the setup in parallel where possible ?
+```
+  
+  If you chose to use the automatic defaults (and only if you did) then you will be asked it you want to do some setup operations in  parallel. This can significantly reduce the time taken to go through the setup steps, though it does mean that the output from those setup stages is written to log files (in `$HOME/setup-logs`) rather than be displayed. Unless you have a particular desire to watch the setup sequence enter `y` at the prompt which will save around 10 - 15 minutes of time while the script sets things up.
+  
+  
+  The script will perform some actions like downloading the certificate tools, and checking resource availability, this takes about one or two minutes.
   
   
   ```
@@ -207,4 +221,4 @@ The script should have run to completion. It will have setup the environment nee
 ## Acknowledgements
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
-* **Last Updated By** - Tim Graves, April 2022
+* **Last Updated By** - Tim Graves, June 2022
