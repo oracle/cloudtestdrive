@@ -296,7 +296,7 @@ may of course change before the OKE cluster is created) there are sufficient res
   
   Assuming you have the available resources please proceed with Task 4.
   
-## Task 4: Configuring the core environment in one go
+## Task 4: Configuring the core environment
 
 If you are running in a free trial tenancy allocated to you then follow the process outlined below, so please skip over the expansion.
 
@@ -408,9 +408,14 @@ Created compartment CTDOKE in the Tenancy root It's OCID is ocid1.compartment.oc
 It may take a short while before new compartment has propogated and the web UI reflects this
 ```
   
- 9. The microservices that form the base content of these labs use a database to store their data, so we need to create a database. The  script will create the database in the compartment we just created, then download the connection information (the "Wallet") and use that to connect to the database and create the user used by the labs.
+  
+## Task 5: Creating the database
 
- 10. If you are in a free trial tenancy you will be creating a new database so enter `y` 
+The microservices that form the base content of these labs use a database to store their data, so we need to create a database. The following script will create the database in the compartment we just created, then download the connection information (the "Wallet") and use that to connect to the database and create the user used by the labs.
+
+ 1. We will run a script to setup this environment
+
+ 2. If you are in a free trial tenancy you will be creating a new database so enter `y` 
   
 <details><summary><b>Only read if you have an existing database to re-use</b></summary>
  
@@ -425,7 +430,7 @@ Operating in compartment CTDOKE
 Do you want to use tgdb as the name of the database to create or re-use in CTDOKE?
 ```
  
-  11. The script will create the database 
+ 3. The script will create the database 
    
   ```
 OK, going to use tgdb as the database name
