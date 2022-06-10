@@ -466,7 +466,7 @@ I've used the index for the data gathered most recently, as can be seen in the i
 
   2. Let's look at the captured data. Look at the indecies list and chose one
   
-  3. Go to the `_search` URL`https://search.logging.<External IP>.nip.io/logstash-<YYYY-MM-DD>/_search` (remember to replace `<External IP>` address with yours) adjust YYYY-MM-DD to one of the entries in the indexes list).
+  3. Go to the `_search` URL`https://search.logging.<External IP>.nip.io/logstash-<YYYY.MM.DD>/_search` (remember to replace `<External IP>` address with yours) replace `<YYYY.MM.DD>` with one of the entries in the indexes list).
   
   
 
@@ -478,7 +478,7 @@ There's a lot of data here (and depending on which browser you use it may be nic
 
 Of course we can focus in on specific entries if we want, in this case we're going to look for entries which have the container_name of storefront
 
-  4. Try this URL `https://search.logging.<External IP>.nip.io/logstash-<YYYY-MM-DD>/_search?q=kubernetes.container_name:storefront` to focus on the storefront container (remember to replace `<External IP>` address with yours) adjust YYYY-MM-DD to one of the entries in the indexes list).
+  4. Try this URL `https://search.logging.<External IP>.nip.io/logstash-<YYYY.MM.DD>/_search?q=kubernetes.container_name:storefront` to focus on the storefront container (remember to replace `<External IP>` address with yours) repalce `<YYYY.MM.DD>` to one of the entries in the indexes list).
 
   ![](images/ES-search-empty-storefront.png)
 
