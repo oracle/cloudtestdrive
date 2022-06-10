@@ -261,7 +261,7 @@ The helm options are :
 
 - `--namespace ingress-nginx`  The kubernetes namespace to install the software into
 
-- `--version 4.1.0` The version of the helm chart to use to specify the install (the software version is defined in the chart, so is indirectly specified for you)
+- `--version 4.1.3` The version of the helm chart to use to specify the install (the software version is defined in the chart, so is indirectly specified for you)
 
 - `--set rbac.create=true` Tells the helm chart to specifiy the role based access control features, we're not really using these in this lab, but they make this a lot more secure in a production env ironment.
 
