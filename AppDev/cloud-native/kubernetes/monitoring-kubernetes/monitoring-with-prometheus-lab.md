@@ -78,17 +78,23 @@ Depending on which other modules you have done you may see differences in the re
 
 ### Task 2b: Setting up the namespace and security information
 
-To separate the monitoring services from the  other services we're going to put them into a new namespace. We will also secure access to prometheus using a password.
+To separate the monitoring services from the  other services we're going to put them into a new namespace. We will also secure access to Prometheus using a password.
 
-If your cloud shell session is new or has been restarted then the shell variable `$EXTERNAL_IP` may be invalid, expand this section if you think this may be the case to check and reset it if needed.
+Check if the `$EXTERNAL_IP` variable is set (depending on the order of modules you took to get here it may not be set)
 
-<details><summary><b>How to check if $EXTERNAL_IP is set, and re-set it if it's not</b></summary>
-
-**To check if `$EXTERNAL_IP` is set**
-
-If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it, there are a couple of ways to do this, expand the appropriate section below.
+  - Open the OCI cloud shell if it's not already open
   
-<details><summary><b>If you used the automated scripts in the kubernetes-lab directory to setup the microservices in Kubernetes</b></summary>
+  - Type `echo $EXTERNAL_IP` 
+  
+  ```
+  123.456.789.123
+  ```
+  
+  If it returns the IP address like the example above you're ready to go
+  
+**If it's not set then you'll need to re-set it.** There are a couple of ways to do this depending on if you use the scripts to install the microservices in Kubernetes (expand the first section immediately below) or if you installed your Kubernetes services manually (expand the second section below).
+  
+<details><summary><b>If you used the automated scripts to setup the microservices in Kubernetes (you have gone directly to the "optional" labs)</b></summary>
 
   - Open the OCI cloud shell 
 
@@ -97,19 +103,19 @@ The automated scripts will create a script file `$HOME/clusterSettings.one` this
   - `source $HOME/clusterSettings.one`
   
 ```
-EXTERNAL_IP set to 139.185.45.98
+EXTERNAL_IP set to 123.456.789.123
 NAMESPACE set to tg
 ```
 
-  Of course the actual IP address and namespace will almost certainly be different from the example here !
+  Of course the actual IP address and namespace will be different from the example here !
   
 ---
 
 </details>
 
-<details><summary><b>If you manually setup the Kubernetes ingress services using helm</b></summary>
+<details><summary><b>If you manually setup the Kubernetes microservices (you have been doing the "full" lab) </b></summary>
 
-In this case as you manually set this up you will need to get the information from Kubernetes itself
+In this case as you manually installed the ingress controller there isn't a script created file with the information and set this up you will need to get the information from Kubernetes itself
 
 
   - Open the OCI cloud shell 
@@ -132,9 +138,10 @@ ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>      
   
 ---
 
-</details>
 
 </details>
+
+Now you have got a value in the variable you can copy and paste from the instructions below.
 
 
   1. Switch to the monitoring directory. In the OCI CLoud shell type
@@ -191,9 +198,11 @@ If your output says it's created key files like `tls-prometheus-.crt` and does n
 ## Task 3: Installing Prometheus
 
 
-<details><summary><b>Older versions of Kubernetes than 1.21.5</b></summary>
+<details><summary><b>Older versions of Kubernetes than 1.23.4</b></summary>
 
-We assume you are using Kubernetes 1.21.5 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the 15.2.0 version of the prometheus helm charts were found to work. If you were using an older version of Kubernetes we found the following version combinations to work.
+We assume you are using Kubernetes 1.23.4 (the most recent version supported by the Oracle Kubernetes Environment at the time of writing these instructions) in which case the 15.9.3 version of the Prometheus helm charts were found to work. If you were using an older version of Kubernetes we found the following version combinations to work.
+
+Kubernrtes 1.21.5 Prometheus Helm Chart 15.2.0 worked for us
 
 Kubernetes 1.22.5 Prometheus Helm chart 14.4.1 worked for us
 
