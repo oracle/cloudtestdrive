@@ -302,7 +302,7 @@ This lab module has been updated to work with the 1.20 CRI-O log format, but if 
             value: "%Y-%m-%dT%H:%M:%S.%N%:z"
 ```
 
-</detail>
+</details>
 
 <details><summary><b>How does Kubernetes know where to get the environment variable values ?</b></summary>
 
