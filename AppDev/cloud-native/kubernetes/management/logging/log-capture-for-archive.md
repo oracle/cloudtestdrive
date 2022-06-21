@@ -289,7 +289,9 @@ The `fluentd-s3-configmap.yaml` contains a config map with the specific settings
 
 The `fluentd-daemonset-oss-rbac.yaml` configures the cluster role, service account, binding between the two and also the details of the daemonset that gathers the log data and writes it to the S3 compatible storage service. The daemon set uses the values that are set in the `fluentd-s3-configmap.yaml` for it's environment variables (look at the file for the details of how the environment variables are defined in terms of config map entries). This means we won't need to change the daemon set configuration / it's yaml file if we want to change those settings.
 
-**IMPORTANT** In Kubernetes 1.20 the default container engine switched from Docker to CRI-O, Docker logs were written in JSON format, wheras CRI-O uses a format called Logrus.
+<details><summary><b>Using Kubernetes 1.20 or earlier ?</b></summary>
+
+In Kubernetes 1.20 the default container engine switched from Docker to CRI-O, Docker logs were written in JSON format, wheras CRI-O uses a format called Logrus.
 
 This lab module has been updated to work with the 1.20 CRI-O log format, but if you are using a version of Kubernetes with Docker as the container engine (Kubernetes removed Docker support in 1.20, so this is probabaly 1.19 or earlier) you will need to modify the `fluentd-daemonset-oss-rbac.yaml` and remove the following lines in the container environment section.
 
@@ -299,6 +301,8 @@ This lab module has been updated to work with the 1.20 CRI-O log format, but if 
           - name: FLUENT_CONTAINER_TAIL_PARSER_TIME_FORMAT
             value: "%Y-%m-%dT%H:%M:%S.%N%:z"
 ```
+
+</detail>
 
 <details><summary><b>How does Kubernetes know where to get the environment variable values ?</b></summary>
 
@@ -349,7 +353,7 @@ metadata:
   namespace: logging
 data:
   ACCESS_KEY: "225c7ab16d07465e1234567e724863ea552e11b0"
-  ACCESS_SECRET: "bgUdGT20T4KpFh5bkJR0pYBwxR4size2utj3f+W2mJ8="
+  ACCESS_SECRET: "bgUdGT20T4KpFh5awJR0pZBwxR4siml2utj3f+W2mJ8="
   BUCKET_NAME: "TG-FLUENTD"
   REGION: "eu-frankfurt-1"
   STORAGE_END_POINT: "https://oractdemeabdmnative.compat.objectstorage.eu-frankfurt-1.oraclecloud.com"
