@@ -1342,7 +1342,7 @@ The External IP of the Load Balancer connected to the ingresss controller is sho
 
 </details>
 
-  9. In the OCI Cloud Shell terminal type the following, be prepared for an error
+  9. In the OCI Cloud Shell terminal type the following, be prepared for an error (the services are doing their on-demand restart process so you may have a timeout while that happens and the database connection is reestablished)
   
   - `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
   
