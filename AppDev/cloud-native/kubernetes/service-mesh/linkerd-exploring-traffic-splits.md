@@ -659,7 +659,7 @@ Yes, of course, in this lab we've aimed to introduce you to the specific concept
 
 Fortunately for us you don't even have to write your own scripts to automate this as it is a sufficiently common task that simple to use automation has already been built for you with the [CNCF Flagger project](https://docs.flagger.app/)
 
-You can get more details on how to use flaggger with linkerd to automate canary deployments from the [linkerd canary release documentation](https://linkerd.io/2.11/tasks/canary-release/)
+You can get more details on how to use flagger with linkerd to automate canary deployments from the [linkerd canary release documentation](https://linkerd.io/2.11/tasks/canary-release/)
 
 
 ## Task 3: Using a traffic split to test resilience (A bit of Chaos)
