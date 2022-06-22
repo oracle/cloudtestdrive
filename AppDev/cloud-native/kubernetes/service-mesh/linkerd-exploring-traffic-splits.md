@@ -653,6 +653,15 @@ Well spotted! We're going to leave the version in place on the original service.
 
 </details>
 
+###This is all a bit complicated, can it be automated ?
+
+Yes, of course, in this lab we've aimed to introduce you to the specific concepts to boost your understanding. Once you understand them of course you may well not want to do all this manually.
+
+Fortunately for us you don't even have to write your own scripts to automate this as it is a sufficiently common task that simple to use automation has already been built for you with the [CNCF Flagger project](https://docs.flagger.app/)
+
+You can get more details on how to use flaggger with linkerd to automate canary deployments from the [linkerd canary release documentation](https://linkerd.io/2.11/tasks/canary-release/)
+
+
 ## Task 3: Using a traffic split to test resilience (A bit of Chaos)
 
 We're going to use a traffic split to send some messages to a fake zipkin endpoint which will generate errors, this will let us see how well our micro-services handle the situation where zipkin becomes unavailable.
