@@ -44,7 +44,7 @@ We will need to update the build pipeline to have it trigger a deploy pipeline o
   
   ![](images/build-pipeline-add-deploy-trigger-stage-start-chose-deployment-pipeline.png)
   
-  7. Once saved the add stage form will update with information on the pipeline. Make sure that the ** Send build pipelines Parameters** check box is selected - if you don't then your deployment won't know about the parameters you set or created in the build pipeline, and the deployment needs those to work out the artifact versions and container image location. You don't need to do anything with the details in the **Deployment Pipeline Parameters** section, they are there for your reference. Click the **Add** button on the lower left of the page
+  7. Once saved the add stage form will update with information on the pipeline. Make sure that the **Send build pipelines Parameters** check box is selected - if you don't then your deployment won't know about the parameters you set or created in the build pipeline, and the deployment needs those to work out the artifact versions and container image location. You don't need to do anything with the details in the **Deployment Pipeline Parameters** section, they are there for your reference. Click the **Add** button on the lower left of the page
   
   ![](images/build-pipeline-add-deploy-trigger-stage-start-part-2-part-2.png)
 
@@ -208,7 +208,7 @@ We are still manually starting the build process, this is what's wanted in some 
   
   ![](images/devops-trigger-create-select-code-repo.png)
   
-  6. Back on the create triggere form In the **Actions** box click the **Add Action** button. This will open a popup
+  6. Back on the create trigger form In the **Actions** box click the **Add Action** button. This will open a popup
   
   ![](images/devops-trigger-create-form-add-action-button.png)
   
