@@ -987,7 +987,7 @@ If however you click on the service name in the services list in the dashboard y
 
 ### Task 4c: Accessing your services using an ingress rule
 
-<details><summary><b>WHy not use multiple Load Balancers?</b></summary>
+<details><summary><b>Why not use multiple Load Balancers?</b></summary>
 
 Services can configure externally visible load balancers for you (and helm did this for you when the ingress controller was installed), however this is not recommended for every REST service for many reasons. 
 
