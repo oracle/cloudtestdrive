@@ -93,65 +93,94 @@ Now we have an environment we can start to build the deployment pipeline it will
 
 We are going to create two deployment stages to deploy the storefront project.
 
-The first stage will do the actual OKE deployment, and also create an OKE service object that matches to the deployment
+The first stage will do the actual OKE deployment, 
 
-The next stage will (once the deployment is completed) apply the Kubernetes manifest to create the ingress rule. As the ingress rule will route traffic using the service object. We do this once the service and deployment are in place so the ingress rule has something to forward requests to.
+The second stage will create an OKE service object that matches to the deployment, this is done after the deployment is complete to ensure that there is something to send requests to.
 
-### Task 3a: Adding the services and deployment stage
+The last stage will apply the Kubernetes manifest to create the ingress rule. As the ingress rule will route traffic using the service object. We do this once the service and deployment are in place so the ingress rule has something to forward requests to.
+
+### Task 3a: Adding the deployment stage
 
   1. Once you are on the Deployment pipeline page make sure you are on the **Pipeline** tab, then click the **+** button. In the popup menu click **Add Stage** to open the Add stage form
   
-  ![](images/deploy-pipelines-add-first-stage-start.png)
+  ![](images/deploy-pipelines-add-deployment-stage-start.png)
 
   2. In the **Deploy** Section click **Apply manifest to your Kubernetes Cluster** then click **Next** at the bottom of the add stage form.
   
-  ![](images/deploy-pipelines-add-first-stage-part-1.png)
+  ![](images/deploy-pipelines-add-deployment-stage-part-1.png)
 
-  3. Name this stage `StorefrontServiceAndDeployDeployment` (it's unwieldy I know, but like good variable names it's helpful to name things by their use). Add a description if you wish. In the **Environment** field select the environment you created earlier (`TG_OKE` in my case, yours will probabaly be different) this is the environment the stage will deploy to. Click the **Select Artifact** button.
+  3. Name this stage `StorefrontDeployDeployment` (it's unwieldy I know, but like good variable names it's helpful to name things by their use). Add a description if you wish. In the **Environment** field select the environment you created earlier (`TG_OKE` in my case, yours will probably be different) this is the environment the stage will deploy to. Click the **Select Artifact** button.
   
-  ![](images/deploy-pipelines-add-first-stage-part-2-part-1.png)
+  ![](images/deploy-pipelines-add-deployment-stage-part-2-part-1.png)
 
- 4. In the resulting popout form select StorefrontDeploymentYAML and StorefrontServiceYAML - notice that both of these have their version specified as `${STOREFRONT_VERSION}` This will be substituted with the value of the variable which will come from the build pipeline phase when we have it trigger the deploy. Click the **Save changes** button
+ 4. In the resulting popout form select StorefrontDeploymentYAML - notice that this has it's version specified as `${STOREFRONT_VERSION}` This will be substituted with the value of the variable which will come from the build pipeline phase when we have it trigger the deploy. Click the **Save changes** button
  
- ![](images/deploy-pipelines-add-first-stage-select-artifacts.png)
+ ![](images/deploy-pipelines-add-deployment-stage-select-artifacts.png)
 
   5. Now we're back on the stage form, Leave the **Override Kubernetes namespace** field blank (the YAML files will set this using a build pipeline parameter). Set the **If validation fails, automatically rollback to the last successful version** option to be `Yes`. Click the **Add** button at the lower left of the page, this will add the stage and return to the pipeline designer.
   
-  ![](images/deploy-pipelines-add-first-stage-part-2-part-2.png)
+  ![](images/deploy-pipelines-add-deployment-stage-part-2-part-2.png)
   
   Our new stage has been added to the pipeline
 
-  ![](images/deploy-pipelines-add-first-stage-completed.png)
+  ![](images/deploy-pipelines-add-deployment-stage-completed.png)
+  
+### Task 3b: Adding the service stage
 
-### Task 3b: Adding the ingress rules stage
+  1. Now we're going to add a Kubernetes service, amongst other things a service sets up the internal DNS to allow the deployment to be located. Make sure you are on the **Pipeline** tab, then click the **+** button at the bottom of the deploy stage you just added. In the popup menu click **Add Stage** to open the Add stage form
+  
+  ![](images/deploy-pipelines-add-service-stage-start.png)
 
-Our stage that applies the manifests for the deployment and service will wait for those actions to complete before completing
+  2. In the **Deploy** Section click **Apply manifest to your Kubernetes Cluster** then click **Next** at the bottom of the add stage form.
+  
+  ![](images/deploy-pipelines-add-service-stage-part-1.png)
+
+  3. Name this stage `StorefrontServiceDeployment` . Add a description if you wish. In the **Environment** field select the environment you created earlier (`TG_OKE` in my case, yours will probably be different). Click the **Select Artifact** button.
+  
+  ![](images/deploy-pipelines-add-service-stage-part-2-part-1.png)
+
+ 4. In the resulting popout form enter `Service` in the **Filter by artifact name** field - the list of artifacts will update and only artifacts that contain the works `Service` will be shown - filtering is useful to help you find artifacts easily if you have a long list of them. select StorefrontServiceYAML.s with the deployment YAML this also has it's version specified as `${STOREFRONT_VERSION}`. Click the **Save changes** button
+ 
+ ![](images/deploy-pipelines-add-service-stage-select-artifacts.png)
+
+  5. Now we're back on the stage form, Leave the **Override Kubernetes namespace** field blank (the YAML files will set this using a build pipeline parameter). Set the **If validation fails, automatically rollback to the last successful version** option to be `Yes`. Click the **Add** button at the lower left of the page, this will add the stage and return to the pipeline designer.
+  
+  ![](images/deploy-pipelines-add-service-stage-part-2-part-2.png)
+  
+  Our new stage has been added to the pipeline
+
+  ![](images/deploy-pipelines-add-service-stage-completed.png)
+
+
+### Task 3c: Adding the ingress rules stage
+
+The stages that apply the manifests for the deployment and service will wait for their actions to complete before handing on  control to the next stage, so once they are done we know that they have been rolled out
 
 Let's add a stage that will deploy the ingress rule to the OKE cluster.
 
   1. **Below** the stage we just added click the **+** symbol, Then in the menu select **Add stage**
   
-  ![](images/deploy-pipelines-add-second-stage-start.png)
+  ![](images/deploy-pipelines-add-ingress-stage-start.png)
 
   2. In the **Deploy** Section click **Apply manifest to your Kubernetes Cluster** then click **Next** at the bottom of the add stage form.
   
-  ![](images/deploy-pipelines-add-second-stage-part-1.png)
+  ![](images/deploy-pipelines-add-ingress-stage-part-1.png)
 
   3. In the form Name this stage `StorefrontIngressDeployment`, Add a description if you wish. In the **Environment** field select the environment you created earlier (`TG_OKE` in my case, yours will probabaly be different) Click the **Select Artifact** button 
 
- ![](images/deploy-pipelines-add-second-stage-part-2-part-1.png)
+ ![](images/deploy-pipelines-add-ingress-stage-part-2-part-1.png)
  
- 4. In the resulting popout form select `StorefrontIngressRuleYAML` - this also uses `${STOREFRONT_VERSION}` to ensure we get the appropriate version for the deployment. Click the **Save changes** button.
+ 4. In the resulting popout form select `StorefrontIngressRuleYAML` (use the filter if you like) - as with the deployment and service this also uses `${STOREFRONT_VERSION}` to ensure we get the appropriate version for the deployment. Click the **Save changes** button.
  
- ![](images/deploy-pipelines-add-second-stage-select-artifacts.png)
+ ![](images/deploy-pipelines-add-ingress-stage-select-artifacts.png)
 
   5. On returning to the stage definition form Leave the **Override Kubernetes namespace** field blank (the YAML files will set this). Set the **If validation fails, automatically rollback to the last successful version** option to be `Yes`. Click the **Add** button at the lower left of the page
   
-  ![](images/deploy-pipelines-add-second-stage-part-2-part-2.png)
+  ![](images/deploy-pipelines-add-ingress-stage-part-2-part-2.png)
   
-  You've now setup both sets of deployment stages. 
+  You've now setup all three stages. 
   
-  ![](images/deploy-pipeline-add-second-stage-completed.png)
+  ![](images/deploy-pipeline-add-ingress-stage-completed.png)
 
 <details><summary><b>What about the container image ?</b></summary>
 
