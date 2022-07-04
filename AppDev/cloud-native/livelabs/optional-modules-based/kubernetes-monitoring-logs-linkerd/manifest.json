@@ -7,8 +7,9 @@
           "filename":"kubernetes-monitoriong-logs-linkerd.md"
         },
         {
-          "title": "Getting Started",
-          "filename":"https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/cloud-login/pre-register-free-tier-account.md"
+            "title": "Oracle Cloud Free Tier",
+            "description": "Use your Always Free resources as long as you want with no time constraints—subject only to the capacity limits noted. When your 30-day trial period for the expanded set of services ends, you can continue using Always Free services with no interruption.",
+            "filename": "https://oracle-livelabs.github.io/common/labs/cloud-login/pre-register-free-tier-account.md"
         },
         {
           "title": "Setup using the all-in-one script",
