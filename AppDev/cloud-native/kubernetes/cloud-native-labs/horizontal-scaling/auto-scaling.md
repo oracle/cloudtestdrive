@@ -45,7 +45,7 @@ For now we are going to use the simplest approach of the metrics server.
 
   1. Install a helm repo that contains the chart for the metrics server
   
-  - `helm repo add bitnami https://charts.bitnami.com/bitnami`
+  - `helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/`
   
   2. Update the repo
   
@@ -55,27 +55,29 @@ For now we are going to use the simplest approach of the metrics server.
 Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "kubernetes-dashboard" chart repository
 ...Successfully got an update from the "ingress-nginx" chart repository
-...Successfully got an update from the "bitnami" chart repository
+...Successfully got an update from the "metrics-server" chart repository
 
 ```
 
   3. In the OCI Cloud Shell install the metrics server by typing
   
-  - `helm install metrics-server bitnami/metrics-server --namespace kube-system --set apiService.create=true`
+  - `helm install metrics-server metrics-server/metrics-server`
 
   ```
 NAME: metrics-server
-LAST DEPLOYED: Fri Feb 28 14:58:53 2020
+LAST DEPLOYED: Fri Jul  8 19:11:45 2022
 NAMESPACE: kube-system
 STATUS: deployed
 REVISION: 1
+TEST SUITE: None
 NOTES:
-The metric server has been deployed. 
-
-In a few minutes you should be able to list metrics using the following
-command:
-
-  kubectl get --raw "/apis/metrics.k8s.io/v1beta1/nodes"
+***********************************************************************
+* Metrics Server                                                      *
+***********************************************************************
+  Chart version: 3.8.2
+  App version:   0.6.1
+  Image tag:     k8s.gcr.io/metrics-server/metrics-server:v0.6.1
+***********************************************************************
 ```
 
 It will take a short time for the metrics server to start up, but you can check the progress using kubectl
@@ -85,11 +87,11 @@ It will take a short time for the metrics server to start up, but you can check 
   - `kubectl get deployments -n kube-system`
   
   ```
-NAME                                   READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/coredns                3/3     3            3           17m
-deployment.apps/kube-dns-autoscaler    1/1     1            1           17m
-deployment.apps/kubernetes-dashboard   1/1     1            1           15m
-deployment.apps/metrics-server         0/1     1            0           18s
+NAME                   READY   UP-TO-DATE   AVAILABLE   AGE
+coredns                3/3     1            1           17m
+kube-dns-autoscaler    1/1     1            1           17m
+kubernetes-dashboard   1/1     1            1           15m
+metrics-server         1/1     1            1           39s
 ```
 
 ### Task 1b: Using the captured metrics
