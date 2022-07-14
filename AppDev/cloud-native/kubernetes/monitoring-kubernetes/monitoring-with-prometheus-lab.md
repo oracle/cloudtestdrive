@@ -5,7 +5,7 @@
 <details><summary><b>Self guided student - video introduction</b></summary>
 
 
-This video is an introduction to the Monitoring microservcies with Prometheus lab. Depending on your browser settings it may open in this tab / window or open a new one. Once you've watched it please return to this page to continue the labs.
+This video is an introduction to the Monitoring microservices with Prometheus lab. Depending on your browser settings it may open in this tab / window or open a new one. Once you've watched it please return to this page to continue the labs.
 
 [![Gathering metrics with Prometheus lab Introduction Video](https://img.youtube.com/vi/qnDzZ2eOy0E/0.jpg)](https://youtu.be/qnDzZ2eOy0E "Gathering metrics with Prometheus lab introduction video")
 
@@ -144,9 +144,9 @@ ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>      
 Now you have got a value in the variable you can copy and paste from the instructions below.
 
 
-  1. Switch to the monitoring directory. In the OCI CLoud shell type
+  1. Switch to the monitoring directory. In the OCI Cloud shell type
   
-   - `cd $HOME/helidon-kubernetes/monitoring-kubernetes` 
+  - `cd $HOME/helidon-kubernetes/monitoring-kubernetes` 
   
 
   2. Type the following to create the namespace
