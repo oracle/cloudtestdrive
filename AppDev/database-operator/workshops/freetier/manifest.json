@@ -1,0 +1,38 @@
+{
+    "workshoptitle": "Oracle Database Kubernetes Operator",
+    "help": "livelabs-help-weblogic_us@oracle.com",
+    "tutorials": [
+        {
+            "title": "Introduction",
+            "filename": "../../introduction/introduction.md"
+        },
+        {
+            "title": "Access your Cloud Account",
+            "filename": "../../access/access.md"
+        },
+        {
+            "title": "Lab 1: Set up an Oracle Kubernetes Engine instance on the Oracle Cloud Infrastructure",
+            "filename": "../../setup-oke/setup-oke.md"
+        },
+        {
+            "title": "Lab 2: Install the Oracle Database Kubernetes Operator",
+            "filename": "../../install-operator/install-operator.md"
+        },
+        {
+            "title": "Lab 4: Deploy a SingleInstance Database using a dynamically allocated Block Volume",
+            "filename": "../../deploy-db-bc/deploy-db-on-bv.md"
+        },
+        {
+            "title": "Lab 5: Deploy a SingleInstance Database using a static NFS filesystem",
+            "filename": "../../deploy-db-fss/deploy-db-on-fss.md"
+        },
+        {
+            "title": "Lab 6 (OPTIONAL): Failover to another node and redeploying the DB",
+            "filename": "../../db-activities/db-activities.md"
+        },
+        {
+            "title": "Need Help?",
+            "filename": "https://raw.githubusercontent.com/oracle/learning-library/master/developer-library/weblogic-to-oci/need-help/need-help.md"
+        }
+    ]
+}

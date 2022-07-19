@@ -1,4 +1,6 @@
 {
+    "workshoptitle": "Weblogic for OKE Workshop",
+    "help": "livelabs-help-weblogic_us@oracle.com",
     "tutorials": [
         {            
             "title": "Part 1 : WebLogic for OKE - Prerequisites for provisioning the WebLogic Infrastructure",

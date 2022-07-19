@@ -1,4 +1,6 @@
 {
+    "workshoptitle": "Weblogic for OCI Workshop",
+    "help": "livelabs-help-weblogic_us@oracle.com",
     "tutorials": [
         {
             "title": "Introduction to the lab",

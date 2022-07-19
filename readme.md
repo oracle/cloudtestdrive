@@ -35,7 +35,7 @@ During this day you will be able to experience the various cloud services hands-
   + Run the [non-JRF version of the lab](https://oracle.github.io/cloudtestdrive/AppDev/wls/ll-nonjrf), (no database setup)
   + Run the [JRF version of the lab](https://oracle.github.io/cloudtestdrive/AppDev/wls/ll-jrf) including database creation and deployment of an ADF application
   
-+ ***New!***  [WebLogic for OKE](https://oracle.github.io/cloudtestdrive/AppDev/wls/ll-wls-for-oke-nonjrf/) - running WLS on Kubernetes via Marketplace
++ ***New!***  [WebLogic for OKE](https://oracle.github.io/cloudtestdrive/AppDev/wls/ll-wls-for-oke-nonjrf/livelab/) - running WLS on Kubernetes via Marketplace
   Launch WebLogic on a Managed Kubernes cluster (OKE), using the pre-configured image provided by Oracle in the Marketplace.
 
 + [Running WebLogic on Kubernetes](https://oracle.github.io/cloudtestdrive/AppDev/wls/ll-oke/) with a customer managed Operator

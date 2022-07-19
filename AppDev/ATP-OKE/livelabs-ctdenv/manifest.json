@@ -1,5 +1,7 @@
 {
-    "tutorials": [
+  "workshoptitle": "Microservices on Kubernetes and Autonomous Database",
+  "help": "jan.leemans@oracle.com",
+  "tutorials": [
         {
           "title": "Introduction and overview of the steps",
           "filename":"README.md"
