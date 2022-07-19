@@ -1,4 +1,6 @@
 {
+    "workshoptitle": "Weblogic for OCI Workshop",
+    "help": "jan.leemans@oracle.com",
     "tutorials": [
         {
             "title": "Running WebLogic on Kubernetes",

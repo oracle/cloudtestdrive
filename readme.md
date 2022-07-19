@@ -76,37 +76,10 @@ During this day you will be able to experience the various cloud services hands-
 
   
 
-## Low Code Development ##
-+ Visual Builder : [Easily build sophisticated Web or Mobile apps](AppDev/vbcs/readme.md)
 
-+ Digital Assistant: [Building an intelligent Banking Bot](Mobile/IntelligentBots/readme.md) - Define a simple ChatBot, create two intents and a few utterances.  Finally you'll train and test your bot to see how it works.
-
-+ [Process Cloud](https://oracle.github.io/cloudtestdrive/Integration/process/?page=README.md): understand the basics of creating a process workflow (BPMN), connecting it to an integration, and apply Business rules (DMN).
-
-  
-
-
-## Integration ##
-
-+ [Integration Cloud Service](Integration/readme.md) - This lab will show you how to set up integration between 2 systems simply using the drag & drop features of Integration Cloud Service.  In this exercise we will set up an integration between a RightNow instance and a generic REST service of a mobile Application.
-+ [APIARY](Integration/APICS/APIPCS-DesignFirst.md) - The objective of this lab is to give you an overview of the APIARY Cloud Platform as an API Developer. 
-+ [API Platform Cloud Service](Integration/APICS/APIPCS-Manager.md) - The objective of this lab is to give you a comprehensive overview of the API Platform Cloud Service as an API Manager. 
-
-
-
-
-## Prerequisites ##
-
-The workshop is intended to work with the Oracle Cloud account information handed out to you during the event.  You will need the following information to start working on these exercises :
-
-+ Oracle Cloud account **username** and **password**
-+ Oracle Cloud **identity domain**
-+ **Data center/region**
-
-Alternatively you can request an Oracle Cloud Free Tier account. To get an account look into [here](common/request.for.trial.md).
 
 
 
 ## [License](LICENSE)
-Copyright (c) 2014, 2020 Oracle and/or its affiliates
+Copyright (c) 2014, 2022 Oracle and/or its affiliates
 The Universal Permissive License (UPL), Version 1.0
