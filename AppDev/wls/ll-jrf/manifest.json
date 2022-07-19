@@ -1,4 +1,6 @@
 {
+    "workshoptitle": "Oracle WebLogic for OCI (JRF)",
+    "help": "livelabs-help-weblogic_us@oracle.com",
     "tutorials": [
         {
             "title": "Introduction to the lab",
