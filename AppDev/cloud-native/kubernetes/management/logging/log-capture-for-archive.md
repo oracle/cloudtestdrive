@@ -156,11 +156,11 @@ The object storage endpoint is `https://<object storage namespace>.compat.object
 
 For example **FOR MY TENANCY, YOURS WILL VARY** it might be  `https://oractdemeabdmnative.compat.objectstorage.eu-frankfurt-1.oraclecloud.com`
 
-  8. Save the Object Storage Service endpoint in your texteditor for later use.
+  8. Save the Object Storage Service endpoint in your text editor for later use.
 
   9. Note the value for the `Amazon S3 Compatibility API Designated Compartment:` (`JAM` in this case)
 
-This is the OCI compartment that will be used to hold the storage bucket. In this case the compartment is named `JAM` If there is no compartment shown then the storage bucket will be created in the root compartment. If you want to change that (only do this if this is your tenancy, if it belongs to your organization then make sure your tenancy admin is OK with you changing it as you might break other things) then click the `Edit Object Storage Settings` and chose another compartment (if this is a new tenancy you may only have the root compartment).
+This is the OCI compartment that will be used to hold the storage bucket. By default this is the root compartment of the tenancy (this is fine for this lab), though in this case the S3 compatibility compartment is named `JAM`.If you want to change that (only do this if this is your tenancy, if it belongs to your organization then make sure your tenancy admin is OK with you changing it as you might break other things) then click the `Edit Object Storage Settings` and chose another compartment (if this is a new tenancy you may only have the root compartment).
 
 **Important** You need to have rights to create storage objects in the compatibility compartment, If this is a trial tenancy then you will be operating as the tenancy administrator, if it's a commercial tenancy you may need to check with your admins to ensure you have the appropriate rights.
 
@@ -200,7 +200,7 @@ To generate a new Customer Secret Key
 
 **VITALLY IMPORTANT**
 
-  17. Click the **Copy** link to copy the secret key, be sure to paste it into a texteditor or somewhere safe (this is a secret key, so it needs to be protected against access). **You cannot retrieve it at any point once this popup is closed** 
+  17. Click the **Copy** link to copy the secret key, be sure to paste it into a text editor or somewhere safe (this is a secret key, so it needs to be protected against access). **You cannot retrieve it at any point once this popup is closed** 
 
   18. **ONLY** after you'ce copied and saved the secret key click the **Close** button
 
@@ -259,7 +259,7 @@ We're going to create a new bucket set for archive storage
 
   4. Click the **Create Bucket** button.
 
-  5. In the popup name the bucket `<YOUR INITIALS>-FLUENTD` For fluentd to write to this bucket the name **must** be entirely in UPPER CASE and you **must** replace <YOUR INITIALS> with something unique to you!
+  5. In the popup name the bucket `<YOUR INITIALS>_FLUENTD` For fluentd to write to this bucket the name **must** be entirely in UPPER CASE and you **must** replace <YOUR INITIALS> with something unique to you!
 
   6. Change the storage tier option to **archive**
 
