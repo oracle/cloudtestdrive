@@ -820,20 +820,20 @@ Kubernetes supports the concept of namespaces, these logically split the cluster
 
 In a production cluster where you may have many applications running composed of many microservices having separate namespaces is basically essential to avoid mistakes and misunderstandings that could impact the service operation.
 
-  1. Create a namespace for your projects and setup the environment to make it the default, to make it easier we have created a script called create-namespace.sh that does this for you. You must use **your initials** as a parameter (for example in my case that's `tg-helidon`, **but yours will probably differ !**)
+  1. Create a namespace for your projects and setup the environment to make it the default, to make it easier we have created a script called create-namespace.sh that does this for you. You must use **your initials** as a parameter (for example in my case that's `tg`, **but yours will probably differ !**)
   
   2.  `cd $HOME/helidon-kubernetes/base-kubernetes`
   
-  3.  `bash create-namespace.sh <your-initials>-helidon`
+  3.  `bash create-namespace.sh <your-initials>`
   
 ```
-Deleting old tg-helidon namespace
-Creating new tg-helidon namespace
-namespace/tg-helidon created
+Deleting old tg namespace
+Creating new tg namespace
+namespace/tg created
 Setting default kubectl namespace
 Context "west" modified.
 ```
-The script tries to delete any existing namespace with that name, creates a new one, and sets it as a default. The output above was using tg-helidon as the namespace, but of course you will have used your initials and so will see them in the output instead of tg.
+The script tries to delete any existing namespace with that name, creates a new one, and sets it as a default. The output above was using `tg` as the namespace, but of course you will have used your initials and so will see them in the output instead of tg.
 
   4. We can check the namespace has been created by listing all namespaces:
 
@@ -846,14 +846,14 @@ docker            Active   2d23h
 kube-node-lease   Active   2d23h
 kube-public       Active   2d23h
 kube-system       Active   2d23h
-tg-helidon        Active   97s
+tg                Active   97s
 ```
   5. If we look into the namespace we've just created we'll see it contains nothing yet:
 
   -  `kubectl get all`
 
   ```
-No resources found in tg-helidon namespace.
+No resources found in tg namespace.
 ```
 
 As we've set the namespace we just created as the default we don't need to specify it in the kubectl commands from now on, but if we want to refer to a different namespace, for example the kube-system namespace then we need to use the -n flag to tell kubectl we are not using the default namespace, e.g. `kubectl get all -n kube-system`
@@ -1082,7 +1082,7 @@ secret/tls-store created
   -  `kubectl get ingress`
 
   ```
-No resources found in tg-helidon namespace.
+No resources found in tg namespace.
 ```
 
 <details><summary><b>More on Ingress rules</b></summary>
@@ -1527,9 +1527,9 @@ kind: Secret
 metadata:
   creationTimestamp: "2019-12-31T20:02:38Z"
   name: sm-conf-secure
-  namespace: tg-helidon
+  namespace: tg
   resourceVersion: "481765"
-  selfLink: /api/v1/namespaces/tg-helidon/secrets/sm-conf-secure
+  selfLink: /api/v1/namespaces/tg/secrets/sm-conf-secure
   uid: 7ef4aaf6-2c08-11ea-bd2b-025000000001
 type: Opaque
 
@@ -1566,7 +1566,7 @@ The dashboard is actually a lot easier in this case.
 
   6. In the dashboard UI
   
-  7. Chose **your** namespace in the namespace selector (upper left) tg-helidon in my case, but yours may differ
+  7. Chose **your** namespace in the namespace selector (upper left) tg in my case, but yours may differ
 
   8. Click on the **Secrets** choice in the **Config and Store** section of the left hand menu.
 
@@ -1643,7 +1643,7 @@ configmap "sf-config-map" deleted
 sm-config-map
 configmap "sm-config-map" deleted
 Config Maps remaining in namespace are
-No resources found in tg-helidon namespace.
+No resources found in tg namespace.
 Creating config maps
 sf-config-map
 configmap/sf-config-map created
@@ -1690,9 +1690,9 @@ kind: ConfigMap
 metadata:
   creationTimestamp: "2019-12-31T20:09:58Z"
   name: sf-config-map
-  namespace: tg-helidon
+  namespace: tg
   resourceVersion: "482505"
-  selfLink: /api/v1/namespaces/tg-helidon/configmaps/sf-config-map
+  selfLink: /api/v1/namespaces/tg/configmaps/sf-config-map
   uid: 84cdf8f5-2c09-11ea-bd2b-025000000001
 ```
 

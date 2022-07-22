@@ -150,7 +150,7 @@ You'll be presented with the linkerd-web main page, unlike when you saw this pre
 
   ![](images/linkerd-web-main-apps-load.png)
 
-  3. Click on the page for your namespace (tg-helidon in my case)
+  3. Click on the page for your namespace (tg in my case)
 
   ![](images/linkerd-namespace-running-ok.png)
 
@@ -311,7 +311,7 @@ We'll open the LinkerdUI and see what it's reporting.
 
   1. In your web browser go to `https://linkerd.<external IP>.nip.io` (replace `<external IP>` of course) If asked login with the user name admin and the password you chose when setting up the Linkerd ingress
 
-  2. Click on **Namespaces** in the **Cluster** section of the left menu and locate the **HTTP metrics** entry for your namespace (mine is tg-helidon, yours will have a different name)
+  2. Click on **Namespaces** in the **Cluster** section of the left menu and locate the **HTTP metrics** entry for your namespace (mine is tg, yours will have a different name)
 
   ![](images/linkerd-broken-overview-namespace.png)
 

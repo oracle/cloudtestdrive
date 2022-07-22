@@ -313,7 +313,7 @@ kube-system       Active   29d
 linkerd           Active   63s
 logging           Active   7d22h
 monitoring        Active   27d
-tg-helidon        Active   27d
+tg                Active   27d
 ```
 
 (Depending on what lab modules you've done, and the name you gave your namespace the list will vary)
@@ -792,9 +792,9 @@ apiVersion: v1
 kind: Namespace
 metadata:
   creationTimestamp: "2020-04-16T14:07:53Z"
-  name: tg-helidon
+  name: tg
   resourceVersion: "239255"
-  selfLink: /api/v1/namespaces/tg-helidon
+  selfLink: /api/v1/namespaces/tg
   uid: c77e0d99-e3b4-42cc-ad87-881c245aadf3
 spec:
   finalizers:
@@ -803,11 +803,11 @@ status:
   phase: Active
 ```
 
-The above output was using tg-helidon as the namespace name, but of course you will have used a different name so the output will be different.
+The above output was using tg as the namespace name, but of course you will have used a different name so the output will be different.
 
 <details><summary><b>If you can't remember your namespace name</b></summary>
 
-If you followed the lab instructions correctly your namespace should be named <your initials>-helidon
+If you followed the lab instructions correctly your namespace should be named `<your initials>`
 
 To get a list of the available namespaces
 
@@ -822,7 +822,7 @@ kube-node-lease   Active   36d
 kube-public       Active   36d
 kube-system       Active   36d
 linkerd           Active   7d2h
-tg-helidon        Active   35d
+tg                Active   35d
 ```
 
 (This is the cluster I'm using to test the lab, so it's been running a while, the age reported in your example will probably be measured in hours, not days!)
@@ -843,9 +843,9 @@ kind: Namespace
 metadata:
   annotations:
     linkerd.io/inject: enabled
-  name: tg-helidon
+  name: tg
   resourceVersion: "239255"
-  selfLink: /api/v1/namespaces/tg-helidon
+  selfLink: /api/v1/namespaces/tg
   uid: c77e0d99-e3b4-42cc-ad87-881c245aadf3
 spec:
   finalizers:
@@ -854,12 +854,12 @@ status:
   phase: Active
 ---
 
-namespace "tg-helidon" injected
+namespace "tg" injected
 ```
 
 You can see that there is now a annotations section with the annotation `linkerd.io/inject: enabled` (As before this is the output for my namespace)
 
-The text `namespace "tg-helidon" injected` is just for information, it doesn't actually appear in the output (technically it's been sent to stderr, not stdout)
+The text `namespace "tg" injected` is just for information, it doesn't actually appear in the output (technically it's been sent to stderr, not stdout)
 
 Let's have kubectl apply the change
 
@@ -868,9 +868,9 @@ Let's have kubectl apply the change
   - `kubectl get namespace <ns-name> -o yaml | linkerd inject - | kubectl replace -f -`
   
   ```
-namespace "tg-helidon" injected
+namespace "tg" injected
 
-namespace/tg-helidon configured
+namespace/tg configured
 ```
 
 The first line of the output is from the linkerd command telling us that its added the annotation, the second is from the kubectl replace command telling us that the previous configuration has been replaced with the new one.
@@ -978,7 +978,7 @@ metadata:
     linkerd.io/proxy-deployment: stockmanager
     pod-template-hash: 654f44d59d
   name: stockmanager-654f44d59d-bjn2v
-  namespace: tg-helidon
+  namespace: tg
   ownerReferences:
   - apiVersion: apps/v1
     blockOwnerDeletion: true
@@ -987,7 +987,7 @@ metadata:
     name: stockmanager-654f44d59d
     uid: 088909ae-deb5-401f-a0a1-c9b23dbeb40e
   resourceVersion: "8437962"
-  selfLink: /api/v1/namespaces/tg-helidon/pods/stockmanager-654f44d59d-bjn2v
+  selfLink: /api/v1/namespaces/tg/pods/stockmanager-654f44d59d-bjn2v
   uid: 67957775-ca04-4e8b-a06e-5901f0042582
 spec:
   containers:
@@ -1372,7 +1372,7 @@ You can now see the main page of the linkerd UI
 
 ![](images/linkerd-web-main-page-after-enablement.png)
 
-Good news! We can see that there is http traffic in the ingress-ngnix namespace and TCP traffic in the tg-helidon namespace (your namespace will of course be different)
+Good news! We can see that there is http traffic in the ingress-ngnix namespace and TCP traffic in the tg namespace (your namespace will of course be different)
 
   11. If we go to the Grafana page in your laptop web browser go to 
   

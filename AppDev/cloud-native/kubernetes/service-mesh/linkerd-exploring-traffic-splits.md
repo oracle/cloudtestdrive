@@ -500,7 +500,7 @@ Locate your namespace on the list, you'll see that it's running fine with 100% s
 
   ![](images/linkerd-traffic-split-canary-main-pre-switchupdate.png)
 
-  9. Click on your namespace name (`tg-helidon` in my case) 
+  9. Click on your namespace name (`tg` in my case) 
 
   10. On the left menu click on **Traffic Splits**
 
@@ -804,7 +804,7 @@ Let's look at the traffic split in the linkerd UI
 
   ![](images/linkerd-namespaces-menu.png)
 
-  4. Click **your namespace** in the list (tg-helidon in my case, but yours should be different)
+  4. Click **your namespace** in the list (`tg` in my case, but yours should be different)
 
   5. On the left menu in the configuration section click **Traffic Splits**
 
@@ -865,11 +865,11 @@ Of course this is useful, but in this case all it's telling us is that the `zipk
 
   2. In the **Tools** section on the  left menu click on **Routes**
 
-  3. In the **Namespace dropdown** chose the name of **your** namespace (tg-helidon in the example below)
+  3. In the **Namespace dropdown** chose the name of **your** namespace (`tg` in the example below)
 
   4. In the **Resource** dropdown chose **Deployment**
 
-  5. In the **To Namespace** dropdown chose the name of **your** namespace (tg-helidon in the example below)
+  5. In the **To Namespace** dropdown chose the name of **your** namespace (`tg` in the example below)
 
   6. In the **To resource** dropdown chose `deployment/zipkin`
 

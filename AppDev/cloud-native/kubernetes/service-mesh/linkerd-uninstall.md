@@ -173,7 +173,7 @@ kube-node-lease   Active   49d
 kube-public       Active   49d
 kube-system       Active   49d
 linkerd           Active   20d
-tg-helidon        Active   48d
+tg                Active   48d
 ```
 
 If you don't see `linkerd` or `linkerd-viz` in the list then remove you're done, if (in the example above the `linkerd` namespace remains) you do then remove them

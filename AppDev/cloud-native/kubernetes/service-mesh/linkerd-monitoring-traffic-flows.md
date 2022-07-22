@@ -185,7 +185,7 @@ In the TCP Metrics section the columns are :
 
 Let's now look at the specific data for your namespace. 
 
-  1. In the **HTTP metrics** section click on the **name** of your namespace (mine is `tg-helidon`, but yours will be different)
+  1. In the **HTTP metrics** section click on the **name** of your namespace (mine is `tg`, but yours will be different)
 
   ![](images/linkerd-app-namespace-top-of-page.png)
 
@@ -271,7 +271,7 @@ Here we can have a look at the REST API calls being made to / from a service.
 
   ![](images/linkerd-top-select-resource.png)
 
-Note that the UI is displaying what the query would be if you ran the linkerd command manually, in this case it's `linkerd top deployment/storefront --namespace tg-helidon` This helps you understand how you could write scripts to gather information if you liked)
+Note that the UI is displaying what the query would be if you ran the linkerd command manually, in this case it's `linkerd top deployment/storefront --namespace tg` This helps you understand how you could write scripts to gather information if you liked)
 
   6. Click the **Start** button (when you selected the resource it may have automatically started, in which case **do not** click the `Stop` button)
 
@@ -359,7 +359,7 @@ The remainder of the Grafana dashboard shows us what's happening broken down by 
 
   ![](images/grafana-my-namespace-on-overview-landing-page.png)
 
-  3. Click on the name for your namespace, mine is ns/tg-helidon, but yours of course will vary.
+  3. Click on the name for your namespace, mine is ns/tg, but yours of course will vary.
 
   ![](images/grafana-my-namespace-stockmanager.png)
 

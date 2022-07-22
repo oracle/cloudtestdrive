@@ -259,7 +259,7 @@ We're going to create a new bucket set for archive storage
 
   4. Click the **Create Bucket** button.
 
-  5. In the popup name the bucket `<YOUR INITIALS>_FLUENTD` For fluentd to write to this bucket the name **must** be entirely in UPPER CASE and you **must** replace <YOUR INITIALS> with something unique to you!
+  5. In the popup name the bucket `<YOUR INITIALS>-FLUENTD` For fluentd to write to this bucket the name **must** be entirely in UPPER CASE and you **must** replace <YOUR INITIALS> with something unique to you!
 
   6. Change the storage tier option to **archive**
 
