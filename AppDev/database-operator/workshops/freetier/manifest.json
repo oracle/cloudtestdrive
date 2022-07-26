@@ -8,10 +8,10 @@
         },
         {
             "title": "Access your Cloud Account",
-            "filename": "../../access/access.md"
+            "filename": "https://oracle-livelabs.github.io/common/labs/cloud-login/pre-register-free-tier-account.md"
         },
         {
-            "title": "Lab 1: Set up an Oracle Kubernetes Engine instance on the Oracle Cloud Infrastructure",
+            "title": "Lab 1: Set up an Oracle Kubernetes Engine instance on OCI",
             "filename": "../../setup-oke/setup-oke.md"
         },
         {
