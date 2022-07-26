@@ -1,6 +1,6 @@
 {
     "workshoptitle": "Oracle Database Kubernetes Operator",
-    "help": "livelabs-help-weblogic_us@oracle.com",
+    "help": "jan.leemans@oracle.com",
     "tutorials": [
         {
             "title": "Introduction",
@@ -19,15 +19,15 @@
             "filename": "../../install-operator/install-operator.md"
         },
         {
-            "title": "Lab 4: Deploy a SingleInstance Database using a dynamically allocated Block Volume",
+            "title": "Lab 3: Deploy a SingleInstance Database using a dynamically allocated Block Volume",
             "filename": "../../deploy-db-bc/deploy-db-on-bv.md"
         },
         {
-            "title": "Lab 5: Deploy a SingleInstance Database using a static NFS filesystem",
+            "title": "Lab 4: Deploy a SingleInstance Database using a static NFS filesystem",
             "filename": "../../deploy-db-fss/deploy-db-on-fss.md"
         },
         {
-            "title": "Lab 6 (OPTIONAL): Failover to another node and redeploying the DB",
+            "title": "Lab 5: Failover to another node and redeploying the DB",
             "filename": "../../db-activities/db-activities.md"
         },
         {

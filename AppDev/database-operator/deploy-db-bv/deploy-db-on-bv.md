@@ -1,15 +1,57 @@
-# Install and configure the operator
+# Deploy a database using a block volume
 
 ## Introduction
 
-An operator is an application-specific controller that extends Kubernetes to create, configure, and manage instances of complex applications. The Oracle Database Kubernetes Operator (the "operator") manages the management and operation of the database deployments on the kubernetes cluster.
+#### Dynamic Persistence
 
-This lab walks you through the steps to install theDatabase Operator using the CLoud Shell.
+In this lab we'll be using **Dynamic Persistence Provisioning**, a persistent volume that is automatically provisioned by mentioning a storage class. As we are running on Oracle OCI, we'll use the **oci-bv** storage class. This storage class facilitates dynamic provisioning of the OCI block volumes. The supported access mode for this class is `ReadWriteOnce`. For other cloud providers, you can similarly use their dynamic provisioning storage classes.
 
-Estimated Lab Time: 15 minutes
+We'll also be specifying the  `Reclaim Policy` of the dynamically provisioned volumes as `Delete`. In this case the volume is deleted when the corresponding database deployment is deleted.
 
-## Task 1: Prepare to pull the DB Docker image
-To access the pre-configured docker image containing the Oracle 21c Enterprise Edition database from the Oracle Container Registry, you need to sign in and accept the required developer License Agreement.
+
+
+Estimated Lab Time: 20 minutes
+
+
+
+## Task 1: Store passwords in Kubernetes Secrets
+When creating a database we will need a few passwords:
+
+- Your Oracle Account password to pull the DB docker container from the Oracle Container Repository 
+- The Admin password of the database we'll be creating
+
+In kubernetes we store these passwords in secrets.
+
+1. In the Cloud Shell, log into the oracle repository with the below command :
+
+   ```
+   docker login container-registry.oracle.com
+   ```
+
+   You'll be prompted for your username and password, please enter your Oracle website username and password (**not** your OCI Cloud username !)
+   If all goes well you'll get a `Login Succeeded`message.
+
+2. Now use the local config file to create the secret we'll pass to the operator:
+
+   ```
+   kubectl create secret generic oracle-container-registry-secret --from-file=.dockerconfigjson=.docker/config.json --type=kubernetes.io/dockerconfigjson
+   ```
+
+   Please note we're assuming you are in the home directory of your cloud shell, if not please make sure to correct the path to the .docker directory accordingly.
+
+3. Let's now create a secret containing the admin password we'll want to specify for the new database: 
+
+   ```
+   kubectl create secret generic admin-secret --from-literal=oracle_pwd=Oracle123456
+   ```
+
+   
+
+
+
+
+
+passworkTo access the pre-configured docker image containing the Oracle 21c Enterprise Edition database from the Oracle Container Registry, you need to sign in and accept the required developer License Agreement.
 
 1. Navigate to the [Oracle Container Registry](https://container-registry.oracle.com/) and log in with your Oracle account. 
    *!! Attention, !!* this is **not** your Cloud account but the account you used to register to the Oracle website, sign up for events or download software.
