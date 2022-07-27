@@ -142,7 +142,7 @@ Next it creates a certificate for the core services using step and the root cert
 
 Once it has the IP address it creates versions of the ingress rules which have the IP address in their DNS names, then it will deploy them.
 
-Next it will deploy the secrets and config maps that the microservcies need to configure themselves
+Next it will deploy the secrets and config maps that the microservices need to configure themselves
 
 Now it deploys the microservices, and waits for them to start
 
@@ -156,9 +156,15 @@ Finally it will use the microservices to create test data in the database. If th
   
   - `cd $HOME/helidon-kubernetes/setup/kubernetes-labs`
   
-  2/ Run the installation script, you will need to replace `<your initials>` with your personal initials, or first name in **lower case** (singluar or plural). For example my name is Tim Graves, so my initials will be tg, or I might use `tim` or `tims`. Of course unless your name is also Tim Graves yoiu will be using a different value. If you are running a version of the lab where multiple people are using the same tenancy (your instructor will notify you of this, most people will be using their own free trial) please ensure that you do not duplicate this value.
+  2. Configure the cluster - thus will update the configuration files with the database wallet and other information.
   
-  - `bash ./configureGitAndFullyInstallCluster.sh <your initials>`
+  - `bash configure-downloaded-git-repo.sh <your initials>`
+  
+  There will be a fair bit of output, if you are asked to confirm please enter `y`
+  
+  3. Run the installation script, you will need to replace `<your initials>` with your personal initials, or first name in **lower case** (singluar or plural). For example my name is Tim Graves, so my initials will be tg, or I might use `tim` or `tims`. Of course unless your name is also Tim Graves yoiu will be using a different value. If you are running a version of the lab where multiple people are using the same tenancy (your instructor will notify you of this, most people will be using their own free trial) please ensure that you do not duplicate this value.
+  
+  - `bash ./configureHelmAndFullyInstallCluster.sh <your initials>`
   
   ```
   setting up config in downloaded git repo using tims as the department name one as the kubernetes context and /home/tim_graves/Wallet.zip as the DB wallet file.
@@ -429,8 +435,17 @@ NAME                                      DESIRED   CURRENT   READY   AGE
 replicaset.apps/stockmanager-6b759ddcd7   1         1         1       4s
 replicaset.apps/storefront-74d6d55dcc     1         1         0       2s
 replicaset.apps/zipkin-55c5b96f9d         1         1         1       5s
-checking https://store.123.456.789.123.nip.io/store/stocklevel for a 200 response
-Waiting for services to start
+checking https://store.141.147.91.196.nip.io/store/stocklevel for a 200 response
+Waiting for services to start on 141.147.91.196, test 1response is HTTP/1.1 503 Service Temporarily Unavailable
+Waiting for services to start on 141.147.91.196, test 2response is HTTP/1.1 503 Service Temporarily Unavailable
+Waiting for services to start on 141.147.91.196, test 3response is HTTP/1.1 503 Service Temporarily Unavailable
+Waiting for services to start on 141.147.91.196, test 4response is HTTP/1.1 502 Bad Gateway
+Waiting for services to start on 141.147.91.196, test 5response is HTTP/1.1 502 Bad Gateway
+Waiting for services to start on 141.147.91.196, test 6response is HTTP/1.1 424 Failed Dependency
+Waiting for services to start on 141.147.91.196, test 7response is HTTP/1.1 424 Failed Dependency
+Waiting for services to start on 141.147.91.196, test 8response is HTTP/1.1 424 Failed Dependency
+Waiting for services to start on 141.147.91.196, test 9response is HTTP/1.1 424 Failed Dependency
+Waiting for services to start on 141.147.91.196, test 10response is HTTP/1.1 200 OK
 Creating test data
 Service IP address is 123.456.789.123
 HTTP/1.1 500 Internal Server Error
@@ -467,6 +482,8 @@ one
 ---
 
 </details>
+
+  Note that the 
 
 If the database already contains data then you may see the `HTTP/1.1 500 Internal Server Error` messages when the script tries to create the test data.
 
