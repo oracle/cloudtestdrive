@@ -45,106 +45,238 @@ In kubernetes we store these passwords in secrets.
    kubectl create secret generic admin-secret --from-literal=oracle_pwd=Oracle123456
    ```
 
-   
 
 
+## Task 2: Creating the DB Config file for the Operator
 
+To initiate the creation of the database by the Operator we'll have to create a config file describing the desired database setup.  For this lab we'll use the file [singleinstancedatabase_create.yaml](https://github.com/oracle/cloudtestdrive/blob/master/AppDev/database-operator/deploy-db-bv/singleinstancedatabase_create.yaml) which contains a configuration ready to use for this part of the lab.
 
+We'll be highlighting some of the sections of this file below :
 
-passworkTo access the pre-configured docker image containing the Oracle 21c Enterprise Edition database from the Oracle Container Registry, you need to sign in and accept the required developer License Agreement.
+- In the top level section of the file, the parameter `kind`refers to the type of database to create, in this case we will be launching a DB in a container running on the Kubernetes cluster, known as a **Single Instance Database**.  Other possible choices are to use an Autonomous DB on OCI, to use a, external Container database, and more.
+  The parameter `name` defines the oracle dabatase name we'll be creating, as well as the name used to refer to the database via the various `kubectl` commands
 
-1. Navigate to the [Oracle Container Registry](https://container-registry.oracle.com/) and log in with your Oracle account. 
-   *!! Attention, !!* this is **not** your Cloud account but the account you used to register to the Oracle website, sign up for events or download software.
-   ![](images/container-reg.png)
+  ```
+  apiVersion: database.oracle.com/v1alpha1
+  kind: SingleInstanceDatabase
+  metadata:
+    name: sidb-test1
+    namespace: default
+  ```
 
-2. Sign in with your Oracle account
+- `secretName` defines the name of the secret containing the database password.  You can specify to remove this secret after creation for enhanced security using the parameter `keepSecret`.
 
-3. Navigate to the Database section
+  ```
+    adminPassword:
+      secretName: admin-secret
+      keepSecret: true
+  ```
 
-4. Click on the `Continue` button besides the **Enterprise** edition, scroll down to the bottom of the page and `Accept` theT&C's.
+- the `image` section specifies where to pull the database container image from.  In this case we use the default image, you could build a custom image and refer to that image instead. The parameter `pullSecrets` refers to the name of the secret where we stored the credentials of the container repo, in this case the Oracle Container Repository.
 
-   You should now see a green checkmark besides the Enterprise edition version
-   ![](images/enterprise-tc.png)
+  ```
+    image:
+     pullFrom: container-registry.oracle.com/database/enterprise:latest
+     pullSecrets: oracle-container-registry-secret
+  ```
 
-5. Now click on the blue **enterprise** label to see the download instructions, especially the exact path for the pull command
-   ![](images/image-details.png)
+- The section `persistence` defines the type of persistent storage to use.  In this case we'll use the class `oci` to use an OCI Block Volume.  The parameter `accessMode` specifies this is a block volume that can only be mounted on a single node of the cluster.  In the next lab we'll be using an NFS volume which can be mounted on multiple nodes at the same time.
 
+  ```
+  persistence:
+    size: 100Gi
+    storageClass: "oci"
+    accessMode: "ReadWriteOnce"
+  ```
 
+- And finally the parameter `replicas`specifies how many pods we want to have up and running.  As this is a block-based volume that can only be mounted on a single node of the cluster we are using **1**.
 
+  ```
+  replicas: 1
+  ```
 
+  
 
+## Task 3: Launching and tracking the DB creation
 
+Launching the creation of the database is done through a single command applying the config file on the cluser.  Next the operator will initiate the necessary operations to spin up the database, and this will take approximately 15 minutes in a fresh environment - as for example the images have to be copied over from the container repository.
 
-## Task 2: Install the operator using the Cloud Shell
+In this section we'll explain a number of commands that allow you to track what is happening during this creation process and how to debug issues you might encounter.
 
-The operator uses webhooks for validating user input before persisting it in Etcd. Webhooks require TLS certificates that are generated and managed by a certificate manager.
-
-1. Install the certificate manager with the following command:
-
-```
-kubectl apply -f https://github.com/jetstack/cert-manager/releases/latest/download/cert-manager.yaml
-```
-
-The resulting output should have no error messages and end like below:
-
-```
-clusterrolebinding.rbac.authorization.k8s.io/cert-manager-webhook:subjectaccessreviews created
-role.rbac.authorization.k8s.io/cert-manager-cainjector:leaderelection created
-role.rbac.authorization.k8s.io/cert-manager:leaderelection created
-role.rbac.authorization.k8s.io/cert-manager-webhook:dynamic-serving created
-rolebinding.rbac.authorization.k8s.io/cert-manager-cainjector:leaderelection created
-rolebinding.rbac.authorization.k8s.io/cert-manager:leaderelection created
-rolebinding.rbac.authorization.k8s.io/cert-manager-webhook:dynamic-serving created
-service/cert-manager created
-service/cert-manager-webhook created
-deployment.apps/cert-manager-cainjector created
-deployment.apps/cert-manager created
-deployment.apps/cert-manager-webhook created
-mutatingwebhookconfiguration.admissionregistration.k8s.io/cert-manager-webhook created
-validatingwebhookconfiguration.admissionregistration.k8s.io/cert-manager-webhook created
-```
-
-
-
-2. Next we'll install the operator itself using the default [oracle-database-operator.yaml](https://github.com/oracle/oracle-database-operator/blob/main/oracle-database-operator.yaml) file straight from the git repo.  Of course you can also download and edit this file manually, as there are various options that can be controlled in this fashion.
+1. Apply the config file to initiate the DB creation : 
 
 ```
-kubectl apply -f https://raw.githubusercontent.com/oracle/oracle-database-operator/main/oracle-database-operator.yaml
+kubectl apply -f https://raw.githubusercontent.com/oracle/cloudtestdrive/master/AppDev/database-operator/deploy-db-bv/singleinstancedatabase_create.yaml
 ```
 
-Again you should see an output ending like below, without errors :
+2. Validate the instance definition was submitted to the operator:
 
 ```
-clusterrolebinding.rbac.authorization.k8s.io/oracle-database-operator-oracle-database-operator-proxy-rolebinding created
-service/oracle-database-operator-controller-manager-metrics-service created
-service/oracle-database-operator-webhook-service created
-certificate.cert-manager.io/oracle-database-operator-serving-cert created
-issuer.cert-manager.io/oracle-database-operator-selfsigned-issuer created
-mutatingwebhookconfiguration.admissionregistration.k8s.io/oracle-database-operator-mutating-webhook-configuration created
-validatingwebhookconfiguration.admissionregistration.k8s.io/oracle-database-operator-validating-webhook-configuration created
-deployment.apps/oracle-database-operator-controller-manager created
+get singleinstancedatabase sidb-test1
 ```
 
+This will result in the following output:
 
+```
+NAME         EDITION      STATUS    VERSION       CONNECT STR   OEM EXPRESS URL
+sidb-test1   Enterprise   Pending   Unavailable   Unavailable   Unavailable
+```
 
-3. Now validate that the operator is indeed running on the three nodes of the kubernetes cluster with the below command : 
+The object was created, but the db instance is not yet available.
+
+3. We can use the below command to see more details:
 
    ```
-   kubectl get pod -n oracle-database-operator-system -o wide
+   kubectl describe singleinstancedatabase sidb-test1
    ```
 
-   The output should be something like the below, where you can see each pod runs on a different node of the cluster:
+   Output of the command at this stage:
+
+```
+Oem Express URL:     Unavailable
+  Pdb Connect String:  Unavailable
+  Pdb Name:            orclpdb1
+  Persistence:
+    Access Mode:    ReadWriteOnce
+    Size:           100Gi
+    Storage Class:  oci
+  Release Update:   Unavailable
+  Replicas:         1
+  Role:             Unavailable
+  Sid:              ORCL1
+  Status:           Pending
+Events:
+  Type    Reason            Age                From                    Message
+
+----    ------            ----               ----                    -------
+
+  Normal  Service creation  43s                SingleInstanceDatabase  successfully created service type LoadBalancer
+  Normal  Database Pending  13s (x4 over 43s)  SingleInstanceDatabase  waiting for a pod to get to running state
+```
+
+We see the operator is waiting for the pod to become available.
+
+4. We can check the status of the pod where the db will be launched, and follow the different steps of the creation process:	
+
+```
+kubectl get pod
+```
+
+​	Initially this command will report the following:
+
+```
+NAME               READY   STATUS     RESTARTS   AGE
+sidb-test1-xe06x   0/1     Init:0/2   0          82s
+```
+
+5. To get more details on the creation, you can issue the following command, replacing the exact name of the pod with the name in your environment:
 
    ```
-   NAME                                                           READY   STATUS    RESTARTS   AGE     IP             NODE          NOMINATED NODE   READINESS GATES
-   oracle-database-operator-controller-manager-5fbbffb45c-9v7k8   1/1     Running   0          6m25s   10.244.0.5     10.0.10.52    <none>           <none>
-   oracle-database-operator-controller-manager-5fbbffb45c-mdxvj   1/1     Running   0          6m25s   10.244.1.132   10.0.10.193   <none>           <none>
-   oracle-database-operator-controller-manager-5fbbffb45c-slj5l   1/1     Running   0          6m25s   10.244.0.132   10.0.10.149   <none>           <none>
+   kubectl describe pod sidb-test1-xe06x
    ```
 
-   
+   This will allow you to see the events happening on the pod level - and any issues, like for example an incorrect password for the container registry
 
-The Database Kubernetes Operator has been installed. You may now **proceed to the next lab**.
+   ![](images/desc-pod-1.png)
+
+​		You can execute this command a few times to see the evolution.
+
+While the pod is starting up, you can check the creation of the block volume and a loadbalancer that were specified in the config file:
+
+- Navigate to **Storage**, then under **Block Storage** select **Block Volumes**.  You will see a new block volume has appeared :
+
+  ![](images/block-vol.png)
+
+- Navigate to **Networking**, then select **Load Balancers**.  You will see a new load balancer serving the EM and SQLplus ports of the DB:
+
+  ![](images/lb.png)
+
+- By now the pod should be running, but not yet **ready** : re-issue the command below:
+
+  ```
+  kubectl get pod
+  ```
+
+  You'll see:
+
+```
+  NAME               READY   STATUS    RESTARTS   AGE
+  sidb-test1-xe06x   0/1     Running   0          5m26s
+```
+
+- We can now re-issue the describe command against the database entity to see more details on the database creation :
+
+```
+kubectl describe singleinstancedatabase sidb-test1
+```
+
+Output of the command at this stage:
+
+![](images/desc-db-1.png)
+
+And re-issuing the same command a few more times will finally show following : 
+
+![](images/desc-db-2.png)
+
+- It looks like the DB is now up and running !  Let's re-issue the get command : 
+
+```
+kubectl get singleinstancedatabase sidb-test1
+```
+
+Resulting output: 
+
+```
+NAME         EDITION      STATUS     VERSION      CONNECT STR                 OEM EXPRESS URL
+sidb-test1   Enterprise   Patching   21.3.0.0.0   132.145.249.43:1521/ORCL1   https://132.145.249.43:5500/em
+```
+
+OK, it looks like our database is indeed up and running !  Let's try to connect to the Enterprise Manager ...
+
+-  Click on the link in the above output, in my case this is  https://132.145.249.43:5500/em, use your IP address !
+
+  ![](images/not-private.png)
+
+You will now get a warning because we did not configure certificates.  In Chrome you can get around this message by simply typing the following text in your browser when visualizing the above screen :
+	**thisisunsafe**
+
+After entering this string of characters, the connection is accepted and you end up on the login screen :
+
+![](images/em-login.png)
+
+
+
+- Enter the username `sys`, the password you specified for the database earlier, and the container db name `orclpdb1`.  You should now see the console :
+
+  ![](images/em-open.png)
+
+
+
+Alternatively, you can use the command line to connect via sqlplus:
+
+- Get the connect string with the below command : 
+
+  ```
+  kubectl get singleinstancedatabase sidb-test1 -o "jsonpath={.status.pdbConnectString}" && echo -e "\n"
+  ```
+
+  This should output something like : 
+
+  ```
+  132.145.249.43:1521/ORCLPDB1
+  ```
+
+- Use your string to compose a command looking like the below, replacing <your_passwd> with the one you specified:
+
+  ```
+  sqlplus sys/<your_passwd>@132.145.249.43:1521/ORCLPDB1 as sysdba
+  ```
+
+  You can quit sqlplus with the `quit` command.
+
+  
+
+Congratulations, your database is up and running, and you are able to connect to it through Enterprise Manager and Sqlplus !  You may now **proceed to the next lab**.
 
 
 
