@@ -827,11 +827,20 @@ In a production cluster where you may have many applications running composed of
   3.  `bash create-namespace.sh <your-initials>-helidon`
   
 ```
+<<<<<<< Updated upstream
 Deleting old tg-helidon namespace
 Creating new tg-helidon namespace
 namespace/tg-helidon created
 Setting default kubectl namespace
 Context "west" modified.
+=======
+create-namespace.sh Using default context name of one
+Deleting old tg namespace in cluster one
+Creating new tg namespace in cluster one
+namespace/tg created
+Setting default kubectl namespace in cluster one
+Context "one" modified.
+>>>>>>> Stashed changes
 ```
 The script tries to delete any existing namespace with that name, creates a new one, and sets it as a default. The output above was using tg-helidon as the namespace, but of course you will have used your initials and so will see them in the output instead of tg.
 
@@ -944,13 +953,14 @@ You need to define the services before defining anything else (e.g. deployments,
   - `bash create-services.sh`
 
   ```
+create-services.sh Using default context name of one
 Deleting existing services
 Storefront
 Stockmanager
 Zipkin
 Deleted services
-Services remaining in namespace are
-No resources found in tims namespace.
+Services remaining in namespace are 
+No resources found in tg namespace.
 Creating services
 Zipkin
 service/zipkin created
@@ -958,11 +968,11 @@ Stockmanager
 service/stockmanager created
 Storefront
 service/storefront created
-Current services in namespace are
+Current services in namespace are 
 NAME           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
-stockmanager   ClusterIP   10.96.31.251    <none>        8081/TCP,9081/TCP   3s
-storefront     ClusterIP   10.96.17.27     <none>        8080/TCP,9080/TCP   2s
-zipkin         ClusterIP   10.96.236.255   <none>        9411/TCP            5s
+stockmanager   ClusterIP   10.96.168.159   <none>        8081/TCP,9081/TCP   5s
+storefront     ClusterIP   10.96.123.84    <none>        8080/TCP,9080/TCP   2s
+zipkin         ClusterIP   10.96.246.168   <none>        9411/TCP            8s
 ```
 
 Note that the service defines the endpoint, it's not actually running any code for your service yet. It's like creating a DNS entry does not mean there is any thing at that IP address.
@@ -1178,20 +1188,26 @@ Note that it is possible to match multiple paths in the same ingress, and they c
 
 As we've mentioned before for the purposes of this lab we are not setting up official DNS domain entries (we're using `nip.io` to get around that) or creating official certificates (we're creating them locally using `step`) for this to work however that means that we need to use the `nip.io` "Fake" DNS Names with the IP address embedded in them
   
-  4. The multiple ingress rules files have a placeholder in them and there is a script that will replace the placeholder with the IP address in a new version of the file. In the OCI Cloud shell type the following, at the prompt enter `y` (no need to press return)
+  4. The multiple ingress rules files have a placeholder in them and there is a script that will replace the placeholder with the IP address in a new version of the file. In the OCI Cloud shell type the following, at the prompts enter `y`
   
   - `bash set-ingress-ip.sh $EXTERNAL_IP`
   
   ```
-Updating the ingress config to set 123.456.789.999 as the External IP address.
-Proceed ? y
-Templating ingress rules - updating the template ingress rules yaml in /home/tim_graves/helidon-kubernetes/base-kubernetes setting 123.456.789.999 as the external IP address
-Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules.yaml to /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules-one.yaml
-Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules.yaml replacing ${EXTERNAL_IP}.nip.io with 123.456.789.999.nip.io to destination /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules-one.yaml
-Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules.yaml to /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules-one.yaml
-Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules.yaml replacing ${EXTERNAL_IP}.nip.io with 123.456.789.999.nip.io to destination /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules-one.yaml
-Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules.yaml to /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules-one.yaml
-Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules.yaml replacing ${EXTERNAL_IP}.nip.io with 123.456.789.999.nip.io to destination /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules-one.yaml
+set-ingress-ip.sh Using default context name of one
+Updating the ingress config to set 141.147.119.246 as the External IP address. (y/n) ?y
+Updating the ingress config to set 141.147.119.246 as the External IP address..
+set-ingress-config.sh Operating on context name one
+Templating the ingress rules yaml in /home/tim_graves/helidon-kubernetes/base-kubernetes to set 141.147.119.246 as the External IP address.
+Proceed (y/n) ?y
+Templating the ingress rules
+Templating ingress rules - updating the template ingress rules yaml in /home/tim_graves/helidon-kubernetes/base-kubernetes setting 141.147.119.246 as the external IP address
+template-ingress.sh Operating on context name one
+Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules.yaml  to /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules-one.yaml
+Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules.yaml replacing ${EXTERNAL_IP}.nip.io with 141.147.119.246.nip.io into destination /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules-one.yaml
+Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules.yaml  to /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules-one.yaml
+Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules.yaml replacing ${EXTERNAL_IP}.nip.io with 141.147.119.246.nip.io into destination /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStorefrontRules-one.yaml
+Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules.yaml  to /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules-one.yaml
+Templating /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules.yaml replacing ${EXTERNAL_IP}.nip.io with 141.147.119.246.nip.io into destination /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressZipkinRules-one.yaml
 
 ```
 
@@ -1202,6 +1218,7 @@ Note that the output above is for an external IP of `123.456.789.999` This is of
   - `bash create-ingress-rules.sh`
   
   ```
+create-ingress-rules.sh Using default context name of one
 Applying /home/tim_graves/helidon-kubernetes/base-kubernetes/ingressStockmanagerRules-one.yaml
 ingress.networking.k8s.io/stockmanager-direct-ingress created
 ingress.networking.k8s.io/stockmanager-rewrite-ingress created
@@ -1464,6 +1481,7 @@ Here we're telling Kubernetes to look in the `stockmanagerdb` secret for a data 
   -  `bash create-secrets.sh`
 
   ```
+create-secrets.sh Using default context name of one
 Deleting existing store front secrets
 sf-conf
 Deleting existing stock manager secrets
@@ -1637,6 +1655,7 @@ In the $HOME/helidon-kubernetes/base-kubernetes folder there is a script create-
   -  `bash create-configmaps.sh`
 
   ```
+create-configmaps.sh Using default context name of one
 Deleting existing config maps
 sf-config-map
 configmap "sf-config-map" deleted
