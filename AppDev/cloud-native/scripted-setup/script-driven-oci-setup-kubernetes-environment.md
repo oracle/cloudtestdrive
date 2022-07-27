@@ -132,11 +132,11 @@ This script will do some data gathering and then if a new cluster is required wi
 
   1. If you are not already there open the OCI cloud shell and go to the scripts directory, type
   
-  - `cd $HOME/helidon-kubernetes/setup/common`
+  - `cd $HOME/helidon-kubernetes/setup/common/oke-setup`
   
   2. Run the script, in the OCI Cloud Shell type
   
-  - `bash ./kubernetes-setup.sh`
+  - `bash ./oke-cluster-setup.sh`
   
   If you have just created the compartment get a message "Authorization failed or requested resource not found" and that "The provided COMPARTMENT_OCID or ocid1.co....oycu3a cant be located" then please wait a short while for the compartment information to propagate and try running the script again. 
 
