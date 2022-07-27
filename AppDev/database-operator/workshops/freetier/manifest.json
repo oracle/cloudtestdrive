@@ -20,7 +20,7 @@
         },
         {
             "title": "Lab 3: Deploy a SingleInstance Database using a dynamically allocated Block Volume",
-            "filename": "../../deploy-db-bc/deploy-db-on-bv.md"
+            "filename": "../../deploy-db-bv/deploy-db-on-bv.md"
         },
         {
             "title": "Lab 4: Deploy a SingleInstance Database using a static NFS filesystem",

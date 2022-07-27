@@ -7,8 +7,9 @@ kind: SingleInstanceDatabase
 metadata:
   name: sidb-test1
   namespace: default
+
+
 spec:
-  
   ## Use only alphanumeric characters for sid
   sid: ORCL1
   
