@@ -144,6 +144,20 @@ Firstly setup a Kubernetes environment for you to deploy into :
   
 </details>
 
+<details><summary><b>Non free trial / Running some where other than the tenancy root compartment ?</b></summary> 
+
+The scripts will create a compartment (it's default name is CTDOKE) in the root of your tenancy. All of the lab work will be done within that compartment. 
+
+If you are in a commercial or non free trial tenancy then you may wish to create the CTDOKE compartment somewhere other than the root of the tenancy (especially if there are multiple folks doing the same lab in the same tenancy)
+
+To do this locate the OCID of the compartment that will be the **PARENT** compartment - i.e. the compartment within which to create the lab compartment
+
+edit (or create) the file `$HOME/hk8sLabsSettings` Add a line of the form `COMPARTMENT_PARENT_OCID=ocid1.compartment.oc1..aaabdtgaeasd342rer463ydquwlln2xunedvtpfixb4hl6wyyvorz4m7sd6xv4k6q` - replace the example OCID for the compartment with the OCID of the compartment you want to use as the parent)
+
+Save the file.
+
+</details>
+
   First you will need to be in the right directory to run the scripts.
   
   - In the OCI Cloud shell type :
@@ -219,6 +233,12 @@ Please can you enter your initials - use lower case a-z only and no spaces, for 
 ## What next ?
 
 The script should have run to completion. It will have setup the environment needed for this lab. Please **skip the remaining setup modules** (they are provided for situations where more precise and non standard configurations are needed) and go direct to the lab module **Part 1** in the modules navigation.
+
+The script will have created two clusters and installed services in them, these clusters will be added to the kubeconfig file under the context names `one` and `two` you can see details of the services in these clusters (e.g. the external LB of the ingress controller, kubernetes dashboard URL and login token etc.) in the info files that are created - these are in your home directory and are of the form `clusterInfo.<context name>` These files also include examples (with the correct IP addresses) to let you go direct to the service endpoints.
+
+There are additional files created, the `clusterSettings.<context name>` file is a script and sets up the NAMESPACE (to the namespace the script setup the services in) and EXTERNAL_IP (of the ingress controller load balancer) variables in case you need to use them in scripts. The `clusterNetwork.<context name>` file is also created which can be sourced by scripts and contains environment variables for the clusters VCN OCID, Load balancer and worker subnet OCID's, and the OCID's of the public (LB) network security group - for some clusters it also provides the NSG of the workers subnet as well.
+
+
 
 ## Acknowledgements
 
