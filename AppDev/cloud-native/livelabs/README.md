@@ -50,6 +50,8 @@ These are single modules, they may depend on elements and modules from the large
 
 [DevOps deploying into OKE](https://oracle.github.io/cloudtestdrive/AppDev/cloud-native/livelabs/standalone/devops-into-oke/index.html?lab=labs-introduction)
 
+[Cloud Native disaster recovery on OCI](https://oracle.github.io/cloudtestdrive/AppDev/cloud-native/livelabs/standalone/dr/index.html?lab=labs-introduction)
+
 ## Customised labs
 
 These labs are variants of the other, but customised for a specific event
