@@ -19,12 +19,21 @@ During this day you will be able to experience the various cloud services hands-
 - [GitOps with Oracle Kubernetes Engine](AppDev/OKE-GitOps/README.md) (OKE) : learn how to use Oracle managed Kubernetes with the  GitOps approach, a new paradigm of implementing Continuous Delivery (CD) for cloud-native applications.
 
 + Run your first **serverless Functions** [using the Opensource FnProject](AppDev/functions/function2_lab.md) or by using the Oracle Managed service called [Oracle Functions](https://www.oracle.com/webfolder/technetwork/tutorials/infographics/oci_faas_gettingstarted_quickview/functions_quickview_top/functions_quickview/index.html#).  Or optionally [create a function from an exiting Docker](https://github.com/shaunsmith/functionslab-codeone19/blob/master/6-Container-as-Function.md) container.
+
 + [Functions and Events](AppDev/functionsandevents/FnHandson.md): showcasing event-driven serverless functions and an Autonomous database. 
+
 + Discover the **Helidon Microservices framework for Java** by running through the 2 Getting Started [Quickstarts](https://helidon.io/docs/latest/#/guides/01_overview) for the SE and MP flavour, and then continue with more advanced features like Metrics and Healthchecks in [this tutorial](https://github.com/tomas-langer/helidon-conference/blob/master/README.md)
+
 + [Building Multi-Cloud Apps on Microsoft Azure and Oracle Cloud Infrastructure](AppDev/OCI-Azure-Interconnection/README.md)
   Develop .NET web application hosted on Azure and connect it to Oracle Autonomous Database on OCI through a private cross-cloud interconnection link
+  
 + [Use Rancher to monitor your OKE deployments](https://github.com/oracle/cloudtestdrive/blob/master/AppDev/oke-rancher/readme.md)
-+ ***New!***   [Running a **Helidon** microservice on **Verrazzano** lab](https://oracle.github.io/cloudtestdrive/AppDev/wls/helidon-verrazzano/workshops/)
+
++ Running a **Helidon** microservice on **Verrazzano** lab](https://oracle.github.io/cloudtestdrive/AppDev/wls/helidon-verrazzano/workshops/)
+
++ ***New!***   [Deploying an Oracle **Database on Kubernetes** with the Database Operator for Kubernetes lab](https://oracle.github.io/cloudtestdrive/AppDev/database-operator/workshops/freetier/)
+
+  
 
 
 

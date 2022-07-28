@@ -112,7 +112,7 @@ kubectl apply -f https://raw.githubusercontent.com/oracle/cloudtestdrive/master/
 2. Validate the instance definition was submitted to the operator:
 
 ```
-get singleinstancedatabase sidb-test1
+kubectl get singleinstancedatabase sidb-test1
 ```
 
 This will result in the following output:
@@ -266,7 +266,7 @@ Alternatively, you can use the command line to connect via sqlplus:
   132.145.249.43:1521/ORCLPDB1
   ```
 
-- Use your string to compose a command looking like the below, replacing <your_passwd> with the one you specified:
+- Use your string to compose a command looking like the below, replacing \<your_passwd\> with the one you specified:
 
   ```
   sqlplus sys/<your_passwd>@132.145.249.43:1521/ORCLPDB1 as sysdba
