@@ -192,7 +192,7 @@ Launching the creation of the database is done through the same single command a
 1. Apply the config file to initiate the DB creation : 
 
 ```
-kubectl apply -f https://raw.githubusercontent.com/oracle/cloudtestdrive/master/AppDev/database-operator/deploy-db-bv/singleinstancedatabase_fss.yaml
+kubectl apply -f https://raw.githubusercontent.com/oracle/cloudtestdrive/master/AppDev/database-operator/deploy-db-fss/singleinstancedatabase_fss.yaml
 ```
 
 2. You can validate the process of creation of the database as in the pevious lab, using the below set of commands :
@@ -201,8 +201,20 @@ kubectl apply -f https://raw.githubusercontent.com/oracle/cloudtestdrive/master/
 kubectl get singleinstancedatabase sidb-test2
 kubectl describe singleinstancedatabase sidb-test2
 kubectl get pod
-kubectl describe pod sidb-test1-<your_id>
+kubectl describe pod sidb-test2-<your_id>
 ```
+
+​	Note you will see 3 pods, choose 1 to validate correct launch of the pods
+
+​	Some extra commands that might be useful to debug any issues: 	
+
+```
+kubectl logs sidb-test2-<your_id>
+kubectl get pod -n oracle-database-operator-system
+kubectl logs -n oracle-database-operator-system oracle-database-operator-controller-manager-<your-id>
+```
+
+
 
 3. Once the database is up and running, you can return to the OCI Console, navigate to the File System menu and verify that the the **Utilization** of the volume has increased, typically something like **4 GiB**
 4. Validate you can login with sqlplus :
