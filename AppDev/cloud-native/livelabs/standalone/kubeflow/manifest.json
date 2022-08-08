@@ -1,7 +1,11 @@
 {
-  "workshoptitle": "Cloud Native disaster recovery using OCI",
+  "workshoptitle": "Kubeflow in Oracle Kubernetes Environment",
   "help": "livelabs-help-oci_us@oracle.com",
-	"tutorials": [       
+	"tutorials": [
+        {
+          "title": "Labs introduction",
+          "filename":"kubeflow-with-kubernetes.md"
+        },
         {
             "title": "Oracle Cloud Free Tier",
             "description": "Use your Always Free resources as long as you want with no time constraints—subject only to the capacity limits noted. When your 30-day trial period for the expanded set of services ends, you can continue using Always Free services with no interruption.",
@@ -9,23 +13,11 @@
         },
         {
           "title": "Setup using the all-in-one script",
-          "filename":"../../../scripted-setup/lab-specific-scripts/script-driven-chartmuseum-setup.md"
+          "filename":"../../../scripted-setup/lab-specific-scripts/script-driven-kubeflow-setup.md"
         },
-        {
-          "title": "Deploy Ingress Controller",
-          "filename":"ingresscontroller.md"
-        },
-        {
-          "title": "Deploy ChartMuseum",
-          "filename":"chartmuseum.md"
-        },
-        {
-          "title": "Enable TLS with Let's Encrypt",
-          "filename":"enabletls.md"
-        }, 
         {
           "title": "Resetting your tenancy",
-          "filename":"../../../scripted-setup/lab-specific-scripts/script-driven-chartmuseum-destroy.md"
+          "filename":"../../../scripted-setup/lab-specific-scripts/script-driven-kubeflow-destroy.md"
         },
         {
           "title": "Need Help?",
