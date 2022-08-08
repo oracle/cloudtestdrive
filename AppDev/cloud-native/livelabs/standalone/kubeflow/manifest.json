@@ -7,6 +7,26 @@
           "filename":"kubeflow-with-kubernetes.md"
         },
         {
+          "title": "Task 1 - Create an OKE cluster",
+          "filename":"Lab-Kubeflow-step1.md"
+        },
+        {
+          "title": "Task 2 - NFS StorageClass",
+          "filename":"Lab-Kubeflow-step2.md"
+        },
+        {
+          "title": "Task 3 - Install Kubeflow",
+          "filename":"Lab-Kubeflow-step3.md"
+        },
+        {
+          "title": "Task 4 - Run Kubeflow pipelines",
+          "filename":"Lab-Kubeflow-step4.md"
+        },
+        {
+          "title": "Optional Tasks",
+          "filename":"Lab-Kubeflow-step5.md"
+        },                            
+        {
             "title": "Oracle Cloud Free Tier",
             "description": "Use your Always Free resources as long as you want with no time constraints—subject only to the capacity limits noted. When your 30-day trial period for the expanded set of services ends, you can continue using Always Free services with no interruption.",
             "filename": "https://oracle-livelabs.github.io/common/labs/cloud-login/pre-register-free-tier-account.md"
