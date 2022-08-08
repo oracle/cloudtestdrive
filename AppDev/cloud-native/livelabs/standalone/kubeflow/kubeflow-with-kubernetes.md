@@ -15,7 +15,6 @@ As we cover quite some theoretical concepts, we included pretty verbose explanat
 
 <details><summary><b>Click this title to expand!</b></summary>
 
-
 If you feel you are already pretty familiar with a specific concept, you can just skip it, or read quickly through the text, then re-collapse the text section by re-clicking on the title. 
 
 ---
@@ -54,16 +53,61 @@ This module shows you how to use the "all-in-one" scripts to setup the environme
 
 If however you are not in a free trial, do not have full admin rights, not in your home region, or need to modify the default choices for some reason then please use the remaining setup modules instead.
 
-## Kubeflow setup - introduction
+<!-- ## Kubeflow setup - introduction -->
 
-Blah, blah, blah, to be fillied in 
+## Run Kubeflow pipelines on OKE - introduction
+
+Kubeflow is a collection of cloud native tools for all of the stages of MDLC (data exploration, feature preparation, model training/tuning, model serving, model testing, and model versioning).
+
+Kubeflow provides a unified system—leveraging Kubernetes for containerization and scalability, for the portability and repeatability of its pipelines.
+
+(source https://learning.oreilly.com/library/view/kubeflow-for-machine/9781492050117/ch01.html#idm45831188258120)
+
+### Introduction
+
+This lab covers the steps to install Kubeflow v1.5 and run your first pipelines.
+
+You will learn:
+
+- Deploy Kubeflow with OKE
+- Enable NFS class storage
+- Run your first Pipelines
+  - Kubeflow Demo XGBoost - Iterative model training
+  - Run a piple with node pool selector (CPU or GPU)
+  - Run MNIST E2E Demo on Kubeflow
+- optional to enable OKE autoscaling
+
+#### Prerequisites
+
+Use Cloud Shell console
+oci-cli, kubectl, git are integrated
+
+#### Warning
+
+- **Kubeflow 1.5.0 is not compatible with version 1.22 and onwards.**
+  - You can track the remaining work for K8s 1.22 support in kubeflow/kubeflow#6353
+https://github.com/kubeflow/kubeflow/issues/6353
+
+- Kustomize (version 3.2.0) ([download link](https://github.com/kubernetes-sigs/kustomize/releases/tag/v3.2.0))
+    - Kubeflow 1.5.0 is not compatible with the latest versions of Kustomize.
+
+### Steps
+
+[Task 1 - Create an OKE cluster](./Lab-Kubeflow-step1.md)
+
+[Task 2 - Add NFS Storage Class](./Lab-Kubeflow-step2.md)
+
+[Task 3 - Install Kubeflow](./Lab-Kubeflow-step3.md)
+
+[Task 4 - Run Kubeflow examples](./Lab-Kubeflow-step4.md)
+
+[Task Optional](./Lab-Kubeflow-step4.md)
 
 Please read **Kubeflow setup - introductions** section. When you've completed it click the `back` button on your browser to return to this page.
 
 ## Resetting your tenancy
 
 Should you wish (or need) to do so this module shows you how to use a script to remove the resources you created in this lab
-
 
 ## At the end of the tutorial
 
@@ -75,4 +119,3 @@ When you finish the modules in this lab the take the time for a cup of tea (or o
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
 * **Last Updated By** - Tim Graves, July 2022
-
