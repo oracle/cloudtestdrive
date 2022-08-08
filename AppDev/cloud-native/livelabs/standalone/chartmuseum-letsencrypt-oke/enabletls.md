@@ -9,7 +9,7 @@ Now, that we know our ChartMuseum requires at least an authentication, we also w
 
 ### Install cert-manager
 
-We'll now install cert-manager:
+We'll first install cert-manager:
 
 1. Deploy the cert-manager CRDs:
 

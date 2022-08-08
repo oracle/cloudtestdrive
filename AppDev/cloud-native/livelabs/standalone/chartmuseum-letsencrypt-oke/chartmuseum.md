@@ -66,7 +66,7 @@ helm install --namespace chartmuseum chartmuseum chartmuseum/chartmuseum -f char
 ```
 ingress.enabled: true
 ingress.hosts:
-    - name: chartmuseum.<LOAD-BALANCER-IP>.nip.io
+    - name: chartmuseum.LOAD-BALANCER-IP.nip.io
       path: /
       tls: false
 ingress.ingressClassName: nginx
@@ -78,7 +78,7 @@ ingress.ingressClassName: nginx
 helm upgrade chartmuseum chartmuseum/chartmuseum -f chartmuseum.yaml
 ```
 
-9. Verify ChartMuseum is working by accessing http://chartmuseum.<LOAD-BALANCER-IP>.nip.io in you browser or using curl:
+9. Verify ChartMuseum is working by accessing http://chartmuseum.LOAD-BALANCER-IP.nip.io in you browser or using curl:
 
 ```
 curl http://chartmuseum.$EXTERNAL_IP.nip.io
@@ -149,7 +149,7 @@ We'll use [Postman](https://www.postman.com/) to test the above operation on Cha
 The purpose of testing GET anonymously is to mimic the experience of users when downloading and installing public helm charts.
 
 1. Open Postman
-2. Put the URL of your ChartMuseum API: http://chartmuseum.<LOAD-BALANCER-IP>.nip.io/api/charts
+2. Put the URL of your ChartMuseum API: http://chartmuseum.LOAD-BALANCER-IP.nip.io/api/charts
 3. Click 'Send'
 4. You should be able to see your helm chart as below:
 
@@ -159,17 +159,15 @@ The purpose of testing GET anonymously is to mimic the experience of users when 
 
 The purpose of testing POST or DELETE anonymously is to mimic the experience of chart maintainers. We don't want anybody to be able to create or delete charts so we want to ensure that anonymous POST or DELETE fail.
 
-1. Repeat the previous exercise but this time select either the POST or DELETE method to the following url: http://chartmuseum.<LOAD-BALANCER-IP>.nip.io/api/charts/mychart/0.1.0
+1. Repeat the previous exercise but this time select either the POST or DELETE method to the following url: http://chartmuseum.LOAD-BALANCER-IP.nip.io/api/charts/mychart/0.1.0
 2. Verify that this fails
 
 #### TESTING POST or DELETE with authentication
 
 The purpose of testing POST or DELETE anonymously is to mimic the experience of chart maintainers. We want authorized users to be able to update their charts.
 
-1. Repeat the previous exercise but this time select either the POST or DELETE method to the following url: http://chartmuseum.<LOAD-BALANCER-IP>.nip.io/api/charts/mychart/0.1.0
+1. Repeat the previous exercise but this time select either the POST or DELETE method to the following url: http://chartmuseum.LOAD-BALANCER-IP.nip.io/api/charts/mychart/0.1.0
 2. Set the authentication to Basic Auth and use curator/password as username and password respectively
 3. Verify that you are able to delete your chart.
-
-###
 
 This concludes Part 2 of this lab.
