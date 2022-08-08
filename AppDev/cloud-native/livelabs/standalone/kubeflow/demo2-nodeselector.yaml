@@ -1,0 +1,70 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: pass-parameter-
+  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.1.2, pipelines.kubeflow.org/pipeline_compilation_time: '2021-12-08T13:42:57.684669',
+    pipelines.kubeflow.org/pipeline_spec: '{"description": "Passing para", "inputs":
+      [{"name": "send_msg"}], "name": "Pass parameter"}'}
+  labels: {pipelines.kubeflow.org/kfp_sdk_version: 1.1.2}
+spec:
+  entrypoint: pass-parameter
+  templates:
+  - name: pass-parameter
+    inputs:
+      parameters:
+      - {name: send_msg}
+    dag:
+      tasks:
+      - name: print-msg
+        template: print-msg
+        arguments:
+          parameters:
+          - {name: send_msg, value: '{{inputs.parameters.send_msg}}'}
+      - name: read-msg-from-1st-component
+        template: read-msg-from-1st-component
+        dependencies: [print-msg]
+        arguments:
+          parameters:
+          - {name: print-msg-output, value: '{{tasks.print-msg.outputs.parameters.print-msg-output}}'}
+  - name: print-msg
+    container:
+      args: [--msg, '{{inputs.parameters.send_msg}}']
+      command: [python, component1.py]
+      image: ajinkyashell/comp1
+      imagePullPolicy: "Always"
+    inputs:
+      parameters:
+      - {name: send_msg}
+    tolerations:
+    - key: "key1"
+      operator: "Equal"
+      value: "value1"
+      effect: "NoSchedule"
+    nodeSelector:
+      name: pool2
+    outputs:
+      parameters:
+      - name: print-msg-output
+        valueFrom: {path: /output.txt}
+      artifacts:
+      - {name: print-msg-output, path: /output.txt}
+  - name: read-msg-from-1st-component
+    container:
+      args: [--msg, '{{inputs.parameters.print-msg-output}}']
+      command: [python, component2.py]
+      image: ajinkyashell/comp2
+      imagePullPolicy: "Always"
+    inputs:
+      parameters:
+      - {name: print-msg-output}
+    tolerations:
+    - key: "key1"
+      operator: "Equal"
+      value: "value1"
+      effect: "NoSchedule"
+    nodeSelector:
+      name: pool2
+  arguments:
+    parameters:
+    - {name: send_msg}
+  serviceAccountName: pipeline-runner
