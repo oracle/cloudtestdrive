@@ -314,7 +314,7 @@ kubectl describe certificate cm-tls
   - Select and delete it.
   - In Chrome
 
-7. Access the ChartMuseum again at https://chartmuseum.<LOAD-BALANCER-IP>.nip.io. This time, you should be able to access it without any security warning.
+7. Access the ChartMuseum again at https://chartmuseum.LOAD-BALANCER-IP.nip.io. This time, you should be able to access it without any security warning.
 
 8. You can now use ChartMuseum to securely store and manage your helm charts privately.
 
