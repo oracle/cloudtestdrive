@@ -26,7 +26,7 @@
     1. Let's generate a password. Replace PASSWORD with your own password.
 
            PASSWORD=BYhAK5rqSpER
-           kubeflow_password=$(htpasswd -nbBC 10 USER $PASSWORD| sed -r 's/^.{5}//')
+           kubeflow_password=$(htpasswd -nbBC 12 USER $PASSWORD| sed -r 's/^.{5}//')
 
     2. Edit Dex config-map.yaml
    Make sure you are in the kubeflow manifests folder.
