@@ -8,22 +8,10 @@
 
 ChartMuseum is an open-source, easy to deploy, Helm Chart Repository server.
 
-1. Create a file 'config' that will used to allow ChartMuseum to communicate with the OCI APIs. Fill in the correct values by entering only values for user, fingerprint, tenancy and region. Do not change the value of they key_file path.
-
-```
-[DEFAULT]
-user=<USER_OCID>
-fingerprint=<API_KEY_FINGERPRINT>
-key_file=/home/chartmuseum/.oci/oci.key
-tenancy=<TENANCY_OCID>
-region=<REGION>
-```
-
-2. Create a namespace and a Kubernetes secret, replacing the path to the config file created above and the path to the private api key:
+1. Create a namespace:
 
 ```
 kubectl create namespace chartmuseum
-kubectl create secret generic chartmuseum-secret --from-file=config="/path/to/config" --from-file=key_file="/path/to/apikey.pem"
 ```
 
 3. Add the helm repo:
@@ -41,9 +29,7 @@ helm show values chartmuseum/chartmuseum > chartmuseum.yaml
 5. Edit the chartmuseum.yaml:
 
 ```
-env.open.STORAGE: oracle
-env.open.STORAGE_ORACLE_COMPARTMENTID: <compartment-id>
-env.open.STORAGE_ORACLE_BUCKET: <bucket-name>
+env.open.STORAGE: local
 env.open.DISABLE_API: false
 env.open.AUTH_ANONYMOUS_GET: true
 env.open.AUTH_REALM: chartmuseum
@@ -51,8 +37,6 @@ env.open.AUTH_REALM: chartmuseum
 env.secret.BASIC_AUTH_USER: curator
 env.secret.BASIC_AUTH_PASS: password
 
-oracle.secret.enabled: true
-oracle.secret.name: chartmuseum-secret
 ```
 
 6. Install ChartMuseum
