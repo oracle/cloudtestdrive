@@ -134,9 +134,9 @@ After checking it will create a vault, and once created create a master key. The
 
   1. If you are not already there open the OCI cloud shell and go to the scripts directory, type
   
-  - `cd $HOME/helidon-kubernetes/setup/common`
+  - `cd $HOME/helidon-kubernetes/setup/common/vault`
   
-  2. Run the script, in the OCI Cloud Shell type
+  2. Run the script to create the vault, in the OCI Cloud Shell type
   
   - `bash vault-setup.sh`
   
@@ -156,11 +156,18 @@ No vault named tgLabsVault pending deletion
 Vault named tgLabsVault doesn't exist, creating it, there may be a short delay
 Action completed. Waiting until the resource has entered state: ('ACTIVE',)
 Vault being created using OCID ocid1.vault.oc1.uk-london-1.ejrbjv6qaadrw.abshqljrbra25ajo6rhq766vbzo57d5mvh723gd5v4vmrvynsgsrslp3wrua
+```
+
+  4. To protect secrets we need a vault key, this will be of type AES, in the same directory run this, it will create a key names `<your initials>AES` or type `AES` with a key length of `32` (this is in bytes, so 256 bits)
+  
+  - `bash vault-key-setup.sh AES AES 32`
+ 
+  ```
 Setting up for Vault master key
 Getting vault endpoint for vault OCID ocid1.vault.oc1.uk-london-1.ejrbjv6qaadrw.abshqljrbra25ajo6rhq766vbzo57d5mvh723gd5v4vmrvynsgsrslp3wrua
 Checking for existing key named tgKey in endpoint https://ejrbjv6qaadrw-management.kms.uk-london-1.oci.oraclecloud.com in compartment OCID ocid1.compartment.oc1..aaaaaaaaxoituenn4vx75p3wlv5czz35wyb3culzulomli7b7wsjekmrhsvq
-No key named tgKey pending deletion
-No existing key with name tgKey, creating it
+No key named tgAES pending deletion
+No existing key with name tgAES, creating it
 Action completed. Waiting until the resource has entered state: ('ENABLED',)
 Vault master key created with OCID ocid1.key.oc1.uk-london-1.ejrbjv6qaadrw.abshqljrksj4rlquue2tflgqzi6fdsv2wny2wlgw4dxbq3ctaltwkq4talra
   ```
