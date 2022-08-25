@@ -1,4 +1,4 @@
-# Task 2 -  NFS StorageClass
+## Task 2 -  NFS StorageClass
 
 Kubeflow recognizes default StorageClass
 Follow the steps to add FileStorage service (NFS) as StorageClass.
