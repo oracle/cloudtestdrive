@@ -11,15 +11,11 @@
           "filename":"Lab-Kubeflow-step1.md"
         },
         {
-          "title": "Task 2 - NFS StorageClass",
-          "filename":"Lab-Kubeflow-step2.md"
-        },
-        {
-          "title": "Task 3 - Install Kubeflow",
+          "title": "Task 2 - Install Kubeflow",
           "filename":"Lab-Kubeflow-step3.md"
         },
         {
-          "title": "Task 4 - Run Kubeflow pipelines",
+          "title": "Task 3 - Run Kubeflow pipelines",
           "filename":"Lab-Kubeflow-step4.md"
         },
         {
