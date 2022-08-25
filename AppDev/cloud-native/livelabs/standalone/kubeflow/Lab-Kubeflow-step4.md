@@ -107,6 +107,8 @@ To run a first pipeline we run from the demo pipelines [Demo] XGBoost - Iterativ
 
 ## Demo 3 - Mnist E2E model Notebook
 
+> Be sure to have enough CPU and RAM resources in your Kubernetes cluster to run mnist-model and tfjos pods
+
 Mnist Kubeflow example (Modified National Institute of Standards and Technology) guides you through the process of taking an example model, modifying it to run better within Kubeflow, and serving the resulting trained model.
 
 The orginal steps are available https://github.com/kubeflow/examples/tree/master/mnist#vanilla
@@ -172,6 +174,10 @@ The orginal steps are available https://github.com/kubeflow/examples/tree/master
 3. Create a bucket in OCI Object Storage named "iad.ocir.io-mnist".
 
 4. Create OCIR repository to host Mnist images.
+5. Create Rolebinding
+
+       NAMESPACE=kubeflow-user-example-com
+       kubectl create --namespace=kubeflow rolebinding --clusterrole=kubeflow-view --serviceaccount=${NAMESPACE}:default-editor ${NAMESPACE}-minio-view
 
 5. Connect to the new Notebook created. Launch a terminal in Jupyter and clone the kubeflow/examples repoClone Kubeflow example in the Notebook
 
