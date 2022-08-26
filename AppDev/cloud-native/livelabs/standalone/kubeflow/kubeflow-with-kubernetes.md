@@ -61,11 +61,11 @@ Kubeflow is a collection of cloud native tools for all of the stages of MDLC (da
 
 Kubeflow provides a unified system—leveraging Kubernetes for containerization and scalability, for the portability and repeatability of its pipelines.
 
-(source https://learning.oreilly.com/library/view/kubeflow-for-machine/9781492050117/ch01.html#idm45831188258120)
+<!-- (source https://learning.oreilly.com/library/view/kubeflow-for-machine/9781492050117/ch01.html#idm45831188258120) -->
 
 ### Introduction
 
-This lab covers the steps to install Kubeflow v1.5 and run your first pipelines.
+This lab covers the steps to install Kubeflow and run your first pipelines.
 
 You will learn:
 
@@ -85,7 +85,7 @@ oci-cli, kubectl, git are integrated
 
 ### Warning
 
-- **Kubeflow 1.6.0 is not compatible with version 1.22 and backwards.**
+- **Kubeflow 1.6.0 is not compatible with version Kubernetes 1.22 and backwards.**
 <!-- - You can track the remaining work for K8s 1.22 support in kubeflow/kubeflow#6353
 https://github.com/kubeflow/kubeflow/issues/6353 
 -->
