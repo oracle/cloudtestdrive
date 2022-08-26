@@ -1,5 +1,16 @@
 # Setup Kubeflow
 
+## Prerequisites
+
+Use Cloud Shell console
+oci-cli, kubectl, git are integrated
+
+### Warning
+
+- **Kubeflow 1.6.0 is not compatible with version Kubernetes 1.22 and backwards.**
+- Kustomize (version 3.2.0) ([download link](https://github.com/kubernetes-sigs/kustomize/releases/tag/v3.2.0))
+    - Kubeflow 1.6.0 is not compatible with the latest versions of Kustomize.
+
 ## Preparation steps
 
 1. Install Kustomize in Cloud Shell

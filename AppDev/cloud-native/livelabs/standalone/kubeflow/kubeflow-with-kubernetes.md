@@ -2,6 +2,41 @@
 
 # Run Kubeflow pipelines on OKE
 
+## Introduction
+
+Kubeflow is a collection of cloud native tools for all of the stages of MDLC (data exploration, feature preparation, model training/tuning, model serving, model testing, and model versioning).
+
+Kubeflow provides a unified system—leveraging Kubernetes for containerization and scalability, for the portability and repeatability of its pipelines.
+
+<!-- (source https://learning.oreilly.com/library/view/kubeflow-for-machine/9781492050117/ch01.html#idm45831188258120) -->
+
+## Objectives
+
+This lab covers the steps to install Kubeflow and run your first pipelines.
+
+You will learn:
+
+- Deploy Kubeflow with OKE
+- Run your first Pipelines
+    - Kubeflow Demo XGBoost - Iterative model training
+    - Run a piple with node pool selector (CPU or GPU)
+    - Run MNIST E2E Demo on Kubeflow
+- Optional tasks
+    - Enable OKE autoscaling
+    - Enable NFS class storage
+
+### Steps
+
+[Task 1 - Create an OKE cluster](./Lab-Kubeflow-step1.md)
+
+[Task 2 - Install Kubeflow](./Lab-Kubeflow-step3.md)
+
+[Task 3 - Run Kubeflow examples](./Lab-Kubeflow-step4.md)
+
+[Task Optional](./Lab-Kubeflow-step4.md)
+
+<!-- Please read **Kubeflow setup - introductions** section. When you've completed it click the `back` button on your browser to return to this page. -->
+
 **Lab conventions**
 
 We have used a few layout tricks to make the reading of this tutorial more intuitive : 
@@ -22,41 +57,6 @@ If you feel you are already pretty familiar with a specific concept, you can jus
 </details>
 
 <!-- ## Kubeflow setup - introduction -->
-
-## Introduction
-
-Kubeflow is a collection of cloud native tools for all of the stages of MDLC (data exploration, feature preparation, model training/tuning, model serving, model testing, and model versioning).
-
-Kubeflow provides a unified system—leveraging Kubernetes for containerization and scalability, for the portability and repeatability of its pipelines.
-
-<!-- (source https://learning.oreilly.com/library/view/kubeflow-for-machine/9781492050117/ch01.html#idm45831188258120) -->
-
-## Objectives
-
-This lab covers the steps to install Kubeflow and run your first pipelines.
-
-You will learn:
-
-- Deploy Kubeflow with OKE
-- Run your first Pipelines
-  - Kubeflow Demo XGBoost - Iterative model training
-  - Run a piple with node pool selector (CPU or GPU)
-  - Run MNIST E2E Demo on Kubeflow
-- Optional tasks
-  - Enable OKE autoscaling
-  - Enable NFS class storage
-
-### Steps
-
-[Task 1 - Create an OKE cluster](./Lab-Kubeflow-step1.md)
-
-[Task 2 - Install Kubeflow](./Lab-Kubeflow-step3.md)
-
-[Task 3 - Run Kubeflow examples](./Lab-Kubeflow-step4.md)
-
-[Task Optional](./Lab-Kubeflow-step4.md)
-
-<!-- Please read **Kubeflow setup - introductions** section. When you've completed it click the `back` button on your browser to return to this page. -->
 
 ## Prerequisites
 
