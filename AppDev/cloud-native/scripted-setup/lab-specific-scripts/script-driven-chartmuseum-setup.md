@@ -2,7 +2,7 @@
 
 # Setting up the Kubeflow lab environment using scripts for free trial accounts
 
-This module walks you through the process of setting up the core OCI features and Kubernrtes needed to run a lab that let's you run the DR Kubernetes lab.
+This module walks you through the process of setting up the core OCI features and Kubernetes needed to run a lab that let's you run the DR Kubernetes lab.
 
 To speed things up for people who are just starting with this set of labs (or deleted their previously created environment) we have provided some scripts that you can use to set things up quickly, consistently and with less opportunity for typos.
 
@@ -14,7 +14,7 @@ Note that if you have just created a free-trial account for a lab then you have 
 
 If you have previously downloaded those then you should ensure you have the latest version, to do this follow the steps in **Task 1b**.
 
-<details><summary><b>How to check if you have already downloaded the scripts ?</b></summary> 
+<details><summary><b>How to check if you have already downloaded the scripts ?</b></summary>
 
 
 If you are not sure if you have downloaded the latest version then you can check
