@@ -3,7 +3,7 @@
   "help": "livelabs-help-oci_us@oracle.com",
 	"tutorials": [
     {
-      "title": "Labs introduction",
+      "title": "Lab introduction",
       "filename":"kubeflow-with-kubernetes.md"
     },
     {
@@ -12,7 +12,11 @@
       "filename": "https://oracle-livelabs.github.io/common/labs/cloud-login/pre-register-free-tier-account.md"
         },
         {
-          "title": "Task 1 - Create an OKE cluster",
+          "title": "Task 1 - Create OKE cluster using a script",
+          "filename":"../../../scripted-setup/lab-specific-scripts/script-driven-kubeflow-setup.md"
+        },
+        {
+          "title": "Task 1 Alternative - Create an OKE cluster manually",
           "filename":"Lab-Kubeflow-step1.md"
         },
         {

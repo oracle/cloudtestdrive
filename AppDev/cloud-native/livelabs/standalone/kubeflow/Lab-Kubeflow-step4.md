@@ -8,7 +8,7 @@ By default the first user is **user@examples.com**
 
 The user user@examples.com corresponds to the profil kubeflow-user-example-com.
 
-Once connected to Kubeflow dashboard you can run pipelines and notbook.
+Once connected to Kubeflow dashboard you can run pipelines and notebook.
 
 ## Demo1 - Iterative model training
 
@@ -33,8 +33,9 @@ To run a first pipeline we run the demo pipelines **[Demo] XGBoost - Iterative m
 
   ![Demo1](images/Demo1Run2.png)
 
-  The run lasts 1-2m
-  Kubeflow is operational and model ran successfully.
+  The run lasts 1-2m <br>
+
+  **Congratulations**  Kubeflow is operational and model ran successfully.
 
 ## Demo 2 - Demo Node selector
 
@@ -43,32 +44,32 @@ To run a first pipeline we run the demo pipelines **[Demo] XGBoost - Iterative m
 
 2. Create a new pipeline
 
-  Click in Pipelines menu, Upload pipeline
+  Click in Pipelines menu, upload pipeline.
   ![Upload pipeline](images/Demo2UploadPipeline.png)
 
 3. Upload Pipeline
 
-   - Provide Pipeline Name: Demo2
-   - Provide Description: Node Selector
-   - Upload file demo2-nodeselector.yaml
-   - Click create
+      - Provide Pipeline Name: Demo2
+      - Provide Description: Node Selector
+      - Upload file demo2-nodeselector.yaml
+      - Click create
 
 4. Create run to execute Demo2 Pipeline
 
-   The pipeline is a Workflow example
+   The pipeline is a Workflow example.
 
-   - We provide an input message
-   - First container read the msg and write it down to pass to second container
-   - Second container only execute on a Worker node with the label pool2 will read the msg and print it.
-   - Click on Create run to execute Demo2 Pipeline.
+      - We provide an input message
+      - First container read the msg and write it down to pass to second container
+      - Second container only execute on a Worker node with the label pool2 will read the msg and print it.
+      - Click on Create run to execute Demo2 Pipeline.
 
    ![Run Demo2](images/Demo2Run.png)
 
  5. Provide run details
 
-    - Select Default experiment
-    - Provide parameters send_msg: Hello_World
-    - Click start
+       - Select Default experiment
+       - Provide parameter send_msg **Hello_World**
+       - Click start
   
   ![Demo2details](images/Demo2msg.png)
 
@@ -78,14 +79,15 @@ To run a first pipeline we run the demo pipelines **[Demo] XGBoost - Iterative m
 
  7. Click on print-msg
 
-  - Step is in Pending state because 0 node are available to execute it.
-  - Step run a on node with the label name=pool2.
+     - Pipeline is in a pending state because no nodes are available to execute it.
+     - Label a node with the label name=pool2.
 
 ![No node](images/Demo2nonode.png)
 
  8. Label a node
 
- This step simulate the usage of different node pool. You can label your nodes to group them by affinity or different selection (Shapes, location, CPU/GPU)
+ This step simulates the usage of a different node pool.
+ You can label your nodes to group them by affinity or different use-cases (Shapes, location, CPU/GPU)
 
  To execute the pipeline we need to label a node.
 
@@ -98,7 +100,6 @@ To run a first pipeline we run the demo pipelines **[Demo] XGBoost - Iterative m
 - Label the first node
 
         kubectl label node 10.0.107.12 name=pool2
-        
         node/10.0.107.12 labeled
 
  9. PodInitialzing
@@ -110,6 +111,8 @@ To run a first pipeline we run the demo pipelines **[Demo] XGBoost - Iterative m
   A node pool is available to execute the workflow. Pipelin executed successfully.
 
   ![Demo2Succesful](images/Demo2Success.png)
+
+  **Congratulations** the pipeline succeed to pass a parameter to a container to another container.
 
 ## Demo 3 - Mnist E2E model Notebook
 

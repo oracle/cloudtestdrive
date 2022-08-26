@@ -213,8 +213,7 @@ Do you want to run the setup in parallel where possible ?
   
   If you chose to use the automatic defaults (and only if you did) then you will be asked it you want to do some setup operations in  parallel. This can significantly reduce the time taken to go through the setup steps, though it does mean that the output from those setup stages is written to log files (in `$HOME/setup-logs`) rather than be displayed. Unless you have a particular desire to watch the setup sequence enter `y` at the prompt which will save around 25 - 30 minutes of time while the script sets things up.
   
-  The script will perform some actions like downloading the certificate tools, and checking resource availability, this takes about one or two minutes. 
-  
+  The script will perform some actions like downloading the certificate tools, and checking resource availability, this takes about one or two minutes.
   
   ```
   Creating new settings information
