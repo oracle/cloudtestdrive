@@ -1,8 +1,25 @@
 ## Task 1 - Create an OKE cluster
 
+### Prerequisites
+
+Use Cloud Shell console
+oci-cli, kubectl, git are integrated
+
+### Warning
+
+- **Kubeflow 1.6.0 is not compatible with version Kubernetes 1.22 and backwards.**
+<!-- - You can track the remaining work for K8s 1.22 support in kubeflow/kubeflow#6353
+https://github.com/kubeflow/kubeflow/issues/6353 
+-->
+
+- Kustomize (version 3.2.0) ([download link](https://github.com/kubernetes-sigs/kustomize/releases/tag/v3.2.0))
+  - Kubeflow 1.6.0 is not compatible with the latest versions of Kustomize.
+
 <!-- 1. Deploy OKE version 1.21.5 using [terraform-oci-oke](https://github.com/oracle-terraform-modules/terraform-oci-oke) -->
 
-Create OKE version using Public endpoint
+<!-- Create OKE version using Public endpoint -->
+
+<details><summary><b>Create an OKE cluster manually</b></summary>
 
 1. In the Console, open the navigation menu and click **Developer Services**. Under **Containers & Artifacts**, click **Kubernetes Clusters (OKE)**.
 
@@ -32,8 +49,6 @@ Create OKE version using Public endpoint
 
     * **Number of nodes**: The number of worker nodes to create. Accept the default value, **3**.
 
-<details><summary><b>Click this title to expand!</b></summary>
-
   ![Quick Cluster](images/ClusterName.png)
   ![Enter Data](images/ClusterShape2.png)
 
@@ -52,3 +67,5 @@ Create OKE version using Public endpoint
     ![cluster1](images/ClusterProvision.png)
 
     ![cluster1](images/ClusterActive.png)
+
+    Now your OKE cluter is ready you can move to Kubeflow installation.

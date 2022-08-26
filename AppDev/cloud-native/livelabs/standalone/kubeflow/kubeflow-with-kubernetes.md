@@ -1,6 +1,6 @@
 ![](../../../images/customer.logo2.png)
 
-# Using the Kubeflow in the Oracle Kubernetes Environment
+# Run Kubeflow pipelines on OKE
 
 **Lab conventions**
 
@@ -21,6 +21,43 @@ If you feel you are already pretty familiar with a specific concept, you can jus
 
 </details>
 
+<!-- ## Kubeflow setup - introduction -->
+
+## Introduction
+
+Kubeflow is a collection of cloud native tools for all of the stages of MDLC (data exploration, feature preparation, model training/tuning, model serving, model testing, and model versioning).
+
+Kubeflow provides a unified system—leveraging Kubernetes for containerization and scalability, for the portability and repeatability of its pipelines.
+
+<!-- (source https://learning.oreilly.com/library/view/kubeflow-for-machine/9781492050117/ch01.html#idm45831188258120) -->
+
+## Objectives
+
+This lab covers the steps to install Kubeflow and run your first pipelines.
+
+You will learn:
+
+- Deploy Kubeflow with OKE
+- Run your first Pipelines
+  - Kubeflow Demo XGBoost - Iterative model training
+  - Run a piple with node pool selector (CPU or GPU)
+  - Run MNIST E2E Demo on Kubeflow
+- Optional tasks
+  - Enable OKE autoscaling
+  - Enable NFS class storage
+
+### Steps
+
+[Task 1 - Create an OKE cluster](./Lab-Kubeflow-step1.md)
+
+[Task 2 - Install Kubeflow](./Lab-Kubeflow-step3.md)
+
+[Task 3 - Run Kubeflow examples](./Lab-Kubeflow-step4.md)
+
+[Task Optional](./Lab-Kubeflow-step4.md)
+
+<!-- Please read **Kubeflow setup - introductions** section. When you've completed it click the `back` button on your browser to return to this page. -->
+
 ## Prerequisites
 
 These labs can be run in many different ways, but in all cases you will need access to a Oracle Cloud Tenancy and be signed in to it.
@@ -29,7 +66,7 @@ Please look at the instructions in the **Oracle Cloud Free Tier** section for de
 
 ## Lab navigation
 
-You can navigate to the modules themselves by using the navigation list on the left. Some modules have a lot of sections, so to make navigation easier you can expand a module by clicking the '+' next to the module name in the modules list, you can shrink a module in the list by clicking the '-' by it's name. 
+You can navigate to the modules themselves by using the navigation list on the left. Some modules have a lot of sections, so to make navigation easier you can expand a module by clicking the '+' next to the module name in the modules list, you can shrink a module in the list by clicking the '-' by it's name.
 
 ![](images/livelabs-expand-module.png) ![](images/livelabs-close-module.png)
 
@@ -53,58 +90,6 @@ This module shows you how to use the "all-in-one" scripts to setup the environme
 
 If however you are not in a free trial, do not have full admin rights, not in your home region, or need to modify the default choices for some reason then please use the remaining setup modules instead.
 
-<!-- ## Kubeflow setup - introduction -->
-
-## Run Kubeflow pipelines on OKE - introduction
-
-Kubeflow is a collection of cloud native tools for all of the stages of MDLC (data exploration, feature preparation, model training/tuning, model serving, model testing, and model versioning).
-
-Kubeflow provides a unified system—leveraging Kubernetes for containerization and scalability, for the portability and repeatability of its pipelines.
-
-<!-- (source https://learning.oreilly.com/library/view/kubeflow-for-machine/9781492050117/ch01.html#idm45831188258120) -->
-
-### Introduction
-
-This lab covers the steps to install Kubeflow and run your first pipelines.
-
-You will learn:
-
-- Deploy Kubeflow with OKE
-- Run your first Pipelines
-  - Kubeflow Demo XGBoost - Iterative model training
-  - Run a piple with node pool selector (CPU or GPU)
-  - Run MNIST E2E Demo on Kubeflow
-- Optional tasks
-  - Enable OKE autoscaling
-  - Enable NFS class storage
-
-### Prerequisites
-
-Use Cloud Shell console
-oci-cli, kubectl, git are integrated
-
-### Warning
-
-- **Kubeflow 1.6.0 is not compatible with version Kubernetes 1.22 and backwards.**
-<!-- - You can track the remaining work for K8s 1.22 support in kubeflow/kubeflow#6353
-https://github.com/kubeflow/kubeflow/issues/6353 
--->
-
-- Kustomize (version 3.2.0) ([download link](https://github.com/kubernetes-sigs/kustomize/releases/tag/v3.2.0))
-  - Kubeflow 1.6.0 is not compatible with the latest versions of Kustomize.
-
-### Steps
-
-[Task 1 - Create an OKE cluster](./Lab-Kubeflow-step1.md)
-
-[Task 2 - Install Kubeflow](./Lab-Kubeflow-step3.md)
-
-[Task 3 - Run Kubeflow examples](./Lab-Kubeflow-step4.md)
-
-[Task Optional](./Lab-Kubeflow-step4.md)
-
-Please read **Kubeflow setup - introductions** section. When you've completed it click the `back` button on your browser to return to this page.
-
 ## Resetting your tenancy
 
 Should you wish (or need) to do so this module shows you how to use a script to remove the resources you created in this lab
@@ -117,5 +102,5 @@ When you finish the modules in this lab the take the time for a cup of tea (or o
 
 ## Acknowledgements
 
-- **Author** - Julien Silverston, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
-- **Last Updated By** - Julien Silverston, August 2022
+- **Author** - Tim Graves and Julien Silverston, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
+- **Last Updated By** - Tim Graves and Julien Silverston, August 2022
