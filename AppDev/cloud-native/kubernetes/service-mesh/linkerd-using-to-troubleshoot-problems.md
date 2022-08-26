@@ -53,7 +53,7 @@ The first thing we need is some load so we can see what the service mesh is doin
 Change to the directory for the service mesh scripts
 
   1. In the OCI Cloud shell type
-  - `cd $HOME/helidon-kubernetes/service-mesh`
+  - `cd $HOME/helidon-kubernetes/service-mesh/linkerd`
 
 Once you are in the directory start the load generator
 
@@ -209,7 +209,7 @@ Now we can apply the update, we'll use the Kubernetes rolling upgrade process to
 
   6. In the OCI Cloud shell type
   
-  - `kubectl apply -f $HOME/helidon-kubernetes/service-mesh/stockmanager-deployment-broken.yaml --record`
+  - `kubectl apply -f $HOME/helidon-kubernetes/service-mesh/linkerd/stockmanager-deployment-broken.yaml --record`
 
   ```
 deployment.apps/stockmanager configured
@@ -389,4 +389,4 @@ You can chose from the remaining `Linkerd service mesh` modules or switch to one
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
 * **Contributor** - Charles Pretzer, Bouyant, Inc for reviewing and sanity checking parts of this document.
-* **Last Updated By** - Tim Graves, April 2021
+* **Last Updated By** - Tim Graves, August 2022

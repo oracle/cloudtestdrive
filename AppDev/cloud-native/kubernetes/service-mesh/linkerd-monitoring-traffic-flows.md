@@ -40,7 +40,7 @@ Change to the directory for the service mesh scripts
 
   1. In the OCI Cloud shell type
   
-  - `cd $HOME/helidon-kubernetes/service-mesh`
+  - `cd $HOME/helidon-kubernetes/service-mesh/linkerd`
 
 Once you are in the directory start the load generator
 
@@ -417,4 +417,4 @@ You can chose from the remaining **Linkerd service mesh** modules or switch to o
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
 * **Contributor** - Charles Pretzer, Bouyant, Inc for reviewing and sanity checking parts of this document.
-* **Last Updated By** - Tim Graves, July 2021
+* **Last Updated By** - Tim Graves, August 2022

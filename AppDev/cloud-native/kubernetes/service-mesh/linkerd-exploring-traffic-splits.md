@@ -73,7 +73,7 @@ Let's switch to the right directory
 
   1. In the OCI Cloud Shell type 
   
-  - `cd $HOME/helidon-kubernetes/service-mesh`
+  - `cd $HOME/helidon-kubernetes/service-mesh/linkerd`
 
 First we need to make a small change to our existing stock manager deployment, adding the version number to the deployment, this will let us differentiate it from the newer version we are about to deploy.
 
@@ -455,7 +455,7 @@ The External IP of the Load Balancer connected to the ingresss controller is sho
   
   6. In the **new** OCI Cloud shell go to the script directory
   
-  - `cd $HOME/helidon-kubernetes/service-mesh`
+  - `cd $HOME/helidon-kubernetes/service-mesh/linkerd`
   
   7. Start the load generator
   
@@ -676,7 +676,7 @@ Switch to the service mesh directory
 
   1. In the OCI Cloud Shell type 
   
-  - `cd $HOME/helidon-kubernetes/service-mesh`
+  - `cd $HOME/helidon-kubernetes/service-mesh/linkerd`
 
 Let's setup the fault injector, this is basically a simple nginx based web server that returns a HTTP 504 error status (Gateway timeout) each time it's accessed.
 
@@ -700,9 +700,9 @@ data:
     }
 ```
 
-  2. In the OCI Cloud shell type
+  2. In the OCI Cloud shell type (this is a common yaml file across service mesh labs, hence it's one directory up)
   
-  - `kubectl apply -f nginx-fault-injector-configmap.yaml`
+  - `kubectl apply -f ../nginx-fault-injector-configmap.yaml`
 
   ```
 configmap/fault-injector-configmap created
@@ -712,7 +712,7 @@ Next let's start a service for the nginx instance (feel free to  look at the con
 
   3. In the OCI Cloud shell type
   
-  - `kubectl apply -f fault-injector-service.yaml`
+  - `kubectl apply -f ../fault-injector-service.yaml`
 
   ```  
 service/fault-injector created
@@ -722,7 +722,7 @@ Start the nginx fault injector deployment
 
   4. In the OCI Cloud shell type
   
-  - `kubectl apply -f nginx-fault-injector-deployment.yaml`
+  - `kubectl apply -f ../nginx-fault-injector-deployment.yaml`
 
 ```
 deployment.apps/fault-injector created
@@ -1035,4 +1035,4 @@ You can chose from the remaining **Linkerd service mesh** modules or switch to o
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
 * **Contributor** - Charles Pretzer, Bouyant, Inc for reviewing and sanity checking parts of this document.
-* **Last Updated By** - Tim Graves, July 2021
+* **Last Updated By** - Tim Graves, August 2022

@@ -638,7 +638,7 @@ We will use step to help us here, it was installed when you did the cloud shell 
   
   1. Move to the directory containing the scripts for the service mesh lab
   
-  - `cd $HOME/helidon-kubernetes/service-mesh`
+  - `cd $HOME/helidon-kubernetes/service-mesh/linkerd`
 
   2. In the OCI Cloud shell run the following.
   
@@ -1408,4 +1408,4 @@ You can chose from the remaining `Linkerd service mesh` modules or switch to one
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
 * **Contributor** - Charles Pretzer, Bouyant, Inc for reviewing and sanity checking parts of this document.
-* **Last Updated By** - Tim Graves, August 2021
+* **Last Updated By** - Tim Graves, August 2022

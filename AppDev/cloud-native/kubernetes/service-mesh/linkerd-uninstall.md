@@ -204,4 +204,4 @@ You can chose from the other Kubernetes optional module sets.
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
 * **Contributor** - Charles Pretzer, Bouyant, Inc for reviewing and sanity checking parts of this document.
-* **Last Updated By** - Tim Graves, April 2021
+* **Last Updated By** - Tim Graves, August 2022
