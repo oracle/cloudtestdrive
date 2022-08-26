@@ -346,7 +346,7 @@ then
     from IPython.core.display import display, HTML
     import yaml
 
-Finaly execute the first 
+Finaly execute the first
 
 if needed install and restart the kernel
 
