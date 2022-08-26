@@ -1,4 +1,4 @@
-# Install Kubeflow
+# Setup Kubeflow
 
 ## Preparation steps
 
@@ -35,7 +35,7 @@
            cp common/dex/base/config-map.yaml{,.org}
            cat common/dex/base/config-map.yaml.org | sed "s|hash:.*|hash: $kubeflow_password|" > common/dex/base/config-map.yaml
 
-## Task 4 - Install Kubeflow
+## Install Kubeflow
 
 1. Access your cluster
 
@@ -78,18 +78,18 @@ kubectl get pods -n kubeflow-user-example-com
 
 >Takes about 15m to have all the containers running.
 
-## Task 5 - Access Kubeflow
+## Access Kubeflow
 
 1. Expose Kubeflow to Internet
 Change istio-ingressgateway to LoadBalancer
 
 ```
-cat <<EOF | tee $HOME/kubeflow_1.5/patchservice_lb.yaml
+cat <<EOF | tee $HOME/kubeflow_1.6/patchservice_lb.yaml
   spec:
     type: LoadBalancer
   metadata:
     annotations:
-      oci.oraclecloud.com/load-balancer-type: "nlb"
+      oci.oraclecloud.com/load-balancer-type: "lb"
 EOF
 ```
     kubectl patch svc istio-ingressgateway -n istio-system -p "$(cat $HOME/kubeflow_1.5/patchservice_lb.yaml)"
