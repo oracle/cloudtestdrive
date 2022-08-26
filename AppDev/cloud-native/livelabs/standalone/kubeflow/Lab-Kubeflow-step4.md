@@ -8,7 +8,7 @@ By default the first user is **user@examples.com**
 
 The user user@examples.com corresponds to the profil kubeflow-user-example-com.
 
-Once connected to Kubeflow dashboard you can run pipelines and notbook.
+Once connected to Kubeflow dashboard you can run pipelines and notebook.
 
 ## Demo1 - Iterative model training
 
@@ -33,8 +33,9 @@ To run a first pipeline we run the demo pipelines **[Demo] XGBoost - Iterative m
 
   ![Demo1](images/Demo1Run2.png)
 
-  The run lasts 1-2m
-  Kubeflow is operational and model ran successfully.
+  The run lasts 1-2m <br>
+  
+  **Congratulations**  Kubeflow is operational and model ran successfully.
 
 ## Demo 2 - Demo Node selector
 
