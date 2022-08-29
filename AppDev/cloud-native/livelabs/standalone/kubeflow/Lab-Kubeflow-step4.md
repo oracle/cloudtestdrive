@@ -116,11 +116,13 @@ To run a first pipeline we run the demo pipelines **[Demo] XGBoost - Iterative m
 
 ## Demo 3 - Mnist E2E model Notebook
 
-> Be sure to have enough CPU and RAM resources in your Kubernetes cluster to run Mnist-model and Tfjos pods
+> Be sure to have enough CPU and RAM resources in your Kubernetes cluster to run Mnist-model and Tfjobs pods
 
-Mnist Kubeflow example (Modified National Institute of Standards and Technology) guides you through the process of taking an example model, modifying it to run better within Kubeflow, and serving the resulting trained model.
+The Mnist Kubeflow example (Modified National Institute of Standards and Technology) guides you through the process of taking an example model, modifying it to run better within Kubeflow, and serving the resulting trained model.
 
-The orginal steps are available [Github/Kubeflow/examples](https://github.com/kubeflow/examples/tree/master/mnist#vanilla)
+This model entify digits from a dataset of handwritten images.
+
+The orginal steps are available on [Github/Kubeflow/examples](https://github.com/kubeflow/examples/tree/master/mnist#vanilla)
 
 1. Create a Notebook
 
@@ -133,6 +135,7 @@ The orginal steps are available [Github/Kubeflow/examples](https://github.com/ku
         Memory: 2G
   
   A new volume will be create: New volume demo3-volume, Empty, 10Gi
+
   You can specfiy a different Storage Class (OCI, OCI-BV, NFS-client)
   <!-- Let's choose oci class -->
   
@@ -186,15 +189,15 @@ The orginal steps are available [Github/Kubeflow/examples](https://github.com/ku
         kubectl create secret docker-registry ocirsecret --docker-server=iad.ocir.io --docker-username='NAMESPACE/usernameOCI' --docker-password='yourOCIpassword' --docker-email='username@domain.com' -n kubeflow-user-example-com
 </details>
 
-1. Create a bucket in OCI Object Storage named "iad.ocir.io-mnist".
+3. Create a bucket in OCI Object Storage named "iad.ocir.io-mnist".
 
-2. Create OCIR repository to host Mnist images.
-3. Create Rolebinding
+4. Create OCIR repository to host Mnist images.
+<!-- 5. Create Rolebinding
 
        NAMESPACE=kubeflow-user-example-com
-       kubectl create --namespace=kubeflow rolebinding --clusterrole=kubeflow-view --serviceaccount=${NAMESPACE}:default-editor ${NAMESPACE}-minio-view
+       kubectl create --namespace=kubeflow rolebinding --clusterrole=kubeflow-view --serviceaccount=${NAMESPACE}:default-editor ${NAMESPACE}-minio-view -->
 
-4. Connect to the new Notebook created. Launch a terminal in Jupyter and clone the kubeflow/examples repoClone Kubeflow example in the Notebook
+5. Connect to the new Notebook created. Launch a terminal in Jupyter and clone the kubeflow/examples repoClone Kubeflow example in the Notebook
 
   ![Notebook](images/Demo3LaunchNotebook.png)
 
@@ -222,13 +225,13 @@ The orginal steps are available [Github/Kubeflow/examples](https://github.com/ku
 
 - mnist_bucket
 
-> mnist_bucket = f"{DOCKER_REGISTRY}-mnist"
+> mnist_bucket = f"{DOCKER\_REGISTRY}-mnist"
 
 - minio_endpoint
 
 Change http to https
 
-> minio_endpoint = "https://"+s3_endpoint
+> minio_endpoint = "https://"+s3\_endpoint
 
 - Create Customer Secret Keys
 
@@ -240,22 +243,22 @@ From OCI console user details, create customer secret keys.
 
 Replace with your values
 
-> minio_username = "12b...."
-> minio_key = "5+Pu....="
+> minio\_username = "12b...."
+> minio\_key = "5+Pu....="
 
 - Define Region
 
-> minio_region = "us-ashburn-1"
+> minio\_region = "us-ashburn-1"
 
 - Define Object storage bucket name created previously.
 
-> mnist_bucket = "mnist-oci"
+> mnist\_bucket = "mnist-oci"
 
 - Define Kubeflow endpoint
 
 Specify Kubeflow endpoint defined during the installation kf.a.b.c.d.nip.io
 
-> EXTERNAL_IP_INGRESS = "kf.a.b.c.d.nip.io" or "host.domain.com"
+> EXTERNAL\_IP\_INGRESS = "kf.a.b.c.d.nip.io" or "host.domain.com"
 
 #### Examples variables
 
@@ -292,7 +295,7 @@ Include OCIR pull secrets
           imagePullSecrets:
             - name: ocirsecret   
 
-Set S3_USE_HTTPS to true
+Set S3\_USE\_HTTPS to true
 
             - name: S3_USE_HTTPS
               value: "1"
@@ -345,7 +348,7 @@ then
 
 Finaly execute the first
 
-if needed install
+if needed install and restart the kernel
 
     !pip install msrestazure
     !pip install nbconvert==6.4.3
