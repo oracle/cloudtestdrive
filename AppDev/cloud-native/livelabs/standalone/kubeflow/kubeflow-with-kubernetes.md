@@ -27,13 +27,13 @@ You will learn:
 
 ### Steps
 
-[Task 1 - Create an OKE cluster](./Lab-Kubeflow-step1.md)
+[Task 1 - Create an OKE cluster](https://oracle.github.io/cloudtestdrive/AppDev/cloud-native/livelabs/standalone/kubeflow/?lab=script-driven-kubeflow-setup)
 
-[Task 2 - Install Kubeflow](./Lab-Kubeflow-step3.md)
+[Task 2 - Install Kubeflow](?lab=Lab-Kubeflow-step3)
 
-[Task 3 - Run Kubeflow examples](./Lab-Kubeflow-step4.md)
+[Task 3 - Run Kubeflow examples](?lab=Lab-Kubeflow-step4)
 
-[Task Optional](./Lab-Kubeflow-step4.md)
+[Task Optional](?lab=Lab-Kubeflow-step5)
 
 <!-- Please read **Kubeflow setup - introductions** section. When you've completed it click the `back` button on your browser to return to this page. -->
 
