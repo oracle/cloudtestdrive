@@ -32,7 +32,7 @@ In this labs we will use OCI Cloud Shell console integrating all these tools.
 
 2. Clone the Kubeflow repository version 1.6.0 into your OCI Cloud Shell environment
 
-        git clone -b v1.6.0 https://github.com/kubeflow/manifests.git kubeflow_1.6
+        git clone -b v1.6-branch https://github.com/kubeflow/manifests.git kubeflow_1.6
         cd kubeflow_1.6
 
 3. Change the default password
