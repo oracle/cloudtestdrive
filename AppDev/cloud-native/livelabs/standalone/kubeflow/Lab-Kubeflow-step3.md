@@ -39,15 +39,14 @@ In this labs we will use OCI Cloud Shell console integrating all these tools.
 
     By default email user@example.com and password is 12341234
 
-    - Let's generate a password. ***Replace PASSWORD with your own password.***
+    Generate a password. ***Replace PASSWORD with your own password.***
 
-           PASSWORD=**BYhAK5rqSpER**
+        PASSWORD=BYhAK5rqSpER
+        kubeflow_password=$(htpasswd -nbBC 12 USER $PASSWORD| sed -r 's/^.{5}//')
 
-           kubeflow_password=$(htpasswd -nbBC 12 USER $PASSWORD| sed -r 's/^.{5}//')
-
-    - Edit Dex config-map.yaml
+    Edit Dex config-map.yaml
   
-   Make sure you are in the kubeflow manifests folder.
+    Make sure you are in the kubeflow manifests folder.
 
         cd $HOME/kubeflow_1.6/
         cp common/dex/base/config-map.yaml{,.org}
@@ -58,8 +57,8 @@ In this labs we will use OCI Cloud Shell console integrating all these tools.
 1. Access your cluster
 
   Click Access Cluster on your cluster detail page.
-  Accept the default **Cloud Shell Access** and click **Copy** copy the `oci ce...` command and paste it into the Cloud Shell and run the command.
-  If you installed your cluter the access is already set.
+  Accept the default **Cloud Shell Access** and click **Copy** copy the `oci ce cluster create-kubeconfig ...` command and paste it into the Cloud Shell and run the command.
+  > If you installed your cluter using the single-script the access is already set.
 
   ![cluster1](images/AccessCluster.png)
 

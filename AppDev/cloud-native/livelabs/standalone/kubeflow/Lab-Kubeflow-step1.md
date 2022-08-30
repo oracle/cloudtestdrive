@@ -38,14 +38,14 @@
 <br>
     > **Caution**: *VM.Standard.E4.Flex is the recommended because Kubeflow has many components. The default VM.Standard2.1 can be enough for testing purposes but the installation takes much longer.*
 
-  ![Quick Cluster](images/ClusterName.png)
-  ![Enter Data](images/ClusterShape2.png)
+  ![Quick Cluster](images/oke-specs.png)
+  <!-- ![Enter Data](images/ClusterShape2.png) -->
 
 1. Click **Next** to review the details you entered for the new cluster.
 
 2. On the Review page, click **Create Cluster** to create the new network resources and the new cluster.
 
-    ![Review Cluster](images/CreateCluster.png)
+    <!-- ![Review Cluster](images/CreateCluster.png) -->
 
     > You see the network resources being created for you. Wait until the request to create the node pool is initiated and then click **Close**.
 

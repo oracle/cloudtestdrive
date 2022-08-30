@@ -12,24 +12,35 @@ Once connected to Kubeflow dashboard you can run pipelines and notebook.
 
 ## Demo1 - Iterative model training
 
-To run a first pipeline we run the demo pipelines **[Demo] XGBoost - Iterative model training**.
+To run your first pipeline we run the demo pipelines **[Demo] XGBoost - Iterative model training**.
 
    1. Create an experiment
 
-  From the menu Experiments (KFP), Create a new experiment.
+  From the Dashboard choose click on [Demo] XGBoost - Iterative model training.
 
-  In this example we define the Experiment name **Default**, click next.
+  ![Demo1](images/Demo1ChoosePipelineXGChoose.png)
 
-  ![Demo1](images/CreateExperiment.png)
+- Create a new experiment
+  
+  ![Demo1](images/Demo1CreateExperiment.png)
 
-- Choose a pipeline [Demo] XGBoost - Iterative model training.
+  - Name the Experiment **Default**
+  - Click Next
+
+  ![Demo1](images/Demo1Experiment.png)
+
+  - Click Start
+  
+<!-- - Choose a pipeline [Demo] XGBoost - Iterative model training.
 - Choose a Run name: Demo1 and click Start
 
-  ![Demo1](images/Demo1ChoosePipeline.png)
+  ![Demo1](images/Demo1ChoosePipeline.png) -->
 
-  ![Demo1](images/Demo1Start.png)
+  ![Demo1](images/Demo1StartRun.png)
 
-  Click on Demo1 to the running Graph
+  Click on the run to get the details
+
+  ![Demo1](images/Demo1RunDetails.png)
 
   ![Demo1](images/Demo1Run2.png)
 
@@ -126,11 +137,11 @@ The orginal steps are available on [Github/Kubeflow/examples](https://github.com
 
 1. Create a Notebook
 
-   First let's create notebook to define our model.
+   First let's create the notebook to define our model.
    ![Create Notebook](images/DemoCreateNotebook.png)
 
-        Name Demo3
-        Image: j1r0q0g6/notebooks/notebook-servers/jupyter-tensorflow-full:v1.6.0
+        Name: demo3
+        Image: j1r0q0g6/notebooks/notebook-servers/jupyter-tensorflow-full:v1.6.0-rc.1
         CPU: 1
         Memory: 2G
   
@@ -139,9 +150,9 @@ The orginal steps are available on [Github/Kubeflow/examples](https://github.com
   You can specfiy a different Storage Class (OCI, OCI-BV, NFS-client)
   <!-- Let's choose oci class -->
   
-  ![Create Notebook](images/Demo3CPU.png)
+  <!-- ![Create Notebook](images/Demo3CPU.png)
   ![Create Notebook](images/Demo3Volume.png)
-  ![Create Notebook](images/demo3Launch.png)
+  ![Create Notebook](images/demo3Launch.png) -->
 
 2. Setup docker credentials.
 
@@ -173,7 +184,7 @@ The orginal steps are available on [Github/Kubeflow/examples](https://github.com
 
     USER=<DOCKERUSER>; PASSWORD=<DOCKERPASSWORD>; echo -n $USER:$PASSWORD | base64 |  xargs echo -n |xargs -0 printf '{
             "auths": {
-                "https://index.docker.io/v1/": {
+                "iad.ocir.io": {
                     "auth": "%s"
                 }
             },
