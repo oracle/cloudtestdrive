@@ -12,24 +12,35 @@ Once connected to Kubeflow dashboard you can run pipelines and notebook.
 
 ## Demo1 - Iterative model training
 
-To run a first pipeline we run the demo pipelines **[Demo] XGBoost - Iterative model training**.
+To run your first pipeline we run the demo pipelines **[Demo] XGBoost - Iterative model training**.
 
    1. Create an experiment
 
-  From the menu Experiments (KFP), Create a new experiment.
+  From the Dashboard choose click on [Demo] XGBoost - Iterative model training.
 
-  In this example we define the Experiment name **Default**, click next.
+  ![Demo1](images/Demo1ChoosePipelineXGChoose.png)
 
-  ![Demo1](images/CreateExperiment.png)
+- Create a new experiment
+  
+  ![Demo1](images/Demo1CreateExperiment.png)
 
-- Choose a pipeline [Demo] XGBoost - Iterative model training.
+  - Name the Experiment **Default**
+  - Click Next
+
+  ![Demo1](images/Demo1Experiment.png)
+
+  - Click Start
+  
+<!-- - Choose a pipeline [Demo] XGBoost - Iterative model training.
 - Choose a Run name: Demo1 and click Start
 
-  ![Demo1](images/Demo1ChoosePipeline.png)
+  ![Demo1](images/Demo1ChoosePipeline.png) -->
 
-  ![Demo1](images/Demo1Start.png)
+  ![Demo1](images/Demo1StartRun.png)
 
-  Click on Demo1 to the running Graph
+  Click on the run to get the details
+
+  ![Demo1](images/Demo1RunDetails.png)
 
   ![Demo1](images/Demo1Run2.png)
 
