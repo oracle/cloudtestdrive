@@ -30,7 +30,7 @@ spec:
     container:
       args: [--msg, '{{inputs.parameters.send_msg}}']
       command: [python, component1.py]
-      image: ajinkyashell/comp1
+      image: iad.ocir.io/idi2cuxxbkto/kfnodeslector/comp1:latest
       imagePullPolicy: "Always"
     inputs:
       parameters:
@@ -41,7 +41,7 @@ spec:
       value: "value1"
       effect: "NoSchedule"
     nodeSelector:
-      name: pool2
+      type: pool2
     outputs:
       parameters:
       - name: print-msg-output
@@ -52,7 +52,7 @@ spec:
     container:
       args: [--msg, '{{inputs.parameters.print-msg-output}}']
       command: [python, component2.py]
-      image: ajinkyashell/comp2
+      image: iad.ocir.io/idi2cuxxbkto/kfnodeslector/comp2:latest
       imagePullPolicy: "Always"
     inputs:
       parameters:
@@ -63,7 +63,7 @@ spec:
       value: "value1"
       effect: "NoSchedule"
     nodeSelector:
-      name: pool2
+      type: pool2
   arguments:
     parameters:
     - {name: send_msg}
