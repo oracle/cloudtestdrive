@@ -4,7 +4,7 @@ Kubeflow is a collection of cloud native tools for all of the stages of MDLC (da
 
 Kubeflow provides a unified system—leveraging Kubernetes for containerization and scalability, for the portability and repeatability of its pipelines.
 
-(source https://learning.oreilly.com/library/view/kubeflow-for-machine/9781492050117/ch01.html#idm45831188258120)
+<!-- (source https://learning.oreilly.com/library/view/kubeflow-for-machine/9781492050117/ch01.html#idm45831188258120) -->
 
 ## Introduction
 
@@ -53,12 +53,12 @@ Install in /usr/local/bin/helm
  -->
 ## Warning
 
-- **Kubeflow 1.5.0 is not compatible with version 1.22 and onwards.**
+- **Kubeflow 1.6.0 is not compatible with version 1.21 and backwards.**
   - You can track the remaining work for K8s 1.22 support in kubeflow/kubeflow#6353
 https://github.com/kubeflow/kubeflow/issues/6353
 
 - Kustomize (version 3.2.0) ([download link](https://github.com/kubernetes-sigs/kustomize/releases/tag/v3.2.0))
-    - Kubeflow 1.5.0 is not compatible with the latest versions of Kustomize.
+    - Kubeflow 1.6.0 is not compatible with the latest versions of Kustomize.
   <!-- - This is due to changes in the order resources are sorted and printed. Please see kubernetes-sigs/kustomize#3794 and kubeflow/manifests#1797. We know this is not ideal and are working with the upstream kustomize team to add support for the latest versions of kustomize as soon as we can. -->
 <!-- - kubectl -->
 
@@ -66,10 +66,8 @@ https://github.com/kubeflow/kubeflow/issues/6353
 
 [Task 1 - Create an OKE cluster](./Lab-Kubeflow-step1.md)
 
-[Task 2 - Add NFS Storage Class](./Lab-Kubeflow-step2.md)
+[Task 2 - Install Kubeflow](./Lab-Kubeflow-step3.md)
 
-[Task 3 - Install Kubeflow](./Lab-Kubeflow-step3.md)
+[Task 3 - Run Kubeflow pipelines](./Lab-Kubeflow-step4.md)
 
-[Task 4 - Run Kubeflow examples](./Lab-Kubeflow-step4.md)
-
-[Task Optional](./Lab-Kubeflow-step4.md)
+[Task Optional](./Lab-Kubeflow-step5.md)

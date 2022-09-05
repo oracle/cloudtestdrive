@@ -1,8 +1,13 @@
-## Task 1 - Create an OKE cluster
+# Alternative Task 1 - Create an OKE cluster manually
 
 <!-- 1. Deploy OKE version 1.21.5 using [terraform-oci-oke](https://github.com/oracle-terraform-modules/terraform-oci-oke) -->
+<!-- - You can track the remaining work for K8s 1.22 support in kubeflow/kubeflow#6353 https://github.com/kubeflow/kubeflow/issues/6353 -->
+<!-- Create OKE version using Public endpoint -->
 
-Create OKE version using Public endpoint
+## Create OKE cluster manually
+
+<!-- <details><summary><b>Create an OKE cluster manually</b>
+</summary> -->
 
 1. In the Console, open the navigation menu and click **Developer Services**. Under **Containers & Artifacts**, click **Kubernetes Clusters (OKE)**.
 
@@ -24,24 +29,23 @@ Create OKE version using Public endpoint
 
     * **Name**: The name of the cluster. Accept the default value.
     * **Compartment**: The name of the compartment. Accept the default value.
-    * **Kubernetes Version**: The version of Kubernetes. Select the **v1.21.5** version.
+    * **Kubernetes Version**: The version of Kubernetes. Select the **v1.23.4** version.
     * **Kubernetes API Endpoint**: Determines if the cluster master nodes are going to be routable or not. Select the **Public Endpoint** value.
     * **Kubernetes Worker Nodes**: Determines if the cluster worker nodes are going to be routable or not. Accept the default value **Private Workers**.
-    * **Shape**: The shape to use for each node in the node pool. The shape determines the number of CPUs and the amount of memory allocated to each node. The list shows only those shapes available in your tenancy that are supported by OKE. Select **VM.Standard.E4.Flex**. You need to select *2* as the number of *OCPUs* and *32* as the *Amount of Memory(GB)*.<br>
+    * **Shape**: The shape to use for each node in the node pool. The shape determines the number of CPUs and the amount of memory allocated to each node. The list shows only those shapes available in your tenancy that are supported by OKE. <br>
+        Select **VM.Standard.E4.Flex**. You need to select *2* as the number of *OCPUs* and *32* as the *Amount of Memory(GB)*.
+    * **Number of nodes**: The number of worker nodes to create. Accept the default value **3**.
+<br>
     > **Caution**: *VM.Standard.E4.Flex is the recommended because Kubeflow has many components. The default VM.Standard2.1 can be enough for testing purposes but the installation takes much longer.*
 
-    * **Number of nodes**: The number of worker nodes to create. Accept the default value, **3**.
+  ![Quick Cluster](images/oke-specs.png)
+  <!-- ![Enter Data](images/ClusterShape2.png) -->
 
-<details><summary><b>Click this title to expand!</b></summary>
+1. Click **Next** to review the details you entered for the new cluster.
 
-  ![Quick Cluster](images/ClusterName.png)
-  ![Enter Data](images/ClusterShape2.png)
+2. On the Review page, click **Create Cluster** to create the new network resources and the new cluster.
 
-5. Click **Next** to review the details you entered for the new cluster.
-
-6. On the Review page, click **Create Cluster** to create the new network resources and the new cluster.
-
-    ![Review Cluster](images/CreateCluster.png)
+    <!-- ![Review Cluster](images/CreateCluster.png) -->
 
     > You see the network resources being created for you. Wait until the request to create the node pool is initiated and then click **Close**.
 
@@ -52,3 +56,5 @@ Create OKE version using Public endpoint
     ![cluster1](images/ClusterProvision.png)
 
     ![cluster1](images/ClusterActive.png)
+
+    Now your OKE cluter is ready you can move to Kubeflow installation.

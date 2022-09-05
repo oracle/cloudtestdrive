@@ -2,7 +2,7 @@
 
 # Setting up the OKE optional lab environment using scripts for free trial accounts
 
-This module walks you through the process of setting up the core OCI features needed to run a lab that just looks at the optional Kubernrtes features.
+This module walks you through the process of setting up the core OCI features needed to run a lab that just looks at the optional Kubernetes features.
 
 To speed things up for people who are just starting with this set of labs (or deleted their previously created environment) we have provided some scripts that you can use to set things up quickly, consistently and with less opportunity for typos.
 

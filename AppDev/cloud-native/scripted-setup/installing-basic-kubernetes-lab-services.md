@@ -8,7 +8,7 @@ If however you are doing a more focused lab where you don't want to be setting u
 
 ### Objectives
 
-To use the scripts to setup the core Kubernrtes services
+To use the scripts to setup the core Kubernetes services
 
 ### Prerequisites
 
@@ -128,7 +128,7 @@ The script is a wrapper around several other scripts that configure your Kuberne
 
 The scripts generate a couple of files that hold information that may be of use (e.g. dashboard access token, IP address of the services and so on). These are in your home directory and are named `clusterInfo.one` and `clusterSetttings.one` (`one` represents the clusters context name, if your contact was different it would have a different name) the clusterSettings file can be sourced to sets the EXTERNAL_IP and NAMESPACE variables for you to save you having to go look them up yourself.
 
-Initially the script will configure the database and department information that will later on be uploaded into the Kubernrtes cluster as secrets and config maps
+Initially the script will configure the database and department information that will later on be uploaded into the Kubernetes cluster as secrets and config maps
 
 It then ensures that the helm repos list is up to date so it can download the helm charts when needed
 

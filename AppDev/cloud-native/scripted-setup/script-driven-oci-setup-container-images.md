@@ -122,7 +122,7 @@ The information gathered and the OCID's of the resource created are stored in th
 
 To start with it will create an auth token that can be used to log into the OCIR to upload the images. If you have existing tokens you can re-use them as long as you know their value. The script will also offer to  save the value of the token away so you can reuse it later without having to re-enter it. For a free tier trial this is OK as it;s saved within your cloud shell home directory so is only accessible by you, but in a commercial environment you should take note of the generated token and re-enter when prompted.
 
-After this it will determine the details needed to create the OCIR URL used to upload images in a docker push command. It then updates the image location in the Kubernrtes deployments and the docker build scripts with this location.
+After this it will determine the details needed to create the OCIR URL used to upload images in a docker push command. It then updates the image location in the Kubernetes deployments and the docker build scripts with this location.
 
 Next it will create the OCIR image repos in your compartment. This is done because the docker v2 registry API does not understand about specific containers, so by default they would be created in the root of the tenancy if you do not precreate them in a specific compartment,this makes running the labs a lot easier if people are charing a tenancy and using different compartments.
 
