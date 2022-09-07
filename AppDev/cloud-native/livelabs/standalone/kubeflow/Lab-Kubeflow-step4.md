@@ -10,7 +10,7 @@ The user user@examples.com corresponds to the profil kubeflow-user-example-com.
 
 Once connected to Kubeflow dashboard you can run pipelines and notebook.
 
-## Demo1 - Iterative model training
+## Demo 1 - Iterative model training
 
 To run your first pipeline we run the demo pipelines **[Demo] XGBoost - Iterative model training**.
 
@@ -212,7 +212,8 @@ The orginal steps are available on [Github/Kubeflow/examples](https://github.com
 
   ![Notebook](images/Demo3LaunchNotebook.png)
 
-        !git clone https://github.com/kubeflow/examples.git git_kubeflow-examples
+        <!-- !git clone https://github.com/kubeflow/examples.git git_kubeflow-examples -->
+        !git clone https://github.com/julioo/examples.git git_kubeflow-examples
 
   ![Gitcloneexamples](images/Demo3Gitclone.png)
 
@@ -227,6 +228,8 @@ The orginal steps are available on [Github/Kubeflow/examples](https://github.com
   Define DOCKER_REGISTRY to use your OCIR region (in this example Ashburn)
 
 > DOCKER_REGISTRY = "iad.ocir.io"
+
+  You can refer to [OCI documentation to find your Container Registry](https://docs.oracle.com/en-us/iaas/Content/Registry/Concepts/registryprerequisites.htm)
   
 - s3_endpoint
 
