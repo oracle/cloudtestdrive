@@ -11,7 +11,7 @@ In this labs we will use OCI Cloud Shell console integrating all these tools.
 
 ### Warning
 
-- **Kubeflow 1.6.0 is not compatible with version Kubernetes 1.22 and backwards.**
+- **Kubeflow 1.6.0 is not compatible with version Kubernetes 1.21 and backwards.**
 - Kustomize (version 3.2.0) ([download link](https://github.com/kubernetes-sigs/kustomize/releases/tag/v3.2.0))
     - Kubeflow 1.6.0 is not compatible with the latest versions of Kustomize.
 
