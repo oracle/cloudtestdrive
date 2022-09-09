@@ -39,20 +39,14 @@ In this labs we will use OCI Cloud Shell console integrating all these tools.
 
     By default email user@example.com and password is 12341234
 
-    Generate a password. ***Replace PASSWORD with your own password.***
+    Generate a password and edit Dex config-map.yaml
 
         PASSWD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
         KF_PASSWD=$(htpasswd -nbBC 12 USER $PASSWORD| sed -r 's/^.{5}//')
         sed -i.orig "s|hash:.*|hash: $KF_PASSWD|" common/dex/base/config-map.yaml
         echo "Random password is: $PASSWD"
 
-    Edit Dex config-map.yaml
-  
     Make sure you are in the kubeflow manifests folder.
-
-        cd $HOME/kubeflow_1.6/
-        cp common/dex/base/config-map.yaml{,.org}
-        cat common/dex/base/config-map.yaml.org | sed "s|hash:.*|hash: $kubeflow_password|" > common/dex/base/config-map.yaml
 
 ## Install Kubeflow
 
