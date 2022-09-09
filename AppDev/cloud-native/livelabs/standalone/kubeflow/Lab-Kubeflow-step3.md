@@ -41,8 +41,10 @@ In this labs we will use OCI Cloud Shell console integrating all these tools.
 
     Generate a password. ***Replace PASSWORD with your own password.***
 
-        PASSWORD=BYhAK5rqSpER
-        kubeflow_password=$(htpasswd -nbBC 12 USER $PASSWORD| sed -r 's/^.{5}//')
+        PASSWD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
+        KF_PASSWD=$(htpasswd -nbBC 12 USER $PASSWORD| sed -r 's/^.{5}//')
+        sed -i.orig "s|hash:.*|hash: $KF_PASSWD|" common/dex/base/config-map.yaml
+        echo "Random password is: $PASSWD"
 
     Edit Dex config-map.yaml
   
