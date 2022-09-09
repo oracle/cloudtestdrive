@@ -283,7 +283,7 @@ Specify Kubeflow endpoint defined during the installation kf.a.b.c.d.nip.io
     minio_username = "example"
     minio_key = "example"
     minio_region = "us-ashburn-1"
-    EXTERNAL_IP_INGRESS=1.2.3.4 # your ingress ip address
+    EXTERNAL_IP_INGRESS="1.2.3.4" # your ingress ip address
 
 6. Update cell 11 to update image_name variable
 
