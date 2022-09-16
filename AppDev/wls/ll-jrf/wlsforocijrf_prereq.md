@@ -145,7 +145,7 @@ You can follow a waking tour to discover the main user interface features:
 
 
 
-Once ready, copy and paste the contents of **[this](https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/ll-wls-bucket/o/adf_app_db_script.sql)** sql file into *Worksheet* window:
+Once ready, copy and paste the contents of **[this](https://raw.githubusercontent.com/oracle/cloudtestdrive/master/AppDev/wls/ll-jrf/sql/adf_app_db_script.sql)** sql file into *Worksheet* window:
 
 ![](images/wlscnonjrfwithenvprereq/image940.png)
 
