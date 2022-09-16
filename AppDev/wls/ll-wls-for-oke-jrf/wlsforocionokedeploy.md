@@ -192,7 +192,7 @@ We can, of course, use WDT to introspect an existing WebLogic Environment and ge
 
 
 
-Let's start by  downloading this Sample ADF Application: [SampleADFApplication.ear](https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/ll-wls-bucket/o/SampleADFApplication.ear)(click on the link).
+Let's start by  downloading this Sample ADF Application: [SampleADFApplication.ear](https://github.com/oracle/cloudtestdrive/raw/master/AppDev/wls/ll-jrf/ear/SampleADFApplication.ear)(click on the link).
 
 Create the following folder structure on your local machine and move the `SampleADFApplication` file in the `applications` folder:
 

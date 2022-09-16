@@ -21,9 +21,11 @@ If you want to explore the ADF Faces components at runtime, the ADF Faces develo
 
 
 
-First, download the [faces-12.2.1.4.0.war](https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/ll-wls-bucket/o/faces-12.2.1.4.0.war) application web archive. Then, in a similar way as at step **Deploy custom ADF application**, use the *update-domain* Pipeline to install the faces-12.2.1.4.0.war application.
-
-
+- First, you need to download the faces-12.2.1.4.0.war Oracle ADF Faces Components Demo archive from the Oracle website.  To do this you need to go through the following steps : 
+    - Use CTRL+click (on Windows) or CMD+click (on MacOS) to open [this page](https://www.oracle.com/tools/downloads/application-development-framework-downloads.html) in a separate tab, and **scroll down** to the place where you can download the **Oracle ADF Faces Components Demo**.  Attention, do NOT use the very first link on the page which leads to the full ADF runtime library!
+    - Click on the "Download button for the **Oracle ADF Faces Components Demo**, where you have to login with your **Oracle account** - this is NOT your cloud tenancy account!.
+    - You now have downloaded the downloader utility (approx 2,7 MB), which you need to launch to download the actual WAR file (which has a size of approx 126,6 MB).  The WAR file will be named somthing like V996797-01.war, rename it to faces-12.2.1.4.0.war 
+    - Then, in a similar way as at step **Deploy sample ADF application**, install the faces-12.2.1.4.0.war application. 
 
 The `wlsapps.yaml` should look like this:
 
@@ -41,11 +43,7 @@ appDeployments:
 
 
 
-But, as the web application archive file is quite big, you'd need to use the *Object_Storage* option to pass the archive source .zip file. You can upload the .zip file either in a public Object Storage bucket or in a private one with a pre-authenticated request generated so that the .zip file can be downloaded without authentication. Anyway, to be more easy, we have prepared the below link that you can pass directly to the **Archive_File_Location** Pipeline parameter:
-
-```
-https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/ll-wls-bucket/o/facesapps.zip
-```
+But, as the web application archive file is quite big, you'd need to use the *Object_Storage* option to pass the archive source .zip file. You can upload the .zip file either in a public Object Storage bucket or in a private one with a pre-authenticated request generated so that the .zip file can be downloaded without authentication. 
 
 
 
