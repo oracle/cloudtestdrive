@@ -352,13 +352,13 @@ You find the full URL in the Terraform Apply Job Logs Output as showed above. Lo
 
 - We can check the Compute Instances to see what has been provisioned; From OCI menu choose *Core Infrastructure* -> *Compute* -> *Instances*:
 
-<img src="images/wlscnonjrfwithenv/image240.png" style="zoom:33%;" />
+  <img src="images/wlscnonjrfwithenv/image240.png" style="zoom:33%;" />
 
 
 
 - We can see two instances having our prefix setup during Stack configuration; one of them runs the WebLogic Admin server and a Managed Server and the other runs the second Managed Server:
 
-![](images/wlscnonjrfwithenv/image250.png)
+  ![](images/wlscnonjrfwithenv/image250.png)
 
 
 
@@ -371,7 +371,7 @@ You find the full URL in the Terraform Apply Job Logs Output as showed above. Lo
 
 - The out of the box deployed sample application is being served through a secured SSL Load Balancer Listener:
 
-![](images/wlscnonjrfwithenv/image395.png)
+  ![](images/wlscnonjrfwithenv/image395.png)
 
 - Congratulations! Your WLS domain is up&running! 
 
@@ -499,7 +499,7 @@ Before deploying the sample ADF Application, we need to change the way Session P
 
 
 
-- Follow **Upload your files** link and upload provided [SampleADFApplication.ear](https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/ll-wls-bucket/o/SampleADFApplication.ear) enterprise archive file:
+- Follow **Upload your files** link and upload provided [SampleADFApplication.ear](https://github.com/oracle/cloudtestdrive/raw/master/AppDev/wls/ll-jrf/ear/SampleADFApplication.ear) enterprise archive file:
 
 ![](images/wlscnonjrfwithenv/image430.png)
 
