@@ -19,7 +19,11 @@ If you want to explore the ADF Faces components at runtime, the ADF Faces develo
 
 
 
-- First, download the [faces-12.2.1.4.0.war](https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/oractdemeabdmnative/b/ll-wls-bucket/o/faces-12.2.1.4.0.war) application web archive. Then, in a similar way as at step **Deploy sample ADF application**, install the faces-12.2.1.4.0.war application. 
+- First, you need to download the faces-12.2.1.4.0.war Oracle ADF Faces Components Demo archive from the Oracle website.  To do this you need to go through the following steps : 
+    - Go to this page, and **scroll down** to the place where you can download the **Oracle ADF Faces Components Demo**.  Attention, do NOT use the very first link on the page which leads to the full ADF runtime library!
+    - Click on the "Download button for the **Oracle ADF Faces Components Demo**, where you have to login with your **Oracle account** - this is NOT your cloud tenancy account!.
+    - You now have downloaded the downloader utility (approx 2,7 MB), which you need to launch to download the actual WAR file (which has a size of approx 126,6 MB).  The WAR file will be named somthing like V996797-01.war, rename it to faces-12.2.1.4.0.war 
+    - Then, in a similar way as at step **Deploy sample ADF application**, install the faces-12.2.1.4.0.war application. 
 
 - Then, from *Deployments* -> *Control* tab start the application:
 
