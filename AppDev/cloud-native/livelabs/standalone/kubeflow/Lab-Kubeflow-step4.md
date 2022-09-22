@@ -212,7 +212,6 @@ The orginal steps are available on [Github/Kubeflow/examples](https://github.com
 
   ![Notebook](images/Demo3LaunchNotebook.png)
 
-        <!-- !git clone https://github.com/kubeflow/examples.git git_kubeflow-examples -->
         !git clone https://github.com/julioo/examples.git git_kubeflow-examples
 
   ![Gitcloneexamples](images/Demo3Gitclone.png)
