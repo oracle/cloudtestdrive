@@ -153,7 +153,7 @@ Estimated Lab Time: 20 minutes
 
 ## Task 2: Creating the DB Config file for the Operator
 
-To initiate the creation of the database by the Operator we'll have to create a config file describing the desired database setup.  For this lab we'll use the file [singleinstancedatabase_fss.yaml](https://github.com/oracle/cloudtestdrive/blob/master/AppDev/database-operator/deploy-db-bv/singleinstancedatabase_fss.yaml) which contains a configuration ready to use for this part of the lab.
+To initiate the creation of the database by the Operator we'll have to create a config file describing the desired database setup.  For this lab we'll use the file [singleinstancedatabase_fss.yaml](https://github.com/oracle/cloudtestdrive/blob/master/AppDev/database-operator/deploy-db-fss/singleinstancedatabase_fss.yaml) which contains a configuration ready to use for this part of the lab.
 
 We'll be highlighting some of the sections of this file that differ from the first lab we ran:
 
