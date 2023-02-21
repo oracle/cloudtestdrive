@@ -83,12 +83,15 @@ During this day you will be able to experience the various cloud services hands-
 
 + [Web Component Development with Oracle JET](https://github.com/geertjanw/ojet-training/blob/master/README.md)
 
-  
+## Contributing
 
+This project welcomes contributions from the community. Before submitting a pull request, please [review our contribution guide](./CONTRIBUTING.md)
 
+## Security
 
+Please consult the [security guide](./SECURITY.md) for our responsible security vulnerability disclosure process
 
+## License
 
-## [License](LICENSE)
 Copyright (c) 2014, 2022 Oracle and/or its affiliates
 The Universal Permissive License (UPL), Version 1.0
