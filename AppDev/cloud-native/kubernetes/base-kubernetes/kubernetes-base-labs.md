@@ -189,7 +189,7 @@ CURRENT   NAME   CLUSTER               AUTHINFO           NAMESPACE
 *         one    cluster-czpet5do3oq   user-czpet5do3oq   default
 ```
   
-Now whenever we run a kubectl command if we did need to specify the cluster we could just use `--context=one` to specify the context and thus kubernetes cluster to target the command to (if you are frequenelt switchign between clusters this is good practice as it will be clear to you which cluster you are working on). Fortunately for us by the most recent context added to the kubectl config file is used as a default, so in the vast majority of steps in this lab you don't need to specify the context at all - we've only made the changes here to make things easier in case you decide to do some of the lab steps where multiple clusters are needed.
+Now whenever we run a kubectl command it will run against the default cluster. If we did have multiple clusters then we may need to use the non default cluster, so to specify the cluster we just use `--context=<cluster context name>` (e.g. `--context=one`) to specify the context and thus kubernetes cluster to target the command to (if you are frequently switching between clusters this is good practice to do always as it will be clear to you which cluster you are working on). Fortunately for us by the most recent context added to the kubectl config file is used as a default, so in the vast majority of steps in this lab you don't need to specify the context at all - we've only made the changes here to make things easier in case you decide to do some of the lab steps where multiple clusters are needed.
 
 </details>
 
@@ -231,7 +231,7 @@ Firstly we need to create a namespace for the ingress controller.
 
   2. Run the following command to install **ingress-nginx** using Helm 3:
   
-  - `helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx --version 4.1.4 --set rbac.create=true  --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-protocol"=TCP --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape"=flexible --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape-flex-min"=10  --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape-flex-max"=20`
+  - `helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx --version 4.5.2 --set rbac.create=true  --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-protocol"=TCP --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape"=flexible --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape-flex-min"=10  --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape-flex-max"=20`
   
   ```
 NAME: ingress-nginx
@@ -348,7 +348,7 @@ The External IP of the Load Balancer connected to the ingresss controller is sho
 
 </details>
   
-  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set ingress.enabled=true  --set ingress.annotations."kubernetes\.io/ingress\.class"=nginx --set ingress.hosts="{dashboard.kube-system.$EXTERNAL_IP.nip.io}" --version 5.7.0`
+  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set ingress.enabled=true  --set ingress.annotations."kubernetes\.io/ingress\.class"=nginx --set ingress.hosts="{dashboard.kube-system.$EXTERNAL_IP.nip.io}" --version 6.0.0`
   
   ```
 NAME: kubernetes-dashboard
@@ -646,33 +646,20 @@ Sadly (for me at least) YAML has been pretty widely adopted for use with Kuberne
 
 
 
-Before we can login to the dashboard we need to get the access token for the dashboard-user. We do this using kubectl
+Before we can login to the dashboard we need to get the access token for the dashboard-user. Prior to Kubernrtes 1.24 creating the user would create the access token, but in Kubernetes 1.24 which changed and you need to create the token as a separate step - We do this using kubectl. Note that the tokens generated are time limited, so here we request one with a life of 1000 hours (about 40 days) which is fine for a lab
 
-  3. Get the token of the newly created user:
-  
+  3. Create the token for the newly created user: 
+    
   ``` 
-  kubectl -n kube-system describe secret `kubectl -n kube-system get secret | grep dashboard-user | awk '{print $1}'`
+  kubectl create token dashboard-user --namespace kube-system --duration=1000h`
 ```
 
 
   ```
-Name:         dashboard-user-token-mhtf9
-Namespace:    kube-system
-Labels:       <none>
-Annotations:  kubernetes.io/service-account.name: dashboard-user
-              kubernetes.io/service-account.uid: a09cd40c-2663-11ea-a75b-025000000001
-
-Type:  kubernetes.io/service-account-token
-Data
-====
-namespace:  11 bytes
-token:      
 eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLW1odGY5Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJhMDljZDQwYy0yNjYzLTExZWEtYTc1Yi0wMjUwMDAwMDAwMDEiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06YWRtaW4tdXNlciJ9.HUg_9-3HBAG0IJKqCNZvXOS8xdt_n2qO4yNc0Lrh4T4AXnUdMHBR1H8uO6J_GoKSKKeuTJpaIB4Ns4QGaWAvcatFxJWmOywwT6CtbxOeLIyP61PCQju_yfqQO5dTUjNW4O1ciPqAWs6GXL-MRTZdvSiaKvUkD_yOrnmacFxVVZUIKR8Ki4dK0VbxF9VvN_MjZS2YgMz8CghsM6AB3lusqoWOK2SdM5VkIGoAOZzsGMjV2eCYJP3k6qIy2lfOD6KrvERhGZLk8GwEQ7h84dbTa4VHqZurS63fle-esKjtNS5A5Oarez6BReByO6nYwEVQBty3VLt9uKPJ7ZRr1FW5iA
-
-ca.crt:     1025 bytes
 ```
 
-  4. Copy the contents of the token (in this case the `eyJh........W5iA` text, but it *will* vary in your environment). 
+  4. Copy the contents of the token (in this case the `eyJh........W5iA` text, but it *will* vary in your environment) This is a **single line** fo make sure any test editor, notepad etc. doesn't split it into multiple lines. 
   
   5. Save it in a plain text editor on your laptop for easy use later in the lab
 

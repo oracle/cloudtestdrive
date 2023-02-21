@@ -61,7 +61,7 @@ Hang tight while we grab the latest from your chart repositories...
 
   3. In the OCI Cloud Shell install the metrics server by typing
   
-  - `helm install metrics-server metrics-server/metrics-server`
+  - `helm install metrics-server metrics-server/metrics-server --version 3.8.3`
 
   ```
 NAME: metrics-server

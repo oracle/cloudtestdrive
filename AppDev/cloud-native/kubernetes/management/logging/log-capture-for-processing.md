@@ -14,7 +14,7 @@ This video is an introduction to the Log Capture for processing labs Depending o
 
 ## Introduction
 
-This is one of the optional sets of Kubernetes labs
+This is one of the optional sets of Kubernetes labs. This lab currently uses a slightly older version of Elastic Search as the data store, it will soon be updated to use the open source Open Search.
 
 **Estimated module duration** 20 mins.
 
@@ -198,7 +198,7 @@ If your output says it's created key files like `tls-search.crt` and does not in
   
   1. Now we can actually install elastic search. In the cloud console type the following.
   
-  - `helm install elasticsearch elastic/elasticsearch --namespace logging --version 7.16.1 --set ingress.enabled=true --set ingress.tls[0].hosts[0]="search.logging.$EXTERNAL_IP.nip.io" --set ingress.tls[0].secretName=tls-search --set ingress.hosts[0].host="search.logging.$EXTERNAL_IP.nip.io" --set ingress.hosts[0].paths[0].path='/' --set ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-type"=basic --set ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-secret"=web-ingress-auth --set ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-realm"="Authentication Required"`
+  - `helm install elasticsearch elastic/elasticsearch --namespace logging --version 7.17.3 --set ingress.enabled=true --set ingress.tls[0].hosts[0]="search.logging.$EXTERNAL_IP.nip.io" --set ingress.tls[0].secretName=tls-search --set ingress.hosts[0].host="search.logging.$EXTERNAL_IP.nip.io" --set ingress.hosts[0].paths[0].path='/' --set ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-type"=basic --set ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-secret"=web-ingress-auth --set ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-realm"="Authentication Required"`
 
   ```
 NAME: elasticsearch

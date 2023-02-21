@@ -91,6 +91,10 @@ This project welcomes contributions from the community. Before submitting a pull
 
 Please consult the [security guide](./SECURITY.md) for our responsible security vulnerability disclosure process
 
+## Installation
+
+This repo only contains lab instructions, there is no installation needed.
+
 ## License
 
 Copyright (c) 2014, 2022 Oracle and/or its affiliates
