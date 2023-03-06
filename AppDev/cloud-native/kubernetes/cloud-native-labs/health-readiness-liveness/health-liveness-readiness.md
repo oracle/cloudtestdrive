@@ -27,7 +27,7 @@ This module takes you through the Kubernetes functionality for detecting failed 
 
 You need to complete the **Setting up the cluster and getting your services running in Kubernetes** module.
 
-## Task 1: Kubernetes and pod health
+## Kubernetes and pod health
 
 Kubernetes provides a service that monitors the pods to see if they meet the requirements in terms of running, being responsive, and being able to process requests. 
 
@@ -35,7 +35,7 @@ A core feature of Kubernetes is the assumption that eventually for some reason o
 
 These labs look at how that is achieved.
 
-## Task 2: Is the container running ?
+## Task 1: Is the container running ?
 
 As we've seen a service in Kubernetes is delivered by programs running in containers. The way a container operates is that it runs a single program, once that program exists then the container exits, and the pod is no longer providing the service. 
 
@@ -198,7 +198,7 @@ Kubernetes has identified that the container exited and within the pod restarted
 ```
 
 
-## Task 3: Liveness
+## Task 2: Liveness
 We now have mechanisms in place to restart a container if it fails, but it may be that the container does not actually fail, just that the program running in it ceases to behave properly, for example there is some kind of non fatal resource starvation such as a deadlock. In this case the pod cannot recognize the problem as the container is still running.
 
 Fortunately Kubernetes provides a mechanism to handle this as well. This mechanism is called **Liveness probes**, if a pod fails a liveness probe then it will be automatically restarted.
@@ -209,9 +209,9 @@ You may recall in the Helidon labs (if you did them) we created a liveness probe
 
   - `cd $HOME/helidon-kubernetes`
   
-  2. Stop the existing deployments
+  2. Stop the existing deployment
 
-  - `bash undeploy.sh`
+  - `kubectl delete deployment storefront`
   
 ```
 Deleting storefront deployment
@@ -238,7 +238,7 @@ replicaset.apps/zipkin-88c48d8b9          1         1         1       66m
 
 ```
 
-  3. Edit the file **storefront-deployment.yaml** using your prefered editor
+  3. Edit the file **storefront-deployment.yaml** using your preferred editor
   
   4. Search for the Liveness probes section. This is under the spec.template.spec.containers section
 
@@ -318,35 +318,10 @@ Let's apply the changes we made in the deployment :
 
   7. Deploy the updated version
   
-  -  `bash deploy.sh`
+  -  `kubectl apply -f storefront-deployment.yaml`
 
   ```
-Creating zipkin deployment
-deployment.apps/zipkin created
-Creating stockmanager deployment
-deployment.apps/stockmanager created
-Creating storefront deployment
 deployment.apps/storefront created
-Kubenetes config is
-NAME                                READY   STATUS              RESTARTS   AGE
-pod/stockmanager-6456cfd8b6-29lmk   0/1     ContainerCreating   0          0s
-pod/storefront-b44457b4d-29jr7      0/1     Pending             0          0s
-pod/zipkin-88c48d8b9-bftvx          0/1     ContainerCreating   0          0s
-
-NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
-service/stockmanager   ClusterIP   10.100.65.58    <none>        8081/TCP,9081/TCP   3h55m
-service/storefront     ClusterIP   10.96.237.252   <none>        8080/TCP,9080/TCP   3h55m
-service/zipkin         ClusterIP   10.104.81.126   <none>        9411/TCP            3h55m
-
-NAME                           READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/stockmanager   0/1     1            0           0s
-deployment.apps/storefront     0/1     1            0           0s
-deployment.apps/zipkin         0/1     1            0           0s
-
-NAME                                      DESIRED   CURRENT   READY   AGE
-replicaset.apps/stockmanager-6456cfd8b6   1         1         0       0s
-replicaset.apps/storefront-b44457b4d      1         1         0       0s
-replicaset.apps/zipkin-88c48d8b9          1         1         0       0s
 
 ```
 
@@ -356,12 +331,12 @@ replicaset.apps/zipkin-88c48d8b9          1         1         0       0s
 
   ```
 NAME                            READY   STATUS    RESTARTS   AGE
-stockmanager-6456cfd8b6-29lmk   1/1     Running   0          24s
+stockmanager-6456cfd8b6-29lmk   1/1     Running   0          114m
 storefront-b44457b4d-29jr7      1/1     Running   0          24s
-zipkin-88c48d8b9-bftvx          1/1     Running   0          24s
+zipkin-88c48d8b9-bftvx          1/1     Running   0          114m
 ```
 
-Note that as we have undeployed and then deployed again these are new pods and so the RESTART count is back to zero.
+Note that as we have undeployed and then deployed again the storefront pod is recreated as part of the new deployment and so the RESTART count is back to zero.
 
 If we look at the logs for the storefront **before** the liveness probe has started (so before the 120 seconds from container creation) we see that it starts as we expect it to. 
 
@@ -459,7 +434,7 @@ Let's see what happens in this case.
   -  `kubectl exec -ti storefront-b44457b4d-29jr7 -- /bin/bash`
   
   -  `touch /frozen`
-  
+   
   17. Go back to the window running the logs
 
 Kubernetes detected that the liveness probes were not responding in time, and after 3 failures it restarted the pod.
@@ -471,7 +446,11 @@ In the logs we see the following
 2020.01.02 16:25:46 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
 2020.01.02 16:25:51 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: Not frozen, Returning alive status true, storename My Shop
 2020.01.02 16:25:56 INFO com.oracle.labs.helidon.storefront.health.LivenessChecker Thread[nioEventLoopGroup-3-1,10,main]: /frozen exists, locking for 60 seconds
-Weld SE container 53fe34a2-0291-4b72-a00e-966bab7ab2ad shut down by shutdown hook
+2020.01.02 16:26:58 SEVERE io.helidon.health.HealthSupport !thread!: Failed to call health checks
+.
+.
+.
+2020.01.02 16:26:59 INFO org.jboss.weld.Bootstrap !thread!: WELD-ENV-002001: Weld SE container 4aad913c-91cc-4eb3-ae4f-e1c767178bcf shut down
 ```
 
 Kubectl tells us there's been a problem and a pod has done a restart for us (the kubectl connection to the pod will have terminated when the pod restarted)
@@ -530,7 +509,7 @@ Unlike a liveness probe, if a container fails it's not killed off, and calls to 
 #            command:
 #            - /bin/bash
 #            - -c
-#            - 'curl -s http://localhost:9080/health/ready | grep "\"outcome\":\"UP\""'
+#            - 'curl -s http://localhost:9080/health/ready | grep "\"status\":\"UP\""'
 #          # No point in checking until it's been running for a while 
 #          initialDelaySeconds: 15
 #          # Allow a short delay for the response
@@ -551,7 +530,7 @@ The ReadinessProbe section should now look like this :
             command:
             - /bin/bash
             - -c
-            - 'curl -s http://localhost:9080/health/ready | grep "\"outcome\":\"UP\""'
+            - 'curl -s http://localhost:9080/health/ready | grep "\"status\":\"UP\""'
           # No point in checking until it's been running for a while 
           initialDelaySeconds: 15
           # Allow a short delay for the response
@@ -564,9 +543,9 @@ The ReadinessProbe section should now look like this :
 
 The various options for readiness are similar to those for Liveliness, except you see here we've got an exec instead of httpGet.
 
-The exec means that we are going to run code **inside** the pod to determine if the pod is ready to serve requests. The command section defines the command that will be run and the arguments. In this case we run the /bin/bash shell, -c means to use the arguments as a command (so it won't try and be interactive) and  **'curl -s http://localhost:9080/health/ready | grep "\"outcome\":\"UP\""'** is the command.
+The exec means that we are going to run code **inside** the pod to determine if the pod is ready to serve requests. The command section defines the command that will be run and the arguments. In this case we run the /bin/bash shell, -c means to use the arguments as a command (so it won't try and be interactive) and  **'curl -s http://localhost:9080/health/ready | grep "\"status\":\"UP\""'** is the command.
 
-Some points about **'curl -s http://localhost:9080/health/ready | grep "\"outcome\":\"UP\""'**
+Some points about **'curl -s http://localhost:9080/health/ready | grep "\"status\":\"UP\""'**
 
 Firstly this is a command string that actually runs several commands connecting the output of one to the input of the other. If you exec to the pod you can actually run these by hand if you like
 
@@ -574,12 +553,12 @@ The first (the curl) gets the readiness data from the service (you may remember 
 
 ```
 root@storefront-b44457b4d-29jr7:/# curl -s http://localhost:9080/health/ready 
-{"outcome":"UP","status":"UP","checks":[{"name":"storefront-ready","state":"UP","status":"UP","data":{"storename":"My Shop"}}]}
+{"status":"UP","status":"UP","checks":[{"name":"storefront-ready","state":"UP","status":"UP","data":{"storename":"My Shop"}}]}
 ```
 
-We can just use the final command the grep to look for a line containing `"outcome":"UP"` We do however have to be careful because " is actually part of what we want to look for (and if you ran the text thoguht a json formatter you may have space characters) So to define these as a constant we need to ensure it's a single string, we do this by enclosing the entire thing in quotes `"` and to prevent the `"` within the string being interpreted as end of string (and thus new argument) characters we need to escape them, hence we end up with `"\"outcome\":\"UP\""`
+We can just use the final command the grep to look for a line containing `"status":"UP"` We do however have to be careful because " is actually part of what we want to look for (and if you ran the text through a json formatter you may have space characters) So to define these as a constant we need to ensure it's a single string, we do this by enclosing the entire thing in quotes `"` and to prevent the `"` within the string being interpreted as end of string (and thus new argument) characters we need to escape them, hence we end up with `"\"status\":\"UP\""`
 
-Now try it out:
+Now try it out with out current pod (this has the readiness reporting enabled already, it's the deployment yaml we updated to tall Kubernetes to make use of it, we haven't applied that yet) :
 
   5. Connect to the pod 
   
@@ -587,10 +566,10 @@ Now try it out:
   
   6. Run the command in the pod:
   
-  -  `curl -s http://localhost:9080/health/ready | grep "\"outcome\":\"UP\""`
+  -  `curl -s http://localhost:9080/health/ready | grep "\"status\":\"UP\""`
 
   ```
-{"outcome":"UP","status":"UP","checks":[{"name":"storefront-ready","state":"UP","status":"UP","data":{"storename":"My Shop"}}]}
+{"status":"UP","status":"UP","checks":[{"name":"storefront-ready","state":"UP","status":"UP","data":{"storename":"My Shop"}}]}
 ```
 
 In this case the pod is ready, so the grep command returns what it's found. We are not actually concerned with what the pod returns in terms of string output, we are looking for the exit code, interactively we can find that by looking in the $? variable:
@@ -605,19 +584,21 @@ In this case the pod is ready, so the grep command returns what it's found. We a
 
 And can see that the variable value (which is what's returned back to the Kubernetes readiness infrastructure) is 0. In Unix / Linux terms this means success.
 
-If you want to see what it would do if the outcome was not UP try running the command changing the UP to DOWN like this (or actually anything other than UP). **Important** While you can run this command in the pods shell **DO NOT** modify the actual yaml files.
+If you want to see what it would do if the status was not UP try running the command changing the UP to DOWN like this (or actually anything other than UP). **Important** While you can run this command in the pods shell **DO NOT** modify the actual yaml files.
 
 ```
-root@storefront-b44457b4d-29jr7:/# curl -s http://localhost:9080/health/ready | grep "\"outcome\":\"DOWN\""
+root@storefront-b44457b4d-29jr7:/# curl -s http://localhost:9080/health/ready | grep "\"status\":\"DOWN\""
 root@storefront-b44457b4d-29jr7:/# echo $?
 1
 ```
 
 In this case the return value in $? is 1, not 0, and in Unix / Linux terms that means something's gone wrong.
 
-The whole thing is held in single quotes `'curl -s http://localhost:9080/health/ready | grep "\"outcome\":\"UP\""'` to that it's treated as a single string by the yaml file parser and when being handed to the bash shell.
+The whole thing is held in single quotes `'curl -s http://localhost:9080/health/ready | grep "\"status\":\"UP\""'` to that it's treated as a single string by the yaml file parser and when being handed to the bash shell.
 
 Remember, in this case the command is executed inside the container, so you have to make sure that the commands you want to run will be available. This is especially important if you change the base image, you might find you are relying on a command that's no longer there, or works in a different way from your expectations.
+
+Of course this is a very simple test in that it just looks for a string of `"status":"UP"` ,of course here there are two status fields so either could be a match (though the outer one basically is the same as the inner one - this is because the framework we are using allows for be multiple readiness components which would get merged into the final status). In a production system you'd probably do something more sophisticated, perhaps using `jq` (if it's in your container) to locate the status entry that covers all of the components
 
 That's all we're going to do with bash shell programming for now!
 
@@ -933,7 +914,7 @@ Connection: keep-alive
 
 You may have noticed above that we had to wait for the liveness probe to complete it's initial delay it started checking. As the liveness probe checks for the service running this means we can't start checking until liveness probe has started. But equally we don't want to set the initial delay of the liveness probe to be to low as it might start checking before the service is running, and then kill the service off before it's finished it's setup. In the case of the storefront this is not to much of a problem as the service starts up fast, but for a more complex service, especially a legacy service that may have a startup time that varies a lot depending on other factors, this could be a problem.
 
-To solve this in Kubernetes 1.18 the concept of startup probes will be introduced as a beta feature. A startup probe is a very simple probe that tests to see if the service has started running, usually at a basic level, and then starts up the liveness probes. Effectively the startupProbe means there is no longer any need for the initialDelaySeconds on the liveness probe.
+To solve this in Kubernetes 1.18 the concept of startup probes was be introduced as a beta feature. A startup probe is a very simple probe that tests to see if the service has started running, usually at a basic level, and then starts up the liveness probes. Effectively the startupProbe means there is no longer any need for the initialDelaySeconds on the liveness probe.
 
 Let's enable this.
 
@@ -945,7 +926,7 @@ Let's enable this.
   
 The result should look like this
 
-  ```
+  ```yaml
         # Use this to check if the pod is started this has to pass before the liveness kicks in
         # note that this was released as beta in k8s V 1.18
         startupProbe:
@@ -970,7 +951,7 @@ The result should look like this
   
 The result should look like this 
 
-  ```
+  ```yaml
         livenessProbe:
           #Simple check to see if the liveness call works
           # If must return a 200 - 399 http status code
@@ -987,7 +968,31 @@ The result should look like this
           failureThreshold: 3
 ```
 
-  6. Restart the storefront
+  6. Locate the  `initialDelaySeconds:` in the `readinessprobe` section
+  
+  7. Place a `#` just before the content
+  
+  The result should look like this 
+
+  ```yaml
+        readinessProbe:
+          exec:
+            command:
+            - /bin/bash
+            - -c
+            - 'curl -s http://localhost:9080/health/ready | grep "\"status\":\"UP\""'
+          # No point in checking until it's been running for a while 
+          # Comment this out when using a startup probe
+          # initialDelaySeconds: 120
+          # Allow a short delay for the response
+          timeoutSeconds: 5
+          # Check every 10 seconds
+          periodSeconds: 10
+          # Need at least only one fail for this to be a problem
+          failureThreshold: 1
+```
+
+  8. Restart the storefront
   
   - `kubectl apply -f storefront-deployment.yaml`
   ```
