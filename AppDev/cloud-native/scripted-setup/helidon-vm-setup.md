@@ -1,4 +1,4 @@
-![](../../../common/images/customer.logo2.png)
+![Title image](../../../common/images/customer.logo2.png)
 
 # Setting up your Development VM core 
 
@@ -44,13 +44,13 @@ If you are in an **instructor led lab** the instructor may have already done thi
   
   1. Open the Cloud Marketplace URL  https://cloudmarketplace.oracle.com/marketplace/listing/86865043 in a new web browser tab / window.
   
-  ![](images/cloud-marketplace-image.png)
+  ![Opening the OCI market place](images/cloud-marketplace-image.png)
   
   2. Click the **Get App** button
   
   3. In the Install Application page chose the region you are using
  
-  ![](images/cloud-marketplace-install-select-region.png)
+  ![Selecting the region to use](images/cloud-marketplace-install-select-region.png)
 
 I chose Frankfurt, but yours may vary
 
@@ -58,7 +58,7 @@ I chose Frankfurt, but yours may vary
 
 In your OCI Console UI page look at the upper right, you will see something like this
 
-![](images/region-name.png)
+![Getting the region name if you don;t know it](images/region-name.png)
 
 In this case for my tenancy I'm in the Germany / Frankfurt region, but if you are using a different region it will show up there.
 
@@ -90,7 +90,7 @@ In this case for my tenancy I'm in the Germany / Frankfurt region, but if you ar
 
   5. If `VM.Standard.E4.Flex`  or `VM.Standard.E3.Flex` with 1 OCPU and 16GB memory is not the selected instance shape click the **Change shape** button, set the Instance type to **Virtual machine**, the Processor to **AMD Rome** and the OCPU count to `1` (This will set the memory for you) Then click **Select shape** to use this shape. (You can chose other shapes if you prefer, just at the time of writing this was the most cost effective)
 
-  ![](images/cloud-marketplace-create-instance.png)
+  ![Creating the instance through the market place](images/cloud-marketplace-create-instance.png)
   
   6. Expand the **Configure networking** section if it's not already expanded
   
@@ -104,7 +104,7 @@ In this case for my tenancy I'm in the Germany / Frankfurt region, but if you ar
 
   11. Check the **Assign a public IP address** option is selected
   
-  ![](images/cloud-marketplace-images-setup-network.png)
+  ![Network configuration for the instance](images/cloud-marketplace-images-setup-network.png)
 
   12. Scroll down to the **Add SSH Key** section
 
@@ -112,7 +112,7 @@ In this case for my tenancy I'm in the Germany / Frankfurt region, but if you ar
 
   14. If you wish you can download the ssh keys by clicking on the buttons (This is not required as we will be using VNC to access the instance)
   
-  ![](images/create-instance-third-part.png)
+  ![Accessing the ssh keys for the instance](images/create-instance-third-part.png)
   
   15. Leave the boot volume settings unchanged (On some newer versions of the UI this may be below the SSH keys section, but you still don't change it)
   
@@ -124,7 +124,7 @@ You have finished the wizard!
 
 Once the create button has been clicked you will see the VM details page.  Initially the state will be **Provisioning** but after a few minutes it will switch to **Running**, and you will see that a **public IP address** has been assigned.  Make a note of that IP address (The copy link next to it will copy the address into your computers copy-and-paste buffer.)
 
-  ![](images/create-instance-public-ip-address.png)
+  ![Getting the public IP address for your instance](images/create-instance-public-ip-address.png)
 
 While it's starting you can work on the next step  
 
@@ -136,13 +136,13 @@ You need to be sure that the Virtual Cloud Network supports remote access using 
 
   1. Go to the VCN you created earlier, click the VCN name in the instance details page, I named mine `H-K8S-Lab-A-Helidon-2020-29-10-tg`
   
-  ![](images/cloud-marketplace-instance-details.png)
+  ![Accessing the VCN for your instance](images/cloud-marketplace-instance-details.png)
 
   2. On the VNC page on the left hand side click the **Security Lists** option
 
   3. Click on the security list in the list, If there is more than one chose the one with a name something like `Default Security List for H-K8S-Lab-A-Helidon-2020-29-10-tg` (don't select the private subnet one if it's there)
   
-  ![](images/cloud-marketplace-image-vcn-security-lists-setup.png)
+  ![Security lists for your instance](images/cloud-marketplace-image-vcn-security-lists-setup.png)
 
   4. In the security list page click the **Add Ingress Rules** button
   
@@ -164,7 +164,7 @@ You need to be sure that the Virtual Cloud Network supports remote access using 
 
   12. Click the **Add Ingress Rules** button
 
-  ![](images/cloud-marketplace-install-add-ingress-rule.png)
+  ![Completed add ingress rule form](images/cloud-marketplace-install-add-ingress-rule.png)
 
 
 ## Step 3: Accessing the Developer VM
@@ -207,15 +207,15 @@ You need to let your VM run for a couple of mins to fully boot and start the VNC
 
   3. You VNC client may warn you that you're making an insecure connection, this is expected as we have not setup security certificates. For example for a real VNC client on a Mac this may look like 
 
-  ![](images/01-vnc-security-warning.png)
+  ![VNC possible security warning](images/01-vnc-security-warning.png)
 
   4. You will be asked to enter a password to access the virtual screen. The initial VNC login password is : `Atp--101` (that's Atp hyphen hyphen one zero one). This is an example showing this with the Real VNC client running on a Mac
 
-  ![](images/02-vnc-login.png)
+  ![Logging in using VNC](images/02-vnc-login.png)
 
 Once you have logged in you will see the Linux desktop, it will look similar to this, though the background and specific icons may differ.
 
-  ![](images/03-desktop.png)
+  ![Your desktop accessed through VNC](images/03-desktop.png)
   
 ### Step 3c: Opening a terminal
 
@@ -225,11 +225,11 @@ For a number of the following steps you will need to open a terminal, if you alr
   
   2. A activity selection menu will appear with commonly used activities, click on the Terminal icon
   
-  ![](images/ol-desktop-activities-open-terminal.png)
+  ![Oracle Linux desktop terminal access](images/ol-desktop-activities-open-terminal.png)
   
   3. A terminal will appear on the desktop.
   
-  ![](images/ol-desktop-open-terminal.png)
+  ![The opened terminal](images/ol-desktop-open-terminal.png)
   
 #### Accessing an existing terminal or other application
   
@@ -239,7 +239,7 @@ For a number of the following steps you will need to open a terminal, if you alr
   
   The screen will display the activity selection menu on the left, but images for any existing applications will also be shown, just click on the image of the application you want to switch to it's window
   
-  ![](images/ol-desktop-activities-select-existing-open-application.png)
+  ![Accessing open applications](images/ol-desktop-activities-select-existing-open-application.png)
 
 ### Step 3e: Changing the VNC Password (optional)
 
@@ -257,13 +257,13 @@ While not required we do recommend that you change this password to prevent acce
 
   5. When prompted if you want a view only password enter `n`
 
-  ![](images/vnc-02-set-vncpasswd.png)
+  ![Changing your VNC password](images/vnc-02-set-vncpasswd.png)
 
 The easiest way to apply the new password is to reboot the VM
 
   6. In the terminal enter `sudo reboot`
 
-  ![](images/vnc-03-reboot.png)
+  ![Rebooting the virtual machine](images/vnc-03-reboot.png)
 
 The VNC connection will probably drop immediately and the VNC client will try to reconnect (in which case close the VNC window) or it may just close the window for you (the specific behavior is VNC client specific.) 
 
@@ -281,21 +281,21 @@ We have installed the Eclipse installer and placed is in a folder on your home d
 
   1. Open the File manager by clicking on the **Activities** menu on the upper left of the VNC window, then the Filling cabinet icon
  
-  ![](images/ol-desktop-activities-select-filemanager.png)
+  ![Opening the Oracle linux file manager](images/ol-desktop-activities-select-filemanager.png)
   
   2. The file manager will start, open the **eclipse-installer** folder by double clicking on it, note that the exact location in the window may vary
   
-  ![](images/ol-desktop-filemanager-select-eclipse-installer-folder.png)
+  ![The Eclipse install icon](images/ol-desktop-filemanager-select-eclipse-installer-folder.png)
   
   3. Start the Eclipse installer by double clicking on the **eclipse-inst** icon, note that the exact location in the window may vary. **DO NOT** click on the .ini file
   
-  ![](images/ol-desktop-filemanager-start-eclipse-installer.png)
+  ![Startign the Eclipse installer](images/ol-desktop-filemanager-start-eclipse-installer.png)
 
 The Eclipse installer will start.
 
   4. Select the **Eclipse IDE for Enterprise Java Developers** option
 
-  ![](images/05-eclipse-installer-selection.png)
+  ![Selecting Java enterprise edition](images/05-eclipse-installer-selection.png)
 
 The installer switched to the next page
 
@@ -305,33 +305,33 @@ The installer switched to the next page
   
   (It's really important that you do this, otherwise you'll have to manually setup a lot of the following)
 
-  ![](images/06-eclipse-installer-selections.png)
+  ![Chosing the install path for Eclipose](images/06-eclipse-installer-selections.png)
  
   7. Then click the **Install** button
  
   8. Assuming you agree with it click **Accept Now** on the license page. (If you don't agree with the license you can install your own IDE but all of the instructions are on the basis of using Eclipse.)
  
-  ![](images/07-eclipse-installer-license.png)
+  ![Agreeing to the Eclipse license](images/07-eclipse-installer-license.png)
  
 The installer progress will be displayed
  
-  ![](images/08-eclipse-installer-progress.png)
+  ![Installer progress](images/08-eclipse-installer-progress.png)
  
   9. You **may** be presented with warnings about unsigned content, if you are click the **Accept** button
  
-  ![](images/09-eclipse-installer-unsigned-warning.png)
+  ![Installer unsigned content warning](images/09-eclipse-installer-unsigned-warning.png)
  
   10. You **may** be presented with warnings about certificates. If you are click the **Select All** button, then the **Accept Selected** button (this is not enabled until certificates have been selected)
   
-  ![](images/10-eclipse-installer-accept-unsigned.png)
+  ![Accepting unsigned certificates](images/10-eclipse-installer-accept-unsigned.png)
   
   11. On completion close the installer window (X on the upper right.) **Do not** click the Launch button.
  
-  ![](images/11-eclipse-installer-finished-install-path.png)
+  ![Closing the installer](images/11-eclipse-installer-finished-install-path.png)
 
   12. Click **No** on the exit launcher page that's displayed to confirm you do not want to launch Eclipse at this point.
 
-  ![](images/12-eclipse-installer-finished-exit-without-launching.png)
+  ![Confirming you are not going to launch Eclipse](images/12-eclipse-installer-finished-exit-without-launching.png)
   
 ### Step 4b: Configuring post Eclipse install
 
@@ -410,39 +410,39 @@ The first tine you start Eclipse there are some additional steps to take, but if
   
   2. Select the application grid in the menu
   
-  ![](images/ol-desktop-activities-open-applications-choice.png)
+  ![Accessing the Oracle Linux applications grid](images/ol-desktop-activities-open-applications-choice.png)
   
   3. In the applications grid that is now displayed click the Eclipse icon, note that it's location in the grid may vary
   
-  ![](images/ol-desktop-activities-select-eclipse.png)
+  ![The Eclipse icon](images/ol-desktop-activities-select-eclipse.png)
 
 As Eclipse starts you will be presented with a start up "splash" then workspace selection option. 
 
   3. Set the Eclipse workspace to be `/home/opc/workspace` (If you chose a different location you will have to remember to use that new location in many later stages.)
 
-  ![](images/20-eclipse-start-workspace-selection.png)
+  ![Chosing your Eclipse workspace](images/20-eclipse-start-workspace-selection.png)
 
   4. Click the **Use this as the default and do not ask again** option, then the **Launch** button
 
-  ![](images/20a-eclipse-start-default-workspace-selection.png)
+  ![Selecting the default workspace location](images/20a-eclipse-start-default-workspace-selection.png)
 
 You will be presented with the Eclipse startup. This may include a welcome page. You can close it by clicking the **x** as per normal with sub windows.
 
-  ![](images/21-eclipse-welcome-page.png)
+  ![The Eclipse welcome page](images/21-eclipse-welcome-page.png)
 
   5. You can close the **Donate**, **Outline** and **Task list** tabs to get the most usage from the screen.
 
-  ![](images/22-eclipse-donate-page.png)
+  ![Eclipse donate page](images/22-eclipse-donate-page.png)
 
 This image shows you the empty Eclipse workspace with the non required tabs all closed
 
-  ![](images/23-empty-eclipse-workspace.png)
+  ![Empty Eclipse workspace](images/23-empty-eclipse-workspace.png)
 
 We need to configure Eclipse to display the course files in a hierarchical manner (this is so it matches the images you will have in the lab instructions, if you prefer to use the Eclipse  "Flat" view then you can ignore this step)
 
   6. Click on the Three dots in the Project Explorer panel, then take the **Package Presentation** menu option and click the radio button for **Hierarchical**
 
-  ![](images/24-eclipse-package-presentation-hierarchical.png)
+  ![Changing the package presentation view](images/24-eclipse-package-presentation-hierarchical.png)
   
   In the specific labs (e.g. the Helidon core labs) there are additional instructions on how to get the relevant source code and open it in Eclipse.
 
@@ -456,7 +456,7 @@ The easiest way to get the database Wallet file into your virtual machine is to 
 
   1. Open a web browser **inside the virtual machine** by clicking the **Activities** menu on the upper left of the VNC window, then clicking the **Firefox** icon
   
-  ![](images/ol-desktop-activities-open-firefox.png)
+  ![Opening the firefox web browser](images/ol-desktop-activities-open-firefox.png)
   
   2. Login to the Oracle Cloud Console with your tenancy details
   

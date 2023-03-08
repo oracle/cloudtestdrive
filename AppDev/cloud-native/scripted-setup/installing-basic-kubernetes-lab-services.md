@@ -1,4 +1,4 @@
-![](../../../common/images/customer.logo2.png)
+![Title image](../../../common/images/customer.logo2.png)
 
 # Installing the core kubernetes lab services
 

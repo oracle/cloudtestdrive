@@ -1,6 +1,6 @@
-![](../../../../common/images/customer.logo2.png)
+![Title image](../../../../common/images/customer.logo2.png)
 
-# Cloud Native - Helidon and operations
+# Getting operations date using Helidon
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -87,7 +87,7 @@ Other reasons may be that you are in an industry like the aerospace sector or fi
 
   4. Open a browser **in the VM** navigate to : http://localhost:9411/zipkin/ 
 
-  ![zipkin-initial](images/zipkin-initial.png)
+  ![Zipkin initial page](images/zipkin-initial.png)
 
 Now you need to add the zipkin packages to the pom.xml file for **both** the storefront and stockmanager projects. This will trigger Helidon to automatically setup the tracing, no code changes are needed by you at all to use the tracing.
 
@@ -165,7 +165,7 @@ We've successfully reserved 7 pencils
 
   16. Go to the **zipkin web page** and click the `Run Query` button, you'll see the list of traces (the details you have will of course be different)
 
-  ![zipkin-trace-details-slow-response](images/zipkin-trace-list-slow-response.png)
+  ![Zipkin trace for a slow response](images/zipkin-trace-list-slow-response.png)
 
 You can see that this took a while to run, nearly 8 seconds in fact. This is because of the lazy initialization in both the storefront and stock manager microservices.
 
@@ -188,13 +188,13 @@ content-length: 37
 
   18. Go to the **zipkin web page** and click the `Run Query` button
 
-  ![zipkin-traces-list](images/zipkin-traces-list.png)
+  ![List of Zipkin traces](images/zipkin-traces-list.png)
 
 We can see that this request was a lot faster at 1.8761 seconds
 
   19.Click on the `Show` on the trace row zipkin will display the full details of our trace.
 
-  ![zipkin-trace-details](images/zipkin-trace-details.png)
+  ![Details of a Zipklin trace](images/zipkin-trace-details.png)
 
 Importantly even though they are in separate microservices and the flow switches between them several times we can see the overall flow, what part of the service was called when and how long it took. This let's developers understand exactly how the initial request was processed and how long each step took.
 
@@ -202,7 +202,7 @@ For requests into the service (the first of these is the first entry in the trac
 
   20. Click **once** on the text to the right of the first stock manager entry
 
-  ![zipkin-trace-stockmanager-getstockitem](images/zipkin-trace-stockmanager-getstockitem.png)
+  ![Zipkin trace for the stockmanager getstockitem call](images/zipkin-trace-stockmanager-getstockitem.png)
 
 Now on the right we can see the details of this sub request, made from the storefront to the stockmanager. Feel free to further explore the zipkin UI if you wish, there's a lot if information available to help explore and diagnose problems.
 

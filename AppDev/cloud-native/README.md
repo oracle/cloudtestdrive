@@ -1,6 +1,6 @@
 [Go to the Cloud Test Drive Welcomer Page](../../readme.md)
 
-![](../../common/images/customer.logo2.png)
+![Title image](../../common/images/customer.logo2.png)
 
 # Migration of Monolith to Cloud Native architecture
 

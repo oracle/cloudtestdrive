@@ -1,4 +1,4 @@
-![](../../../images/customer.logo2.png)
+![Title image](../../../images/customer.logo2.png)
 
 # Pi Day 2022
 

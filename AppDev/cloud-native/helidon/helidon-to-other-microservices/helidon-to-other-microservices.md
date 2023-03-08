@@ -1,6 +1,6 @@
-![](../../../../common/images/customer.logo2.png)
+![Title image](../../../../common/images/customer.logo2.png)
 
-# Cloud Native - Communicating between microservcies
+# Communicating between microservcies with Helidon
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 

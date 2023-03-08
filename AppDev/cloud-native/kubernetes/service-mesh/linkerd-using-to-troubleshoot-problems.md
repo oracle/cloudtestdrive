@@ -1,6 +1,6 @@
-![](../../../../common/images/customer.logo2.png)
+![Title image](../../../../common/images/customer.logo2.png)
 
-# Cloud Native - Using the Service mesh to troubleshoot problems
+# Troubleshoot problems with the Service mesh
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
@@ -142,17 +142,17 @@ You may be challenged as you have a self signed certificate. Follow the normal p
 
 Next you may be presented with the login challenge.
 
-![](images/linkerd-web-login.png)
+  ![Linked login page](images/linkerd-web-login.png)
 
   2. If you are, login with `admin` as the username, for the password use the one you used when creating the login password during the linkerd installation in the previous module.
 
 You'll be presented with the linkerd-web main page, unlike when you saw this previously now it's showing load for your services.
 
-  ![](images/linkerd-web-main-apps-load.png)
+  ![Linkerd list of servcies](images/linkerd-web-main-apps-load.png)
 
   3. Click on the page for your namespace (tg-helidon in my case)
 
-  ![](images/linkerd-namespace-running-ok.png)
+  ![Accessing your namepace in linkerd UI](images/linkerd-namespace-running-ok.png)
 
 We can see that the services are running with a 100% success rate.
 
@@ -313,7 +313,7 @@ We'll open the LinkerdUI and see what it's reporting.
 
   2. Click on **Namespaces** in the **Cluster** section of the left menu and locate the **HTTP metrics** entry for your namespace (mine is tg-helidon, yours will have a different name)
 
-  ![](images/linkerd-broken-overview-namespace.png)
+  ![Looking at the details in linkerd when we have deliberatly deployed a broken microservice implementation](images/linkerd-broken-overview-namespace.png)
 
 While the precise numbers will of course vary you should see that the success rate is not 100%, it's likely to be around 90% That is not a surprise (after all we are deliberately throwing an error on about half of the calls to the stock manager) but it looks like we have a bit of a problem!
 
@@ -328,19 +328,19 @@ Remember that here we're looking at all the HTTP REST API calls that happen in t
 
   3. Click on the name of your namespace to access it.
 
-  ![](images/linkerd-broken-detailed-namespace.png)
+  ![Accessing the namespace of the broken service](images/linkerd-broken-detailed-namespace.png)
 
 We can see that it's the stockmanager service that has a problem, the rest are all reporting 100% success
 
   4. Click on the stockmanager **in the deployments list** then scroll down so you can see the inbound and outbound HTTP metrics, pods and the live calls
 
-  ![](images/linkerd-broken-detailed-service.png)
+  ![Details of our deliberately broken stock manager service](images/linkerd-broken-detailed-service.png)
 
 Now we can see that it's the inbound requests on the stockmanager that's the problem, the outbound ones are working fine, and (in this case) there is one pod that has the problem (if there were multiple pods you wild see them listed, and might be able to see if the problem was pod specific, or a problem across all pods in the deployment)
 
   5. Now look at the **Live calls** section
 
-  ![](images/linkerd-broken-live-calls.png)
+  ![Live call info to the broken stock manager service](images/linkerd-broken-live-calls.png)
 
 We can see that the from deploy/storefront to /stocklevel call is the one that's generating a lot of failures
 
@@ -348,11 +348,11 @@ We can see that the from deploy/storefront to /stocklevel call is the one that's
 
   7. Click the **Start** button at the top of this page and wait for a few calls to come in, then click the **Stop** button
 
-  ![](images/linkerd-broken-tap-list.png)
+  ![The list of live calls reported by tap to out broken service](images/linkerd-broken-tap-list.png)
 
   8. Locate a row where the HTTP status is 500, click the down arrow / Expand" icon ![](images/linkerd-tap-expand-icon.png)
 
-  ![](images/linkerd-broken-tap-details.png)
+  ![Details of a failed call to the broken service](images/linkerd-broken-tap-details.png)
 
 You can now see the details of the failed call. Click the **Close** button on the lower right to close this popup.
 

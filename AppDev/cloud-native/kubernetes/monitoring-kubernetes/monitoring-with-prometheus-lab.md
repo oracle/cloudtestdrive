@@ -1,6 +1,6 @@
-![](../../../../common/images/customer.logo2.png)
+![Title image](../../../../common/images/customer.logo2.png)
 
-# Cloud Native - Monitoring with Prometheus
+# Install monitoring with Prometheus
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -282,11 +282,11 @@ Alternatively rather than selecting from the list you can just start to type `ku
 
 Depending on what Prometheus feels like (It seems to very between versions and your starting view) you will initially be presented with either a table of text data
 
-  ![prometheus-kubelet-http-requests-total-console](images/prometheus-kubelet-http-requests-total-console.png)
+  ![Prometheus reported metrics of total kubelet http requests - table](images/prometheus-kubelet-http-requests-total-console.png)
 
 or a graph
 
-  ![prometheus-kubelet-http-requests-total-graph](images/prometheus-kubelet-http-requests-total-graph.png)
+  ![Prometheus reported metrics of total kubelet http requests - graoh](images/prometheus-kubelet-http-requests-total-graph.png)
 
   5. Click the **Graph** or **Table** tab names to switch between them
 
@@ -315,13 +315,13 @@ We can see what services Prometheus is currently scraping :
 
 You will be presented with a list of all of the pods in the system and the information that Prometheus has gathered about them (it does this by making api calls to the api server in the same way kubectl does)
 
-  ![prometheus-pods-lists-initial](images/prometheus-pods-lists-initial.png)
+  ![List of pods prometheus knows about](images/prometheus-pods-lists-initial.png)
 
   4. Scroll down to find the entries for the storefront and stockmanager pods. 
 
 If the pod is exposing multiple ports there may be multiple entries for the same pod as Prometheus is checking every port it can to see if there are metrics available.  The image below shows the entries for the storefront on ports 8080 and 9080:
 
-  ![prometheus-pods-storefront-initial](images/prometheus-pods-storefront-initial.png)
+  ![Details of the storefront pods as seen by Prometheus](images/prometheus-pods-storefront-initial.png)
 
 We know that Prometheus can see our pods, the question is how do we get it to scrape data from them ?
 
@@ -427,13 +427,13 @@ replicaset.apps/zipkin-88c48d8b9         1         1         1       1h
 
 You will see that there are 2 pods showing as being discovered, previously it was 0
 
-  ![prometheus-pods-list-updated](images/prometheus-pods-list-updated.png)
+  ![Updated list of pods Prometheus is scraping](images/prometheus-pods-list-updated.png)
 
   10. Click on the **show more** button next to the kubernetes-pods label
 
 You can see that the storefront pod (port 9080) and stockmanager (port 9081) pods are no longer being dropped and there is now data in the target labels column. The actual data services for storefont (port 8080) and stockmanager (port 8081) are however still dropped.
 
-  ![prometheus-pods-storefront-updated](images/prometheus-pods-storefront-updated.png)
+  ![Details of the storefront metrics from Prometheus](images/prometheus-pods-storefront-updated.png)
 
 ## Task 6: Let's look at our captured data
 Now we have configured Prometheus to scrape the data from our services we can look at the data it's been capturing.
@@ -448,11 +448,11 @@ Now we have configured Prometheus to scrape the data from our services we can lo
 
 If you're on the graph screen you'll probably see a pretty boring graph
 
-  ![prometheus-list-stock-empty](images/prometheus-list-stock-empty-graph.png)
+  ![Metrics of calls for the storefront listAllStock method as a graph](images/prometheus-list-stock-empty-graph.png)
 
   5.Look at the **console view** to see a bit more information:
 
-  ![prometheus-list-stock-empty-console](images/prometheus-list-stock-empty-console.png)
+  ![Metrics of calls for the storefront listAllStock method as a table](images/prometheus-list-stock-empty-console.png)
 
 If we look at the data we can see that the retrieved value (in the **Value** column on the right) in this case is 0  (it may be another number, depends on how often you made the call to list the stock in previous labs) of course our graph looks boring, since we've just setup Prometheus we haven't actually done anything)
 
@@ -512,11 +512,11 @@ We see that our changes have been applied, herwe we see that there were 9 calls 
 
 In the console we can see the number of requests we have made
 
-  ![prometheus-list-stock-requested-console](images/prometheus-list-stock-requested-console.png)
+  ![Updated metrics form Prometheus on the list stock requests as a table](images/prometheus-list-stock-requested-console.png)
 
 And in the Graph we can see the data history
 
-  ![prometheus-list-stock-requested-graph](images/prometheus-list-stock-requested-graph.png)
+  ![Updated metrics form Prometheus on the list stock requests as a graph](images/prometheus-list-stock-requested-graph.png)
 
 In this case you can see a set of 9 requests, you may of course have done a different number, or had a break between requests, so what you see will vary.
 
@@ -528,19 +528,19 @@ When we did the Helidon labs we actually setup the metrics on the call to list s
 
 We can see the number of calls to list all stock per second averaged over 1 min. This basically provides us with a view of the number of calls made to the system over time, and we can use it to identify peak loads.
 
-  ![prometheus-list-stock-requested-graph-rat-per-sec-one-min](images/prometheus-list-stock-requested-graph-rat-per-sec-one-min.png)
+  ![Graph of stock requests per second](images/prometheus-list-stock-requested-graph-rat-per-sec-one-min.png)
 
 Prometheus can also produce multi value graphs. For example in addition to the counting metrics we also setup a timer on the listAllStock method to see how long calls to it took. If we now generate a graph on the timer we see in the Console view that instead of just seeing a single entry representing the latest data, that there are actually 6 entries representing different breakdowns of the data (0.5 being the most common data, 0.999 being the least common) Of course the data you see may vary depending on your situation and how much you've already been using the services.
 
   11. Change the metric to `application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_listAllStockTimer_seconds` Click the **Execute** button
 
-  ![prometheus-list-stock-timer-quantile-console](images/prometheus-list-stock-timer-quantile-console.png)
+  ![Distribution graph of requests per second](images/prometheus-list-stock-timer-quantile-console.png)
 
 We can see that 50% of the requests are within 0.12 seconds, and 99.9% are within 0.47 seconds.
 
   12. The graph is also a lot more interesting, especially if we enabled the stacked mode
 
-  ![prometheus-list-stock-timer-quantile-graph](images/prometheus-list-stock-timer-quantile-graph.png)
+  ![Stacked distribution graph of requests per second](images/prometheus-list-stock-timer-quantile-graph.png)
 
 It's not possible to show in a static screen grab but in your browser as you move your mouse over the legend the selected data is highlighted, and if you click on a line in the legend only that data is displayed.
 

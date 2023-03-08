@@ -1,6 +1,4 @@
-[Go to Helidon for Cloud Native Page](../helidon-labs.md)
-
-![](../../../common/images/customer.logo2.png)
+![Title image](../../../common/images/customer.logo2.png)
 
 # Loading the client VM into your tenancy
 

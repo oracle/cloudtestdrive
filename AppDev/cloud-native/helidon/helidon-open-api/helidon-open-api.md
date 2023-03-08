@@ -1,6 +1,6 @@
-![](../../../../common/images/customer.logo2.png)
+![Title image](../../../../common/images/customer.logo2.png)
 
-# Cloud Native - Helidon and Open API
+# Specifying OpenAPI information with Helidon
 
 This is an optional module for the Helidon lab. It is currently not required that this module be completed to enable other optional modules.
 
@@ -858,7 +858,7 @@ To be more efficient for now we will create a run configuration to run this proc
 
   1. Select the helidon-labs-storefront project (this is the project title in the explorer) click right -> Run As -> Maven Build .... (Chose the version with the dots)
 
-  ![](images/maven-build-config-menu.png)
+  ![Opening the Maven build menu](images/maven-build-config-menu.png)
 
 Update the popup with the following
 
@@ -868,19 +868,19 @@ Update the popup with the following
 
   4. Click **Apply** then `Close`
 
-  ![](images/maven-build-config-process-classes.png)
+  ![Completed Maven build configuration](images/maven-build-config-process-classes.png)
 
 Now to run a build with this target.
 
   3. Click right on the **project** name (helidon-labs-storefront) in Eclipse, then chose `Run As` then `Maven build`  (This is the version **without** the three dots!)
 
-  ![](images/run-as-maven-build.png)
+  ![Running the Maven build](images/run-as-maven-build.png)
 
 Depending on the precise eclispe configuration there **may** be a resulting popup window, do not worry if this is not displayed and the build just continues
 
   4. If there is a popup then chose the process-classes option.
 
-  ![](images/maven-build-run-configurations.png)
+  ![Chosing the maven build configuraiton to use - if asked](images/maven-build-run-configurations.png)
 
   5. Then click the OK button
 

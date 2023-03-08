@@ -1,4 +1,6 @@
-# Further information
+![Title image](../../../../common/images/customer.logo2.png)
+
+# Where to find further information
 While writing these labs I came across many web pages. Ones that I think are especially useful are detailed in the sections below
 
 ## Helm

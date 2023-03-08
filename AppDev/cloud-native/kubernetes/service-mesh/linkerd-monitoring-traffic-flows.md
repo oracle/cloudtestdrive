@@ -1,6 +1,6 @@
-![](../../../../common/images/customer.logo2.png)
+![Title image](../../../../common/images/customer.logo2.png)
 
-# Cloud Native - Monitoring traffic flows with a Service mesh
+# Monitor traffic flows with a Service mesh
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
@@ -128,13 +128,13 @@ You may be challenged as you have a self signed certificate. Follow the normal p
 
 Next you may be presented with the login challenge.
 
-![](images/linkerd-web-login.png)
+![Linkerd login page](images/linkerd-web-login.png)
 
   2. If you are login with `admin` as the username, for the password use the one you used when creating the login password during the linkerd installation in the previous module.
 
 You'll be presented with the linkerd-web main page, unlike when you saw this previously now it's showing load for your services.
 
-![](images/linkerd-web-main-apps-load.png)
+![Linkerd main page with our services load details](images/linkerd-web-main-apps-load.png)
 
 You can see that in both the HTTP metrics and TCP metrics sections the namespace tg-hekidon (your namespace will be different of course) is showing a request rate.
 
@@ -187,7 +187,7 @@ Let's now look at the specific data for your namespace.
 
   1. In the **HTTP metrics** section click on the **name** of your namespace (mine is `tg-helidon`, but yours will be different)
 
-  ![](images/linkerd-app-namespace-top-of-page.png)
+  ![Accessing out namespace in linkerd](images/linkerd-app-namespace-top-of-page.png)
 
 The most obvious thing we see here it the data routing network at the top of the page. This shows us which services are initiating connections to which other services within the namespace. We've got an easy way to see our data flows between microservices (to be precise the ones that have the service mesh proxy installed!)
 
@@ -224,7 +224,7 @@ There are details on the deployments and also specific pods.
 
   2. If we scroll down a bit we can see further information.
 
-  ![](images/linkerd-app-namespace-bottom-of-page.png)
+  ![Additional details on out namespace in linkerd](images/linkerd-app-namespace-bottom-of-page.png)
 
 We can see the traffic broken down by replica set and the TCP traffic. 
 
@@ -236,7 +236,7 @@ Let's look at what the pod is specifically doing, in the pods section
 
   3. Click on the stock manager pod, in my case that's stockmanager-6b5d4897fc-t2ddz but of course yours will be different
 
-  ![](images/linkerd-pod-stats.png)
+  ![Details of the stock manager pod](images/linkerd-pod-stats.png)
 
 Note that you may also see information for linkerd pods such as the prometheus and tap service. Don't worry if you don't, but we will ignore them as they are basically the internal workings of the service mesh communicating with the proxy in the stockmanager pod to gather information. 
 
@@ -250,26 +250,26 @@ So far we've seen what's happening on the pods, but as the service mesh is a lay
 
   1. On the left hand menu in the tools section 
 
-  ![](images/linkerd-tools-selection.png)
+  ![Accessing the linkerd tools page](images/linkerd-tools-selection.png)
 
 
   2. Click on the **Top** option
 
 We switch to the Top screen
 
-  ![](images/linkerd-top-empty.png)
+  ![The top requests tool](images/linkerd-top-empty.png)
 
 Here we can have a look at the REST API calls being made to / from a service.
 
   3. Click on the **Namespace**, select **your** namespace from the list
 
-  ![](images/linkerd-top-select-namespace.png)
+  ![Selecting the namespace for the top tool](images/linkerd-top-select-namespace.png)
 
   4. Click on the **Resource** section (this may have been updated when you selected a namespace) 
 
   5. Select `deloyment/storefront` from the list
 
-  ![](images/linkerd-top-select-resource.png)
+  ![Selecting the resources for the top tool to track](images/linkerd-top-select-resource.png)
 
 Note that the UI is displaying what the query would be if you ran the linkerd command manually, in this case it's `linkerd top deployment/storefront --namespace tg-helidon` This helps you understand how you could write scripts to gather information if you liked)
 
@@ -277,7 +277,7 @@ Note that the UI is displaying what the query would be if you ran the linkerd co
 
   7. Wait a short while for requests to be made and data to be gathered
 
-  ![](images/linkerd-top-running.png)
+  ![The top tool displaying requests](images/linkerd-top-running.png)
 
 We can now see that the storefront deployment has been receiving requests from the ingress controller on `/store/stocklevel` and making requests to the stockmanager on `/stocklevel` and occasionally connecting to Zipkin to report the tracing spans on `/api/v2/spans` More importantly we can see how many requests there have been and their timings, a useful tool for understanding what's actually happening within your collection of microservices. 
 
@@ -285,7 +285,7 @@ You may also see requests to /status, /metrics and /health/live These are the Ku
 
   8. Click the **Tap** icon ![](images/linkerd-tap-icon.png) on the right of the `To stockmanager` row
 
-  ![](images/linkerd-tap-intro.png)
+  ![Accessing the individual requests using tap](images/linkerd-tap-intro.png)
 
 This is the Tap page, it let's us look at individual requests so we can see how things are going, and also diagnose problems. If it's not obvious you could also get to it by clicking the **Tap** menu option in the tools section on the left hand menu.
 
@@ -295,7 +295,7 @@ For now we are not going to change any of these settings as we're just exploring
 
 Wait a short while for requests to be made and data to be gathered
 
-  ![](images/linkerd-tap-results.png)
+  ![Looking at the tap results as they are generated](images/linkerd-tap-results.png)
 
 We see the results as they are generated, let's look at them
 
@@ -303,7 +303,7 @@ We see the results as they are generated, let's look at them
 
   11. Click on the "down arrow" - at the start of each row to the left of the `Direction` column
 
-  ![](images/linkerd-tap-details.png)
+  ![Examining the details of a request using the tap tool](images/linkerd-tap-details.png)
 
 We can now see the details of the request. Note that we **do not** see the content of the request, only the header information (content could of course contain private information, admittedly the basic auth can easily be reversed, but in a production rather than a lab environment you's use something like JWT or OAUTH2.) We can however see the duration of the request, and other information that could be very useful in diagnosing  problems (something we will look at in another module)
 
@@ -315,11 +315,11 @@ We've currently been looking at the services, deployments and pods within the na
 
   1. Click **Control Plane** on the upper left.
 
-  ![](images/linkerd-select-namespace.png)
+  ![Locating the linked control plane namespace](images/linkerd-select-namespace.png)
 
 It's not a surprise, but we can now see the details of the control plane :-)
 
-  ![](images/linkerd-control-plane.png)
+  ![Details of the linkerd control plane](images/linkerd-control-plane.png)
 
 In the control plane we can see the deployments, the green dots indicate all is well with the services, to the right of that we have a summary of the actual installation. Then there is the list of all of the namespaces currently part of the mesh (this is clickable in the same way as the namespaces list we saw at the start of this module.)
 
@@ -329,7 +329,7 @@ Obviously if the service mesh is managing all of the network traffic flowing in 
 
 The details below cover Linkerd but the basic principles apply to all service meshes.
 
-Firstly the control plane is itself running in Kuernetes, this means if the control plans services have problems then the containers will be restarted automatically by Kubernetes, equally upgrades can be done in a rolling manner.
+Firstly the control plane is itself running in Kubernetes, this means if the control plans services have problems then the containers will be restarted automatically by Kubernetes, equally upgrades can be done in a rolling manner.
 
 If the control plane does have a significant failure then existing proxies (i.e. for existing pods) will continue to operate, though they won't get any updates to their configuration until the control plane comes back. Of course any new pods will not get their configuration, so will not be able to communicate (though they should get the additional proxy containers configured in the pods for when the control plane becomes available.)
 
@@ -345,11 +345,11 @@ There is more information on control plan failure in [the linkerd FAQ](https://l
 
 The data we've seen so far is the live view, but if we wanted to understand what was happening over a longer period of time (say to understand how the request breakdown changes over the day) we want to look at historical data. To do that we will use the Grafana visualizations that the linkerd install setup for us. 
 
-We could of course go direct to the Grafana page for a specific item (all the tables have a little Grafana icon ![](images/linkerd-grafana-icon.png) which would take us there directly) but let's start out looking at the Grafana overview
+We could of course go direct to the Grafana page for a specific item (all the tables have a little Grafana icon ![Grafana icon in linkerd](images/linkerd-grafana-icon.png) which would take us there directly) but let's start out looking at the Grafana overview
 
   1. In your laptop web browser go to `https://linkerd.<external IP>.nip.io/grafana`
 
-  ![](images/grafana-overview.png)
+  ![Accessing the linkerd grafana instance](images/grafana-overview.png)
 
 The first few rows show us a summary of everything that's running in the system, As expected everything is fine in this image.
 
@@ -357,29 +357,29 @@ The remainder of the Grafana dashboard shows us what's happening broken down by 
 
   2. You may have to scroll down to find it, as they are in alphabetical order, but here is the section for my namespace
 
-  ![](images/grafana-my-namespace-on-overview-landing-page.png)
+  ![Locating your namespace details in the linked grafana dashboard](images/grafana-my-namespace-on-overview-landing-page.png)
 
   3. Click on the name for your namespace, mine is ns/tg-helidon, but yours of course will vary.
 
-  ![](images/grafana-my-namespace-stockmanager.png)
+  ![Details of your nameapace in the grafana linkerd dashboard](images/grafana-my-namespace-stockmanager.png)
 
 This takes us to a details page for our namespace. It's showing us the page for the stock manager deployment, but you could change that (please **don't**) using the dropdowns on the upper left
 
-  ![](images/grafana-my-namespace-change-deployment.png)
+  ![How to change deployments for the grafana dashbaord](images/grafana-my-namespace-change-deployment.png)
 
   4. Hover your mouse above the **Latency** graph on the right
 
-  ![](images/grafana-my-namespace-stockmanager-latency.png)
+  ![Viewing the details of the request latency graph](images/grafana-my-namespace-stockmanager-latency.png)
 
 This give us a report of the latency of handling requests , the green line hows the max latency for 50% or the requests, the other lines show us the max latency for 95% and 99% of the requests.
 
 Grafana is showing us an overview in the first few sets of panels. There are however a number of panel sets that are currently hidden
 
-  ![](images/grafana-my-namespace-stockmanager-expander.png)
+  ![Expanding the dashboard to see additional metrics](images/grafana-my-namespace-stockmanager-expander.png)
 
   5. Click on the **>** to the left of the **Inbound TCP Metrics** heading
 
-  ![](images/grafana-my-namespace-stockmanager-inbound-tcp.png)
+  ![Details of inbound TCP metrics](images/grafana-my-namespace-stockmanager-inbound-tcp.png)
 
 This will expand the panel and we can see more details.
 
@@ -387,7 +387,7 @@ Let's look at the TCP performance graph on the right hand side. In my deployment
 
   6. Hover your mouse over the lower "bucket" to get a tool tip like popup
 
-  ![](images/grafana-my-namespace-stockmanager-inbound-tcp-performance.png)
+  ![Using a tool tip like popup to get the really detailed information](images/grafana-my-namespace-stockmanager-inbound-tcp-performance.png)
 
 We can see that this is reporting that 50 requests were received in the 0 to 2 millisecond range (on my system the upper red line is reporting one request in the 21-23 millisecond range)
 
@@ -395,11 +395,11 @@ There are many other dashboards provided by Grafana, they all have the same basi
 
   7. On the upper left click the dashboard name, in this case `Linkerd Deployment`
 
-  ![](images/grafana-dashboard-selection.png)
+  ![Accessing the list of other dashboards available](images/grafana-dashboard-selection.png)
 
 You will get a long list of dashboards
 
-  ![](images/grafana-dashboards-list.png)
+  ![List of available linkerd dashbaords in grafana](images/grafana-dashboards-list.png)
 
 The ones that have recently been visited are listed first (I've been exploring a fair bit as I write this module, so there are many recent's in my list, yours may only contain the `Linkerd Deployments` dashboard.) Then the full list of available dashboards. The ones relating to Linkerd are indicated by their name, and also the `linkers` tag on the right side of the list.
 

@@ -1,6 +1,6 @@
-![](../../../../common/images/customer.logo2.png)
+![Title image](../../../../common/images/customer.logo2.png)
 
-# Cloud Native - Setting up the cluster and getting your services running in Kubernetes
+# Setting up the cluster and getting your services running in Kubernetes
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -108,15 +108,15 @@ To check the setup, make sure to have copied your personal kubeconfig file to th
 
   4. Click on the **Developer Services** menu option, then **Kubernetes Clusters**
 
-  ![](images/container-oke-menu.png)
+  ![Accessing the Oracle Kubernetes Environment on ](images/container-oke-menu.png)
 
   5. Locate **your** cluster in the list, this will be the one you've been assigned or the one you just created. Click on the name to get to the cluster details.
 
-  ![](images/cluster-details.png)
+  ![Accessing the page for your cluster](images/cluster-details.png)
 
   6. Click the **Accesss Cluster** button to get the configuration for **your** cluster.
 
-  ![](images/access-your-cluster.png)
+  ![Getting your cluster access details](images/access-your-cluster.png)
 
 You will be presented with a page with details for downloading the kubeconfig file. Make sure the **OCI Cloud Shell Access** is the selected option.
 
@@ -654,6 +654,8 @@ Before we can login to the dashboard we need to get the access token for the das
   kubectl create token dashboard-user --namespace kube-system --duration=1000h`
 ```
 
+(The following is just an example, not a real token)
+
 
   ```
 eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLW1odGY5Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJhMDljZDQwYy0yNjYzLTExZWEtYTc1Yi0wMjUwMDAwMDAwMDEiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06YWRtaW4tdXNlciJ9.HUg_9-3HBAG0IJKqCNZvXOS8xdt_n2qO4yNc0Lrh4T4AXnUdMHBR1H8uO6J_GoKSKKeuTJpaIB4Ns4QGaWAvcatFxJWmOywwT6CtbxOeLIyP61PCQju_yfqQO5dTUjNW4O1ciPqAWs6GXL-MRTZdvSiaKvUkD_yOrnmacFxVVZUIKR8Ki4dK0VbxF9VvN_MjZS2YgMz8CghsM6AB3lusqoWOK2SdM5VkIGoAOZzsGMjV2eCYJP3k6qIy2lfOD6KrvERhGZLk8GwEQ7h84dbTa4VHqZurS63fle-esKjtNS5A5Oarez6BReByO6nYwEVQBty3VLt9uKPJ7ZRr1FW5iA
@@ -693,23 +695,23 @@ You'll now be presented with the login screen for the dashboard.
   
   6. Press **Sign In**
 
-  ![dashboard-login-completed](images/dashboard-login-completed.png)
+  ![Logging in to the Kubernetes dashboard service](images/dashboard-login-completed.png)
 
 **Important** The Kubernetes dashboard will only keep the login session open for a short time, after which you will be logged out. Unfortunately when your login session expires the Kubernetes dashboard doesn't always return you to the login screen. If you find that you are making changes and the dashboard doesn't reflect them, or that you can see something using kubectl - but not in the dashboard, or you trigger an action on the dashboard (e.g. switching to a different a namespace) but the content doesn't update it's probable that the session has expired. In this case **reload** the web page or go to the login URL (above), this will reset the pages state and present you with the login screen again, login using your token as previously (the token does not change, so you don't have to extract it again)
 
 You now should see the **Overview** dashboard :
 
-  ![dashboard-overview](images/dashboard-overview.png)
+  ![Kubernetes dashboard overview](images/dashboard-overview.png)
 
 Note that some options on the left menu have a little N by them (if you hover your mouse it becomes "Namespaced") This is a reminder that this menu item (or in the case of Workloads, Service, and Config and storage) will display / allow you to manage stuff that is namespace specific. 
 
   7. To select a namespace use the dropdown on the upper right of the web page.
 
-  ![dashboard-namespace-selector](images/dashboard-namespace-selector.png)
+  ![Opening the namespce selector in the kubernetes dashboard](images/dashboard-namespace-selector.png)
 
   7. Initially it will probably say default, if you click on it you will get a choice of namespaces.
 
-  ![dashboard-namespace-selector-chose](images/dashboard-namespace-selector-chose.png)
+  ![Selecting the namespace in the kubernetes dashboard](images/dashboard-namespace-selector-chose.png)
 
 ---
 
@@ -724,15 +726,15 @@ The first thing to remember with the dashboard is that (like kubectl) you need t
 
   - In the Namespace section on the click the dropdown to select the kube-system namespace
  
-  ![dashboard-namespace-selector-select-kube-system](images/dashboard-namespace-selector-select-kube-system.png)
+  ![Shoding the kube-system namespace](images/dashboard-namespace-selector-select-kube-system.png)
 
   - Select kube-system, precisely which page you'll go to will depend on what was selected in the left menu when you switched namespaces, but in my case it took me to an overview page.
 
-  ![dashboard-overview-kube-system](images/dashboard-overview-kube-system.png)
+  ![Overvide of the kube-system namespace in the dashboard](images/dashboard-overview-kube-system.png)
 
   - Let's switch to see the details of the workspace, Click **Workloads** on the left menu
 
-  ![dashboard-overview-kube-system-workloads](images/dashboard-overview-kube-system-workloads.png)
+  ![List of workloads in the kube-system namespace](images/dashboard-overview-kube-system-workloads.png)
 
 You can use the Kubernetes dashboard to navigate the relationships between the resources. Let's start by looking at the services in the kube-system namespace
 
@@ -740,33 +742,33 @@ You can use the Kubernetes dashboard to navigate the relationships between the r
 
   - If you scroll down the page to services you'll see the kubentes-dashboard service listed, 
 
-  ![dashboard-overview-kube-system-services](images/dashboard-overview-kube-system-services.png)
+  ![List of services in the kube-system namespace](images/dashboard-overview-kube-system-services.png)
 
   - Click on the service name `kubernetes-dashboard` to get the details of the service, including the pods it's running on.
 
-  ![dashboard-service-dashboard](images/dashboard-service-dashboard.png)
+  ![Details of the kubernetes dashboard service itself](images/dashboard-service-dashboard.png)
 
 (You may have to scroll down to see the pods list and some other details)
 
   - If you click the **Deployments** in the **Workloads** section of the left menu you'll see the deployments list (the dashboard, coredns and auto-scaler services) 
 
-  ![dashboard-deployments-list](images/dashboard-deployments-list.png)
+  ![Deployments running in the kube-system namespace](images/dashboard-deployments-list.png)
 
   - Click on the kubernetes-dashboard deployment to look into the detail of the deployment and you'll see the deployment details, including the list of replica sets that are in use. We'll look into the old / new distinction when we look at rolling upgrades) 
 
-  ![dashboard-deployment-dashboard](images/dashboard-deployment-dashboard.png)
+  ![Looking at kubernetes dashboard deployment](images/dashboard-deployment-dashboard.png)
 
   - Scroll down until you can see the replica set section
 
-  ![dashboard-deployment-dashboard-replica-sets-list](images/dashboard-deployment-dashboard-replica-sets-list.png)
+  ![List of replica sets for the kubernetes dashboard deployment](images/dashboard-deployment-dashboard-replica-sets-list.png)
 
   - Click on the replica set name (kubernetes-dashboard-699cc9f655 in this case) then scroll down a bit to see the pods in the replica set. 
 
-  ![dashboard-replicaset-dashboard](images/dashboard-replicaset-dashboard.png)
+  ![Details of a specific replica set for the kubernetes dashboard](images/dashboard-replicaset-dashboard.png)
 
   - In this case there's only one pod (kubernetes-dashboard-699cc9f655-jz4ph in this case, yours will vary) so click on that to see the details of the pod. 
 
-  ![dashboard-pod-dashboard](images/dashboard-pod-dashboard.png)
+  ![The pod details of the kubernrtes dashboard](images/dashboard-pod-dashboard.png)
 
 Using kubernetes-dashboard to look at a pod provides several useful features, we can look at any log data it's generated (output the pod has written to stderr or stdout) 
 
@@ -774,7 +776,7 @@ Using kubernetes-dashboard to look at a pod provides several useful features, we
 
 That displays the logs for the dashboard pod
 
-  ![dashboard-logs-dashboard](images/dashboard-logs-dashboard.png)
+  ![Using the dashboard to look at the logs for the kubernetes dashboard](images/dashboard-logs-dashboard.png)
 
 This displays the log data which can be very useful when debugging.  Of course it's also possible to use kubectl to download logs info if you wanted to rather than just displaying it in the browser.
 
@@ -1579,7 +1581,7 @@ The dashboard is actually a lot easier in this case.
 
   10. Click on the eye icon next to the storefront-security.yaml to see the contents of the secret.
 
-  ![dashboard-secrets-stockmanager-security](images/dashboard-secrets-stockmanager-security.png)
+  ![Details of the stockmanager security secret in the dashboard](images/dashboard-secrets-stockmanager-security.png)
   
 For security reasons Kubernetes only stores the secrets in memory, they are not written to permenant storage.
 
@@ -1889,11 +1891,11 @@ The OCIR region code is based on the IATA code for the city hosting the region, 
 
   - To determine your region look at the top of your OCI Console UI in the web browser and you'll see your current region.
 
-  ![](images/region-name.png)
+  ![Locating yor current OCI region](images/region-name.png)
 
   - If you click on the name you'll get a list of regions enabled for your tenancy and your home region
 
-  ![](images/regions-list.png)
+  ![List of regions for your tenancy](images/regions-list.png)
 
 You can see here in this example we're using the Frankfurt region, which is also our home region.
 
@@ -1901,7 +1903,7 @@ Now go to the [OCIR Availability By Region list.](https://docs.cloud.oracle.com/
 
   - Locate your region on the list and then to the right identify the region code, for example we can see below in the case of Frankfurt the OCIR region code to use is `fra` for Sydney it's `syd`
 
-  ![](images/fra.png)
+  ![Getting the short code for your region](images/fra.png)
 
 
 
@@ -1912,7 +1914,7 @@ Now go to the [OCIR Availability By Region list.](https://docs.cloud.oracle.com/
   - In the menu, scroll down to **Administration**, 
   - Click **Administration** then **Tenancy Details**
 
-![](images/ObjStor.png) 
+![Locating the object storage namespace for your tenancy](images/ObjStor.png) 
 
 - Note down the **Object Storage Namespace** of your tenancy, in the example above this is `frjqogy3byob` **but yours will be different** (this is what we mean when we say mytenancystoragenamespace in these labs)
 
@@ -1926,11 +1928,11 @@ OCIR uses an authentication token rather than a password. To set an authenticati
 
 - Click on the "Shadow" on the upper right of the console, then on the resulting menu your name, for example
 
-  ![](images/gui-get-username.png)
+  ![Acceding your user details](images/gui-get-username.png)
 
 This will open up your user details.
 
-  ![](images/token1.png)
+  ![Opening the auth tokens page for your user](images/token1.png)
 
 - Select **Token** in the right-hand menu, then click the button **Create Token**.
 
@@ -1938,7 +1940,7 @@ This will open up your user details.
 
   - Use the **Copy** button to copy the token in your buffer, and **immediately paste it** in a notebook of your choice, you will need this later.
 
-    ![](images/token2.png)
+    ![Creating and auth token and copying it](images/token2.png)
 
 
 

@@ -1,6 +1,6 @@
-![](../../../../common/images/customer.logo2.png)
+![Title image](../../../../common/images/customer.logo2.png)
 
-# Cloud Native - Core Helidon
+# Using Core Helidon features
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
@@ -40,7 +40,7 @@ The main class we will be using is **StorefrontResource.java**.   Locate it in t
   
   4. Expand **src/main/java**, then the **com.oracle.labs.helidon.storefront** package, then the **resources** package, then double-click **StoreFrontResource.java**
   
-  ![](images/eclipse-first-project.png)
+  ![Accessing the storefront project](images/eclipse-first-project.png)
 
 
 <details><summary><b>What are the @Slf4j and @NoArgsConstructor annotations ?</b></summary>
@@ -294,7 +294,7 @@ import javax.ws.rs.ApplicationPath;
 
   3. Save your changes to the StorefrontResource file with Control-s, or you can save all your changes to all files with Shift-Control-S or by hitting this icon:
   
-  ![](images/eclipse-save2.png)
+  ![Save file icon](images/eclipse-save2.png)
 
 <details><summary><b>Do I really need an Application class ?</b></summary>
 
@@ -370,7 +370,7 @@ We've got data! Admittedly this is using fake data for now for testing purposes,
 
   6. **Stop** the service by clicking on the square stop button on the console tab
 
-  ![eclipse-stop-console-tab](images/eclipse-stop-console-tab.png)
+  ![Stop the running service button](images/eclipse-stop-console-tab.png)
 
 Congratulations on creating your first REST API of the lab!
 
@@ -462,11 +462,11 @@ Basically in addition to running the server and configuring things Helidon is no
 
 If when running you get Exception messages in the console about "Failed to start server" and a whole bunch of stack trace including a "Bind Exception: Address already in use" then you forgot to stop the server in the last part of the lab. You will need to close the current console tab by clicking on the X in the console tab options.
 
-  ![eclipse-close-console-tab](images/eclipse-close-console-tab.png)
+  ![Close the tab in the console](images/eclipse-close-console-tab.png)
 
 This should switch to the still running tab. Click the square red stop icon in this tab to stop the previous sections still running code.
 
-  ![eclipse-stop-console-tab](images/eclipse-stop-console-tab.png)
+  ![Stop the running process](images/eclipse-stop-console-tab.png)
 
 Once the red stop icon turns grey the program is stopped and you can try re-starting the Main program as described above.
 

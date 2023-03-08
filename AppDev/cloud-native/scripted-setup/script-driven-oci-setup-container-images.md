@@ -1,4 +1,4 @@
-![](../../../common/images/customer.logo2.png)
+![Title image](../../../common/images/customer.logo2.png)
 
 # Setting up the OCI container images using scripts
 

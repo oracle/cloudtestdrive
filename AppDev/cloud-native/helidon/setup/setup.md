@@ -1,6 +1,6 @@
-![](../../../../common/images/customer.logo2.png)
+![Title image](../../../../common/images/customer.logo2.png)
 
-# Cloud Native - Configure your Developer VM for the Helidon labs
+# Configuring your Developer VM for the Helidon labs
 
 ## Introduction
 
@@ -22,7 +22,7 @@ The cloud-native-support project you downloaded during the initial setup has a s
 
   1. Open a terminal by clicking the **Activities** m enu on the upper left of your VNC window, then the terminal icon
 
-  ![](images/ol-desktop-activities-open-terminal.png)
+  ![Opening the terminal in Oracle Linux](images/ol-desktop-activities-open-terminal.png)
 
   2. In the terminal switch to the script directory
 
@@ -58,25 +58,25 @@ To save you from having to completely create all of the Eclipse projects and cla
 
   1. In the **virtual machine** open the Firefox web browser in the virtual machine - Click **Activities** on thge upper left of the VNC window, then click the **Firefox** icon 
 
-  ![](images/ol-desktop-activities-open-firefox.png)
+  ![Opening the firefox web browser](images/ol-desktop-activities-open-firefox.png)
 
   2. In the browser **in the virtual machine** go to the URL `https://github.com/CloudTestDrive/helidon-labs`
 
   3. Click the `Code` button
 
-  ![](images/41-github-project-page.png)
+  ![Accessing the code in github](images/41-github-project-page.png)
 
   4. Click the `Download ZIP` option
 
-  ![](images/42-github-download-code.png)
+  ![Request download of code from github](images/42-github-download-code.png)
 
   5. If a save options menu is displayed Click the `Save file` option, then `OK`
 
-  ![](images/43-github-download-save-file.png)
+  ![Confirming the save options for downloaded code](images/43-github-download-save-file.png)
 
 When the download is complete the Firefox download icon will turn completely blue
 
-  ![](images/44-github-download-complete.png)
+  ![Code download form github completed](images/44-github-download-complete.png)
 
 ### Task 2b. Importing the downloaded zip file
 
@@ -84,29 +84,29 @@ When the download is complete the Firefox download icon will turn completely blu
 
   2. Click the `File` menu, then `Import`
 
-  ![](images/50-eclipse-import-menu.png)
+  ![Opening the import process in Eclipse](images/50-eclipse-import-menu.png)
 
   3. Open the `General` node, then chose the `Existing projects into Workspace` option. Click `Next`
 
-  ![](images/51-eclipse-import-types.png)
+  ![Chosing the Eclipse import type](images/51-eclipse-import-types.png)
 
   4. Chose the `Select archive file` radio button, then click `Browse` on that row
 
-  ![](images/52-eclipse-import-archive.png)
+  ![Selecting the archive import type](images/52-eclipse-import-archive.png)
 
   5. On the left menu chose `Downloads` then in the resulting list chose the download you just made - it should be called `helidon-labs-master.zip` Note that though the image here only shows a single file in your downloads there may be other files (the setup and DB wallet for example) depending on which other steps you have already done.
 
   6. Click the `Open` button
 
-  ![](images/53-eclipse-import-file-selection.png)
+  ![Choosing the downloaded zip file](images/53-eclipse-import-file-selection.png)
 
   7. Click `Select All` to make sure all the projects are imported (the list of projects may differ slightly from that shown in the example below), then click the `Finish` button
 
-  ![](images/54-eclipse-import-final-stage.png)
+  ![Choosing the projects in the zip file](images/54-eclipse-import-final-stage.png)
 
 Eclipse will import the projects and start importing the Maven dependencies. Note that depending on the steps you have already taken you may see other projects in the projects list.
 
-  ![](images/55-eclipse-import-progress.png)
+  ![Import projects progress](images/55-eclipse-import-progress.png)
 
 This may take a few mins. **Do not worry if you see errors during this process** (usually indicated by a white cross in a red box, as seem by the helidon-labs-stockmanager projectr in the above image). These are to be expected as Eclipse imports the code, then updates the Maven configuration and other elements. Once the building indicator (lower right) has gone away the errors should have gone. Expect to see yellow warning triangles though - these are telling about unused code that we will be completing during the lab modules.
 
@@ -122,7 +122,7 @@ You need to open a terminal window in the Development VM
 
   2. In the popup menu chose `Open Terminal`
 
-  ![](images/10-open-terminal.png)
+  ![Opening the Oracle Linux terminal](images/10-open-terminal.png)
 
   3. Delete any existing wallet information
   

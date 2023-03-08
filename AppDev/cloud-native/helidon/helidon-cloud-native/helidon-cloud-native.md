@@ -1,6 +1,6 @@
 ![](../../../../common/images/customer.logo2.png)
 
-# Cloud Native - Supporting cloud native operations with Helidon
+# Supporting cloud native operations with Helidon
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 

@@ -1,6 +1,6 @@
-![](../../../../common/images/customer.logo2.png)
+![Title image](../../../../common/images/customer.logo2.png)
 
-# Cloud Native - Securing the REST endpoint
+# Securing the REST endpoint
 
 ## Introduction
 
