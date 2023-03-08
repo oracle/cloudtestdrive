@@ -1,6 +1,6 @@
-![](../../../../common/images/customer.logo2.png)
+![Title image](../../../../common/images/customer.logo2.png)
 
-# Cloud Native - Helidon and Databases
+# Connecting to Databases with Helidon
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -301,25 +301,25 @@ We are now going to configure the Eclipse run configuration to add the database 
 
   1. In the Eclipse navigator window on (on the left) select the stockmanager main class
 
-  ![](images/eclipse-select-stockmanager-main.png)
+  ![Selecting the stock manager class](images/eclipse-select-stockmanager-main.png)
 
   2. Now click the right mouse button and in the resulting menu navigate to `Run As`, then `Run configurations`
 
-  ![](images/eclipse-select-run-configurations.png)
+  ![Opening the stockmanger run configurations](images/eclipse-select-run-configurations.png)
 
 The run configurations popup appears
 
   3. In the left side of the Run Configurations popup select `Java Applications`
 
-  ![](images/eclipse-run-configuration-select-java-application.png)
+  ![Chosing the Java run configuration](images/eclipse-run-configuration-select-java-application.png)
 
   4. Click the new configuration button, this looks like a blank page at the top of the left hand list
 
-  ![](images/eclipse-run-configuration-new-config.png)
+  ![Creating a new Java run configuration](images/eclipse-run-configuration-new-config.png)
 
 The Run configurations popup will create and display a new configuration
 
-  ![](images/eclipse-run-configurations-new-config-initial.png)
+  ![Blank Java run configuration](images/eclipse-run-configurations-new-config-initial.png)
 
 Note that in this case it is named `Main (2)` but that may vary
 
@@ -327,15 +327,15 @@ Note that in this case it is named `Main (2)` but that may vary
   
   6. Make sure that the project is set to `helidon-labs-stockmanager`
   
-  7. Make sure that the Main slass is set to `com.oracle.labs.helidon.stockmanager.Main`
+  7. Make sure that the Main class is set to `com.oracle.labs.helidon.stockmanager.Main`
 
-  ![](images/eclipse-run-configurations-new-config-named.png)
+  ![Naming the new run configuration](images/eclipse-run-configurations-new-config-named.png)
 
   8. Now click on the `args` tab (this is just below the name)
 
 The Run configurations popup will now switch to the arguments tab (this may have been abbreviated to `args` in the UI
 
-  ![](images/eclipse-run-configurations-new-config-args.png)
+  ![Opening the new run configuration arguments tab](images/eclipse-run-configurations-new-config-args.png)
 
   9. Copy the text below into a notepad or ASCII text editor you will need to make some changes to it before you use it. (Do **not** use a word processor like Microsoft Word or anything that makes the text "pretty" as they replace the `-` characters automatically with a non ASCII visually longer version, and that won't work) 
 
@@ -361,7 +361,7 @@ As an example for **my** database it looks like this, **but yours will vary**
 
   12. In the `VM Arguments` file of the Run configurations popup paste the **updated** text
 
-  ![](images/eclipse-run-configurations-new-config-args-with-vm.png)
+  ![Specifying the arguments for the run configuration](images/eclipse-run-configurations-new-config-args-with-vm.png)
 
   13. Click the `Apply` button to save the changes
 

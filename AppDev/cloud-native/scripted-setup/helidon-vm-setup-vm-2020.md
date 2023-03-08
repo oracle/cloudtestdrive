@@ -1,4 +1,4 @@
-![](../../../common/images/customer.logo2.png)
+![Title image](../../../common/images/customer.logo2.png)
 
 # Setting up your Development VM core 
 
@@ -42,13 +42,13 @@ If you are in an **instructor led lab** the instructor may have already done thi
   
   1. Open the Cloud Marketplace URL  https://cloudmarketplace.oracle.com/marketplace/listing/86865043 in a new web browser tab / window.
   
-  ![](images/cloud-marketplace-image.png)
+  ![Accessing the market place image](images/cloud-marketplace-image.png)
   
   2. Click the **Get App** button
   
   3. In the Install Application page chose the region you are using
  
-  ![](images/cloud-marketplace-install-select-region.png)
+  ![Selecting the region to install into](images/cloud-marketplace-install-select-region.png)
 
 I chose Frankfurt, but yours may vary
 
@@ -56,7 +56,7 @@ I chose Frankfurt, but yours may vary
 
 In your OCI Console UI page look at the upper right, you will see something like this
 
-![](images/region-name.png)
+![Locating your region](images/region-name.png)
 
 In this case for my tenancy I'm in the Germany / Frankfurt region, but if you are using a different region it will show up there.
 
@@ -88,7 +88,7 @@ In this case for my tenancy I'm in the Germany / Frankfurt region, but if you ar
 
   5. If `VM.Standard.E4.Flex`  or `VM.Standard.E3.Flex` with 1 OCPU and 16GB memory is not the selected instance shape click the **Change shape** button, set the Instance type to **Virtual machine**, the Processor to **AMD Rome** and the OCPU count to `1` (This will set the memory for you) Then click **Select shape** to use this shape. (You can chose other shapes if you prefer, just at the time of writing this was the most cost effective)
 
-  ![](images/cloud-marketplace-create-instance.png)
+  ![Creating the market place instance](images/cloud-marketplace-create-instance.png)
   
   6. Expand the **Configure networking** section if it's not already expanded
   
@@ -102,7 +102,7 @@ In this case for my tenancy I'm in the Germany / Frankfurt region, but if you ar
 
   11. Check the **Assign a public IP address** option is selected
   
-  ![](images/cloud-marketplace-images-setup-network.png)
+  ![Setting the public IP option](images/cloud-marketplace-images-setup-network.png)
 
   12. Scroll down to the **Add SSH Key** section
 
@@ -110,7 +110,7 @@ In this case for my tenancy I'm in the Germany / Frankfurt region, but if you ar
 
   14. If you wish you can download the ssh keys by clicking on the buttons (This is not required as we will be using VNC to access the instance)
   
-  ![](images/create-instance-third-part.png)
+  ![Getting the generated ssh key](images/create-instance-third-part.png)
   
   15. Leave the boot volume settings unchanged (On some newer versions of the UI this may be below the SSH keys section, but you still don't change it)
   
@@ -122,7 +122,7 @@ You have finished the wizard!
 
 Once the create button has been clicked you will see the VM details page.  Initially the state will be **Provisioning** but after a few minutes it will switch to **Running**, and you will see that a **public IP address** has been assigned.  Make a note of that IP address (The copy link next to it will copy the address into your computers copy-and-paste buffer.)
 
-  ![](images/create-instance-public-ip-address.png)
+  ![Getting the public IP address of the instance](images/create-instance-public-ip-address.png)
 
 While it's starting you can work on the next step  
 
@@ -134,13 +134,13 @@ You need to be sure that the Virtual Cloud Network supports remote access using 
 
   1. Go to the VCN you created earlier, click the VCN name in the instance details page, I named mine `H-K8S-Lab-A-Helidon-2020-29-10-tg`
   
-  ![](images/cloud-marketplace-instance-details.png)
+  ![Accessing the instances VCN](images/cloud-marketplace-instance-details.png)
 
   2. On the VNC page on the left hand side click the **Security Lists** option
 
   3. Click on the security list in the list, If there is more than one chose the one with a name something like `Default Security List for H-K8S-Lab-A-Helidon-2020-29-10-tg` (don't select the private subnet one if it's there)
   
-  ![](images/cloud-marketplace-image-vcn-security-lists-setup.png)
+  ![Openign the security list for the VCN](images/cloud-marketplace-image-vcn-security-lists-setup.png)
 
   4. In the security list page click the **Add Ingress Rules** button
   
@@ -162,7 +162,7 @@ You need to be sure that the Virtual Cloud Network supports remote access using 
 
   12. Click the **Add Ingress Rules** button
 
-  ![](images/cloud-marketplace-install-add-ingress-rule.png)
+  ![Adding the VNC ingesss rule](images/cloud-marketplace-install-add-ingress-rule.png)
 
 
 ## Step 3: Accessing the Developer VM
@@ -205,15 +205,15 @@ You need to let your VM run for a couple of mins to fully boot and start the VNC
 
   3. You VNC client may warn you that you're making an insecure connection, this is expected as we have not setup security certificates. For example for a real VNC client on a Mac this may look like 
 
-  ![](images/01-vnc-security-warning.png)
+  ![Possible VNC security warning](images/01-vnc-security-warning.png)
 
   4. You will be asked to enter a password to access the virtual screen. The initial VNC login password is : `Atp--101` (that's Atp hyphen hyphen one zero one). This is an example showing this with the Real VNC client running on a Mac
 
-  ![](images/02-vnc-login.png)
+  ![The VNC login page](images/02-vnc-login.png)
 
 Once you have logged in you will see the Linux desktop, it will look similar to this, though the background and specific icons may differ.
 
-  ![](images/03-desktop.png)
+  ![The Oracle Linux desktop in VNC](images/03-desktop.png)
 
 ### Step 3c: Changing the VNC Password (optional)
 
@@ -223,7 +223,7 @@ While not required we do recommend that you change this password to prevent acce
 
   1. On the desktop background click right, then the **Open Terminal** option
 
-  ![](images/vnc-01-open-terminal.png)
+  ![Opening the terminal in Oracle Linux](images/vnc-01-open-terminal.png)
 
   2. In the resulting terminal window type `vncpasswd`
 
@@ -233,13 +233,13 @@ While not required we do recommend that you change this password to prevent acce
 
   5. When prompted if you want a view only password enter `n`
 
-  ![](images/vnc-02-set-vncpasswd.png)
+  ![Setting the VNC password](images/vnc-02-set-vncpasswd.png)
 
 The easiest way to apply the new password is to reboot the VM
 
   6. In the terminal enter `sudo reboot`
 
-  ![](images/vnc-03-reboot.png)
+  ![Rebooting after the VNC password change](images/vnc-03-reboot.png)
 
 The VNC connection will probably drop immediately and the VNC client will try to reconnect (in which case close the VNC window) or it may just close the window for you (the specific behavior is VNC client specific.) 
 
@@ -257,13 +257,13 @@ We have installed the Eclipse installer and places a short cut to it on the desk
 
   1. Double click on the **eclipse-installer** icon on the desktop. This will open the installer. It may look like a text page and be named `eclipse-installer.desktop` rather than the icon shown below, if it does still click it. You may be warned it's an **Untrusted application launcher**, if this happens click the **Trust and launch** option. **Do not** click the Post Eclipse Installer icon.
  
-  ![](images/04-eclipse-installer-icon.png)
+  ![The eclipse installer icon](images/04-eclipse-installer-icon.png)
 
 The Eclipse installer will start.
 
   2. Select the **Eclipse IDE for Enterprise Java Developers** option
 
-  ![](images/05-eclipse-installer-selection.png)
+  ![Chosing the Java enterprise versionof Eclipse](images/05-eclipse-installer-selection.png)
 
 The installer switched to the next page
 
@@ -273,33 +273,33 @@ The installer switched to the next page
   
   (It's really important that you do this, otherwise you'll have to manually setup a lot of the following)
 
-  ![](images/06-eclipse-installer-selections.png)
+  ![Specifying the eclipse install path](images/06-eclipse-installer-selections.png)
  
   5. Then click the **Install** button
  
   6. Assuming you agree with it click **Accept Now** on the license page. (If you don't agree with the license you can install your own IDE but all of the instructions are on the basis of using Eclipse.)
  
-  ![](images/07-eclipse-installer-license.png)
+  ![The eclipse license page](images/07-eclipse-installer-license.png)
  
 The installer progress will be displayed
  
-  ![](images/08-eclipse-installer-progress.png)
+  ![Progress of Eclipse installation](images/08-eclipse-installer-progress.png)
  
   7. You **may** be presented with warnings about unsigned content, if you are click the **Accept** button
  
-  ![](images/09-eclipse-installer-unsigned-warning.png)
+  ![Potential unsigned content warning](images/09-eclipse-installer-unsigned-warning.png)
  
   8. You **may** be presented with warnings about certificates. If you are click the **Select All** button, then the **Accept Selected** button (this is not enabled until certificates have been selected)
   
-  ![](images/10-eclipse-installer-accept-unsigned.png)
+  ![Accepting unsigned content](images/10-eclipse-installer-accept-unsigned.png)
   
   9. On completion close the installer window (X on the upper right.) **Do not** click the Launch button.
  
-  ![](images/11-eclipse-installer-finished-install-path.png)
+  ![Completed Eclispe installation](images/11-eclipse-installer-finished-install-path.png)
 
   10. Click **No** on the exit launcher page that's displayed to confirm you do not want to launch Eclipse at this point.
 
-  ![](images/12-eclipse-installer-finished-exit-without-launching.png)
+  ![Exiting the Eclipse installer](images/12-eclipse-installer-finished-exit-without-launching.png)
   
 ### Step 4b: Configuring post Eclipse install
 
@@ -307,7 +307,7 @@ We're now going to run a script that tidies up the desktop and creates an eclips
 
   1. Double click on the **Post Eclipse Installer** icon on the desktop. This will run the script. It may look like a text page and be called `posteclipseinstal.desktop` rather than the icon shown below, if it does still click it. You may be warned it's an **Untrusted application launcher**, if this happens click the **Trust and launch** option.
 
-  ![](images/13-post-eclipse-installer-icon.png)
+  ![Starting the script to handle post Eclipse install tasks](images/13-post-eclipse-installer-icon.png)
 
 If the eclipse installation was in the right place then the two desktop icons will disappear and be replaced with an `Eclipse` icon (**Do not start eclipse now**). If the Eclipse installation was in the wrong place then it will exit immediately without making any changes. In that case re-run the installer and ensure you use `/home/opc` as the Eclipse installation path.
 
@@ -380,41 +380,41 @@ Note that sometimes the Eclipse installer will create it's own desktop icon to s
 
   1. Double click on the **Eclipse** icon on the desktop. It may look like a text page rather than the icon shown below, if it does still click it. You may be warned it's an **Untrusted application launcher**, if this happens click the **Trust and launch** option.
 
-  ![](images/14-eclipse-icon.png)
+  ![Start Eclipse with the Eclipse icon](images/14-eclipse-icon.png)
 
 As Eclipse starts you will be presented with a start up "splash" then workspace selection option. 
 
   2. Set the eclipse workspace to be `/home/opc/workspace` (If you chose a different location you will have to remember to use that new location in many later stages.)
 
-  ![](images/20-eclipse-start-workspace-selection.png)
+  ![The Eclipse workspace selector](images/20-eclipse-start-workspace-selection.png)
 
   3. Click the **Use this as the default and do not ask again** option, then the **Launch** button
 
-  ![](images/20a-eclipse-start-default-workspace-selection.png)
+  ![Setting the default workspace](images/20a-eclipse-start-default-workspace-selection.png)
 
 You will be presented with the Eclipse startup. This may include a welcome page. You can close it by clicking the **x** as per normal with sub windows.
 
-  ![](images/21-eclipse-welcome-page.png)
+  ![The Eclipse welcome page](images/21-eclipse-welcome-page.png)
 
   4. You can close the **Donate**, **Outline** and **Task list** tabs to get the most usage from the screen.
 
-  ![](images/22-eclipse-donate-page.png)
+  ![The Eclipse donation page](images/22-eclipse-donate-page.png)
 
 This image shows you the empty Eclipse workspace with the non required tabs all closed
 
-  ![](images/23-empty-eclipse-workspace.png)
+  ![The new empty eclispe workspace](images/23-empty-eclipse-workspace.png)
 
 We need to configure Eclipse to display the course files in a hierarchical manner (this is so it matches the images you will have in the lab instructions, if you prefer to use the Eclipse  "Flat" view then you can ignore this step)
 
   5. Click on the Three dots in the Project Explorer panel, then take the **Package Presentation** menu option and click the radio button for **Hierarchical**
 
-  ![](images/24-eclipse-package-presentation-hierarchical.png)
+  ![Changing the Eclipse package presentation option](images/24-eclipse-package-presentation-hierarchical.png)
 
 ### Step 4d: How to re-open Eclipse if it's been closed
 
 Double click on the **Eclipse** icon on the desktop. It may look like a text page rather than the icon shown below, if it does still click it. You may be warned it's an **Untrusted application launcher**, if this happens click the **Trust and launch** option.
 
-![](images/14-eclipse-icon.png)
+![Re-opening eclipse if it's been closed](images/14-eclipse-icon.png)
 
 
 ## Step 5: Downloading the database Wallet file.

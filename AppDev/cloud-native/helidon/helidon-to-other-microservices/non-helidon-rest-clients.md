@@ -1,6 +1,6 @@
-![](../../../../common/images/customer.logo2.png)
+![Title image](../../../../common/images/customer.logo2.png)
 
-# Cloud Native - Non Helidon clients of a micro service
+# Connecting a Non Helidon clients to a micro service (With the Helidon RESTClient)
 
 ## Introduction
 

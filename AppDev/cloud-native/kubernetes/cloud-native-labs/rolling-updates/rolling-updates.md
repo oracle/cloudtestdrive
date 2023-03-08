@@ -1,4 +1,6 @@
-# Cloud Native - Rolling Updates
+![Title image](../../../../../common/images/customer.logo2.png)
+
+# Improve availability using Rolling Updates
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 

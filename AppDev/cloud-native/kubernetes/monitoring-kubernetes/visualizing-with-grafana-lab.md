@@ -1,6 +1,6 @@
-![](../../../../common/images/customer.logo2.png)
+![Title image](../../../../common/images/customer.logo2.png)
 
-# Cloud Native - Visualising using Grafana
+# Visualising using Grafana
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
@@ -234,23 +234,23 @@ We have had reports that some versions of Chrome will not allow you to override 
 
 
 You'll be presented with the Grafana login window
-  ![grafana-login](images/grafana-login.png)
+  ![Grafana login](images/grafana-login.png)
 
   11. Enter **admin** as the user name and then use the Grafana password you copied a few moments ago. 
 
   12. Press enter to login and go to the Grafana initial config page
 
-  ![grafana-initial-setup](images/grafana-initial-setup.png)
+  ![Initial pre-configuration Grafana page](images/grafana-initial-setup.png)
 
 Before we can do anything useful with Grafana we need to provide it with some data. 
 
   13. Click the **Add Your First Data Source** icon to start this process
 
-  ![grafana-possible-data-sources](images/grafana-possible-data-sources.png)
+  ![List of potential data sources for Grafana](images/grafana-possible-data-sources.png)
 
   14. Select **Prometheus**  from the list, then when the UI displays it click the **Select** button
 
-  ![grafana-configure-prometheus-data-source](images/grafana-configure-prometheus-data-source.png)
+  ![Completing the details for the Prometheus data source](images/grafana-configure-prometheus-data-source.png)
 
   15. In the **URL** field we need to enter the details we got then we installed Prometheus. Enter the URL 
   
@@ -260,15 +260,15 @@ Leave the other values unchanged
 
   16. Scroll down and click the **Save & Test** button at the bottom of the screen. 
 
-  ![grafana-configure-prometheus-data-source-save-and-test](images/grafana-configure-prometheus-data-source-save-and-test.png)
+  ![Saving and testing the data we entered for the Prometheus data soruce](images/grafana-configure-prometheus-data-source-save-and-test.png)
 
 Assuming you entered the details correctly it will report that it's done the save and that the data source is working
 
-  ![grafana-configure-prometheus-data-source-saved](images/grafana-configure-prometheus-data-source-saved.png)
+  ![The saved Promethus data source configured in Grafana](images/grafana-configure-prometheus-data-source-saved.png)
 
   17. Click the **Grafana logo** ![grafana-logo](images/grafana-logo.png) at the top left to return to the Grafana home page
 
-  ![grafana-home-datasource-done](images/grafana-home-datasource-done.png)
+  ![The Grafana home page with a data source](images/grafana-home-datasource-done.png)
   
 ## Task 3: Creating our first dashboard
 
@@ -276,25 +276,25 @@ We now need to configure a dashboard that will display data for us.
 
 ### Task 3a: Create our initial visualisation
 
-  ![grafana-home-create-first-dashboard](images/grafana-home-create-first-dashboard.png)
+  ![Creating our first Grafana dashboard](images/grafana-home-create-first-dashboard.png)
   
   1. Click the **Create your first dashboard** button to start the process
 
-  ![grafana-new-dashboard-add-first-panel](images/grafana-new-dashboard-add-first-panel.png)
+  ![Add the first panel to the dashboard](images/grafana-new-dashboard-add-first-panel.png)
 
   2. In the new Panel click the **Add an empty panel** button to define the data we want to retrieve
 
-  ![grafana-new-dashboard-first-panel-add-query](images/grafana-new-dashboard-first-panel-add-query.png)
+  ![Definign the data query for our new panel](images/grafana-new-dashboard-first-panel-add-query.png)
 
   3. In the Metrics browser enter `application_listAllStockMeter_one_min_rate_per_second` then click in the Graph box (for example where it says `No Data In respomse` )
 
-![grafana-new-dashboard-first-panel-add-query-list-stock-meter-rate](images/grafana-new-dashboard-first-panel-add-query-list-stock-meter-rate.png)
+![Usinf the list stock data rate as the query](images/grafana-new-dashboard-first-panel-add-query-list-stock-meter-rate.png)
 
 You may recall that this it the data set for the number of list stock requests made per second averaged over a minute.
 
 Once you've entered this it then the display will update with the graph you've selected
 
-  ![grafana-new-dashboard-first-panel-add-query-list-stock-meter-rate-individual-pods](images/grafana-new-dashboard-first-panel-add-query-list-stock-meter-rate-individual-pods.png)
+  ![The new panel with the per pod data rate](images/grafana-new-dashboard-first-panel-add-query-list-stock-meter-rate-individual-pods.png)
   
 If your cloud shell session is new or has been restarted then the shell variable `$EXTERNAL_IP` may be invalid, expand this section if you think this may be the case to check and reset it if needed.
 
@@ -347,11 +347,11 @@ You can refresh the graph using the refresh icon if you added some new data
 
   5. Click the time selector and chose a time period where you have data (In this case I'm going for the last hour)
 
-  ![grafana-new-dashboard-first-panel-add-query-select-time-window](images/grafana-new-dashboard-first-panel-add-query-select-time-window.png)
+  ![Seletging the time winbdow for the panel](images/grafana-new-dashboard-first-panel-add-query-select-time-window.png)
 
 Once you've clicked the time the graph will update
 
-  ![grafana-new-dashboard-first-panel-add-query-selected-time-window](images/grafana-new-dashboard-first-panel-add-query-selected-time-window.png)
+  ![After selecting the time window](images/grafana-new-dashboard-first-panel-add-query-selected-time-window.png)
 
 
 You may see multiple pods listed in the legend (above one as a green line in the chart, the other as yellow). Do not worry if you can only see one, it depends on the exact flow and timing of the labs which will vary between participants.
@@ -364,15 +364,15 @@ Grafana allows us to combine the data using the Prometheus query language, by us
   
   - then click on the graph
 
-  ![grafana-new-dashboard-first-panel-add-query-list-stock-meter-rate-combined-pods](images/grafana-new-dashboard-first-panel-add-query-list-stock-meter-rate-combined-pods.png)
+  ![Combining the per second rate for all pods](images/grafana-new-dashboard-first-panel-add-query-list-stock-meter-rate-combined-pods.png)
 
 Now any pod that provides the `application_listAllStockMeter_one_min_rate_per_second` data will be part of the total, giving us the total rate across all of the pods.
 
-  ![grafana-new-dashboard-first-panel-apply-button](images/grafana-new-dashboard-first-panel-apply-button.png.png)
+  ![Applying out new panel to the dashboard](images/grafana-new-dashboard-first-panel-apply-button.png.png)
 
   7. Click the **Apply** button on the upper right.
 
-  ![grafana-new-dashboard-first-panel-added](images/grafana-new-dashboard-first-panel-added.png)
+  ![The dashboard after adding the panel](images/grafana-new-dashboard-first-panel-added.png)
 
   8. Make a few requests using curl to generate some new data.
   
@@ -391,7 +391,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 After a bit of time for Helidon to update it's metrics (this is an average over 1 min) Prometheus to get round to scraping them and for Grafana to get round to retrieving them click the refresh icon on the upper right ![grafana-refresh-icon](images/grafana-refresh-icon.png) (We'll look at auto refresh in a bit).
 
-  ![grafana-new-dashboard-first-panel-add-query-list-stock-meter-rate-combined-pods-updated-graph](images/grafana-new-dashboard-first-panel-add-query-list-stock-meter-rate-combined-pods-updated-graph.png)
+  ![The combined stock rate list panel after waiting for data updates](images/grafana-new-dashboard-first-panel-add-query-list-stock-meter-rate-combined-pods-updated-graph.png)
 
 If it hasn't updated after a bit you can force the screen to update, click the refresh icon on the upper right ![grafana-refresh-icon](images/grafana-refresh-icon.png) 
 
@@ -403,29 +403,29 @@ Let's go back and edit the visuals
 
   9. Click the **Panel Title** then chose **Edit**
 
-  ![grafana-new-dashboard-edit-first-panel](images/grafana-new-dashboard-edit-first-panel.png)
+  ![Editing the firat panel](images/grafana-new-dashboard-edit-first-panel.png)
 
   10. On the right click on the graph type choice (Here this is set to **Time Series**)
 
-  ![grafana-new-dashboard-first-panel-visualization-options](images/grafana-new-dashboard-first-panel-visualization-options.png)
+  ![Chosing the visialisation options for the panel](images/grafana-new-dashboard-first-panel-visualization-options.png)
 
 You can chose the visualization type you want
 
-  11. As you can see there are a lot of options ![grafana-visualization-options](images/grafana-visualization-options.png). 
+  11. As you can see there are a lot of options ![The set of Grafana visualization options](images/grafana-visualization-options.png). 
 
 For now we're going to leave this as a **Time Series** graph, but if you want try clicking on some of the other options to see what they display, not all data makes sense in all visualization types though.
 
-  ![grafana-visualization-options-time-series](images/grafana-visualization-options-time-series.png)
+  ![Using the time series data graph](images/grafana-visualization-options-time-series.png)
   
 For now (as there is only a single set of numeric data) we are going to leave this as a time series line graph, so just click on the **Time Series** option but we'll make it a little more interesting.
 
   12. On the right scroll down to the **Graph Styles**, if neede expand the selection with the arrow
 
-  ![grafana-new-dashboard-first-panel-visualization-display-options](images/grafana-new-dashboard-first-panel-visualization-display-options.png)
+  ![Opening the graph styles options](images/grafana-new-dashboard-first-panel-visualization-display-options.png)
 
   13. Set the **Line width** to `2` the **Fill Opacity** to `100` and the **Gradient mode** to `Opacity`
 
-  ![grafana-new-dashboard-first-panel-visualization-options-updated](images/grafana-new-dashboard-first-panel-visualization-options-updated.png)
+  ![Changing the graph visualisation details](images/grafana-new-dashboard-first-panel-visualization-options-updated.png)
 
   14. Notice that the graph displayed updates as you make changes.
 
@@ -433,19 +433,19 @@ For now (as there is only a single set of numeric data) we are going to leave th
 
   16. In the **Panel Options** **Title** field enter a suitable title, for example  `Stock Listing Requests per second`
 
-  ![grafana-new-dashboard-first-panel-general-options](images/grafana-new-dashboard-first-panel-general-options.png)
+  ![Entering the title for the panel](images/grafana-new-dashboard-first-panel-general-options.png)
   
   17. Click back on the graph to apply the change
   
-  ![grafana-new-dashboard-first-panel-title-set](images/grafana-new-dashboard-first-panel-title-set.png)
+  ![Once the panel is titled](images/grafana-new-dashboard-first-panel-title-set.png)
 
   18. Click the **Apply** button at the top right to return to the New Dashboard
   
-  ![grafana-new-dashboard-first-panel-updated-apply-button](images/grafana-new-dashboard-first-panel-updated-apply-button.png)
+  ![Applying the updates to our panel](images/grafana-new-dashboard-first-panel-updated-apply-button.png)
 
 Now we see our dashboard with a graph panel
 
-   ![grafana-new-dashboard-first-panel-completed](images/grafana-new-dashboard-first-panel-completed.png)
+   ![The updated panel](images/grafana-new-dashboard-first-panel-completed.png)
    
 ### Task 3b: Adding a second panel
 
@@ -453,7 +453,7 @@ Of course this looks pretty basic, It's good to see how many requests we're gett
 
   1. Click on the  **Add Panel** icon on the upper right ![grafana-add-panel-icon](images/grafana-add-panel-icon.png) 
 
-  ![grafana-dashboard-add-second-panel](images/grafana-dashboard-add-second-panel.png)
+  ![Adding a second panel](images/grafana-dashboard-add-second-panel.png)
 
   2. Click the **Add a new panel** button
 
@@ -462,63 +462,63 @@ Of course this looks pretty basic, It's good to see how many requests we're gett
   - `avg(application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_listAllStockTimer_mean_seconds)` 
 
 
-  ![grafana-dashboard-add-second-panel-timer-mean-seconds](images/grafana-dashboard-add-second-panel-timer-mean-seconds.png)
+  ![Using the average function on the request timer](images/grafana-dashboard-add-second-panel-timer-mean-seconds.png)
 
   4. In the Graph types section on the right hand menu (in the image shown this is titled **Time Series** but it changes based on the selected visualization). If it's not already selected chose **Time Series** as the type
   
   5. In the **Graph Styles** section on the right hand menu. Set the **Style** to **Bars** Note that the graph updates.
 
-  ![grafana-dashboard-add-second-panel-visualization](images/grafana-dashboard-add-second-panel-visualization.png)
+  ![Choesing the visual style for the secont panel](images/grafana-dashboard-add-second-panel-visualization.png)
 
   6. Move to the **Settings** section at the top of the right hand menu 
 
-  ![grafana-dashboard-add-second-panel-general](images/grafana-dashboard-add-second-panel-general.png)
+  ![Accessing the title field](images/grafana-dashboard-add-second-panel-general.png)
 
   7. In the **Panel Options** section set the title to `Response Times`
   
   8. Hit the **Apply** button on the upper right to return to the New Dashboard
   
-  ![grafana-dashboard-added-second-panel](images/grafana-dashboard-added-second-panel.png)
+  ![The dashboard after adding the second panel](images/grafana-dashboard-added-second-panel.png)
   
 ### Task 3c: Adding a different type of visualisation
 
 We're going to add a 3rd panel with a different visualization type, using a dial graph that gives us a view of the most recent data.
 
-  ![grafana-dashboard-add-third-panel](images/grafana-dashboard-add-third-panel.png)
+  ![Adding the third panel](images/grafana-dashboard-add-third-panel.png)
 
   1. Click the **Add panel** icon then the **Add a New Panel** 
 
-  ![grafana-dashboard-add-third-panel-timer-seconds](images/grafana-dashboard-add-third-panel-timer-seconds.png)
+  ![Choosing the mean data for the timer](images/grafana-dashboard-add-third-panel-timer-seconds.png)
 
   2. In the **Metrics browser** set it to `application_com_oracle_labs_helidon_storefront_resources_StorefrontResource_listAllStockTimer_mean_seconds` then click in the graph area to get the data
 
 We're going for a different visualization type. 
 
-  ![grafana-dashboard-add-third-panel-select-graph-type](images/grafana-dashboard-add-third-panel-select-graph-type.png)
+  ![Choding the graph type for the third panel](images/grafana-dashboard-add-third-panel-select-graph-type.png)
   
   3. In the graph selection on the right hand menu  (in this image this is set to **Time Series** )
   
-  ![grafana-dashboard-add-third-panel-select-gauage-type](images/grafana-dashboard-add-third-panel-select-gauage-type.png)
+  ![Selecting the gage visualisation type for the third panel](images/grafana-dashboard-add-third-panel-select-gauage-type.png)
   
   4. Chose the **Gauge** option, the display will update to show a gauge.  Note that the right hand menu has also changed a bit
 
-  ![grafana-visualization-options-guage](images/grafana-visualization-options-gauge.png)
+  ![Accessing the options for the third panel gauge visual type](images/grafana-visualization-options-gauge.png)
 
   5. In the right hand section scroll down to the Gauge section, make sure that both **Show Threshold Labels** and **Show Threshold Markers** are enabled. 
 
-  ![grafana-visualization-options-guage-display](images/grafana-visualization-options-gauge-display.png)
+  ![Threshold and markers selected for the gauge](images/grafana-visualization-options-gauge-display.png)
   
   6. We are going to override the max and min for the gauge, Sctoll down to the **Standard Options** section on the right panel, then set the **Min** to be `0` and the **Max** to be `1` Set the **Display Name** to be `Response Times`
   
-  ![grafana-visualization-options-gauge-display-max-min](images/grafana-visualization-options-gauge-display-max-min.png)
+  ![Selecting the min and max limits for the gauge](images/grafana-visualization-options-gauge-display-max-min.png)
 
   6. We now need to define different thresholds. Scroll further down the right section to find the **Thresholds** section, Click the **Add Threshold** button. You will see three entries.
 
-  ![grafana-gauge-set-threshold-colours](imnages/grafana-gauge-set-threshold-colours.png)
+  ![Selecting threshold colours for the guage](imnages/grafana-gauge-set-threshold-colours.png)
   
   7. The colours are a little wrong here, click on the colour next to the `90` threshold and in the resulting colour choser set it to Red, then got the `80` threshold set it to orange
 
-  ![grafana-visualization-options-gauge-thresholds-added](images/grafana-visualization-options-gauge-thresholds-added.png)
+  ![After updating the threshold colours](images/grafana-visualization-options-gauge-thresholds-added.png)
 
   9. In the text boxes representing the thresholds 
   
@@ -526,15 +526,15 @@ We're going for a different visualization type.
   
   - Set the yellow threshold to be 0.25
   
-  ![grafana-visualization-options-gauge-thresholds-adjusted](images/grafana-visualization-options-gauge-thresholds-adjusted.png)
+  ![Setting the threfhold values for our gauge bands](images/grafana-visualization-options-gauge-thresholds-adjusted.png)
   
 Note that as you enter the values the order of the boxes may change.
 
-  ![grafana-visualization-options-gauge-final](images/grafana-visualization-options-gauge-final.png)
+  ![The final version of the gauge visual options](images/grafana-visualization-options-gauge-final.png)
 
   10. Scroll up to the top of the right hand panel, Remove any text in the panel title, Click the **Apply** to return to the New Dashboard
 
-  ![grafana-three-panel-dashboard-colums](images/grafana-three-panel-dashboard-colums.png)
+  ![Adding the third panel](images/grafana-three-panel-dashboard-colums.png)
   
 ### Task 3d: Organising the dashboard
 
@@ -542,27 +542,27 @@ We can see what data we're getting, but it's not that easy to look at.
 
 Let's Re-arrange the panels a bit. 
 
-  ![grafana-three-panel-dashboard-rearange-start](images/grafana-three-panel-dashboard-rearange-start.png)
+  ![Panels as a vertical column](images/grafana-three-panel-dashboard-rearange-start.png)
 
   1. Click on the working of the middle panels title (Response Times) and drag it to the right of the gauge panel.
 
-  ![grafana-three-panel-dashboard-grid](images/grafana-three-panel-dashboard-grid.png)
+  ![Panels in a 2 column grid](images/grafana-three-panel-dashboard-grid.png)
 
 We need to rename our panel, after all "New dashboard" is not especially descriptive. 
 
-  ![grafana-three-panel-dashboard-grid-settings-icon](images/grafana-three-panel-dashboard-grid-settings-icon.png)
+  ![Renaming the dashboard](images/grafana-three-panel-dashboard-grid-settings-icon.png)
 
   2. Click on the dashboard settings icon on the upper right of the window
 
-  ![grafana-dashboard-settings](images/grafana-dashboard-settings.png)
+  ![Settign the dashboard name](images/grafana-dashboard-settings.png)
 
   3. In the settings page give it a name, let's use `Stock Listing performance`, provide a description, *disable* the editing option, and set it to auto refresh when showing live data.
 
-  ![grafana-dashboard-settings-save-button])images/grafana-dashboard-settings-save-button.png)
+  ![Saving the dashbaord])images/grafana-dashboard-settings-save-button.png)
   
   4. Then click the **Save Dashboard** button
   
-  ![grafana-dashboard-save-dialogue](images/grafana-dashboard-save-dialogue.png)
+  ![Dashboard save dialogue box](images/grafana-dashboard-save-dialogue.png)
 
   5. In the popup checkthe dashboard is named `Stock Listing performance` then click the **Save** button
 
@@ -570,17 +570,17 @@ Confirm if prompted (Note you cannot save to the name of an existing dashboard)
 
 Now we have our dashboard let's look at the time windows and set the auto refresh so as new data becomes available it will be displayed.
 
-  ![grafana-dashboard-auto-refresh](images/grafana-dashboard-auto-refresh.png)
+  ![Configuring the visuals auto refrech settings](images/grafana-dashboard-auto-refresh.png)
 
   6. Next to the **Refresh** icon click the menu to open up the auto-refresh options list. Chose 5 seconds from the list
 
 Let's set it to display the most recent data
 
-  ![grafana-dashboard-display-range](images/grafana-dashboard-display-range.png)
+  ![Configuring the displayed data to be most recent](images/grafana-dashboard-display-range.png)
   
   7. Select the display range (set to `Last 1 hour` in this grab, and for the list chose `5 minutes`)
   
-  ![grafana-dashboard-display-update-updated](images/grafana-dashboard-display-update-updated.png)
+  ![After updating the dashboard time range](images/grafana-dashboard-display-update-updated.png)
   
   Note that the resulting dashboard doesn't have a lot to display as it's only showing recent data, and we haven't been doing a lot with the microservices themselves.
 
@@ -600,7 +600,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 ```
 Within a min or two (remember Helidon, Prometheus and Grafana need to capture and process their data) the UI will update with the requests you've just made. Curiously in my case I had to actually click eht refresh button to get the latest data. I don;t know if this is an issue with this version of Grafana, the browser, or simply some cached data somewhere in my web proxies.
 
-  ![grafana-dashboard-auto-refresh-happened](images/grafana-dashboard-auto-refresh-happened.png)
+  ![After the data updates have made their way to the dashboard](images/grafana-dashboard-auto-refresh-happened.png)
 
 
 ## Task 4: More complex dashboards
@@ -610,31 +610,31 @@ This is a fairly simple dashboard, far more complex ones are easily achievable u
 
   2. On the left side menu click the settings **cog**, and then **Datasources**.
 
-  ![grafana-config-menu](images/grafana-config-menu.png)
+  ![Accessing the datasourcesa list](images/grafana-config-menu.png)
 
   3. Click the entry for **Prometheus**
 
-  ![grafana-config-chose-prometheus](images/grafana-config-chose-prometheus.png)
+  ![The Prometheus data source](images/grafana-config-chose-prometheus.png)
 
   4. To get the list of dashboards click the **Dashboards** tab
 
-  ![grafana-config-prometheus-dashboards](images/grafana-config-prometheus-dashboards.png)
+  ![List of pre-build prometheus data soruce dashbaords](images/grafana-config-prometheus-dashboards.png)
 
   5. Click on the **import** button for each dashboard, 
 
 The dashbaords will be imported (there will be a quick "I'm doing an import" message after each click) after which we can see they are all imported
 
-  ![grafana-prometheus-data-source-dashboards-import-done](images/grafana-prometheus-data-source-dashboards-import-done.png)
+  ![Imported the pre-build dashboard](images/grafana-prometheus-data-source-dashboards-import-done.png)
 
   6. Click the **Grafana** logo ![grafana-logo](images/grafana-logo.png) on the upper left. 
   
   7. Click the **Home** menu ![grafana-home-dashboards-menu](images/grafana-home-dashboards-menu.png) to get a list of available dashboards
 
-  ![grafana-home-available-dashboards](images/grafana-home-available-dashboards.png)
+  ![Updated list of dashboard in Grafana](images/grafana-home-available-dashboards.png)
 
   8. Click on the **Prometheus 2.0 Stats** option to see an example of a more comlex dashboard containing stats for Prometheus
 
-  ![grafana-prometheus-stats-dashboard](images/grafana-prometheus-stats-dashboard.png)
+  ![The Promethus statistics dashboard](images/grafana-prometheus-stats-dashboard.png)
 
 ---
 

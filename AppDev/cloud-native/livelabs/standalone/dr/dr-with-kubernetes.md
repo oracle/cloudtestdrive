@@ -1,4 +1,4 @@
-![](../../../images/customer.logo2.png)
+![Title image](../../../images/customer.logo2.png)
 
 # Using the Cloud Native disaster recovery using OCI.
 
@@ -32,7 +32,7 @@ Please look at the instructions in the **Oracle Cloud Free Tier** section for de
 
 You can navigate to the modules themselves by using the navigation list on the left. Some modules have a lot of sections, so to make navigation easier you can expand a module by clicking the '+' next to the module name in the modules list, you can shrink a module in the list by clicking the '-' by it's name. 
 
-![](images/livelabs-expand-module.png) ![](images/livelabs-close-module.png)
+![Navigating the live labs modules - expand a module](images/livelabs-expand-module.png) ![Navigating the live labs module - close a module](images/livelabs-close-module.png)
 
 You can go directly to a module or section within a module by clicking on the name in the navigation list
 

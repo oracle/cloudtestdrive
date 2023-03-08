@@ -1,6 +1,6 @@
-![](../../../../../common/images/customer.logo2.png)
+![Title image](../../../../../common/images/customer.logo2.png)
 
-# Cloud Native - Log Capture for Archive
+# Configure Log Capture for Archive
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -114,7 +114,7 @@ Firstly let's get the OCI Region details.
 
   1. On the upper right of the OCI browser UI you will see the name of **your** current region
 
-  ![](images/Region-dropdown.png)
+  ![Locating your current OCI region](images/Region-dropdown.png)
 
 In the example above this is Germany Central (Frankfurt) **but yours may vary**
 
@@ -122,17 +122,17 @@ However we need the region ID, not the name
 
   2. Click on the name you will get a list of regions enabled for your tenancy.
 
-  ![](images/Regions-enabled.png)
+  ![Getting the list of regions enabled for your tenancy](images/Regions-enabled.png)
 
   3. Click the **Manage Regions** button to get a list of the infrastructure regions, along with their details
   
-  ![](images/Regions-choice.png)
+  ![Details for the various OCI regions](images/Regions-choice.png)
 
 Regions that are enabled for **your** tenancy are in green, the ones in grey are not enabled.
 
   4. Locate **your** region in the list (it will have a green region icon) Then locate the region identifier, these are the details for the region I'm using Frankfurt in Germany.
 
-  ![](images/Region-frankfurt.png)
+  ![Details for the Frankfurt region](images/Region-frankfurt.png)
 
 We can see here that the region identifier for Frankfurt (the region I'm using) is `eu-frankfurt-1` **your region identifier will be different if you are not in this region**
 
@@ -140,15 +140,15 @@ Next we need to get the storage endpoint this is of the form `https://<object st
 
   5. In the upper right of the screen you can access your tenancy details.
 
-  ![](images/Region-dropdown.png)
+  ![How to access your region details](images/Region-dropdown.png)
 
   6. Click on the little "shadow" of a person to access your profile.
 
-  ![](images/User-profile-details.png)
+  ![Opening your tennacy information menu](images/User-profile-details.png)
 
   7. Click on the tenancy name (oractdemeabdnmative in this case) to access the tenancy details
 
-  ![](images/Tenancy-details.png)
+  ![The tenancy details page](images/Tenancy-details.png)
 
 In this case in the Object Storage Settings you can see that the `Object Storage Namespace` is `oractdemeabdmnative` It will be different in other tenancies. This particular tenancy is quite old which is why the storage namespace is the same as the tenancy name, recent tenancies have a storage namespace that is a set of random letters and numbers.
 
@@ -168,19 +168,19 @@ We need to have security keys to access the S3 compliant storage API. Access tho
 
   10. Click on the little "shadow" of a person to access your profile.
 
-  ![](images/User-profile-details.png)
+  ![Accessing your user profile](images/User-profile-details.png)
 
   11. Click on your name (in this case oracleidentitycloudservice/tim.graves) to go to your account details.
 
   12. Locate the resources section, this is on the lower left of the page (you may need to scroll down to see it
 
-  ![](images/User-profile-resources.png)
+  ![Your users resources](images/User-profile-resources.png)
 
   13. Click on the **Customer Secret Keys** in the resources section.
 
 The table changes to showing the **Customer Secret Keys** table
 
-  ![](images/User-profile-customer-secret-keys.png)
+  ![Customer secret keys list](images/User-profile-customer-secret-keys.png)
 
 In this case there is already one Customer secret key for my account.
 
@@ -190,13 +190,13 @@ To generate a new Customer Secret Key
 
   14. Click the generate secret key button. 
 
-  ![](images/User-profile-generate-secret-key.png)
+  ![Generating a new secret key](images/User-profile-generate-secret-key.png)
 
   15. Provide a name that you'll be able to remember, in this case I'm using `MySecretKey` but you chose your own
 
   16. Click the **Generate Secret Key** button, to get the system to generate a key pair for you.
 
-  ![](images/User-profile-save-secret-key.png)
+  ![Saving the new secret key](images/User-profile-save-secret-key.png)
 
 **VITALLY IMPORTANT**
 
@@ -204,7 +204,7 @@ To generate a new Customer Secret Key
 
   18. **ONLY** after you'ce copied and saved the secret key click the **Close** button
 
-  ![](images/User-profile-secret-key-list.png)
+  ![Updated list of secret keys](images/User-profile-secret-key-list.png)
 
 You'll see the newly generated key in the list (remember in this case I had an existing key, you may not have in which case you'll only see the key you just generated)
 
@@ -212,7 +212,7 @@ You now need to get the access key (this is the other part of the generated key 
 
   19. Click on the **Access key** for the key you just generated, if you have multiple keys remember to chose the key you just generated (the name you chose will help you)
 
-  ![](images/User-profile-get-access-key.png)
+  ![Getting the access key for the new secret key](images/User-profile-get-access-key.png)
 
   20. Click on the **Copy** link to get a copy of the key, save this in a text editor or something.
 
@@ -243,17 +243,17 @@ Let's create our storage bucket.
 
   2. Click on the "Hamburger" menu, then in the **Core Infastructure** section click on **Object Storage** then **Object Storage** 
 
-  ![](images/Object-storage-hamburger-menu.png)
+  ![Accessing the object storage service](images/Object-storage-hamburger-menu.png)
 
 This will take you to the storage service page
 
-  ![](images/Object-storage-compartment-selection.png)
+  ![Choosing the OCI compartment for your S3 compatibility](images/Object-storage-compartment-selection.png)
 
   3. Make sure in the compartments list you have selected the compartment used for the Amazon S3 Compatibility (this was shown in the tenancy details earlier). This may be `root` if there isn't a S3 compatibility compartment specified for the tenancy
 
 You will now see a list of buckets in this compartment, In this case there is just one called `TG` In your tenancy there may be a zero or more existing buckets.
 
-  ![](images/Obiect-storage-initial-compartments.png)
+  ![Details of existing storage buckets (if any)](images/Obiect-storage-initial-compartments.png)
 
 We're going to create a new bucket set for archive storage
 
@@ -263,7 +263,7 @@ We're going to create a new bucket set for archive storage
 
   6. Change the storage tier option to **archive**
 
-  ![](images/Object-storage-create-bucket.png)
+  ![Creating a new object storage bucket](images/Object-storage-create-bucket.png)
 
   7. Click the **Create Bucket** button
 
@@ -271,7 +271,7 @@ Note, if the bucket name must be unique across your entire tenancy in the region
 
 You will now see the list of buckets in your compartment. Remember that in my case the `TG` bucket existed previously, so there are two shown here.
 
-  ![](images/Object-storage-after-create-bucket.png)
+  ![Object storage buckets list after creating your new bucket](images/Object-storage-after-create-bucket.png)
 
 Note that the storage tier for the new bucket (named TG-FLUENTD in this case **but yours will vary**) is **Archive** This means all data will be held in a long term storage model which is much cheaper, but may take time to become available when requested.
 
@@ -293,7 +293,7 @@ The `fluentd-daemonset-oss-rbac.yaml` configures the cluster role, service accou
 
 In Kubernetes 1.20 the default container engine switched from Docker to CRI-O, Docker logs were written in JSON format, wheras CRI-O uses a format called Logrus.
 
-This lab module has been updated to work with the 1.20 CRI-O log format, but if you are using a version of Kubernetes with Docker as the container engine (Kubernetes removed Docker support in 1.20, so this is probabaly 1.19 or earlier) you will need to modify the `fluentd-daemonset-oss-rbac.yaml` and remove the following lines in the container environment section.
+This lab module has been updated to work with the 1.20 CRI-O log format, but if you are using a version of Kubernetes with Docker as the container engine (Kubernetes removed Docker support in 1.20, so this is probably 1.19 or earlier) you will need to modify the `fluentd-daemonset-oss-rbac.yaml` and remove the following lines in the container environment section.
 
 ```
           - name: FLUENT_CONTAINER_TAIL_PARSER_TYPE
@@ -642,11 +642,11 @@ The Object storage UI provides a pseudo directory structure view. In this case t
 
   1. Click on the year
 
-  ![Object-storage-hierarchy-top-level](images/Object-storage-hierarchy-top-level.png)
+  ![Thge top level of the Object storage hierarchy](images/Object-storage-hierarchy-top-level.png)
 
   2. Continue navigating down the pseudo directory structure until you get to the objects created today
 
-  ![](images/Object-storage-bucket-with-logs.png)
+  ![Navigating to todays log data in the hierarchy](images/Object-storage-bucket-with-logs.png)
 
 You can see the list of logs that have been saved. Note that all of them have a status of `Archived`.
 
@@ -656,19 +656,19 @@ Let's start the process to restore from the archive.
 
   3. Click the selection checkbox next to **one** of the entries. Then click the **More Actions** button and chose **Restore** from the menu
 
-  ![](images/Object-storage-select-for-restore.png)
+  ![Identifying objects to restore](images/Object-storage-select-for-restore.png)
 
 Note that the **Restore** and **Delete** buttons are now enabled.
 
   4. Click the **Restore** button, the confirm restore popup is shown
 
-  ![](images/Object-storage-confirm-restore.png)
+  ![Confirming restoration of archived objects](images/Object-storage-confirm-restore.png)
 
 By default the restored data is available for 24 hours before it's only available in the archive again, you can change this duration if you like, but for now we'll leave the field blank which keeps the default 24 hours download window. The storage service will be charging you the extra copy for the time it's spent online, so you want to keep that to a minimum that meets your needs
 
   5. Click the **Restore** button in the popup and the object storage service will trigger the restore process to start.
 
-  ![](images/Object-storage-restore-in-process.png)
+  ![Object storage starts the restore process](images/Object-storage-restore-in-process.png)
 
 You can see that the status is now `Restoring`. Of course there is also a REST API to allow you to automate this process if you wanted in a production environment.
 
@@ -678,17 +678,17 @@ If you want to progress with the lab then you can do so and come back to this se
 
 Once the restore process has completed you will see that the objects state becomes `Restored` (The images below were taken about an hour after starting the restore process). If you don't want to wait for the restore to complete just look at the images below to see what can be done, then follow the instructions in the **Tidying up the environment** section.
 
-  ![](images/Object-storage-restored-object.png)
+  ![Our newly restored object](images/Object-storage-restored-object.png)
 
   6. Click the three vertical dots just to the right of the word Restored to get the object menu.
 
-  ![](images/Object-storage-restored-object-menu.png)
+  ![Accessing the menu for our restored object](images/Object-storage-restored-object-menu.png)
 
   7. Click the **Download** option on this menu
 
 Your web browser will start to download the object and depending on the web browser you will get a download options popup. This is the one I got when doing a similar download using Firefox on MacOS Catalina
 
-  ![](images/Object-storage-restored-object-download-options.png)
+  ![Doanload popup when accessing a restored object](images/Object-storage-restored-object-download-options.png)
 
 To access the restored object follow whatever the normal procedure is on your computer to access a downloaded `.gz` file.
 
@@ -724,7 +724,7 @@ In the Object bucket details screen
 
 - Click the checkbox next to the **Name** heading at the top of the objects table
 
-![](images/Object-storage-select-all.png)
+![Selecting all object in the bucket](images/Object-storage-select-all.png)
 
 - Click the **Delete** button.
 
@@ -734,24 +734,24 @@ May need to repeat if there are multiple pages of objects.
 
 Once you have deleted all of the captured log data objects than you can also delete the bucket if you want.
 Make sure you are in the bucket and it is empty
-![](images/Object-storage-bucket-delete.png)
+![Deleting the empty bucket](images/Object-storage-bucket-delete.png)
 
 - Click on the **Delete** button above the bucket details
 
 You will be presented with a confirmation screen
-![](images/Object-storage-bucket-delete-confirmation.png)
+![Confirming you want to delete the bucket](images/Object-storage-bucket-delete-confirmation.png)
 
 - Click the **Delete** button to confirm.
 
 Only if the bucket is empty will the delete process complete. If it's not then you will get the following error
 
-![](images/Object-storage-delete-non-empty-bucket-refusal.png)
+![Alert if the bucket is not empty](images/Object-storage-delete-non-empty-bucket-refusal.png)
 
 Even though it seems you can press **Delete** anyway this won't have any effect (Yes, this seems odd to me as well). Click on the **Cancel** button and make sure you have selected all the objects and deleted them, then try to delete the bucket again.
 
 Once the bucket has been successfully deleted you will be returned to the list of buckets in the S3 compatibility compartment (`JAM` in my case)
 
-![](images/Object-storage-post-bucket-delete.png)
+![Object storage buckets list after delete](images/Object-storage-post-bucket-delete.png)
 
 Of course there is also a REST API to allow you to automate this process if you wanted in a production environment.
 

@@ -1,6 +1,6 @@
-![](../../../../../common/images/customer.logo2.png)
+![Title image](../../../../../common/images/customer.logo2.png)
 
-# Cloud Native - Auto scaling
+# Setting up Auto scaling
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -494,15 +494,15 @@ If you want you can also see the pods being added in the Kubernetes dashboard,
 
   14. In the **Pods** section you can see that in this case it's scaled to 5 pods
 
-  ![](images/autoscaling-pods-increased.png)
+  ![Seeing the change in pod count in the dashboard](images/autoscaling-pods-increased.png)
 
   15. Scroll down to the **Events** section and you can seen the changes it's made
 
-  ![](images/autoscaling-dashboard-events.png)
+  ![History of pod count changes in the dashboard](images/autoscaling-dashboard-events.png)
 
   16. You can see the pod details by opening the replica set.
 
-  ![](images/autoscaling-pods-list.png)
+  ![Details of the auto scaled pods](images/autoscaling-pods-list.png)
 
   17. In the load generator window(s) stop the script by typing Control-C
 

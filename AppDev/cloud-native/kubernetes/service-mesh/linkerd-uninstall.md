@@ -1,6 +1,6 @@
-![](../../../../common/images/customer.logo2.png)
+![Title image](../../../../common/images/customer.logo2.png)
 
-# Cloud Native - Service mesh uninstall
+# Uninstall the service mesh 
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>

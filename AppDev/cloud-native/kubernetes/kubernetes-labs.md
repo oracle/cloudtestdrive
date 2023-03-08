@@ -1,6 +1,6 @@
 [Go to Overview Page](../README.md)
 
-![](../../../common/images/customer.logo2.png)
+![Title image](../../../common/images/customer.logo2.png)
 
 # Migration of Monolith to Cloud Native - Kubernetes labs
 

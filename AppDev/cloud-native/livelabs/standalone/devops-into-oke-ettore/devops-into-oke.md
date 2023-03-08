@@ -1,4 +1,4 @@
-![](../../../images/customer.logo2.png)
+![Title image](../../../images/customer.logo2.png)
 
 # Using the OCI DevOps service to build and deploy an example microservice into the Oracle Kubernetes Environment.
 

@@ -1,6 +1,6 @@
-![](../../../../common/images/customer.logo2.png)
+![Title image](../../../../common/images/customer.logo2.png)
 
-# Cloud Native - Service mesh install and setup
+# Install and setup a Service mesh
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>
@@ -35,7 +35,7 @@ The concept behind a service mesh is pretty simple. It's basically a set of netw
 
 The following diagram (from [buoyant.io](https://buoyant.io)) shows the components in the [linkerd](https://linkerd.io) service mesh, but other service mesh implementations have a similar structure. In this architecture, the proxies run as containers within the pod using the [sidecar pattern](https://dzone.com/articles/sidecar-design-pattern-in-your-microservices-ecosy-1)
 
-![](https://buoyant.io/images/manifesto/diag1.svg)
+![Diagram of the linkerd architecture](https://buoyant.io/images/manifesto/diag1.svg)
 
 The data plane consists of proxies which intercept the network operations of the pods and can apply rules to the data, for example restricting which services can be called by other services, encrypting data between proxies so cross microservice connections are transparently encrypted, splitting or mirroring traffic to help with update processes, and also gathering metrics on the number of calls, how often a cross microservice call failed and such like. Of course in a non Kubernetes environment you may have had your network switches or host operating systems do this, and many organizations had various levels of networking (separated by firewalls) for users, web applications, and databases, but in Kubernetes the boundary between the physical and logical compute resources is blurred, so using a service mesh allows you to have a simple implementation approach that applies regardless of if pods are running on the same node, different nodes in the same environment, or potentially even between data centers in opposite sides of the world.
 
@@ -730,13 +730,13 @@ We have had reports that some versions of Chrome will not allow you to override 
 
 Next you will be presented with the login challenge. The image below was captured using Safari, different browsers have slightly different looks, but the basic content is the same.
 
-  ![](images/linkerd-web-login.png)
+  ![Logging in to the Linkerd web page](images/linkerd-web-login.png)
 
   5. Login with `admin` as the username, for the password use the one you used when creating the login password above. Some browsers offer the change to remember the password details for later use. Feel free to do so if you like, or if you prefer you can re-enter the username and password when prompted by the browser.
 
 You'll be presented with the linkerd-web main page
 
-  ![](images/linkerd-web-main-page.png)
+  ![Main linkerd UI](images/linkerd-web-main-page.png)
 
 Let's also check you can access the grafana dashboard that's been installed by linkerd
 
@@ -744,7 +744,7 @@ Let's also check you can access the grafana dashboard that's been installed by l
 
 I have found that for some versions of Firefox that grafana complains about reverse-proxy settings. You may find that you need to use chrome or safari to access the grafana page.
 
-  ![](images/linkerd-grafana-initial-topline.png)
+  ![Possible browser related access issues for the linkerd ui](images/linkerd-grafana-initial-topline.png)
 
 <details><summary><b>Other options for linkerd access</b></summary>
 
@@ -877,7 +877,7 @@ The first line of the output is from the linkerd command telling us that its add
 
 Let's have a look at the web page again, refresh the main web page in the browser
 
-![](images/linkerd-web-main-page-after-namespace-inject.png)
+![The namespaces page after adding the injectiin annotation ](images/linkerd-web-main-page-after-namespace-inject.png)
 
 It doesn't look very different, and if you looked at the Grafana page that would still report it was only be monitoring one namespace. How come ? We added the annotation!
 
@@ -885,7 +885,7 @@ Well the reason for this is to do with the way a service mesh works.
 
 The following diagram (from [buoyant.io](https://buoyant.io)) shows the components in the [linkerd](https://linkerd.io) service mesh
 
-![](https://buoyant.io/images/manifesto/control-plane.png) 
+![Linkerd control plane](https://buoyant.io/images/manifesto/control-plane.png) 
 
 If you look at the data plane you can see what a pod looks like when the service mesh is enabled. In addition to the application containers in the pods you'll see there is also a container in the pod called `linkerd-proxy` This is a container that's automatically added to the pod for you when the pod is deployed. The proxy is what does the day to day activities of the service mesh as it intercepts the network traffic, does the metric counting, connection encryption and so on.
 
@@ -1370,7 +1370,7 @@ If you are asked to login use `admin` as the user name and the password you setu
 
 You can now see the main page of the linkerd UI
 
-![](images/linkerd-web-main-page-after-enablement.png)
+![Linked main page after restarting the services with the linkerd sidecar container](images/linkerd-web-main-page-after-enablement.png)
 
 Good news! We can see that there is http traffic in the ingress-ngnix namespace and TCP traffic in the tg-helidon namespace (your namespace will of course be different)
 
@@ -1380,23 +1380,23 @@ Good news! We can see that there is http traffic in the ingress-ngnix namespace 
   https://linkerd.<external IP>.nip.io/grafana
   ```
 
-  ![](images/linkerd-grafana-topline-after-services-enabled.png)
+  ![Grafana page showing data from linkerd enabled services](images/linkerd-grafana-topline-after-services-enabled.png)
 
 In some rare situations Grafana may not show all of the namespaces and services, I'm not sure exactly why, but I think it gets occasionally gets confused by times and timezones. And it will only show information (including summaries) of the display range.
 
   12. Let's adjust the visualization range to cover the last 12 hours. In the upper right you will see the time range selection
 
-  ![](images/linkerd-grafana-time-range-selected.png)
+  ![The current grafana time window](images/linkerd-grafana-time-range-selected.png)
 
 In this case it's showing `May 20,2020,12:00:00 to May 22,2020 11:59:59` but it might also be showing a relative time range like `Last 5 minutes`
 
   13. Click time range to get the selection choice 
 
-  ![](images/linkerd-grafana-time-range-selection.png)
+  ![Accessing new time window selection](images/linkerd-grafana-time-range-selection.png)
 
   14. Click the **Last 12 hours** option
 
-  ![](images/linkerd-grafana-topline-after-services-enabled-last-12-hours.png)
+  ![Changing the time window to 12 hours](images/linkerd-grafana-topline-after-services-enabled-last-12-hours.png)
 
 We can see that there are three namespaces being monitored and 14 deployments. You may need to play around a bit with the time range in the UI to get the proper details.
 

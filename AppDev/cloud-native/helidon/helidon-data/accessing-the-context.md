@@ -1,6 +1,6 @@
-![](../../../../common/images/customer.logo2.png)
+![Title image](../../../../common/images/customer.logo2.png)
 
-# Helidon Cloud Native - Accessing the context of the request
+# Accessing the context of a request
 
 Sometimes you need to understand what's going on  within a request, for example to generate an audit record you may want to get the users identity (validated of course) so you can record who did what.
 

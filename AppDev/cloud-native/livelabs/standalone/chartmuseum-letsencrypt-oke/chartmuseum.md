@@ -1,4 +1,4 @@
-![](../../../images/customer.logo2.png)
+![Title image](../../../images/customer.logo2.png)
 
 # Deploy a private helm repository with ChartMuseum and Let's Encrypt
   

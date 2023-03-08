@@ -1,6 +1,6 @@
-![](../../../../../common/images/customer.logo2.png)
+![Title image](../../../../../common/images/customer.logo2.png)
 
-# Cloud Native - Health, Readines and liveness
+# Using probes for Health, Readines and liveness
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
