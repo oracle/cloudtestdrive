@@ -119,7 +119,7 @@ Located ssh access details for OCI Code repo called cloudnative-helidon-storefro
 Ready to start demo project code transfer, proceed ?
 ```
 
-  3. The Script checks that everything is setup as expected, and ensures that your code repo is empty (after all you wpoudln't want to overwrite any existing work) If there is a problem it will tell you. It then asks if you want to proceed, enter `y` if you do.
+  3. The Script checks that everything is setup as expected, and ensures that your code repo is empty (after all you wouldn't want to overwrite any existing work) If there is a problem it will tell you. It then asks if you want to proceed, enter `y` if you do.
   
   ```
   OK, starting to transfer sample code

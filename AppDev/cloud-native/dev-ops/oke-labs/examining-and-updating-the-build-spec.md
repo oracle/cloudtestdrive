@@ -88,7 +88,7 @@ The exportedVariables are passed out of the build process to the following stage
 
 A variable defined here is automatically transfered between build stages as if it were defined in the `variables:` block.
 
-You can't export a vaultVariable for security reasons, so if you want to do that you have to crate another variable to export, then in one of the stages transfer the values over. This is why there is a vaultVariable names `OCID_HOST_VAULT` and an exportedVariable called `OCIR_HOST`
+You can't export a vaultVariable for security reasons, so if you want to do that you have to create another variable to export, then in one of the stages transfer the values over. This is why there is a vaultVariable named `OCID_HOST_VAULT` and an exportedVariable called `OCIR_HOST`
 
 Note that it's also possible to define parameters that you can set when the pipeline is run, those are processed as ${VARIABLE_NAME} we'll look at how to set them up later on
 
@@ -289,7 +289,7 @@ You can see here in this example we're using the Frankfurt region, which is also
   
   ![](images/vault-create-secret-start.png)
 
-  4. Confirm the compartment is the one you are using, Name the secret `OCIR_HOST_VAULT`. Provide a description `Secret to hold the registry host info`. In the encryption key chose the master key you created earlier. 
+  4. Confirm the compartment is the one you are using, Name the secret `OCIR_HOST`. Provide a description `Secret to hold the registry host info`. In the encryption key chose the master key you created earlier. 
   
   ![](images/vault-create-secret-part-1.png)
   
@@ -299,9 +299,9 @@ You can see here in this example we're using the Frankfurt region, which is also
 
 It will take a short while to create the secret, but you can carry on while that's happening.
 
-  6. Click the three dots on the left of the row containing your secret, take the **Copy OCID** option, paste the OCID into a note pad or something, being sure to identify it so you know its for the `OCIR_HOST_VAULT` secret
+  6. Click the three dots on the left of the row containing your secret, take the **Copy OCID** option, paste the OCID into a note pad or something, being sure to identify it so you know its for the `OCIR_HOST` secret
 
-  7. Follow the steps above to create a `OCIR_STORAGE_NAMESPACE_VAULT` secret, with a description `Secret to hold the storage namespace info` but in this case the contents will be the tenancy storage namespace you determined earlier from the tenancy web page (it's not the OCIR host name) remember when you save its OCID away to identify it as the tenancy storage OCID.
+  7. Follow the steps above to create a `OCIR_STORAGE_NAMESPACE` secret, with a description `Secret to hold the storage namespace info` but in this case the contents will be the tenancy storage namespace you determined earlier from the tenancy web page (it's not the OCIR host name) remember when you save its OCID away to identify it as the tenancy storage OCID.
   
   Once you have finished you will have two secrets in your vault.
   
@@ -317,7 +317,7 @@ It will take a short while to create the secret, but you can carry on while that
 
 The script first of all checks the `$HOME/hk8sLabsSettings` file to see if you've already setup the secrets, it will check that you have created a vault and a master key with the vault setup scripts, and also check that the information needed to setup the OCIR connections has been created (This will have happened when you build the container images). 
 
-It then creates two secrets in the vault you created with the vault setup scripts, one (OCIR_HOST_VAULT) contains the DNS name used for the images in OCIR (e.g. lhr.ocir.io) and the other (OCIR_STORAGE_NAMESPACE_VAULT) contains the Kubernetes namespace that the service you are about to build will be deployed into 
+It then creates two secrets in the vault you created with the vault setup scripts, one (`OCIR_HOST`) contains the DNS name used for the images in OCIR (e.g. lhr.ocir.io) and the other (`OCIR_STORAGE_NAMESPACE`) contains the Kubernetes namespace that the service you are about to build will be deployed into 
 
 It will save the OCID's of the resources created so that they can be removed later if desired.
 
@@ -340,17 +340,17 @@ Found vault key
 Loading existing settings information
 Found vault
 Found vault key
-No existing reuse information for OCIR_HOST_VAULT, continuing
+No existing reuse information for OCIR_HOST, continuing
 Checking if secret OCIR_HOST_VAULT already exists
 secret OCIR_HOST_VAULT Does not exist, creating it and setting it to dxb.ocir.io and description OCIR hostname
 The OCID for the OCIR_HOST_VAULT secret is ocid1.vaultsecret.oc1.uk-london-1.amaaaaaaq54j26aaquv2oxfcvd7lm2sex4aqwfzy5ubwd6znzjhsv6obpcna
 Loading existing settings information
 Found vault
 Found vault key
-No existing reuse information for OCIR_STORAGE_NAMESPACE_VAULT, continuing
-Checking if secret OCIR_STORAGE_NAMESPACE_VAULT already exists
-secret OCIR_STORAGE_NAMESPACE_VAULT Does not exist, creating it and setting it to axqyfhi1mo8s and description OCIR Storage namespace
-The OCID for the OCIR_STORAGE_NAMESPACE_VAULT secret is ocid1.vaultsecret.oc1.uk-london-1.amaaaaaaq54j26acrs3y52m7y6ynmqc2ewsjirew6ta5vncjxi63z5c3kzoa
+No existing reuse information for OCIR_STORAGE_NAMESPACE, continuing
+Checking if secret OCIR_STORAGE_NAMESPACE already exists
+secret OCIR_STORAGE_NAMESPACE Does not exist, creating it and setting it to axqyfhi1mo8s and description OCIR Storage namespace
+The OCID for the OCIR_STORAGE_NAMESPACE secret is ocid1.vaultsecret.oc1.uk-london-1.amaaaaaaq54j26acrs3y52m7y6ynmqc2ewsjirew6ta5vncjxi63z5c3kzoa
   ```
   
   The script will set the secrets up based on information gathered when the OCIR container images were created. It will display the OCID's for the two secrets. When you do the next step these will no longer be visible, so please copy these into a text editor (along with the associated secret name !) or note pad as you will need this information when you update the build_spec.yaml file.
@@ -390,7 +390,7 @@ Note that your new my-lab-branch branch is the one currently checked out (is has
   - `cp helidon-storefront-full/yaml/build/build_spec.yaml .`
 
 
-  5. Edit the new `$HOME/cloudnative-helidon-storefront/build_spec.yaml` file in the OCI cloud shell (vi and nano are available), locate the `vaultVariables` section in the YAML and REPLACE the current `OCI_HOST_VAULT` value (`Needs your host secrets OCID`) with the OCID of the `OCIR_HOST_VAULT` secret you just created. For the and `OCIR_STORAGE_NAMEPACE_VAULT` variable REPLACE its current value (`Needs your storage namespace OCID`) with the OCID of the `OCIR_STORAGE_NAMESPACE_VAULT` you just created. The example below if my file, but of course yours will be different.
+  5. Edit the new `$HOME/cloudnative-helidon-storefront/build_spec.yaml` file in the OCI cloud shell (vi and nano are available), locate the `vaultVariables` section in the YAML and REPLACE the current `OCI_HOST_VAULT` value (`Needs your host secrets OCID`) with the OCID of the `OCIR_HOST` secret you just created. For the and `OCIR_STORAGE_NAMEPACE_VAULT` variable REPLACE its current value (`Needs your storage namespace OCID`) with the OCID of the `OCIR_STORAGE_NAMESPACE` you just created. The example below if my file, but of course yours will be different.
   
   **IMPORTANT** Make certain you use the right OCID from the vault to match the variables names in the build_spec.yaml, If you get this wrong (getting them reversed is not uncommon) there will be unusual errors later on. 
   
