@@ -140,7 +140,7 @@ In this tutorial, you use default settings to define a new cluster. When you cre
         name: oke-admin
         namespace: kube-system
       ---
-      apiVersion: rbac.authorization.k8s.io/v1beta1
+      apiVersion: rbac.authorization.k8s.io/v1
       kind: ClusterRoleBinding
       metadata:
         name: oke-admin
