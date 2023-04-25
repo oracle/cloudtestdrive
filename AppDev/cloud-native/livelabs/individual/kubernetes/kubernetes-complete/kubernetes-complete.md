@@ -82,7 +82,7 @@ This module takes you through the process of using the scripts we have provided 
 
 Please follow the tasks in the **Setup your container images using scripts** section (click the name in the labs index)
 
-## BPart 1:  Setting up your cluster and running your services
+## Part 1:  Setting up your cluster and running your services
 
 This section covers how to run the docker images in kubenetes, how to use Kubernetes secrets to hold configuration and access information, how to use an ingress to expose your application on a web port. Basically this covers how to make your docker based services run in in a Kubernetes cluster.
 
