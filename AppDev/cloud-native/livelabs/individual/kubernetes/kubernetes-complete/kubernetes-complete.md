@@ -53,7 +53,7 @@ If you feel you are already pretty familiar with a specific concept, you can jus
 
 You are about to create a Kubernetes deployment with two microservices, Storefront and Stockmanager. These are very simple microservcies to show a very small bit of business logic and how to access the Autonomous Transaction Processing database. Once they are running you will look at how Kubernetes delivers high availability, horizontal scaling and rolling upgrades. There will also be the System services of an Ingress controller with associated load balancer and the Kubernetes dashboard 
 
-Depending on what optional modules you do you may also explore the use of Prometheus and Grafana to capture and visdualize metrics data, Fluend to capture and store log data in Elastic Stack or Object Storage and how the Linkerd service mesh can be used to help monitor and manage your network traffic.
+Depending on what optional modules you do you may also explore the use of Prometheus and Grafana to capture and visualize metrics data, Fluentd to capture and store log data in Elastic Stack or Object Storage and how the Linkerd service mesh can be used to help monitor and manage your network traffic.
 
 ![](../../../images/kubernetes-labs-what-will-be-built-incl-optional.png)
 
