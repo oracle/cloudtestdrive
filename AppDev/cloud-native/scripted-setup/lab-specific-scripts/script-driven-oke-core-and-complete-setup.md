@@ -181,7 +181,7 @@ you will still be prompted for input.
 Do you want to use the automatic defaults ?
 ```
 
-  Next the script asks you if you want to use the automatic defaults, if you do so the case the script will automatically assume the answer to any yes / no question is `y` If you are in a free trial account it's safe to enter `y` as this will significantly speed up the setup process as the script will not have to wait for your inputs - as mentioned above though you will have to interact with the Cloud Shell occasionally while the script is running to prevent it timing out and the scripts being aborted.
+  Next the script asks you if you want to use the automatic defaults, if you do so the script will automatically assume the answer to any yes / no question is `y` If you are in a free trial account it's safe to enter `y` as this will significantly speed up the setup process as the script will not have to wait for your inputs - as mentioned above though you will have to interact with the Cloud Shell occasionally while the script is running to prevent it timing out and the scripts being aborted.
     
   ```
   This script can perform certain setup operations in parallel, doing so will speed
@@ -215,4 +215,4 @@ The script should have run to completion. It will have setup the environment nee
 ## Acknowledgements
 
 * **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
-* **Last Updated By** - Tim Graves, June 2022
+* **Last Updated By** - Tim Graves, May 2023

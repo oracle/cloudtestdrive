@@ -231,7 +231,7 @@ Firstly we need to create a namespace for the ingress controller.
 
   2. Run the following command to install **ingress-nginx** using Helm 3:
   
-  - `helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx --version 4.6.1 --set rbac.create=true  --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-protocol"=TCP --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape"=flexible --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape-flex-min"=10  --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape-flex-max"=20`
+  - `helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx --version 4.6.1 --set rbac.create=true  --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-protocol"=TCP --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape"=flexible --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape-flex-min"=10  --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape-flex-max"=10`
   
   ```
 NAME: ingress-nginx
@@ -269,7 +269,7 @@ The helm options are :
 
 - `--set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape"=flexible` As above this sets a specific flag, in this case to be passed to OCI to create a load balancer which supports variable levels of throughput.
 
-- `--set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape-flex-min"=10` and `--set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape-flex-max"=20` also set specific flags which are passed on when creating the load balancer and specify the minimum and maximum throughput for the flexible load balancer
+- `--set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape-flex-min"=10` and `--set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape-flex-max"=10` also set specific flags which are passed on when creating the load balancer and specify the minimum and maximum throughput for the flexible load balancer
 
 </details>
 
@@ -651,7 +651,7 @@ Before we can login to the dashboard we need to get the access token for the das
   3. Create the token for the newly created user: 
     
   ``` 
-  kubectl create token dashboard-user --namespace kube-system --duration=1000h`
+  kubectl create token dashboard-user --namespace kube-system --duration=1000h
 ```
 
 (The following is just an example, not a real token)
@@ -1371,6 +1371,11 @@ There are also more specific secrets used for TLS certificates and pulling docke
 
 ### Task 5a: Configuring the database connection details
 
+If you used the scripts to create your database  you don't need to do this step by hand as they will have set the database configuration up for you, but if you created the database by hand you will need to expend this section and perform the steps.
+
+<details><summary><b>I created the database by hand, how to I configure the DB credentials ?</b></summary>
+
+
 In The Helidon labs we provided the database details via Java system properties using the command line. We don't want to do that here as it we would have to place them in the image (making it insecure, and also hard to update) To get around that (and to show the flexibility of the Helidon framework) here we will be specifying them using environment variables, because Helidon uses a hierarchy of sources for the configuration we don't even need to change the code to do this!
 
 We will of course be using a Kubernetes secret to hold them (they are sensitive, so placing them in a deployment yaml file which might be accessible by many folks would also be a bad idea) **You** need to update them with the setting for **your** database, these were downloaded for you by the database setup scripts.
@@ -1458,6 +1463,7 @@ Here we're telling Kubernetes to look in the `stockmanagerdb` secret for a data 
 ---
 
 </details>
+</details>
 
 ### Task 5b: Creating the secrets
 
@@ -1498,7 +1504,7 @@ sm-wallet-atp         Opaque                                7      1s
 
 ```
 
-Feel free to look at the script, it just uses kubectl to ussue commands, we just script it to reduce the amount of copy-and-paste
+Feel free to look at the script, it just uses kubectl to issue commands, we just script it to reduce the amount of copy-and-paste
 
 If you had made a mistake editing the file or get an error when executing it just re-edit the *create-secrets.sh* script and run it again, it will reset to a known state before creating the secrets again so running it multiple times is safe. 
 
@@ -1525,8 +1531,6 @@ sm-wallet-atp         Opaque                                7      5m9s
   ```
 apiVersion: v1
 data:
-  stockmanager-database.yaml: amF2YXg6CiAgICBzcWw6CiAgICAgICAgRGF0YVNvdXJjZToKICAgICAgICAgICAgc3RvY2tMZXZlbERhdGFTb3VyY...
-ogSGVsaWRvbkxhYnMKICAgICAgICAgICAgICAgICAgICBwYXNzd29yZDogSDNsaWQwbl9MYWJzCgo=
   stockmanager-security.yaml: c2VjdXJpdHk6CiAgcHJvdmlkZXJzOgogICAgIyBlbmFibGUgdGhlICJBQkFDIiBzZWN1cml0eSBwcm92aWRlciAoY
 ...  
 XIiXQogICAgICAgICAgLSBsb2dpbjogImpvZSIKICAgICAgICAgICAgcGFzc3dvcmQ6ICJwYXNzd29yZCI=
@@ -1587,7 +1591,12 @@ For security reasons Kubernetes only stores the secrets in memory, they are not 
 
 ### Task 5c: Configuration
 
-Now all configuration information needs to be secreat, we'e going to look at config maps in a moment, but first we need to add some configuration information
+If you used the scripts to create your environment you don't need to do this step by hand as they will have set the stockmanager configuration up for you, but if you created the instanced by hand you will need to expend this section and perform the steps.
+
+<details><summary><b>I created the environment by hand, how to I configure the stockmanager details ?</b></summary>
+
+
+Now all configuration information needs to be secret, we'e going to look at config maps in a moment, but first we need to add some configuration information
 
 To allow for some lab situations where there are multiple users in the same database we separate tables by department Id, like many other parts of these labs this will be based on your name or initials.
 
@@ -1617,6 +1626,8 @@ app:
   5. Switch back to the scripts directory
   
   - `cd $HOME/helidon-kubernetes/base-kubernetes`
+  
+</details>
 
 ### Task 5d: Config Maps
 
@@ -2163,7 +2174,7 @@ This will populate the database for you so you have some test data.
 
 We can interact with the deployment using the public side of the ingress (it's load ballancer),  We stored this in the environment variable `$EXTERNAL_IP` .
 
-  5. Let's try to get some data - **you might get an error** if you do wait a short while and try again as your servcies are probabaly still starting up. If you only get a response of `[]` it's fine, you'll just need to setup the test data (expand the section below for details)
+  5. Let's try to get some data - **you might get an error** if you do wait a short while and try again as your services are probabaly still starting up. If you only get a response of `[]` it's fine, you'll just need to setup the test data (expand the section above for details)
   
   -  `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
 
@@ -2327,7 +2338,7 @@ Hibernate:
         StockLevel 
     WHERE
         departmentName='TestOrg'
-2019.12.29 18:05:23 INFO com.oracle.labs.helidon.stockmanager.resources.StockResource Thread[helidon-1,5,server]: Returning 5 stock items
+2019.12.29 18:05:23 INFO com.oracle.labs.helidon.stockmanager.resources.StockResource Thread[helidon-1,5,server]: Returning 4 stock items
 
 ```
 
@@ -2427,7 +2438,7 @@ We've mounted the `sf-config-map` (which contains the contents of `storefront-co
   
   -  `kubectl exec -it storefront-588b4d69db-w244b -- /bin/bash`
   
-You are now inside the container.  Let's look atround
+You are now inside the container.  Let's look around
 
   3. Inside the container type
 
@@ -2555,6 +2566,7 @@ You have reached the end of this module, the next section is **Cloud Native with
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
+* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA CNAD Team
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, April 2022
+* **Contributor** - Alberto Campagna, Cloud Native Solutions Architect, EMEA CNAD Team
+* **Last Updated By** - Tim Graves, May 2023
