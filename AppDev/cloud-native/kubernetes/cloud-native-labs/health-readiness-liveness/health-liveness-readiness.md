@@ -912,9 +912,9 @@ Connection: keep-alive
 
 ## Task 5: Startup probes
 
-You may have noticed above that we had to wait for the liveness probe to complete it's initial delay it started checking. As the liveness probe checks for the service running this means we can't start checking until liveness probe has started. But equally we don't want to set the initial delay of the liveness probe to be to low as it might start checking before the service is running, and then kill the service off before it's finished it's setup. In the case of the storefront this is not to much of a problem as the service starts up fast, but for a more complex service, especially a legacy service that may have a startup time that varies a lot depending on other factors, this could be a problem.
+You may have noticed above that we had to wait for the liveness probe to complete it's initial delay it started checking. As the liveness probe checks for the service running this means we can't start checking until liveness probe has started. But equally we don't want to set the initial delay of the liveness probe to low as it might start checking before the service is running, and then kill the service off before it's finished it's setup. In the case of the storefront this is not much of a problem as the service starts up fast, but for a more complex service, especially a legacy service that may have a startup time that varies a lot depending on other factors, this could be a problem.
 
-To solve this in Kubernetes 1.18 the concept of startup probes was be introduced as a beta feature. A startup probe is a very simple probe that tests to see if the service has started running, usually at a basic level, and then starts up the liveness probes. Effectively the startupProbe means there is no longer any need for the initialDelaySeconds on the liveness probe.
+To solve this in Kubernetes 1.18 the concept of startup probes was introduced as a beta feature. A startup probe is a very simple probe that tests to see if the service has started running, usually at a basic level, and then starts up the liveness probes. Effectively the startupProbe means there is no longer any need for the initialDelaySeconds on the liveness probe.
 
 Let's enable this.
 
