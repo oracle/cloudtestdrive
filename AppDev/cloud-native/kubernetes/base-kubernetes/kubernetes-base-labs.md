@@ -40,7 +40,7 @@ The OCI Cloud Shell has helm already installed for you, however it does not know
  
   1. Add the Kubernetes nginx based ingress repo to helm
   
-  - `helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx`
+  <copy>helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx</copy>
 
   ```
 "ingress-nginx" has been added to your repositories
