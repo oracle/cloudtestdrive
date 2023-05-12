@@ -42,7 +42,7 @@ The OCI Cloud Shell has helm already installed for you, however it does not know
  
  
  ``` 
-  <copy>helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx</copy>
+  helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
   
  ```
 
@@ -52,21 +52,25 @@ The OCI Cloud Shell has helm already installed for you, however it does not know
 
   2. Run the following command to add the dashboard repo to helm
   
-  - `helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard`
-  
   ```
+  helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard
+  ```
+  
+  `
 "kubernetes-dashboard" has been added to your repositories
- ```
+ `
 
   3. To can get the current list of repositories run the following command :
   
-  - `helm repo list`
+  ```
+  helm repo list
+  ```
   
-  ```                                            
+  `                                            
 NAME                    URL        
 ingress-nginx           https://kubernetes.github.io/ingress-nginx   
 kubernetes-dashboard    https://kubernetes.github.io/dashboard
-```
+`
     
   4. Lastly let's update the helm cache, run the following command :
   
