@@ -215,7 +215,6 @@ We are working on or exploring the posibility of a number of additional optional
 ---
 
 
-
 ## Further Information
 
 For links to useful web pages and other information that I found while writing these labs see the further information on Kubernetes section
