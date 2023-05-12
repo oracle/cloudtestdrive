@@ -62,7 +62,9 @@ The OCI Cloud Shell has helm already installed for you, however it does not know
 
   3. To can get the current list of repositories run the following command :
   
+ ``` 
   <copy>helm repo list</copy>
+  ```
   
   ```                                         
 NAME                    URL        
@@ -72,7 +74,9 @@ kubernetes-dashboard    https://kubernetes.github.io/dashboard
     
   4. Lastly let's update the helm cache, run the following command :
   
-  - `helm repo update`
+  ``` 
+  <copy>helm repo update`</copy>
+  ```
 
   ```
 Hang tight while we grab the latest from your chart repositories...
