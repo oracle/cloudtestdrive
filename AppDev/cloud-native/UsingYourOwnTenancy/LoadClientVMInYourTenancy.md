@@ -212,6 +212,9 @@ You need to let your VM run for a couple of mins to fully boot and start the VNC
 - You will be asked to enter a password to access the virtual screen. Your instructor will have provided this.
  
  ---
+## Acknowledgements
 
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
+* **Last Updated By** - Tim Graves, May 2023
 
 [Go to *Helidon for Cloud Native* overview Page](../helidon-labs.md)

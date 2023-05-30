@@ -31,6 +31,22 @@ If you are only doing the Kubernetes based labs you need to have completed the t
 
 In both cases you need to complete the **Create your Kubernetes cluster** and **Cloud Shell Setup for the Kubernetes Labs** modules.
 
+### Copy tags
+
+In many cases in this lab you will find text in a box with a `Copy` label which is text you may need to execute in the cloud shell or enter into a file.
+
+```bash
+  <copy>echo "For example like this echo command"</copy>
+```
+
+Clicking the `Copy` will copy the text to the clip board, this will make it easier for you to simply paste it into the shell to do the lab.
+
+However... in some cases the commands you'd need to type will vary from the commands shown (for example a different identifier). Obviously in this case just pasting text that has been copied will not work as these need to be changed. Usually in those cases though the command will be given as an example there will not be a `Copy` box present - this indicates that you will need to modify the command to make it work.
+
+```
+Of course in some cases what you will see is example output from a program or a file, from the context it shoudl be clear that this is not somethign you will need to enter into a shell.
+```
+
 ## Task 1: Configure the Helm repository
 
 Helm is the tool we will be using to install standard software into Kubernetes. While it's possible to load software into Kubertetes by hand Helm makes it much easier as it has pre-defined configurations (called charts) that it pulls from an internet based repository.
@@ -43,8 +59,10 @@ The OCI Cloud Shell has helm already installed for you, however it does not know
  
  ``` 
   <copy>helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx</copy>
-  
- ```
+
+  ```bash
+  <copy>helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx</copy>
+  ```
 
  ```
  "ingress-nginx" has been added to your repositories
@@ -52,7 +70,7 @@ The OCI Cloud Shell has helm already installed for you, however it does not know
 
   2. Run the following command to add the dashboard repo to helm
   
-  ```
+  ```bash
   <copy>helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard</copy>
   ```
   
@@ -61,8 +79,8 @@ The OCI Cloud Shell has helm already installed for you, however it does not know
  ```
 
   3. To can get the current list of repositories run the following command :
-  
- ``` 
+ 
+  ```bash
   <copy>helm repo list</copy>
   ```
   
@@ -74,8 +92,8 @@ kubernetes-dashboard    https://kubernetes.github.io/dashboard
     
   4. Lastly let's update the helm cache, run the following command :
   
-  ``` 
-  <copy>helm repo update`</copy>
+  ```bash
+  <copy>helm repo update</copy>
   ```
 
   ```
@@ -94,7 +112,9 @@ If you used the scripts to create your OKE cluster this will have been configure
 
 Verify you can access the cluster:
   
-  -  `kubectl get nodes`
+  ```bash
+  <copy>kubectl get nodes</copy>
+  ```
 
   ```
 NAME        STATUS   ROLES   AGE     VERSION
@@ -110,7 +130,9 @@ To check the setup, make sure to have copied your personal kubeconfig file to th
 
   1. Create a directory for the Kubernetes config
   
-  - `mkdir -p $HOME/.kube`
+  ```bash
+  <copy>mkdir -p $HOME/.kube</copy>
+  ```
 
   2. Open the OCI Console UI
 
@@ -132,7 +154,7 @@ You will be presented with a page with details for downloading the kubeconfig fi
 
 Look for the section with the download command, it will look something like this (yours of course will have a different OCID)
 
-  ```
+  ```bash
 oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.eu-frankfurt-1.abababababj472oaexzkmkvm5lsue2usqfkrcizupdx64o2qg4dcsvt62fhrgq --file $HOME/.kube/config --region eu-frankfurt-1 --token-version 2.0.0  --kube-endpoint PUBLIC_ENDPOINT
 ```
 
@@ -153,11 +175,15 @@ Existing kubeconfig file found at /home/oracle/.kube/config and new config merge
 
   9. Set the config file to be accessible only by you (This stops warnings from helm about it having the wrong permissions)
   
-  - `chmod 600 $HOME/.kube/config`
+  ```bash
+  <copy>chmod 600 $HOME/.kube/config</copy>
+  ```
   
   10. Verify you can access the cluster:
   
-  -  `kubectl get nodes`
+  ```bash
+  <copy>kubectl get nodes</copy>
+  ```
 
   ```
 NAME        STATUS   ROLES   AGE     VERSION
@@ -171,7 +197,9 @@ Your Kubernetes config file is now downloaded into the `.kube/config` file. It's
 
   11. In the OCI cloud shell type
   
-  - `kubectl config get-contexts`
+  ```bash
+  <copy>kubectl config get-contexts</copy>
+  ```
   
   ```
 CURRENT   NAME   	              CLUSTER               AUTHINFO           NAMESPACE
@@ -182,9 +210,11 @@ Of course this is an example from when I ran the command in my environment, the 
 
 If you are in an environment where you have multiple clusters in use and their kubectl config downloaded you will see multiple entries here. The current context (indicated by the `*` in the `CURRENT` column) is the one that will be used if you don't target a kubectl command at a specific cluster using it's context name. Of course if you were running with multiple clusters having to type `context-czpet5do3oq` every time would be painful, and it's not exactly memorable either, so let's rename it to something easier to work with.
 
-  12. In the OCI Cloud shell type the following, replace `<Context name>` with the context name you just got for your cluster, I'd recommend copy-and-paste ! The output shows it when the context is names `context-czpet5do3oq` as in my example above.
+  12. In the OCI Cloud shell type the following, replace `[Context name]` with the context name you just got for your cluster, I'd recommend copy-and-paste ! The output shows it when the context is names `context-czpet5do3oq` as in my example above.
   
-  - `kubectl config rename-context <Context name> one` 
+  ```bash
+  kubectl config rename-context [Context name] one
+  ``` 
   
   ```
   Context "context-czpet5do3oq" renamed to "one".
@@ -192,7 +222,9 @@ If you are in an environment where you have multiple clusters in use and their k
   
   13. Let's look at the updated info. In the OCI clouds shell type :
   
-  - `kubectl config get-contexts`
+  ```bash
+  <copy>kubectl config get-contexts</copy>
+  ```
   
   ```
 CURRENT   NAME   CLUSTER               AUTHINFO           NAMESPACE
@@ -233,7 +265,9 @@ Firstly we need to create a namespace for the ingress controller.
 
   1. Run the following command :
   
-  - `kubectl create namespace ingress-nginx`
+  ```bash
+  <copy>kubectl create namespace ingress-nginx</copy>
+  ```
   
   ```
     namespace/ingress-nginx created
@@ -241,7 +275,9 @@ Firstly we need to create a namespace for the ingress controller.
 
   2. Run the following command to install **ingress-nginx** using Helm 3:
   
-  - `helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx --version 4.6.1 --set rbac.create=true  --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-protocol"=TCP --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape"=flexible --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape-flex-min"=10  --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape-flex-max"=10`
+  ```bash
+  <copy>helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx --version 4.6.1 --set rbac.create=true  --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-protocol"=TCP --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape"=flexible --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape-flex-min"=10  --set controller.service.annotations."service\.beta\.kubernetes\.io/oci-load-balancer-shape-flex-max"=10</copy>
+  ```
   
   ```
 NAME: ingress-nginx
@@ -305,7 +341,9 @@ Because the Ingress controller is a service, to make it externally available it 
 
   7. To see the progress in creating the Ingress service type :
   
-  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+  ```bash
+  <copy>kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller</copy>
+  ```
   
   ```
 NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
@@ -315,12 +353,14 @@ In this case we can see that the load balancer has been created and the external
 
 In the helm command you'll have seen a couple of `--set`` options.  These are oci specific annotations (more on annotations later) which tell Kubernetes to setup the load balancer using the TLS secret we created earlier
 
-  8. **Make a note of this external IP address, you'll be using it a lot!** We'll also set a OCI Shell variable so you can reference it directly when running subsequent commands that use it, that'll make running those commands much easier ! In the OCI Shell type the following, replacing `<External IP>` with the ip address you've just got.
+  8. **Make a note of this external IP address, you'll be using it a lot!** We'll also set a OCI Shell variable so you can reference it directly when running subsequent commands that use it, that'll make running those commands much easier ! In the OCI Shell type the following, replacing `[External IP]` with the ip address you've just got.
   
-  - `export EXTERNAL_IP=<External IP>`
+  ```bash
+  export EXTERNAL_IP=[External IP]
+  ```
   
 
-**IMPORTANT** Ths OCI Cloud shall variable you've just set will persist for the duration of the cloud shell session (it will "time out" after approximately 20 mins of no interaction), if you exit and re-open the browser window / tab, start using a different OCI Cloud Shell instance, or reconnect after a timeout the variable will need to be set again using the `export EXTERNAL_IP=<External IP>` you just used - if you don't then commands that use the variable will not fail, potentially silently. If you are in doubt if the variable is set then entering `echo $EXTERNAL_IP` into the cloud shell will display the IP address, if it returns nothing or an empty line then you will need to re-set the variable.
+**IMPORTANT** Ths OCI Cloud shall variable you've just set will persist for the duration of the cloud shell session (it will "time out" after approximately 20 mins of no interaction), if you exit and re-open the browser window / tab, start using a different OCI Cloud Shell instance, or reconnect after a timeout the variable will need to be set again using the `export EXTERNAL_IP=[External IP]` you just used - if you don't then commands that use the variable will not fail, potentially silently. If you are in doubt if the variable is set then entering `echo $EXTERNAL_IP` into the cloud shell will display the IP address, if it returns nothing or an empty line then you will need to re-set the variable.
 
 Note that in a production environment you might want to terminate the encryption in the load balancer for efficiency reasons, and also between the microservices using a service mesh (which is a later optional lab).
 
@@ -341,7 +381,9 @@ If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it
 
 In the OCI Cloud shell type
 
-  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+  ```bash
+  <copy>kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller</copy>
+  ```
   
   ```
 NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
@@ -352,13 +394,17 @@ The External IP of the Load Balancer connected to the ingresss controller is sho
 
 **To set the variable again**
 
-  - `export EXTERNAL_IP=<External IP>`
+  ```bash
+  export EXTERNAL_IP=[External IP] 
+  ```
   
 ---
 
 </details>
   
-  -  `helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set ingress.enabled=true  --set ingress.annotations."kubernetes\.io/ingress\.class"=nginx --set ingress.hosts="{dashboard.kube-system.$EXTERNAL_IP.nip.io}" --version 6.0.7`
+  ```bash
+  <copy>helm install kubernetes-dashboard  kubernetes-dashboard/kubernetes-dashboard --namespace kube-system --set ingress.enabled=true  --set ingress.annotations."kubernetes\.io/ingress\.class"=nginx --set ingress.hosts="{dashboard.kube-system.$EXTERNAL_IP.nip.io}" --version 6.0.7</copy>
+  ```
   
   ```
 NAME: kubernetes-dashboard
@@ -384,7 +430,9 @@ If the variable `$EXTERNAL_IP` was not set or was set incorrectly then you will 
 
   To uninstall the dashboard type 
 
-  - `helm uninstall kubernetes-dashboard --namespace kube-system`
+  ```bash
+  <copy>helm uninstall kubernetes-dashboard --namespace kube-system</copy>
+  ```
   
 It will take a short while to remove the dashboard, after which set  re-try with the **correct external IP address for your ingress service** 
 
@@ -392,13 +440,21 @@ It will take a short while to remove the dashboard, after which set  re-try with
 
 **To check if `$EXTERNAL_IP` is set**
 
-If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it returns the IP address you're ready to go, if not then you'll need to re-set it.
+If you want to check if the variable is still set type 
+
+```bash
+  <copy>echo $EXTERNAL_IP</copy>
+```  
+
+If it returns the IP address you're ready to go, if not then you'll need to re-set it.
 
 **To get the external IP address if you no longer have it**
 
 In the OCI Cloud shell type
 
-  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+  ```bash
+  <copy>kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller</copy>
+  ```
   
   ```
 NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
@@ -409,7 +465,9 @@ The External IP of the Load Balancer connected to the ingresss controller is sho
 
 **To set the variable again**
 
-  - `export EXTERNAL_IP=<External IP>`
+  ```bash
+  export EXTERNAL_IP=[External IP]
+  ```
   
 ---
 
@@ -441,7 +499,9 @@ The helm options are :
 
   2.  Check the staus of the Helm deployment
   
-  -  `helm list --namespace kube-system`
+  ```bash
+  <copy>`helm list --namespace kube-system</copy>
+  ```
 
   ```
 NAME                    NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                           APP VERSION
@@ -452,7 +512,9 @@ We've seen it's been deployed by Helm, this doesn't however mean that the pods a
 
   3. Check the  status of the objects created:
   
-  -  `kubectl get all --namespace kube-system`
+  ```bash
+  <copy>kubectl get all --namespace kube-system</copy>
+  ```
 
   ```
 NAME                                       READY   STATUS    RESTARTS   AGE
@@ -494,7 +556,9 @@ If you want more detailed information then you can extract it, for example to ge
 
   4.  Execute below command, replacing the ID with the ID of your pod. You can get the ID of your pod by looking at the output from the previous kubectl command, in the pods list for a pod starting kubernetes-dashboard.
   
-  -  `kubectl get pod kubernetes-dashboard-bfdf5fc85-djnvb  -n kube-system -o yaml`
+  ```bash
+  kubectl get pod kubernetes-dashboard-bfdf5fc85-djnvb  -n kube-system -o yaml
+  ```
 
   ```yaml
 apiVersion: v1
@@ -539,21 +603,25 @@ If you're using JSON and want to focus in on just one section of the data struct
 
   5. Get a specific element from a configuration, replacing the pod ID of course :
   
-  -  `kubectl get pod kubernetes-dashboard-bfdf5fc85-djnvb  -n kube-system -o=jsonpath='{.spec.containers[0].image}'`
+  ```bash
+  kubectl get pod kubernetes-dashboard-bfdf5fc85-djnvb  -n kube-system -o=jsonpath='{.spec.containers[0].image}'
+  ```
 
   ```
 kubernetesui/dashboard:v2.0.4
 ```
 
-(The image shown is correct at the time of writing, but as the Kubernetes dashboard updates over time that the precise image used may also update.) 
+(This is correct at the time of writing, but as the Kubernetes dashboard updates over time that the version will change) 
 
-This used the "path" in json of .spec.containers[0].image where the first . means the "root" of the JSON structure (subesquent . are delimiters in the way that / is a delimiter in Unix paths) the spec means the spec object (the specification) containers[0] means the first object in the containers list in the spec object and image means the attribute image in the located container.
+This used the "path" in json of .spec.containers[0].image where the first . means the "root" of the JSON structure (subsequent . are delimiters in the way that / is a delimiter in Unix paths) the spec means the spec object (the specification) containers[0] means the first object in the containers list in the spec object and image means the attribute image in the located container.
 
 We can use this coupled with kubectl to identify the specific pods associated with a service, for example 
 
   6. Run this to get the selectors used by the dashboard service
    
-  -  `kubectl get service kubernetes-dashboard -n kube-system -o=jsonpath='{.spec.selector}'`
+  ```bash
+  <copy>kubectl get service kubernetes-dashboard -n kube-system -o=jsonpath='{.spec.selector}'</copy>
+  ```
 
   ```
 map[app.kubernetes.io/component:kubernetes-dashboard app.kubernetes.io/instance:kubernetes-dashboard app.kubernetes.io/name:kubernetes-dashboard]
@@ -562,7 +630,9 @@ Tells us that any thing with label app.kubernetes.io/name (or /component of /ins
 
   7. Get the list of pods providing the dashboard service by name (the service just goes by it's name, no random identifiers added to it)
   
-  -  `kubectl get pod -n kube-system --selector=app.kubernetes.io/name=kubernetes-dashboard`
+  ```bash
+  <copy>kubectl get pod -n kube-system --selector=app.kubernetes.io/name=kubernetes-dashboard</copy>
+  ```
 
   ```
 NAME                                    READY   STATUS    RESTARTS   AGE
@@ -575,13 +645,17 @@ First we're going to need create a user to access the dashboard. This involves c
 
   1. Go to the helidon-kubernetes project folder, then the base-kubernetes directory
   
-  -  `cd  $HOME/helidon-kubernetes/base-kubernetes`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/base-kubernetes</copy>
+  ```
   
   2. Create the user and role
   
-  -  `kubectl apply -f dashboard-user.yaml`
-
+  ```bash
+  <copy>kubectl apply -f dashboard-user.yaml</copy>
   ```
+
+```
 serviceaccount/dashboard-user created
 clusterrolebinding.rbac.authorization.k8s.io/dashboard-user created
 ```
@@ -593,7 +667,7 @@ clusterrolebinding.rbac.authorization.k8s.io/dashboard-user created
 
 Open up the dashboard-file.yaml and let's have a look at a few of the configuration items
 
-  ```
+  ```yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -605,7 +679,7 @@ This first line tells us that kubectl will be using the core Kubernetes API to d
 
 There is then a "divider" of `---` between the next section, this tells kubectl / kubetnetes to start the next section as if it was a separate command, the benefit here is that it allows us to basically issue one command that does two actions.
 
-  ```
+  ```yaml
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
@@ -621,7 +695,7 @@ rules:
 
 This section is potentially dangerous, it's  tells Kubernetes to use the rbac.authorization.k8s.io service (This naming scheme uses DNS type naming and basically means the role based access controls capability of the authorization service in Kubernetes.io) to define a cluster role that has all permissions to everything. In a production environment you'd want to restrict to specific capabilities, but for this lab it's easier to do the lot rather than jump into the Kubernetes security configuration, which is a large topic in it's own right (But something you should study before moving into production).
 
-  ```
+  ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -660,9 +734,9 @@ Before we can login to the dashboard we need to get the access token for the das
 
   3. Create the token for the newly created user: 
     
-  ``` 
-  kubectl create token dashboard-user --namespace kube-system --duration=1000h
-```
+  ```bash
+  <copy> kubectl create token dashboard-user --namespace kube-system --duration=1000h</copy>
+  ```
 
 (The following is just an example, not a real token)
 
@@ -681,7 +755,9 @@ In several of the labs we're going to be using the dashboard, so let's look arou
 
   1. Open a web browser and go to the dashbaord URL you got above, it will be something like `https://dashboard.kube-system.123.456.789.999.nip.io` but the IP address will be that of your ingress service (this is just an example)
   
-  - `https://dashboard.kube-system.<External IP>.nip.io/#!/login`
+  ```text
+  https://dashboard.kube-system.[External IP].nip.io/#!/login
+  ```
 
   2. In the browser, accept a self signed certificate the mechanism varies by browser and version, but as of August 2020 the following worked.
   
@@ -821,31 +897,33 @@ In a production cluster where you may have many applications running composed of
 
   1. Create a namespace for your projects and setup the environment to make it the default, to make it easier we have created a script called create-namespace.sh that does this for you. You must use **your initials** as a parameter (for example in my case that's `tg-helidon`, **but yours will probably differ !**)
   
-  2.  `cd $HOME/helidon-kubernetes/base-kubernetes`
+  2.  Switch to the directory
   
-  3.  `bash create-namespace.sh <your-initials>-helidon`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/base-kubernetes</copy>
+  ```
+  
+  3.  Create the namespace (remember to substitute `[your-initials]`)
+  
+  ```bash
+  bash create-namespace.sh [your-initials]-helidon
+  ```
   
 ```
-<<<<<<< Updated upstream
-Deleting old tg-helidon namespace
-Creating new tg-helidon namespace
-namespace/tg-helidon created
-Setting default kubectl namespace
-Context "west" modified.
-=======
 create-namespace.sh Using default context name of one
 Deleting old tg namespace in cluster one
 Creating new tg namespace in cluster one
 namespace/tg created
 Setting default kubectl namespace in cluster one
 Context "one" modified.
->>>>>>> Stashed changes
 ```
 The script tries to delete any existing namespace with that name, creates a new one, and sets it as a default. The output above was using tg-helidon as the namespace, but of course you will have used your initials and so will see them in the output instead of tg.
 
   4. We can check the namespace has been created by listing all namespaces:
 
-  -  `kubectl get namespace`
+  ```bash
+  <copy>kubectl get namespace</copy>
+  ```
 
   ```
 NAME              STATUS   AGE
@@ -858,7 +936,9 @@ tg-helidon        Active   97s
 ```
   5. If we look into the namespace we've just created we'll see it contains nothing yet:
 
-  -  `kubectl get all`
+  ```bash
+  <copy>kubectl get all</copy>
+  ```
 
   ```
 No resources found in tg-helidon namespace.
@@ -875,13 +955,13 @@ A namespace is basically a "virtual" cluster that let's us separate our services
 
 The following command will create a namespace (don't actually do this)
 
-```
-$ kubectl create namespace <my namespace name>
+```bash
+kubectl create namespace <my namespace name>
 ```
 
 We list available namespaces using kubectl
 
-```
+```bash
 $ kubectl get namespace
 NAME              STATUS   AGE
 default           Active   2d23h
@@ -894,8 +974,8 @@ kube-system       Active   2d23h
 
 Once you have a namespace you can use it by adding `--namespace <my namespace name>` to all of your kubectl commands (otherwise the default namespace is used which is called `default`). That's a bit of a pain, but fortunately for us there is a way to tell kubectl to use a different namespace for the default
 
-```
-$ kubectl config set-context --current --namespace=<my namespace name>
+```bash
+kubectl config set-context --current --namespace=<my namespace name>
 ```
 
 Of course the Kubernetes dashboard also understands namespaces. If you go to the dashboard page you can chose the namespace to use (initially the dashboard uses the "default" namespace, so if you can't see what you're expecting there remember to change it to the namespace you've chosen. 
@@ -909,7 +989,7 @@ Of course the Kubernetes dashboard also understands namespaces. If you go to the
 
 The next task is to create services. A service effectively defines a logical endpoint that has a internal dns name inside the cluster and a virtual IP address bound to that name to enable communication to a service. It's also internal load balancer in that if there are multiple pods for a service it will switch between the pods, and also will remove pods from it's load balancer if they are not operating properly (We'll look at this side of a service later on). 
 
-<details><summary><b>Explaining the service concept in Kubernetes</b></summary>
+<details><summary><b>Explaining the service concept in Kubernetes and sample service yaml</b></summary>
 
 Services determine what pods they will talk to using selectors. Each pod had meta data comprised of multiple name / value pairs that can be searched on (e.g. type=dev, type=test, type=production, app=stockmanager etc.) The service has a set of labels it will match on (within the namespace) and gets the list of pods that match from Kubernetes and uses that information to setup the DNS and the virtual IP address that's behind the DNS name. The Kubernetes system uses a round robin load balancing algorithm to distribute requests if there are multiple pods with matching labels that are able to accept requests (more on that later) 
 
@@ -917,7 +997,7 @@ Services can be exposed externally via load balancer on a specific port (the typ
 
 The various services files define the services for us. Below is the definition of the storefront service (there are also files which define the stock manager and zipkin services as well)
 
-```
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -949,7 +1029,9 @@ You need to define the services before defining anything else (e.g. deployments,
 
   1. The `create-services.sh` script applies the YAML files to create the cluster services for us. Using a script makes this easily reproducible, though of course you could store the YAML in a git repo and use a deployment tool like Oracle DevOps CD or ArgoCD to apply them from the repo. Note that as you may be running this in a the script deletes any existing servcies for saftey first.
 
-  - `bash create-services.sh`
+  ```bash
+  <copy>bash create-services.sh</copy>
+  ```
 
   ```
 create-services.sh Using default context name of one
@@ -978,7 +1060,9 @@ Note that the service defines the endpoint, it's not actually running any code f
 
   2. To see the services we can use kubectl :
 
-  - `kubectl get services`
+  ```bash
+  <copy>kubectl get services</copy>
+  ```
 
   ```
 Current services in namespace are
@@ -1022,7 +1106,9 @@ We have already installed the Ingress controller which actually operates the ing
 
   1. Let's look at the Ingress services
 
-  -  `kubectl get services -n ingress-nginx`
+  ```bash
+  <copy>kubectl get services -n ingress-nginx</copy>
+  ```
 
   ```
 NAME                                          TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
@@ -1042,7 +1128,9 @@ If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it
 
 In the OCI Cloud shell type
 
-  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+  ```bash
+  <copy>kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller</copy>
+  ```
   
   ```
 NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
@@ -1053,7 +1141,9 @@ The External IP of the Load Balancer connected to the ingresss controller is sho
 
 **To set the variable again**
 
-  - `export EXTERNAL_IP=<External IP>`
+  ```bash
+  export EXTERNAL_IP=[External IP]
+  ```
   
 ---
 
@@ -1067,7 +1157,9 @@ To enable the lab to complete in a reasonable time we will therefore be generati
 
   3. Run the following command to generate a certificate (you installed the step command in the cloud shell setup). The value of the IP address of the Ingress controllers load balancer is in `$EXTERNAL_IP` and will be replaced in the command below automatically.
 
-  - `$HOME/keys/step certificate create store.$EXTERNAL_IP.nip.io tls-store-$EXTERNAL_IP.crt tls-store-$EXTERNAL_IP.key --profile leaf  --not-after 8760h --no-password --insecure --kty=RSA --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
+  ```bash
+  <copy>$HOME/keys/step certificate create store.$EXTERNAL_IP.nip.io tls-store-$EXTERNAL_IP.crt tls-store-$EXTERNAL_IP.key --profile leaf  --not-after 8760h --no-password --insecure --kty=RSA --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key</copy>
+  ```
 
   ```
 Your certificate has been saved in tls-store-123.456.789.123.crt.
@@ -1080,7 +1172,9 @@ The certificate needs to be in a Kubernetes secret, we'll look at these in more 
 
   4. Run the following command to save the certificate as a secret in the ingress-nginx namespace.
 
-  - `kubectl create secret tls tls-store --key tls-store-$EXTERNAL_IP.key --cert tls-store-$EXTERNAL_IP.crt`
+  ```bash
+  <copy>kubectl create secret tls tls-store --key tls-store-$EXTERNAL_IP.key --cert tls-store-$EXTERNAL_IP.crt</copy>
+  ```
  
   ```
 secret/tls-store created
@@ -1088,7 +1182,9 @@ secret/tls-store created
 
   5. Let's use kubectl to confirm we have no rules yet
 
-  -  `kubectl get ingress`
+  ```bash
+  <copy>kubectl get ingress</copy>
+  ```
 
   ```
 No resources found in tg-helidon namespace.
@@ -1104,7 +1200,7 @@ An ingress rule defines a URL path that is looked for, when it's discovered the 
 
 There are ***many*** possible types of rules that we could define, but here we're just going to look at two types: Rules that are plain in that the recognize part of a path, and just pass the whole URL along to the actual service, and rules that re-write the URL before passing it on. Let's look at the simpler case first, that of the forwarding.
 
-```
+```yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -1140,7 +1236,7 @@ The spec section basically defines the rules to do the processing, basically if 
 
 In some cases we don't want the entire URL to be forwarded however, what if we were using the initial part of the URL to identify a different service, perhaps for the health or metrics capabilities of the microservices which are on a different port (http://storefront:9081/health for example) In this case we want to re-write the incomming URL as it's passed to the target
 
-```
+```yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -1189,7 +1285,9 @@ As we've mentioned before for the purposes of this lab we are not setting up off
   
   4. The multiple ingress rules files have a placeholder in them and there is a script that will replace the placeholder with the IP address in a new version of the file. In the OCI Cloud shell type the following, at the prompts enter `y`
   
-  - `bash set-ingress-ip.sh $EXTERNAL_IP`
+  ```bash
+  <copy>bash set-ingress-ip.sh $EXTERNAL_IP</copy>
+  ```
   
   ```
 set-ingress-ip.sh Using default context name of one
@@ -1214,7 +1312,9 @@ Note that the output above is for an external IP of `123.456.789.999` This is of
 
   5. There is a shell script that will apply each of the ingress rules yaml files. Using a script here is prefered as it is reproducible and minimises the chance of typo's, mistakes or forgetting to apply a file. of course in a production system you'd probabaly be using an automated deployment tool instead of this script. In the OCI cloud shell type
   
-  - `bash create-ingress-rules.sh`
+  ```bash
+  <copy>bash create-ingress-rules.sh</copy>
+  ```
   
   ```
 create-ingress-rules.sh Using default context name of one
@@ -1232,7 +1332,9 @@ ingress.networking.k8s.io/zipkin-direct-ingress created
   
   6. We can see the resulting ingresses using kubectl
 
-  -  `kubectl get ingress`
+  ```bash
+  <copy>kubectl get ingress</copy>
+  ```
 
   ```
 NAME                           CLASS    HOSTS                          ADDRESS   PORTS     AGE
@@ -1280,7 +1382,9 @@ If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it
 
 In the OCI Cloud shell type
 
-  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+  ```bash
+  <copy>kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller</copy>
+  ```
   
   ```
 NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
@@ -1291,14 +1395,18 @@ The External IP of the Load Balancer connected to the ingresss controller is sho
 
 **To set the variable again**
 
-  - `export EXTERNAL_IP=<External IP>`
+  ```bash
+  export EXTERNAL_IP=[External IP]
+  ```
   
 ---
 
 </details>
 
 
-  -  `curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/store`
+  ```bash
+  <copy>curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/store</copy>
+  ```
 
   ```
 HTTP/2 503 
@@ -1329,7 +1437,9 @@ We got a **service unavailable** error. This is because that web page is recogni
 
   10. If we tried to go to a URL that's not defined we will as expected get a **404 error**:
 
-  -  `curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/unknowningress`
+  ```bash
+  <copy>curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/unknowningress</copy>
+  ```
 
   ```
 HTTP/2 404 
@@ -1365,7 +1475,7 @@ A secret can be mounted into the pod like any other type of volume. They represe
 
 Creating a secret is pretty simple, for example (**don't type this**)
 
-```
+```bash
 $ kubectl create secret generic sm-wallet-atp --from-file=confdir/Wallet_ATP
 secret/sm-wallet-atp created
 ```
@@ -1392,21 +1502,31 @@ We will of course be using a Kubernetes secret to hold them (they are sensitive,
 
   1. Create the wallet directory and navigate to it:
   
-  - `mkdir -p $HOME/helidon-kubernetes/configurations/stockmanagerconf/Wallet_ATP`
+  ```bash
+  <copy>mkdir -p $HOME/helidon-kubernetes/configurations/stockmanagerconf/Wallet_ATP</copy>
+  ```
   
-  - `cd $HOME/helidon-kubernetes/configurations/stockmanagerconf/Wallet_ATP`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/configurations/stockmanagerconf/Wallet_ATP</copy>
+  ```
   
   2. Copy the wallet file to the directory
   
-  - `cp $HOME/Wallet.zip .`
+  ```bash
+  <copy>cp $HOME/Wallet.zip .</copy>
+  ```
   
   3. Unzip the wallet file
   
-  - `unzip Wallet.zip`
+  ```bash
+  <copy>unzip Wallet.zip</copy>
+  ```
   
   4. Look at the contents of the tnsnames.ora file to get the database connection names
   
-  - `cat tnsnames.ora`
+  ```bash
+  <copy>cat tnsnames.ora</copy>
+  ```
 
   ```
 jleoow_high = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_high.atp.oraclecloud.com))(security=(ssl_server
@@ -1431,7 +1551,9 @@ l_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFU
 
   6. Switch to the config files directory
   
-  - `cd $HOME/helidon-kubernetes/configurations/stockmanagerconf`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/configurations/stockmanagerconf</copy>
+  ```
 
   7. **Edit** the file `databaseConnectionSecret.yaml`
 
@@ -1479,11 +1601,15 @@ Here we're telling Kubernetes to look in the `stockmanagerdb` secret for a data 
 
   1. Switch back to the scripts directory
   
-  - `cd $HOME/helidon-kubernetes/base-kubernetes `
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/base-kubernetes</copy>
+  ```
 
   2. Run the following command to create the secrets:
   
-  -  `bash create-secrets.sh`
+  ```bash
+  <copy>bash create-secrets.sh</copy>
+  ```
 
   ```
 create-secrets.sh Using default context name of one
@@ -1522,7 +1648,9 @@ If you want to modify a secret then you simply use kubectl to edit it with the n
 
   3. Listing the secrets is simple:
 
-  -  `kubectl get secrets`
+  ```bash
+  <copy>kubectl get secrets</copy>
+  ```
 
   ```
 NAME                  TYPE                                  DATA   AGE
@@ -1536,7 +1664,9 @@ sm-wallet-atp         Opaque                                7      5m9s
 
   4. To see the content of a specific secret :
 
-  -  `kubectl get secret sm-conf-secure -o yaml`
+  ```bash
+  <copy>kubectl get secret sm-conf-secure -o yaml</copy>
+  ```
 
   ```
 apiVersion: v1
@@ -1558,11 +1688,13 @@ type: Opaque
 
 The contents of the secret is base64 encoded, to see the actual content we need to use a base64 decoder, in the following replace <your secret payload> with the stockmanager-security.yaml data in result from above, (it starts c2VjdXJpdHk in this example) : 
 
-  5. To get the secret in plain test
+  5. To get the secret in plain text
 
-  -  `echo <your secret payload> | base64 -d -i -`
-
+  ```bash
+  echo [your secret payload] | base64 -d -i -
   ```
+
+  ```yaml
 security:
   providers:
     # enable the "ABAC" security provider (also handles RBAC)
@@ -1614,7 +1746,9 @@ We need to configure the stockmanager-config.yaml file. You need to do this even
 
   1. Navigate into the folder 
   
-  - `cd $HOME/helidon-kubernetes/configurations/stockmanagerconf/conf`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/configurations/stockmanagerconf/conf</copy>
+  ```
   
   2. Open the file **stockmanager-config.yaml**
   
@@ -1635,7 +1769,9 @@ app:
   
   5. Switch back to the scripts directory
   
-  - `cd $HOME/helidon-kubernetes/base-kubernetes`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/base-kubernetes</copy>
+  ```
   
 </details>
 
@@ -1662,7 +1798,9 @@ In the $HOME/helidon-kubernetes/base-kubernetes folder there is a script create-
 
   1. Run the script to create the config maps
 
-  -  `bash create-configmaps.sh`
+  ```bash
+  <copy>bash create-configmaps.sh</copy>
+  ```
 
   ```
 create-configmaps.sh Using default context name of one
@@ -1689,7 +1827,9 @@ As with the secretd we are using a script to make it easier, feel free to look a
 
   2. To get the list of config maps we need to ask kubectl or look at the config maps in the dashbaord:
 
-  -  `kubectl get configmaps`
+  ```bash
+  <copy>kubectl get configmaps</copy>
+  ```
 
   ```
 NAME            DATA   AGE
@@ -1699,9 +1839,11 @@ sm-config-map   2      37s
 
   3. We can get more details by getting the data in JSON or YAML, in this case I'm extracting it using YAML as that's the origional data format:
 
-  -  `kubectl get configmap sf-config-map -o=yaml`
-
+  ```bash
+  <copy>kubectl get configmap sf-config-map -o=yaml</copy>
   ```
+
+  ```yaml
 apiVersion: v1
 data:
   storefront-config.yaml: |-
@@ -1800,7 +1942,7 @@ If you were looking at the stockmanager deployment you'd see entries like the be
 
 Next is the resources section.
 
-```
+```yaml
         resources:
           limits:
             # Set this to me a quarter CPU for now
@@ -2007,7 +2149,9 @@ You will be using the details you gathered for the docker login.
 
 - Now run the file to create the secret
 
-- `bash create-docker-secret.sh`
+```bash
+  <copy>bash create-docker-secret.sh</copy>
+  ```
 
 ---
 
@@ -2017,11 +2161,15 @@ The `deploy.sh` script just does a sequence of commands to apply the deployment 
 
   1. Switch to the helidon-kubernetes directory
   
-  - `cd $HOME/helidon-kubernetes`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes</copy>
+  ```
 
   2. Now run the deploy.sh script
   
-  -  `bash deploy.sh`
+  ```bash
+  <copy>bash deploy.sh</copy>
+  ```
 
   ```
 Creating zipkin deployment
@@ -2090,10 +2238,15 @@ deployment.apps/storefront     0/1     1            0           0s
 deployment.apps/zipkin         0/1     1            0           0s
 ```
 
-This shows us that for the deployments we have 0 pods ready of the target of 1 and that therer are no pods currently available.
+This shows us that for the deployments we have 0 pods ready of the target of 1 and that there are no pods currently available.
 
+We can refresh the information if we want
+
+```bash
+  <copy> kubectl get all</copy>
+  ```
+  
 ```
-$ kubectl get all
 NAME                               READY   STATUS    RESTARTS   AGE
 pod/stockmanager-d6cc5c9b7-bbjdp   1/1     Running   0          3m9s
 pod/storefront-68bbb5dbd8-vp578    1/1     Running   0          3m9s
@@ -2128,7 +2281,9 @@ Is we look at the Kubernetes dashboard we will see similar information. There is
 
   3. Now lets look at the logs of the pods you have launched (replace the ID shown here with the exact ID of your pod)
   
-  -  `kubectl logs  --follow storefront-68bbb5dbd8-vp578`
+  ```bash
+  kubectl logs  --follow storefront-68bbb5dbd8-vp578
+  ```
 
   ```
 2019.12.29 17:40:04 INFO com.oracle.labs.helidon.storefront.Main Thread[main,5,main]: Starting server
@@ -2156,11 +2311,15 @@ If you haven't run the Helidon labs you won't have  setup the test data, expand 
 
   - Make sure you're in the right directory
   
-  - `cd $HOME/helidon-kubernetes`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes</copy>
+  ```
 
   - Run the following command, using the external IP address you used above (just the ip address is needed)
 
-  - `bash create-test-data.sh $EXTERNAL_IP`
+  ```bash
+  <copy>bash create-test-data.sh $EXTERNAL_IP</copy>
+  ```
   
 ```
     Service IP address is 130.61.11.184
@@ -2186,7 +2345,9 @@ We can interact with the deployment using the public side of the ingress (it's l
 
   5. Let's try to get some data - **you might get an error** if you do wait a short while and try again as your services are probabaly still starting up. If you only get a response of `[]` it's fine, you'll just need to setup the test data (expand the section above for details)
   
-  -  `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
+  ```bash
+  <copy>curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel</copy>
+  ```
 
   ```
 HTTP/2 200 
@@ -2211,7 +2372,9 @@ Check to see if the stock manager is restarting a lot
 
   - In the OCI cloud shell type
   
-  - `kubectl get pods` 
+  ```bash
+  <copy>kubectl get pods</copy>
+  ```
   
   ```
   NAME                            READY   STATUS    RESTARTS   AGE
@@ -2226,7 +2389,9 @@ You can have a look at the logs of the service
 
   - In the OCI Cloud Shell type - note that here I am using the pod ID in my environment, the pod ID you have for your stockmanager service will be different.
   
-  - `kubectl logs stockmanager-6b759ddcd7-rz2jm`
+  ```bash
+  kubectl logs stockmanager-6b759ddcd7-rz2jm
+  ```
   
 Looking at the output you may get usefull information from any stack traces, the example here is a part of the ouput showing a stack trace where the `app.department` property can't be found. This may be because it not been set, the line it's on is incorrectly indented, or it has not had the comment characters removed.
 
@@ -2267,7 +2432,9 @@ If you can't get the database connection info then make sure you have downloaded
 
   - In the OCI CLoud shell type 
   
-  - `ls $HOME/helidon-kubernetes/configurations/stockmanagerconf/Wallet_ATP `
+  ```bash
+  <copy>ls $HOME/helidon-kubernetes/configurations/stockmanagerconf/Wallet_ATP</copy>
+  ```
   
   ```
 cwallet.sso  ewallet.p12  keystore.jks  ojdbc.properties  README  sqlnet.ora  tnsnames.ora  truststore.jks  Wallet.zip
@@ -2277,7 +2444,7 @@ If you get a `not found` or the directory does not contain the file as described
 
 If the database connection is not found then make sure that you have correctly set the JDBC URL value in the `$HOME/helidon-kubernetes/configurations/stockmanagerconf/databaseConnectionSecret.yaml` file, the URL should look something like 
 
-```
+```yaml
   url: jdbc:oracle:thin:@tgdemo_high?TNS_ADMIN=./Wallet_ATP
 ```
 
@@ -2294,7 +2461,9 @@ Of course tgdemo_high is the connection name for **my** database, yours will pro
 
 The service definition maps onto the actual pods in the deployments using the selector as seen above. To find out exactly what pods match the selectors for a service 
 
-- `kubectl get endpoints`
+```bash
+  <copy>kubectl get endpoints</copy>
+  ```
 
 ```
 NAME           ENDPOINTS                           AGE
@@ -2313,7 +2482,9 @@ And to see what's happening when we made the request we can look into the pods l
 
   6. Looking at the logs now - remember to replace the storefront pod id (`storefront-68bbb5dbd8-vp578` in this case) with **the pod id you got earlier** (from the `kubectl get all`)
   
-  - `kubectl logs storefront-68bbb5dbd8-vp578 --tail=5`
+  ```bash
+  kubectl logs storefront-68bbb5dbd8-vp578 --tail=5
+  ```
 
 ```
 2019.12.29 18:05:14 INFO com.netflix.config.sources.URLConfigurationSource Thread[helidon-2,5,server]: To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
@@ -2325,7 +2496,9 @@ And to see what's happening when we made the request we can look into the pods l
 
   7. And also on the stockmanager pod, you also need to replace the pod id !
   
-  -  `kubectl logs stockmanager-d6cc5c9b7-bbjdp  --tail=20`
+  ```bash
+  kubectl logs stockmanager-d6cc5c9b7-bbjdp  --tail=20
+  ```
 
   ```
 $ kubectl logs stockmanager-d6cc5c9b7-bbjdp  --tail=20
@@ -2362,7 +2535,7 @@ As we are running zipkin and have an ingress setup to let us access the zipkin p
 
   8. Open your browser
   
-  9. Go to the ingress end point for your cluster, for example `https://store.<external IP>.nip.io/zipkin` (replace with `<external IP>` *your* ingress controllers Load balancer IP address when entering in the browser)
+  9. Go to the ingress end point for your cluster, for example `https://store.<external IP].nip.io/zipkin` (replace with `<external IP]` *your* ingress controllers Load balancer IP address when entering in the browser)
 
   10. In the browser, accept a self signed certificate. The mechanism varies per browser and sometimes version, but below worked as of Summer 2020.
   
@@ -2392,7 +2565,9 @@ Of course the other services are also available, for example we can get the mini
 
   13. Consult minimum change 
   
-  -  `curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/sf/minimumChange`
+  ```bash
+  <copy>curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/sf/minimumChange</copy>
+  ```
 
   ```
 HTTP/2 200 
@@ -2409,7 +2584,9 @@ And in this case we are going to look at data on the admin port for the stock ma
 
   14. Test the Readiness call
   
-  - `curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/smmgt/health/ready`
+  ```bash
+  <copy>curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/smmgt/health/ready</copy>
+  ```
 
   ```
 HTTP/2 200 
@@ -2427,7 +2604,9 @@ We saw in the helidon labs that it's possible to have the helidon framework moni
 
   1. Get the status resource data 
   
-  -  `curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/sf/status`
+  ```bash
+  <copy>curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/sf/status</copy>
+  ```
 
   ```
 HTTP/2 200 
@@ -2444,15 +2623,19 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 We've mounted the `sf-config-map` (which contains the contents of `storefront-config.yaml` file) onto `/conf`. Let's use a command to connect to the running pod (remember your storefront pod will have a different id so use kubectl get pods to retrieve that) and see how it looks in there, then exit the connection
 
-  2. Execute these commands :
+  2. Execute these commands (replacing the pod ID with that of your pod of course):
   
-  -  `kubectl exec -it storefront-588b4d69db-w244b -- /bin/bash`
+  ```bash
+  kubectl exec -it storefront-588b4d69db-w244b -- /bin/bash
+  ```
   
 You are now inside the container.  Let's look around
 
   3. Inside the container type
 
-  -  `ls /conf`
+  ```bash
+  <copy>ls /conf</copy>
+  ```
    
   ```
 storefront-config.yaml
@@ -2461,9 +2644,11 @@ storefront-network.yaml
 
   4. Inside the container type
   
-  -  `cat /conf/storefront-config.yaml`
+  ```bash
+  <copy>cat /conf/storefront-config.yaml</copy>
+  ```
 
-   ```
+   ```yaml
     app:
       storename: "My Shop"
       minimumdecrement: 2
@@ -2475,7 +2660,9 @@ storefront-network.yaml
 
   5. Exit the pod :  
   
-  - `exit`
+  ```bash
+  <copy>exit</copy>
+  ```
 
 As expected we see the contents of our config firectory and the storefront-config.yaml. Let's use the dashboard to modify that data
 
@@ -2511,15 +2698,19 @@ You'll see the changes reflected in the window. If you made any changes which ca
 
 Now let's return to the pod and see what's happened
 
-  14. Re-connect to the pod
+  14. Re-connect to the pod (replacing the pod ID with that of your pod)
   
-  - `kubectl exec -it storefront-588b4d69db-w244b -- /bin/bash`
+  ```bash
+  kubectl exec -it storefront-588b4d69db-w244b -- /bin/bash
+  ```
   
   15. In the pod, run 
   
-  - `cat /conf/storefront-config.yaml`
-
+  ```bash
+  <copy>cat /conf/storefront-config.yaml</copy>
   ```
+
+  ```yaml
     app:
       storename: "Tims Shop"
       minimumdecrement: 2
@@ -2531,7 +2722,9 @@ Now let's return to the pod and see what's happened
 
   16. Exit the pod 
 
-  - `exit`
+  ```bash
+  <copy>exit</copy>
+  ```
 
 The `storefront-config.yaml` file has now changed to reflect the modifications you made to the config map. Note that it usually seems to take between 30 - 60  seconds for the change to propogate into the pod, so if you don't see the change immediately wait a short time then retry.
 
@@ -2539,7 +2732,9 @@ If we now get the status resource data again it's also updated
 
   17. Query the status
   
-  - `curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/sf/status`
+  ```bash
+  <copy>curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/sf/status</copy>
+  ```
 
   ```
 HTTP/2 200 

@@ -214,8 +214,8 @@ Next step is to start creating a DevOps project !
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
-* **Last Updated By** - Tim Graves, November 2021
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
+* **Last Updated By** - Tim Graves, May 2023
 
 If you want to see the official documentation on setting these up then please see
 https://docs.oracle.com/en-us/iaas/Content/devops/using/devops_iampolicies.htm

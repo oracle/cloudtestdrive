@@ -49,10 +49,12 @@ In the VM you have docker installed and running, so to start zipkin:
   
   2. Run the following command in a terminal of your VM to start Zipkin in a container:
   
-  - `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin:2.23.4`
+  ```bash
+  <copy>docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin:2.24.1</copy>
+  ```
 
   ```
-Unable to find image 'openzipkin/zipkin:2.22.0' locally
+Unable to find image 'openzipkin/zipkin:2.24.1' locally
 Trying to pull repository docker.io/openzipkin/zipkin ... 
 2.22.0: Pulling from docker.io/openzipkin/zipkin
 188c0c94c7c5: Pull complete 
@@ -95,26 +97,26 @@ Now you need to add the zipkin packages to the pom.xml file for **both** the sto
 
   6. Look for the dependency `helidon-tracing-zipkin` in **each** pom.xml file, you may want to use the search facility (Control-F) to look for zipkin, it will be towards the end of the dependencies section. You will find a section that has been commented out and looks like the following (The way the file is formated may mean this is on one line, or spread across multiple lines)
 
-  ```xml
-		<!-- tracing calls -->
-		<!-- 
-		<dependency>
-			<groupId>io.helidon.tracing</groupId>
-			<artifactId>helidon-tracing-zipkin</artifactId>
-		</dependency>
-		-->
+  ```text
+		&lt!-- tracing calls --&gt
+		&lt!-- 
+		&ltdependency&gt
+			&ltgroupId&gtio.helidon.tracing&lt/groupId&gt
+			&ltartifactId&gthelidon-tracing-zipkin&lt/artifactId&gt
+		&lt/dependency&gt
+		--&gt
 ```
 
   7. Remove the `<!--` and `-->` around the dependency ONLY
 
-The result will look something like, if it's all on one line that's fins as long as the `<!--` and `-->` around the dependency have been removed)
+The result will look something like, if it's all on one line that's fine as long as the `<!--` and `-->` around the dependency have been removed)
   
-```xml
-		<!-- tracing calls -->
-		<dependency>
-			<groupId>io.helidon.tracing</groupId>
-			<artifactId>helidon-tracing-zipkin</artifactId>
-		</dependency>
+```text
+		&lt!-- tracing calls --&gt
+		&ltdependency&gt
+			&ltgroupId&gtio.helidon.tracing&lt/groupId&gt
+			&ltartifactId&gthelidon-tracing-zipkin&lt/artifactId&gt
+		&lt/dependency&gt
 ```
 
   8. Save **both** of the pom.xml files
@@ -149,7 +151,9 @@ You now need to tell Helidon what to call the tracing requests and where traces 
 
   15. Make a request, for example reserving stock (this may take a few seconds due to the lazy initialization) 
   
-  -  `curl -i -X POST -u jill:password -d '{"requestedItem":"Pencil", "requestedCount":7}' -H "Content-type:application/json" http://localhost:8080/store/reserveStock`
+  ```bash
+  <copy>curl -i -X POST -u jill:password -d '{"requestedItem":"Pencil", "requestedCount":7}' -H "Content-type:application/json" http://localhost:8080/store/reserveStock</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -173,7 +177,9 @@ Let's see what happens once we've re-made the request.
  
   17. re-run the request
   
-   -  `curl -i -X POST -u jill:password -d '{"requestedItem":"Pencil", "requestedCount":7}' -H "Content-type:application/json" http://localhost:8080/store/reserveStock`
+  ```bash
+  <copy>curl -i -X POST -u jill:password -d '{"requestedItem":"Pencil", "requestedCount":7}' -H "Content-type:application/json" http://localhost:8080/store/reserveStock</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -219,7 +225,9 @@ The pom.xml would usually need to be updated for the metrics, that's already bee
   
   3. Add the following annotation:
   
-  -  `@Counted`
+  ```java
+  <copy>@Counted</copy>
+  ```
 
 The result will look like
 
@@ -239,7 +247,7 @@ public class StorefrontResource {
 You may need to add the following import to the class
 
 ```java
-import org.eclipse.microprofile.metrics.annotation.Counted;
+<copy>import org.eclipse.microprofile.metrics.annotation.Counted;</copy>
 ```
 ---
 
@@ -262,7 +270,9 @@ That's it, you don't need to do anything else, Helidon will automatically genera
 
   5. Now look at the metrics endpoint :
   
-  - `curl -i -X GET http://localhost:9080/metrics`
+  ```bash
+  <copy>curl -i -X GET http://localhost:9080/metrics</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -355,7 +365,9 @@ There is a lot of data returned, including system data, let's see how we can lim
 
   1. If you like you can limit the scope of the returned metrics by specifying the scope in the request:
 
-  -  `curl -i -X GET http://localhost:9080/metrics/application`
+  ```bash
+  <copy>curl -i -X GET http://localhost:9080/metrics/application</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -381,7 +393,9 @@ Let's make a couple of list stock requests, then look at the list_all_stock coun
 
   1. Run the following command 5 times : 
   
-  -  `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
+  ```bash
+  <copy>curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -395,7 +409,9 @@ content-length: 148
 
   2. Now let's look at the metrics (I removed a bunch of unneeded output here to focus on the counters):
 
-  -  `curl -i -X GET http://localhost:9080/metrics/`
+  ```bash
+  <copy>curl -i -X GET http://localhost:9080/metrics/</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -432,9 +448,9 @@ There are other types of metrics, for examples times.
   3. Add a counter, timer and a meter annotation:
 
   ```java
-    @Counted(name = "stockReporting")
+    <copy>@Counted(name = "stockReporting")
     @Timed(name = "listAllStockTimer")
-    @Metered(name = "listAllStockMeter", absolute = true)
+    @Metered(name = "listAllStockMeter", absolute = true)</copy>
 ```
 
 The resulting code will look like 
@@ -455,8 +471,8 @@ The resulting code will look like
 You may need to add the following imports to the class
 
 ```java
-import org.eclipse.microprofile.metrics.annotation.Metered;
-import org.eclipse.microprofile.metrics.annotation.Timed;
+<copy>import org.eclipse.microprofile.metrics.annotation.Metered;
+import org.eclipse.microprofile.metrics.annotation.Timed;</copy>
 ```
 
 ---
@@ -471,7 +487,9 @@ The *absolute=true* on the meter means that the class name won't be prepended, i
 
   4. Now **restart** the **storefront** and make a few calls
 
-  -  `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
+  ```bash
+  <copy>curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -485,7 +503,9 @@ content-length: 148
 
   5	. Now let's get the details specific to our named meter by specifying it in the metrics data request:
 
-  -  `curl -i -X GET http://localhost:9080/metrics/application/listAllStockMeter`
+  ```bash
+  <copy>curl -i -X GET http://localhost:9080/metrics/application/listAllStockMeter</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -522,7 +542,7 @@ The next lab in the Helidon core labs is **Cloud Native support in Helidon**
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, November 2020
+* **Last Updated By** - Tim Graves, May 2023
 

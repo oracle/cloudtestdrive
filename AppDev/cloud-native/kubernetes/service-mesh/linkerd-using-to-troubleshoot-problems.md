@@ -42,7 +42,7 @@ in the case of Linkerd if a service fails to respond at all, or it responds but 
 
 ### Where do we get our problem source from ?
 
-Well fortunately for us I have build a version of the Stock Manager that can be configured to generate deliberate errors (I promise it's not just me doing bad coding :-) ) We will deploy this new version and then configure it to generate errors on half of the requests it makes.
+Well fortunately for us I have built a version of the Stock Manager that can be configured to generate deliberate errors (I promise it's not just me doing bad coding :-) ) We will deploy this new version and then configure it to generate errors on half of the requests it makes.
 
 ## Task 2: Using a service mesh to troubleshoot
 
@@ -53,7 +53,10 @@ The first thing we need is some load so we can see what the service mesh is doin
 Change to the directory for the service mesh scripts
 
   1. In the OCI Cloud shell type
-  - `cd $HOME/helidon-kubernetes/service-mesh`
+  
+   ```bash
+   <copy>cd $HOME/helidon-kubernetes/service-mesh</copy>
+   ```
 
 Once you are in the directory start the load generator
 
@@ -71,7 +74,9 @@ If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it
 
 The automated scripts will create a script file `$HOME/clusterSettings.one` this can be executed using the shell built in `source` to set the EXTERNAL_IP variable for you.
 
-  - `source $HOME/clusterSettings.one`
+  ```bash
+   <copy>source $HOME/clusterSettings.one</copy>
+   ```
   
 ```
 EXTERNAL_IP set to 139.185.45.98
@@ -93,7 +98,9 @@ In this case as you manually set this up you will need to get the information fr
 
   - You are going to get the value of the `EXTERNAL_IP` for your environment. This is used to identify the DNS name used by an incoming connection. In the OCI cloud shell type
 
-  - `kubectl get services -n ingress-nginx`
+  ```bash
+   <copy>kubectl get services -n ingress-nginx</copy>
+   ```
 
 ```
 NAME                                 TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)                      AGE
@@ -103,9 +110,11 @@ ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>      
 
   - Look for the `ingress-nginx-controller` line and note the IP address in the `EXTERNAL-IP` column, in this case that's `130.162.40.121` but it's almost certain that the IP address you have will differ. IMPORTANT, be sure to use the IP in the `EXTERNAL-IP` column, ignore anything that looks like an IP address in any other column as those are internal to the OKE cluster and not used externally. 
 
-  - IN the OCI CLoud shell type the following, replacing `<external ip>` with the IP address you retrieved above.
+  - IN the OCI CLoud shell type the following, replacing `[external ip]` with the IP address you retrieved above.
   
-  - `export EXTERNAL_IP=<external ip>`
+  ```bash
+  export EXTERNAL_IP=[external ip]
+  ```
   
 ---
 
@@ -116,7 +125,9 @@ ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>      
 
   2. In the OCI Cloud shell type
   
-  - `bash generate-service-mesh-load.sh $EXTERNAL_IP 2`
+  ```bash
+   <copy>bash generate-service-mesh-load.sh $EXTERNAL_IP 2</copy>
+   ```
   
  ```
 Iteration 1
@@ -136,7 +147,7 @@ If that happens while you are doing the service mesh labs the solution is to con
 
 Let's just check that the load is running fine
 
-  1. In your web browser go to `https://linkerd.<external IP>.nip.io` (replace `<External IP> with the IP of the load balancer)
+  1. In your web browser go to `https://linkerd.<external IP>.nip.io` (replace `<External IP>` with the IP of the load balancer)
 
 You may be challenged as you have a self signed certificate. Follow the normal procedures in your browser to accept the connection and proceed.
 
@@ -164,12 +175,16 @@ For now let's stop the load generator while we deploy our "broken" service
 
 We are going to edit one of the configurations for the stock manager to specify that we want a 50% failure rate on requests to the stock manager. The deliberately "broken" stockmanager will pay attention to this, but the normal one will not.
 
-  1. In the OCI Cloud Shell use your preferred editor (vi, nano etc.) to edit `$HOME/helidon-kubernetes/configurations/stockmanagerconf/conf/stockmanager-config.yaml`
+  1. In the OCI Cloud Shell use your preferred editor (vi, nano etc.) to edit the stock manager configuration
+  
+  ```bash
+  <copy>vi $HOME/helidon-kubernetes/configurations/stockmanagerconf/conf/stockmanager-config.yaml</copy>
+   ```
 
-  2. Add the following to the end of the file on a line of it's own, not that this is **not** indented 
+  2. Add the following to the end of the file on a line of it's own, note that this is **not** indented 
   
 ```
-errorgenerationrate: 0.5
+<copy>errorgenerationrate: 0.5</copy>
 ```
 
 The resulting file will look something like this **the department name should be different in your case** it should not be `Tims shop` unless your name is Tim !
@@ -192,14 +207,19 @@ Strangely `kubectl` doesn't seem to have a mechanism to replace a config map tha
 
   4. In the OCI Cloud shell type
   
-  - `kubectl delete configmap sm-config-map`
+  ```bash
+   <copy>kubectl delete configmap sm-config-map</copy>
+   ```
   
   ```
 configmap "sm-config-map" deleted
 ```
 
   5. In the OCI Cloud shell type
-  - `kubectl create configmap sm-config-map --from-file=$HOME/helidon-kubernetes/configurations/stockmanagerconf/conf`
+  
+  ```bash
+   <copy>kubectl create configmap sm-config-map --from-file=$HOME/helidon-kubernetes/configurations/stockmanagerconf/conf</copy>
+   ```
 
   ```
 configmap/sm-config-map created
@@ -209,7 +229,9 @@ Now we can apply the update, we'll use the Kubernetes rolling upgrade process to
 
   6. In the OCI Cloud shell type
   
-  - `kubectl apply -f $HOME/helidon-kubernetes/service-mesh/stockmanager-deployment-broken.yaml --record`
+  ```bash
+   <copy>kubectl apply -f $HOME/helidon-kubernetes/service-mesh/stockmanager-deployment-broken.yaml --record</copy>
+   ```
 
   ```
 deployment.apps/stockmanager configured
@@ -223,7 +245,9 @@ Now let's check that the change has applied by going direct to the stockmanager 
 
   7. In the OCI Cloud shell type the following
   
-  - `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/sm/stocklevel`
+  ```bash
+   <copy>curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/sm/stocklevel</copy>
+   ```
 
 (As usual the first response may take a short while, if you get a 503 error it means that the Kubernetes is waiting for the stockmanager to come online. If you get a 'Cannot resolve host' or similar then the `$EXTErNAL_IP` address is wrong, follow the earlier instructions in an expansion section to set it correctly.
  
@@ -260,7 +284,9 @@ Now try making the request a few times to the storefront service
 
   8. In the OCI Cloud shell type the following
   
-  - `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
+  ```bash
+   <copy>curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel</copy>
+   ```
   
 You will get either error messages like this
 
@@ -295,7 +321,10 @@ As before repeat this a few times, approximately half the time it will succeed a
 Restart the load generator
 
   9. In the OCI Cloud shell type
-  - `bash generate-service-mesh-load.sh $EXTERNAL_IP 2`
+  
+  ```bash
+   <copy>bash generate-service-mesh-load.sh $EXTERNAL_IP 2</copy>
+   ```
   
  ```
  Iteration 1
@@ -320,7 +349,7 @@ While the precise numbers will of course vary you should see that the success ra
 <details><summary><b>Why only 90% ?</b></summary>
 
 
-Remember that here we're looking at all the HTTP REST API calls that happen in the entire namespace, including those inbound from the Ingress controller as well as calls to the Zipkin tracing, so while we'd expect to see some calls fail (about half of the calls to the stockmanager) won't be hald of the overall calls.
+Remember that here we're looking at all the HTTP REST API calls that happen in the entire namespace, including those inbound from the Ingress controller as well as calls to the Zipkin tracing, so while we'd expect to see some calls fail (about half of the calls to the stockmanager) won't be half of the overall calls made between services in the namespace.
 
 ---
 
@@ -375,7 +404,9 @@ Let's use the Kubernetes rollout mechanism to reverse our "upgrade"
 
   2. In the OCI Cloud Shell type
   
-  - `kubectl rollout undo deployment stockmanager`
+  ```bash
+   <copy>kubectl rollout undo deployment stockmanager</copy>
+   ```
 
 ```
 deployment.apps/stockmanager rolled back
@@ -387,6 +418,6 @@ You can chose from the remaining `Linkerd service mesh` modules or switch to one
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Applications Development specialists team
 * **Contributor** - Charles Pretzer, Bouyant, Inc for reviewing and sanity checking parts of this document.
-* **Last Updated By** - Tim Graves, April 2021
+* **Last Updated By** - Tim Graves, May 2023

@@ -64,7 +64,9 @@ Before we update the pipeline let's check the version that's currently running -
 
 The automated scripts will create a script file `$HOME/clusterSettings.one` this can be executed using the shell built in `source` to set the EXTERNAL_IP variable for you.
 
-  - `source $HOME/clusterSettings.one`
+  ```bash
+  <copy>source $HOME/clusterSettings.one</copy>
+  ```
   
 ```
 EXTERNAL_IP set to 139.185.45.98
@@ -86,7 +88,9 @@ In this case as you manually set this up you will need to get the information fr
 
   - You are going to get the value of the `EXTERNAL_IP` for your environment. This is used to identify the DNS name used by an incoming connection. In the OCI cloud shell type
 
-  - `kubectl get services -n ingress-nginx`
+  ```bash
+  <copy>`kubectl get services -n ingress-nginx</copy>
+  ```
 
 ```
 NAME                                 TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)                      AGE
@@ -96,9 +100,11 @@ ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>      
 
   - Look for the `ingress-nginx-controller` line and note the IP address in the `EXTERNAL-IP` column, in this case that's `130.162.40.121` but it's almost certain that the IP address you have will differ. IMPORTANT, be sure to use the IP in the `EXTERNAL-IP` column, ignore anything that looks like an IP address in any other column as those are internal to the OKE cluster and not used externally. 
 
-  - IN the OCI CLoud shell type the following, replacing `<external ip>` with the IP address you retrieved above.
+  - IN the OCI CLoud shell type the following, replacing `[external ip]` with the IP address you retrieved above.
   
-  - `export EXTERNAL_IP=<external ip>`
+  ```
+  export EXTERNAL_IP=[external ip]
+  ```
   
 </details>
 
@@ -107,7 +113,9 @@ ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>      
 
   - In the OCI Cloud shell type
   
-  - `curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/sf/status`
+  ```bash
+  <copy>curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/sf/status</copy>
+  ```
   
   ```
   HTTP/1.1 200 OK
@@ -156,7 +164,9 @@ You can confirm that this is indeed a new deployment by looking at the running p
 
   - In the OCI Cloud shell type
   
-  - `kubectl get pods`
+  ```bash
+  <copy>kubectl get pods</copy>
+  ```
   
   ```
   NAME                            READY   STATUS    RESTARTS   AGE
@@ -171,7 +181,9 @@ The service is however running, you can check that it's there using the OCI clou
 
   5. Let's talk to the status service to see if the version number has updated, Make sure you are using the OCI Cloud shell instance where you set the EXTERNAL_IP environment variable. Type
   
-  - `curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/sf/status`
+  ```bash
+  <copy>curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/sf/status</copy>
+  ```
   
   ```
   HTTP/1.1 200 OK
@@ -245,9 +257,15 @@ Now we are going to make a change to our code, to show the process working.
 
   1. Open the OCI CLoud shell, make sure you are in the local code repo
   
-  - `cd $HOME/cloudnative-helidon-storefront`
+  ```bash
+  <copy>cd $HOME/cloudnative-helidon-storefront</copy>
+  ```
 
-  1. In the OCI Cloud shell edit the file `$HOME/cloudnative-helidon-storefront/helidon-storefront-full/src/main/java/com/oracle/labs/helidon/storefront/resources/StatusResource.java`
+  1. In the OCI Cloud shell edit the StatusRecource file (I'm using vi here, but use a different editor if you want)
+  
+  ```bash
+  <copy>vi $HOME/cloudnative-helidon-storefront/helidon-storefront-full/src/main/java/com/oracle/labs/helidon/storefront/resources/StatusResource.java</copy>
+  ```
   
   2. Locate the line `public final static String VERSION = "1.0.0";` and change the version string to `"1.0.1"` Save the updated file. Be careful not to remove any quotes or make any other changes that would mean it won't compile. The new line will look like
   
@@ -259,7 +277,9 @@ Now we are going to make a change to our code, to show the process working.
   
   3. Commit these changes to your local git repo (the one in the cloud shell you are using). In the OCI Cloud shell type
   
-  - `git commit -a -m 'Updated version number'`
+  ```bash
+  <copy>git commit -a -m 'Updated version number'</copy>
+  ```
   
   ```  
 [my-lab-branch 0d9128c] Updated version number
@@ -268,7 +288,9 @@ Now we are going to make a change to our code, to show the process working.
 
   4. Now push the repo branch to the OCI Code repo you created. In the OCI cloud shell type
 
-  - `git push devops my-lab-branch`
+  ```bash
+  <copy>git push devops my-lab-branch</copy>
+  ```
   
   ```
   FIPS mode initialized
@@ -298,7 +320,9 @@ Once the build and deploy pipelines have finished (remember that the deploy stag
 
   - In the OCI Cloud shell type
   
-  - `curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/sf/status`
+  ```bash
+  <copy>curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/sf/status</copy>
+  ```
   
   ```
   HTTP/1.1 200 OK
@@ -334,6 +358,6 @@ This has been a quick overview, we encourage you to explore the DevOps service a
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
-* **Last Updated By** - Tim Graves, February 2022
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
+* **Last Updated By** - Tim Graves, May 2023
 

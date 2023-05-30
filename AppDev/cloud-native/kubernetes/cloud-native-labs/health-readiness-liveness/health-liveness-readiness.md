@@ -53,7 +53,9 @@ If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it
 
 The automated scripts will create a script file `$HOME/clusterSettings.one` this can be executed using the shell built in `source` to set the EXTERNAL_IP variable for you.
 
-  - `source $HOME/clusterSettings.one`
+  ```bash
+  <copy>source $HOME/clusterSettings.one</copy>
+  ```
   
 ```
 EXTERNAL_IP set to 139.185.45.98
@@ -75,7 +77,9 @@ In this case as you manually set this up you will need to get the information fr
 
   - You are going to get the value of the `EXTERNAL_IP` for your environment. This is used to identify the DNS name used by an incoming connection. In the OCI cloud shell type
 
-  - `kubectl get services -n ingress-nginx`
+  ```bash
+  <copy>kubectl get services -n ingress-nginx</copy>
+  ```
 
 ```
 NAME                                 TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)                      AGE
@@ -85,9 +89,11 @@ ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>      
 
   - Look for the `ingress-nginx-controller` line and note the IP address in the `EXTERNAL-IP` column, in this case that's `130.162.40.121` but it's almost certain that the IP address you have will differ. IMPORTANT, be sure to use the IP in the `EXTERNAL-IP` column, ignore anything that looks like an IP address in any other column as those are internal to the OKE cluster and not used externally. 
 
-  - IN the OCI CLoud shell type the following, replacing `<external ip>` with the IP address you retrieved above.
+  - IN the OCI CLoud shell type the following, replacing `[External IP]` with the IP address you retrieved above.
   
-  - `export EXTERNAL_IP=<external ip>`
+  ```bash
+  export EXTERNAL_IP=[External IP]
+  ```
   
 ---
 
@@ -99,7 +105,9 @@ First let's make sure that the service is running
 
   1. In the OCI Cloud Shell
   
-  - `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
+  ```bash
+  <copy>curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -116,7 +124,9 @@ If you get a DNS error that `store..nip.io` cannot be found this means that `EXT
 
   2. Lets look at the pods to check all is running fine:
 
-  -  `kubectl get pods` 
+  ```bash
+  <copy>kubectl get pods</copy>
+  ```
 
   ```
 NAME                            READY   STATUS    RESTARTS   AGE
@@ -131,11 +141,15 @@ We're going to simulate a crash in our program, this will cause the container to
 
   3. Using the name of the storefront pod above let's connect to the container in the pod using kubectl:
 
-  -  `kubectl exec storefront-65bd698bb4-cq26l -ti -- /bin/bash` 
+  ```bash
+  kubectl exec storefront-65bd698bb4-cq26l -ti -- /bin/bash
+  ```
 
   4. Inside the pod simulate a major fault that causes a service failure by killing the process running our service :
 
-  - `kill -1 1`
+  ```bash
+  <copy>kill -1 1</copy>
+  ```
 
   ```
 root@storefront-65bd698bb4-cq26l:/# command terminated with exit code 137
@@ -155,7 +169,9 @@ If we now try getting the data again it still responds. If you get a 502 or 503 
 
   5. Try getting the data
 
-  - `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
+  ```bash
+  <copy>curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel</copy>
+  ```
 
   ```
 HTTP/2 200 
@@ -172,7 +188,9 @@ The reason it took a bit longer than usual when accessing the service is that be
 
   6. Let's look at the pod details again:
   
-  -  `kubectl get pods`
+  ```bash
+  <copy>kubectl get pods</copy>
+  ```
 
   ```
 NAME                            READY   STATUS    RESTARTS   AGE
@@ -187,7 +205,9 @@ Kubernetes has identified that the container exited and within the pod restarted
 
   7. Let's look at the logs (use your storefront pod id of course)
 
-  -  `kubectl logs storefront-65bd698bb4-cq26l `
+  ```bash
+  kubectl logs storefront-65bd698bb4-cq26l 
+  ```
 
   ```
 2020.01.02 14:06:30 INFO com.oracle.labs.helidon.storefront.Main Thread[main,5,main]: Starting server
@@ -207,11 +227,15 @@ You may recall in the Helidon labs (if you did them) we created a liveness probe
 
   1. Navigate to the **$HOME/helidon-kubernetes** folder
 
-  - `cd $HOME/helidon-kubernetes`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes</copy>
+  ```
   
   2. Stop the existing deployment
 
-  - `kubectl delete deployment storefront`
+  ```bash
+  <copy>kubectl delete deployment storefront</copy>
+  ```
   
 ```
 Deleting storefront deployment
@@ -242,7 +266,7 @@ replicaset.apps/zipkin-88c48d8b9          1         1         1       66m
   
   4. Search for the Liveness probes section. This is under the spec.template.spec.containers section
 
-  ```
+  ```yaml
         resources:
           limits:
             # Set this to me a whole CPU for now
@@ -274,7 +298,7 @@ As you can see this section has been commented out.
 
 The resulting section should look like this:
 
-  ```
+  ```yaml
         resources:
           limits:
             # Set this to me a whole CPU for now
@@ -318,7 +342,9 @@ Let's apply the changes we made in the deployment :
 
   7. Deploy the updated version
   
-  -  `kubectl apply -f storefront-deployment.yaml`
+  ```bash
+  <copy>kubectl apply -f storefront-deployment.yaml</copy>
+  ```
 
   ```
 deployment.apps/storefront created
@@ -327,7 +353,9 @@ deployment.apps/storefront created
 
   8. Let's see how our pod is doing.
   
-  -  `kubectl get pods`
+  ```bash
+  <copy>kubectl get pods</copy>
+  ```
 
   ```
 NAME                            READY   STATUS    RESTARTS   AGE
@@ -342,7 +370,9 @@ If we look at the logs for the storefront **before** the liveness probe has star
 
   9. Let's look at the logs 
   
-  -  `kubectl logs storefront-b44457b4d-29jr7`
+  ```bash
+  kubectl logs storefront-b44457b4d-29jr7
+  ```
 
   ```
 2020.01.02 16:18:58 INFO com.oracle.labs.helidon.storefront.Main Thread[main,5,main]: Starting server
@@ -354,7 +384,9 @@ If however the 120 seconds has passed and the liveness call has started we will 
 
   10. Run the kubectl command again
   
-  - `kubectl logs storefront-b44457b4d-29jr7 `
+  ```bash
+  kubectl logs storefront-b44457b4d-29jr7
+  ```
 
 You will see multiple entries like the one below:
 
@@ -364,7 +396,9 @@ You will see multiple entries like the one below:
 
   11. Look at the pods detailed info to check the state is fine :
   
-  -  `kubectl describe pod storefront-b44457b4d-29jr7 `
+  ```bash
+  kubectl describe pod storefront-b44457b4d-29jr7
+  ```
 
   ```
 ...
@@ -382,7 +416,7 @@ It's started and no unexpected events!
 
 Now is the time to explain that `Not frozen ...` text in the status. To enable us to actually simulate the service having a deadlock or resource starvation problem there's a bit of a cheat in the storefront LivenessChecker code :
 
-```
+```java
 	@Override
 	public HealthCheckResponse call() {
 		// don't test anything here, we're just reporting that we are running, not that
@@ -415,7 +449,9 @@ Let's see what happens in this case.
 
   12. First let's start following the logs of your pod. Run the following command (replace the pod Id with yours)
   
-  -  `kubectl logs -f --tail=10 storefront-b44457b4d-29jr7 `
+  ```bash
+  kubectl logs -f --tail=10 storefront-b44457b4d-29jr7
+  ```
 
   ```
 ...
@@ -429,13 +465,18 @@ Let's see what happens in this case.
   
   15. Once in the cloud account open an OCI Cloud Shell in the new window
 
-  16. Log in to the your container and create the `/frozen` file  (replace the pod Id with yours)
+  16. Log in to the your container (replace the pod Id with yours)
   
-  -  `kubectl exec -ti storefront-b44457b4d-29jr7 -- /bin/bash`
+  ```bash
+  kubectl exec -ti storefront-b44457b4d-29jr7 -- /bin/bash
+  ```
+  17. Now create the `/frozen` file 
   
-  -  `touch /frozen`
+  ```bash
+  <copy>touch /frozen</copy>
+  ```
    
-  17. Go back to the window running the logs
+  18. Go back to the window running the logs
 
 Kubernetes detected that the liveness probes were not responding in time, and after 3 failures it restarted the pod.
 
@@ -455,9 +496,11 @@ In the logs we see the following
 
 Kubectl tells us there's been a problem and a pod has done a restart for us (the kubectl connection to the pod will have terminated when the pod restarted)
 
-  18. Check the pod status
+  19. Check the pod status
   
-  - `kubectl get pods`
+  ```bash
+  <copy>kubectl get pods</copy>
+  ```
 
   ```
 NAME                            READY   STATUS    RESTARTS   AGE
@@ -466,9 +509,11 @@ storefront-b44457b4d-29jr7      1/1     Running   1          7m50s
 zipkin-88c48d8b9-bftvx          1/1     Running   0          7m50s
 ```
 
-  19. Look at the deployment events for the pod
+  20. Look at the deployment events for the pod
   
-  -  `kubectl describe pod storefront-b44457b4d-29jr7`
+  ```bash
+  kubectl describe pod storefront-b44457b4d-29jr7
+  ```
 
   ```
 ...
@@ -503,7 +548,7 @@ Unlike a liveness probe, if a container fails it's not killed off, and calls to 
 
   3. Look for the section (just after the Liveness probe) where we define the **readiness probe**. 
 
-  ```
+  ```yaml
 #        readinessProbe:
 #          exec:
 #            command:
@@ -523,7 +568,7 @@ Unlike a liveness probe, if a container fails it's not killed off, and calls to 
 
 The ReadinessProbe section should now look like this :
 
-  ```
+  ```yaml
        # This checks if the pod is ready to process requests
         readinessProbe:
           exec:
@@ -562,11 +607,15 @@ Now try it out with out current pod (this has the readiness reporting enabled al
 
   5. Connect to the pod 
   
-  - `kubectl exec -ti storefront-b44457b4d-29jr7  -- /bin/bash`
+  ```bash
+  kubectl exec -ti storefront-b44457b4d-29jr7  -- /bin/bash
+  ```
   
   6. Run the command in the pod:
   
-  -  `curl -s http://localhost:9080/health/ready | grep "\"status\":\"UP\""`
+  ```bash
+  <copy>curl -s http://localhost:9080/health/ready | grep "\"status\":\"UP\""</copy>
+  ```
 
   ```
 {"status":"UP","status":"UP","checks":[{"name":"storefront-ready","state":"UP","status":"UP","data":{"storename":"My Shop"}}]}
@@ -574,9 +623,11 @@ Now try it out with out current pod (this has the readiness reporting enabled al
 
 In this case the pod is ready, so the grep command returns what it's found. We are not actually concerned with what the pod returns in terms of string output, we are looking for the exit code, interactively we can find that by looking in the $? variable:
 
-  7. Inside the pod look at the output of the previous command
+  7. Inside the pod look at the exit code of the previous command
   
-  -  `echo $?`
+  ```bash
+  <copy>echo $?</copy>
+  ```
 
   ```
 0
@@ -610,7 +661,9 @@ In the OCI Cloud Shell
   
   9. Let's stop the services running, run the undeploy.sh script
   
-  -  `bash undeploy.sh `
+  ```bash
+  <copy>bash undeploy.sh </copy>
+  ```
 
  ```
 Deleting storefront deployment
@@ -640,7 +693,9 @@ As usual it takes a few seconds for the deployments to stop, this was about 30 s
 
   10. Check only the services remain running : 
   
-  -  `kubectl get all`
+  ```bash
+  <copy>kubectl get all</copy>
+  ```
 
   ```
 NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
@@ -653,7 +708,9 @@ Now let's deploy them again, run the deploy.sh script, be prepared to run kubect
 
   11. Run the deploy script 
   
-  -  `bash deploy.sh`
+  ```bash
+  <copy>bash deploy.sh</copy>
+  ```
 
   ```
 Creating zipkin deployment
@@ -686,7 +743,9 @@ replicaset.apps/zipkin-88c48d8b9          1         1         0       0s
 
   12. **Immediately** run the command in the OCI cloud shell
   
-  - `kubectl get all`
+  ```bash
+  <copy>kubectl get all</copy>
+  ```
 
   ```
 NAME                                READY   STATUS    RESTARTS   AGE
@@ -749,7 +808,9 @@ To see what happens if the readiness probe does not work we can simply undeploy 
 
   13. First let's check it's running fine - be prepared for a short delay as we'd just restarted everything
   
-  - `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
+  ```bash
+  <copy>curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -764,14 +825,18 @@ Connection: keep-alive
 
   14. Now let's use kubectl to undeploy just the stockmanager service
   
-  -  `kubectl delete -f stockmanager-deployment.yaml`
+  ```bash
+  <copy>kubectl delete -f stockmanager-deployment.yaml</copy>
+  ```
 
   ```
 deployment.apps "stockmanager" deleted
 ```
   15. Let's check the pods status
   
-  -  `kubectl get pods`
+  ```bash
+  <copy>kubectl get pods</copy>
+  ```
 
   ```
 NAME                            READY   STATUS        RESTARTS   AGE
@@ -779,11 +844,13 @@ stockmanager-6456cfd8b6-vqq7c   0/1     Terminating   0          26m
 storefront-74cd999d8-dzl2n      1/1     Running       0          26m
 zipkin-88c48d8b9-vdn47          1/1     Running       0          26m
 ```
-The stock manager service is being stopped (this is quite a fast process, so it may have completed before you ran the command). After 60 seconds or so if we run kubectl to get everything we see it's gone (note this is `all`, not `pods` here)
+The stock manager service is being stopped (this is quite a fast process, so it may have completed before you ran the command in which case you won't see a stockmanager pod). After 60 seconds or so if we run kubectl to get everything we see it's gone (note this is `all`, not `pods` here)
 
   16. Make sure that the stockmanager **pod** and **deployment** are terminated
   
-  -  `kubectl get all`
+  ```bash
+  <copy>kubectl get all</copy>
+  ```
 
   ```
 NAME                             READY   STATUS    RESTARTS   AGE
@@ -809,7 +876,9 @@ Something else has also happened though, the storefront service has no pods in t
 
   17. Let's try accessing the service
   
-  -  `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
+  ```bash
+  <copy>curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel</copy>
+  ```
 
   ```
 HTTP/1.1 503 Service Temporarily Unavailable
@@ -831,7 +900,9 @@ The service is giving us a 503 Service Temporarily Unavailable message. Well to 
 
   18. Let's start the stockmager service using kubectl again
   
-  -  `kubectl apply -f stockmanager-deployment.yaml`
+  ```bash
+  <copy>kubectl apply -f stockmanager-deployment.yaml</copy>
+  ```
 
   ```
 deployment.apps/stockmanager created
@@ -841,7 +912,9 @@ Now let's see what's happening with our deployments
 
   19. **Immediately** let's look at the situation
   
-  -  `kubectl get all`
+  ```bash
+  <copy>kubectl get all</copy>
+  ```
 
   ```
 NAME                                READY   STATUS    RESTARTS   AGE
@@ -869,7 +942,9 @@ The stockmanager is running, but the storefront is still not ready, and it won't
 
   20. Looking at the kubectl output about 120 seconds later:
   
-  -  `kubectl get all`
+  ```bash
+  <copy>kubectl get all</copy>
+  ```
 
 ```
 NAME                                READY   STATUS    RESTARTS   AGE
@@ -897,7 +972,9 @@ The storefront readiness probe has kicked in and the services are all back in th
 
   21. Check the service is responding properly now
   
-  - `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
+  ```bash
+  <copy>curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -994,7 +1071,9 @@ The result should look like this
 
   8. Restart the storefront
   
-  - `kubectl apply -f storefront-deployment.yaml`
+  ```bash
+  <copy>kubectl apply -f storefront-deployment.yaml</copy>
+  ```
   ```
 deployment.apps/storefront configured
 ```
@@ -1007,6 +1086,6 @@ You have reached the end of this section of the lab. The next module is `Horizon
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Applications Development specialists team
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, July 2021
+* **Last Updated By** - Tim Graves, May 2023

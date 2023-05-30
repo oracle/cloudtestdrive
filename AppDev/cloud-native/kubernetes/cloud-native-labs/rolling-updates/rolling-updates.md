@@ -54,13 +54,19 @@ We are going to once again edit the storefront-deployment.yaml file to give Kube
 
   2. Copy the storefront-deployment yaml file:
   
-  -  `cp storefront-deployment.yaml storefront-deployment-v0.0.1.yaml`
+  ```bash
+  <copy>cp storefront-deployment.yaml storefront-deployment-v0.0.1.yaml</copy>
+  ```
 
-  3. Edit the new file `storefront-deployment-v0.0.1.yaml`
+  3. Edit the new file `storefront-deployment-v0.0.1.yaml` I'm using vi but use any available editor you liike
+  
+  ```bash
+  <copy>vi storefront-deployment-v0.0.1.yaml</copy>
+  ```
 
 The current contents of the section of the file looks like this:
 
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -78,7 +84,7 @@ spec:
 
   4. Set the number of replicas to 4:
 
-  ```
+  ```yaml
   replicas: 4
 ```
 
@@ -86,7 +92,7 @@ We're now going to tell Kubernetes to use a rolling upgrade strategy for any upg
 
   5. After the replicas:4 line,  add
 
-  ```
+  ```yaml
     strategy:
       type: RollingUpdate
 ```
@@ -95,7 +101,7 @@ Finally we're going to tell Kubernetes what limits we want to place on the rolli
 
   6. Under the type line above, and **at the same indent** add the following
 
-  ```
+  ```yaml
       rollingUpdate:
         maxSurge: 1
         maxUnavailable: 1
@@ -107,7 +113,7 @@ Note that unless you have very specific reasons don't change the default setting
 
 The section of the file after the changes will look like this
 
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -137,14 +143,19 @@ To do the roll out we're just going to apply the new file. Kubernetes will compa
 
   1. Apply the new config
   
-  -  `kubectl apply -f storefront-deployment-v0.0.1.yaml --record`
+  ```bash
+  <copy>kubectl apply -f storefront-deployment-v0.0.1.yaml --record</copy>
+  ```
 
   ```
 deployment.apps/storefront configured
 ```
 
   2.  We can have a look at the status of the rollout
-  -  `kubectl rollout status deployment storefront`
+  
+```bash
+  <copy>kubectl rollout status deployment storefront</copy>
+  ```
 
   ```
 deployment "storefront" successfully rolled out
@@ -154,7 +165,9 @@ If you get a message along the lines of `Waiting for deployment "storefront" rol
 
   3. Let's also look at the history of this and previous roll outs:
 
-  -  `kubectl rollout history  deployment storefront`
+  ```bash
+  <copy>kubectl rollout history  deployment storefront</copy>
+  ```
 
   ```
 deployment.apps/storefront 
@@ -182,7 +195,10 @@ To apply the new v0.0.2 image we need to upgrade the configuration again. As dis
 However ... for the purpose of showing how this can be done using kubectl we are going to do this using the command line, not a configuration file change. This **might** be something you'd do in a test environment, but **don't** do it in a production environment or your change management processes will almost certainly end up damaged.
 
   1. In the OCI cloud shell Execute the command 
-  -  `kubectl set image deployment storefront storefront=fra.ocir.io/oractdemeabdmnative/h-k8s_repo/storefront:0.0.2 --record`
+  
+```bash
+  <copy>kubectl set image deployment storefront storefront=fra.ocir.io/oractdemeabdmnative/h-k8s_repo/storefront:0.0.2 --record</copy>
+  ```
 
   ```
 deployment.apps/storefront image updated
@@ -190,7 +206,9 @@ deployment.apps/storefront image updated
 
   2. Let's look at the status of our setup during the roll out
   
-  -  `kubectl get all`
+  ```bash
+  <copy>kubectl get all</copy>
+  ```
 
 ```
 NAME                                READY   STATUS    RESTARTS   AGE
@@ -232,7 +250,9 @@ Basically what Kuberntes has done is created a new replica set and started some 
 
   3. Rerun the status command a few times to see the changes 
   
-  -  `kubectl get all`
+  ```bash
+  <copy>kubectl get all</copy>
+  ```
 
 If we look at the output again we can see the progress (note that the exact results will vary depending on how long after the previous kubectl get all command you ran this one).
 
@@ -266,7 +286,9 @@ replicaset.apps/zipkin-88c48d8b9          1         1         1       29m
 
   4. Kubectl provides an easier way to look at the status of our rollout
 
-  - `kubectl rollout status deployment storefront`
+  ```bash
+  <copy>kubectl rollout status deployment storefront</copy>
+  ```
 
   ```
 Waiting for deployment "storefront" rollout to finish: 3 out of 4 new replicas have been updated...
@@ -283,7 +305,9 @@ During the rollout if you had accessed the status page for the storefront (on /s
 
   5. If we look at the setup now we can see that the storefront is running only the new pods, and that there are 4 pods providing the service.
 
-  -  `kubectl get all`
+  ```bash
+  <copy>kubectl get all</copy>
+  ```
 
   ```
 NAME                                READY   STATUS    RESTARTS   AGE
@@ -316,7 +340,9 @@ One important point is that you'll see that the **old** replica set is still aro
 
   6. if we now look at the history we see that there have been two sets of changes
   
-  -  `kubectl rollout history deployment storefront`
+  ```bash
+  <copy>kubectl rollout history deployment storefront</copy>
+  ```
 
   ```
 deployment.apps/storefront 
@@ -329,7 +355,9 @@ Note that to get the detail of the change you have to use the --record flag
 
   7. Let's check on our deployment to make sure that the image is the v0.0.2 we expect
   
-  -  `kubectl describe deployment storefront`
+  ```bash
+  <copy>kubectl describe deployment storefront</copy>
+  ```
 
   ```
 Name:                   storefront
@@ -378,7 +406,9 @@ If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it
 
 The automated scripts will create a script file `$HOME/clusterSettings.one` this can be executed using the shell built in `source` to set the EXTERNAL_IP variable for you.
 
-  - `source $HOME/clusterSettings.one`
+  ```bash
+  <copy>source $HOME/clusterSettings.one</copy>
+  ```
   
 ```
 EXTERNAL_IP set to 139.185.45.98
@@ -400,7 +430,9 @@ In this case as you manually set this up you will need to get the information fr
 
   - You are going to get the value of the `EXTERNAL_IP` for your environment. This is used to identify the DNS name used by an incoming connection. In the OCI cloud shell type
 
-  - `kubectl get services -n ingress-nginx`
+  ```bash
+  <copy>kubectl get services -n ingress-nginx</copy>
+  ```
 
 ```
 NAME                                 TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)                      AGE
@@ -410,9 +442,11 @@ ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>      
 
   - Look for the `ingress-nginx-controller` line and note the IP address in the `EXTERNAL-IP` column, in this case that's `130.162.40.121` but it's almost certain that the IP address you have will differ. IMPORTANT, be sure to use the IP in the `EXTERNAL-IP` column, ignore anything that looks like an IP address in any other column as those are internal to the OKE cluster and not used externally. 
 
-  - IN the OCI CLoud shell type the following, replacing `<external ip>` with the IP address you retrieved above.
+  - IN the OCI CLoud shell type the following, replacing `[external ip]` with the IP address you retrieved above.
   
-  - `export EXTERNAL_IP=<external ip>`
+  ```bash
+  export EXTERNAL_IP=[external ip]
+  ```
   
 ---
 
@@ -422,7 +456,9 @@ ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>      
 
   8. We should of course check that our update is correctly delivering a service.
   
-  - `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
+  ```bash
+  <copy>curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel</copy>
+  ```
 
   ```
 HTTP/2 200 
@@ -439,7 +475,9 @@ If you get a DNS error that `store..nip.io` cannot be found this means that `EXT
 
   9. Now let's check the output from the StatusResource
   
-  -  `curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/sf/status`
+  ```bash
+  <copy>curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/sf/status</copy>
+  ```
 
   ```
 HTTP/2 200 
@@ -460,7 +498,9 @@ In this case the update worked, but what would happen if it had for some reason 
 
   1. Let's get the replica set list
   
-  -  `kubectl get replicaset`
+  ```bash
+  <copy>kubectl get replicaset</copy>
+  ```
 
   ```
 NAME                                                     DESIRED   CURRENT   READY   AGE
@@ -471,9 +511,11 @@ storefront-79d7d954d6                                    4         4         4  
 zipkin-88c48d8b9                                         1         1         1       61m
 ```
 
-  2. And let's look at the latest storefront replica
+  2. And let's look at the latest storefront replica, of course replace the replica set id with yours
   
-  -  `kubectl describe replicaset storefront-79d7d954d6`
+ ```bash
+ kubectl describe replicaset storefront-79d7d954d6
+ ```
 
   ```
 Name:           storefront-79d7d954d6
@@ -523,9 +565,11 @@ Events:
 
 If we look at the Image we can see it's my v0.0.2 image. We can also see stuff like the pods being added during the update
 
-  3. But let's look at the old replica set
+  3. But let's look at the old replica set, again replace the replica set id with yours
   
-  -  `kubectl describe replicaset storefront-5f777cb4f5`
+  ```bash
+  kubectl describe replicaset storefront-5f777cb4f5
+  ```
 
   ```
 Name:           storefront-5f777cb4f5
@@ -582,7 +626,9 @@ If we undo the rollout Kubernetes will revert to the previous version
 
   4. Undo the rollout 
   
-  -  `kubectl rollout undo deployment storefront`
+  ```bash
+  <copy>kubectl rollout undo deployment storefront</copy>
+  ```
 
   ```
 deployment.apps/storefront rolled back
@@ -592,7 +638,9 @@ The rollback process follows the same process as the update process, gradually m
 
   5. Let's monitor the status
   
-  -  `kubectl rollout status deployment storefront`
+  ```bash
+  <copy>kubectl rollout status deployment storefront</copy>
+  ```
 
   ```
 ... 
@@ -606,7 +654,9 @@ deployment "storefront" successfully rolled out
 
   6. Once it's finished if we now look at the namespace
   
-  -  `kubectl get all`
+  ```bash
+  <copy>kubectl get all</copy>
+  ```
 
   ```
 NAME                                                               READY   STATUS    RESTARTS   AGE
@@ -646,7 +696,9 @@ We see that all of the pods are now the original replica set version, and there 
 
   7. If we check this by going to the status we can see the rollback has worked.
   
-  -  `curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/sf/status`
+  ```bash
+  <copy>curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/sf/status</copy>
+  ```
 
   ```
 HTTP/2 200 
@@ -705,9 +757,9 @@ The recreate strategy focuses on the resource usage and basically stops the exit
 
 There are several other options which require additional external actions.
 
-The Blue / Green (also known as red / black) focuses on the performance at the cost of processing. It creates a new replica set with all of the required pods, then switches all the traffic from the old replica set to the new one before stopping the old one. To do this all the deployments have a specific version and the service is configured with additional selectors for the version/ When the new replica set is up and running and time comes to switch the service selector is updated to refer to the new version and it will thus no longer match the pods of the old version, but will instead match the pods of the new one and switch all traffic to that. Note that this may require the creation of additional deployments.
+The Blue / Green (also known as red / black) focuses on the performance at the cost of processing. It creates a new replica set with all of the required pods, then switches all the traffic from the old replica set to the new one before stopping the old one. To do this all the deployments have a specific version and the service is configured with additional selectors for the version. When the new replica set is up and running and time comes to switch the service selector is updated to refer to the new version and it will thus no longer match the pods of the old version, but will instead match the pods of the new one and switch all traffic to that. Note that this may require the creation of additional deployments.
 
-One major benefit of the blue / green approach is that if your new version of the service means that the persistence required an incompatible change then you won't have to worry about old / new versions of persisted data (though you will have to work out a strategy for actually updating the data itself)
+One major benefit of the blue / green approach is that if your new version of the service means that the persistence required an incompatible change then you won't have to worry about supporting but the old / new versions of persisted data at the same time (though you will have to work out a strategy for actually updating the data itself)
 
 Other rollout types exist, though these do require the use of a service mesh (e.g. [Linkerd](https://linkerd.io/) or [Istio](https://istio.io/)to split the request flow between different versions. Examples include :
 
@@ -733,6 +785,6 @@ If you are doing the optional modules version of this course then you can chose 
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, August 2021
+* **Last Updated By** - Tim Graves, May 2023

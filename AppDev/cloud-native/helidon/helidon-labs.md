@@ -206,7 +206,11 @@ Once you've finished these labs then it's time for a cup of tea (or other bevera
 
 Please look at the follow-on lab focusing [packaging these new microservices in Docker](../docker/docker-labs.md) and deploying them in Kubernetes.
 
+## Acknowledgements
 
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
+* **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
+* **Last Updated By** - Tim Graves, May 2023
 
 ------
 

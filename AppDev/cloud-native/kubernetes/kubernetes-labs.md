@@ -188,7 +188,11 @@ For links to useful web pages and other information that I found while writing t
 
 Congratulations, you have reached the end of the tutorial!  You are now ready to start refactoring your own applications with the techniques you learned during this session!
 
+## Acknowledgements
 
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
+* **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
+* **Last Updated By** - Tim Graves, May 2023
 
 ------
 

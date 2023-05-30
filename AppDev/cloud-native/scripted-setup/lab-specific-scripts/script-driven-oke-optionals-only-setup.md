@@ -21,7 +21,9 @@ If you are not sure if you have downloaded the latest version then you can check
 
   - In the OCI Cloud shell type 
   
-  - `ls $HOME/helidon-kubernetes`
+  ```bash
+  <copy>ls $HOME/helidon-kubernetes</copy>
+  ```
 
 If you get output like this then you need to download the scripts, follow the process in **Task 1a**
 
@@ -45,11 +47,15 @@ We will use git to download the scripts
 
   2. Make sure you are in the top level directory
   
-  - `cd $HOME`
+  ```bash
+  <copy>cd $HOME</copy>
+  ```
   
   3. Clone the repository with all scripts from github into your OCI Cloud Shell environment
   
-  - `git clone https://github.com/CloudTestDrive/helidon-kubernetes.git`
+  ```bash
+  <copy>git clone https://github.com/CloudTestDrive/helidon-kubernetes.git</copy>
+  ```
   
   ```
   Cloning into 'helidon-kubernetes'...
@@ -73,11 +79,15 @@ We will use git to update the scripts
   
   2. Make sure you are in the home directory
   
-  - `cd $HOME/helidon-kubernetes`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes</copy>
+  ```
   
   3. Use git to get the latest updates
   
-  - `git pull`
+  ```bash
+  <copy>git pull</copy>
+  ```
 
 ```
 remote: Enumerating objects: 21, done.
@@ -145,14 +155,18 @@ This script will perform the following tasks, where possible you have already us
   
   - In the OCI Cloud shell type :
   
-  - `cd $HOME/helidon-kubernetes/setup/lab-specific`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/setup/lab-specific</copy>
+  ```
   
   
   To run the main script (this will call the other scripts for you in the right order)
   
   - In the OCI Cloud shell type
   
-  - `bash ./optional-kubernetes-lab-setup.sh`
+  ```bash
+  <copy>bash ./optional-kubernetes-lab-setup.sh</copy>
+  ```
   
   The script will ask for a few core bits of information before continuing.
   
@@ -220,5 +234,5 @@ The script should have run to completion. It will have setup the environment nee
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
 * **Last Updated By** - Tim Graves, June 2022

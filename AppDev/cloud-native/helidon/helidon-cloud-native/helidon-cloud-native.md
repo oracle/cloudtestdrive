@@ -41,7 +41,9 @@ Helidon has built in health info as standard. By default this is available on th
 
   2.Look at the details of the default health service
   
-  -  `curl -i -X GET http://localhost:9080/health`
+  ```bash
+  <copy>curl -i -X GET http://localhost:9080/health</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -64,7 +66,9 @@ Provding a Liveness capability is pretty simple. Somewhere in the class structur
 
   2. Add an annotation to the class definition:
 
-  -  `@Liveness`
+  ```java
+  <copy>@Liveness</copy>
+  ```
   
   The class declaration section should look like 
 
@@ -81,7 +85,7 @@ public class LivenessChecker implements HealthCheck {
 You may need to add the following import to the class
 
 ```java
-import org.eclipse.microprofile.health.Liveness;
+<copy>import org.eclipse.microprofile.health.Liveness;</copy>
 ```
 
 ---
@@ -118,7 +122,9 @@ As another reason this particular Liveness checker is not production ready in th
 
   4. Look at the results of the health endpoint
   
-  -  `curl -i -X GET http://localhost:9080/health`
+  ```bash
+  <copy>curl -i -X GET http://localhost:9080/health</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -158,7 +164,9 @@ Readiness is a way to let the microservices runtime determine if a service has e
   
   2. Add the following annotation to the class ReadinessChecker
   
-  - `@Readiness`
+  ```java
+  <copy>@Readiness</copy>
+  ```
 
 The start of the class should now look like :
 
@@ -174,7 +182,7 @@ public class ReadinessChecker implements HealthCheck {
 You may need to add the following import to the class
 
 ```java
-import org.eclipse.microprofile.health.Readiness;
+  <copy>import org.eclipse.microprofile.health.Readiness;</copy>
 ```
 
 ---
@@ -185,7 +193,9 @@ import org.eclipse.microprofile.health.Readiness;
 
   4. Call the URL that goes direct to the storefront ready state:
   
-  -  `curl -i -X GET http://localhost:9080/health/ready`
+  ```bash
+  <copy>curl -i -X GET http://localhost:9080/health/ready</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -205,7 +215,9 @@ Let's check that the service can indeed inform us of an issue - the backend stor
 
   6. Now let's make another readiness request to the storefront :
 
-  -  `curl -i -X GET http://localhost:9080/health/ready`
+  ```bash
+  <copy>curl -i -X GET http://localhost:9080/health/ready</copy>
+  ```
 
   ```
 HTTP/1.1 503 Service Unavailable
@@ -223,7 +235,9 @@ The service is "DOWN" as it can't process requests properly, so a cloud native p
   
   8. Wait a short time (we need the stock manager to start and be available for the storefront readiness check) and then rerun the readiness check:
   
-  -  `curl -i -X GET http://localhost:9080/health/ready`
+  ```bash
+  <copy>curl -i -X GET http://localhost:9080/health/ready</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -251,8 +265,8 @@ If you are only doing the Helidon labs and do not want to do the **Self document
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, November 2020
+* **Last Updated By** - Tim Graves, May 2023
 
 

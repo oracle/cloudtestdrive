@@ -44,7 +44,9 @@ Like many other Kubernetes services Grafana can be installed using helm. By defa
 
   1. Add the Helm repository entry for Grafana 
   
-  - `helm repo add grafana https://grafana.github.io/helm-charts`
+  ```bash
+  <copy>helm repo add grafana https://grafana.github.io/helm-charts</copy>
+  ```
 
  ```
 "grafana" has been added to your repositories
@@ -54,7 +56,9 @@ If you have already added the repository in another module of the lab you'll be 
 
   2. Update the repository cache
   
-  - `helm repo update`
+  ```bash
+  <copy>helm repo update</copy>
+  ```
 
   ```
 Hang tight while we grab the latest from your chart repositories...
@@ -83,7 +87,9 @@ If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it
 
 The automated scripts will create a script file `$HOME/clusterSettings.one` this can be executed using the shell built in `source` to set the EXTERNAL_IP variable for you.
 
-  - `source $HOME/clusterSettings.one`
+  ```bash
+  <copy>source $HOME/clusterSettings.one</copy>
+  ```
   
 ```
 EXTERNAL_IP set to 139.185.45.98
@@ -105,7 +111,9 @@ In this case as you manually set this up you will need to get the information fr
 
   - You are going to get the value of the `EXTERNAL_IP` for your environment. This is used to identify the DNS name used by an incoming connection. In the OCI cloud shell type
 
-  - `kubectl get services -n ingress-nginx`
+  ```bash
+  <copy>kubectl get services -n ingress-nginx</copy>
+  ```
 
 ```
 NAME                                 TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)                      AGE
@@ -115,9 +123,11 @@ ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>      
 
   - Look for the `ingress-nginx-controller` line and note the IP address in the `EXTERNAL-IP` column, in this case that's `130.162.40.121` but it's almost certain that the IP address you have will differ. IMPORTANT, be sure to use the IP in the `EXTERNAL-IP` column, ignore anything that looks like an IP address in any other column as those are internal to the OKE cluster and not used externally. 
 
-  - IN the OCI CLoud shell type the following, replacing `<external ip>` with the IP address you retrieved above.
+  - IN the OCI CLoud shell type the following, replacing `[external ip]` with the IP address you retrieved above.
   
-  - `export EXTERNAL_IP=<external ip>`
+  ```bash
+  export EXTERNAL_IP=[external ip]
+  ```
   
 ---
 
@@ -127,11 +137,15 @@ ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>      
 
   3. Make sure you're in the `$HOME/helidon-kubernetes/monitoring-kubernetes` directory
   
-  - `cd $HOME/helidon-kubernetes/monitoring-kubernetes`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/monitoring-kubernetes</copy>
+  ```
 
   4. Create a certificate to protect the connection, we'll use step which we installed in the cloud shell setup section of the lab.
   
-  - `$HOME/keys/step certificate create grafana.monitoring.$EXTERNAL_IP.nip.io tls-grafana-$EXTERNAL_IP.crt tls-grafana-$EXTERNAL_IP.key --profile leaf  --not-after 8760h --no-password --insecure --kty=RSA --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
+  ```bash
+  <copy>$HOME/keys/step certificate create grafana.monitoring.$EXTERNAL_IP.nip.io tls-grafana-$EXTERNAL_IP.crt tls-grafana-$EXTERNAL_IP.key --profile leaf  --not-after 8760h --no-password --insecure --kty=RSA --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key</copy>
+  ```
   
   ```
   Your certificate has been saved in tls-grafana-123.456.789.123.crt.
@@ -144,7 +158,9 @@ If your output says it's created key files like `tls-grafana-.crt` and does not 
 
   5. Now let's create a TLS secret containing this configuration. 
   
-  - `kubectl create secret tls tls-grafana --key tls-grafana-$EXTERNAL_IP.key --cert tls-grafana-$EXTERNAL_IP.crt -n monitoring`
+  ```bash
+  <copy>kubectl create secret tls tls-grafana --key tls-grafana-$EXTERNAL_IP.key --cert tls-grafana-$EXTERNAL_IP.crt -n monitoring</copy>
+  ```
   
   ```
   secret/tls-grafana created
@@ -152,7 +168,9 @@ If your output says it's created key files like `tls-grafana-.crt` and does not 
 
   6. Let's install Grafana itself. In the OCI Cloud Shell type following command, replace `<External IP>` with the IP address of the load balancer we've been using for all the other steps.
   
-  - `helm install grafana grafana/grafana --version 6.56.2 --namespace  monitoring  --set persistence.enabled=true --set ingress.enabled=true --set ingress.hosts="{grafana.monitoring.$EXTERNAL_IP.nip.io}" --set ingress.tls[0].secretName=tls-grafana --set ingress.annotations."kubernetes\.io/ingress\.class"=nginx`
+  ```bash
+  <copy>helm install grafana grafana/grafana --version 6.56.2 --namespace  monitoring  --set persistence.enabled=true --set ingress.enabled=true --set ingress.hosts="{grafana.monitoring.$EXTERNAL_IP.nip.io}" --set ingress.tls[0].secretName=tls-grafana --set ingress.annotations."kubernetes\.io/ingress\.class"=nginx</copy>
+  ```
 
   ```
 NAME: grafana
@@ -199,7 +217,9 @@ Like many helm charts the output has some useful hints in it, specifically in th
 
   7. Now get the Grafana login password. In the OCI Cloud Shell 
   
-  - `kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo`
+  ```bash
+  <copy>kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo</copy>
+  ```
   
   ```
 G5gBdejUfBxhzKn4ZrmwhZQTtlXlZ9qaLHpzispm
@@ -213,13 +233,17 @@ We need some data to look at, so :
 
   9. Using the OCI Cloud Shell or your laptop, make a few requests using curl to generate some new data.
   
-  -  `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
+  ```bash
+  <copy>curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel</copy>
+  ```
 
 We need to open a web page to the Grafana service. This was displayed in the Helm output, in this example it's `http://grafana.monitoring.123.456.789.999.nip.io` ** but of of thats an example, your's will vary** (and that's not a valid address anyway)
 
-  10. Open a web page (replace `<External IP>`) with the one you just got for the grafana service.
+  10. Open a web page (replace `<External IP>` with the one for the load balancer.
   
-  - `https://grafana.monitoring.<External IP>.nip.io`
+  ```
+  https://grafana.monitoring.<External IP>.nip.io
+  ```
   
 
 If the browser prompts you about using a self signed certificate accept it. The process for doing this can vary by browser and version, as of August 2020 the following worked, but newer versions may have changed it.
@@ -254,7 +278,9 @@ Before we can do anything useful with Grafana we need to provide it with some da
 
   15. In the **URL** field we need to enter the details we got then we installed Prometheus. Enter the URL 
   
-  -  `http://prometheus-server.monitoring.svc.cluster.local`
+  ```
+  <copy>http://prometheus-server.monitoring.svc.cluster.local</copy>
+  ```
 
 Leave the other values unchanged
 
@@ -308,7 +334,9 @@ If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it
 
 In the OCI Cloud shell type
 
-  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+  ```bash
+  <copy>kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller</copy>
+  ```
   
   ```
 NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
@@ -317,9 +345,11 @@ ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:3138
 
 The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column.
 
-**To set the variable again**
+**To set the variable again** replacing `[External IP]` with the one you just retrieved for the load balancer
 
-  - `export EXTERNAL_IP=<External IP>`
+  ```bash
+  export EXTERNAL_IP=[External IP]
+  ```
   
 ---
 
@@ -330,7 +360,9 @@ The External IP of the Load Balancer connected to the ingresss controller is sho
 
   4. If needed use curl to generate some new data.
   
-  -  `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
+  ```bash
+  <copy>curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel</copy>
+  ```
   
   ```
 HTTP/2 200 
@@ -347,7 +379,7 @@ You can refresh the graph using the refresh icon if you added some new data
 
   5. Click the time selector and chose a time period where you have data (In this case I'm going for the last hour)
 
-  ![Seletging the time winbdow for the panel](images/grafana-new-dashboard-first-panel-add-query-select-time-window.png)
+  ![Selecting the time window for the panel](images/grafana-new-dashboard-first-panel-add-query-select-time-window.png)
 
 Once you've clicked the time the graph will update
 
@@ -376,7 +408,9 @@ Now any pod that provides the `application_listAllStockMeter_one_min_rate_per_se
 
   8. Make a few requests using curl to generate some new data.
   
-  -  `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
+  ```bash
+  <copy>curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel</copy>
+  ```
 
   ```
 HTTP/2 200 
@@ -586,7 +620,9 @@ Let's set it to display the most recent data
 
   8. In the cloud shell. Make a few requests using curl to generate some new data, remember if the cloud shell has timed out you will need to set the EXTERNAL_IP variable when you reconnect / create a new session.
   
-  -  `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
+  ```bash
+  <copy>curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel</copy>
+  ```
   
 ```
 HTTP/2 200 
@@ -646,7 +682,9 @@ To delete the monitoring namespace do the following
 
   1. In the OCI Cloud shell type 
   
-  - `kubectl delete namespace monitoring`
+  ```bash
+  <copy>kubectl delete namespace monitoring</copy>
+  ```
   
   ```
 namespace "monitoring" deleted
@@ -658,6 +696,6 @@ You can chose from the various Kubernetes optional module sets.
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, August 2021
+* **Last Updated By** - Tim Graves, May 2023

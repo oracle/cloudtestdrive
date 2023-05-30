@@ -36,7 +36,11 @@ As you might expect we use dependency injection to automatically add the context
 
   1. Open the com.oracle.labs.helidon.stockmanager.resources.StockResource class in the helidon-stockmanager project.
 
-  2. add ` @Context SecurityContext securityContext` to the end of the createStockLevel method parameters.
+  2. Add this security context to the end of the createStockLevel method parameters.
+  
+  ```java
+  <copy>@Context SecurityContext securityContext</copy>
+  ```
 
 The full method signature now looks like
 
@@ -51,8 +55,8 @@ The full method signature now looks like
 You may need to add the following imports to the class
 
 ```java
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.SecurityContext;
+<copy>import javax.ws.rs.core.Context;
+import javax.ws.rs.core.SecurityContext;</copy>
 ```
 
 ---
@@ -79,13 +83,17 @@ This value is used later in the method to generate audit record information (you
   
   5. try adding a new item
 
-  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pie/3142`
+  ```bash
+  <copy>curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pie/3142</copy>
+  ```
   
 There is a REST endpoint that let's us get the most recent audit records, let's have a look at tht data now
 
   6. Run the following command 
   
-  - `curl -i -X GET -u jack:password http://localhost:8081/stocklevel/audit`
+  ```bash
+  <copy>curl -i -X GET -u jack:password http://localhost:8081/stocklevel/audit</copy>
+  ```
   
   ```json
 HTTP/1.1 200 OK
@@ -151,7 +159,7 @@ The next lab in the Helidon labs is **Communicating between microservcies with H
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, November 2020
+* **Last Updated By** - Tim Graves, May 2023
 

@@ -58,7 +58,9 @@ If you are not sure if you have downloaded the latest version then you can check
 
   - In the OCI Cloud shell type 
   
-  - `ls $HOME/helidon-kubernetes`
+  ```bash
+  <copy>ls $HOME/helidon-kubernetes</copy>
+  ```
 
 If you get output like this then you need to download the scripts, follow the process in **Task 1a**
 
@@ -81,11 +83,15 @@ We will use git to download the scripts
 
   2. Make sure you are in the top level directory
   
-  - `cd $HOME`
+  ```bash
+  <copy>cd $HOME</copy>
+  ```
   
   3. Clone the repository with all scripts from github into your OCI Cloud Shell environment
   
-  - `git clone https://github.com/CloudTestDrive/helidon-kubernetes.git`
+  ```bash
+  <copy>git clone https://github.com/CloudTestDrive/helidon-kubernetes.git</copy>
+  ```
   
   ```
   Cloning into 'helidon-kubernetes'...
@@ -109,11 +115,15 @@ We will use git to update the scripts
   
   2. Make sure you are in the home directory
   
-  - `cd $HOME/helidon-kubernetes`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes</copy>
+  ```
   
   3. Use git to get the latest updates
   
-  - `git pull`
+  ```bash
+  <copy>git pull</copy>
+  ```
 
 ```
 remote: Enumerating objects: 21, done.
@@ -158,7 +168,9 @@ If you do not know if you have downloaded `step` then you can check
 
  - In the OCI CLoud shell type
  
- - `ls $HOME/keys`
+ ```bash
+  <copy>ls $HOME/keys</copy>
+  ```
 
 If you get output like this then you have setup both the `step` command and the root certificate, in this case go to **Task 3**, do not continue with any other steps in task 2
 
@@ -196,11 +208,15 @@ To make setting `step` up easier (manually it requires a lot of visits to differ
 
   1. Open the OCI cloud shell and go to the scripts directory, type
   
-  - `cd $HOME/helidon-kubernetes/setup/common`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/setup/common</copy>
+  ```
   
   2. Run the download script, In the OCI cloud shell type
   
-  - `bash ./download-step.sh`
+  ```bash
+  <copy>bash ./download-step.sh</copy>
+  ```
   
   ```
   /home/tim_graves/keys does not exist creating
@@ -228,7 +244,9 @@ Assuming you have `step` you can easily create the self signed root certificate
 
   1. Open the OCI Cloud shell and type
     
-  - `$HOME/keys/step certificate create root.cluster.local $HOME/keys/root.crt $HOME/keys/root.key --kty=RSA --profile root-ca --no-password --insecure`
+  ```bash
+  <copy>$HOME/keys/step certificate create root.cluster.local $HOME/keys/root.crt $HOME/keys/root.key --kty=RSA --profile root-ca --no-password --insecure</copy>
+  ```
   
   ```
   Your certificate has been saved in root.crt.
@@ -260,11 +278,15 @@ We do this check in-case lab students may be running multiple activities in thei
 
   1. If you are not already there open the OCI cloud shall and go to the scripts directory, type
   
-  - `cd $HOME/helidon-kubernetes/setup/common`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/setup/common</copy>
+  ```
   
   2. Run the script
   
-  - `bash check-minimum-resources.sh`
+  ```bash
+  <copy>bash check-minimum-resources.sh</copy>
+  ```
   
   ```
 Using default context name of one
@@ -333,11 +355,15 @@ Finally it extracts connection information from the downloaded wallet file, and 
 
   1. If you are not already there open the OCI cloud shall and go to the scripts directory, type
   
-  - `cd $HOME/helidon-kubernetes/setup/common`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/setup/common</copy>
+  ```
   
   2. Run the script
   
-  - `bash ./core-environment-setup.sh`
+  ```bash
+  <copy>bash ./core-environment-setup.sh</copy>
+  ```
   
   3. When asked if you are in a Free trial tenancy enter `y` if you are (if you are not sure then you probably are in a free trial tenancy, in a taught class your instructor will make it clear if you are not). If you are not then enter `n` and follow the instructions (possibly also doing this step by step, see the link in the expansion if you need more information n this)
   
@@ -411,11 +437,11 @@ It may take a short while before new compartment has propogated and the web UI r
   
 ## Task 5: Creating the database
 
-The microservices that form the base content of these labs use a database to store their data, so we need to create a database. The following script will create the database in the compartment we just created, then download the connection information (the "Wallet") and use that to connect to the database and create the user used by the labs.
+The microservices that form the base content of these labs use a database to store their data, so we need to create a database. The  script will create the database in the compartment we just created, then download the connection information (the "Wallet") and use that to connect to the database and create the user used by the labs.
 
- 1. We will run a script to setup this environment
+The script will now proceed to setup the database
 
- 2. If you are in a free trial tenancy you will be creating a new database so enter `y` 
+ 1. If you are in a free trial tenancy you will be creating a new database so enter `y` 
   
 <details><summary><b>Only read if you have an existing database to re-use</b></summary>
  
@@ -430,7 +456,7 @@ Operating in compartment CTDOKE
 Do you want to use tgdb as the name of the database to create or re-use in CTDOKE?
 ```
  
- 3. The script will create the database 
+ 2. The script will create the database 
    
   ```
 OK, going to use tgdb as the database name
@@ -444,7 +470,7 @@ There may be a delay of several minutes while the database completes its creatio
   
   ```
   
-  12.   The script will then setup a temporary set of access credentials using the wallet, connect to the database using the password it generated (or in the case of a database that you are re-using the password you provided) and setup the labs user in the database.
+  3.   The script will then setup a temporary set of access credentials using the wallet, connect to the database using the password it generated (or in the case of a database that you are re-using the password you provided) and setup the labs user in the database.
   
   If you are reusing a database and had already setup the labs user then you may get error messages that the user conflicts with the existing one.
   
@@ -495,11 +521,10 @@ Deleting temporary database connection info
 The database admin password is 2005758405_SeCrEt Please ensure that you save this information in case you need it later
 ```
   
-  12. **IMPORTANT** The database password is auto-generated and will not be displayed again. you are **strongly** recommended to save the generated database password (`2005758405_SeCrEt` in this case) in case you need to administer the database later. If there is an existing `$HOME/Wallet.zip` then it will be saved before downloading the new wallet.
+  4. **IMPORTANT** The database password is auto-generated and will not be displayed again. you are **strongly** recommended to save the generated database password (`2005758405_SeCrEt` in this case) in case you need to administer the database later. If there is an existing `$HOME/Wallet.zip` then it will be saved before downloading the new wallet.
 ```
-
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
-* **Last Updated By** - Tim Graves, February 2022
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
+* **Last Updated By** - Tim Graves, May 2023

@@ -18,7 +18,9 @@ If you are not sure if you have downloaded the latest version then you can check
 
   - In the OCI Cloud shell type 
   
-  - `ls $HOME/helidon-kubernetes`
+  ```bash
+  <copy>ls $HOME/helidon-kubernetes</copy>
+  ```
 
 If you get output like this then you need to download the scripts, follow the process in **Task 1a**
 
@@ -41,11 +43,15 @@ We will use git to download the scripts
 
   2. Make sure you are in the top level directory
   
-  - `cd $HOME`
+  ```bash
+  <copy>cd $HOME</copy>
+  ```
   
   3. Clone the repository with all scripts from github into your OCI Cloud Shell environment
   
-  - `git clone https://github.com/CloudTestDrive/helidon-kubernetes.git`
+  ```bash
+  <copy>git clone https://github.com/CloudTestDrive/helidon-kubernetes.git</copy>
+  ```
   
   ```
   Cloning into 'helidon-kubernetes'...
@@ -69,11 +75,15 @@ We will use git to update the scripts
   
   2. Make sure you are in the home directory
   
-  - `cd $HOME/helidon-kubernetes`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes</copy>
+  ```
   
   3. Use git to get the latest updates
   
-  - `git pull`
+  ```bash
+  <copy>git pull</copy>
+  ```
 
 ```
 remote: Enumerating objects: 21, done.
@@ -132,11 +142,15 @@ This script will do some data gathering and then if a new cluster is required wi
 
   1. If you are not already there open the OCI cloud shell and go to the scripts directory, type
   
-  - `cd $HOME/helidon-kubernetes/setup/common/oke-setup`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/setup/common/oke-setup</copy>
+  ```
   
   2. Run the script, in the OCI Cloud Shell type
   
-  - `bash ./oke-cluster-setup.sh`
+  ```bash
+  <copy>bash ./oke-cluster-setup.sh</copy>
+  ```
   
   If you have just created the compartment get a message "Authorization failed or requested resource not found" and that "The provided COMPARTMENT_OCID or ocid1.co....oycu3a cant be located" then please wait a short while for the compartment information to propagate and try running the script again. 
 
@@ -258,7 +272,9 @@ Once the scripts have completed you can check that the cluster is responding.
   
   1. Use the Kubernetes control program `kubectl` to check on the nodes, in the OCI Cloud shell type
   
-  - `kubectl get nodes`
+  ```bash
+  <copy>kubectl get nodes</copy>
+  ```
 
 ```
 NAME          STATUS   ROLES   AGE   VERSION
@@ -293,6 +309,6 @@ Thus we need to enable access to the Kubernetes management API endpoint from any
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
 * **Kubernetes Terraform Script author** Ali Mukadam, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Open Source program
-* **Last Updated By** - Tim Graves, February 2022
+* **Last Updated By** - Tim Graves, May 2023

@@ -40,7 +40,9 @@ Change to the directory for the service mesh scripts
 
   1. In the OCI Cloud shell type
   
-  - `cd $HOME/helidon-kubernetes/service-mesh`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/service-mesh</copy>
+  ```
 
 Once you are in the directory start the load generator
 
@@ -58,7 +60,9 @@ If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it
 
 The automated scripts will create a script file `$HOME/clusterSettings.one` this can be executed using the shell built in `source` to set the EXTERNAL_IP variable for you.
 
-  - `source $HOME/clusterSettings.one`
+  ```bash
+  <copy>source $HOME/clusterSettings.one</copy>
+  ```
   
 ```
 EXTERNAL_IP set to 139.185.45.98
@@ -80,7 +84,9 @@ In this case as you manually set this up you will need to get the information fr
 
   - You are going to get the value of the `EXTERNAL_IP` for your environment. This is used to identify the DNS name used by an incoming connection. In the OCI cloud shell type
 
-  - `kubectl get services -n ingress-nginx`
+  ```bash
+  <copy>kubectl get services -n ingress-nginx</copy>
+  ```
 
 ```
 NAME                                 TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)                      AGE
@@ -90,9 +96,11 @@ ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>      
 
   - Look for the `ingress-nginx-controller` line and note the IP address in the `EXTERNAL-IP` column, in this case that's `130.162.40.121` but it's almost certain that the IP address you have will differ. IMPORTANT, be sure to use the IP in the `EXTERNAL-IP` column, ignore anything that looks like an IP address in any other column as those are internal to the OKE cluster and not used externally. 
 
-  - In the OCI Cloud shell type the following, replacing `<external ip>` with the IP address you retrieved above.
+  - In the OCI Cloud shell type the following, replacing `[external ip]` with the IP address you retrieved above.
   
-  - `export EXTERNAL_IP=<external ip>`
+  ```bash
+  export EXTERNAL_IP=[external ip]
+  ```
   
 ---
 
@@ -103,7 +111,9 @@ ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>      
 
   2. In the OCI Cloud shell type 
   
-  - `bash generate-service-mesh-load.sh $EXTERNAL_IP 2`
+  ```bash
+  <copy>bash generate-service-mesh-load.sh $EXTERNAL_IP 2</copy>
+  ```
   
  ```
 Iteration 1
@@ -415,6 +425,6 @@ You can chose from the remaining **Linkerd service mesh** modules or switch to o
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Applications Development specialists team
 * **Contributor** - Charles Pretzer, Bouyant, Inc for reviewing and sanity checking parts of this document.
-* **Last Updated By** - Tim Graves, July 2021
+* **Last Updated By** - Tim Graves, May 2023

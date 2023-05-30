@@ -16,6 +16,8 @@ This video is an introduction to the Log Capture for processing labs Depending o
 
 This is one of the optional sets of Kubernetes labs. This lab currently uses a slightly older version of Elastic Search as the data store, it will soon be updated to use the open source Open Search.
 
+Please be aware that this log capture works if you are using manually managed nodes, for virtual nodes you will need a different approach as they don't support daemon sets. The approach described here is one of several approaches and this focused on handling the log data capture within Kubernetes, OKE also supports ways of directly capturing log data using [OCI log management techniques](https://docs.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengviewingworkernodelogs.htm) as well
+
 **Estimated module duration** 20 mins.
 
 ### Objectives
@@ -64,7 +66,9 @@ If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it
 
 The automated scripts will create a script file `$HOME/clusterSettings.one` this can be executed using the shell built in `source` to set the EXTERNAL_IP variable for you.
 
-  - `source $HOME/clusterSettings.one`
+  ```bash
+  <copy>source $HOME/clusterSettings.one</copy>
+  ```
   
 ```
 EXTERNAL_IP set to 139.185.45.98
@@ -86,7 +90,9 @@ In this case as you manually set this up you will need to get the information fr
 
   - You are going to get the value of the `EXTERNAL_IP` for your environment. This is used to identify the DNS name used by an incoming connection. In the OCI cloud shell type
 
-  - `kubectl get services -n ingress-nginx`
+  ```bash
+  <copy>kubectl get services -n ingress-nginx</copy>
+  ```
 
 ```
 NAME                                 TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)                      AGE
@@ -96,9 +102,11 @@ ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>      
 
   - Look for the `ingress-nginx-controller` line and note the IP address in the `EXTERNAL-IP` column, in this case that's `130.162.40.121` but it's almost certain that the IP address you have will differ. IMPORTANT, be sure to use the IP in the `EXTERNAL-IP` column, ignore anything that looks like an IP address in any other column as those are internal to the OKE cluster and not used externally. 
 
-  - IN the OCI CLoud shell type the following, replacing `<external ip>` with the IP address you retrieved above.
+  - IN the OCI CLoud shell type the following, replacing `[external ip]` with the IP address you retrieved above.
   
-  - `export EXTERNAL_IP=<external ip>`
+  ```bash
+  export EXTERNAL_IP=[external ip]
+  ```
   
 ---
 
@@ -117,7 +125,9 @@ As with elsewhere in the labs we'll do this module in it's own namespace, so fir
 
   1. In the cloud console type 
   
-  - `kubectl create namespace logging`
+  ```bash
+  <copy>kubectl create namespace logging</copy>
+  ```
   
   ```
 namespace/logging created
@@ -127,7 +137,9 @@ Now let's use helm to install the elastic search engine into the logging namespa
 
   2. First add the Elastic helm chart repository.
 
-  - `helm repo add elastic https://helm.elastic.co`
+  ```bash
+  <copy>helm repo add elastic https://helm.elastic.co</copy>
+  ```
   
   ```
 "elastic" has been added to your repositories
@@ -135,7 +147,9 @@ Now let's use helm to install the elastic search engine into the logging namespa
 
   3. Update the repository cache
   
-  - `helm repo update`
+  ```bash
+  <copy>helm repo update</copy>
+  ```
 
   ```
 Hang tight while we grab the latest from your chart repositories...
@@ -147,7 +161,9 @@ Update Complete. ⎈ Happy Helming!⎈
 
   4. Make sure you are in the right environment which holds the yaml files
   
-  - `cd $HOME/helidon-kubernetes/management/logging`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/management/logging</copy>
+  ```
   
 ### Task 2b: Setting up the security for the elastic search install
 
@@ -157,7 +173,9 @@ First let's create a password file for the admin user. In the example below I'm 
 
   1. In the OCI Cloud Shell type
   
-  - `htpasswd -c -b auth admin ZaphodBeeblebrox`
+  ```bash
+  <copy>htpasswd -c -b auth admin ZaphodBeeblebrox</copy>
+  ```
 
   ```
 Adding password for user admin
@@ -167,7 +185,9 @@ Now having create the password file we need to add it to Kuberntes as a secret s
 
   2. In the OCI Cloud Shell type
   
-  - `kubectl create secret generic web-ingress-auth -n logging --from-file=auth`
+  ```bash
+  <copy>kubectl create secret generic web-ingress-auth -n logging --from-file=auth</copy>
+  ```
 
   ```
 secret/web-ingress-auth created
@@ -175,7 +195,9 @@ secret/web-ingress-auth created
 
   3. Let's create the certificate for this service. In the OCI cloud shell type the following.
   
-  - `$HOME/keys/step certificate create search.logging.$EXTERNAL_LP.nip.io tls-search-$EXTERNAL_IP.crt tls-search-$EXTERNAL_IP.key  --profile leaf  --not-after 8760h --no-password --insecure --kty=RSA --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
+  ```bash
+  <copy>$HOME/keys/step certificate create search.logging.$EXTERNAL_LP.nip.io tls-search-$EXTERNAL_IP.crt tls-search-$EXTERNAL_IP.key  --profile leaf  --not-after 8760h --no-password --insecure --kty=RSA --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key</copy>
+  ```
   
   ```
   Your certificate has been saved in tls-search-123.456.789.123.crt.
@@ -188,7 +210,9 @@ If your output says it's created key files like `tls-search.crt` and does not in
 
   4. Create the tls secret from the certificate. In the OCI cloud shell type the following., as usual you must replace `<External IP>` with the IP address of the ingress controller
   
-  - `kubectl create secret tls tls-search --key tls-search-$EXTERNAL_IP.key --cert tls-search-$EXTERNAL_IP.crt -n logging`
+  ```bash
+  <copy>kubectl create secret tls tls-search --key tls-search-$EXTERNAL_IP.key --cert tls-search-$EXTERNAL_IP.crt -n logging</copy>
+  ```
 
    ```
    secret/tls-search created
@@ -198,7 +222,9 @@ If your output says it's created key files like `tls-search.crt` and does not in
   
   1. Now we can actually install elastic search. In the cloud console type the following.
   
-  - `helm install elasticsearch elastic/elasticsearch --namespace logging --version 8.5.1 --set ingress.enabled=true --set ingress.tls[0].hosts[0]="search.logging.$EXTERNAL_IP.nip.io" --set ingress.tls[0].secretName=tls-search --set ingress.hosts[0].host="search.logging.$EXTERNAL_IP.nip.io" --set ingress.hosts[0].paths[0].path='/' --set ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-type"=basic --set ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-secret"=web-ingress-auth --set ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-realm"="Authentication Required"`
+  ```bash
+  <copy>helm install elasticsearch elastic/elasticsearch --namespace logging --version 8.5.1 --set ingress.enabled=true --set ingress.tls[0].hosts[0]="search.logging.$EXTERNAL_IP.nip.io" --set ingress.tls[0].secretName=tls-search --set ingress.hosts[0].host="search.logging.$EXTERNAL_IP.nip.io" --set ingress.hosts[0].paths[0].path='/' --set ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-type"=basic --set ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-secret"=web-ingress-auth --set ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-realm"="Authentication Required"</copy>
+  ```
 
   ```
 NAME: elasticsearch
@@ -219,7 +245,9 @@ Let's check on the installation, note that is can take a few mins for the elasti
 
   2. In the cloud console type 
   
-  - `kubectl get all -n logging`
+  ```bash
+  <copy>kubectl get all -n logging</copy>
+  ```
 
   ```
 NAME                         READY   STATUS    RESTARTS   AGE
@@ -237,7 +265,9 @@ statefulset.apps/elasticsearch-master   2/3     4m58s
 
   3. We can check that the software has been installed by using the helm test command. In the OCI cloud shell type 
   
-  - `helm test elasticsearch -n logging`
+  ```bash
+  <copy>helm test elasticsearch -n logging</copy>
+  ```
   
   ```
 Pod elasticsearch-qepig-test pending
@@ -342,11 +372,15 @@ Let's create the daemonset
 
   1. Make sure you are in the logging scripts directory
   
-  - `cd $HOME/helidon-kubernetes/management/logging`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/management/logging</copy>
+  ```
   
   2. In the OCI Cloud Shell terminal type
   
-  - `kubectl apply -f fluentd-daemonset-elasticsearch-rbac.yaml`
+  ```bash
+  <copy>kubectl apply -f fluentd-daemonset-elasticsearch-rbac.yaml</copy>
+  ```
 
   ```
 serviceaccount/fluentd created
@@ -357,7 +391,9 @@ daemonset.apps/fluentd created
 
   3. Let's make sure that everything has started. In the OCI Cloud Shell type
 
-  - `kubectl get daemonsets -n logging`
+  ```bash
+  <copy>kubectl get daemonsets -n logging</copy>
+  ```
 
   ```
 NAME      DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
@@ -368,8 +404,11 @@ We can see that there are 3 pods, why 3 ? That's the number of nodes in the clus
 
 Let's look at the distribution of the fluent instances, we could do this using kubectl commands, for example  
 
+```bash
+  <copy>kubectl get nodes</copy>
+  ```
+  
 ```
-$ kubectl get nodes
 NAME        STATUS   ROLES   AGE   VERSION
 10.0.10.2   Ready    node    8d    v1.15.7
 10.0.10.3   Ready    node    8d    v1.15.7
@@ -394,37 +433,6 @@ We have had reports that some versions of Chrome will not allow you to override 
 
 
 If you are presented with the login page use the Token option and the dashboard user token you got previously
-
-<details><summary><b>If you've forgotten your dashboard user token</b></summary>
-
-- Retrieve the token of the dashboard user:
-
-  - ```
-    kubectl -n kube-system describe secret `kubectl -n kube-system get secret | grep dashboard-user | awk '{print $1}'`
-    ```
-
-```
-Name:         dashboard-user-token-mhtf9
-Namespace:    kube-system
-Labels:       <none>
-Annotations:  kubernetes.io/service-account.name: dashboard-user
-              kubernetes.io/service-account.uid: a09cd40c-2663-11ea-a75b-025000000001
-
-Type:  kubernetes.io/service-account-token
-Data
-====
-namespace:  11 bytes
-token:      
-eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLW1odGY5Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJhMDljZDQwYy0yNjYzLTExZWEtYTc1Yi0wMjUwMDAwMDAwMDEiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06YWRtaW4tdXNlciJ9.HUg_9-3HBAG0IJKqCNZvXOS8xdt_n2qO4yNc0Lrh4T4AXnUdMHBR1H8uO6J_GoKSKKeuTJpaIB4Ns4QGaWAvcatFxJWmOywwT6CtbxOeLIyP61PCQju_yfqQO5dTUjNW4O1ciPqAWs6GXL-MRTZdvSiaKvUkD_yOrnmacFxVVZUIKR8Ki4dK0VbxF9VvN_MjZS2YgMz8CghsM6AB3lusqoWOK2SdM5VkIGoAOZzsGMjV2eCYJP3k6qIy2lfOD6KrvERhGZLk8GwEQ7h84dbTa4VHqZurS63fle-esKjtNS5A5Oarez6BReByO6nYwEVQBty3VLt9uKPJ7ZRr1FW5iA
-
-ca.crt:     1025 bytes
-```
-- Copy the contents of the token (in this case the `eyJh........W5iA` text, but it *will* vary in your environment). 
-- Save it in a plain text editor on your laptop for easy use later
-
----
-
-</details>
 
   6. Click on the **nodes** option in the **cluster** section of the UI menu on the left
 
@@ -488,7 +496,9 @@ If you haven't generated any log messages from the storefront container since we
 
   5. In the OCI Cloud Shell terminal type.
   
-  - `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
+  ```bash
+  <copy>curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel</copy>
+  ```
   
   ```
 HTTP/1.1 200 OK
@@ -543,7 +553,9 @@ If you are in a trial tenancy there are limitations on how many resources you ca
 
   1. In the OCI Cloud shell type 
   
-  - `kubectl delete namespace logging`
+  ```bash
+  <copy>kubectl delete namespace logging</copy>
+  ```
   
   ```
 namespace "logging" deleted
@@ -561,6 +573,6 @@ You can chose from the various Kubernetes optional module sets.
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, August 2021
+* **Last Updated By** - Tim Graves, May 2023

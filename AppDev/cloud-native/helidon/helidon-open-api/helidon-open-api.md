@@ -79,7 +79,9 @@ You may of course chose to document other services, for example the stockmanager
   
   2. Check you can access the generated OpenAPI documentation using curl
 
-  - `curl http://localhost:8080/openapi`
+  ```bash
+  <copy>curl http://localhost:8080/openapi</copy>
+  ```
 
   ```yaml
 info: 
@@ -147,7 +149,7 @@ Firstly we shall define what the top level service provides, this can be done on
   1. Open the **StorefrontApplication.java file**, and add the following @OpenAPIDefiniton annotation on the *class declaration* itself:
   
   ```java
-    @OpenAPIDefinition(info = @Info(title = "StorefrontApplication", description = "Acts as a simple stock level tool for a post room or similar", version = "0.0.1"))
+   <copy>@OpenAPIDefinition(info = @Info(title = "StorefrontApplication", description = "Acts as a simple stock level tool for a post room or similar", version = "0.0.1"))</copy>
 ```
 
 The resulting class declaration should look like
@@ -165,7 +167,7 @@ public class StorefrontApplication extends Application {
 You may need to add the following import to the class
 
 ```java
-import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
+<copy>import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;</copy>
 ```
 
 ---
@@ -184,7 +186,9 @@ The title, description and version fields are I hope self explanatory
 
   3. Save the file and restart the storefront Check you can access the generated OpenAPI documentation using curl
 
-  - `curl http://localhost:8080/openapi`
+  ```bash
+  <copy>curl http://localhost:8080/openapi</copy>
+  ```
 
   ```yaml
 info: 
@@ -212,7 +216,9 @@ This means that you probably already have a index file, in some situations this 
   
   - In the terminal run the following command, be sure to run it exactly as it is below
   
-  - `find . -name jandex.idx -print -exec rm \{\} \;`
+  ```bash
+  <copy>find . -name jandex.idx -print -exec rm \{\} \;</copy>
+  ```
   
   You may see some output like `./target/classes/META-INF/jandex.idx` this means it has located an index file and deleted it.
   
@@ -305,7 +311,10 @@ The `paths:` section defines the REST endpoints offered by the service, in this 
 Helidon can generate the OpenAPI document in yaml (the default) or in JSON. To generate JSON use the Accept header.
  - In a terminal window type:
 
-   - `curl -i -H "Accept:application/json" http://localhost:8080/openapi`
+  ```bash
+  <copy>curl -i -H "Accept:application/json" http://localhost:8080/openapi</copy>
+  ```
+  
 
 ```json
  {
@@ -459,7 +468,9 @@ Let's see how this looks.
 
   4. Check out the updated documentation that's generated
 
-  - ` curl -i http://localhost:8080/openapi`
+  ```bash
+  <copy>curl -i http://localhost:8080/openapi</copy>
+  ```
   
   ```yaml
 info: 
@@ -529,10 +540,10 @@ The result will look like
 You may need to add the following imports to the class
 
 ```java
-import org.eclipse.microprofile.openapi.annotations.Operation;
+<copy>import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
-import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Content;</copy>
 ```
 
 ---
@@ -559,7 +570,9 @@ Let's look at the updated REST API description
 
   4. Get the updated documentation, in a terminal window type
 
-  - `curl -i http://localhost:8080/openapi`
+  ```bash
+  <copy>curl -i http://localhost:8080/openapi</copy>
+  ```
   
 (The following has been truncated to only include the `/store/stocklevel` part of the `paths:` section)
 
@@ -594,14 +607,14 @@ Let's now add annotations to the `/store/reserveStock` method that let's us desc
   6. Add the following annotations to the reserveStock method
 
   ```java
-    	@Operation(summary = "Reserves a number of stock items", description = "reserves a number of stock items in the database. The number of stock items being reserved must be greater than the defined minimum change")
-	@APIResponse(description = "The updated stock details for the item", responseCode = "200", content = @Content(schema = @Schema(name = "ItemDetails", implementation = ItemDetails.class), example = "{\"itemCount\": 10, \"itemName\": \"Pencil\"}"))
+    	<copy>@Operation(summary = "Reserves a number of stock items", description = "reserves a number of stock items in the database. The number of stock items being reserved must be greater than the defined minimum change")
+	@APIResponse(description = "The updated stock details for the item", responseCode = "200", content = @Content(schema = @Schema(name = "ItemDetails", implementation = ItemDetails.class), example = "{\"itemCount\": 10, \"itemName\": \"Pencil\"}"))</copy>
 ```
 
   9. Add the following annotation to the reserveStock method itemRequest parameter
 
   ```java
-    @RequestBody(description = "The details of the item being requested", required = true, content = @Content(schema = @Schema(name = "ItemRequest", implementation = ItemRequest.class), example = "{\"requestedItem\",\"Pencil\",\"requestedCount\",5}"))
+    <copy>@RequestBody(description = "The details of the item being requested", required = true, content = @Content(schema = @Schema(name = "ItemRequest", implementation = ItemRequest.class), example = "{\"requestedItem\",\"Pencil\",\"requestedCount\",5}"))</copy>
 ```
 
 The updated method declaration should now look like the following. Note that other annotations for metrics, timers etc. may not be as displayed here depending on what sections of the lab you've done. Comments have been omitted to simplify the text
@@ -626,7 +639,7 @@ The updated method declaration should now look like the following. Note that oth
 You may need to add the following imports to the class
 
 ```java
-import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+<copy>import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;</copy>
 ```
 
 ---
@@ -637,7 +650,9 @@ import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
   11. Get the updated documentation, in a terminal window type
 
-  - `curl -i http://localhost:8080/openapi`
+  ```bash
+  <copy>curl -i http://localhost:8080/openapi</copy>
+  ```
   
 (The following has been truncated to only include the reserveStock path in the `paths:` section)
 
@@ -675,9 +690,9 @@ Of course not every REST API call returns successfully, there may be problems, f
   1. In the StorefrontResource class Add the following additional `@APIResponse` annotations to the reserveStock method
 
   ```java
-    @APIResponse(description = "The requested item does not exist", responseCode = "404")
+    <copy>@APIResponse(description = "The requested item does not exist", responseCode = "404")
 	@APIResponse(description = "The requested change does not meet the minimum level required for the change (i.e. is <= the minimumChange value)", responseCode = "406")
-	@APIResponse(description = "There are not enough of the requested item to fulfil your request", responseCode = "409")
+	@APIResponse(description = "There are not enough of the requested item to fulfil your request", responseCode = "409")</copy>
 ```
 
 The updated method declaration should now look like this (comments omitted for clarity)
@@ -703,7 +718,9 @@ The updated method declaration should now look like this (comments omitted for c
 
   3. Get the updated documentation, in a terminal window type
 
-  - `curl -i http://localhost:8080/openapi`
+  ```bash
+  <copy>curl -i http://localhost:8080/openapi</copy>
+  ```
   
 (The following has been truncated to only include the `/store/reserveStock` path in the `paths:` section)
 
@@ -765,19 +782,19 @@ You may have noticed that we don;t ac tually have any details of the data being 
   2. Add the following annotation to the class definition itself
   
   ```java
-    @Schema(name = "ItemRequest", description = "Details of a Item reservation request")
+   <copy>@Schema(name = "ItemRequest", description = "Details of a Item reservation request")</copy>
 ```
 
   3. Add the following annotation to the requestedItem field
   
   ```java
-    @Schema(required = true, description = "Name of the item being requested", example = "Pencil")
+    <copy>@Schema(required = true, description = "Name of the item being requested", example = "Pencil")</copy>
 ```
 
   4. Add the following annotation to the requestedCount field
 
   ```java
-    @Schema(name = "ItemRequest", description = "Details of a Item reservation request", example = "{\"requestedItem\", \"Pin\", \"requestedCount\",5}")
+    <copy>@Schema(name = "ItemRequest", description = "Details of a Item reservation request", example = "{\"requestedItem\", \"Pin\", \"requestedCount\",5}")</copy>
 ```
 
 The resulting class looks like :
@@ -801,7 +818,7 @@ public class ItemRequest {
 You may need to add the following import to the class
 
 ```java
-import org.eclipse.microprofile.openapi.annotations.media.Schema;
+<copy>import org.eclipse.microprofile.openapi.annotations.media.Schema;</copy>
 ```
 
 ---
@@ -829,7 +846,9 @@ The ItemDetails class has already been updated for you with the same annotations
 
   2. Get the updated documentation, in a terminal window type
 
-  - `curl -i http://localhost:8080/openapi`
+  ```bash
+  <copy>curl -i http://localhost:8080/openapi</copy>
+  ```
   
   3. Note that it is the same as before - the `@Schema` entries are not showing !
   
@@ -938,7 +957,9 @@ One key point here, the index file will always be used if it's present abd the c
   
   3. Get the updated documentation, in a terminal window type
 
-  - `curl -i http://localhost:8080/openapi`
+  ```bash
+  <copy>curl -i http://localhost:8080/openapi</copy>
+  ```
   
   Note that there is a new section now called `components` as shown below
 
@@ -1029,8 +1050,8 @@ The OpenAPI document doesn't specify what's required security wise. Let's add th
   1. At the start of the Storefront class add the following annotations on the Storefront class
 
 ```java
-@SecurityScheme(securitySchemeName = "httpBasic", type = SecuritySchemeType.HTTP, scheme = "Basic")
-@SecurityRequirement(name = "httpBasic")
+<copy>@SecurityScheme(securitySchemeName = "httpBasic", type = SecuritySchemeType.HTTP, scheme = "Basic")
+@SecurityRequirement(name = "httpBasic")</copy>
 ```
 
 The class should now have the following annotations (commends have been removed for brevity
@@ -1064,7 +1085,9 @@ public class StorefrontResource {
   
   4. Get the updated documentation, in a terminal window type
 
-  - `curl -i http://localhost:8080/openapi`
+  ```bash
+  <copy>curl -i http://localhost:8080/openapi</copy>
+  ```
   
   Note that there is a new section in the `components` section 
   
@@ -1110,7 +1133,7 @@ If you are only doing the Helidon labs then thank you for your time and attentio
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, November 2020
+* **Last Updated By** - Tim Graves, May 2023
 

@@ -28,7 +28,9 @@ If you are not sure if you have downloaded the lates version then you can check
 
   - In the OCI Cloud shell type 
   
-  - `ls $HOME/helidon-kubernetes`
+  ```bash
+  <copy>ls $HOME/helidon-kubernetes</copy>
+  ```
 
 If you get output like this then you need to download the scripts, follow the process in **Task 1a**
 
@@ -51,11 +53,15 @@ We will use git to download the scripts
 
   2. Make sure you are in the top level directory
   
-  - `cd $HOME`
+  ```bash
+  <copy>cd $HOME</copy>
+  ```
   
   3. Clone the repository with all scripts from github into your OCI Cloud Shell environment
   
-  - `git clone https://github.com/CloudTestDrive/helidon-kubernetes.git`
+  ```bash
+  <copy>git clone https://github.com/CloudTestDrive/helidon-kubernetes.git</copy>
+  ```
   
   ```
   Cloning into 'helidon-kubernetes'...
@@ -79,11 +85,15 @@ We will use git to update the scripts
   
   2. Make sure you are in the home directory
   
-  - `cd $HOME/helidon-kubernetes`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes</copy>
+  ```
   
   3. Use git to get the latest updates
   
-  - `git pull`
+  ```bash
+  <copy>git pull</copy>
+  ```
 
 ```
 remote: Enumerating objects: 21, done.
@@ -154,17 +164,23 @@ Finally it will use the microservices to create test data in the database. If th
 
   1. If you have not already done so open the OCI Cloud shell and go to the scripts directory 
   
-  - `cd $HOME/helidon-kubernetes/setup/kubernetes-labs`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/setup/kubernetes-labs</copy>
+  ```
   
-  2. Configure the cluster - thus will update the configuration files with the database wallet and other information.
+  2. Configure the git repo - thus will update the configuration files with the database wallet and other information. Replace `[your initials]` with your initials (e.g. `tg` in my case, of course yours will probably be different)
   
-  - `bash configure-downloaded-git-repo.sh <your initials>`
+  ```bash
+  bash configure-downloaded-git-repo.sh [your initials]
+  ```
   
   There will be a fair bit of output, if you are asked to confirm please enter `y`
   
   3. Run the installation script, you will need to replace `<your initials>` with your personal initials, or first name in **lower case** (singluar or plural). For example my name is Tim Graves, so my initials will be tg, or I might use `tim` or `tims`. Of course unless your name is also Tim Graves yoiu will be using a different value. If you are running a version of the lab where multiple people are using the same tenancy (your instructor will notify you of this, most people will be using their own free trial) please ensure that you do not duplicate this value.
   
-  - `bash ./configureHelmAndFullyInstallCluster.sh <your initials>`
+  ```bash
+  bash ./configureHelmAndFullyInstallCluster.sh <your initials>
+  ```
   
   ```
   setting up config in downloaded git repo using tims as the department name one as the kubernetes context and /home/tim_graves/Wallet.zip as the DB wallet file.
@@ -483,8 +499,6 @@ one
 
 </details>
 
-  Note that the 
-
 If the database already contains data then you may see the `HTTP/1.1 500 Internal Server Error` messages when the script tries to create the test data.
 
 ## Task 3: Viewing the results
@@ -493,7 +507,9 @@ The script saves information that is useful for the lab into a config file.
 
   - To look at the contents in the OCI Cloud shell type
   
-  - `cat $HOME/clusterInfo.one`
+  ```bash
+  <copy>cat $HOME/clusterInfo.one</copy>
+  ```
 
 ```
 External IP
@@ -516,9 +532,11 @@ curl -i -X GET -k https://store.123.456.789.123.nip.io/sf/status
 
 You can confirm that everything is working using the curl command in the output, of course your IP address may be different so you will need to replace `123.456.789.123` with the IP address you see
 
-  - Check the service is available, in the OCI CLoud shell copy and past the curl command ending in `/sf/status` from the clusterSettings.one file
+  - Check the service is available, in the OCI CLoud shell copy and past the curl command ending in `/sf/status` from the clusterInfo.one file, this is an example, use the one from **your** clusterInfo.one file
   
-  - `curl -i -X GET -u jack:password -k https://store.123.456.789.123.nip.io/sf/status`
+  ```bash
+  curl -i -X GET -u jack:password -k https://store.123.456.789.123.nip.io/sf/status
+  ```
 
 ```
 HTTP/1.1 200 OK
@@ -534,9 +552,11 @@ Strict-Transport-Security: max-age=15724800; includeSubDomains
 
 The output above shows that the shop is "alive" and is version "0.0.1"
  
-  - In the OCI cloud shell copy and paste the curl command ending oin /store/stocklevel from the clusterSettings.one file
+  - In the OCI cloud shell copy and paste the curl command ending in /store/stocklevel from the clusterSettings.one file, again this is an example, use the one from **your** file
   
-  - `curl -i -X GET -u jack:password -k https://store.123.456.789.123.nip.io/store/stocklevel`
+  ```bash
+  curl -i -X GET -u jack:password -k https://store.123.456.789.123.nip.io/store/stocklevel
+  ```
   
 ```
 HTTP/1.1 200 OK
@@ -553,5 +573,5 @@ The output above shows that the storefront can communicate with the stock manage
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
-* **Last Updated By** - Tim Graves, November 2021
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
+* **Last Updated By** - Tim Graves, May 2023
