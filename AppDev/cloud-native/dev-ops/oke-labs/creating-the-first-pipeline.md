@@ -266,7 +266,7 @@ Lastly we see the phase `SAVE_EXPORTED_VARIABLES` This phase is extracting the v
 
 So we've seen how to setup the build pipeline and how the `build_spec.yaml` is processed by the build runner, but all this has done is shown us the compilation process and how to look at the results. The next stage is to look at how to get the artifacts we have created out of the pipeline and into a longer term storage so they can be used for a deployment.
 
-## Acknowledgments
+## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
-* **Last Updated By** - Tim Graves, February 2022
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
+* **Last Updated By** - Tim Graves, May 2023

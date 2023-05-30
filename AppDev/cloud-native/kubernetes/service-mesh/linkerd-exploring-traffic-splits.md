@@ -73,7 +73,9 @@ Let's switch to the right directory
 
   1. In the OCI Cloud Shell type 
   
-  - `cd $HOME/helidon-kubernetes/service-mesh`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/service-mesh</copy>
+  ```
 
 First we need to make a small change to our existing stock manager deployment, adding the version number to the deployment, this will let us differentiate it from the newer version we are about to deploy.
 
@@ -107,7 +109,9 @@ Unfortunately since Kubernetes 1.17 we cannot just change the labels by updating
 
   2. Let's remove the old deployment. In the OCI Cloud shell type
 
-  - `kubectl delete deployment stockmanager` 
+  ```bash
+  <copy>kubectl delete deployment stockmanager</copy>
+  ```
 
   ```
 deployment/stockmanager: deleted
@@ -115,7 +119,9 @@ deployment/stockmanager: deleted
 
   3. And create the new one. In the OCI Cloud Shell type 
 
-  - `kubectl apply -f stockmanager-deployment-v0.0.1.yaml`
+  ```bash
+  <copy>kubectl apply -f stockmanager-deployment-v0.0.1.yaml</copy>
+  ```
   
   ```
 deployment.apps/stockmanager created
@@ -124,7 +130,10 @@ deployment.apps/stockmanager created
 If we have a look at the pods we'll see that the stockmanager deployment has been restarted, and it's a new pod
 
   4. In the OCI Cloud shell type
-  - ` kubectl get pods`
+  
+  ```bash
+  <copy>kubectl get pods</copy>
+  ```
 
 ```
 NAME                             READY   STATUS    RESTARTS   AGE
@@ -149,7 +158,9 @@ If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it
 
 The automated scripts will create a script file `$HOME/clusterSettings.one` this can be executed using the shell built in `source` to set the EXTERNAL_IP variable for you.
 
-  - `source $HOME/clusterSettings.one`
+  ```bash
+  <copy>source $HOME/clusterSettings.one</copy>
+  ```
   
 ```
 EXTERNAL_IP set to 139.185.45.98
@@ -171,7 +182,9 @@ In this case as you manually set this up you will need to get the information fr
 
   - You are going to get the value of the `EXTERNAL_IP` for your environment. This is used to identify the DNS name used by an incoming connection. In the OCI cloud shell type
 
-  - `kubectl get services -n ingress-nginx`
+  ```bash
+  <copy>kubectl get services -n ingress-nginx</copy>
+  ```
 
 ```
 NAME                                 TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)                      AGE
@@ -181,9 +194,11 @@ ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>      
 
   - Look for the `ingress-nginx-controller` line and note the IP address in the `EXTERNAL-IP` column, in this case that's `130.162.40.121` but it's almost certain that the IP address you have will differ. IMPORTANT, be sure to use the IP in the `EXTERNAL-IP` column, ignore anything that looks like an IP address in any other column as those are internal to the OKE cluster and not used externally. 
 
-  - IN the OCI CLoud shell type the following, replacing `<external ip>` with the IP address you retrieved above.
+  - IN the OCI CLoud shell type the following, replacing `[external ip]` with the IP address you retrieved above.
   
-  - `export EXTERNAL_IP=<external ip>`
+  ```bash
+  export EXTERNAL_IP=[external ip]
+  ```
   
 ---
 
@@ -194,7 +209,9 @@ ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>      
 
   5. In the OCI Cloud shell type the following
   
-  - `curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
+  ```bash
+  <copy>curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel</copy>
+  ```
 
   ```
 HTTP/2 200 
@@ -220,7 +237,7 @@ We need to do define the version based services now so we can create the traffic
 
 The versioned services are defined in a couple of yaml files. The key differences are that their selectors mean they are bound to specific versions of the deployment. This means that the selector specifies the version to match. Our previous service (which is still running) allowed connections to any version of the service as it didn't select using the version.
 
-```
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -242,7 +259,9 @@ spec:
 
   1. Let's deploy the 0.0.1 service version - this has a service name stockmanagerv0-0-1 (we have to use use `-` because the service name is used by Kubernetes as part of it's internal DNS setup, and of course a `.` represents a break point in the DNS naming scheme). In the OCI Cloud shell type the following
   
-  - `kubectl apply -f stockmanager-v0.0.1-service.yaml`
+  ```bash
+  <copy>kubectl apply -f stockmanager-v0.0.1-service.yaml</copy>
+  ```
 
   ```
 service/stockmanagerv0-0-1 created
@@ -250,7 +269,9 @@ service/stockmanagerv0-0-1 created
 
   2. And the 0.0.2 service version - nor surprisingly this has a service name stockmanagerv0-0-2. In the OCI CLoud shell type the following
   
-  - `kubectl apply -f stockmanager-v0.0.2-service.yaml`
+  ```bash
+  <copy>kubectl apply -f stockmanager-v0.0.2-service.yaml</copy>
+  ```
 
   ```
 service/stockmanagerv0-0-2 created
@@ -260,7 +281,9 @@ service/stockmanagerv0-0-2 created
 
   3. In the OCI CLoud shell type the following
   
-  - `kubectl apply -f ingressStockmanagerCanaryRules.yaml`
+  ```bash
+  <copy>kubectl apply -f ingressStockmanagerCanaryRules.yaml</copy>
+  ```
 
   ```
 ingress.networking.k8s.io/stockmanager-canary-ingress created
@@ -270,7 +293,9 @@ These ingress rules connect to the versioned services, not the original stockman
 
   4. Let's check them out. Firstly the 0.0.1 specific version. In the OCI CLoud shell type the following
   
-  - `curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/stockmanagerv0-0-1/stocklevel`
+  ```bash
+  <copy>curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/stockmanagerv0-0-1/stocklevel</copy>
+  ```
 
   ```
 HTTP/2 200 
@@ -287,7 +312,9 @@ Accessing the 0.0.1 version the ingress connects to the 0.0.1 service which has 
 
   5. Now let's try the 0.0.2 version (expect an error)
   
-  - `curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/stockmanagerv0-0-2/stocklevel`
+  ```bash
+  <copy>curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/stockmanagerv0-0-2/stocklevel</copy>
+  ```
 
   ```
 HTTP/2 503 
@@ -316,7 +343,7 @@ We are going to deploy our split on the service `stockmanager` (In service mesh 
 
 As we can see below, that breakdown sends all the traffic to the v0.0.1 version and none to the v0.0.2 version, we need to do this because we haven't setup any pods for the 0.0.2 service yet, so it couldn't respond to requests.
 
-```
+```yaml
 apiVersion: split.smi-spec.io/v1alpha1
 kind: TrafficSplit
 metadata:
@@ -346,7 +373,9 @@ By having a weight of 0 on the 0.0.2 split it means that no requests will be sen
 
   1. Let's apply the traffic split we just looked at. In the OCI Cloud shell type
   
-  - `kubectl apply -f stockmanager-canary-traffic-split.yaml`
+  ```bash
+  <copy>kubectl apply -f stockmanager-canary-traffic-split.yaml</copy>
+  ```
   
   ```
 trafficsplit.split.smi-spec.io/stockmanager-canary created
@@ -358,7 +387,9 @@ We can confirm this by making a few requests
 
   2. In the OCI Cloud shell type
   
-  - `curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
+  ```bash
+  <copy>curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel</copy>
+  ```
   
   ```
 HTTP/2 200 
@@ -377,7 +408,9 @@ Now we have confirmed that the original setup is working as it should be we can 
 
   3. In the OCI Shell type
   
-  - `kubectl apply -f stockmanager-deployment-v0.0.2.yaml`
+  ```bash
+  <copy>kubectl apply -f stockmanager-deployment-v0.0.2.yaml</copy>
+  ```
 
 ```
 deployment.apps/stockmanagerv0-0-2 created
@@ -388,7 +421,9 @@ After waiting a short while for the new deployment to start we can check that th
 
   4. In the OCI Cloud Shell type
   
-  - `curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/stockmanagerv0-0-2/stocklevel`
+  ```bash
+  <copy>curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/stockmanagerv0-0-2/stocklevel</copy>
+  ```
   
 Note that it may take a short while for the v0.0.2 stockmanager to start, so you may get a 502 Bad Gateway or a delay while the stockmanager does it's lazy initialization and the database connection is established.
 
@@ -438,7 +473,9 @@ Now we've seen that the services are behaving as expected let's start up the loa
 
 In the OCI Cloud shell type
 
-  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+  ```bash
+  <copy>kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller</copy>
+  ```
   
   ```
 NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
@@ -447,19 +484,25 @@ ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:3138
 
 The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column.
   
+  ```bash
+  export EXTERNAL_IP=[External IP]
+  ```
+  
 ---
 
 </details>
  
-  - `export EXTERNAL_IP=<External IP>`
-  
   6. In the **new** OCI Cloud shell go to the script directory
   
-  - `cd $HOME/helidon-kubernetes/service-mesh`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/service-mesh</copy>
+  ```
   
   7. Start the load generator
   
-  - `bash generate-service-mesh-load.sh $EXTERNAL_IP 1 &`
+  ```bash
+  <copy>bash generate-service-mesh-load.sh $EXTERNAL_IP 1 &</copy>
+  ```
   
  ```
  Iteration 1
@@ -481,7 +524,10 @@ If needed accept that it's a self signed certificate and login as `admin` with p
 
 
 - In the OCI Cloud Shell type :
-  - `kubectl get services -n ingress-nginx`
+
+  ```bash
+  <copy>kubectl get services -n ingress-nginx</copy>
+  ```
 
 ```
 NAME                                          TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)                      AGE
@@ -516,13 +562,15 @@ Let's adjust the split
 
   1. In the OCI Cloud shell type
   
-  - `kubectl edit trafficsplit stockmanager-canary`
+  ```bash
+  <copy>kubectl edit trafficsplit stockmanager-canary</copy>
+  ```
   
   2. Go down to the backends section and for the service stockmanagerv-0-0-2 change the weight to 10
 
 The result will look like this (the order of the elements may vary)
 
-```
+```yaml
   service: stockmanager
   backends:
   - service: stockmanagerv0-0-1
@@ -565,7 +613,7 @@ Once you've finished looking at the split we need to stop the load generator
 
 ### Task 2g: It's failed, but what if it had worked ?
 
-If it had worked then you would gradually adjust the traffic split, over time sending more traffic to the new deployment. Once it was taking all of the load then you could remove the deployment for the old version, and the associated service.
+Of course we know that this example will fail - that's the point of this part of the lab, so the deployment woudl not continue in this case. But if it had worked then you would gradually adjust the traffic split, over time sending more traffic to the new deployment. Once it was taking all of the load then you could remove the deployment for the old version, and the associated service.
 
 You **might** delete the traffic split (so requests to the stockmanager service were no longer being intercepted) or you might leave it in place, but remove the old version of the service. That way you would have all of the building blocks in place to easily start testing the next version of the service.
 
@@ -579,13 +627,15 @@ Well obviously in the short term we don't want a broken version of the service i
 
   1. In the OCI Cloud shell type
   
-  - `kubectl edit trafficsplit stockmanager-canary`
+  ```bash
+  <copy>kubectl edit trafficsplit stockmanager-canary</copy>
+  ```
   
   2. Go down to the backends section and for the service stockmanagerv-0-0-2 change the weight to 0
 
 The result will look like this (the order of the elements may vary)
 
-```
+```yaml
   service: stockmanager
   backends:
   - service: stockmanagerv0-0-1
@@ -628,7 +678,9 @@ I've put a small a script in place to do this for us
 
   1. In the OCI Cloud Shell type
   
-  - `bash stop-canary.sh`
+  ```bash
+  <copy>bash stop-canary.sh</copy>
+  ```
 
 ```
 deployment.apps "stockmanagerv0-0-2" deleted
@@ -676,13 +728,15 @@ Switch to the service mesh directory
 
   1. In the OCI Cloud Shell type 
   
-  - `cd $HOME/helidon-kubernetes/service-mesh`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/service-mesh</copy>
+  ```
 
 Let's setup the fault injector, this is basically a simple nginx based web server that returns a HTTP 504 error status (Gateway timeout) each time it's accessed.
 
 First we need to setup the config map for nginx, below is the contents of nginx-fault-injector-configmap.yaml. It defines a config rule for nginx that will always return a 504 error
 
-```
+```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -702,7 +756,9 @@ data:
 
   2. In the OCI Cloud shell type
   
-  - `kubectl apply -f nginx-fault-injector-configmap.yaml`
+  ```bash
+  <copy>kubectl apply -f nginx-fault-injector-configmap.yaml</copy>
+  ```
 
   ```
 configmap/fault-injector-configmap created
@@ -712,7 +768,9 @@ Next let's start a service for the nginx instance (feel free to  look at the con
 
   3. In the OCI Cloud shell type
   
-  - `kubectl apply -f fault-injector-service.yaml`
+  ```bash
+  <copy>kubectl apply -f fault-injector-service.yaml</copy>
+  ```
 
   ```  
 service/fault-injector created
@@ -722,7 +780,9 @@ Start the nginx fault injector deployment
 
   4. In the OCI Cloud shell type
   
-  - `kubectl apply -f nginx-fault-injector-deployment.yaml`
+  ```bash
+  <copy>kubectl apply -f nginx-fault-injector-deployment.yaml</copy>
+  ```
 
 ```
 deployment.apps/fault-injector created
@@ -732,7 +792,9 @@ For testing purposes we'll run an ingress, normally you wouldn't need to do this
 
   6. In the OCI Cloud shell type
   
-  - `kubectl apply -f ingressFaultInjectorRules.yaml`
+  ```bash
+  <copy>kubectl apply -f ingressFaultInjectorRules.yaml</copy>
+  ```
 
   ```
 ingress.networking.k8s.io/fault-injector created
@@ -742,7 +804,9 @@ Test the fault injection returns the right value
 
   7. In the OCI Cloud shell type
 
-  - `curl -i -k https://store.$EXTERNAL_IP.nip.io/fault`
+  ```bash
+  <copy>curl -i -k https://store.$EXTERNAL_IP.nip.io/fault</copy>
+  ```
 
   ```
 Handling connection for 9411
@@ -770,7 +834,7 @@ So far all we've done is to create a service that generates 504 errors, not much
 
 Let's look at the traffic split, below is the contents of fault-injector-traffic-split.yaml
 
-```
+```yaml
 apiVersion: split.smi-spec.io/v1alpha1
 kind: TrafficSplit
 metadata:
@@ -790,7 +854,9 @@ OK, now we know what it is let's deploy it.
 
   1. In the OCI Cloud shell type 
   
-  - `kubectl apply -f  fault-injector-traffic-split.yaml`
+  ```bash
+  <copy>kubectl apply -f  fault-injector-traffic-split.yaml</copy>
+  ```
   
 ```
 trafficsplit.split.smi-spec.io/fault-injector-split created
@@ -830,7 +896,9 @@ Let's generate some requests to see what happens
 
   1. In the OCI Cloud Shell type the following
   
-  - `curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
+  ```bash
+  <copy>curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel</copy>
+  ```
 
   ```  
 HTTP/2 200 
@@ -881,7 +949,9 @@ This will generate reports from any deployment to the `zipkin` deployment (it is
 
   8. In the OCI cloud shell make multiple curl requests of the form
   
-  - `curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
+  ```bash
+  <copy>curl -i -k  -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel</copy>
+  ```
   
   9. Looking at the Linkerd UI we can see the result.
 
@@ -895,7 +965,7 @@ This is great, but how is our service handling it ?
 
 Unless something very unexpected from the point of view of the lab writer has happened all the time you have been getting a reply to the curl command of something like 
 
-```
+```json
 [{"itemCount":410,"itemName":"Pencil"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":4490,"itemName":"Pins"},{"itemCount":100,"itemName":"Book"}]
 ```
 
@@ -910,7 +980,9 @@ First we need the pod name
 
 - In the OCI Cloud shell type 
 
- - `kubectl get pods`
+ ```bash
+  <copy>kubectl get pods</copy>
+  ```
 
 ```
 NAME                             READY   STATUS    RESTARTS   AGE
@@ -927,7 +999,9 @@ Let's use kubectl to get the logs. Note that as the pod now contains multiple co
 
 - In the OCI Cloud Shell type the following, replace the pod name with your stockmanager pod name :
 
-  - `kubectl logs stockmanager-7945b54576-9f7q7 stockmanager`
+  ```bash
+  kubectl logs stockmanager-7945b54576-9f7q7 stockmanager
+  ```
 
 ```
 ... Loads of stuff ....
@@ -1007,7 +1081,9 @@ For now let's remove the Traffic split and the fault-injector components we crea
 
   1. In the OCI Cloud shell type
   
-  - `bash stop-fault-injection.sh`
+  ```bash
+  <copy>bash stop-fault-injection.sh</copy>
+  ```
 
 ```
 trafficsplit.split.smi-spec.io "fault-injector" deleted
@@ -1033,6 +1109,6 @@ You can chose from the remaining **Linkerd service mesh** modules or switch to o
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Applications Development specialists team
 * **Contributor** - Charles Pretzer, Bouyant, Inc for reviewing and sanity checking parts of this document.
-* **Last Updated By** - Tim Graves, July 2021
+* **Last Updated By** - Tim Graves, May 2023

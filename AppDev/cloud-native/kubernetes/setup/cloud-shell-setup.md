@@ -80,11 +80,15 @@ Firstly we need to download all of the scripts, templates and other configuratio
 
   2. Make sure you are in the top level directory
   
-  - `cd $HOME`
+  ```bash
+  <copy>cd $HOME</copy>
+  ```
   
   3. Clone the repository with all scripts from github into your OCI Cloud Shell environment
   
-  - `git clone https://github.com/CloudTestDrive/helidon-kubernetes.git`
+  ```bash
+  <copy>git clone https://github.com/CloudTestDrive/helidon-kubernetes.git</copy>
+  ```
   
 ## Task 3: Downloading the database wallet file
 
@@ -96,11 +100,15 @@ We will use the OCI Cloud Shell to download the database wallet file.
   
   1. Make sure you are in the top level directory
   
-  - `cd $HOME`
+  ```bash
+  <copy>cd $HOME</copy>
+  ```
   
   2. Attention: replace the example OCID below with the OCID of your database. If you didn't copy this when you created the database or don't have it then if you go to the database page for your instance (Hamburger -> Oracle Database -> Autonomous Transaction Processing -> your instance) it will be shown there with a **copy** link)
     
-  - `oci db autonomous-database generate-wallet --file Wallet.zip --password 'Pa$$w0rd' --autonomous-database-id ocid1.autonomousdatabase.oc1.eu-frankfurt-1.aa8d698erlewaiehqrfklhfoeqwfaalkdhfuieiq`
+  ```bash
+  oci db autonomous-database generate-wallet --file Wallet.zip --password 'Pa$$w0rd' --autonomous-database-id ocid1.autonomousdatabase.oc1.eu-frankfurt-1.aa8d698erlewaiehqrfklhfoeqwfaalkdhfuieiq
+  ```
 
   ```
 Downloading file  [####################################]  100%
@@ -108,21 +116,31 @@ Downloading file  [####################################]  100%
 
   3. Create the wallet directory and navigate to it:
   
-  - `mkdir -p $HOME/helidon-kubernetes/configurations/stockmanagerconf/Wallet_ATP`
+  ```bash
+  <copy>mkdir -p $HOME/helidon-kubernetes/configurations/stockmanagerconf/Wallet_ATP</copy>
+  ```
   
-  - `cd $HOME/helidon-kubernetes/configurations/stockmanagerconf/Wallet_ATP`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/configurations/stockmanagerconf/Wallet_ATP</copy>
+  ```
   
   4. Copy the wallet file to the directory
   
-  - `cp $HOME/Wallet.zip .`
+  ```bash
+  <copy>cp $HOME/Wallet.zip .</copy>
+  ```
   
   5. Unzip the wallet file
   
-  - `unzip Wallet.zip`
+  ```bash
+  <copy>unzip Wallet.zip</copy>
+  ```
   
   6. Look at the contents of the tnsnames.ora file to get the database connection names
   
-  - `cat tnsnames.ora`
+  ```bash
+  <copy>cat tnsnames.ora</copy>
+  ```
 
   ```
 jleoow_high = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_jleoow_high.atp.oraclecloud.com))(security=(ssl_server
@@ -149,7 +167,9 @@ l_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com,OU=Oracle BMCS FRANKFU
 
   9. Return to the home directory
 
-  - `cd $HOME`
+  ```bash
+  <copy>cd $HOME</copy>
+  ```
 
 ## Task 4: Setting up your department Id
 
@@ -159,13 +179,17 @@ We need to configure the stockmanager-config.yaml file. You need to do this even
 
   1. Navigate into the folder 
   
-  - `cd $HOME/helidon-kubernetes/configurations/stockmanagerconf/conf`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/configurations/stockmanagerconf/conf</copy>
+  ```
   
   2. Open the file **stockmanager-config.yaml**
   
   3. In the `app:` section, add a property **department** with **your** your name, initials or something that's going to be **unique**
   
-  -  `department: "your_name"`
+  ```yaml
+  department: "your_name"
+  ```
 
 Example (Yours will be different of course)
 
@@ -188,11 +212,15 @@ To make this a little easier we're going to use `step` this is a much easier to 
  
   1. To set up these certificates let's first of all create a working directory
 
-  - `mkdir $HOME/keys`
+  ```bash
+  <copy>mkdir $HOME/keys</copy>
+  ```
 
   2. Now let's switch to it
 
-  - `cd $HOME/keys`
+  ```bash
+  <copy>cd $HOME/keys</copy>
+  ```
   
 ### b: Locating the step executable
 
@@ -200,23 +228,29 @@ To make this a little easier we're going to use `step` this is a much easier to 
   
   2. Click on `Linux-other` in the list of options
   
-  3. Copy the `wget` and `tar` commands **only**. The `wget` command will be something like `wget -O step.tar.gz https://github.com/smallstep/cli/releases/download/v0.15.14/step_linux_0.15.14_amd64.tar.gz` but the version numbers will probably be different. **Important** use the one from the web page, not this example one !
+  3. Copy the `wget` and `tar` commands **only**. The `wget` command will be something like `wget -O step.tar.gz https://github.com/smallstep/cli/releases/download/v0.15.14/step_linux_0.15.14_amd64.tar.gz` but the version numbers will be different. **Important** use the one from the web page, not this example one !
   
   4. Paste the commands you just copied into the cloud shell window, press return if needed. It will take a short while to download and unpack the files.
   
   5. This will extract the step command, but it's burried in a directory, let's move that to somewhere easier
   
-  - `mv step_*/bin/step .`
+  ```bash
+  <copy>mv step_*/bin/step .</copy>
+  ```
   
   6. Let's get rid of the temporary stuff
 
-  - `rm -rf *gz step_*`
+  ```bash
+  <copy>rm -rf *gz step_*</copy>
+  ```
   
 ### c: Creating our root certificate
 
   1. Let's create a "root" certificate that we can use for signing the specific certificates, this will also package it up as a certificate authority - something that can be used to sign other certificates. Please note that this is of course still a self signed certificate, in a production environment you would be using a certificate for your organization (which ultimately would be signed by a known certificate authority)
 
-  - `./step certificate create root.cluster.local root.crt root.key --profile root-ca --no-password --insecure`
+  ```bash
+  <copy>./step certificate create root.cluster.local root.crt root.key --profile root-ca --no-password --insecure</copy>
+  ```
   
   ```
   Your certificate has been saved in root.crt.
@@ -229,6 +263,6 @@ Go to the **Setting up the cluster and getting your services running in Kubernet
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Applications Development specialists team
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, November 2020
+* **Last Updated By** - Tim Graves, May 2023

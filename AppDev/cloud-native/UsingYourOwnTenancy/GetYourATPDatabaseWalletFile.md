@@ -92,3 +92,8 @@ tg_tpurgent = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tc
 - Locate the "high" connection and take a note of the name, in the example above this is tg_high **Your file will contain different names**
 
 - Be sure to write down the database connection name you have just found, you will need it later
+
+## Acknowledgements
+
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
+* **Last Updated By** - Tim Graves, May 2023

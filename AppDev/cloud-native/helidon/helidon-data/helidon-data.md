@@ -65,7 +65,7 @@ For some versions of this lab, all attendees will are operating on a shared data
 
   3. Open the file **stockmanager-config.yaml**
 
-  4. In the `app:` section, add a property **department** with **your** your name, initials or something that's going to be **unique**:
+  4. In the `app:` section, uncomment the sample **department** property and set it to be **your** your name, initials or something that's going to be **unique to you**:
   
   -  `department: "your_name"`
 
@@ -131,6 +131,7 @@ public class StockLevel {
 ```
 
 ---
+
 <details><summary><b>The annotations explained</b></summary>
 
 
@@ -261,7 +262,9 @@ The resulting method should now look like this
 ```
   3. Scroll up to the **top** of the file, just below the class definition, and locate where the **EntityManager** is defined and add an annotation :
   
-  - `@PersistenceContext(unitName = "stockmanagerJTA")`
+  ```java
+  <copy>@PersistenceContext(unitName = "stockmanagerJTA")</copy>
+  ```
 
 The result should look like 
 
@@ -276,7 +279,7 @@ public class StockResource {
 You may need to add the following import to the class
 
 ```java
-import javax.persistence.PersistenceContext;
+<copy>import javax.persistence.PersistenceContext;</copy>
 ```
 
 ---
@@ -341,11 +344,11 @@ The Run configurations popup will now switch to the arguments tab (this may have
 
 Be careful not to add any newlines or extra spaces, tabs etc. Note that this is a long line, and you may have to scroll in the text box to see all of it.
 
-  ```
--Djavax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.url=jdbc:oracle:thin:@\<database connection name\>?TNS_ADMIN=./Wallet_ATP -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.user=HelidonLabs -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.password=H3lid0n_Labs -Dhibernate.dialect=org.hibernate.dialect.Oracle10gDialect -Dhibernate.hbm2ddl.auto=update
+  ```bash
+<copy>-Djavax.sql.DataSource.stockmanagerDataSource.dataSourceClassName=oracle.jdbc.pool.OracleDataSource -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.url=jdbc:oracle:thin:@\<database connection name\>?TNS_ADMIN=./Wallet_ATP -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.user=HelidonLabs -Djavax.sql.DataSource.stockmanagerDataSource.dataSource.password=H3lid0n_Labs -Dhibernate.dialect=org.hibernate.dialect.Oracle10gDialect -Dhibernate.hbm2ddl.auto=update</copy>
 ```
 
-  10. In the test editor replace `<database connection name>` with the name of your database connection, in my case that's `tg_high`, **yours will be different** 
+  10. In the text editor replace `<database connection name>` with the name of your database connection, in my case that's `tg_high`, **yours will be different** 
 
   - Make sure you replace the entire thing including `<` and `>`
 
@@ -407,7 +410,9 @@ The result should show the application listening on http://localhost:8081
 
   16. Use curl to see what's there
 
-  -  `curl -i -X GET -u jack:password http://localhost:8081/stocklevel`
+  ```bash
+  <copy>curl -i -X GET -u jack:password http://localhost:8081/stocklevel</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -439,7 +444,9 @@ Of course in a production environment you wouldn't want the database changing un
 
   17. Let's try to create some stock items - **error expected**:
 
-  -  `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pins/5000`
+  ```bash
+  <copy>curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pins/5000</copy>
+  ```
 
 Note there is a few seconds delay when you try this as the code does the database connection on demand ... and then you get an error as expected: 
 
@@ -481,7 +488,9 @@ Fortunately for us all we need is an @Transactional annotation and Helidon will 
  
   2. Add the transaction annotation on the top:
   
-  -  `@Transactional`
+  ```java
+  <copy>@Transactional</copy>
+  ```
 
   ```
 @Path("/stocklevel")
@@ -511,8 +520,10 @@ This will apply if there were multiple entity managers or database modification 
 
   3. Let's try the POST again
 
-  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pins/5000`
-
+  ```bash
+  <copy>curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pins/5000</copy>
+  ```
+  
   ```
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -529,7 +540,9 @@ Once the first operation has returned and the database connection is all setup t
 
   4. Let's confirm if it's been committed to the DB. Here we're going to use the API to retrieve a specific item
 
-  - `curl -i -u jack:password  -X GET localhost:8081/stocklevel/Pins`
+  ```bash
+  <copy>curl -i -u jack:password  -X GET localhost:8081/stocklevel/Pins</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -549,15 +562,13 @@ It has been committed to the database.
 
   2. Use curl to create some stock items (expect an error on the last one) :
   
-  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pin/5000`
-  
-  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pencil/200`
-  
-  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Eraser/50`
-  
-  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Book/100`
-  
-  - `curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Book/50`
+  ```bash
+  <copy>curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pin/5000
+  curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Pencil/200
+  curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Eraser/50
+  curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Book/100
+  curl -i -X PUT -u jack:password http://localhost:8081/stocklevel/Book/50</copy>
+  ```
   
   ```
 HTTP/1.1 200 OK
@@ -576,7 +587,9 @@ Note that on the 2nd attempt to add the books we don't get anything back represe
 
   3. Use curl to get the current stock list
   
-  -  `curl -i -X GET -u jack:password http://localhost:8081/stocklevel`
+  ```bash
+  <copy>curl -i -X GET -u jack:password http://localhost:8081/stocklevel</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -588,11 +601,13 @@ content-length: 185
 [{"itemCount":100,"itemName":"Book"},{"itemCount":50,"itemName":"Eraser"},{"itemCount":200,"itemName":"Pencil"},{"itemCount":5000,"itemName":"Pin"},{"itemCount":5000,"itemName":"Pins"}]
 ```
 
-Note that we have "accidentally" created two versions of the Pin (Pin and Pins), let's remove one
+Note that we have "accidentally" created two versions of the Pin (Pin and Pins), let's use the DELETE method to remove one
 
   4. Use curl to remove it
   
-  -  `curl -i -X DELETE -u jack:password http://localhost:8081/stocklevel/Pins`
+  ```bash
+  <copy>curl -i -X DELETE -u jack:password http://localhost:8081/stocklevel/Pins</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -607,11 +622,15 @@ content-length: 36
 
   5.Finally let's test changing the level of some stock, we had 200 Pencils, let's reduce that to 150
 
-  -  `curl -X POST  -u jack:password http://localhost:8081/stocklevel/Pencil/150`
+  ```bash
+  <copy>curl -X POST  -u jack:password http://localhost:8081/stocklevel/Pencil/150</copy>
+  ```
 
   6. And we can check the stock levels are changed : 
 
-  -  `curl -i -X GET -u jack:password http://localhost:8081/stocklevel`
+  ```bash
+  <copy>curl -i -X GET -u jack:password http://localhost:8081/stocklevel</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -649,7 +668,7 @@ The next lab in the Helidon core labs is **Communicating between microservices w
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, November 2020
+* **Last Updated By** - Tim Graves, May 2023
 

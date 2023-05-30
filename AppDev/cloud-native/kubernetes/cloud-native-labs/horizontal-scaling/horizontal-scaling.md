@@ -38,7 +38,9 @@ In many of the labs when you've looked at the contents of the namespace you'll h
 
   1. Let's look at the replica sets. In the OCI Cloud Shell, type
   
-  -  `kubectl get all`
+  ```bash
+  <copy>kubectl get all</copy>
+  ```
 
   ```
 NAME                                READY   STATUS    RESTARTS   AGE
@@ -118,7 +120,7 @@ Scaling the deployment is simple, :
 
 Kubernetes immediately gets to work creating new pods for us, you can see this in the pod status section of the page
 
-  ![Seeing the increaded number of pods](images/scaling-deployment-increasing-pods.png)
+  ![Seeing the increased number of pods](images/scaling-deployment-increasing-pods.png)
 
 <details><summary><b>Changing the number of replicas using kubectl</b></summary>
 
@@ -126,11 +128,11 @@ We can of course change the number of replicas using kubectl as well (it's just 
 
 To do this we can find out the current number of replicas in a deployment. Note that we operate at the deployment, not the replica set. If you tried changing the number in the replica set then you'll find that the deployment will come along and almost instantly reset the count to what the deployment thinks it should be, regardless of what you just told the replica set (I know this doesn't seem right when you first look at it, but it's sensible if you consider what happens in situations like a rolling update, more on which later).
 
-The following is an example showing how it could be done, please just look at these, but follow the lab and in this section only make changes in the dashboard.
+The following is an example showing how it could be done, please just look at these, but follow the lab and in this section only make changes using the dashboard.
 
 First you would find out how many replicas you have in your deployment
 
-```
+```bash
 $ kubectl get deployments
 NAME           READY   UP-TO-DATE   AVAILABLE   AGE
 stockmanager   1/1     1            1           4d2h
@@ -140,7 +142,7 @@ zipkin         1/1     1            1           4d2h
 
 Then you'd modify the number of replicas in the deployment, in this case to 2 replicas
 
-```
+```bash
 $ kubectl scale --replicas=2 deployment storefront
 deployment.apps/storefront scaled
 ```
@@ -242,6 +244,6 @@ You have reached the end of this section of the lab. The next module is `Auto sc
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, November 2020
+* **Last Updated By** - Tim Graves, May 2023

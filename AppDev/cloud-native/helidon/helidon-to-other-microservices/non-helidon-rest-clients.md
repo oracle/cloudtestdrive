@@ -130,30 +130,30 @@ The ResponseExceptionMappers take the response returned and if it's not what's e
 ### Required libraries
 You will of course need to bring in the required libraries for the rest client builder. The Maven dependencies are as follows (the version numbers are correct as of Mid Feb 2020, but you may want to check for later versions).
 
-```xml
-		<dependency>
-			<groupId>io.helidon.microprofile.rest-client</groupId>
-			<artifactId>helidon-microprofile-rest-client</artifactId>
-			<version>${helidon.version}</version>
-		</dependency>
-		<!-- brings in the json binsings -->
-		<dependency>
-			<groupId>jakarta.xml.bind</groupId>
-			<artifactId>jakarta.xml.bind-api</artifactId>
-			<version>2.3.2</version>
-		</dependency>
-		<!-- runtime for the java bindings (no longer part of std java -->
-		<dependency>
-			<groupId>org.glassfish.jaxb</groupId>
-			<artifactId>jaxb-runtime</artifactId>
-			<version>2.3.2</version>
-		</dependency>
-		<!-- sets up the message readers for us -->
-		<dependency>
-			<groupId>org.glassfish.jersey.media</groupId>
-			<artifactId>jersey-media-json-jackson</artifactId>
-			<version>2.30</version>
-		</dependency>
+```text
+		&ltdependency&gt
+			&ltgroupId&gtio.helidon.microprofile.rest-client&lt/groupId&gt
+			&ltartifactId&gthelidon-microprofile-rest-client&lt/artifactId&gt
+			&ltversion&gt${helidon.version}&lt/version&gt
+		&lt/dependency&gt
+		&lt!-- brings in the json binsings --&gt
+		&ltdependency&gt
+			&ltgroupId&gtjakarta.xml.bind&lt/groupId&gt
+			&ltartifactId&gtjakarta.xml.bind-api&lt/artifactId&gt
+			&ltversion&gt2.3.2&lt/version&gt
+		&lt/dependency&gt
+		&lt!-- runtime for the java bindings (no longer part of std java --&gt
+		&ltdependency&gt
+			&ltgroupId&gtorg.glassfish.jaxb&lt/groupId&gt
+			&ltartifactId&gtjaxb-runtime&lt/artifactId&gt
+			&ltversion&gt2.3.2&lt/version&gt
+		&lt/dependency&gt
+		&lt!-- sets up the message readers for us --&gt
+		&ltdependency&gt
+			&ltgroupId&gtorg.glassfish.jersey.media&lt/groupId&gt
+			&ltartifactId&gtjersey-media-json-jackson&lt/artifactId&gt
+			&ltversion&gt2.30&lt/version&gt
+		&lt/dependency&gt
 ```
 
 ---
@@ -167,7 +167,7 @@ The next lab in the Helidon labs is **Operations support with Helidon**
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, November 2020
+* **Last Updated By** - Tim Graves, May 2023
 

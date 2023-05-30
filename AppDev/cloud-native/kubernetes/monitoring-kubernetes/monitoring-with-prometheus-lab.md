@@ -55,7 +55,9 @@ We need to specify the Helm repository for Prometheus
 
   1. In the OCI Cloud shell 
   
-  - `helm repo add prometheus-community https://prometheus-community.github.io/helm-charts`
+  ```bash
+  <copy>helm repo add prometheus-community https://prometheus-community.github.io/helm-charts</copy>
+  ```
 
   ```
 "prometheus-community" has been added to your repositories
@@ -65,7 +67,9 @@ Now update the repository information
 
   2. In the OCI Cloud shell 
   
-  - `helm repo update`
+  ```bash
+  <copy>helm repo update</copy>
+  ```
 
    ```
 Hang tight while we grab the latest from your chart repositories...
@@ -82,9 +86,11 @@ To separate the monitoring services from the  other services we're going to put 
 
 Check if the `$EXTERNAL_IP` variable is set (depending on the order of modules you took to get here it may not be set)
 
-  - Open the OCI cloud shell if it's not already open
+  - Open the OCI cloud shell if it's not already open, type
   
-  - Type `echo $EXTERNAL_IP` 
+  ```bash
+  <copy>echo $EXTERNAL_IP</copy>
+  ``` 
   
   ```
   123.456.789.123
@@ -100,7 +106,9 @@ Check if the `$EXTERNAL_IP` variable is set (depending on the order of modules y
 
 The automated scripts will create a script file `$HOME/clusterSettings.one` this can be executed using the shell built in `source` to set the EXTERNAL_IP variable for you.
 
-  - `source $HOME/clusterSettings.one`
+  ```bash
+  <copy>source $HOME/clusterSettings.one</copy>
+  ```
   
 ```
 EXTERNAL_IP set to 123.456.789.123
@@ -122,7 +130,9 @@ In this case as you manually installed the ingress controller there isn't a scri
 
   - You are going to get the value of the `EXTERNAL_IP` for your environment. This is used to identify the DNS name used by an incoming connection. In the OCI cloud shell type
 
-  - `kubectl get services -n ingress-nginx`
+  ```bash
+  <copy>kubectl get services -n ingress-nginx</copy>
+  ```
 
 ```
 NAME                                 TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)                      AGE
@@ -132,9 +142,11 @@ ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>      
 
   - Look for the `ingress-nginx-controller` line and note the IP address in the `EXTERNAL-IP` column, in this case that's `130.162.40.121` but it's almost certain that the IP address you have will differ. IMPORTANT, be sure to use the IP in the `EXTERNAL-IP` column, ignore anything that looks like an IP address in any other column as those are internal to the OKE cluster and not used externally. 
 
-  - IN the OCI CLoud shell type the following, replacing `<external ip>` with the IP address you retrieved above.
+  - IN the OCI CLoud shell type the following, replacing `[external ip]` with the IP address you retrieved above.
   
-  - `export EXTERNAL_IP=<external ip>`
+  ```bash
+  export EXTERNAL_IP=[external ip]
+  ```
   
 ---
 
@@ -146,12 +158,16 @@ Now you have got a value in the variable you can copy and paste from the instruc
 
   1. Switch to the monitoring directory. In the OCI Cloud shell type
   
-  - `cd $HOME/helidon-kubernetes/monitoring-kubernetes` 
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/monitoring-kubernetes</copy>
+  ```
   
 
   2. Type the following to create the namespace
   
-  -  `kubectl create namespace monitoring`
+  ```bash
+  <copy>kubectl create namespace monitoring</copy>
+  ```
 
   ```
       namespace/monitoring created
@@ -159,7 +175,9 @@ Now you have got a value in the variable you can copy and paste from the instruc
  
   3. Create a password file for the admin user. In the example below I'm using `ZaphodBeeblebrox` as the password, but please feel free to change this if you like. In the OCI Cloud Shell type
   
-  - `htpasswd -c -b auth admin ZaphodBeeblebrox`
+  ```bash
+  <copy>htpasswd -c -b auth admin ZaphodBeeblebrox</copy>
+  ```
 
   ```
 Adding password for user admin
@@ -167,7 +185,9 @@ Adding password for user admin
 
   4. Now having created the password file we need to add it to Kuberntes as a secret so the ingress controller can use it. In the OCI Cloud Shell type
   
-  - `kubectl create secret generic web-ingress-auth -n monitoring --from-file=auth`
+  ```bash
+  <copy>kubectl create secret generic web-ingress-auth -n monitoring --from-file=auth</copy>
+  ```
 
   ```
 secret/web-ingress-auth created
@@ -175,7 +195,9 @@ secret/web-ingress-auth created
 
   5. To provide secure access for the ingress we will set this up with a TLS connection , that requires that we create a certificate for the ingress rule. In production you would of course use a proper certificate, but for this lab we're going to use the self-signed root certificate we created in the cloud shell setup.
   
-  - `$HOME/keys/step certificate create prometheus.monitoring.$EXTERNAL_IP.nip.io tls-prometheus-$EXTERNAL_IP.crt tls-prometheus-$EXTERNAL_IP.key --profile leaf  --not-after 8760h --no-password --insecure --kty=RSA --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
+  ```bash
+  <copy>$HOME/keys/step certificate create prometheus.monitoring.$EXTERNAL_IP.nip.io tls-prometheus-$EXTERNAL_IP.crt tls-prometheus-$EXTERNAL_IP.key --profile leaf  --not-after 8760h --no-password --insecure --kty=RSA --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key</copy>
+  ```
   
   ```
   Your certificate has been saved in tls-prometheus-123.456.789.123.crt.
@@ -188,7 +210,9 @@ If your output says it's created key files like `tls-prometheus-.crt` and does n
 
   6. Now we will create a tls secret in Kubernetes using this certificate, note that this is in the `monitoring` namespace as that's where Prometheus will be installed..
   
-  - `kubectl create secret tls tls-prometheus --key tls-prometheus-$EXTERNAL_IP.key --cert tls-prometheus-$EXTERNAL_IP.crt -n monitoring`
+  ```bash
+  <copy>`kubectl create secret tls tls-prometheus --key tls-prometheus-$EXTERNAL_IP.key --cert tls-prometheus-$EXTERNAL_IP.crt -n monitoring</copy>
+  ```
   
   ```
   secret/tls-prometheus created
@@ -205,9 +229,11 @@ The Helm chart will automatically create a couple of small persistent volumes to
 
 
 
-  1. Installing Prometheus is simple, we just use helm. In the OCI Cloud Shell type the following.
+  1. Installing Prometheus is simple, we just use helm, though there are quite a lot of options here most of them relate to setting up security on the ingress rules. In the OCI Cloud Shell type the following.
   
-  - `helm install prometheus prometheus-community/prometheus --namespace monitoring --version 22.4.1 --set server.ingress.enabled=true --set server.ingress.hosts="{prometheus.monitoring.$EXTERNAL_IP.nip.io}" --set server.ingress.tls[0].secretName=tls-prometheus --set server.ingress.annotations."kubernetes\.io/ingress\.class"=nginx --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-type"=basic --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-secret"=web-ingress-auth --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-realm"="Authentication Required" --set alertmanager.persistentVolume.enabled=false --set server.persistentVolume.enabled=false --set pushgateway.persistentVolume.enabled=false`
+  ```bash
+  <copy>helm install prometheus prometheus-community/prometheus --namespace monitoring --version 22.4.1 --set server.ingress.enabled=true --set server.ingress.hosts="{prometheus.monitoring.$EXTERNAL_IP.nip.io}" --set server.ingress.tls[0].secretName=tls-prometheus --set server.ingress.annotations."kubernetes\.io/ingress\.class"=nginx --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-type"=basic --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-secret"=web-ingress-auth --set server.ingress.annotations."nginx\.ingress\.kubernetes\.io/auth-realm"="Authentication Required" --set alertmanager.persistentVolume.enabled=false --set server.persistentVolume.enabled=false --set pushgateway.persistentVolume.enabled=false</copy>
+  ```
   
   ```
   NAME: prometheus
@@ -258,7 +284,9 @@ Let's go to the service web page
 
   1. In your web browser open up the following link (replace <External IP> with the IP for your Load balancer) - you may have to accept it as an unsafe page due to using a self-signed root certificate.
   
-  - `https://prometheus.monitoring.<External IP>.nip.io`
+  ```
+  https://prometheus.monitoring.<External IP>.nip.io
+  ```
   
   2. When prompted enter the username of `admin` and the password you chose when you setup the credentials (we suggested `ZaphodBeeblebrox` but if you chose your own you'll need to use that).
   
@@ -333,7 +361,7 @@ Don't actually do this, this is just to show how you could modify a live pod wit
 
 This gets the pod name - Example only, do not run this:
 
-```
+```bash
 $ kubectl get pods -l "app=storefront" -o jsonpath="{.items[0].metadata.name}"
 storefront-588b4d69db-w244b
 ```
@@ -342,7 +370,7 @@ Now we could use kubectl to add a few annotations to the pod (this is applied im
 
 These are annotations to apply the live pod - Example only, do not run this:
 
-```
+```bash
 $ kubectl annotate pod storefront-588b4d69db-w244b prometheus.io/scrape=true --overwrite
 pod/storefront-588b4d69db-w244b annotated
 $ kubectl annotate pod storefront-588b4d69db-w244b prometheus.io/path=/metrics --overwrite
@@ -355,7 +383,7 @@ We can see what annotations there would be on the pod with kubectl (this works e
 
 This lists the pod annotations - Example only, do not run this:
 
-```
+```bash
 $  kubectl get pod storefront-588b4d69db-w244b -o jsonpath="{.metadata..annotations}"
 map[prometheus.io/path:/metrics prometheus.io/port:9080 prometheus.io/scrape:true]
 ```
@@ -367,11 +395,15 @@ In most cases we don't want these to be a temporary change, we want the Promethe
 
   5. Switch to the monitoring directory. In the OCI CLoud shell type
   
-   - `cd $HOME/helidon-kubernetes/monitoring-kubernetes` 
+   ```bash
+  <copy>cd $HOME/helidon-kubernetes/monitoring-kubernetes</copy>
+  ```
   
   6. Run the script
   
-  - `bash configure-pods-for-prometheus.sh `
+  ```bash
+  <copy>bash configure-pods-for-prometheus.sh</copy>
+  ```
   
   ```
 deployment.apps/stockmanager configured
@@ -380,7 +412,7 @@ deployment.apps/storefront configured
   
   7. The deployment files now contains annotations like the following
    
-  ```
+  ```yaml
       annotations:
         prometheus.io/path: /metrics
         prometheus.io/port: "9080"
@@ -395,7 +427,11 @@ deployment.apps/storefront configured
 
 If we use kubectl to get the status after a short while (the pods may have to wait for their readiness probes to be operational) we'll see everything is working as expected and the pods are Running
 
-  8. View status: `kubectl get all`
+  8. View status: 
+  
+  ```bash
+  <copy>kubectl get all</copy>
+  ```
 
   ```
 NAME                               READY   STATUS    RESTARTS   AGE
@@ -470,7 +506,9 @@ If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it
 
 In the OCI Cloud shell type
 
-  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+  ```bash
+  <copy>kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller</copy>
+  ```
   
   ```
 NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
@@ -479,9 +517,11 @@ ingress-nginx-controller   LoadBalancer   10.96.61.56   132.145.235.17   80:3138
 
 The External IP of the Load Balancer connected to the ingresss controller is shown in the EXTERNAL-IP column.
 
-**To set the variable again**
+**To set the variable again** replace `[External IP]` with the IP address you got above
 
-  - `export EXTERNAL_IP=<External IP>`
+  ```bash
+  export EXTERNAL_IP=[External IP]
+  ```
   
 ---
 
@@ -489,9 +529,11 @@ The External IP of the Load Balancer connected to the ingresss controller is sho
 
 
 
-  6. Execute the following command a few times
+  6. Execute the following command a few times to generate some call metrics
   
-  -  `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
+ ```bash
+  <copy>curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel</copy>
+  ```
 
   ```
 HTTP/2 200 
@@ -544,7 +586,7 @@ We can see that 50% of the requests are within 0.12 seconds, and 99.9% are withi
 
 It's not possible to show in a static screen grab but in your browser as you move your mouse over the legend the selected data is highlighted, and if you click on a line in the legend only that data is displayed.
 
-Prometheus has a number of mathematical functions we can apply to the graphs it produces, these are perhaps not so much use if there's only a single pod servicing requests, but if there are multiple pods all generating the same statistics (perhaps because of a replica set providing multiple pods to a service for horizontal scaling) then when you gather information such as call rates (the  `application_listAllStockMeter_one_min_rate_per_second` metric) instead of just generating and displaying the data per pod you could also generate data such as `sum(application_listAllStockMeter_one_min_rate_per_second)` which would tell you the total number of requests across ***all*** the pods providing the service (trhis f course assumes that you do have multiple pods).
+Prometheus has a number of mathematical functions we can apply to the graphs it produces, these are perhaps not so much use if there's only a single pod servicing requests (that's unusual in any production environment where you'd always want to have at least two instances running in case one fails), but if there are multiple pods all generating the same statistics (perhaps because of a replica set providing multiple pods to a service for horizontal scaling) then when you gather information such as call rates (the  `application_listAllStockMeter_one_min_rate_per_second` metric) instead of just generating and displaying the data per pod you could also generate data such as `sum(application_listAllStockMeter_one_min_rate_per_second)` which would tell you the total number of requests across ***all*** the pods providing the service (trhis f course assumes that you do have multiple pods).
 
 It's also possible to do things like separate out pods that are being used for testing (say they have a deployment type of test rather than production) or many other parameters. If you want more details there is a link to the Prometheus Query language description in the further-information document
 
@@ -560,7 +602,7 @@ If you are going to do the Visualizing with Gafana module please do **not** do t
 
 **ONLY** do the following if you no longer want the Prometheus environment. **DO NOT** do this if you are planning on running the Visualising with Grafana module.
 
-If you are in a trial tenancy there are limitations on how many Load Balancers and other resources you can have in use at any time, and you may need them for other modules. The simplest way to release the resources used in his module (including the load balancer) is to delete the entire namespace.
+If you are in a trial tenancy there are limitations on how many resources you can have in use at any time, and you may need them for other modules. The simplest way to release the resources used in his module (including the load balancer) is to delete the entire namespace.
 
 To delete the monitoring namespace **Only do this if you want to delete the entire monitoring environment and will not be doing the Visualising with Grafana module** 
 
@@ -568,7 +610,9 @@ Do the following
 
   1. In the OCI Cloud shell type 
   
-  - `kubectl delete namespace monitoring`
+  ```bash
+  <copy>kubectl delete namespace monitoring</copy>
+  ```
   
   ```
 namespace "monitoring" deleted
@@ -580,6 +624,6 @@ You can move on to the `Visualizing with Grafana` module which builds on this mo
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, August 2021
+* **Last Updated By** - Tim Graves, May 2023

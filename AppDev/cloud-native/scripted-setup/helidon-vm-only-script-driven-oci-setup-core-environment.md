@@ -48,7 +48,9 @@ If you are not sure if you have downloaded the latest version then you can check
 
   - In the OCI Cloud shell type 
   
-  - `ls $HOME/helidon-kubernetes`
+  ```bash
+  <copy>ls $HOME/helidon-kubernetes</copy>
+  ```
 
 If you get output like this then you need to download the scripts, follow the process in **Task 1a**
 
@@ -71,11 +73,15 @@ We will use git to download the scripts
 
   2. Make sure you are in the top level directory
   
-  - `cd $HOME`
+  ```bash
+  <copy>cd $HOME</copy>
+  ```
   
   3. Clone the repository with all scripts from github into your OCI Cloud Shell environment
   
-  - `git clone https://github.com/CloudTestDrive/helidon-kubernetes.git`
+  ```bash
+  <copy>git clone https://github.com/CloudTestDrive/helidon-kubernetes.git</copy>
+  ```
   
   ```
   Cloning into 'helidon-kubernetes'...
@@ -99,11 +105,15 @@ We will use git to update the scripts
   
   2. Make sure you are in the home directory
   
-  - `cd $HOME/helidon-kubernetes`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes</copy>
+  ```
   
   3. Use git to get the latest updates
   
-  - `git pull`
+  ```bash
+  <copy>git pull</copy>
+  ```
 
 ```
 remote: Enumerating objects: 21, done.
@@ -154,11 +164,15 @@ There are a number of activities required to configure the core environment, the
 
   1. If you are not already there open the OCI cloud shall and go to the scripts directory, type
   
-  - `cd $HOME/helidon-kubernetes/setup/common`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/setup/common</copy>
+  ```
   
   2. Run the script
   
-  - `bash ./core-environment-setup.sh`
+  ```bash
+  <copy>bash ./core-environment-setup.sh</copy>
+  ```
   
   3. When asked if you are in a Free trial tenancy enter `y` if you are (if you are not sure what type of tenancy you have then you probably are in a free trial tenancy, in a taught class your instructor will make it clear if you are not). If you are not then enter `n` and follow the instructions (possibly also doing this step by step, see the link in the expansion if you need more information n this)
   
@@ -317,5 +331,5 @@ The database admin password is 2005758405_SeCrEt Please ensure that you save thi
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
-* **Last Updated By** - Tim Graves, February 2022
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
+* **Last Updated By** - Tim Graves, May 2023

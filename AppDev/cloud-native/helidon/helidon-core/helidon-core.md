@@ -68,8 +68,8 @@ Firstly we need to tell Helidon that the StorefrontResource class responds to RE
   1. On top of the **StorefrontResource** **class definition** add the following 2 annotations:
   
   ```java
-@Path("/store")
-@RequestScoped
+<copy>@Path("/store")
+@RequestScoped</copy>
 ```
 
 
@@ -90,8 +90,8 @@ public class StorefrontResource {
 You may need to add the following imports to the class
 
 ```java
-import javax.enterprise.context.RequestScoped;
-import javax.ws.rs.Path;
+<copy>import javax.enterprise.context.RequestScoped;
+import javax.ws.rs.Path;</copy>
 ```
 
 ---
@@ -144,9 +144,9 @@ In a capability introduced in Helidon 2.0 the Helidon framework  will automatica
   3. Add the following annotations on the **listAllStock** method:
 
   ```java
-@GET
+<copy>@GET
 @Path("/stocklevel")
-@Produces(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)</copy>
 ```
 
     
@@ -169,9 +169,9 @@ public Collection<ItemDetails> listAllStock() {
 You may need to add the following imports to the class
 
 ```java
-import javax.ws.rs.GET;
+<copy>import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MediaType;</copy>
 ```
 
 ---
@@ -246,8 +246,8 @@ We need to define a new class which extents the `Application` to provide this in
   2. add the following 2 annotations:
 
   ```java
-    @ApplicationScoped
-    @ApplicationPath("/")
+    <copy>@ApplicationScoped
+    @ApplicationPath("/")</copy>
 ```
 
 The result should look like : 
@@ -272,8 +272,8 @@ public class StorefrontApplication extends Application {
 You may need to add the following imports to the class
 
 ```java
-import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.ApplicationPath;
+<copy>import javax.enterprise.context.ApplicationScoped;
+import javax.ws.rs.ApplicationPath;</copy>
 ```
 
 ---
@@ -345,7 +345,9 @@ On the last line of the output, we can see the URL that our server is running on
 
   5. Issue the following **curl** command to test the REST endpoint
   
-  - ` curl -i -X GET http://localhost:8080/store/stocklevel`
+  ```bash
+  <copy> curl -i -X GET http://localhost:8080/store/stocklevel</copy>
+  ```
 
 Example Result : 
 
@@ -397,10 +399,10 @@ We're going to make this class respond to a POST request (in REST terms POST cal
   18. **Add** the following annotations to the **reserveStockItem** method:
 
   ```java
-    @POST
+    <copy>@POST
     @Path("/reserveStock")
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)</copy>
 ```
 
 The result should look like this : 
@@ -425,8 +427,8 @@ The result should look like this :
 You may need to add the following imports to the class
 
 ```java
-import javax.ws.rs.POST;
-import javax.ws.rs.Consumes;
+<copy>import javax.ws.rs.POST;
+import javax.ws.rs.Consumes;</copy>
 ```
 
 ---
@@ -485,7 +487,9 @@ Then we can use curl to test it.
 
   5. To get the initial set of data in a terminal type
 
-  - `curl -i -X GET http://localhost:8080/store/stocklevel`
+  ```bash
+  <copy>curl -i -X GET http://localhost:8080/store/stocklevel</copy>
+  ```
 
 Example result:
 
@@ -507,7 +511,9 @@ Now we'll use curl to send a REST request that will reserve 4 pencils (Note we h
 
   6. Reserve 4 pencils:
 
-  - `curl -i -X POST -H "Content-Type:application/json" -d '{"requestedItem":"Pencil", "requestedCount":4}' http://localhost:8080/store/reserveStock`
+  ```bash
+  <copy>curl -i -X POST -H "Content-Type:application/json" -d '{"requestedItem":"Pencil", "requestedCount":4}' http://localhost:8080/store/reserveStock</copy>
+  ```
 
 Result:
 
@@ -525,7 +531,9 @@ The returned object represents the updated view of the Pencil stock, as expected
 
   7. Check this calling the **stocklevel** method again:
 
-  - `curl -i -X GET http://localhost:8080/store/stocklevel`
+  ```bash
+  curl -i -X GET http://localhost:8080/store/stocklevel</copy>
+  ```
 
 Result:
 
@@ -561,7 +569,9 @@ This simple single annotation tells Helidon that before even reaching your actua
 
   1. **Add** the annotation to the **StorefrontResource** class
   
-  - `@Authenticated`
+  ```java
+  <copy>@Authenticated</copy>
+  ```
 
 Result:
 
@@ -581,7 +591,7 @@ public class StorefrontResource {
 You may need to add the following import to the class
 
 ```java
-import io.helidon.security.annotations.Authenticated;
+<copy>import io.helidon.security.annotations.Authenticated;</copy>
 ```
 ---
 
@@ -597,7 +607,9 @@ Try accessing the list endpoint, without setting the user details - we **expect 
 
   5. Run this curl command : 
   
-  - `curl -i -X GET http://localhost:8080/store/stocklevel`
+  ```bash
+  <copy>curl -i -X GET http://localhost:8080/store/stocklevel</copy>
+  ```
 
 Result:
 
@@ -615,7 +627,9 @@ If we try with a user / password, in this case username jill, password password 
 
   6. Now try with this curl command, the -u tells curl to encode the username / password that follows and add them to the request as the authentication header.
 
-  - `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
+  ```bash
+  curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel</copy>
+  ```
 
 Result:
 
@@ -692,7 +706,9 @@ We can test this by running the service (from now on we're going to assume that 
 
   1. Run a curl command, **expect an error**
   
-  - `curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":2}' http://localhost:8080/store/reserveStock`
+  ```bash
+  <copy>curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":2}' http://localhost:8080/store/reserveStock</copy>
+  ```
 
   ```
 HTTP/1.1 500 Internal Server Error
@@ -766,7 +782,7 @@ public class StorefrontApplication extends Application {
 You may need to add the following import to the class
 
 ```java
-import io.helidon.security.annotations.import com.oracle.labs.helidon.storefront.resources.ConfigurationResource;;
+<copy>import io.helidon.security.annotations.import com.oracle.labs.helidon.storefront.resources.ConfigurationResource;</copy>
 ```
 
 ---
@@ -777,7 +793,9 @@ import io.helidon.security.annotations.import com.oracle.labs.helidon.storefront
 
   7. Run curl to see what the current value is:
   
-  -  `curl -i -X GET http://localhost:8080/minimumChange`
+  ```bash
+  <copy>curl -i -X GET http://localhost:8080/minimumChange</copy>
+  ```
 
 Result:
 
@@ -795,7 +813,9 @@ The result is 3, this is the default defined in the MinimumChange class. There i
 
   8. Now let's try and change the value - **expect an error**:
   
-  -  `curl -i -X POST -u jill:password -d "4"  -H "Content-type:application/json" http://localhost:8080/minimumChange`
+  ```bash
+  <copy>curl -i -X POST -u jill:password -d "4"  -H "Content-type:application/json" http://localhost:8080/minimumChange</copy>
+  ```
 
 Result:
 
@@ -811,7 +831,9 @@ Well, that's a new error message, we're forbidden to access the resource, even t
 
   9. Retry the change, using **jack** as user:
   
-  -  `curl -i -X POST -u jack:password -d "4"  -H "Content-type:application/json" http://localhost:8080/minimumChange`
+  ```bash
+  <copy>curl -i -X POST -u jack:password -d "4"  -H "Content-type:application/json" http://localhost:8080/minimumChange</copy>
+  ```
 
 Result:
 
@@ -830,7 +852,9 @@ Success, we've changed it.
 
   10. Let's see what we actually have there:
   
-  -  `curl -i -X GET http://localhost:8080/minimumChange`
+  ```bash
+  <copy>curl -i -X GET http://localhost:8080/minimumChange</copy>
+  ```
 
 Result:
 
@@ -868,7 +892,7 @@ public class ConfigurationResource {
 You may need to add the following import to the class
 
 ```java
-import javax.enterprise.context.ApplicationScoped;
+<copy>import javax.enterprise.context.ApplicationScoped;</copy>
 ```
 
 ---
@@ -879,7 +903,9 @@ import javax.enterprise.context.ApplicationScoped;
 
   14. Let's just check the current value is 3 as we expect
   
-  -  `curl -i -X GET http://localhost:8080/minimumChange`
+  ```bash
+  <copy>curl -i -X GET http://localhost:8080/minimumChange</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -895,7 +921,9 @@ It is, we get 3 as a result, as expected.
 
   15. Now let's make the change again
   
-  -   `curl -i -X POST -u jack:password -d 4  -H "Content-type:application/json" http://localhost:8080/minimumChange`
+  ```bash
+  <copy>curl -i -X POST -u jack:password -d 4  -H "Content-type:application/json" http://localhost:8080/minimumChange</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -911,7 +939,9 @@ This time it's 4, the change has held
 
   16. And check that the change has held across requests
   
-  -  `curl -i -X GET http://localhost:8080/minimumChange`
+  ```bash
+  <copy>curl -i -X GET http://localhost:8080/minimumChange</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -950,7 +980,7 @@ While we're here we're also going to add the `StatusResource.class` to the `com.
 You may need to add the following import to the class
 
 ```java
-import com.oracle.labs.helidon.storefront.resources.StatusResource;
+<copy>import com.oracle.labs.helidon.storefront.resources.StatusResource;</copy>
 ```
 
 ---
@@ -961,7 +991,9 @@ import com.oracle.labs.helidon.storefront.resources.StatusResource;
 
   21. We'll test the status is there:
   
-  -  `curl -i -X GET http://localhost:8080/status`
+  ```bash
+  <copy>curl -i -X GET http://localhost:8080/status</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -999,7 +1031,9 @@ The actual creation of the instances is handled for us by Helidon, we just need 
   
   2. Make the class `ApplicationScoped`, so only one instance no matter how often it's used in the application by adding an annotation to the class:
   
-  -  `@ApplicationScoped`
+  ```java
+  <copy>@ApplicationScoped</copy>
+  ```
 
   ```java
 @ApplicationScoped
@@ -1012,7 +1046,7 @@ public class MinimumChange {
 You may need to add the following import to the class
 
 ```java
-import javax.enterprise.context.ApplicationScoped;
+<copy>import javax.enterprise.context.ApplicationScoped;</copy>
 ```
 
 ---
@@ -1036,7 +1070,7 @@ import javax.enterprise.context.ApplicationScoped;
 You may need to add the following import to the class
 
 ```java
-import javax.inject.Inject;
+<copy>import javax.inject.Inject;</copy>
 ```
 
 ---
@@ -1059,7 +1093,7 @@ This tells Helidon that when creating an instance of the Configuration resource 
 You may need to add the following import to the class
 
 ```java
-import javax.inject.Inject;
+<copy>import javax.inject.Inject;</copy>
 ```
 
 ---
@@ -1076,7 +1110,9 @@ As the Helidon framework knows that MinimumChange is ApplicationScoped this mean
 
   11. First we'll try and make a change that is less than the default minimum by requesting 2 pencils
 
-  - `curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":2}' http://localhost:8080/store/reserveStock`
+  ```bash
+  <copy>curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":2}' http://localhost:8080/store/reserveStock</copy>
+  ```
 
   ```
 HTTP/1.1 500 Internal Server Error
@@ -1097,7 +1133,9 @@ com.oracle.labs.helidon.storefront.exceptions.MinimumChangeException: The reserv
 
   12. If we try and get 3 pencils then of course it will work
 
-  -  `curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":3}' http://localhost:8080/store/reserveStock`
+  ```bash
+  <copy>curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":3}' http://localhost:8080/store/reserveStock</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -1111,7 +1149,9 @@ content-length: 35
 
   13. And if we check the minimum change it is of course 3
 
-  -  `curl -i -X GET http://localhost:8080/minimumChange`
+  ```bash
+  <copy>curl -i -X GET http://localhost:8080/minimumChange</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -1125,7 +1165,9 @@ content-length: 1
 
   14. Let's use Jacks admin rights to change the minimum change to 1
 
-  -  `curl -i -X POST -u jack:password -d 1  -H "Content-type:application/json" http://localhost:8080/minimumChange`
+  ```bash
+  <copy>curl -i -X POST -u jack:password -d 1  -H "Content-type:application/json" http://localhost:8080/minimumChange</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -1139,7 +1181,9 @@ content-length: 1
 
   15. We can confirm that the Configuration resource recognizes the update
 
-  -  `curl -i -X GET http://localhost:8080/minimumChange`
+  ```bash
+  <copy>curl -i -X GET http://localhost:8080/minimumChange</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -1153,7 +1197,9 @@ content-length: 1
 
   16. Now let have Jill try getting 2 pencils again
 
-  -  `curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":2}' http://localhost:8080/store/reserveStock`
+  ```bash
+  <copy>curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":2}' http://localhost:8080/store/reserveStock</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -1192,10 +1238,10 @@ Fortunately for us Helidon can get values to use for a constructor from the conf
   2. Add an additional constructor after the no args constructor:
 
   ```java
-    @Inject
+    <copy>@Inject
     	public MinimumChange(@ConfigProperty(name = "app.minimumchange") Integer initialMinimumChange) {
     		this.minimumChange.set(initialMinimumChange);
-    	}
+    	}</copy>
 ```
   
 
@@ -1217,14 +1263,15 @@ The result should look like :
 	}
 ...
 ```
+
 <details><summary><b>Java Imports</b></summary>
 
 
 You may need to add the following imports to the class
 
 ```java
-import javax.inject.Inject;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
+<copy>import javax.inject.Inject;
+import org.eclipse.microprofile.config.inject.ConfigProperty;</copy>
 ```
 
 ---
@@ -1238,7 +1285,9 @@ The `@Inject` on  constructor means to use this constructor when creating instan
 
   4. Request the value for minimum change,  we'll see that it has a value of 4 (which comes from a config property set in the microprofile-config.properties file)
 
-  -  `curl -i -X GET http://localhost:8080/minimumChange`
+  ```bash
+  <copy>curl -i -X GET http://localhost:8080/minimumChange</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -1309,7 +1358,9 @@ Let's go an add a new config file to the list!
 
   8. Add the `conf/storefront-config.yaml` source as the **first element** in the list of property sources to scan.
   
-  -  `configSourcesToScan.add(ConfigSources.file("conf/storefront-config.yaml").optional().build());`
+  ```java
+  <copy>configSourcesToScan.add(ConfigSources.file("conf/storefront-config.yaml").optional().build());</copy>
+  ```
 
 Result should look like : 
 
@@ -1423,7 +1474,9 @@ Configuration properties are stored as basic strings and Helidon will convert th
 
   11. Let's check that the minimum change value is now 2:
   
-  -  `curl -i -X GET http://localhost:8080/minimumChange`
+  ```bash
+  <copy>curl -i -X GET http://localhost:8080/minimumChange</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -1460,8 +1513,8 @@ Let's see how we can update the configuration when the file changes.
   2. Update the configuration for the `storefront-config` config file as follows:
 
   ```java
-  configSourcesToScan.add(ConfigSources.file("conf/storefront-config.yaml")
-            .pollingStrategy(PollingStrategies.regular(Duration.ofSeconds(5))).optional().build());
+  <copy>configSourcesToScan.add(ConfigSources.file("conf/storefront-config.yaml")
+            .pollingStrategy(PollingStrategies.regular(Duration.ofSeconds(5))).optional().build());</copy>
 ```
 
 Note here that we are specifying a check with a Duration of 5 seconds. That's great for a lab, but in reality you'd want to chose an interval that reflects the overhead of checking for a change vs the implications of not picking the change up immediately, and I suspect in most cases that would possibly be 5 mins rather than 5 seconds. 
@@ -1494,7 +1547,9 @@ private static Config buildConfig() {
 
   4. Run the program and access the status resource:
   
-  -  `curl -i -X GET http://localhost:8080/status`
+  ```bash
+  <copy>curl -i -X GET http://localhost:8080/status</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -1520,7 +1575,9 @@ app:
 
  6. Access the status resource again:
  
-  -  `curl -i -X GET http://localhost:8080/status`
+  ```bash
+  <copy>curl -i -X GET http://localhost:8080/status</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -1581,7 +1638,9 @@ You will see that it defines two network ports, the primary one on port 8080 and
   
   3. Include the conf/storefront-network.yaml file into the config properties
   
-  -  `configSourcesToScan.add(ConfigSources.file("conf/storefront-network.yaml").optional().build());`
+  ```java
+  <copy>configSourcesToScan.add(ConfigSources.file("conf/storefront-network.yaml").optional().build());</copy>
+  ```
 
   ```java
 	private static Config buildConfig() {
@@ -1639,7 +1698,9 @@ Let's **force an error**.
 
   3. **Save** and **run** it, then make a request - **we expect an error**:
   
-  -  `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
+  ```bash
+  <copy>curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel</copy>
+  ```
 
   ```
 HTTP/1.1 500 Internal Server Error
@@ -1683,7 +1744,7 @@ Fortunately for us Helidon provides a simple way to handle the problem.
 You may need to add the following imports to the class
 
 ```java
-import org.eclipse.microprofile.faulttolerance.Fallback;
+<copy>import org.eclipse.microprofile.faulttolerance.Fallback;</copy>
 ```
 
 ---
@@ -1711,7 +1772,9 @@ In this case we are building a `WebApplicationException` which has a response of
   
   7. Call the REST endpoint : 
   
-  - `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel` 
+  ```bash
+  <copy>curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel</copy>
+  ```
 
   ```
 HTTP/1.1 424 Failed Dependency
@@ -1731,8 +1794,13 @@ Helidon has another approach error handling we're going to look at here that doe
 
   1. Navigate to `resources` package and open the file `StorefrontResource.java`
   
-  2. Locate the reserverStock method and add the annotation `@Fallback(StorefrontFallbackHandler.class)`
-
+  2. Locate the reserveStock method and add the annotation 
+  
+  ```java
+  <copy>@Fallback(StorefrontFallbackHandler.class)</copy>
+  ```
+   The updated method will look like this
+   
   ```java
 	@POST
 	@Path("/reserveStock")
@@ -1752,7 +1820,7 @@ Helidon has another approach error handling we're going to look at here that doe
 You may need to add the following imports to the class
 
 ```java
-import org.eclipse.microprofile.faulttolerance.Fallback;
+<copy>import org.eclipse.microprofile.faulttolerance.Fallback;</copy>
 ```
 
 ---
@@ -1766,7 +1834,9 @@ This annotation means the in the event of an exception Helidon will call a metho
 
   4. Make a call to the reserveStockItem REST API endpoint:
   
-  -  `curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":6}' http://localhost:8080/store/reserveStock`
+  ```bash
+  <copy>curl -i -X POST -H "Content-Type:application/json" -u jill:password  -d '{"requestedItem":"Pencil", "requestedCount":6}' http://localhost:8080/store/reserveStock</copy>
+  ```
 
   ```
 HTTP/1.1 500 Internal Server Error
@@ -1811,8 +1881,12 @@ It's hard to actually simulate these in action without writing code to deliberat
   
   6. Add the annotation 
   
-  - `@Timeout(value = 15, unit = ChronoUnit.SECONDS)`
+  ```java
+  <copy>@Timeout(value = 15, unit = ChronoUnit.SECONDS)</copy>
+  ```
 
+   The updated code will look like this
+   
   ```java
 @Path("/store")
 @RequestScoped
@@ -1828,8 +1902,8 @@ public class StorefrontResource {
 You may need to add the following imports to the class
 
 ```java
-import org.eclipse.microprofile.faulttolerance.Timeout;
-import java.time.temporal.ChronoUnit;
+<copy>import org.eclipse.microprofile.faulttolerance.Timeout;
+import java.time.temporal.ChronoUnit;</copy>
 ```
 
 ---
@@ -1860,7 +1934,7 @@ The next lab in the *Helidon for Cloud Native* section is  **Databases and Helid
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, November 2020
+* **Last Updated By** - Tim Graves, May 2023
 

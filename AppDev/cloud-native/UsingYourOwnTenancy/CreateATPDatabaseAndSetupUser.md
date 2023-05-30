@@ -43,12 +43,13 @@ Login if required as admin, using the admin password you set when you setup the 
 
 Copy and paste the below, Note that the username (HelidonLabs) and password (H3lid0n_Labs) below can be changed if you like, **BUT** if you do change them you will also need to change the database connection configurations you use (more on these later) with the any changes to the username or password or you will be unable to connect to the database
 
-CREATE USER HelidonLabs IDENTIFIED BY H3lid0n_Labs;
+```
+<copy>CREATE USER HelidonLabs IDENTIFIED BY H3lid0n_Labs;
 GRANT CONNECT TO HelidonLabs;
 GRANT CREATE SESSION TO HelidonLabs;
 GRANT DWROLE TO HelidonLabs ;
-GRANT UNLIMITED TABLESPACE TO HelidonLabs;
-
+GRANT UNLIMITED TABLESPACE TO HelidonLabs;</copy>
+```
 Run the script (The Page of paper with the green "run" button.) if it works OK you will see a set of messages in the Script Output window saying the User has been created and grants made.
 
 ## Creating database tables
@@ -56,3 +57,8 @@ Fortunately for us we don't need to create the database tables ourselves. The la
 
 # **VERY IMPORTANT**
 Make sure you take a copy of the DB OCID (see above) You will need this if you do the Kubernetes labs.
+
+## Acknowledgements
+
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
+* **Last Updated By** - Tim Graves, May 2023

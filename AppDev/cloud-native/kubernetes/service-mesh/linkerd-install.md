@@ -47,7 +47,7 @@ Service meshes can also provide functionality across multiple clusters, in these
 
 ### What service meshes are there ?
 
-There are multiple service mesh implementations available, a non exclusive list (there are others) includes Linkerd, Istio, Consul, Kuma, Maesh, Aspen Mesh, and Grey Matter. 
+There are multiple service mesh implementations available, a non exclusive list (there are others) includes the Oracle OCI Service mesh, Linkerd, Istio, Consul, Kuma, Maesh, Aspen Mesh, and Grey Matter. 
 
 Most Service mesh implementations are open source to some level, but currently only [Linkerd](https://linkerd.io/) from [Buoyant Inc.](https://buoyant.io/) is listed as being a Cloud Native Computing Foundation (the governance body for open source Kubernetes related things) project though there have been press discussions that Istio may be donated by Google to an open source foundation.
 
@@ -87,7 +87,9 @@ As linkerd is not a core Kubernetes component it's not included in the Oracle OC
 
   1. In the OCI Cloud Shell type the follwing
   
-  - `curl -sL https://run.linkerd.io/install | sh`
+  ```bash
+  <copy>curl -sL https://run.linkerd.io/install | sh</copy>
+  ```
   
   ```
 Downloading linkerd2-cli-stable-2.10.0-linux...
@@ -121,7 +123,9 @@ Warning, this may take a while to run, in my case it usually takes around 30 sec
   
   2. Now we need to add the linkerd command to our path. In the OCI Cloud Shell type 
   
-  - `export PATH=$PATH:$HOME/.linkerd2/bin`
+  ```bash
+  <copy>export PATH=$PATH:$HOME/.linkerd2/bin</copy>
+  ```
   
 This is only a temporary change, that applies to the current OCI Cloud shell session. To make it permanent we need to edit the $HOME/.bashrc file
 
@@ -129,13 +133,15 @@ This is only a temporary change, that applies to the current OCI Cloud shell ses
 
   4. At the end of the file add and new line containing 
 
+  ```bash
+  <copy>export PATH=$PATH:$HOME/.linkerd2/bin</copy>
   ```
-export PATH=$PATH:$HOME/.linkerd2/bin
-```
 
   5. Lastly let's check the status of the linkerd installation. In the OCI Cloud Shell type
   
-  - `linkerd version`
+  ```bash
+  <copy>linkerd version</copy>
+  ```
 
   ```
 Client version: stable-2.11.0
@@ -153,7 +159,9 @@ Firstly let's make sure that the cluster meets the requirements to deploy linker
 
   1. In the OCI Cloud shell type :
   
-  - `linkerd check --pre`
+  ```bash
+  <copy>linkerd check --pre</copy>
+  ```
   
   ```
 kubernetes-api
@@ -203,10 +211,11 @@ The linkerd control plan process used the linkerd command to generate the config
 
   2.  In the OCI Cloud Shell type
   
-  - `linkerd install | kubectl apply -f -`
+  ```bash
+  <copy>linkerd install | kubectl apply -f -</copy>
+  ```
   
 ```
-linkerd install | kubectl apply -f -
 namespace/linkerd created
 clusterrole.rbac.authorization.k8s.io/linkerd-linkerd-identity created
 clusterrolebinding.rbac.authorization.k8s.io/linkerd-linkerd-identity created
@@ -235,12 +244,18 @@ deployment.apps/linkerd-grafana created
 To find out exactly what linkerd is going to install we can execute it without sending the output to kubectl. There is a lot of output, so we're going to redirect it to a file
 
 - In the OCI Cloud Shell type
-  - `linkerd install > /tmp/linkerd-install-output`
+
+ ```bash
+  <copy>linkerd install > /tmp/linkerd-install-output</copy>
+  ```
 
 To see the YAML
 
 - In the OCI Cloud Shell type
-  - `more /tmp/linkerd-install-output`
+
+ ```bash
+  <copy>more /tmp/linkerd-install-output</copy>
+  ```
   
 ```
 ---
@@ -284,7 +299,9 @@ Let's check that the linkerd command can talk to the control plane
 
   3. After a few mins delay for the linkerd control plane to startup, In the OCI Cloud Shell type
   
-  - `linkerd version`
+  ```bash
+  <copy>linkerd version</copy>
+  ```
 
 ```
 Client version: stable-2.11.0
@@ -301,7 +318,9 @@ Linkerd creates it's own namespace so we can check what's in there using kubectl
 
   4. In the OCI Cloud shell type 
   
-  - `kubectl get namespaces`
+  ```bash
+  <copy>kubectl get namespaces</copy>
+  ```
 
   ```
 NAME              STATUS   AGE
@@ -322,7 +341,9 @@ And we can see what's in the linkerd namespace
 
   5. In the OCI Cloud shell type
   
-  - `kubectl get all -n linkerd`
+  ```bash
+  <copy>kubectl get all -n linkerd</copy>
+  ```
 
   ```
 NAME                                          READY   STATUS    RESTARTS   AGE
@@ -365,7 +386,9 @@ Let's get linkerd to check that it's been installed correctly and everything is 
 
   6. In the OCI Cloud Shell type
   
-  - `linkerd check`
+  ```bash
+  <copy>linkerd check</copy>
+  ```
   
 ```
 kubernetes-api
@@ -451,7 +474,9 @@ For this lab however we want to see the visuals, so let's install them. First we
 
   7. In the OCI Cloud Shell type
   
-  - `linkerd viz install | kubectl apply -f -`
+  ```bash
+  <copy>linkerd viz install | kubectl apply -f -</copy>
+  ```
 
 ```
 namespace/linkerd-viz created
@@ -510,7 +535,9 @@ Now let's make sure everything installed correctly
 
   8. In the OCI CLoud shell type 
   
-  - `linkerd check`
+  ```bash
+  <copy>linkerd check</copy>
+  ```
   
 ```
 ...
@@ -554,17 +581,19 @@ The first thing we need to do is to remove the restriction in the linkerd web fr
 
   1. In the OCI Cloud shell type
   
-  - `kubectl edit deployment web -n linkerd-viz`
+  ```bash
+  <copy>kubectl edit deployment web -n linkerd-viz</copy>
+  ```
   
   2. In the spec.template.spec.containers.args locate the line that is like 
   
-```
+```yaml
 - -enforced-host=^(localhost|127\\.0\\.0\\.1|linkerd-web\\.linkerd\\.svc\\.cluster\\.local|linkerd-web\\.linkerd\\.svc|\\[::1\\])(:\\d+)?$
 ```
 
   3. Remove all of the value section of the line after the `=` the new line will look like
 
-``` 
+```yaml
         - -enforced-host=
 ```
 
@@ -589,7 +618,9 @@ If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it
 
 The automated scripts will create a script file `$HOME/clusterSettings.one` this can be executed using the shell built in `source` to set the EXTERNAL_IP variable for you.
 
-  - `source $HOME/clusterSettings.one`
+  ```bash
+  <copy>source $HOME/clusterSettings.one</copy>
+  ```
   
 ```
 EXTERNAL_IP set to 139.185.45.98
@@ -611,7 +642,9 @@ In this case as you manually set this up you will need to get the information fr
 
   - You are going to get the value of the `EXTERNAL_IP` for your environment. This is used to identify the DNS name used by an incoming connection. In the OCI cloud shell type
 
-  - `kubectl get services -n ingress-nginx`
+  ```bash
+  <copy>kubectl get services -n ingress-nginx</copy>
+  ```
 
 ```
 NAME                                 TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)                      AGE
@@ -621,9 +654,11 @@ ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>      
 
   - Look for the `ingress-nginx-controller` line and note the IP address in the `EXTERNAL-IP` column, in this case that's `130.162.40.121` but it's almost certain that the IP address you have will differ. IMPORTANT, be sure to use the IP in the `EXTERNAL-IP` column, ignore anything that looks like an IP address in any other column as those are internal to the OKE cluster and not used externally. 
 
-  - IN the OCI CLoud shell type the following, replacing `<external ip>` with the IP address you retrieved above.
+  - IN the OCI CLoud shell type the following, replacing `[external ip]` with the IP address you retrieved above.
   
-  - `export EXTERNAL_IP=<external ip>`
+  ```bash
+  export EXTERNAL_IP=[external ip]
+  ```
   
 ---
 
@@ -638,11 +673,15 @@ We will use step to help us here, it was installed when you did the cloud shell 
   
   1. Move to the directory containing the scripts for the service mesh lab
   
-  - `cd $HOME/helidon-kubernetes/service-mesh`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/service-mesh</copy>
+  ```
 
   2. In the OCI Cloud shell run the following.
   
-  - `$HOME/keys/step certificate create linkerd.$EXTERNAL_IP.nip.io tls-linkerd-$EXTERNAL_IP.crt tls-linkerd-$EXTERNAL_IP.key --profile leaf  --not-after 8760h --no-password --insecure --kty=RSA --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key`
+  ```bash
+  <copy>$HOME/keys/step certificate create linkerd.$EXTERNAL_IP.nip.io tls-linkerd-$EXTERNAL_IP.crt tls-linkerd-$EXTERNAL_IP.key --profile leaf  --not-after 8760h --no-password --insecure --kty=RSA --ca $HOME/keys/root.crt --ca-key $HOME/keys/root.key</copy>
+  ```
 
   ```
   Your certificate has been saved in tls-linkerd-123.456.789.123.crt.
@@ -655,7 +694,9 @@ If your output says it's created key files like `tls-linkerd-.crt` and does not 
 
   3. Now let's put this in a Kubernetes TLS secret. In the OCI Cloud shell
   
-  - `kubectl create secret tls tls-linkerd --key tls-linkerd-$EXTERNAL_IP.key --cert tls-linkerd-$EXTERNAL_IP.crt -n linkerd-viz`
+  ```bash
+  <copy>kubectl create secret tls tls-linkerd --key tls-linkerd-$EXTERNAL_IP.key --cert tls-linkerd-$EXTERNAL_IP.crt -n linkerd-viz</copy>
+  ```
   
 
 ### Task 5c: Create a login password to secure the connection
@@ -666,7 +707,9 @@ First let's create a password file for the admin user. In the example below I'm 
 
   1. In the OCI Cloud Shell type
   
-  - `htpasswd -c -b auth admin ZaphodBeeblebrox`
+  ```bash
+  <copy>htpasswd -c -b auth admin ZaphodBeeblebrox</copy>
+  ```
 
   ```
 Adding password for user admin
@@ -676,7 +719,9 @@ Now having create the password file we need to add it to Kuberntes as a secret s
 
   2. In the OCI Cloud Shell type
   
-  - `kubectl create secret generic web-ingress-auth -n linkerd-viz --from-file=auth`
+  ```bash
+  <copy>kubectl create secret generic web-ingress-auth -n linkerd-viz --from-file=auth</copy>
+  ```
 
   ```
 secret/web-ingress-auth created
@@ -696,18 +741,18 @@ As with the base services because we are using a certificate with the DNS name e
 
   1. In the OCI Cloud shell type
   
-  - `bash set-ingress-ip.sh $EXTERNAL_IP`
+  ```bash
+  <copy>bash set-ingress-ip.sh $EXTERNAL_IP</copy>
+  ```
   
 
   2. Apply the ingress rule - in the OCI Cloud Shell type
   
-  ```
-  kubectl apply -f ingressLinkerdRules-`kubectl config current-context`.yaml
+  ```bash
+  <copy>kubectl apply -f ingressLinkerdRules-`kubectl config current-context`.yaml</copy>
   ```
   
-  Outputs
-  
-```
+  ```
 ingress.networking.k8s.io/web-ingress created
 ```
 
@@ -756,7 +801,10 @@ You need to have the linkerd client installed on your machine.
 On your local laptop (which must already be configured with the appropriate Kuberntes configuration and other credentials your provider may require)
 
 - Open a terminal window and type
-  - `linkerd dashboard`
+
+ ```bash
+  <copy>linkerd dashboard</copy>
+  ```
 
 ```
 Linkerd dashboard available at:
@@ -785,9 +833,11 @@ First let's see what this looks like
 
   1. in the OCI shell type the following, replacing <ns name> with your namespace 
   
-  - `kubectl get namespace <ns name> -o yaml`
-  
+  ```bash
+  kubectl get namespace <ns name> -o yaml
   ```
+  
+  ```yaml
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -812,7 +862,10 @@ If you followed the lab instructions correctly your namespace should be named <y
 To get a list of the available namespaces
 
 - In the OC Cloud Shell type
-  - `kubectl get namespace`
+
+ ```bash
+  <copy>kubectl get namespace</copy>
+  ```
 
 ```
 NAME              STATUS   AGE
@@ -833,11 +886,13 @@ tg-helidon        Active   35d
 
 We can use the linkerd command to add the annotations, first let's just see what it does
 
-  2. In the OCI Cloud shell type the following replacing `<ns-name>` with your namespace name
+  2. In the OCI Cloud shell type the following replacing `[ns-name]` with your namespace name
   
-  - `kubectl get namespace <ns-name> -o yaml | linkerd inject -`
-
+  ```bash
+  kubectl get namespace [ns-name] -o yaml | linkerd inject -
   ```
+
+  ```yaml
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -863,9 +918,11 @@ The text `namespace "tg-helidon" injected` is just for information, it doesn't a
 
 Let's have kubectl apply the change
 
-  3. In the OCI Cloud shell type the following replacing `<ns-name>` with your namespace name
+  3. In the OCI Cloud shell type the following replacing `[ns-name]` with your namespace name
   
-  - `kubectl get namespace <ns-name> -o yaml | linkerd inject - | kubectl replace -f -`
+  ```bash
+  kubectl get namespace [ns-name] -o yaml | linkerd inject - | kubectl replace -f -
+  ```
   
   ```
 namespace "tg-helidon" injected
@@ -897,7 +954,9 @@ Let's get the list of deplpyments
 
   4. In the OCI Cloud shell type 
   
-  - `kubectl get deployments`
+  ```bash
+  <copy>kubectl get deployments</copy>
+  ```
 
   ```
 NAME           READY   UP-TO-DATE   AVAILABLE   AGE
@@ -912,7 +971,9 @@ Sadly there doesn't seem to be a way to restart all of the deployments in a name
 
   5. In the OCI Cloud shell type the following, if you have additional deployments from other optional modules in these labs add them to the list or re-run with the namespace for those deployments
 
-  - `kubectl rollout restart deployments storefront stockmanager zipkin`
+  ```bash
+  <copy>kubectl rollout restart deployments storefront stockmanager zipkin</copy>
+  ```
 
   ```
 deployment.apps/storefront restarted
@@ -926,7 +987,9 @@ Restarting the pods triggered linkerd to do it's automatic update of the pod add
 
 - In the OCI Cloud shell type the following
   
-  - ` kubectl get pods`
+ ```bash
+  <copy>kubectl get pods</copy>
+  ```
   
 ```
 NAME                            READY   STATUS    RESTARTS   AGE
@@ -941,7 +1004,9 @@ Let's see what's in those pods, here we're going to use the jsonpath ooption to 
 
 - In the OCI Cloud shell (remember to substitute the pod name for your storefront!)
 
-  - `kubectl get pods storefront-8ddc6db75-nxlnm   -o jsonpath='{.spec.containers[*].name}'`
+  ```bash
+  kubectl get pods storefront-8ddc6db75-nxlnm   -o jsonpath='{.spec.containers[*].name}'`
+  ```
 
 ```
 storefront linkerd-proxy
@@ -956,7 +1021,9 @@ The following will generate a **lot** of output, you'll see it's **way** bigger 
 
 - In the OCI Cloud shell (remember to substitute the pod name for your stockmanager!)
 
-  - `kubectl get pod stockmanager-654f44d59d-bjn2v -o yaml`
+  ```
+  kubectl get pod stockmanager-654f44d59d-bjn2v -o yaml
+  ```
 
 ```yaml
 apiVersion: v1
@@ -1279,7 +1346,9 @@ First update the ingress-nginix namespace
 
   6. In the OCI Cloud shell type :
 
-  - `kubectl get namespace ingress-nginx -o yaml | linkerd inject - | kubectl replace -f -`
+  ```bash
+  <copy>kubectl get namespace ingress-nginx -o yaml | linkerd inject - | kubectl replace -f -</copy>
+  ```
 
   ```
 namespace "ingress-nginx" injected
@@ -1291,7 +1360,9 @@ Now get the list of deployments in the ingress-nginx namespace
 
   7. In the OCI Cloud shell type :
 
-  - `kubectl get deployments -n ingress-nginx`
+  ```bash
+  <copy>kubectl get deployments -n ingress-nginx</copy>
+  ```
 
   ```
 NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
@@ -1303,7 +1374,9 @@ And next update them so the proxy will be added.
 
   8. In the OCI Cloud shell type :
 
-  - `kubectl rollout restart deployments -n ingress-nginx ingress-nginx-controller`
+  ```bash
+  <copy>kubectl rollout restart deployments -n ingress-nginx ingress-nginx-controller</copy>
+  ```
 
   ```
 deployment.apps/ingress-nginx-nginx-ingress-controller restarted
@@ -1325,7 +1398,9 @@ If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it
 
 In the OCI Cloud shell type
 
-  -  `kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller`
+  ```bash
+  <copy>kubectl --namespace ingress-nginx get services -o wide ingress-nginx-controller</copy>
+  ```
   
   ```
 NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)                      AGE   SELECTOR
@@ -1336,7 +1411,9 @@ The External IP of the Load Balancer connected to the ingresss controller is sho
 
 **To set the variable again**
 
-  - `export EXTERNAL_IP=<External IP>`
+  ```bash
+  export EXTERNAL_IP=[External IP]
+  ```
   
 ---
 
@@ -1344,7 +1421,9 @@ The External IP of the Load Balancer connected to the ingresss controller is sho
 
   9. In the OCI Cloud Shell terminal type the following, be prepared for an error (the services are doing their on-demand restart process so you may have a timeout while that happens and the database connection is reestablished)
   
-  - `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
+  ```bash
+  <copy>curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel</copy>
+  ```
   
   ```
 HTTP/1.1 200 OK
@@ -1406,6 +1485,6 @@ You can chose from the remaining `Linkerd service mesh` modules or switch to one
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Applications Development specialists team
 * **Contributor** - Charles Pretzer, Bouyant, Inc for reviewing and sanity checking parts of this document.
-* **Last Updated By** - Tim Graves, August 2021
+* **Last Updated By** - Tim Graves, May 2023

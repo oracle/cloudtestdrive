@@ -33,11 +33,15 @@ You will be running scripts in two locations, the storefront and the stockmanage
 
   2. In one switch to the storefront project directory
 
-  -  `cd $HOME/workspace/helidon-labs-storefront/`
+  ```bash
+  <copy>cd $HOME/workspace/helidon-labs-storefront/</copy>
+  ```
 
   3. In one switch to the stockmanager project directory
 
-  -  `cd $HOME/workspace/helidon-labs-stockmanager/`
+  ```bash
+  <copy>cd $HOME/workspace/helidon-labs-stockmanager/</copy>
+  ```
   
 Make sure you keep track of which terminal is in which directory !
 
@@ -47,7 +51,9 @@ Make sure the zipkin container is running. You may have done this in the previou
   
   4. To check if it is already running type :
 
-   - `docker ps`
+   ```bash
+  <copy>docker ps</copy>
+  ```
   
   5. Check in the output if there is an entry named **zipkin**:
   
@@ -57,7 +63,9 @@ Make sure the zipkin container is running. You may have done this in the previou
   
   6. If the entry is **missing**, relaunch it
   
-  - `docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin:2.23.4`
+  ```bash
+  <copy>docker run -d -p 9411:9411 --name zipkin --rm openzipkin/zipkin:2.24.1</copy>
+  ```
 
 
 ## Task 1: Jib - Docker image build tool
@@ -105,7 +113,9 @@ Use the Maven package target (mvn package) to trigger jib to create the docker c
   
   2. Run maven 
   
-  -  `mvn package`
+  ```bash
+  <copy>mvn package</copy>
+  ```
 
   ```
 [MVNVM] Using maven: 3.5.2
@@ -148,7 +158,9 @@ Now repeat this step for the stockmanager:
   
   4. Run maven
   
-  - `mvn package`
+  ```bash
+  <copy>mvn package</copy>
+  ```
 
 This operation will create two docker images, stored locally. The mvn package triggers jib to run which will build the docker image based on the properties in the jib section of the pom.xml file.
 
@@ -162,7 +174,9 @@ Once you've created the basic images by using mvn package you can manually creat
   
   6. Run a docker build 
   
-  -  `docker build --tag stockmanager --file Dockerfile .`
+  ```bash
+  <copy>docker build --tag stockmanager --file Dockerfile .</copy>
+  ```
 
   ```
 Sending build context to Docker daemon  229.4kB
@@ -188,7 +202,9 @@ The --file flag specified the name of the file containing the commands to execut
   
   8. Run the docker build
   
-  - `docker build --tag storefront --file Dockerfile .`
+  ```bash
+  <copy>docker build --tag storefront --file Dockerfile .</copy>
+  ```
 
   ```
 Sending build context to Docker daemon  110.6kB
@@ -218,7 +234,9 @@ You can explore the containers by running them to give you shell access (This is
 
   9. In the stockmanager terminal run the stockmanager container you just created:
   
-  -  `docker run --tty --interactive --rm --entrypoint=/bin/bash stockmanager`
+  ```bash
+  <copy>docker run --tty --interactive --rm --entrypoint=/bin/bash stockmanager</copy>
+  ```
 
 This command creates a docker container running the shell which is connected to your terminal. Once you're running in the container you can look around
 
@@ -226,7 +244,9 @@ Let's take a look inside the container
   
   19. Inside the container type 
 
-  - `ls`
+  ```bash
+  <copy>ls</copy>
+  ```
 
   ```
 app   conf	  etc	lib64  opt   run   sys	var
@@ -236,25 +256,33 @@ boot  dev	  lib	mnt    root  srv   usr
 
   11. Inside the container type 
 
-  - `ls Wallet_ATP` 
+  ```bash
+  <copy>ls Wallet_ATP</copy>
+  ```
 
 (No output)
 
   12. Inside the container type 
   
-  - `ls conf` 
+  ```bash
+  <copy>ls conf</copy>
+  ```
 
 (No output)
 
   13. Inside the container type 
   
-  - `ls confsecure` 
+  ```bash
+  <copy>ls confsecure</copy>
+  ```
 
 (No output)
 
   14. Now exit the container - Inside the container type
 
-  -  `exit`
+  ```bash
+  <copy>exit</copy>
+  ```
 
 As you can see there is nothing in the /conf /confsecure or /Wallet_ATP directories .jib was told as part of it's config that these would be used for mounting external configuration, so it created the folders for us automatically.
 
@@ -283,9 +311,9 @@ Let's use docker volumes (the docker --volume flag) to inject the configuration 
 
   16. Run the container with the volumes attached:
     
-   ```
-docker run --tty --interactive --volume `pwd`/Wallet_ATP:/Wallet_ATP --volume `pwd`/conf:/conf --volume `pwd`/confsecure:/confsecure  --rm --entrypoint=/bin/bash stockmanager
-```
+  ```bash
+  <copy>docker run --tty --interactive --volume `pwd`/Wallet_ATP:/Wallet_ATP --volume `pwd`/conf:/conf --volume `pwd`/confsecure:/confsecure  --rm --entrypoint=/bin/bash stockmanager</copy>
+  ```
   
 
 As before we find ourselves in the container and the root directory looks the same, but the other directories now have content.
@@ -294,7 +322,9 @@ Let's Look around again
 
   17. Inside the container type 
   
-   - `ls`
+   ```bash
+   <copy>ls</copy>
+   ```
   
   ```
 root@bc7d4ae0666b:/# ls
@@ -303,7 +333,9 @@ Wallet_ATP  app  app.yml  bin  boot  conf  confsecure dev	etc  home  lib	lib64  
   
   18. Inside the container type 
   
-   - `ls conf`
+   ```bash
+  <copy>ls conf</copy>
+  ```
   
   ```
 root@bc7d4ae0666b:/# ls /conf
@@ -312,7 +344,9 @@ stockmanager-config.yaml  stockmanager-network.yaml
   
   19. Inside the container type 
   
-   - `ls confsecure`
+   ```bash
+  <copy>ls confsecure</copy>
+  ```
   
   ```
   root@bc7d4ae0666b:/# la /confsecure
@@ -321,7 +355,9 @@ stockmanager-security.yaml
   
   20. Inside the container type 
   
-  - `ls Wallet_ATP`
+  ```bash
+  <copy>ls Wallet_ATP</copy>
+  ```
 
   ```
 root@bc7d4ae0666b:/# ls /Wallet_ATP
@@ -330,7 +366,9 @@ cwallet.sso  ewallet.p12  keystore.jks	ojdbc.properties  sqlnet.ora  tnsnames.or
 
   21. Exit the container. Inside the container type 
   
-  - `exit`
+  ```bash
+  <copy>exit</copy>
+  ```
   
  We have added the configuration to the container, but without having to hard code it into the image. Of course this means that if we change the content of the files in the directories that those changes will be reflected inside the container. 
 
@@ -351,7 +389,11 @@ For this lab the scripts that will run the stockmanager use the --env-file appro
 
   1. Make sure you are in the terminal for the **stockmanager** project directory
 
-  2. Edit the `database-env` file 
+  2. Edit the `database-env` file I'm using vi here but you can use another editor if you want
+  
+  ```bash
+  <copy>vi database-env</copy>
+  ```
 
 It will look like the following
 
@@ -376,7 +418,9 @@ Run the container with the configuration attached:
 
   5. In the VM shell type
 
-  - `bash runBashContainer.sh`
+  ```bash
+  <copy>bash runBashContainer.sh</copy>
+  ```
 
   ```
 executing in /Users/tg13456/Development/helidon-kubernetes-labs/helidon-labs-stockmanager
@@ -388,7 +432,9 @@ Once in the container look at the environment (we're going to sort the output to
 
   6. In the container shell type :
 
-  - `printenv | sort`
+  ```bash
+  <copy>printenv | sort</copy>
+  ```
   
   ```
 hibernate.dialect=org.hibernate.dialect.Oracle10gDialect
@@ -413,7 +459,9 @@ You can see the environment variables we have set (in this case it is of course 
 
   7. Exit the container by typing in the container
 
-  - `exit`
+  ```bash
+  <copy>exit</copy>
+  ```
 
 <details><summary><b>Why not use the Java system properties in the docker entry point ?</b></summary>
 
@@ -440,7 +488,7 @@ The script also uses the --publish flag to the docker run command this sets up a
 
 **If you have not stopped the stockmanager and storefront applications you were running in the helidon labs then they will have ownership of the ports** 
 
-  1. Check now that the **stockmanager and storefront applicationsthey are not running** inside of your Eclipse environment
+  1. Check now that the **stockmanager and storefront applications are not running** inside of your Eclipse environment
 
 <details><summary><b>If when running the docker containers you get bind errors.</b></summary>
 
@@ -463,7 +511,9 @@ As the storefront depends on the stockmanager (and both depend on zipkin) it's i
 
   3. Run the **Stockmanager** container via script:
 
-  - `bash runStockmanagerLocalExternalConfig.sh`
+  ```bash
+  <copy>bash runStockmanagerLocalExternalConfig.sh</copy>
+  ```
   
 Keep the terminal window open to see any log info it generates
   
@@ -471,12 +521,17 @@ Keep the terminal window open to see any log info it generates
   
   5. Run the **Storefront** container via script
   
-  - `bash runStorefrontLocalExternalConfig.sh`
+  ```bash
+  <copy>bash runStorefrontLocalExternalConfig.sh</copy>
+  ```
 
   6. Open **another** new terminal window
 
   7. Call the stocklevel method of the application:
-  -  `curl -i -X GET -u jack:password http://localhost:8080/store/stocklevel`
+  
+  ```bash
+  <copy>curl -i -X GET -u jack:password http://localhost:8080/store/stocklevel</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -533,7 +588,9 @@ To stop the containers do Ctrl-C in each of the windows, or in a separate termin
 
   8. Stop the containers, in the terminal you used for the curl command run
   
-  -  `docker stop storefront stockmanager`
+  ```bash
+  <copy>docker stop storefront stockmanager</copy>
+  ```
 
 <details><summary><b>Why use volumes for stuff that's not secret ?</b></summary>
 
@@ -668,7 +725,7 @@ For example a completed version may look like this (this is only an example, use
 **Important** The auth token being used for the password may well contain characters with special meaning to the shell, so it's important to include it in single quotes as in the example below ( ' )
 
 ```
-docker login fra.ocir.io --username=cdtemeabdnse/oracleidentitycloudservice/my.email@you.server.com --password='q)u70[]eUkM1u}zu;:[L'
+docker login fra.ocir.io --username=cdtemeabdnse/oracleidentitycloudservice/my.email@you.server.com --password='q)u250[]fUkM2u}zu;:[L'
 ```
 
 Enter the command with **your** details into a terminal in the virtual machine to login to the OCIR.
@@ -776,7 +833,9 @@ Let's actually push the images.
 
   6. Run the script to build the image and push it to the repo
   
-  - `bash buildStockmanagerPushToRepo.sh`
+  ```bash
+  <copy>bash buildStockmanagerPushToRepo.sh</copy>
+  ```
  
   ```
 $ bash buildPushToRepo.sh 
@@ -814,7 +873,9 @@ The script will do the build then push the container images. The first time you 
 
   8. Run the script to build the image and push it to the repo
   
-  - `bash buildStorefrontPushToRepo.sh`
+  ```bash
+  <copy>bash buildStorefrontPushToRepo.sh</copy>
+  ```
 
 (Lots of output similar to the above)
 
@@ -838,7 +899,9 @@ You can now re-run the images that have been pushed the cloud.
 
   2. Run the image you just pushed
 
-  - `bash runStockmanagerRepo.sh`
+  ```bash
+  <copy>bash runStockmanagerRepo.sh</copy>
+  ```
 
 (Usual output from the stockmanager starting) 
 
@@ -846,13 +909,17 @@ You can now re-run the images that have been pushed the cloud.
 
   4. Run the image you just pushed
 
-  - `bash runStorefrontRepo.sh`
+  ```bash
+  <copy>bash runStorefrontRepo.sh</copy>
+  ```
 
 (Usual output from the storefront starting) 
 
   5. Make a request to confirm it works
   
-  -  `curl -i -X GET -u jack:password http://localhost:8080/store/stocklevel`
+  ```bash
+  <copy>curl -i -X GET -u jack:password http://localhost:8080/store/stocklevel</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -871,11 +938,15 @@ This is the end of this section of the lab, let's stop the running images
 
   2. Stop the Storefront and Stockmanager apps:
   
-  -  ` docker stop storefront stockmanager`
+  ```bash
+  <copy>docker stop storefront stockmanager</copy>
+  ```
   
   3. Stop the zipkin instance running
   
-  -  `docker stop zipkin`
+  ```bash
+  <copy>docker stop zipkin</copy>
+  ```
 
 ## End of the Module, what's next ?
 
@@ -885,7 +956,7 @@ If you are doing only the Helidon and Docker lab you've finished. If you're doin
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, November 2020
+* **Last Updated By** - Tim Graves, May 2023
 

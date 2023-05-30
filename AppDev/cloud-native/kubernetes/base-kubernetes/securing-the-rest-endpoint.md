@@ -10,7 +10,7 @@ This is an optional reading only module, there are no exercises to do.
 
 ### Objectives
 
-This module looks at some of the 
+This module looks at some of the options for securing access to your ReST API.
 
 ### Prerequisites
 You should have completed the **Setting up the cluster and getting your services running in Kubernetes** module.
@@ -24,7 +24,7 @@ The answer is that of course you should. Even if the information you have is pub
 
 ## Securing the REST API
 
-This module looks at **some** of the ways you can secure your REST API's. Just to be clear, this is not a complete list and there are other approaches not covered here, but I have attempted to cover the major approaches.
+This module looks at **some** of the ways you can secure your REST API's. Just to be clear, this is not a complete list and there are other approaches not covered here, but I have attempted to cover a number of the major approaches.
 
 ### What security approach to use ?
 
@@ -36,7 +36,7 @@ Below are some thoughts, but these need to be considered with professional advic
 
 You can of course have your micro-service itself implement the end point termination and other security features. If you did the Helidon lab you will have seen how Helidon can implement authentication to limit who can access certain features of the micro-service.
 
-You could of course implement a TLS end point in your application as well, but then you have to implement your own certificate management. By taking the encryption all the way to the micro-service you'd also be limiting what you can do in terms of a Layer 7 firewall where you use an external service to inspect your data, for example to rate limit for specific endpoints, or dynamically add capabilities such as SQL Injection protection.
+You could of course implement a TLS end point in your application as well, and in Helidon making your application implement TLS can all be done with a few config file entries and a certificate, but then you have to implement your own certificate management. By taking the encryption all the way to the micro-service you'd also be limiting what you can do in the ingress controller or a Layer 7 firewall where you use an external service to inspect your data, for example to rate limit for specific endpoints, or dynamically add capabilities such as SQL Injection protection.
 
 Taking the encryption all the way to the micro-service does however reduce the chance that you will be subject to a attack by compromised network infrastructure (with modern clouds this is unlikely as the vendor can almost certainly do a better job at managing their infrastructure and detecting attacks than most end user organizations who will have a different focus).
 
@@ -60,6 +60,12 @@ Load balancers however are often not part of your Kubernetes environment, and of
 
 For the Oracle load balancer there are some annotations you can apply when creating the service, these cover a number of possibilities that avoid manually configuring the load balancer, for example you can specify a Kubernetes secret to be used for the TLS certificate. [See the Load balancers section in the Oracle Kubernetes documentation](https://docs.cloud.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengcreatingloadbalancer.htm#creatinglbhttps) for more details.
 
+The Oracle Load Balancer can act as an externally facing TLS termination point, but then use a different certificate (possibly self signed) to secure the connection inside your network, usually to the ingress controller. In my view this is a great combination as you get the benefits of the LB implementing proper security, along with the secure connection inside the network (especially important if your network in OCI is an extension of your corporate network as you can't always fully control what happens in your corporate network and the devices connected to it).
+
+### Use a Web Application Firewall
+
+Web Application Firewalls [See the wikipedia page for more details](https://en.wikipedia.org/wiki/Web_application_firewall) can usually provide similar features to the API Gateways, and for Oracle Cloud Infrastructure we actually offer this as an option in the load balancers.
+
 ### With an API Gateway
 
 Technologies such as an API gateway are applied (usually with their own load balancer) to examine the REST API Requests and to externally apply policy to those requests, this is done on the edge of your environment and prevents out of policy REST API calls even reaching your micro-service. For example an API Gateway would typically be configured with policies that ensure that the correct authentication details are applied to the connection, often also validating the supplied details are correct. Other typical functions are ensuring that the data is in the correct format, potentially applying checks against SQL Injection, and performing functions such as rate limiting and API key management (for example limiting access only to applications from organizations that have been issued with an access key.
@@ -68,7 +74,7 @@ API Gateways usually act as an encryption endpoint for incoming / outgoing traff
 
 ## Internal to the cluster data encryption
 
-Most Kubernetes implementations can run a service mesh like Linkerd (other service mesh implementations are of course available). These can provide many capabilities, but they usually offer mechanisms whereby you can encrypt internal communications within the cluster.
+Most Kubernetes implementations can run a service mesh like Linkerd (other service mesh implementations are of course available, for exa mple Istio and the Oracle [Service Mesh](https://www.oracle.com/uk/cloud/cloud-native/service-mesh/)). These can provide many capabilities, but they usually offer mechanisms whereby you can encrypt internal communications within the cluster.
 
 If you are operating a distributed Kubernetes cluster where the microservices are spread around with physical separation  between the nodes, then this may be a good approach to ensuring that a wide area communications provider (or someone that's hacked into them) cannot access the data (though usually wide area links would have their own encryption applied to protect the actual connection).
 
@@ -88,6 +94,6 @@ The next module is the **Cloud native availability with Kubernetes** module
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Applications Development specialists team
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, August 2021
+* **Last Updated By** - Tim Graves, May 2023

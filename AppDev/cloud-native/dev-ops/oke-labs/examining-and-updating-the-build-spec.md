@@ -327,11 +327,15 @@ It will save the OCID's of the resources created so that they can be removed lat
   
   Switch to the right directory. In the OCI cloud shell type
   
-  - `cd $HOME/helidon-kubernetes/setup/devops-labs`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/setup/devops-labs</copy>
+  ```
   
   Now run the script
   
-  - `bash vault-secrets-setup.sh`
+  ```bash
+  <copy>bash vault-secrets-setup.sh</copy>
+  ```
   
   ```
   Loading existing settings information
@@ -364,11 +368,15 @@ We're about to be making changes to the code, so let's create a new git branch t
 
   1. Go to the OCI Cloud shell (open it if needed) and make sure you are in the cloud-native-storefront directory that contains the git repo we downloaded earlier
 
-  - `cd $HOME/cloudnative-helidon-storefront`
+  ```bash
+  <copy>cd $HOME/cloudnative-helidon-storefront</copy>
+  ```
   
   2. In the OCI Cloud shell type
   
-  - `git checkout -b my-lab-branch`
+  ```bash
+  <copy>git checkout -b my-lab-branch</copy>
+  ```
   
   ```
   Switched to a new branch 'my-lab-branch'
@@ -376,7 +384,9 @@ We're about to be making changes to the code, so let's create a new git branch t
 
   3. Let's check this change has happened as expected, In the OCI Cloud shell type
 
-  - `git branch --list`
+  ```bash
+  <copy>git branch --list</copy>
+  ```
   
   ```
     main
@@ -387,7 +397,9 @@ Note that your new my-lab-branch branch is the one currently checked out (is has
 
   4. Copy the build_spec.yaml file to the root of the project, this is where the build tools look for it by default.
   
-  - `cp helidon-storefront-full/yaml/build/build_spec.yaml .`
+  ```bash
+  <copy>cp helidon-storefront-full/yaml/build/build_spec.yaml .</copy>
+  ```
 
 
   5. Edit the new `$HOME/cloudnative-helidon-storefront/build_spec.yaml` file in the OCI cloud shell (vi and nano are available), locate the `vaultVariables` section in the YAML and REPLACE the current `OCI_HOST_VAULT` value (`Needs your host secrets OCID`) with the OCID of the `OCIR_HOST` secret you just created. For the and `OCIR_STORAGE_NAMEPACE_VAULT` variable REPLACE its current value (`Needs your storage namespace OCID`) with the OCID of the `OCIR_STORAGE_NAMESPACE` you just created. The example below if my file, but of course yours will be different.
@@ -435,11 +447,15 @@ To enable us to confirm the updated when we push a new version through the DevOp
 
   1. Add the build_spec we just created to the repo
   
-  - `git add .`
+  ```bash
+  <copy>git add .</copy>
+  ```
   
   2. Let's commit these changes to your local git repo (the one in the cloud shell you are using). In the OCI Cloud shell type
 
-  - `git commit -a -m 'Set secret OCIDs and updated version'`
+  ```bash
+  <copy>git commit -a -m 'Set secret OCIDs and updated version'</copy>
+  ```
   
   ```
   [my-lab-branch 9d34518] Set secret OCIDs and updated version
@@ -448,7 +464,9 @@ To enable us to confirm the updated when we push a new version through the DevOp
 
   3. Now push the repo branch to the OCI Code repo you created earlier. In the OCI Cloud shell type
 
-  - `git push devops my-lab-branch`
+  ```bash
+  <copy>git push devops my-lab-branch</copy>
+  ```
 
 ```
 FIPS mode initialized
@@ -485,5 +503,5 @@ Congratulations, you've updated the sample content to your OCI Code repo.
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
-* **Last Updated By** - Tim Graves, February 2022
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
+* **Last Updated By** - Tim Graves, May 2023
