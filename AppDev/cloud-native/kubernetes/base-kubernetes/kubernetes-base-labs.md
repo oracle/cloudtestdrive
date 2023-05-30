@@ -55,13 +55,17 @@ The OCI Cloud Shell has helm already installed for you, however it does not know
 
  
   1. Add the Kubernetes nginx based ingress repo to helm
-  
+ 
+ 
+ ``` 
+  <copy>helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx</copy>
+
   ```bash
   <copy>helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx</copy>
   ```
 
-  ```
-"ingress-nginx" has been added to your repositories
+ ```
+ "ingress-nginx" has been added to your repositories
 ```
 
   2. Run the following command to add the dashboard repo to helm
@@ -75,12 +79,12 @@ The OCI Cloud Shell has helm already installed for you, however it does not know
  ```
 
   3. To can get the current list of repositories run the following command :
-  
+ 
   ```bash
   <copy>helm repo list</copy>
   ```
   
-  ```                                            
+  ```                                         
 NAME                    URL        
 ingress-nginx           https://kubernetes.github.io/ingress-nginx   
 kubernetes-dashboard    https://kubernetes.github.io/dashboard
@@ -906,20 +910,12 @@ In a production cluster where you may have many applications running composed of
   ```
   
 ```
-<<<<<<< Updated upstream
-Deleting old tg-helidon namespace
-Creating new tg-helidon namespace
-namespace/tg-helidon created
-Setting default kubectl namespace
-Context "west" modified.
-=======
 create-namespace.sh Using default context name of one
 Deleting old tg namespace in cluster one
 Creating new tg namespace in cluster one
 namespace/tg created
 Setting default kubectl namespace in cluster one
 Context "one" modified.
->>>>>>> Stashed changes
 ```
 The script tries to delete any existing namespace with that name, creates a new one, and sets it as a default. The output above was using tg-helidon as the namespace, but of course you will have used your initials and so will see them in the output instead of tg.
 
