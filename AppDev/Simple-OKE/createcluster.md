@@ -131,27 +131,27 @@ In this tutorial, you use default settings to define a new cluster. When you cre
 
 3. Verify that you can use the Kubernetes Dashboard to connect to the cluster:
 
-   1. In a text editor, create a file called oke-admin-service-account.yaml with the following content:
+   1. In a text editor, create a file called dashboard-adminuser.yaml with the following content:
 
       ```
       apiVersion: v1
       kind: ServiceAccount
       metadata:
-        name: oke-admin
-        namespace: kube-system
+        name: admin-user
+        namespace: kubernetes-dashboard
       ---
-      apiVersion: rbac.authorization.k8s.io/v1beta1
+      apiVersion: rbac.authorization.k8s.io/v1
       kind: ClusterRoleBinding
       metadata:
-        name: oke-admin
+        name: admin-user
       roleRef:
         apiGroup: rbac.authorization.k8s.io
         kind: ClusterRole
         name: cluster-admin
       subjects:
-        - kind: ServiceAccount
-          name: oke-admin
-          namespace: kube-system
+      - kind: ServiceAccount
+        name: admin-user
+        namespace: kubernetes-dashboard
       ```
 
       The file defines an administrator service account and a clusterrolebinding, both called oke-admin.
@@ -159,43 +159,29 @@ In this tutorial, you use default settings to define a new cluster. When you cre
    2. Create the service account and the clusterrolebinding in the cluster by entering:
 
       ```
-      $ kubectl apply -f oke-admin-service-account.yaml
+      $ kubectl apply -f dashboard-adminuser.yaml
       ```
 
       The output from the above command confirms the creation of the service account and the clusterrolebinding:
 
       ```
-      serviceaccount "oke-admin" created
-      clusterrolebinding.rbac.authorization.k8s.io "oke-admin" created
+      serviceaccount "admin-user" created
+      clusterrolebinding.rbac.authorization.k8s.io "admin-user" created
       ```
 
       You can now use the oke-admin service account to view and control the cluster, and to connect to the Kubernetes dashboard.
 
-   3. Obtain an authentication token for the oke-admin service account by entering:
-
-      ```
-      $ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep oke-admin | awk '{print $1}')
-      ```
-      
-
-The output from the above command includes an authentication token (a long alphanumeric string) as the value of the **token** element, as shown below:
-      
+   3. Getting a Bearer Token
+    Now we need to find the token we can use to log in. Execute the following command:
+    ```
+    kubectl -n kubernetes-dashboard create token admin-user
+    ```
+It should print something like:
 ```
-      Name: oke-admin-token-gwbp2
-Namespace: kube-system
-      Labels: <none>
-      Annotations: kubernetes.io/service-account.name: oke-admin
-      kubernetes.io/service-account.uid: 3a7fcd8e-e123-11e9-81ca-0a580aed8570
-Type: kubernetes.io/service-account-token
-      Data
-===
-      ca.crt: 1289 bytes
-namespace: 11 bytes
-      token: eyJh______px1Q
+eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLXY1N253Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiIwMzAzMjQzYy00MDQwLTRhNTgtOGE0Ny04NDllZTliYTc5YzEiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.Z2JrQlitASVwWbc-s6deLRFVk5DWD3P_vjUFXsqVSY10pbjFLG4njoZwh8p3tLxnX_VBsr7_6bwxhWSYChp9hwxznemD5x5HLtjb16kI9Z7yFWLtohzkTwuFbqmQaMoget_nYcQBUC5fDmBHRfFvNKePh_vSSb2h_aYXa8GV5AcfPQpY7r461itme1EXHQJ
 ```
-
-    In the example above, **eyJh______px1Q** is the authentication token.
-
+Now copy the token and paste it into the Enter token field on the login screen.
+      
 
    4. Copy the value of the `token:` element from the output. You will use this token to
       connect to the dashboard.
