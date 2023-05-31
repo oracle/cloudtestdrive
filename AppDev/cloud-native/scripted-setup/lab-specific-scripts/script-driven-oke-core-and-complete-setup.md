@@ -21,7 +21,9 @@ If you are not sure if you have downloaded the latest version then you can check
 
   - In the OCI Cloud shell type 
   
-  - `ls $HOME/helidon-kubernetes`
+  ```bash
+  <copy>ls $HOME/helidon-kubernetes</copy>
+  ```
 
 If you get output like this then you need to download the scripts, follow the process in **Task 1a**
 
@@ -45,11 +47,15 @@ We will use git to download the scripts
 
   2. Make sure you are in the top level directory
   
-  - `cd $HOME`
+  ```bash
+  <copy>cd $HOME</copy>
+  ```
   
   3. Clone the repository with all scripts from github into your OCI Cloud Shell environment
   
-  - `git clone https://github.com/CloudTestDrive/helidon-kubernetes.git`
+  ```bash
+  <copy>git clone https://github.com/CloudTestDrive/helidon-kubernetes.git</copy>
+  ```
   
   ```
   Cloning into 'helidon-kubernetes'...
@@ -73,11 +79,15 @@ We will use git to update the scripts
   
   2. Make sure you are in the home directory
   
-  - `cd $HOME/helidon-kubernetes`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes</copy>
+  ```
   
   3. Use git to get the latest updates
   
-  - `git pull`
+  ```bash
+  <copy>git pull</copy>
+  ```
 
 ```
 remote: Enumerating objects: 21, done.
@@ -140,14 +150,18 @@ This script will perform the following tasks, where possible you have already us
   
   - In the OCI Cloud shell type :
   
-  - `cd $HOME/helidon-kubernetes/setup/lab-specific`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/setup/lab-specific</copy>
+  ```
   
   
   To run the main script (this will call the other scripts for you in the right order)
   
   - In the OCI Cloud shell type
   
-  - `bash ./core-kubernetes-lab-setup.sh`
+  ```bash
+  <copy>bash ./core-kubernetes-lab-setup.sh</copy>
+  ```
   
   The script will ask for a few core bits of information before continuing.
   
@@ -181,7 +195,7 @@ you will still be prompted for input.
 Do you want to use the automatic defaults ?
 ```
 
-  Next the script asks you if you want to use the automatic defaults, if you do so the case the script will automatically assume the answer to any yes / no question is `y` If you are in a free trial account it's safe to enter `y` as this will significantly speed up the setup process as the script will not have to wait for your inputs - as mentioned above though you will have to interact with the Cloud Shell occasionally while the script is running to prevent it timing out and the scripts being aborted.
+  Next the script asks you if you want to use the automatic defaults, if you do so the script will automatically assume the answer to any yes / no question is `y` If you are in a free trial account it's safe to enter `y` as this will significantly speed up the setup process as the script will not have to wait for your inputs - as mentioned above though you will have to interact with the Cloud Shell occasionally while the script is running to prevent it timing out and the scripts being aborted.
     
   ```
   This script can perform certain setup operations in parallel, doing so will speed
@@ -214,5 +228,5 @@ The script should have run to completion. It will have setup the environment nee
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
-* **Last Updated By** - Tim Graves, June 2022
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
+* **Last Updated By** - Tim Graves, May 2023

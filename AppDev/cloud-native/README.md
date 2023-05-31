@@ -123,7 +123,10 @@ Go to [the Kubernetes Labs](kubernetes/kubernetes-labs.md)
 
 [Go to the Cloud Test Drive Welcomer Page](../../readme.md)
 
+## Acknowledgements
 
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
+* **Last Updated By** - Tim Graves, May 2023
 
 #### [License](../../LICENSE)
 

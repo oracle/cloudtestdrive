@@ -14,11 +14,15 @@ We need to capture your initials and save them. It is important that when you en
 
   1. If you are not already there open the OCI cloud shall and go to the scripts directory, type
   
-  - `cd $HOME/helidon-kubernetes/setup/common`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/setup/common</copy>
+  ```
   
   2. Run the script to gather and save your initials, when prompted by the script enter your initials and press return, in the example below as my name is Tim Graves I used `tg` as the initials
   
-  - `bash ./initials-setup.sh`
+  ```bash
+  <copy>bash ./initials-setup.sh</copy>
+  ```
   
   ```
   Please can you enter your initials - use lower case a-z only and no spaces, for example if your name is John Smith your initials would be js. This will be used to do things like name the database
@@ -35,11 +39,15 @@ A number of processes require knowledge of your users identity, this script will
 
 1. If you are not already there open the OCI cloud shall and go to the scripts directory, type
   
-  - `cd $HOME/helidon-kubernetes/setup/common`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/setup/common</copy>
+  ```
   
   2. Run the compartment setup script, it does not require any input
   
-  - `bash ./user-identity-setup.sh`
+  ```bash
+  <copy>bash ./user-identity-setup.sh</copy>
+  ```
   
   ```
   Loading existing settings
@@ -59,11 +67,15 @@ The following instructions follow through the prompts one at a time, unless you 
 
   1. If you are not already there open the OCI cloud shall and go to the scripts directory, type
   
-  - `cd $HOME/helidon-kubernetes/setup/common`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/setup/common</copy>
+  ```
   
   2. Run the compartment setup script
   
-  - `bash ./compartment-setup.sh`
+  ```bash
+  <copy>bash ./compartment-setup.sh</copy>
+  ```
   
   ```
   Loading existing settings
@@ -100,11 +112,15 @@ The microservices that form the base content of these labs use a database to sto
 
   1. If you are not already there open the OCI cloud shall and go to the scripts directory, type
   
-  - `cd $HOME/helidon-kubernetes/setup/common`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/setup/common</copy>
+  ```
   
   2. Run the script to create or re-use the database
   
-  - `bash ./database-setup.sh`
+  ```bash
+  <copy>bash ./database-setup.sh</copy>
+  ```
   
   ```
   Loading existing settings information
@@ -176,3 +192,9 @@ The generated admin password is 2005758405_SeCrEt Please ensure that you save th
 ```
   
   5. **IMPORTANT** you are **strongly** recommended to save the generated database password (`2005758405_SeCrEt` in this case) in case you need to administer the database later. If there is an existing `$HOME/Wallet.zip` then it will be saved before downloading the new wallet.
+  
+## Acknowledgements
+
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
+* **Author** - Jan Leemans, Director Business Development, EMEA Divisional Technology
+* **Last Updated By** - Tim Graves, May 2023

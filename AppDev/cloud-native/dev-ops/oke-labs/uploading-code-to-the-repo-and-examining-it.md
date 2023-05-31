@@ -89,11 +89,15 @@ It the updates your local git repo with the remote git repos in OCI (when create
 
   1. Make sure you are in the right directory, in the OCI cloud shell
   
-  - `cd $HOME/helidon-kubernetes/setup/devops-labs`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/setup/devops-labs</copy>
+  ```
   
   2. Run the script
   
-  - `bash ./upload-git-repo.sh`
+  ```bash
+  <copy>bash ./upload-git-repo.sh</copy>
+  ```
   
   ```
   Loading existing settings information
@@ -196,11 +200,15 @@ First we are going to download the original repo from github. This is a public r
 
   1. Open the OCI Cloud Shell, if you are not already there go to your home directory
   
-  - `cd $HOME`
+  ```bash
+  <copy>cd $HOME</copy>
+  ```
 
   2. Use git to download the sample code
 
-  - `git clone https://github.com/oracle-devrel/cloudnative-helidon-storefront.git`
+  ```bash
+  <copy>git clone https://github.com/oracle-devrel/cloudnative-helidon-storefront.git</copy>
+  ```
   
   ```
   Cloning into 'cloudnative-helidon-storefront'...
@@ -216,13 +224,16 @@ The precise details will vary as we update the lab, btu you shoudl see somethign
 
   3. This will create a folder called `cloudnative-helidon-storefront` in your home directory, switch to it
 
-  - `cd cloudnative-helidon-storefront`
+  ```bash
+  <copy>cd cloudnative-helidon-storefront</copy>
+  ```
 
-  4. We need to tell git who we are so it can track who makes changes, run the commands below replacing `<your email` and `<your name>` you can use anything you want here as this is just a lab, but in a real project you'd use your real email and name. Both of these two commands just return without any output.
-
-  - `git config  user.email "<your email>"`
+  4. We need to tell git who we are so it can track who makes changes, run the commands below replacing `[your email]` and `[your name]` you can use anything you want here as this is just a lab, but in a real project you'd use your real email and name. Both of these two commands just return without any output.
   
-  - `git config user.name "<your name>"`
+  ```
+  git config user.email "[your email]"
+  git config user.name "[your name]"
+  ```
   
 We are only setting these for this specific project, do don't worry, doing this will not effect any other git projects you have in the OCI Cloud Shell
 
@@ -240,19 +251,25 @@ We need to tell git where the OCI Code repo is in your project. For this to work
   
   ![](images/code-repo-project-clone-info.png)
 
-  3. We are now going to create a connection to the OCI Code Repository you created, this will be called `devops`. In the OCI Cloud shell type the following, replacing `<SSH PATH>` with the ssh details you just copied
+  3. We are now going to create a connection to the OCI Code Repository you created, this will be called `devops`. In the OCI Cloud shell type the following, replacing `[SSH PATH]` with the ssh details you just copied
   
-  - `git remote add devops <SSH PATH>`
+  ```
+  git remote add devops [SSH PATH]
+  ```
   
 This command will just return and won't generate any output
 
   4. For safety remove the connection to the original repo in github - you shouldn't be able to push to this anyway, but it will prevent me getting lot's of pull requests !
 
-  - `git remote remove origin`
+  ```bash
+  <copy>git remote remove origin</copy>
+  ```
   
   5. Let's confirm we've made the changes
 
-  - `git remote`
+  ```bash
+  <copy>git remote</copy>
+  ```
   
   ```
   devops
@@ -268,7 +285,9 @@ We're now ready to upload the contents of our local repo to the OCI Code repo yo
   
 
   
-  - `git pull --no-edit --allow-unrelated-histories devops main`
+  ```bash
+  <copy>git pull --no-edit --allow-unrelated-histories devops main</copy>
+  ```
   
   ```
   FIPS mode initialized
@@ -293,7 +312,9 @@ The --no-edit option just tells git to use default text when combining the conte
 
   2. Now let's push our active branch to the repo, you may be asked to confirm you want to upload (You get a message "The authenticity of host..." as below) then enter `yes`
 
-  - `git push devops main`
+  ```bash
+  <copy>git push devops main</copy>
+  ```
   
    ```
 FIPS mode initialized
@@ -360,5 +381,5 @@ Congratulations, you've added the sample content to your OCI Code repo.
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
-* **Last Updated By** - Tim Graves, February 2022
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
+* **Last Updated By** - Tim Graves, May 2023

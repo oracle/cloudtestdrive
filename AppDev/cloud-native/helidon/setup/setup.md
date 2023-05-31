@@ -26,11 +26,15 @@ The cloud-native-support project you downloaded during the initial setup has a s
 
   2. In the terminal switch to the script directory
 
-  - `cd $HOME/cloud-native-setup/cloud-native-setup/scripts/helidon-basics`
+  ```bash
+  <copy>cd $HOME/cloud-native-setup/cloud-native-setup/scripts/helidon-basics</copy>
+  ```
 
   3. Run the script to update the hosts file
 
-  - `bash add-helidon-basics-hosts.sh`
+  ```bash
+  <copy>bash add-helidon-basics-hosts.sh</copy>
+  ```
 
   ```
 Testing if zipkin is in /etc/hosts
@@ -60,7 +64,11 @@ To save you from having to completely create all of the Eclipse projects and cla
 
   ![Opening the firefox web browser](images/ol-desktop-activities-open-firefox.png)
 
-  2. In the browser **in the virtual machine** go to the URL `https://github.com/CloudTestDrive/helidon-labs`
+  2. In the browser **in the virtual machine** go to the URL 
+  
+  ```bash
+  <copy>https://github.com/CloudTestDrive/helidon-labs</copy>
+  ```
 
   3. Click the `Code` button
 
@@ -126,29 +134,41 @@ You need to open a terminal window in the Development VM
 
   3. Delete any existing wallet information
   
-  - `rm -rf $HOME/workspace/helidon-labs-stockmanager/Wallet_ATP`
+  ```bash
+  <copy>rm -rf $HOME/workspace/helidon-labs-stockmanager/Wallet_ATP</copy>
+  ```
 
   4. Create a new wallet directory
   
-  - `mkdir -p $HOME/workspace/helidon-labs-stockmanager/Wallet_ATP`
+  ```bash
+  <copy>mkdir -p $HOME/workspace/helidon-labs-stockmanager/Wallet_ATP</copy>
+  ```
 
   5. Navigate to the stock manager folder
   
-  - `cd $HOME/workspace/helidon-labs-stockmanager/Wallet_ATP`
+  ```bash
+  <copy>cd $HOME/workspace/helidon-labs-stockmanager/Wallet_ATP</copy>
+  ```
 
   6. Copy the downloaded wallet file from the downloads to the folder (we're copying rather than moving so it will remain in Downloads ready to be used in other lab modules)
   
-  - `cp $HOME/Downloads/Wallet_*.zip .`
+  ```bash
+  <copy>cp $HOME/Downloads/Wallet_*.zip .</copy>
+  ```
 
   7. Unpack the wallet 
   
-  - `unzip Wallet_*.zip`
+  ```bash
+  <copy>unzip Wallet_*.zip</copy>
+  ```
 
 We now need to locate the wallet connection details.
 
   8. Look at the contents of the tnsnames.ora file to get the database connection name
 
-  - `cat tnsnames.ora`
+  ```bash
+  <copy>cat tnsnames.ora</copy>
+  ```
 
   ```
   tg_high = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=cgipkrq1hwcdlkv_tg_high.atp.oraclecloud.com))(security=(ssl_ser
@@ -179,7 +199,7 @@ Congratulations, you have successfully setup your VM with the template code. You
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
-* **Author** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, November 2020
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
+* **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
+* **Last Updated By** - Tim Graves, May 2023
 

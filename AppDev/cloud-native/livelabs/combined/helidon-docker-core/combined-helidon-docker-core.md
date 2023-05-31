@@ -7,11 +7,19 @@ This set of lab instructions is based on the virtual machine image dated 2020-10
 **Lab conventions**
 
 We have used a few layout tricks to make the reading of this tutorial more intuitive : 
-
-- If you see a "Bullet" sign, this means **you** need to perform some sort of **action**.  This can be 
-  - Opening a window and navigating to some point in a file system
-  - Executing some command on the command line of a terminal window :
-    -  For example : `ls -al`
+- If you see a "Bullet" sign, this means **you** need to perform some sort of **action**.  For example opening a window and navigating to some point in a file system
+  
+In some cases you will need to executing some command on the command line of a terminal window. If this is a command you can just copy directly from the lab is will be in a box with a **Copy** button. For example
+  
+  ```bash
+  <copy>ls -al</copy>
+  ```
+  
+  However in some cases the command can't just be copied and will need to be entered with some modifications. We have **deliberately** chosen not to allow these to be directly copied as we found that some people didn't make the modifications and then of course the command did not work. In those cases the command will be in a box as below, but without a copy button, you will need to enter the command and in this case replace the pod id, the instructions will make it clear the changes that need to be made. For example the following example kubectl command will get the details of a pod, but the actual pod id will need to be replaced with one from your environment :
+  
+  ```bash
+  kubectl describe pod 234kj3g-c6e43-j3h4
+  ```
 
 As we cover quite some theoretical concepts, we included pretty verbose explanations.  To make the lab easier to grasp, we placed the longer parts in *Collapsibles*:
 
@@ -242,6 +250,7 @@ When you finish the modules in this lab the take the time for a cup of tea (or o
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
-* **Last Updated By** - Tim Graves, November 2020
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
+* **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
+* **Last Updated By** - Tim Graves, May 2023
 

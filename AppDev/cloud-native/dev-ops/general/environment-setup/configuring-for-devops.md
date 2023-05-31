@@ -50,11 +50,15 @@ It will save the OCID's of the resources created so that they can be removed lat
 
   1. Make sure you are in the right directory, in the OCI Cloud shell
   
-  - `cd $HOME/helidon-kubernetes/setup/devops-labs`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/setup/devops-labs</copy>
+  ```  
   
   2. Run the security setup script, in the OCI Cloud shell
   
-  - `bash ./security-setup.sh`
+  ```bash
+  <copy>bash ./security-setup.sh</copy>
+  ```  
   
   ```
   Loading existing settings information
@@ -167,17 +171,23 @@ Once open you can do normal things like minimize / maximize / restore / close th
 
   2. Create the .ssh directory to hold the keys we are about to create.
 
-  - `mkdir -p $HOME/.ssh`
+  ```bash
+  <copy>mkdir -p $HOME/.ssh</copy>
+  ```  
   
   3. Switch to that directory
 
-  - `cd $HOME/.ssh`
+  ```bash
+  <copy>cd $HOME/.ssh</copy>
+  ```  
 
 Now we can create the keys to use, we are going to do this rather than let the web UI do it as this means we don't have to transfer them over from your computer. Note that if you have already got ssh API keys configured for authentication which were not created in the OCI cloud Shell you can just place them into id_rsa and id_rsa.pub files in this folder (use `cat > id_rsa` and then past the contents then do Control-D to finish the cat). If you prefer to use new keys please do so, but remember than you can only have three API Keys in each account.
 
-  4. Run the following command in the OCI Cloud Shell to create a key pair, when prompted for a pass phrase just press return (a pass phrase can be used to secure access to the generated key, but that requires some additional setup so in the interests of time not going to use that here). Please replace `<email address>` with the email address for your user (for a free tenancy this is usually the one you provided during the sign-up process)
+  4. Run the following command in the OCI Cloud Shell to create a key pair, when prompted for a pass phrase just press return (a pass phrase can be used to secure access to the generated key, but that requires some additional setup so in the interests of time not going to use that here). Please replace `[email address]` with the email address for your user (for a free tenancy this is usually the one you provided during the sign-up process)
 
-  - `ssh-keygen -t rsa -f $HOME/.ssh/id_rsa -C "<email address>" `
+  ```
+  ssh-keygen -t rsa -f $HOME/.ssh/id_rsa -C "[email address]" 
+  ```
 
   ```
 Generating public/private rsa key pair.
@@ -203,7 +213,9 @@ The key's randomart image is:
 
   5. Now we need to get the public part of the key into PEM format so OCI can process it
 
-  - `ssh-keygen -f ~/.ssh/id_rsa.pub -e -m pkcs8`
+  ```bash
+  <copy>ssh-keygen -f ~/.ssh/id_rsa.pub -e -m pkcs8</copy>
+  ```  
 
    ```
 -----BEGIN PUBLIC KEY-----
@@ -501,3 +513,8 @@ Policies are applied in the parent of the compartment you are operating in, (or 
   Of course these all use my initials !
   
 </details>
+
+## Acknowledgements
+
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
+* **Last Updated By** - Tim Graves, May 2023

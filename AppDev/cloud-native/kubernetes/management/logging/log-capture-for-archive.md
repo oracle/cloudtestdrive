@@ -26,6 +26,8 @@ This module shows how to install and configure the log capture tool Fluentd, and
 
 You need to complete the **Rolling update** module (last of the core Kubernetes labs modules). You can have done any of the other optional module sets. The **log capture for processing** module is also optional.
 
+Please be aware that this log capture works if you are using manually managed nodes, for virtual nodes you will need a different approach as they don't support daemon sets. The approach described here is one of several approaches and this focused on handling the log data capture within Kubernetes, OKE also supports ways of directly capturing log data using [OCI log management techniques](https://docs.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengviewingworkernodelogs.htm) as well
+
 ## Task 1: Capturing data to archive it
 
 <details><summary><b>The problem with log data in a distributed cloud native environment</b></summary>
@@ -66,7 +68,9 @@ As with elsewhere in the labs we do this module in it's own namespace.
 
   1. In the cloud console type 
   
-  - `kubectl create namespace logging`
+  ```bash
+  <copy>kubectl create namespace logging</copy>
+  ```
   
   ```
 namespace/logging created
@@ -279,7 +283,9 @@ Note that the storage tier for the new bucket (named TG-FLUENTD in this case **b
 
   1. In the OCI Cloud shell Change to the logging folder.
   
-  - `cd $HOME/helidon-kubernetes/management/logging`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/management/logging</copy>
+  ```
 
 There are a several of yaml files that we will use. These will all be applied in the `logging` namespace
 
@@ -329,7 +335,13 @@ in the `env:` section we see the name of the environment variable (`SWITCH_LOG_F
 
 </details>
 
-  1. You will need to edit the `fluentd-s3-configmap.yaml` file and update it with the values you gathered earlier. Remember to keep the values in double quotes.
+  1. You will need to edit the `fluentd-s3-configmap.yaml` file and update it with the values you gathered earlier. I'm using vi here, but use the supported editor of your choice. 
+  
+  ```bash
+  <copy>vi fluentd-s3-configmap.yaml</copy>
+  ```
+  
+  Remember to keep the values in double quotes.
 
   - ACCESS_KEY - This is the OCI access key
 
@@ -376,7 +388,9 @@ First we will create the `fluentd-config-to-ooss` config map, this is in the `fl
 
   1. In the OCI Cloud Shell type 
   
-  - `kubectl apply -f fluentd-to-ooss-configmap.yaml`
+  ```bash
+  <copy>kubectl apply -f fluentd-to-ooss-configmap.yaml</copy>
+  ```
 
   ```
 configmap/fluentd-config-to-ooss configured
@@ -402,7 +416,9 @@ Now let's apply the configuration settings specific to our environment we just s
 
   2. In the OCI Cloud Shell type 
   
-  - `kubectl apply -f fluentd-s3-configmap.yaml`
+  ```bash
+  <copy>kubectl apply -f fluentd-s3-configmap.yaml</copy>
+  ```
   
   ```
 configmap/fluentd-s3-config configured
@@ -412,7 +428,9 @@ Finally let's start the daemonset itself
 
   3. In the OCI Cloud Shell type 
   
-  - `kubectl apply -f fluentd-daemonset-ooss-rbac.yaml`
+  ```bash
+  <copy>kubectl apply -f fluentd-daemonset-ooss-rbac.yaml</copy>
+  ```
 
   ```
 serviceaccount/fluentd-to-ooss created
@@ -424,7 +442,9 @@ Let's make sure that everything has started
 
   4. In the OCI Cloud Shell type 
   
-  - `kubectl get daemonsets -n logging`
+  ```bash
+  <copy>kubectl get daemonsets -n logging</copy>
+  ```
 
 ```
 NAME              DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
@@ -437,7 +457,9 @@ Let's get the specifics of the pods
 
   5. In the OCI Cloud Shell type 
   
-  - `kubectl get pods -n logging`
+  ```bash
+  <copy>kubectl get pods -n logging</copy>
+  ```
   
 ```
 NAME                                    READY   STATUS             RESTARTS   AGE
@@ -458,9 +480,11 @@ You may occasionally see a fluentd pod with status CrashLoopBackOff, this is usu
 
 Let's look at the logs from one of these pods, in this case I'm going to use `fluentd-to-ooss-fgx4s` but of course the pod name you have will be different.
 
-  6. In the OCI Cloud Shell type 
+  6. In the OCI Cloud Shell type the followibng, replace the pod id with yours.
   
-  - `kubectl logs -n logging fluentd-to-ooss-fgx4s`
+  ```
+  kubectl logs -n logging fluentd-to-ooss-fgx4s
+  ```
 
   ```
 2020-05-05 14:53:35 +0000 [info]: parsing config file is succeeded path="/fluentd/etc/override/fluent.conf"
@@ -568,7 +592,9 @@ If you want to check if the variable is still set type `echo $EXTERNAL_IP` if it
 
 The automated scripts will create a script file `$HOME/clusterSettings.one` this can be executed using the shell built in `source` to set the EXTERNAL_IP variable for you.
 
-  - `source $HOME/clusterSettings.one`
+  ```bash
+  <copy>source $HOME/clusterSettings.one</copy>
+  ```
   
 ```
 EXTERNAL_IP set to 139.185.45.98
@@ -590,7 +616,9 @@ In this case as you manually set this up you will need to get the information fr
 
   - You are going to get the value of the `EXTERNAL_IP` for your environment. This is used to identify the DNS name used by an incoming connection. In the OCI cloud shell type
 
-  - `kubectl get services -n ingress-nginx`
+  ```bash
+  <copy>kubectl get services -n ingress-nginx</copy>
+  ```
 
 ```
 NAME                                 TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)                      AGE
@@ -600,9 +628,11 @@ ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>      
 
   - Look for the `ingress-nginx-controller` line and note the IP address in the `EXTERNAL-IP` column, in this case that's `130.162.40.121` but it's almost certain that the IP address you have will differ. IMPORTANT, be sure to use the IP in the `EXTERNAL-IP` column, ignore anything that looks like an IP address in any other column as those are internal to the OKE cluster and not used externally. 
 
-  - IN the OCI CLoud shell type the following, replacing `<external ip>` with the IP address you retrieved above.
+  - IN the OCI CLoud shell type the following, replacing `[external ip]` with the IP address you retrieved above.
   
-  - `export EXTERNAL_IP=<external ip>`
+  ```bash
+  export EXTERNAL_IP=<external ip>
+  ```
   
 ---
 
@@ -611,9 +641,11 @@ ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>      
 </details>
 
 
-  7. In the OCI Cloud Shell terminal type.
+  7. Sent a request that will generate log data. In the OCI Cloud Shell terminal type.
   
-  - `curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel`
+  ```bash
+  <copy>curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel</copy>
+  ```
   
   ```
 HTTP/1.1 200 OK
@@ -642,7 +674,7 @@ The Object storage UI provides a pseudo directory structure view. In this case t
 
   1. Click on the year
 
-  ![Thge top level of the Object storage hierarchy](images/Object-storage-hierarchy-top-level.png)
+  ![The top level of the Object storage hierarchy](images/Object-storage-hierarchy-top-level.png)
 
   2. Continue navigating down the pseudo directory structure until you get to the objects created today
 
@@ -701,7 +733,9 @@ If you want to leave the log capture running to see more of the data please feel
 
   1. To delete the `logging` namespace (if you have chosen to do this). In the OCI Cloud Shell type 
   
-  - `kubectl delete namespace logging`
+  ```bash
+  <copy>kubectl delete namespace logging</copy>
+  ```
   
   ```
 namespace "logging" deleted
@@ -771,6 +805,6 @@ You can chose from the various Kubernetes optional module sets.
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, August 2021
+* **Last Updated By** - Tim Graves, May 2023

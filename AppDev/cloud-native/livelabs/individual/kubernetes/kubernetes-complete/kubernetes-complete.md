@@ -33,10 +33,19 @@ In this series of labs we will focus on the specific features of Kubernetes to r
 
 We have used a few layout tricks to make the reading of this tutorial more intuitive : 
 
-- If you see a "Bullet" sign, this means **you** need to perform some sort of **action**.  This can be 
-  - Opening a window and navigating to some point in a file system
-  - Executing some command on the command line of a terminal window :
-    -  For example : `ls -al`
+- If you see a "Bullet" sign, this means **you** need to perform some sort of **action**.  For example opening a window and navigating to some point in a file system
+  
+In some cases you will need to executing some command on the command line of a terminal window. If this is a command you can just copy directly from the lab is will be in a box with a **Copy** button. For example
+  
+  ```bash
+  <copy>ls -al</copy>
+  ```
+  
+  However in some cases the command can't just be copied and will need to be entered with some modifications. We have **deliberately** chosen not to allow these to be directly copied as we found that some people didn't make the modifications and then of course the command did not work. In those cases the command will be in a box as below, but without a copy button, you will need to enter the command and in this case replace the pod id, the instructions will make it clear the changes that need to be made. For example the following example kubectl command will get the details of a pod, but the actual pod id will need to be replaced with one from your environment :
+  
+  ```bash
+  kubectl describe pod 234kj3g-c6e43-j3h4
+  ```
 
 As we cover quite some theoretical concepts, we included pretty verbose explanations.  To make the lab easier to grasp, we placed the longer parts in *Collapsibles*:
 
@@ -53,7 +62,7 @@ If you feel you are already pretty familiar with a specific concept, you can jus
 
 You are about to create a Kubernetes deployment with two microservices, Storefront and Stockmanager. These are very simple microservcies to show a very small bit of business logic and how to access the Autonomous Transaction Processing database. Once they are running you will look at how Kubernetes delivers high availability, horizontal scaling and rolling upgrades. There will also be the System services of an Ingress controller with associated load balancer and the Kubernetes dashboard 
 
-Depending on what optional modules you do you may also explore the use of Prometheus and Grafana to capture and visdualize metrics data, Fluend to capture and store log data in Elastic Stack or Object Storage and how the Linkerd service mesh can be used to help monitor and manage your network traffic.
+Depending on what optional modules you do you may also explore the use of Prometheus and Grafana to capture and visualize metrics data, Fluentd to capture and store log data in Elastic Stack or Object Storage and how the Linkerd service mesh can be used to help monitor and manage your network traffic.
 
 ![](../../../images/kubernetes-labs-what-will-be-built-incl-optional.png)
 
@@ -82,7 +91,7 @@ This module takes you through the process of using the scripts we have provided 
 
 Please follow the tasks in the **Setup your container images using scripts** section (click the name in the labs index)
 
-## BPart 1:  Setting up your cluster and running your services
+## Part 1:  Setting up your cluster and running your services
 
 This section covers how to run the docker images in kubenetes, how to use Kubernetes secrets to hold configuration and access information, how to use an ingress to expose your application on a web port. Basically this covers how to make your docker based services run in in a Kubernetes cluster.
 
@@ -215,17 +224,9 @@ We are working on or exploring the posibility of a number of additional optional
 ---
 
 
-
 ## Further Information
 
 For links to useful web pages and other information that I found while writing these labs see the further information on Kubernetes section
-
-
-## End of this tutorial
-
-We hope you enjoy doing the labs, and that they will be useful to you. 
-
-When you finish the modules in this lab the take the time for a cup of tea (or other beverage of your choice). While you're having that well earned break we recommend that you visit the [Oracle live labs site](https://apexapps.oracle.com/pls/apex/dbpm/r/livelabs/home) for a wide range of other labs on a variety of subjects.
 
 ## End of this tutorial
 
@@ -235,6 +236,7 @@ When you finish the modules in this lab the take the time for a cup of tea (or o
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
-* **Last Updated By** - Tim Graves, April 2022
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
+* **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
+* **Last Updated By** - Tim Graves, May 2023
 

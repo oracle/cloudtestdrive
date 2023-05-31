@@ -49,15 +49,15 @@ storefront-7667fc5fdc-5zwbr     1/1     Running   0          173m
 zipkin-7db7558998-c5b5j         1/1     Running   0          173m
 ```
 
-Also for some tasks kubectl will require you to provide the container name in the pod, for example looking at the logs with the service mesh installed you need to do 
+Also for some tasks kubectl will require you to provide the container name in the pod as the service mesh adds a sidecar container resulting in two (or more if you have set them up) containers in the pod. For example looking at the logs in a pod with only one container kubernrtes will return the logs withouth you having to specify the (single) container name, but if there are multiple containers in a pod (and with the service mesh installed there will be a sidecar container in the pods being managed y the service mesh)  you need to specify the name of the container to get the logs for :
 
-```
+```bash
 kubectl logs stockmanager-7945b54576-9f7q7 stockmanager
 ```
 
-But if the service mesh was not installed you only need to do
+But if the service mesh was not installed (and there are no other containers in your pod) you only need to do
 
-```
+```bash
 kubectl logs stockmanager-7945b54576-9f7q7
 ```
 If you are confident you can handle this (and not complain about the labs being buggy because of these minor changes!) then please feel free to leave linkerd installed, and carry on with the labs.
@@ -69,9 +69,11 @@ If however this will cause you problems you can remove the service mesh
 
 First remove the linkerd annotation on the namespaces
 
-  1. In the OCI Cloud shell type the following (replace <ns-name with your namespace)
+  1. In the OCI Cloud shell type the following (replace `[ns-name]` with your namespace)
   
-  - `kubectl get namespace <ns-name> -o yaml | linkerd uninject - | kubectl replace -f -`
+  ```bash
+  kubectl get namespace [ns-name] -o yaml | linkerd uninject - | kubectl replace -f -
+  ```
 
   ```
 namespace "usernameecho" uninjected
@@ -83,7 +85,9 @@ Now restart the deployments to remove the linkerd-proxy sidecar container, as th
 
   2. Let's get the list of deployments. In the OCI Cloud shell type 
   
-  - `kubectl get deployments`
+  ```bash
+  <copy>kubectl get deployments</copy>
+  ```
 
   ```
 NAME           READY   UP-TO-DATE   AVAILABLE   AGE
@@ -98,7 +102,9 @@ Sadly there doesn't seem to be a way to restart all of the deployments in a name
 
   3.In the OCI Cloud shell type the following, if you have additional deployments from other modules add them to the list
 
-  - `kubectl rollout restart deployments storefront stockmanager zipkin`
+  ```bash
+  <copy>kubectl rollout restart deployments storefront stockmanager zipkin</copy>
+  ```
 
   ```
 deployment.apps/storefront restarted
@@ -113,7 +119,9 @@ First update the ingress-nginix namespace to remove the linkerd annotation
 
   4. In the OCI Cloud shell type the following 
 
-  - `kubectl get namespace ingress-nginx -o yaml | linkerd uninject - | kubectl replace -f -`
+  ```bash
+  <copy>kubectl get namespace ingress-nginx -o yaml | linkerd uninject - | kubectl replace -f -</copy>
+  ```
 
   ```
 namespace "ingress-nginx" uninjected
@@ -125,7 +133,9 @@ Now get the list of deployments in the ingress-nginx namespace
 
   5. In the OCI Cloud shell type :
 
-  - `kubectl get deployments -n ingress-nginx`
+  ```bash
+  <copy>kubectl get deployments -n ingress-nginx</copy>
+  ```
 
   ```
 NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
@@ -136,7 +146,9 @@ And next update them so the proxy will be removed.
 
   6. In the OCI Cloud shell type :
 
-  - `kubectl rollout restart deployments -n ingress-nginx ingress-nginx-controller`
+  ```bash
+  <copy>kubectl rollout restart deployments -n ingress-nginx ingress-nginx-controller</copy>
+  ```
 
   ```
 deployment.apps/ingress-nginx-nginx-ingress-controller restarted
@@ -149,13 +161,17 @@ Now the data plane elements have been removed let's remove the linkerd control p
 
   7. In the OCI Cloud shell type 
 
-  - `linkerd viz install | kubectl delete -f -`
+  ```bash
+  <copy>linkerd viz install | kubectl delete -f -</copy>
+  ```
 
 There will be lots of messages about deleting resources, you may get warnings about attempts to delete resources that are not there, these can be ignored.
 
   8. In the OCI Cloud shell type 
 
-  - `linkerd install --ignore-cluster | kubectl delete -f -`
+  ```bash
+  <copy>linkerd install --ignore-cluster | kubectl delete -f -</copy>
+  ```
   
 There will be lots of messages about deleting resources, you may get warnings about attempts to delete resources that are not there, these can be ignored.
 
@@ -163,7 +179,9 @@ At the end check to see if the linkerd namespaces are still there, they may have
 
   9. In the OCI Cloud shell type 
   
-  - `kubectl get namespaces`
+  ```bash
+  <copy>kubectl get namespaces</copy>
+  ```
 
   ```
 NAME              STATUS   AGE
@@ -180,7 +198,9 @@ If you don't see `linkerd` or `linkerd-viz` in the list then remove you're done,
 
   10. In the OCI Cloud shell type 
 
-  - `kubectl delete namespace linkerd-viz`
+  ```bash
+  <copy>kubectl delete namespace linkerd-viz</copy>
+  ```
 
   ```
 namespace "linkerd-viz" deleted
@@ -188,7 +208,9 @@ namespace "linkerd-viz" deleted
 
   11. In the OCI Cloud shell type 
 
-  - `kubectl delete namespace linkerd`
+  ```bash
+  <copy>kubectl delete namespace linkerd</copy>
+  ```
 
  ```
 namespace "linkerd" deleted
@@ -202,6 +224,6 @@ You can chose from the other Kubernetes optional module sets.
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Applications Development specialists team
 * **Contributor** - Charles Pretzer, Bouyant, Inc for reviewing and sanity checking parts of this document.
-* **Last Updated By** - Tim Graves, April 2021
+* **Last Updated By** - Tim Graves, May 2023

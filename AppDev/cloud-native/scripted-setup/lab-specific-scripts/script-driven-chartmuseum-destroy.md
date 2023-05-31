@@ -50,14 +50,18 @@ In some situations the compartment cannot be deleted, this is because some resou
   
   - In the OCI Cloud shell type :
   
-  - `cd $HOME/helidon-kubernetes/setup/lab-specific`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/setup/lab-specific</copy>
+  ```
   
   
   To run the main script (this will call the other scripts for you in the right order)
   
   - In the OCI Cloud shell type
   
-  - `bash ./chartmuseum-kubernetes-lab-destroy.sh`
+  ```bash
+  <copy>bash ./chartmuseum-kubernetes-lab-destroy.sh</copy>
+  ```
   
   The script will ask for a few core bits of information before continuing.
   

@@ -150,8 +150,8 @@ Apart from being an interface (so only method names, not implementations) this l
   3. Let's set this up as something that can be build into a REST client. Add the following annotations:
 
   ```java
-    @RegisterRestClient(configKey = "StockManager")
-    @ApplicationScoped
+    <copy>@RegisterRestClient(configKey = "StockManager")
+    @ApplicationScoped</copy>
 ```
 
 The result should look like :
@@ -169,8 +169,8 @@ public interface StockManager {
 You may need to add the following imports to the class
 
 ```java
-import javax.enterprise.context.ApplicationScoped;
-import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+<copy>import javax.enterprise.context.ApplicationScoped;
+import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;</copy>
 ```
 
 ---
@@ -230,8 +230,8 @@ It's possible to manually create a REST client from a code perspective using a R
   3. Add the following annotations:
 
   ```java
-    @Inject
-    @RestClient
+    <copy>@Inject
+    @RestClient</copy>
 ```
 
   4. Remove the null initializer.
@@ -249,7 +249,7 @@ Result:
 You may need to add the following import to the class
 
 ```java
-import org.eclipse.microprofile.rest.client.inject.RestClient;
+<copy>import org.eclipse.microprofile.rest.client.inject.RestClient;</copy>
 ```
 
 ---
@@ -268,7 +268,9 @@ Basically this looks pretty simple in comparison to making all of the http reque
 
   8. Let's try accessing the storefront service using curl. Expect an error
 
-  -  `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
+  ```bash
+  <copy>curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel</copy>
+  ```
 
 The curl response will give you a 424 error (Failed Dependency) because it can't communicate with the stockmanager servcie, but why is that ? We need to look at the storefront logs to find out.
 
@@ -293,10 +295,18 @@ Fortunately for us Helidon has that solution built in, we just need to tell the 
 
 This contains the security setting used by the storefront service. The `http-basic-auth` is the section we need
 
-  10. Add an outbound section to the `http-basic-auth` **exactly** as shown below
+  10. Add an outbound section to the `http-basic-auth` under the `users` section **exactly** as shown below
 
+  ```yaml
+        outbound:
+          - name: "propogate-to-everyone"
+            hosts: ["*"]
   ```
-   - http-basic-auth:
+  
+  The resulting `http-basic-auth` section will look like this
+   
+  ```yaml
+    - http-basic-auth:
         realm: "helidon"
         users:
           - login: "jack"
@@ -330,7 +340,9 @@ The precise settings options depend on the security provider, you can see detail
 
   13. Try the curl again
 
-  -  `curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel`
+  ```bash
+  <copy>curl -i -X GET -u jill:password http://localhost:8080/store/stocklevel</copy>
+  ```
 
   ```
 HTTP/1.1 200 OK
@@ -445,8 +457,7 @@ The next lab in the Helidon core labs is **Operations support with Helidon**
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, EMEA OCI Centre of Excellence
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
 * **Contributor** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, November 2020
-
+* **Last Updated By** - Tim Graves, May 2023
 

@@ -46,14 +46,18 @@ In some situations the compartment cannot be deleted, this is because some resou
   
   - In the OCI Cloud shell type :
   
-  - `cd $HOME/helidon-kubernetes/setup/lab-specific`
+  ```bash
+  <copy>cd $HOME/helidon-kubernetes/setup/lab-specific</copy>
+  ```
   
   
   To run the main script (this will call the other scripts for you in the right order)
   
   - In the OCI Cloud shell type
   
-  - `bash ./optional-kubernetes-lab-destroy.sh`
+  ```bash
+  <copy>bash ./optional-kubernetes-lab-destroy.sh</copy>
+  ```
   
   The script will ask for a few core bits of information before continuing.
   
@@ -91,5 +95,5 @@ The script should have run to completion. It will have reset the environment cre
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
 * **Last Updated By** - Tim Graves, April 2022

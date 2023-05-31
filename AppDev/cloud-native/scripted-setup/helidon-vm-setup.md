@@ -343,11 +343,15 @@ To enable us to update the labs without having to update the Developer VM image 
   
   2. If you are reusing a termnal make sure you are in your home directory by typing
   
-  - `cd`
+  ```bash
+  <copy>cd</copy>
+  ```
   
   3. In the terminal execute the following command to download the latest setup
   
-  - `git clone https://github.com/CloudTestDrive/cloud-native-setup.git`
+  ```bash
+  <copy>git clone https://github.com/CloudTestDrive/cloud-native-setup.git</copy>
+  ```
 
   ```
 Cloning into 'cloud-native-setup'...
@@ -360,7 +364,9 @@ Unpacking objects: 100% (88/88), done.
   
   4. Run the setup script
   
-  - `bash $HOME/cloud-native-setup/cloud-native-setup/scripts/setup/downloadedSetup.sh`
+  ```bash
+  <copy>bash $HOME/cloud-native-setup/cloud-native-setup/scripts/setup/downloadedSetup.sh</copy>
+  ```
   
   ```
 Running post eclipse scripts
@@ -494,7 +500,7 @@ Congratulations, you have successfully configured trhe code of the development v
 
 ## Acknowledgements
 
-* **Author** - Tim Graves, Cloud Native Solutions Architect, OCI Strategic Engagements Team, Developer Lighthouse program
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
 * **Author** - Jan Leemans, Director Business Development, EMEA Divisional Technology
-* **Last Updated By** - Tim Graves, January 2022
+* **Last Updated By** - Tim Graves, May 2023
 

@@ -26,3 +26,8 @@ To download the database wallet and install it in the VM follow [these instructi
 ## 4/ Do the Helidon labs 
 
 You can now start [The helidon labs](../README.md)
+
+## Acknowledgements
+
+* **Author** - Tim Graves, Cloud Native Solutions Architect, Oracle EMEA Cloud Native Application Development specialists Team
+* **Last Updated By** - Tim Graves, May 2023
