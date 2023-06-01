@@ -144,14 +144,24 @@ To do the roll out we're just going to apply the new file. Kubernetes will compa
   1. Apply the new config
   
   ```bash
-  <copy>kubectl apply -f storefront-deployment-v0.0.1.yaml --record</copy>
+  <copy>kubectl apply -f storefront-deployment-v0.0.1.yaml</copy>
   ```
 
   ```
 deployment.apps/storefront configured
 ```
 
-  2.  We can have a look at the status of the rollout
+  2. Kubernetes will automatically keep a record of the previous versions and the command used (e.g. `kubectl apply -f storefront-deployment.yaml`), but the command may not be that usefull and we may want to describe the change. To provide a meaningful description we're going to apply an annotation to the deployment and when we then look at the deployment history we will see the change description.
+  
+  ```bash
+  <copy>kubectl annotate deployment/storefront kubernetes.io/change-cause="Changed rollout settings"</copy>
+  ```
+
+  ```text
+  deployment.apps/storefront annotated
+  ```
+ 
+  3.  We can have a look at the status of the rollout
   
 ```bash
   <copy>kubectl rollout status deployment storefront</copy>
@@ -163,7 +173,7 @@ deployment "storefront" successfully rolled out
 
 If you get a message along the lines of `Waiting for deployment "storefront" rollout to finish: 3 of 4 updated replicas are available...` this just means that the roll out is still in progress, once it's complete you should see the success message.
 
-  3. Let's also look at the history of this and previous roll outs:
+  4. Let's also look at the history of this deployment :
 
   ```bash
   <copy>kubectl rollout history  deployment storefront</copy>
@@ -172,18 +182,16 @@ If you get a message along the lines of `Waiting for deployment "storefront" rol
   ```
 deployment.apps/storefront 
 REVISION  CHANGE-CAUSE
-1         kubectl apply --filename=storefront-deployment.yaml --record=true
+1         Changed rollout settings
 ```
 
-(The `--record` tells Kubernetes to keep track of the change)
-
-We can see that the previous state of the deployment resulted from us doing the initial apply. Note that the filename is specified in the rollout, as long as we version our file names we will be able to know exactly what configuration was applied to different versions of the deployment.
+The update has the change-cause of `"Changed rollout settings"` from the `kubectl annotate` command.
 
 One point to note here, these changes *only* modified the deployment roll out configuration, so there was no need for Kubernetes to actually restart any pods as those were unchanged, however additional pods may have needed to be started to meet the replica count.
 
 ### Making a change that updates the pods
 
-Of course normally you would make a change, test it and build it, then push to the registry, you would probably use some form of CI/CD tooling to manage the process, for example a pipeline built using the Oracle Developer Cloud Service (other options include the open source tools Jenkins / Hudson and Ansible). 
+Of course normally you would make a change to the deployment yaml, test it and build it, then push to the registry, you would probably use some form of CI/CD tooling to manage the process, for example a pipeline built using the Oracle Developer Cloud Service, or Argo CD (other options include the open source tools Jenkins / Hudson and Ansible). 
 
 For this lab we are focusing on Helidon and Kubernetes, not the entire CI/CD chain so like any good cooking program we're going to use a v0.0.2 image that we created for you. For the purposes of this module the image is basically the same as the v0.0.1 version, except it reports it's version as 0.0.2 
 
@@ -194,17 +202,33 @@ To apply the new v0.0.2 image we need to upgrade the configuration again. As dis
 
 However ... for the purpose of showing how this can be done using kubectl we are going to do this using the command line, not a configuration file change. This **might** be something you'd do in a test environment, but **don't** do it in a production environment or your change management processes will almost certainly end up damaged.
 
-  1. In the OCI cloud shell Execute the command 
+  1. Edit the  `storefront-deployment-v0.0.1.yaml` file and locate the image line, in my case it looks like `image: fra.ocir.io/nrrwtjdl235/tg_labs_base_repo/storefront:0.0.1` but yours will be different. I'm using vi here but use the editor you prefer
+  
+  ```bash
+  <copy>vi storefront-deployment-v0.0.1.yaml</copy>
+  ```
+  
+  2. Copy **your** image location details to a notepad or similar. In my case the image location is `fra.ocir.io/nrrwtjdl235/tg_labs_base_repo/storefront:0.0.1` but yours **will be different**, replace the version with the micro release `2` so for me after making the chance it will look like ``fra.ocir.io/nrrwtjdl235/tg_labs_base_repo/storefront:0.0.2`
+   
+  3. In the OCI cloud shell Execute the command below, replacing `[image location]` with the one you just got
   
 ```bash
-  <copy>kubectl set image deployment storefront storefront=fra.ocir.io/oractdemeabdmnative/h-k8s_repo/storefront:0.0.2 --record</copy>
+  kubectl set image deployment storefront storefront=[image location]
   ```
+
+  In my case the command is `kubectl set image deployment storefront storefront=fra.ocir.io/nrrwtjdl235/tg_labs_base_repo/storefront:0.0.2` but of course **yours will be different**
 
   ```
 deployment.apps/storefront image updated
 ```
 
-  2. Let's look at the status of our setup during the roll out
+  4. As is good practice we'll update the history of the deployment so we know what the change is.
+  
+   ```bash
+  <copy>kubectl annotate deployment/storefront kubernetes.io/change-cause="Updated to v0.0.2 image"</copy>
+  ```
+
+  5. Let's look at the status of our setup during the roll out
   
   ```bash
   <copy>kubectl get all</copy>
@@ -248,7 +272,7 @@ Finally if we look at the pods themselves we see that there are five storefront 
 
 Basically what Kuberntes has done is created a new replica set and started some new pods in it by adjusting the number of pod replicas in each set, maintaining the overall count of having 3 pods available at all times, and only one additional pod over the replica count set in the deployment. Over time as those new pods come online in the new replica set **and** pass their readiness test, then they can provide the service and the **old** replica set will be reduced by one pod, allowing another new pod to be started. At all times there are 3 pods running.
 
-  3. Rerun the status command a few times to see the changes 
+  6. Rerun the status command a few times to see the changes 
   
   ```bash
   <copy>kubectl get all</copy>
@@ -284,7 +308,7 @@ replicaset.apps/storefront-79d7d954d6     4         4         2       63s
 replicaset.apps/zipkin-88c48d8b9          1         1         1       29m
 ```
 
-  4. Kubectl provides an easier way to look at the status of our rollout
+  7. Kubectl provides an easier way to look at the status of our rollout
 
   ```bash
   <copy>kubectl rollout status deployment storefront</copy>
@@ -303,7 +327,7 @@ Kubectl provides us with a monitor which updates over time. Once all of the depl
 
 During the rollout if you had accessed the status page for the storefront (on /sf/status) you would sometimes have got a version 0.0.1 in the response, and other times 0.0.2 This is because during the rollout there are instances of both versions running.
 
-  5. If we look at the setup now we can see that the storefront is running only the new pods, and that there are 4 pods providing the service.
+  8. If we look at the setup now we can see that the storefront is running only the new pods, and that there are 4 pods providing the service.
 
   ```bash
   <copy>kubectl get all</copy>
@@ -338,7 +362,7 @@ replicaset.apps/zipkin-88c48d8b9          1         1         1       30m
 
 One important point is that you'll see that the **old** replica set is still around, even though it hasn't got any pods assigned to it. This is because it still holds the configuration that was in place before if we wanted to rollback (we'll see this later)
 
-  6. if we now look at the history we see that there have been two sets of changes
+  9. if we now look at the history we see that there have been two sets of changes
   
   ```bash
   <copy>kubectl rollout history deployment storefront</copy>
@@ -347,13 +371,13 @@ One important point is that you'll see that the **old** replica set is still aro
   ```
 deployment.apps/storefront 
 REVISION  CHANGE-CAUSE
-1         kubectl apply --filename=storefront-deployment-v0.0.1.yaml --record=true
-2         kubectl set image deployment storefront storefront=fra.ocir.io/oractdemeabdmnative/h-k8s_repo/storefront:0.0.2 --record=true
+1         Changed rollout settings
+2         Updated to v0.0.2 image
 ```
 
-Note that to get the detail of the change you have to use the --record flag
+Note the change cause is what we set with the kubectl annotate command
 
-  7. Let's check on our deployment to make sure that the image is the v0.0.2 we expect
+  10. Let's check on our deployment to make sure that the image is the v0.0.2 we expect
   
   ```bash
   <copy>kubectl describe deployment storefront</copy>
@@ -454,7 +478,7 @@ ingress-nginx-controller-admission   ClusterIP      10.96.216.33    <none>      
 
 </details>
 
-  8. We should of course check that our update is correctly delivering a service.
+  11. We should of course check that our update is correctly delivering a service.
   
   ```bash
   <copy>curl -i -k -X GET -u jack:password https://store.$EXTERNAL_IP.nip.io/store/stocklevel</copy>
@@ -473,7 +497,7 @@ strict-transport-security: max-age=15724800; includeSubDomains
 
 If you get a DNS error that `store..nip.io` cannot be found this means that `EXTERNAL_IP` is not set, follow the instructions above to set it and then re-run the curl command.
 
-  9. Now let's check the output from the StatusResource
+  12. Now let's check the output from the StatusResource
   
   ```bash
   <copy>curl -i -k -X GET https://store.$EXTERNAL_IP.nip.io/sf/status</copy>
@@ -526,6 +550,7 @@ Labels:         app=storefront
 Annotations:    deployment.kubernetes.io/desired-replicas: 4
                 deployment.kubernetes.io/max-replicas: 5
                 deployment.kubernetes.io/revision: 2
+                kubernetes.io/change-cause: Updated to v0.0.2 image
 Controlled By:  Deployment/storefront
 Replicas:       4 current / 4 desired
 Pods Status:    4 Running / 0 Waiting / 0 Succeeded / 0 Failed
@@ -563,7 +588,7 @@ Events:
   Normal  SuccessfulCreate  33m   replicaset-controller  Created pod: storefront-79d7d954d6-h6qv7
 ```
 
-If we look at the Image we can see it's my v0.0.2 image. We can also see stuff like the pods being added during the update
+If we look at the Image we can see it's my v0.0.2 image and has the change information we set using kubectl annotate. We can also see stuff like the pods being added during the update
 
   3. But let's look at the old replica set, again replace the replica set id with yours
   
@@ -580,7 +605,7 @@ Labels:         app=storefront
 Annotations:    deployment.kubernetes.io/desired-replicas: 4
                 deployment.kubernetes.io/max-replicas: 5
                 deployment.kubernetes.io/revision: 1
-                kubernetes.io/change-cause: kubectl apply --filename=storefront-deployment.yaml --record=true
+                kubernetes.io/change-cause: Changed rollout settings
 Controlled By:  Deployment/storefront
 Replicas:       0 current / 0 desired
 Pods Status:    0 Running / 0 Waiting / 0 Succeeded / 0 Failed
@@ -618,9 +643,9 @@ Events:
   Normal  SuccessfulDelete  33m   replicaset-controller  Deleted pod: storefront-5f777cb4f5-7tlkb
 ```
 
-In this case we see it's showing the old 0.0.1 image.
+In this case we see it's showing the old 0.0.1 image and the change info is the one we set when we applied the updated yaml.
 
-So we can see how kuberntes keeps the old configurations around (the different revisions are tied to the replica sets)
+So we can see how kubernetes keeps the old configurations around (the different revisions are tied to the replica sets)
 
 If we undo the rollout Kubernetes will revert to the previous version
 
@@ -712,6 +737,8 @@ strict-transport-security: max-age=15724800; includeSubDomains
 ```
 
 Normally of course the testing of the pods would be linked into CI/CD automated tooling that would trigger the rollback if it detected a problem automatically, but here we're trying to show you the capabilities of Kubernetes rather than just run automation.
+
+We could apply a new change annotation if we wanted, but that doesn;t actually make sense as the change info represents the change when this one was setup, there is not point saying "reverted from ...." as that change is what we just undid.
 
 <details><summary><b>What if I do new update while another is still in progress ?</b></summary>
 

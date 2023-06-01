@@ -225,19 +225,20 @@ configmap "sm-config-map" deleted
 configmap/sm-config-map created
 ```
 
-Now we can apply the update, we'll use the Kubernetes rolling upgrade process to record the change (as we're going to want to revert this one!)
+Now we can apply the update, we'll use the Kubernetes rolling upgrade process to make the change (as we're going to want to revert this one!)
 
   6. In the OCI Cloud shell type
   
   ```bash
-   <copy>kubectl apply -f $HOME/helidon-kubernetes/service-mesh/stockmanager-deployment-broken.yaml --record</copy>
+   <copy>kubectl apply -f $HOME/helidon-kubernetes/service-mesh/stockmanager-deployment-broken.yaml</copy>
    ```
 
   ```
 deployment.apps/stockmanager configured
 ```
 
-Wait a short while for the update to be applied.
+Wait a short while for the update to be applied. 
+   
 
 This is basically the same stockmanager code that was created in the Helidon labs, however it has a bit of additional code that generates errors at the rate specified by the errorGeneration rate we set in the config file.
   
