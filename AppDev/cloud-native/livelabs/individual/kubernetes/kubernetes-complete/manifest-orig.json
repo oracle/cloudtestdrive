@@ -1,5 +1,5 @@
 {
-  "workshoptitle": "Deploy Microservices in Kubernetes and supporting cloud native services",
+  "workshoptitle": "Deploy Microservices in Kubernetes and OCI Supporting Features",
   "help": "livelabs-help-oci_us@oracle.com",
 	"tutorials": [
         {
@@ -16,63 +16,75 @@
           "filename":"../../../../scripted-setup/lab-specific-scripts/script-driven-oke-core-and-complete-setup.md"
         },
         {
-          "title": "Lab 1: Set up the cluster and run your services in Kubernetes",
+          "title": "Setup your core tenancy using scripts",
+          "filename":"../../../../scripted-setup/script-driven-oci-setup-core-environment.md"
+        },
+        {
+          "title": "Setup your kubernetes cluster using scripts",
+          "filename":"../../../../scripted-setup/script-driven-oci-setup-kubernetes-environment.md"
+        },
+        {
+          "title": "Setup your container images using scripts",
+          "filename":"../../../../scripted-setup/script-driven-oci-setup-container-images.md"
+       },
+        {
+          "title": "Part 1: Setting up the cluster and getting your services running in Kubernetes",
           "filename": "../../../../kubernetes/base-kubernetes/kubernetes-base-labs.md"
         },
 		{
-          "title": "Lab 2: Cloud native availability with Kubernetes",
+          "title": "Part 2: Cloud native availability with Kubernetes",
           "filename": "../../../../kubernetes/cloud-native-labs/health-readiness-liveness/health-liveness-readiness.md"
         },
 		{
-          "title": "Lab 3a: Horizontal Scaling",
+          "title": "Part 3a: Horizontal Scaling",
           "filename": "../../../../kubernetes/cloud-native-labs/horizontal-scaling/horizontal-scaling.md"
         },
 		{
-          "title": "Lab 3b: Auto Scaling",
+          "title": "Part 3b: Auto Scaling",
           "filename": "../../../../kubernetes/cloud-native-labs/horizontal-scaling/auto-scaling.md"
         },
         {
-          "title": "Lab 4: Rolling Updates",
+          "title": "Part 4: Rolling Updates",
           "filename": "../../../../kubernetes/cloud-native-labs/rolling-updates/rolling-updates.md"
         },
         {
-          "title": "Optional Lab 1a: Capture metrics with Prometheus",
+          "title": "Optional 1a: Prometheus for metrics capture",
           "filename": "../../../../kubernetes/monitoring-kubernetes/monitoring-with-prometheus-lab.md"
         },
 		{
-          "title": "Optional Lab 1b: Visualize metrics with Grafana",
+          "title": "Optional 1b: Visualizing metrics with Grafana",
           "filename": "../../../../kubernetes/monitoring-kubernetes/visualizing-with-grafana-lab.md"
         },
 		{
-          "title": "Optional Lab 2a: Capture log data for imediate processing",
+          "title": "Optional 2a: Capturing log data for processing",
           "filename": "../../../../kubernetes/management/logging/log-capture-for-processing.md"
         },
         {
-          "title": "Optional Lab 2b: Log Capture for long term storage",
+          "title": "Optional 2b: Capturing log data for archive",
           "filename": "../../../../kubernetes/management/logging/log-capture-for-archive.md"
         },
 		{
-          "title": "Optional Lab 3a: Install the Linkerd service mesh",
+          "title": "Optional 3a: Installing the Linkerd service mesh",
           "filename": "../../../../kubernetes/service-mesh/linkerd-install.md"
         },
         {
-          "title": "Optional Lab 3b: Monitor traffic with the Linkerd service mesh",
+          "title": "Optional 3b: Traffic monitoring with a Linkerd service mesh",
           "filename": "../../../../kubernetes/service-mesh/linkerd-monitoring-traffic-flows.md"
         },
 		{
-          "title": "Optional Lab 3c: Use the Linkerd service mesh to troubleshoot problems",
+          "title": "Optional 3c: Using the Linkerd service mesh for troubleshooting",
           "filename": "../../../../kubernetes/service-mesh/linkerd-using-to-troubleshoot-problems.md"
         },
         {
-          "title": "Optional Lab 3d: Traffic splits with the Linkerd service mesh (Canary deployments, and chaos engineering)",
+          "title": "Optional 3d: Traffic splits with the Linkerd service mesh (Canary deployments, and chaos engineering)",
           "filename": "../../../../kubernetes/service-mesh/linkerd-exploring-traffic-splits.md"
         },
 		{
-          "title": "Optional Lab 3e: Uninstall the Linkerd service mesh",
+          "title": "Optional 3e: Uninstalling the Linkerd service mesh",
           "filename": "../../../../kubernetes/service-mesh/linkerd-uninstall.md"
         },
         {
-          "title": "Reset your tenancy",
+          "title": "Resetting your tenancy",
           "filename":"../../../../scripted-setup/lab-specific-scripts/script-driven-oke-core-and-complete-destroy.md"
         },
         {

@@ -12,31 +12,43 @@
             "filename": "https://oracle-livelabs.github.io/common/labs/cloud-login/pre-register-free-tier-account.md"
         },
         {
-          "title": "Setup your environment with the all-in-one script",
+          "title": "Setup using the all-in-one script",
           "filename":"../../../../scripted-setup/lab-specific-scripts/script-driven-oke-core-and-complete-setup.md"
         },
         {
-          "title": "Lab 1: Set up the cluster and run your services in Kubernetes",
+          "title": "Setup your core tenancy using scripts",
+          "filename":"../../../../scripted-setup/script-driven-oci-setup-core-environment.md"
+        },
+        {
+          "title": "Setup your kubernetes cluster using scripts",
+          "filename":"../../../../scripted-setup/script-driven-oci-setup-kubernetes-environment.md"
+        },
+        {
+          "title": "Setup your container images using scripts",
+          "filename":"../../../../scripted-setup/script-driven-oci-setup-container-images.md"
+        },
+        {
+          "title": "Part 1: Setting up the cluster and getting your services running in Kubernetes",
           "filename": "../../../../kubernetes/base-kubernetes/kubernetes-base-labs.md"
         },
 		{
-          "title": "Lab 2: Cloud native availability with Kubernetes",
+          "title": "Part 2: Cloud native availability with Kubernetes",
           "filename": "../../../../kubernetes/cloud-native-labs/health-readiness-liveness/health-liveness-readiness.md"
         },
 		{
-          "title": "Lab 3a: Horizontal Scaling",
+          "title": "Part 3a: Horizontal Scaling",
           "filename": "../../../../kubernetes/cloud-native-labs/horizontal-scaling/horizontal-scaling.md"
         },
 		{
-          "title": "Lab 3b: Auto Scaling",
+          "title": "Part 3b: Auto Scaling",
           "filename": "../../../../kubernetes/cloud-native-labs/horizontal-scaling/auto-scaling.md"
         },
         {
-          "title": "Lab 4: Rolling Updates",
+          "title": "Part 4: Rolling Updates",
           "filename": "../../../../kubernetes/cloud-native-labs/rolling-updates/rolling-updates.md"
         },
         {
-          "title": "Reset your tenancy",
+          "title": "Resetting your tenancy",
           "filename":"../../../../scripted-setup/lab-specific-scripts/script-driven-oke-core-and-complete-destroy.md"
         },
         {

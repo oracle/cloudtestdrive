@@ -1,6 +1,6 @@
 ![Title image](../../../../../common/images/customer.logo2.png)
 
-# Setting up Auto scaling
+# Handle load changes with automatic Horizontal Scaling
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 

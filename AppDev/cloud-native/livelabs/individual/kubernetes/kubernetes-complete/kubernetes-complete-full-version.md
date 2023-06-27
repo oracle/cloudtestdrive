@@ -66,27 +66,44 @@ Depending on what optional modules you do you may also explore the use of Promet
 
 ![](../../../images/kubernetes-labs-what-will-be-built-incl-optional.png)
 
-## Overview of the labs
 
-### Setup using the all-in-one script
+## Setup using the all-in-one script
 
 This module shows you how to use the "all-in-one" scripts to setup the environment for your lab in one go. If you are running in a free trial, or have full admin rights to your tenancy **and** are running in your home region this is the preferred approach, just follow the instructions in this module then once completed jump directly to module **Part 1** skipping the remaining setup modules.
 
 If however you are not in a free trial, do not have full admin rights, not in your home region, or need to modify the default choices for some reason then please use the remaining setup modules instead.
 
-## Lab 1:  Set up the cluster and run your services in Kubernetes
+## Setup your core tenancy using scripts
+
+This module takes you through the process of using the scripts we have provided to gather data, create compartments,and a database used by the microservices running in Kubernetes. If you have already created these in a previous lab you can skip this module
+
+Please follow the tasks in the **Setup your core tenancy using scripts** section (click the name in the labs index)
+
+## Setup the Kubernetes environment using scripts
+
+This module takes you through the process of using the scripts we have provided to create a Kubernetes cluster. If you have already created this in a previous lab you can skip this module
+
+Please follow the tasks in the **Setup your kubernetes environment using scripts** section (click the name in the labs index)
+
+## Setup your container images using scripts
+
+This module takes you through the process of using the scripts we have provided to build the container images you will be using in your Kubernetes cluster and to push them into the Oracle Container Image Registry (OCIR) If you have already created these in a previous lab you can skip this module
+
+Please follow the tasks in the **Setup your container images using scripts** section (click the name in the labs index)
+
+## Part 1:  Setting up your cluster and running your services
 
 This section covers how to run the docker images in kubenetes, how to use Kubernetes secrets to hold configuration and access information, how to use an ingress to expose your application on a web port. Basically this covers how to make your docker based services run in in a Kubernetes cluster.
 
 We also look at using Helm to install Kubernetes "infrastructure" such as the ingress server
 
-### Lab 2: Cloud Native with Kubernetes
+## Part 2: Cloud Native with Kubernetes
 
-#### Is it running, and what to do if it isn't
+### Is it running, and what to do if it isn't
 
 Kubernetes doesn't just provide a platform to run containers in, it also provides a base for many other things including a comprehensive service availability framework which handles monitoring containers and services to see if they are still running, are still alive and are capable of responding to requests.
 
-### Labs 3a&b: Horizontal and Auto Scaling
+## Part 3a&b: Horizontal and Auto Scaling
 
 Kubernetes also supports horizontal scaling of services, enabling multiple instances of a service to run with the load being shared amongst all of them. 
 
@@ -96,7 +113,7 @@ Horizontal scaling provides you with a manual process to control how many instan
 
 This auto scaling labs shows how you can have Kubernetes automatically scale the number of instances for you.
 
-### Lab 4: Rolling out deployment updates
+## Part 4: Rolling out deployment updates
 
 Commonly when a service is deployed it will be updated, Kubernetes provides support for performing rolling upgrades, ensuring that the service continues running during the upgrade. Built into this are easy ways to reverse a deployment roll out to one of it's previous states.
 
@@ -107,9 +124,9 @@ The following modules are in **some** cases optional, this is because some of th
 
 These optional modules are grouped by subject area. Unless there are dependencies specified you should be able to do the module groups in any order, though the labs were written following the order defined below, so if you don't do all of them, or in a different order the visuals may differ slightly.
 
-### Optional labs group 1. Monitor your services
+### Optional labs group 1. Monitoring your services
 
-#### Optional Lab 1a. Capture metrics with Prometheus
+#### Optional 1a. Monitoring services -  Prometheus for data gathering
 
 Once a service is running in Kubernetes we want to start seeing how well it's working in terms of the load on the service. At a basic level this is CPU / IO's but more interesting are things like the number of requests being serviced. You will need to do this module if you are going to do the Grafana for data display module.
 
@@ -117,8 +134,7 @@ Monitoring metrics may also help us determining things like how changes when rel
 
 The process for installing and using Prometheus is detailed in the Prometheus module.
 
-#### Optional Lab 1b. Visualize metrics with Grafana
-
+#### Optional 1b. Monitoring services - Grafana for data display
 To do this optional module you will have to have completed the optional Promtheus for data gathering module.
 
 As you've seen Prometheus is great at capturing the data, but it's not the worlds best tool for displaying the data. Fortunately for us there is an open source tool called **Grafana** which is way better than Prometheus at this.
@@ -130,14 +146,14 @@ These labs are self standing, you can do either of them, or both. They have no d
 
 Both these lab modules use fluentd to read the log data within the Kuberntes environment
 
-#### Optional Lab 2a. Log Capture for processing
+#### Optional 2a. Log Capture for processing
 
 This optional module shows how you can use fluentd to capture the log data, and then write the output to Elastic Search (often used to help process log data in Cloud Native deployments). The module is intended as an example of how to handle log data for people who will need instant indexed access to the log data.
 
 To understand how to do do this look at the Log capture for processing module.
 
 
-#### Optional Lab 2b. Log Capture for long term storage (archive)
+#### Optional 2b. Log Capture for long term storage (archive)
 
 This optional module shows how you can use fluentd to capture the log data, and then write the output to a long term storage offering, In this case we will be writing to the S3 compatible Oracle Object Storage Service. The module is intended as an example to how to handle log data for people that need to retain log data for the long term (perhaps for legal reasons) but don't need instant access, so can use the most cost effective long term storage.
 
@@ -156,7 +172,7 @@ Service meshes can also monitor the traffic flowing throughout your clusters, en
 As they are part of the network they can also split the network traffic, enabling activities like canary rollouts and testing the system by injecting faults.
 
 
-#### Optional lab 3a Install the Linkerd service mesh
+#### Optional 3a Service mesh install and setup
 
 You must do this module before you can do any of the other service mesh modules
 
@@ -164,7 +180,7 @@ This module shows how to install the Linkerd service mesh, and enable it on the 
 
 Instalation is covered in the Installing the Linkerd service mesh module
 
-#### Optional lab 3b. Monitor traffic with the Linkerd service mesh
+#### Optional 3b. Monitoring traffic with the service mesh
 
 You must have done the service mesh install and setup module before this one.
 
@@ -172,7 +188,7 @@ This module shows how to use the service mesh we installed in Optional lab 3a to
 
 You can see how to do traffic monitoring in the Traffic monitoring with a Linkerd service mesh module.
 
-#### Optional lab 3c. Using the service mesh to troubleshoot problems
+#### Optional 3c. Using the service mesh to troubleshoot problems
 
 You must have done the service mesh install and setup module before this one.
 
@@ -180,7 +196,7 @@ This modules uses a simulated "broken" implementation of the stockmanager servic
 
 To understand how to troubleshoot using the service mesh see the  service mesh see the Using the Linkerd service mesh for troubleshooting module.
 
-#### Optional lab 3d. Using the traffic split facility of the service mesh
+#### Optional 3d. Using the traffic split facility of the service mesh
 
 You must have done the service mesh install and setup module, and the service mesh troubleshooting module before this one.
 
@@ -190,7 +206,7 @@ This module also used the traffic split capability of the service mesh to show h
 
 Discover what you can do with a service mesh traffic splits in the Traffic splits with the Linkerd service mesh (Canary deployments, and chaos engineering) module.
 
-#### Optional lab 3e Uninstall the service mesh
+#### Optional 3e Uninstalling the service mesh
 
 **Only** do this after you have completed the service mesh lab modules you want to do.
 

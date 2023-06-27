@@ -1,6 +1,6 @@
 ![Title image](../../../../common/images/customer.logo2.png)
 
-# Setting up the cluster and getting your services running in Kubernetes
+# Set up the cluster and get your services running in Kubernetes
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -56,11 +56,7 @@ The OCI Cloud Shell has helm already installed for you, however it does not know
  
   1. Add the Kubernetes nginx based ingress repo to helm
  
- 
- ``` 
-  <copy>helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx</copy>
-
-  ```bash
+    ```bash
   <copy>helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx</copy>
   ```
 

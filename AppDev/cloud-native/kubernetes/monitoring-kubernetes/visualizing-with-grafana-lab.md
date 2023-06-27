@@ -1,6 +1,6 @@
 ![Title image](../../../../common/images/customer.logo2.png)
 
-# Visualising using Grafana
+# Visualize metrics data with Grafana
 
 
 <details><summary><b>Self guided student - video introduction</b></summary>

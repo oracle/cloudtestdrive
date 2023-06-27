@@ -1,6 +1,6 @@
 ![Title image](../../../../../common/images/customer.logo2.png)
 
-# Using probes for Health, Readines and liveness
+# Health, Readiness and liveness probes to improve availability
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
@@ -27,7 +27,7 @@ This module takes you through the Kubernetes functionality for detecting failed 
 
 You need to complete the **Setting up the cluster and getting your services running in Kubernetes** module.
 
-## Kubernetes and pod health
+### Kubernetes and pod health
 
 Kubernetes provides a service that monitors the pods to see if they meet the requirements in terms of running, being responsive, and being able to process requests. 
 

@@ -1,6 +1,6 @@
 ![Title image](../../../../../common/images/customer.logo2.png)
 
-# Taking advantage of Horizontal Scaling (manually)
+# Respond to load changes with Horizontal Scaling (manually)
 
 <details><summary><b>Self guided student - video introduction</b></summary>
 
