@@ -97,5 +97,5 @@ This repo only contains lab instructions, there is no installation needed.
 
 ## License
 
-Copyright (c) 2019, 2023 Oracle and/or its affiliates
+Copyright (c) 2019, 2024 Oracle and/or its affiliates
 The Universal Permissive License (UPL), Version 1.0
